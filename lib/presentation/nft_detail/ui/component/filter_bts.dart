@@ -48,7 +48,7 @@ class _FilterBtsState extends State<FilterBts> {
           sigmaY: 4,
         ),
         child: Container(
-          height: widget.isLogin ? 686.h : 841.h,
+          height: 650.h,
           width: 375.w,
           padding: EdgeInsets.only(
             top: 9.h,
@@ -58,252 +58,271 @@ class _FilterBtsState extends State<FilterBts> {
           ),
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
             ),
           ),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 109.w,
-                      height: 5.h,
-                      decoration: const BoxDecoration(
-                        color: Color(0xff585782),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(3),
-                        ),
-                      ),
-                    ),
-                  ),
-                  spaceH20,
-                  if (widget.isLogin)
-                    Text(
-                      S.current.address,
-                      style: textNormalCustom(
-                        Colors.white,
-                        20,
-                        FontWeight.w600,
-                      ),
-                    ),
-                  if (widget.isLogin)
-                    StreamBuilder<String>(
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot,) {
-                        return boxAddress(snapshot.data ?? '');
-                      },
-                    ),
-                  Text(
-                    S.current.nft_type,
-                    style: textNormalCustom(
-                      Colors.white,
-                      20,
-                      FontWeight.w600,
-                    ),
-                  ),
-                  spaceH12,
-                  Row(
+          child: GestureDetector(
+            onTap: () {
+              widget.listNftCubit.isShowDropDownStream.add(false);
+            },
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  physics: const ScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: CheckBoxFilter(
-                          cubit: widget.listNftCubit,
-                          nameCkcFilter: S.current.hard_NFT,
-                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                          filterType: S.current.nft_type,
-                        ),
-                      ),
-                      Expanded(
-                        child: CheckBoxFilter(
-                          cubit: widget.listNftCubit,
-                          nameCkcFilter: S.current.soft_nft,
-                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                          filterType: S.current.nft_type,
-                        ),
-                      ),
-                    ],
-                  ),
-                  spaceH20,
-                  Text(
-                    S.current.status,
-                    style: textNormalCustom(
-                      Colors.white,
-                      20,
-                      FontWeight.w600,
-                    ),
-                  ),
-                  spaceH12,
-                  if (widget.isLogin)
-                    CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.on_sell,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.status,
-                    )
-                  else
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CheckBoxFilter(
-                            cubit: widget.listNftCubit,
-                            nameCkcFilter: S.current.on_sell,
-                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                            filterType: S.current.status,
+                      spaceH20,
+                      if (widget.isLogin)
+                        Text(
+                          S.current.address,
+                          style: textNormalCustom(
+                            Colors.white,
+                            20,
+                            FontWeight.w600,
                           ),
                         ),
-                        Expanded(
-                          child: CheckBoxFilter(
-                            cubit: widget.listNftCubit,
-                            nameCkcFilter: S.current.not_on_market,
-                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                            filterType: S.current.status,
-                          ),
-                        ),
-                      ],
-                    ),
-                  spaceH12,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CheckBoxFilter(
-                          cubit: widget.listNftCubit,
-                          nameCkcFilter: S.current.on_pawn,
-                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                          filterType: S.current.status,
+                      if (widget.isLogin) spaceH10,
+                      StreamBuilder<String>(
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<String> snapshot,
+                        ) {
+                          return boxAddress(snapshot.data ?? '');
+                        },
+                      ),
+                      spaceH10,
+                      Text(
+                        S.current.nft_type,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20,
+                          FontWeight.w600,
                         ),
                       ),
-                      Expanded(
-                        child: CheckBoxFilter(
-                          cubit: widget.listNftCubit,
-                          nameCkcFilter: S.current.on_auction,
-                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                          filterType: S.current.status,
-                        ),
-                      ),
-                    ],
-                  ),
-                  spaceH20,
-                  Text(
-                    S.current.collection,
-                    style: textNormalCustom(
-                      Colors.white,
-                      20,
-                      FontWeight.w600,
-                    ),
-                  ),
-                  spaceH12,
-                  searchCollection(),
-                  spaceH20,
-                  SizedBox(
-                    height: 210.h,
-                    width: double.infinity,
-                    child: StreamBuilder<List<CheckBoxFilter>>(
-                      stream: widget.listNftCubit.listCheckBox,
-                      builder: (context,
-                          AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
-                        final itemCount = snapshot.data?.length ?? 0;
-                        if (itemCount != 0) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: (itemCount > 5) ? 5 : itemCount,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  CheckBoxFilter(
-                                    cubit: widget.listNftCubit,
-                                    nameCkcFilter:
-                                    snapshot.data?[index].nameCkcFilter ??
-                                        '',
-                                    typeCkc: snapshot.data?[index].typeCkc ??
-                                        TYPE_CKC_FILTER.NON_IMG,
-                                    urlCover: snapshot.data![index].urlCover,
-                                    filterType: S.current.collection,
-                                    collectionId:
-                                    snapshot.data?[index].collectionId ??
-                                        '',
-                                  ),
-                                  spaceH12,
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          return Padding(
-                            padding: EdgeInsets.only(top: 40.h),
-                            child: Column(
-                              children: [
-                                Image(
-                                  image: const AssetImage(
-                                    ImageAssets.img_search_empty,
-                                  ),
-                                  height: 40.h,
-                                  width: 40.w,
-                                ),
-                                SizedBox(
-                                  height: 17.7.h,
-                                ),
-                                Text(
-                                  S.current.no_result_found,
-                                  style: textNormal(
-                                    Colors.white54,
-                                    14.sp,
-                                  ),
-                                ),
-                              ],
+                      spaceH12,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CheckBoxFilter(
+                              cubit: widget.listNftCubit,
+                              nameCkcFilter: S.current.hard_NFT,
+                              typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                              filterType: S.current.nft_type,
                             ),
+                          ),
+                          Expanded(
+                            child: CheckBoxFilter(
+                              cubit: widget.listNftCubit,
+                              nameCkcFilter: S.current.soft_nft,
+                              typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                              filterType: S.current.nft_type,
+                            ),
+                          ),
+                        ],
+                      ),
+                      spaceH20,
+                      Text(
+                        S.current.status,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20,
+                          FontWeight.w600,
+                        ),
+                      ),
+                      spaceH12,
+                      if (widget.isLogin)
+                        CheckBoxFilter(
+                          cubit: widget.listNftCubit,
+                          nameCkcFilter: S.current.on_sell,
+                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          filterType: S.current.status,
+                        )
+                      else
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilter(
+                                cubit: widget.listNftCubit,
+                                nameCkcFilter: S.current.on_sell,
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                filterType: S.current.status,
+                              ),
+                            ),
+                            Expanded(
+                              child: CheckBoxFilter(
+                                cubit: widget.listNftCubit,
+                                nameCkcFilter: S.current.not_on_market,
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                filterType: S.current.status,
+                              ),
+                            ),
+                          ],
+                        ),
+                      spaceH12,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CheckBoxFilter(
+                              cubit: widget.listNftCubit,
+                              nameCkcFilter: S.current.on_pawn,
+                              typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                              filterType: S.current.status,
+                            ),
+                          ),
+                          Expanded(
+                            child: CheckBoxFilter(
+                              cubit: widget.listNftCubit,
+                              nameCkcFilter: S.current.on_auction,
+                              typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                              filterType: S.current.status,
+                            ),
+                          ),
+                        ],
+                      ),
+                      spaceH20,
+                      Text(
+                        S.current.collection,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20,
+                          FontWeight.w600,
+                        ),
+                      ),
+                      spaceH12,
+                      searchCollection(),
+                      spaceH20,
+                      SizedBox(
+                        height: 210.h,
+                        width: double.infinity,
+                        child: StreamBuilder<List<CheckBoxFilter>>(
+                          stream: widget.listNftCubit.listCheckBox,
+                          builder: (context,
+                              AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
+                            final itemCount = snapshot.data?.length ?? 0;
+                            if (itemCount != 0) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: (itemCount > 5) ? 5 : itemCount,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      CheckBoxFilter(
+                                        cubit: widget.listNftCubit,
+                                        nameCkcFilter: snapshot
+                                                .data?[index].nameCkcFilter ??
+                                            '',
+                                        typeCkc:
+                                            snapshot.data?[index].typeCkc ??
+                                                TYPE_CKC_FILTER.NON_IMG,
+                                        urlCover:
+                                            snapshot.data![index].urlCover,
+                                        filterType: S.current.collection,
+                                        collectionId: snapshot
+                                                .data?[index].collectionId ??
+                                            '',
+                                      ),
+                                      spaceH12,
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 40.h),
+                                child: Column(
+                                  children: [
+                                    Image(
+                                      image: const AssetImage(
+                                        ImageAssets.img_search_empty,
+                                      ),
+                                      height: 40.h,
+                                      width: 40.w,
+                                    ),
+                                    SizedBox(
+                                      height: 17.7.h,
+                                    ),
+                                    Text(
+                                      S.current.no_result_found,
+                                      style: textNormal(
+                                        Colors.white54,
+                                        14.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 34.h,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          widget.listNftCubit.page = 1;
+                          widget.listNftCubit.canLoadMoreListNft = true;
+                          widget.listNftCubit.checkStatus();
+                          widget.listNftCubit.checkFilterArr.clear();
+                          widget.listNftCubit.getListNft(
+                            status: widget.listNftCubit
+                                .getParam(widget.listNftCubit.selectStatus),
+                            nftType: widget.listNftCubit
+                                .getParam(widget.listNftCubit.selectTypeNft),
+                            collectionId: widget.listNftCubit
+                                .getParam(widget.listNftCubit.selectCollection),
+                            walletAddress: widget.listNftCubit.walletAddress,
                           );
-                        }
-                      },
+                          widget.listNftCubit.setTitle();
+                          widget.listNftCubit.setCheck(
+                            widget.listNftCubit.selectTypeNft,
+                            widget.listNftCubit.selectStatus,
+                            widget.listNftCubit.selectCollection,
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: ButtonGold(
+                          isEnable: true,
+                          title: S.current.apply,
+                          height: 48.h,
+                          textSize: 16,
+                        ),
+                      ),
+                      if (widget.isLogin) spaceH38,
+                    ],
+                  ),
+                ),
+                StreamBuilder<bool>(
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    return Visibility(
+                      visible: snapshot.data ?? false,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16.w, top: 130.h),
+                        child: selectAccount(),
+                      ),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 117.w, top: 8.h),
+                  child: Container(
+                    width: 109.w,
+                    height: 5.h,
+                    decoration: const BoxDecoration(
+                      color: Color(0xff585782),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(3),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: 34.h,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      widget.listNftCubit.page = 1;
-                      widget.listNftCubit.canLoadMoreListNft = true;
-                      widget.listNftCubit.checkStatus();
-                      widget.listNftCubit.checkFilterArr.clear();
-                      widget.listNftCubit.getListNft(
-                        status: widget.listNftCubit
-                            .getParam(widget.listNftCubit.selectStatus),
-                        nftType: widget.listNftCubit
-                            .getParam(widget.listNftCubit.selectTypeNft),
-                        collectionId: widget.listNftCubit
-                            .getParam(widget.listNftCubit.selectCollection),
-                      );
-                      widget.listNftCubit.setTitle();
-                      widget.listNftCubit.setCheck(
-                        widget.listNftCubit.selectTypeNft,
-                        widget.listNftCubit.selectStatus,
-                        widget.listNftCubit.selectCollection,
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: ButtonGold(
-                      isEnable: true,
-                      title: S.current.apply,
-                    ),
-                  ),
-                ],
-              ),
-              StreamBuilder<bool>(
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  return Visibility(
-                    visible: snapshot.data ?? false,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 130.h),
-                      child: selectAccount(),
-                    ),
-                  );
-                },
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -398,10 +417,10 @@ class _FilterBtsState extends State<FilterBts> {
 
   Widget selectAccount() {
     return Container(
-      color: colorSelected,
       width: 343.w,
       height: 177.h,
       decoration: BoxDecoration(
+        color: colorSelected,
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Theme(
@@ -429,8 +448,9 @@ class _FilterBtsState extends State<FilterBts> {
       },
       child: Container(
         height: 54.h,
-        color: text == widget.listNftCubit.walletAddress ? Colors.white
-            .withOpacity(0.3) : Colors.transparent,
+        color: text == widget.listNftCubit.walletAddress
+            ? Colors.white.withOpacity(0.3)
+            : colorSelected,
         child: Padding(
           padding: EdgeInsets.only(left: 24.w),
           child: Text(
@@ -449,12 +469,6 @@ class _FilterBtsState extends State<FilterBts> {
         }
       },
       child: Container(
-        margin: EdgeInsets.only(
-          top: 16.h,
-          bottom: 12.h,
-          // right: 16.w,
-          left: 10.w,
-        ),
         height: 46.h,
         padding: EdgeInsets.symmetric(
           horizontal: 15.5.w,
