@@ -34,6 +34,10 @@ class _AuctionTabState extends State<AuctionTab>
   int chooseIndex = 0;
   bool outPrice = false;
   bool priceStep = false;
+  final timeStartController = TextEditingController();
+  final timeEndController = TextEditingController();
+  final dateStartController = TextEditingController();
+  final dateEndController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +133,15 @@ class _AuctionTabState extends State<AuctionTab>
               datetimePickerCustom(
                 date: S.current.start_date,
                 time: S.current.start_time,
+                timeController: timeStartController,
+                dateController: dateStartController,
               ),
               const SizedBox(
                 height: 16,
               ),
               datetimePickerCustom(
+                timeController: timeEndController,
+                dateController: dateEndController,
                 date: S.current.end_date,
                 time: S.current.end_time,
               ),
@@ -273,7 +281,12 @@ class _AuctionTabState extends State<AuctionTab>
     );
   }
 
-  Widget datetimePickerCustom({required String date, required String time}) {
+  Widget datetimePickerCustom({
+    required String date,
+    required String time,
+    required timeController,
+    required dateController,
+  }) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
