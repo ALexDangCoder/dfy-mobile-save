@@ -89,6 +89,7 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
       selectPage(event.tabIndex);
     }).addTo(compositeSubscription);
   }
+
   @override
   void dispose() {
     compositeSubscription.clear();

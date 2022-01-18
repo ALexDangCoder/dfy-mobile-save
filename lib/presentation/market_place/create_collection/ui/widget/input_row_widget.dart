@@ -18,7 +18,6 @@ class InputRow extends StatelessWidget {
   final String suffixes;
   final String prefixText;
 
-
   const InputRow({
     Key? key,
     this.hint = '',

@@ -1,6 +1,6 @@
 part of 'nft_detail.dart';
 
-NFTDetailBloc bloc = nftKey.currentState!.bloc;
+NFTDetailBloc bloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
 
 Widget _leading(BuildContext context) => InkWell(
       onTap: () {
@@ -12,14 +12,12 @@ Widget _leading(BuildContext context) => InkWell(
       ),
     );
 
-Widget _nameNFT({
-  required String title,
-  int quantity = 1,
-  String url = '',
-  double? price,
-  required BuildContext context
-
-}) {
+Widget _nameNFT(
+    {required String title,
+    int quantity = 1,
+    String url = '',
+    double? price,
+    required BuildContext context}) {
   return Container(
     margin: EdgeInsets.only(
       top: 8.h,

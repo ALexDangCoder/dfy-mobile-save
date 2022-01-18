@@ -84,7 +84,7 @@ class _SendOfferState extends State<SendOffer> {
                             hintText: S.current.enter_msg,
                             typeForm: TypeFormWithoutPrefix.TEXT,
                             cubit: '',
-                            textValue: (value){},
+                            textValue: (value) {},
                             txtController: _txtMessage,
                             quantityOfAll: 10,
                             isTokenOrQuantity: false,
@@ -102,7 +102,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.loan_to_vl,
                             typeForm: TypeFormWithoutPrefix.IMAGE,
                             cubit: '',
@@ -123,7 +123,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.enter_loan_amount,
                             typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
                             cubit: '',
@@ -145,7 +145,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.enter_interest_rate,
                             typeForm: TypeFormWithoutPrefix.NONE,
                             cubit: '',
@@ -167,7 +167,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.ltv_liquid_thres,
                             typeForm: TypeFormWithoutPrefix.IMAGE,
                             cubit: '',
@@ -188,7 +188,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.repayment_curr,
                             typeForm: TypeFormWithoutPrefix.IMAGE,
                             cubit: '',
@@ -209,7 +209,7 @@ class _SendOfferState extends State<SendOffer> {
                           ),
                           spaceH4,
                           FormWithOutPrefix(
-                            textValue: (value){},
+                            textValue: (value) {},
                             hintText: S.current.recurring_interest,
                             typeForm: TypeFormWithoutPrefix.IMAGE,
                             cubit: '',

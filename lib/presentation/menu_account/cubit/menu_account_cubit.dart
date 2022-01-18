@@ -5,7 +5,6 @@ import 'package:rxdart/rxdart.dart';
 
 import 'menu_account_state.dart';
 
-
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   MenuAccountCubit() : super(NoLoginState());
 
