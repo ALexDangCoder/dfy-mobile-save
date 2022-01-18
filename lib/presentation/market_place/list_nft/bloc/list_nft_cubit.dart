@@ -170,7 +170,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  late final String walletAddress;
+String walletAddress = '';
 
   void getAddressWallet() {
     /// get SharePreF

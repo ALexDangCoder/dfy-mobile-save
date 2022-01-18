@@ -372,15 +372,23 @@ class _FilterBtsState extends State<FilterBts> {
   Widget selectAccount() {
     return Container(
       color: colorSelected,
+      width: 343.w,
+      height: 177.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Scrollbar(
         child: ListView.builder(
+          itemCount: 5,
           itemBuilder: (BuildContext context, int index) {  
-            
+            return SizedBox();
           },),
       ),
+    );
+  }
+  Widget itemAddress(){
+    return SizedBox(
+
     );
   }
 }

@@ -477,5 +477,8 @@
   "start_in": "Bắt đầu trong",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
     "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
-  "end_in": "Kết thúc"
+  "end_in": "Kết thúc",
+   "buy_fail": "Mua thất bại",
+    "nft_success": "NFT đã chuyển vào ví của bạn thành công",
+    "nft_fail": "Đã có lỗi xảy ra khi chuyển NFT vào ví của bạn"
 }

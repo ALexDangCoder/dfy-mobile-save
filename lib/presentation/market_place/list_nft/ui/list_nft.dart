@@ -42,7 +42,6 @@ class _ListNftState extends State<ListNft> {
   @override
   void initState() {
     super.initState();
-    _cubit.getAddressWallet();
     _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
