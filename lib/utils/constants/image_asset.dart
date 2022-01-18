@@ -300,9 +300,12 @@ class ImageAssets {
   static const String ic_round_i = '$baseImg/ic_round_i.svg';
   static const String ic_expand_white_svg = '$baseImg/ic_expand_white_svg.svg';
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
-
-
   static const String ic_star = '$baseImg/ic_star.png';
+
+
+  //MyAccount
+  static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
+
 
   static SvgPicture svgAssets(
     String name, {
