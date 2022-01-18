@@ -1,16 +1,23 @@
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../../main.dart';
 
-part 'connect_wallet_state.dart';
+part 'connect_wallet_dialog_state.dart';
 
-class ConnectWalletCubit extends Cubit<ConnectWalletState> {
-  ConnectWalletCubit() : super(ConnectWalletInitial());
-  String contentDialog = '';
-  String contentRightButton = '';
+class ConnectWalletDialogCubit extends Cubit<ConnectWalletDialogState> {
+  ConnectWalletDialogCubit() : super(ConnectWalletDialogInitial());
+  // BehaviorSubject<bool> isLogin = BehaviorSubject();
+
+  // Future<void> checkLoginStatus() async {
+  //   final bool check = await PrefsService.getLoginStatus();
+  //   isLogin.sink.add(check);
+  // }
 
   Future<void> getListWallet() async {
     try {
