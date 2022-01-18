@@ -4,8 +4,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
@@ -15,10 +15,10 @@ class FilterBts extends StatefulWidget {
   const FilterBts({
     Key? key,
     required this.listNftCubit,
-    required this.pageRouter,
+    required this.isLogin,
   }) : super(key: key);
   final ListNftCubit listNftCubit;
-  final PageRouter pageRouter;
+  final bool isLogin;
 
   @override
   _FilterBtsState createState() => _FilterBtsState();
@@ -48,7 +48,7 @@ class _FilterBtsState extends State<FilterBts> {
           sigmaY: 4,
         ),
         child: Container(
-          height: widget.pageRouter == PageRouter.MARKET ? 686.h : 841.h,
+          height: widget.isLogin ? 686.h : 841.h,
           width: 375.w,
           padding: EdgeInsets.only(
             top: 9.h,
@@ -63,219 +63,245 @@ class _FilterBtsState extends State<FilterBts> {
               topRight: Radius.circular(20),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Center(
-                child: Container(
-                  width: 109.w,
-                  height: 5.h,
-                  decoration: const BoxDecoration(
-                    color: Color(0xff585782),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(3),
-                    ),
-                  ),
-                ),
-              ),
-              spaceH20,
-              if(widget.pageRouter == PageRouter.MY_ACC)
-                Text(
-                  S.current.nft_type,
-                  style: textNormalCustom(
-                    Colors.white,
-                    20,
-                    FontWeight.w600,
-                  ),
-                ),
-              Text(
-                S.current.nft_type,
-                style: textNormalCustom(
-                  Colors.white,
-                  20,
-                  FontWeight.w600,
-                ),
-              ),
-              spaceH12,
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.hard_NFT,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.nft_type,
+                  Center(
+                    child: Container(
+                      width: 109.w,
+                      height: 5.h,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff585782),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(3),
+                        ),
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.soft_nft,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.nft_type,
+                  spaceH20,
+                  if (widget.isLogin)
+                    Text(
+                      S.current.address,
+                      style: textNormalCustom(
+                        Colors.white,
+                        20,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  if (widget.isLogin)
+                    StreamBuilder<String>(
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String> snapshot,) {
+                        return boxAddress(snapshot.data ?? '');
+                      },
+                    ),
+                  Text(
+                    S.current.nft_type,
+                    style: textNormalCustom(
+                      Colors.white,
+                      20,
+                      FontWeight.w600,
                     ),
                   ),
-                ],
-              ),
-              spaceH20,
-              Text(
-                S.current.status,
-                style: textNormalCustom(
-                  Colors.white,
-                  20,
-                  FontWeight.w600,
-                ),
-              ),
-              spaceH12,
-              if (widget.pageRouter == PageRouter.MARKET)
-                CheckBoxFilter(
-                cubit: widget.listNftCubit,
-                nameCkcFilter: S.current.on_sell,
-                typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                filterType: S.current.status,
-              ) else Row(
-                children: [
-                  Expanded(
-                    child: CheckBoxFilter(
+                  spaceH12,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckBoxFilter(
+                          cubit: widget.listNftCubit,
+                          nameCkcFilter: S.current.hard_NFT,
+                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          filterType: S.current.nft_type,
+                        ),
+                      ),
+                      Expanded(
+                        child: CheckBoxFilter(
+                          cubit: widget.listNftCubit,
+                          nameCkcFilter: S.current.soft_nft,
+                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          filterType: S.current.nft_type,
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceH20,
+                  Text(
+                    S.current.status,
+                    style: textNormalCustom(
+                      Colors.white,
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  spaceH12,
+                  if (widget.isLogin)
+                    CheckBoxFilter(
                       cubit: widget.listNftCubit,
                       nameCkcFilter: S.current.on_sell,
                       typeCkc: TYPE_CKC_FILTER.NON_IMG,
                       filterType: S.current.status,
-                    ),
-                  ),
-                  Expanded(
-                    child: CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.not_on_market,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.status,
-                    ),
-                  ),
-                ],
-              ),
-              spaceH12,
-              Row(
-                children: [
-                  Expanded(
-                    child: CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.on_pawn,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.status,
-                    ),
-                  ),
-                  Expanded(
-                    child: CheckBoxFilter(
-                      cubit: widget.listNftCubit,
-                      nameCkcFilter: S.current.on_auction,
-                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                      filterType: S.current.status,
-                    ),
-                  ),
-                ],
-              ),
-              spaceH20,
-              Text(
-                S.current.collection,
-                style: textNormalCustom(
-                  Colors.white,
-                  20,
-                  FontWeight.w600,
-                ),
-              ),
-              spaceH12,
-              searchCollection(),
-              spaceH20,
-              SizedBox(
-                height: 210.h,
-                width: double.infinity,
-                child: StreamBuilder<List<CheckBoxFilter>>(
-                  stream: widget.listNftCubit.listCheckBox,
-                  builder:
-                      (context, AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
-                    final itemCount = snapshot.data?.length ?? 0;
-                    if (itemCount != 0) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: (itemCount > 5) ? 5 : itemCount,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              CheckBoxFilter(
-                                cubit: widget.listNftCubit,
-                                nameCkcFilter:
-                                    snapshot.data?[index].nameCkcFilter ?? '',
-                                typeCkc: snapshot.data?[index].typeCkc ??
-                                    TYPE_CKC_FILTER.NON_IMG,
-                                urlCover: snapshot.data![index].urlCover,
-                                filterType: S.current.collection,
-                                collectionId:
-                                    snapshot.data?[index].collectionId ?? '',
-                              ),
-                              spaceH12,
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 40.h),
-                        child: Column(
-                          children: [
-                            Image(
-                              image: const AssetImage(
-                                ImageAssets.img_search_empty,
-                              ),
-                              height: 40.h,
-                              width: 40.w,
-                            ),
-                            SizedBox(
-                              height: 17.7.h,
-                            ),
-                            Text(
-                              S.current.no_result_found,
-                              style: textNormal(
-                                Colors.white54,
-                                14.sp,
-                              ),
-                            ),
-                          ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CheckBoxFilter(
+                            cubit: widget.listNftCubit,
+                            nameCkcFilter: S.current.on_sell,
+                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                            filterType: S.current.status,
+                          ),
                         ),
+                        Expanded(
+                          child: CheckBoxFilter(
+                            cubit: widget.listNftCubit,
+                            nameCkcFilter: S.current.not_on_market,
+                            typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                            filterType: S.current.status,
+                          ),
+                        ),
+                      ],
+                    ),
+                  spaceH12,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckBoxFilter(
+                          cubit: widget.listNftCubit,
+                          nameCkcFilter: S.current.on_pawn,
+                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          filterType: S.current.status,
+                        ),
+                      ),
+                      Expanded(
+                        child: CheckBoxFilter(
+                          cubit: widget.listNftCubit,
+                          nameCkcFilter: S.current.on_auction,
+                          typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          filterType: S.current.status,
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceH20,
+                  Text(
+                    S.current.collection,
+                    style: textNormalCustom(
+                      Colors.white,
+                      20,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  spaceH12,
+                  searchCollection(),
+                  spaceH20,
+                  SizedBox(
+                    height: 210.h,
+                    width: double.infinity,
+                    child: StreamBuilder<List<CheckBoxFilter>>(
+                      stream: widget.listNftCubit.listCheckBox,
+                      builder: (context,
+                          AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
+                        final itemCount = snapshot.data?.length ?? 0;
+                        if (itemCount != 0) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: (itemCount > 5) ? 5 : itemCount,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  CheckBoxFilter(
+                                    cubit: widget.listNftCubit,
+                                    nameCkcFilter:
+                                    snapshot.data?[index].nameCkcFilter ??
+                                        '',
+                                    typeCkc: snapshot.data?[index].typeCkc ??
+                                        TYPE_CKC_FILTER.NON_IMG,
+                                    urlCover: snapshot.data![index].urlCover,
+                                    filterType: S.current.collection,
+                                    collectionId:
+                                    snapshot.data?[index].collectionId ??
+                                        '',
+                                  ),
+                                  spaceH12,
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          return Padding(
+                            padding: EdgeInsets.only(top: 40.h),
+                            child: Column(
+                              children: [
+                                Image(
+                                  image: const AssetImage(
+                                    ImageAssets.img_search_empty,
+                                  ),
+                                  height: 40.h,
+                                  width: 40.w,
+                                ),
+                                SizedBox(
+                                  height: 17.7.h,
+                                ),
+                                Text(
+                                  S.current.no_result_found,
+                                  style: textNormal(
+                                    Colors.white54,
+                                    14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 34.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      widget.listNftCubit.page = 1;
+                      widget.listNftCubit.canLoadMoreListNft = true;
+                      widget.listNftCubit.checkStatus();
+                      widget.listNftCubit.checkFilterArr.clear();
+                      widget.listNftCubit.getListNft(
+                        status: widget.listNftCubit
+                            .getParam(widget.listNftCubit.selectStatus),
+                        nftType: widget.listNftCubit
+                            .getParam(widget.listNftCubit.selectTypeNft),
+                        collectionId: widget.listNftCubit
+                            .getParam(widget.listNftCubit.selectCollection),
                       );
-                    }
-                  },
-                ),
+                      widget.listNftCubit.setTitle();
+                      widget.listNftCubit.setCheck(
+                        widget.listNftCubit.selectTypeNft,
+                        widget.listNftCubit.selectStatus,
+                        widget.listNftCubit.selectCollection,
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: ButtonGold(
+                      isEnable: true,
+                      title: S.current.apply,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 34.h,
-              ),
-              GestureDetector(
-                onTap: () {
-                  widget.listNftCubit.page = 1;
-                  widget.listNftCubit.canLoadMoreListNft = true;
-                  widget.listNftCubit.checkStatus();
-                  widget.listNftCubit.checkFilterArr.clear();
-                  widget.listNftCubit.getListNft(
-                    status: widget.listNftCubit
-                        .getParam(widget.listNftCubit.selectStatus),
-                    nftType: widget.listNftCubit
-                        .getParam(widget.listNftCubit.selectTypeNft),
-                    collectionId: widget.listNftCubit
-                        .getParam(widget.listNftCubit.selectCollection),
+              StreamBuilder<bool>(
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  return Visibility(
+                    visible: snapshot.data ?? false,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16.w, top: 130.h),
+                      child: selectAccount(),
+                    ),
                   );
-                  widget.listNftCubit.setTitle();
-                  widget.listNftCubit.setCheck(
-                    widget.listNftCubit.selectTypeNft,
-                    widget.listNftCubit.selectStatus,
-                    widget.listNftCubit.selectCollection,
-                  );
-                  Navigator.pop(context);
                 },
-                child: ButtonGold(
-                  isEnable: true,
-                  title: S.current.apply,
-                ),
               ),
             ],
           ),
@@ -369,6 +395,7 @@ class _FilterBtsState extends State<FilterBts> {
       ],
     );
   }
+
   Widget selectAccount() {
     return Container(
       color: colorSelected,
@@ -377,18 +404,91 @@ class _FilterBtsState extends State<FilterBts> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
-      child: Scrollbar(
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {  
-            return SizedBox();
-          },),
+      child: Theme(
+        data: ThemeData(
+          highlightColor: backgroundBottomSheet,
+        ),
+        child: Scrollbar(
+          child: ListView.builder(
+            itemCount: widget.listNftCubit.walletAddressFilter.length,
+            itemBuilder: (BuildContext context, int index) {
+              return itemAddress(widget.listNftCubit.walletAddress[index]);
+            },
+          ),
+        ),
       ),
     );
   }
-  Widget itemAddress(){
-    return SizedBox(
 
+  Widget itemAddress(String text) {
+    return InkWell(
+      onTap: () {
+        widget.listNftCubit.addressStream.add(text);
+        widget.listNftCubit.walletAddress = text == 'All' ? '' : text;
+        widget.listNftCubit.isShowDropDownStream.add(false);
+      },
+      child: Container(
+        height: 54.h,
+        color: text == widget.listNftCubit.walletAddress ? Colors.white
+            .withOpacity(0.3) : Colors.transparent,
+        child: Padding(
+          padding: EdgeInsets.only(left: 24.w),
+          child: Text(
+            text.length == 3 ? text : text.formatAddress(index: 4),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget boxAddress(String address) {
+    return InkWell(
+      onTap: () {
+        if (widget.listNftCubit.showDropdownAddress) {
+          widget.listNftCubit.isShowDropDownStream.add(true);
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.only(
+          top: 16.h,
+          bottom: 12.h,
+          // right: 16.w,
+          left: 10.w,
+        ),
+        height: 46.h,
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.5.w,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().itemBtsColors(),
+          borderRadius: BorderRadius.all(
+            Radius.circular(12.r),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  child: Text(
+                    address,
+                    style: textNormal(
+                      null,
+                      16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Image.asset(
+              ImageAssets.ic_line_down,
+              height: 20.67.h,
+              width: 20.14.w,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

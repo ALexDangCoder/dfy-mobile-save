@@ -24,11 +24,9 @@ class ListNft extends StatefulWidget {
     Key? key,
     this.marketType,
     this.queryAllResult,
-    required this.pageRouter,
   }) : super(key: key);
   final MarketType? marketType;
   final String? queryAllResult;
-  final PageRouter pageRouter;
 
   @override
   _ListNftState createState() => _ListNftState();
@@ -42,40 +40,16 @@ class _ListNftState extends State<ListNft> {
   @override
   void initState() {
     super.initState();
+    if(widget.queryAllResult?.isNotEmpty ?? false){
+      controller.text = widget.queryAllResult!;
+    }
     _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
     _cubit.getTokenInf();
+    _cubit.getAddressWallet(widget.marketType, widget.queryAllResult);
     _cubit.getCollectionFilter();
-    if (widget.pageRouter == PageRouter.MARKET) {
-      if (widget.marketType != null) {
-        _cubit.getListNft(status: _cubit.status(widget.marketType));
-      } else {
-        if (widget.queryAllResult != null) {
-          controller.text = widget.queryAllResult ?? '';
-          _cubit.getListNft(name: widget.queryAllResult);
-        } else {
-          _cubit.getListNft();
-        }
-      }
-    } else {
-      if (widget.marketType != null) {
-        _cubit.getListNft(
-          status: _cubit.status(widget.marketType),
-          walletAddress: _cubit.walletAddress,
-        );
-      } else {
-        if (widget.queryAllResult != null) {
-          controller.text = widget.queryAllResult ?? '';
-          _cubit.getListNft(
-            name: widget.queryAllResult,
-            walletAddress: _cubit.walletAddress,
-          );
-        } else {
-          _cubit.getListNft(walletAddress: _cubit.walletAddress);
-        }
-      }
-    }
+
   }
 
   @override
@@ -122,8 +96,7 @@ class _ListNftState extends State<ListNft> {
                     context: context,
                     builder: (_) {
                       return FilterBts(
-                        listNftCubit: _cubit,
-                        pageRouter: widget.pageRouter,
+                        listNftCubit: _cubit, isLogin: _cubit.getLogin(),
                       );
                     },
                   );
@@ -148,7 +121,7 @@ class _ListNftState extends State<ListNft> {
                           if (_cubit.canLoadMoreListNft &&
                               (scrollInfo.metrics.pixels ==
                                   scrollInfo.metrics.maxScrollExtent)) {
-                            _cubit.loadMorePosts(widget.pageRouter);
+                            _cubit.loadMorePosts();
                           }
                           return true;
                         },
@@ -162,7 +135,7 @@ class _ListNftState extends State<ListNft> {
                                 return Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: () async {
-                                      _cubit.refreshPosts(widget.pageRouter);
+                                      _cubit.refreshPosts();
                                     },
                                     child: Stack(
                                       children: [
@@ -372,7 +345,6 @@ class _ListNftState extends State<ListNft> {
       _cubit.searchNft(
         query,
         _cubit.getParam(_cubit.selectStatus),
-        widget.pageRouter,
       );
     });
   }

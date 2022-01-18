@@ -23,6 +23,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   final BehaviorSubject<String> title = BehaviorSubject.seeded('');
   final BehaviorSubject<List<CheckBoxFilter>> listCheckBox =
       BehaviorSubject<List<CheckBoxFilter>>();
+  final BehaviorSubject<String> addressStream = BehaviorSubject.seeded('');
+  final BehaviorSubject<bool> isShowDropDownStream = BehaviorSubject.seeded(false);
 
   CollectionFilterRepository get _collectionRepo => Get.find();
 
@@ -48,6 +50,15 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       title.add(getTitleStream(selectStatus.first));
     }
   }
+  bool getLogin(){
+    if(walletAddress == ''){
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
 
   String getTitleStream(int num) {
     if (num == 2) {
@@ -92,9 +103,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void searchNft(String? name, String? status, PageRouter pageRouter) {
+  void searchNft(String? name, String? status,) {
     page = 1;
-    if (pageRouter == PageRouter.MARKET) {
+    if (walletAddress == '') {
       if (status!.isEmpty) {
         getListNft(name: name);
       } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
@@ -118,8 +129,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   bool canLoadMoreListNft = true;
   bool refresh = false;
 
-  void loadMorePosts(PageRouter pageRouter) {
-    if (pageRouter == PageRouter.MARKET) {
+  void loadMorePosts() {
+    if (walletAddress == '') {
       if (!loadMore) {
         page += 1;
         canLoadMoreListNft = true;
@@ -145,10 +156,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void refreshPosts(PageRouter pageRouter) {
+  void refreshPosts() {
     canLoadMoreListNft = true;
     page = 1;
-    if (pageRouter == PageRouter.MARKET) {
+    if (walletAddress == '') {
       if (!refresh) {
         refresh = true;
         getListNft(
@@ -170,11 +181,53 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-String walletAddress = '';
+  ///My account
 
-  void getAddressWallet() {
+  List<String> walletAddressFilter = [];
+  String walletAddress = '';
+  String email = '';
+  bool showDropdownAddress = true;
+
+  void getAddressWallet(MarketType? marketType , String? queryAllResult ) {
     /// get SharePreF
     walletAddress = '';
+    email = '';
+    if(email.isEmpty){
+      showDropdownAddress = false;
+      addressStream.add(walletAddress);
+    }
+    else{
+      ///getListAddressToFilter
+      addressStream.add(walletAddress);
+      walletAddressFilter.add('All');
+    }
+    if (walletAddress == '') {
+      if (marketType != null) {
+        getListNft(status: status(marketType));
+      } else {
+        if (queryAllResult != null) {
+          getListNft(name: queryAllResult);
+        } else {
+          getListNft();
+        }
+      }
+    } else {
+      if (marketType != null) {
+        getListNft(
+          status: status(marketType),
+          walletAddress: walletAddress,
+        );
+      } else {
+        if (queryAllResult != null) {
+          getListNft(
+            name: queryAllResult,
+            walletAddress: walletAddress,
+          );
+        } else {
+          getListNft(walletAddress: walletAddress);
+        }
+      }
+    }
   }
 
   Future<void> getListNft({
