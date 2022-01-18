@@ -8,7 +8,6 @@ class BuyNftRequest {
   final int quantity;
   final String txn_hash;
 
-
   BuyNftRequest(this.nft_market_id, this.quantity, this.txn_hash);
 
   factory BuyNftRequest.fromJson(Map<String, dynamic> json) =>

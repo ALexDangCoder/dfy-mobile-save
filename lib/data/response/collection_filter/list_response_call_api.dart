@@ -16,7 +16,6 @@ class ListResponseFromApi extends Equatable {
   @JsonKey(name: 'rows')
   List<CollectionFilterResponse>? rows;
 
-
   ListResponseFromApi(this.rc, this.rd, this.total, this.rows);
 
   factory ListResponseFromApi.fromJson(Map<String, dynamic> json) =>
@@ -26,5 +25,6 @@ class ListResponseFromApi extends Equatable {
 
   @override
   List<Object?> get props => [];
+
   List<CollectionFilter>? toDomain() => rows?.map((e) => e.toDomain()).toList();
 }

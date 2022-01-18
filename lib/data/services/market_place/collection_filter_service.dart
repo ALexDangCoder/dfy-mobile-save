@@ -7,9 +7,9 @@ part 'collection_filter_service.g.dart';
 
 @RestApi()
 abstract class CollectionFilterClient {
-  factory CollectionFilterClient(Dio dio, {String baseUrl}) = _CollectionFilterClient;
+  factory CollectionFilterClient(Dio dio, {String baseUrl}) =
+      _CollectionFilterClient;
 
   @GET(ApiConstants.GET_LIST_COLLECTION_FILTER)
   Future<ListResponseFromApi> getListCollection();
-
 }
