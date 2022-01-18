@@ -15,7 +15,11 @@ class ItemMenuModel {
     required String title,
   }) {
     return ItemMenuModel(
-        routeName: routeName, title: title, icon: '', children: [],);
+      routeName: routeName,
+      title: title,
+      icon: '',
+      children: [],
+    );
   }
 
   factory ItemMenuModel.createParent({

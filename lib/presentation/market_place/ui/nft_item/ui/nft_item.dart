@@ -106,15 +106,14 @@ class _NFTItemState extends State<NFTItemWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                NFTDetailScreen(
-                  key: nftKey,
-                  typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-                  marketId: widget.nftMarket.marketId,
-                  typeNft: widget.nftMarket.typeNFT,
-                  nftId: widget.nftMarket.nftId,
-                  pawnId: widget.nftMarket.pawnId,
-                ),
+            builder: (context) => NFTDetailScreen(
+              key: nftKey,
+              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+              marketId: widget.nftMarket.marketId,
+              typeNft: widget.nftMarket.typeNFT,
+              nftId: widget.nftMarket.nftId,
+              pawnId: widget.nftMarket.pawnId,
+            ),
           ),
         );
       },
@@ -166,13 +165,13 @@ class _NFTItemState extends State<NFTItemWidget> {
                           width: 140.w,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
-                            child: (widget.nftMarket.typeImage !=
-                                    TypeImage.VIDEO)
-                                ? Image.network(
-                                     widget.nftMarket.image ?? '',
-                                    fit: BoxFit.cover,
-                                  )
-                                : VideoPlayer(_controller!),
+                            child:
+                                (widget.nftMarket.typeImage != TypeImage.VIDEO)
+                                    ? Image.network(
+                                        widget.nftMarket.image ?? '',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : VideoPlayer(_controller!),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
@@ -214,7 +213,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                   false)
                                 ClipRRect(
                                   child: Image.network(
-                                   widget.nftMarket.urlToken ?? '',
+                                    widget.nftMarket.urlToken ?? '',
                                     fit: BoxFit.cover,
                                   ),
                                 )
