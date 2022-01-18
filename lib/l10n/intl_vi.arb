@@ -480,6 +480,19 @@
   "connect": "Kết nối",
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT đã chuyển vào ví của bạn thành công",
+  "custom_url" : "Đường dẫn tùy chỉnh",
   "nft_fail": "Đã có lỗi xảy ra khi chuyển NFT vào ví của bạn",
-  "custom_url" : "Đường dẫn tùy chỉnh"
+  "how_to_create_hard_nft": "Cách tạo Hard NFT",
+  "skip": "Bỏ qua",
+  "step": "Bước",
+  "create_an_unauth_hard_nft": "Tạo chưa xác thực",
+  "send_evalue_to_evaluator": "Gửi yêu cầu đánh giá",
+  "to_evaluator": "đến người đánh giá",
+  "receive_accept_result_blockchain": "Nhận và chấp nhận kết quả đánh giá",
+  "on_blockchain": "trên blockchain",
+  "put_hard_nft_market": "Đưa Hard Nft lên",
+  "marketplace": "Marketplace",
+  "to_take_profit": "để thu lợi nhuận",
+  "next": "Tiếp theo",
+  "get_started": "Bắt đầu"
 }
