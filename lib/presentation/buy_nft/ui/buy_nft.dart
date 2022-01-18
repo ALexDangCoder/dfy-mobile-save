@@ -203,8 +203,7 @@ class BuyNFT extends StatelessWidget {
                         isPadding: false,
                         title: '${S.current.from}:',
                         child: Text(
-                          walletAddress
-                              .formatAddressWalletConfirm(),
+                          walletAddress.formatAddressWalletConfirm(),
                           style: textNormalCustom(
                             AppTheme.getInstance().textThemeColor(),
                             16,
@@ -263,111 +262,117 @@ class BuyNFT extends StatelessWidget {
           );
     }
 
-    return GestureDetector(
-      onTap: () {
-        final FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        resizeToAvoidBottomInset: false,
-        body: Align(
-          alignment: Alignment.bottomCenter,
-          child: StateStreamLayout(
-            stream: nftDetailCubit.stateStream,
-            error:
-                AppException(S.current.error, S.current.something_went_wrong),
-            retry: () {
-              //refresh();
-            },
-            textEmpty: '',
-            child: BaseBottomSheet(
-              isImage: true,
-              text: ImageAssets.ic_close,
-              title: '${S.current.buy} NFT',
-              child: Column(
-                children: [
-                  spaceH24,
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
-                          right: 16.w,
-                        ),
-                        child: Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.current.quantity,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    14.sp,
-                                    FontWeight.w400,
-                                  ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: StateStreamLayout(
+          stream: nftDetailCubit.stateStream,
+          error: AppException(S.current.error, S.current.something_went_wrong),
+          retry: () {
+            //refresh();
+          },
+          textEmpty: '',
+          child: BaseBottomSheet(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            title: '${S.current.buy} NFT',
+            child: Column(
+              children: [
+                spaceH24,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.current.quantity,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  14.sp,
+                                  FontWeight.w400,
                                 ),
-                                spaceH4,
-                                FormWithOutPrefix(
-                                  textValue: (value) {
-                                    emitValue(value);
-                                  },
-                                  hintText: S.current.enter_quantity,
-                                  typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
-                                  cubit: BuyNftCubit,
-                                  txtController: TextEditingController(),
-                                  quantityOfAll: nftMarket.totalCopies,
-                                  imageAsset: nftMarket.urlToken,
-                                  isTokenOrQuantity: false,
+                              ),
+                              spaceH4,
+                              FormWithOutPrefix(
+                                textValue: (value) {
+                                  emitValue(value);
+                                },
+                                hintText: S.current.enter_quantity,
+                                typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
+                                cubit: BuyNftCubit,
+                                txtController: TextEditingController(),
+                                quantityOfAll: nftMarket.totalCopies,
+                                imageAsset: nftMarket.urlToken,
+                                isTokenOrQuantity: false,
+                              ),
+                              warningAmount(),
+                              spaceH20,
+                              pricePerOne(),
+                              spaceH12,
+                              divider,
+                              spaceH12,
+                              showTotalPayment(),
+                              spaceH4,
+                              Text(
+                                '${S.current.your_balance} ${balance} '
+                                '${nftMarket.symbolToken}',
+                                style: textNormalCustom(
+                                  Colors.white.withOpacity(0.7),
+                                  14,
+                                  FontWeight.w400,
                                 ),
-                                warningAmount(),
-                                spaceH20,
-                                pricePerOne(),
-                                spaceH12,
-                                divider,
-                                spaceH12,
-                                showTotalPayment(),
-                                spaceH4,
-                                Text(
-                                  '${S.current.your_balance} ${balance} '
-                                  '${nftMarket.symbolToken}',
-                                  style: textNormalCustom(
-                                    Colors.white.withOpacity(0.7),
-                                    14,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 300.h,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                              SizedBox(
+                                height: 300.h,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  StreamBuilder<bool>(
-                    initialData: false,
-                    stream: cubit.btnStream,
-                    builder: (ctx, snapshot) {
-                      final isEnable = snapshot.data!;
-                      if (isEnable) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: ButtonGradient(
-                            onPressed: () {
-                              // refresh();
-                            },
-                            gradient: RadialGradient(
-                              center: const Alignment(0.5, -0.5),
-                              radius: 4,
-                              colors:
-                                  AppTheme.getInstance().gradientButtonColor(),
+                ),
+                StreamBuilder<bool>(
+                  initialData: false,
+                  stream: cubit.btnStream,
+                  builder: (ctx, snapshot) {
+                    final isEnable = snapshot.data!;
+                    if (isEnable) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: ButtonGradient(
+                          onPressed: () {
+                            // refresh();
+                          },
+                          gradient: RadialGradient(
+                            center: const Alignment(0.5, -0.5),
+                            radius: 4,
+                            colors:
+                                AppTheme.getInstance().gradientButtonColor(),
+                          ),
+                          child: Text(
+                            S.current.buy_nft,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
                             ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: ErrorButton(
+                          child: Center(
                             child: Text(
                               S.current.buy_nft,
                               style: textNormal(
@@ -376,28 +381,13 @@ class BuyNFT extends StatelessWidget {
                               ),
                             ),
                           ),
-                        );
-                      } else {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: ErrorButton(
-                            child: Center(
-                              child: Text(
-                                S.current.buy_nft,
-                                style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  spaceH38,
-                ],
-              ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                spaceH38,
+              ],
             ),
           ),
         ),
