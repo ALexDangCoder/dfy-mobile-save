@@ -8,6 +8,8 @@ import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
+import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -125,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ImageIcon(
                             const AssetImage(ImageAssets.ic_lock),
                             color: AppTheme.getInstance().whiteColor(),
-                            size: 24.sp,
+                            size: 24,
                           ),
                           SizedBox(
                             width: 20.5.w,

@@ -1,11 +1,11 @@
-import 'dart:developer';
-
-import 'package:Dfy/data/response/nonce/nonce_response.dart';
+import 'dart:async';
+import 'dart:math';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:meta/meta.dart';
@@ -22,11 +22,11 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     if (!emailValid) {
-      emit(EmailInvalid());
+      emit(EmailInvalid(errText: S.current.email_invalid));
       return;
     }
     if (email.length > 50) {
-      emit(EmailTooLong());
+      emit(EmailTooLong(errText: S.current.email_too_long));
       return;
     }
     emit(ValidateSuccess());
@@ -36,10 +36,26 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
     final Result<NonceModel> result =
         await _nonceRepository.getNonce(walletAddress);
     result.when(
-        success: (res) {
-        },
+        success: (res) {},
         error: (err) {
-          log(err.message);
         });
+  }
+
+  void startTimer({int timeStart = 60}) {
+    const oneSec = Duration(milliseconds: 1000);
+    emit(TimerCountDown(timeStart));
+
+    Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (timeStart == 0) {
+            timer.cancel();
+            emit(TimerEnd(0));
+        } else {
+          timeStart--;
+          emit(TimerCountDown(timeStart));
+        }
+      },
+    );
   }
 }
