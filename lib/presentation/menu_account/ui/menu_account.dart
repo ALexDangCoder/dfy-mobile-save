@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -16,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
+import '../../../main.dart';
 import 'component/Expansion_title_custom.dart';
 
 class MenuAccount extends StatefulWidget {
@@ -28,12 +27,11 @@ class MenuAccount extends StatefulWidget {
 class _MenuAccountState extends State<MenuAccount> {
   MenuAccountCubit cubit = MenuAccountCubit();
 
-  int currentTab = -1;
-  int selectedTab = -1;
-
   @override
   void initState() {
     // TODO: implement initState
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     for (int i = 0; i < listItemMenu.length; i++) {
       openTab.add(false);
     }
