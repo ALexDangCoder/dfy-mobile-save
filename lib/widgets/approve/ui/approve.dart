@@ -394,7 +394,7 @@ class _ApproveState extends State<Approve> {
                 title: state.message,
                 content: S.current.buy_fail,
                 onTapBtn: () {
-                  Navigator.popUntil(context, (route) => false);
+                  Navigator.popUntil(context, (route) => true);
                 },
               ),
             ),

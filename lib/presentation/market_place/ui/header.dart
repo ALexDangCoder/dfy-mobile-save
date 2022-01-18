@@ -33,7 +33,6 @@ class HeaderMarketPlace extends StatelessWidget {
                 color: AppTheme.getInstance().whiteColor(),
               ),
               onTap: () {
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(

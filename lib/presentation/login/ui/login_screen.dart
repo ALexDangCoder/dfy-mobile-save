@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -213,7 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) =>
-                                widget.navigationToScreen ?? const MainScreen(
+                                widget.navigationToScreen ??
+                                const MainScreen(
                                   index: 1,
                                 ),
                           ),

@@ -7,7 +7,7 @@ class HardNFTBloc {
   List<String> listImg = [];
 
   void getListImage(Evaluation evaluation) {
-    for(int i= 0;i < (evaluation.media?.length ?? 0);i++) {
+    for (int i = 0; i < (evaluation.media?.length ?? 0); i++) {
       listImg.add(evaluation.media![i].urlImage ?? '');
     }
   }
@@ -27,8 +27,6 @@ class HardNFTBloc {
 
   final BehaviorSubject<int> _changeTabSubject = BehaviorSubject();
 
-
-
   Stream<String> get imageStream => _imageSubject.stream;
 
   Stream<bool> get showPreStream => _showPreSubject.stream;
@@ -39,11 +37,8 @@ class HardNFTBloc {
 
   Stream<int> get changeTabStream => _changeTabSubject.stream;
 
-
-
-
-  void changeImage(String _img){
-    if(currentImage!=''){
+  void changeImage(String _img) {
+    if (currentImage != '') {
       getIndex(_img);
     }
     checkButton();
@@ -52,44 +47,44 @@ class HardNFTBloc {
     getIndex(currentImage);
   }
 
-  void nextImage(){
-    if (currentIndexImage < listImg.length-1){
-      currentImage = listImg[currentIndexImage+1];
+  void nextImage() {
+    if (currentIndexImage < listImg.length - 1) {
+      currentImage = listImg[currentIndexImage + 1];
       _imageSubject.sink.add(currentImage);
       _showPreSubject.sink.add(true);
-      _showNextSubject.sink.add(currentIndexImage != listImg.length-2);
+      _showNextSubject.sink.add(currentIndexImage != listImg.length - 2);
       getIndex(currentImage);
     }
   }
-  void preImage(){
-    if (currentIndexImage > 0){
-      currentImage = listImg[currentIndexImage-1];
+
+  void preImage() {
+    if (currentIndexImage > 0) {
+      currentImage = listImg[currentIndexImage - 1];
       _imageSubject.sink.add(currentImage);
       _showNextSubject.sink.add(true);
-      _showPreSubject.sink.add((currentIndexImage-1) != 0);
+      _showPreSubject.sink.add((currentIndexImage - 1) != 0);
       getIndex(currentImage);
     }
   }
-  void getIndex(String _img){
+
+  void getIndex(String _img) {
     currentIndexImage = listImg.indexWhere((element) => element == _img);
   }
 
-  void checkButton(){
-    if (currentIndexImage == 0){
+  void checkButton() {
+    if (currentIndexImage == 0) {
       _showPreSubject.sink.add(false);
       _showNextSubject.sink.add(true);
-
-    } else if (currentIndexImage == listImg.length-1){
+    } else if (currentIndexImage == listImg.length - 1) {
       _showNextSubject.sink.add(false);
       _showPreSubject.sink.add(true);
-
     } else {
       _showPreSubject.sink.add(true);
       _showNextSubject.sink.add(true);
     }
   }
 
-  void showInformation(){
+  void showInformation() {
     showMore = !showMore;
     _showMoreSubject.sink.add(showMore);
   }

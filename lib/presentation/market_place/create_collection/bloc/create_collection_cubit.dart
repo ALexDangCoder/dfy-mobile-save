@@ -25,7 +25,6 @@ import 'package:rxdart/rxdart.dart';
 part 'create_collection_state.dart';
 
 class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
-
   CreateCollectionCubit() : super(CreateCollectionInitial());
 
   final Web3Utils _web3utils = Web3Utils();

@@ -20,7 +20,6 @@ class OfferDetailScreen extends StatelessWidget {
     return BaseBottomSheet(
       bottomBar: Container(
         padding: EdgeInsets.only(bottom: 38.h, right: 16.w, left: 16.w),
-
         color: AppTheme.getInstance().bgBtsColor(),
         child: Row(
           children: [

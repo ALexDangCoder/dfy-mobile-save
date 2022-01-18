@@ -8,7 +8,7 @@ abstract class ConnectWalletState {
 
 class ConnectWalletInitial extends ConnectWalletState {}
 
-class HasNoWallet extends ConnectWalletState{
+class HasNoWallet extends ConnectWalletState {
   @override
   String get contentDialog => S.current.create_now;
 
@@ -16,7 +16,7 @@ class HasNoWallet extends ConnectWalletState{
   String get contentRightButton => S.current.create;
 }
 
-class NeedLoginToUse extends ConnectWalletState{
+class NeedLoginToUse extends ConnectWalletState {
   @override
   String get contentDialog => S.current.login_now;
 

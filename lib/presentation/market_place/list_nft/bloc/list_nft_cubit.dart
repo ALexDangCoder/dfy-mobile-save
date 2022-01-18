@@ -100,13 +100,13 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   int page = 1;
-  bool loadMore  = false;
+  bool loadMore = false;
   bool canLoadMoreListNft = true;
   bool refresh = false;
 
   void loadMorePosts() {
-    if(!loadMore){
-      page +=1;
+    if (!loadMore) {
+      page += 1;
       canLoadMoreListNft = true;
       loadMore = true;
       getListNft(
@@ -116,10 +116,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       );
     }
   }
+
   void refreshPosts() {
     canLoadMoreListNft = true;
     page = 1;
-    if(!refresh){
+    if (!refresh) {
       refresh = true;
       getListNft(
         status: getParam(selectStatus),
@@ -135,12 +136,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     String? name,
     String? collectionId,
   }) async {
-    if(loadMore){
+    if (loadMore) {
       emit(ListNftLoadMore());
-    } else if(refresh){
+    } else if (refresh) {
       emit(ListNftRefresh());
-    }
-    else {
+    } else {
       emit(ListNftLoading());
     }
     final Result<List<NftMarket>> result = await _nftRepo.getListNft(
@@ -163,14 +163,13 @@ class ListNftCubit extends BaseCubit<ListNftState> {
             }
           }
         }
-        if(res.isEmpty && loadMore){
+        if (res.isEmpty && loadMore) {
           canLoadMoreListNft = false;
         }
-        if(loadMore){
+        if (loadMore) {
           listData = listData + res;
           loadMore = false;
-        }
-        else {
+        } else {
           listData = res;
           refresh = false;
         }
@@ -260,7 +259,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   void checkStatus() {
     if (selectCollection.length > 1) {
-      for (int i = 0; i < selectCollection.length -1; i++) {
+      for (int i = 0; i < selectCollection.length - 1; i++) {
         for (int j = i + 1; j < selectCollection.length; j++) {
           if (selectCollection[i] == selectCollection[j]) {
             selectCollection.removeAt(j);
@@ -270,7 +269,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
 
     if (selectStatus.length > 1) {
-      for (int i = 0; i < selectStatus.length -1; i++) {
+      for (int i = 0; i < selectStatus.length - 1; i++) {
         for (int j = i + 1; j < selectStatus.length; j++) {
           if (selectStatus[i] == selectStatus[j]) {
             selectStatus.removeAt(j);
@@ -279,7 +278,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       }
     }
     if (selectTypeNft.length > 1) {
-      for (int i = 0; i < selectTypeNft.length -1; i++) {
+      for (int i = 0; i < selectTypeNft.length - 1; i++) {
         for (int j = i + 1; j < selectTypeNft.length; j++) {
           if (selectTypeNft[i] == selectTypeNft[j]) {
             selectTypeNft.removeAt(j);
@@ -401,6 +400,4 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   List<NftMarket> listData = [];
-
-
 }

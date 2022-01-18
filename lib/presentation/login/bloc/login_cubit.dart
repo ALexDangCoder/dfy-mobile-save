@@ -16,6 +16,7 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool isAppLock = true;
   bool isFaceID = false;
   BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
+
   bool hidePassword() {
     return hidePass = !hidePass;
   }
@@ -44,8 +45,7 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   Future<void> getConfig() async {
     try {
-      final data = {
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {
       //nothing

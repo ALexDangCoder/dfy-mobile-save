@@ -70,8 +70,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       BehaviorSubject.seeded([]);
   final BehaviorSubject<List<OfferDetail>> listOfferStream =
       BehaviorSubject.seeded([]);
-  final BehaviorSubject<Evaluation> evaluationStream =
-      BehaviorSubject();
+  final BehaviorSubject<Evaluation> evaluationStream = BehaviorSubject();
 
   String symbolToken = '';
 

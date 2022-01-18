@@ -1,5 +1,4 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,6 +11,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
   Stream<int> get amountStream => _amountSubject.stream;
 
   Sink<int> get amountSink => _amountSubject.sink;
+
   int get amountValue => _amountSubject.valueOrNull ?? 1;
   final _warnSubject = BehaviorSubject<String>.seeded('');
 

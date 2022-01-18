@@ -5,18 +5,18 @@ import 'package:meta/meta.dart';
 
 import '../../../../../main.dart';
 
-
 part 'connect_wallet_state.dart';
 
 class ConnectWalletCubit extends Cubit<ConnectWalletState> {
   ConnectWalletCubit() : super(ConnectWalletInitial());
   String contentDialog = '';
   String contentRightButton = '';
+
   Future<void> getListWallet() async {
     try {
       final data = {};
-      await trustWalletChannel.invokeMethod('getConfig',data);
-    } on PlatformException catch (e){
+      await trustWalletChannel.invokeMethod('getConfig', data);
+    } on PlatformException catch (e) {
       //nothing
     }
   }
@@ -39,5 +39,4 @@ class ConnectWalletCubit extends Cubit<ConnectWalletState> {
         break;
     }
   }
-
 }

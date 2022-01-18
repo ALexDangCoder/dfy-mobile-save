@@ -69,11 +69,10 @@ class ConfirmEmail extends StatelessWidget {
                 fieldWidth: 50,
                 activeFillColor: const Color(0x1AE4AC1A),
                 activeColor: const Color(0XFFE4AC1A),
-                selectedColor:const Color(0x1AE4AC1A),
+                selectedColor: const Color(0x1AE4AC1A),
                 selectedFillColor: const Color(0x1AE4AC1A),
                 errorBorderColor: const Color(0xFF585782),
                 disabledColor: const Color(0XFF33324C),
-
               ),
               animationDuration: Duration(milliseconds: 300),
               enableActiveFill: true,

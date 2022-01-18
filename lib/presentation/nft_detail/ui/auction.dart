@@ -7,19 +7,19 @@ Widget _buildButtonPlaceBid(
       onPressed: () async {
         await bloc
             .getBalanceToken(
-          ofAddress: bloc.wallets.first.address ?? '',
-          tokenAddress: bloc.nftOnAuction.token ?? '',
-        )
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftOnAuction.token ?? '',
+            )
             .then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PlaceBid(
-                balance: value,
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PlaceBid(
+                    balance: value,
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),

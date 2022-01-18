@@ -38,13 +38,10 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-
-
   void checkAppLock() {
-    if(PrefsService.getFirstAppConfig() == 'true'){
+    if (PrefsService.getFirstAppConfig() == 'true') {
       index = 3;
-    }
-    else if (PrefsService.getAppLockConfig() == 'true') {
+    } else if (PrefsService.getAppLockConfig() == 'true') {
       index = 2;
     } else {
       index = 1;
