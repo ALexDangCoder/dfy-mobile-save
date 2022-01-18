@@ -71,12 +71,13 @@ Container _priceContainerOnSale({
 Widget _buildButtonBuyOutOnSale(
   BuildContext context,
   NFTDetailBloc bloc,
+  NftMarket nftMarket,
   bool isBought,
 ) {
   return ButtonGradient(
     onPressed: () async {
       if(isBought){
-        _showDialog(context);
+        _showDialog(context, nftMarket);
       }
       else{
         await bloc
@@ -89,6 +90,7 @@ Widget _buildButtonBuyOutOnSale(
             context,
             MaterialPageRoute(
               builder: (context) => BuyNFT(
+                nftMarket: nftMarket,
                 balance: value,
               ),
             ),
@@ -112,7 +114,7 @@ Widget _buildButtonBuyOutOnSale(
   );
 }
 
-void _showDialog(BuildContext context) {
+void _showDialog(BuildContext context, NftMarket nftMarket) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -220,6 +222,7 @@ void _showDialog(BuildContext context) {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BuyNFT(
+                                nftMarket: nftMarket,
                                 balance: value,
                               ),
                             ),

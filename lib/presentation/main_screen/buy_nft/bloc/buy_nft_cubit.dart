@@ -1,10 +1,11 @@
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'buy_nft_state.dart';
 
-class BuyNftCubit extends Cubit<BuyNftState> {
+class BuyNftCubit extends BaseCubit<BuyNftState> {
   BuyNftCubit() : super(BuyNftInitial());
   final _amountSubject = BehaviorSubject<int>();
 

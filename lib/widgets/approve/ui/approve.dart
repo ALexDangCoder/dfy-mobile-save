@@ -643,8 +643,8 @@ class _ApproveState extends State<Approve> {
           ),
         ).then(
           (_) => cubit.importNft(
-            contract: cubit.nftMarket.collectionAddress ?? '',
-            id: int.parse(cubit.nftMarket.nftTokenId ?? ''),
+            contract: nftDetailBloc.nftMarket.collectionAddress ?? '',
+            id: int.parse(nftDetailBloc.nftMarket.nftTokenId ?? ''),
             address: nftDetailBloc.walletAddress,
           ),
         );
