@@ -91,6 +91,7 @@ Widget _buildButtonBuyOutOnSale(
                   builder: (context) => BuyNFT(
                     nftMarket: nftMarket,
                     balance: value,
+                    walletAddress: bloc.wallets.first.address ?? '',
                   ),
                 ),
               ),
@@ -223,6 +224,7 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
                               builder: (context) => BuyNFT(
                                 nftMarket: nftMarket,
                                 balance: value,
+                                walletAddress: bloc.wallets.first.address ?? '',
                               ),
                             ),
                           ),

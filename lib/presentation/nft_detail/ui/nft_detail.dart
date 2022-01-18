@@ -783,6 +783,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                       nftOnAuction.endTime ?? 0,
                     ),
                     bloc,
+                    nftOnAuction,
                   ),
                 ),
               ],

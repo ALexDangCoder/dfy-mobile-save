@@ -1,7 +1,7 @@
 part of 'nft_detail.dart';
 
-Widget _buildButtonPlaceBid(
-    BuildContext context, bool start, bool end, NFTDetailBloc bloc) {
+Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
+    NFTDetailBloc bloc, NFTOnAuction nftOnAuction) {
   if (!start && end) {
     return ButtonGradient(
       onPressed: () async {
@@ -15,6 +15,7 @@ Widget _buildButtonPlaceBid(
                 context,
                 MaterialPageRoute(
                   builder: (context) => PlaceBid(
+                    nftOnAuction: nftOnAuction,
                     balance: value,
                   ),
                 ),
