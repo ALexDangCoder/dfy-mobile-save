@@ -34,6 +34,9 @@ extension CallCoreExtensi on ApproveCubit{
               await gesGasLimitFirst(hexString ?? '');
             }
           }
+          else {
+            await gesGasLimitFirst(hexString ?? '');
+          }
           try {
             balanceWallet = await web3Client.getBalanceOfBnb(
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',

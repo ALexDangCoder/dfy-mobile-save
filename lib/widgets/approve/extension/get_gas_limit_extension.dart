@@ -35,8 +35,11 @@ extension GetGasLimit on ApproveCubit {
           gasLimit = '20000';
           break;
         }
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION : {
+        gasLimit = '30000';
+        break;
+      }
     }
-    print (gasLimit);
     return double.parse(gasLimit);
   }
 

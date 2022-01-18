@@ -7,8 +7,7 @@ import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
-import 'package:Dfy/presentation/menu_account/cubit/menu_account_cubit.dart';
-import 'package:Dfy/presentation/menu_account/cubit/menu_account_state.dart';
+import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
@@ -18,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../main.dart';
+import '../../../../main.dart';
 import 'component/Expansion_title_custom.dart';
 
 class MenuAccount extends StatefulWidget {

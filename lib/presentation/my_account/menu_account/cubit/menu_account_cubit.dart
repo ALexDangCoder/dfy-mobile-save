@@ -9,7 +9,7 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
+import '../../../../main.dart';
 import 'menu_account_state.dart';
 
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
