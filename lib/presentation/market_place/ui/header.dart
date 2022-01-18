@@ -44,11 +44,6 @@ class HeaderMarketPlace extends StatelessWidget {
                   ),
                 );
               },
-              onDoubleTap: () => showDialog(
-                  context: context,
-                  builder: (context) => const ConnectWalletDialog(
-                        currentScreen: HomeScreen(),
-                      )),
               onLongPress: () {
                 Navigator.push(
                   context,

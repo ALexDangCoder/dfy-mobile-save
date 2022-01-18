@@ -481,5 +481,9 @@
   "connect": "Kết nối",
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT đã chuyển vào ví của bạn thành công",
-  "nft_fail": "Đã có lỗi xảy ra khi chuyển NFT vào ví của bạn"
+  "nft_fail": "Đã có lỗi xảy ra khi chuyển NFT vào ví của bạn",
+  "dont_have_wallet": "Bạn không có ví.\nTạo ngay",
+  "need_login": "Bạn chưa đăng nhập.\nĐăng nhập ngay"
+
+
 }
