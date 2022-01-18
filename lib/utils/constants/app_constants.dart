@@ -14,6 +14,7 @@ enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
 enum MarketType { SALE, AUCTION, PAWN, NOT_ON_MARKET }
+enum PageRouter {MARKET,MY_ACC}
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 

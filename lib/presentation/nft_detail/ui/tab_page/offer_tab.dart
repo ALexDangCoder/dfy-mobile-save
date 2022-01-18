@@ -31,8 +31,8 @@ class _OfferTabState extends State<OfferTab> {
     if (widget.listOffer.isEmpty) {
       return Center(
         child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 100.h),
           children: [
             Center(
               child: sizedPngImage(

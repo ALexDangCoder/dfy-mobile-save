@@ -14,12 +14,12 @@ class BaseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:BoxConstraints(
-        minHeight: 68.h,
-        maxHeight: 68.h,
-      ),
+      constraints: const BoxConstraints(),
       child: Container(
-        padding: EdgeInsets.only(top: 12.h),
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
+        ),
         decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border(
@@ -28,7 +28,8 @@ class BaseItem extends StatelessWidget {
             ),
           ),
         ),
-        child: child,),
+        child: child,
+      ),
     );
   }
 }

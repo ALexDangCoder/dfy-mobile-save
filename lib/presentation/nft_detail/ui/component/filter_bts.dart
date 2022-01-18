@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,13 @@ import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterBts extends StatefulWidget {
-  const FilterBts({Key? key, required this.listNftCubit}) : super(key: key);
+  const FilterBts({
+    Key? key,
+    required this.listNftCubit,
+    required this.pageRouter,
+  }) : super(key: key);
   final ListNftCubit listNftCubit;
+  final PageRouter pageRouter;
 
   @override
   _FilterBtsState createState() => _FilterBtsState();
@@ -42,7 +48,7 @@ class _FilterBtsState extends State<FilterBts> {
           sigmaY: 4,
         ),
         child: Container(
-          height: 686.h,
+          height: widget.pageRouter == PageRouter.MARKET ? 686.h : 841.h,
           width: 375.w,
           padding: EdgeInsets.only(
             top: 9.h,
@@ -73,6 +79,15 @@ class _FilterBtsState extends State<FilterBts> {
                 ),
               ),
               spaceH20,
+              if(widget.pageRouter == PageRouter.MY_ACC)
+                Text(
+                  S.current.nft_type,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20,
+                    FontWeight.w600,
+                  ),
+                ),
               Text(
                 S.current.nft_type,
                 style: textNormalCustom(
@@ -112,11 +127,31 @@ class _FilterBtsState extends State<FilterBts> {
                 ),
               ),
               spaceH12,
-              CheckBoxFilter(
+              if (widget.pageRouter == PageRouter.MARKET)
+                CheckBoxFilter(
                 cubit: widget.listNftCubit,
                 nameCkcFilter: S.current.on_sell,
                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
                 filterType: S.current.status,
+              ) else Row(
+                children: [
+                  Expanded(
+                    child: CheckBoxFilter(
+                      cubit: widget.listNftCubit,
+                      nameCkcFilter: S.current.on_sell,
+                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                      filterType: S.current.status,
+                    ),
+                  ),
+                  Expanded(
+                    child: CheckBoxFilter(
+                      cubit: widget.listNftCubit,
+                      nameCkcFilter: S.current.not_on_market,
+                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                      filterType: S.current.status,
+                    ),
+                  ),
+                ],
               ),
               spaceH12,
               Row(
@@ -159,32 +194,31 @@ class _FilterBtsState extends State<FilterBts> {
                   builder:
                       (context, AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
                     final itemCount = snapshot.data?.length ?? 0;
-                    if(itemCount != 0) {
+                    if (itemCount != 0) {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: (itemCount >5) ? 5: itemCount,
+                        itemCount: (itemCount > 5) ? 5 : itemCount,
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
                               CheckBoxFilter(
                                 cubit: widget.listNftCubit,
                                 nameCkcFilter:
-                                snapshot.data?[index].nameCkcFilter ?? '',
+                                    snapshot.data?[index].nameCkcFilter ?? '',
                                 typeCkc: snapshot.data?[index].typeCkc ??
                                     TYPE_CKC_FILTER.NON_IMG,
                                 urlCover: snapshot.data![index].urlCover,
                                 filterType: S.current.collection,
                                 collectionId:
-                                snapshot.data?[index].collectionId ?? '',
+                                    snapshot.data?[index].collectionId ?? '',
                               ),
                               spaceH12,
                             ],
                           );
                         },
                       );
-                    }
-                    else {
+                    } else {
                       return Padding(
                         padding: EdgeInsets.only(top: 40.h),
                         child: Column(
@@ -333,6 +367,20 @@ class _FilterBtsState extends State<FilterBts> {
           ),
         ),
       ],
+    );
+  }
+  Widget selectAccount() {
+    return Container(
+      color: colorSelected,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+      ),
+      child: Scrollbar(
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {  
+            
+          },),
+      ),
     );
   }
 }
