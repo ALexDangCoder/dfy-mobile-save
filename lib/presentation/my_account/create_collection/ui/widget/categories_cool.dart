@@ -25,6 +25,8 @@ class CategoriesCool extends StatelessWidget {
             return CoolDropdown(
               gap: 8.h,
               isTriangle: false,
+              dropdownItemMainAxis: MainAxisAlignment.start,
+              resultMainAxis: MainAxisAlignment.start,
               dropdownItemHeight: 54.h,
               dropdownHeight: dropdownItemList.length < 4
                   ? (54 * dropdownItemList.length).h
