@@ -9,7 +9,6 @@ import 'package:Dfy/domain/model/search_marketplace/search_collection_nft_model.
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';

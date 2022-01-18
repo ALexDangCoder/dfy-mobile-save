@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-LoginModel loginFromJson(String str) => LoginModel.fromLogin(json.decode(str));
+LoginModel loginFromJson(String str) {
+  return LoginModel.fromLogin(json.decode(str));
+}
 
 String loginToJson(LoginModel data) => json.encode(data.toJson());
 

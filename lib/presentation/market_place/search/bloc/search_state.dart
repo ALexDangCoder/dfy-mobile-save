@@ -1,7 +1,7 @@
 part of 'search_cubit.dart';
 
 @immutable
-abstract class SearchState extends Equatable{}
+abstract class SearchState extends Equatable {}
 
 class SearchInitial extends SearchState {
   @override
@@ -13,7 +13,6 @@ class SearchSuccess extends SearchState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }
 
 class SearchLoading extends SearchState {
@@ -26,5 +25,4 @@ class SearchError extends SearchState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

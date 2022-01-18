@@ -15,7 +15,10 @@ class CheckBoxFilter extends StatefulWidget {
   const CheckBoxFilter({
     Key? key,
     required this.nameCkcFilter,
-    required this.typeCkc, this.urlCover, required this.filterType, this.cubit,
+    required this.typeCkc,
+    this.urlCover,
+    required this.filterType,
+    this.cubit,
     this.collectionId,
   }) : super(key: key);
   final String nameCkcFilter;
@@ -31,10 +34,11 @@ class CheckBoxFilter extends StatefulWidget {
 
 class _CheckBoxFilterState extends State<CheckBoxFilter> {
   late bool _isSelected;
+
   @override
   void initState() {
     super.initState();
-    _isSelected = widget.cubit?.checkFilter(widget.nameCkcFilter) ?? false ;
+    _isSelected = widget.cubit?.checkFilter(widget.nameCkcFilter) ?? false;
   }
 
   @override
@@ -93,7 +97,7 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
             width: 4.w,
           ),
           circularImage(
-            widget.urlCover?? '',
+            widget.urlCover ?? '',
             height: 28.h,
             width: 28.w,
           ),
@@ -106,28 +110,24 @@ class _CheckBoxFilterState extends State<CheckBoxFilter> {
       return Container();
     }
   }
-  void checkKey(String type,bool isSellect){
-    if(type == S.current.collection){
-      if(isSellect){
+
+  void checkKey(String type, bool isSellect) {
+    if (type == S.current.collection) {
+      if (isSellect) {
         widget.cubit!.selectParamCollection(widget.nameCkcFilter);
-      }
-      else {
+      } else {
         widget.cubit!.moveParamCollection(widget.nameCkcFilter);
       }
-    }
-    else if(type == S.current.status) {
-      if(isSellect){
+    } else if (type == S.current.status) {
+      if (isSellect) {
         widget.cubit!.selectParamStatus(widget.nameCkcFilter);
-      }
-      else {
+      } else {
         widget.cubit!.moveParamStatus(widget.nameCkcFilter);
       }
-    }
-    else {
-      if(isSellect){
+    } else {
+      if (isSellect) {
         widget.cubit!.selectParamTypeNft(widget.nameCkcFilter);
-      }
-      else {
+      } else {
         widget.cubit!.moveParamTypeNft(widget.nameCkcFilter);
       }
     }
