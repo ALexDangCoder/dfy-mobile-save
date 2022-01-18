@@ -203,6 +203,8 @@ abstract class AppColor {
 
   Color bgTextFormField();
   Color bgProgressingColors();
+  Color yellowColor();
+  Color getPurpleColor();
 }
 
 class LightApp extends AppColor {
@@ -509,9 +511,31 @@ class LightApp extends AppColor {
   Color whiteOpacityDot5() {
     return whiteColor().withOpacity(0.5);
   }
+
+  @override
+  Color getPurpleColor() {
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
+  }
 }
 
 class DarkApp extends AppColor {
+
+  @override
+  Color getPurpleColor() {
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
+  }
   @override
   Color primaryColor() {
     return Colors.black;

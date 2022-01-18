@@ -236,7 +236,6 @@ class _AuctionTabState extends State<AuctionTab>
                         context,
                         MaterialPageRoute(
                           builder: (context) => Approve(
-                            needApprove: true,
                             title: S.current.put_on_sale,
                             listDetail: [
                               DetailItemApproveModel(
@@ -252,7 +251,6 @@ class _AuctionTabState extends State<AuctionTab>
                               ),
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            gasLimitInit: 100.0,
                             typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                           ),
                         ),

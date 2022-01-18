@@ -9,9 +9,7 @@ class EstimateGasFee extends StatefulWidget {
   const EstimateGasFee({
     Key? key,
     required this.cubit,
-    required this.gasLimitStart,
   }) : super(key: key);
-  final double gasLimitStart;
   final ApproveCubit cubit;
 
   @override
@@ -22,26 +20,27 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   bool isCustomFee = false;
   double? gasPrice;
 
-  late double gasLimit;
+  double gasLimit=0;
 
   final TextEditingController _editGasPriceController = TextEditingController();
   final TextEditingController _editGasLimitController = TextEditingController();
 
   @override
   void initState() {
-    gasLimit = widget.gasLimitStart;
-    _editGasLimitController.text = widget.gasLimitStart.toInt().toString();
-    initData();
-    // TODO: implement initState
-    super.initState();
-  }
-
-  Future<void> initData() async {
-    await widget.cubit.getGasPrice();
+    widget.cubit.gasLimitFirstSubject.listen((value) {
+      setState(() {
+        gasLimit = widget.cubit.gasLimitFirst ?? 0;
+        _editGasLimitController.text =
+            (widget.cubit.gasLimitFirst ?? 0).toInt().toString();
+      });
+    });
     gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
     _editGasPriceController.text =
-        ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) / 1000000000).toInt()
+        ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) / 1000000000)
+            .toInt()
             .toString();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -83,11 +82,12 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                     builder: (context, snapshot) {
                       final gasFee = (gasPrice ?? 0) * gasLimit / 1000000000;
                       if (gasFee < (widget.cubit.balanceWallet ?? 0) &&
-                          gasFee >= (widget.gasLimitStart *
-                              (widget.cubit.gasPriceFirst ?? 0)/1e18)) {
+                          gasFee >=
+                              ((widget.cubit.gasLimitFirst ?? 0) *
+                                  (widget.cubit.gasPriceFirst ?? 0) /
+                                  1e18)) {
                         widget.cubit.canActionSubject.sink.add(true);
-                      }
-                      else {
+                      } else {
                         widget.cubit.canActionSubject.sink.add(false);
                       }
                       return Column(
@@ -198,22 +198,27 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                 ],
                                 onChanged: (value) {
                                   setState(() {
-                                    if (value != ''){
+                                    if (value != '') {
                                       gasLimit = double.parse(value);
-                                    }
-                                    else {
+                                    } else {
                                       gasLimit = 0;
                                     }
                                   });
                                   final gasFee =
                                       (gasPrice ?? 0) * gasLimit / 1000000000;
-                                  if (gasFee < (widget.cubit.balanceWallet ?? 0) &&
-                                      gasFee >= (widget.gasLimitStart *
-                                          (widget.cubit.gasPriceFirst ?? 0)/1e18)) {
-                                    widget.cubit.canActionSubject.sink.add(true);
-                                  }
-                                  else {
-                                    widget.cubit.canActionSubject.sink.add(false);
+                                  if (gasFee <
+                                      (widget.cubit.balanceWallet ?? 0) &&
+                                      gasFee >=
+                                          ((widget.cubit.gasLimitFirst ?? 0) *
+                                              (widget.cubit.gasPriceFirst ??
+                                                  0) /
+                                              1e18)) {
+                                    widget.cubit.canActionSubject.sink.add(
+                                      true,
+                                    );
+                                  } else {
+                                    widget.cubit.canActionSubject.sink
+                                        .add(false);
                                   }
                                   widget.cubit.gasLimit = gasLimit;
                                 },
@@ -277,10 +282,9 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    if (value != ''){
+                                    if (value != '') {
                                       gasPrice = double.parse(value);
-                                    }
-                                    else {
+                                    } else {
                                       gasPrice = 0;
                                     }
                                   });
@@ -288,13 +292,18 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                       (gasPrice ?? 0) * 1000000000;
                                   final gasFee =
                                       (gasPrice ?? 0) * gasLimit / 1000000000;
-                                  if (gasFee < (widget.cubit.balanceWallet ?? 0) &&
-                                      gasFee >= (widget.gasLimitStart *
-                                          (widget.cubit.gasPriceFirst ?? 0)/1e18)) {
-                                    widget.cubit.canActionSubject.sink.add(true);
-                                  }
-                                  else {
-                                    widget.cubit.canActionSubject.sink.add(false);
+                                  if (gasFee <
+                                      (widget.cubit.balanceWallet ?? 0) &&
+                                      gasFee >=
+                                          ((widget.cubit.gasLimitFirst ?? 0) *
+                                              (widget.cubit.gasPriceFirst ??
+                                                  0) /
+                                              1e18)) {
+                                    widget.cubit.canActionSubject.sink
+                                        .add(true);
+                                  } else {
+                                    widget.cubit.canActionSubject.sink
+                                        .add(false);
                                   }
                                 },
                               ),
@@ -310,9 +319,11 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                       setState(() {
                         gasPrice =
                             (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
-                        _editGasPriceController.text = gasPrice!.toInt().toString();
-                        gasLimit = widget.gasLimitStart;
-                        _editGasLimitController.text = gasLimit.toInt().toString();
+                        _editGasPriceController.text =
+                            gasPrice!.toInt().toString();
+                        gasLimit = widget.cubit.gasLimitFirst ?? 0;
+                        _editGasLimitController.text =
+                            gasLimit.toInt().toString();
                         widget.cubit.gasLimit = gasLimit;
                         widget.cubit.gasPrice = gasLimit;
                       });
