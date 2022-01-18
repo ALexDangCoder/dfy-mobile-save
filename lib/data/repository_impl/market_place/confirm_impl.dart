@@ -39,8 +39,4 @@ class ConfirmImplement implements ConfirmRepository {
       (response) => response.toDomain(),
     );
   }
-      () => _confirmClient.cancelSale(id, txnHash),
-      (response) => response.toDomain(),
-    );
-  }
 }

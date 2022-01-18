@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -23,7 +25,11 @@ class CategoriesDropDown extends StatelessWidget {
             final List<Map<String, dynamic>> dropdownItemList =
                 snapshot.data ?? [];
             return CoolDropdown(
+              dropdownItemMainAxis: MainAxisAlignment.start,
+              resultMainAxis: MainAxisAlignment.start,
+              dropdownList: dropdownItemList,
               gap: 8.h,
+              dropdownItemReverse: true,
               isTriangle: false,
               dropdownItemHeight: 54.h,
               dropdownHeight: dropdownItemList.length < 4
@@ -40,6 +46,9 @@ class CategoriesDropDown extends StatelessWidget {
                 color: AppTheme.getInstance().backgroundBTSColor(),
                 borderRadius: BorderRadius.circular(20),
               ),
+              selectedItemBD: BoxDecoration(
+                color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+              ),
               resultTS: textNormal(
                 AppTheme.getInstance().whiteColor(),
                 16,
@@ -52,13 +61,8 @@ class CategoriesDropDown extends StatelessWidget {
                 AppTheme.getInstance().whiteColor(),
                 16,
               ),
-              selectedItemBD: BoxDecoration(
-                color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
-              ),
-              dropdownList: dropdownItemList,
               onChange: (selected) {
-                // bloc.validateCategory(selected['value']);
-                // bloc.validateCreate();
+                log(selected['value']);
               },
               resultIcon: const SizedBox.shrink(),
               placeholder: S.current.collection_name,

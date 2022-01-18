@@ -1,5 +1,7 @@
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CollectionMarketModel {
@@ -36,7 +38,10 @@ class CollectionMarketModel {
         ),
         height: 28.h,
         width: 28.h,
-        child: Image.network(ApiConstants.BASE_URL_IMAGE+(avatarCid??'')),
+        child: CachedNetworkImage(
+          imageUrl: ApiConstants.BASE_URL_IMAGE+(avatarCid??''),
+          placeholder: (context, url) => const CircularProgressIndicator(),
+        ),
       ),
     };
   }
