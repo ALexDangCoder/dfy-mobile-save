@@ -31,7 +31,7 @@ class _PlaceBidState extends State<PlaceBid> {
   String bidValue = '';
 
   void initData() {
-    nftDetailBloc = nftKey.currentState!.bloc;
+    nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
     nftOnAuction = nftDetailBloc.nftOnAuction;
     cubit = PlaceBidCubit();
   }

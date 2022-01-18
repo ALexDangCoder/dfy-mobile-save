@@ -1,6 +1,6 @@
 part of 'nft_detail.dart';
 
-NFTDetailBloc bloc = nftKey.currentState!.bloc;
+NFTDetailBloc bloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
 
 Widget _leading(BuildContext context) => InkWell(
       onTap: () {

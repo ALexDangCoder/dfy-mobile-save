@@ -101,15 +101,15 @@ class _ApproveState extends State<Approve> {
   void initData(TYPE_CONFIRM_BASE typeBase) {
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        nftDetailBloc = nftKey.currentState!.bloc;
+        nftKey.currentState?.bloc ?? NFTDetailBloc();
         break;
     }
   }

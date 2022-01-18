@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/buy_nft/bloc/buy_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
@@ -29,7 +28,7 @@ class BuyNFT extends StatefulWidget {
 class _BuyNFTState extends State<BuyNFT> {
   late BuyNftCubit cubit;
   late TextEditingController txtQuantity;
-  final _nftBloc = nftKey.currentState!.bloc;
+  final _nftBloc = nftKey.currentState?.bloc;
 
   @override
   void initState() {
@@ -40,11 +39,11 @@ class _BuyNFTState extends State<BuyNFT> {
 
   void emitValue(String value) {
     if (value.isNotEmpty) {
-      if (int.parse(value) <= (_nftBloc.nftMarket.totalCopies ?? 1)) {
+      if (int.parse(value) <= (_nftBloc?.nftMarket.totalCopies ?? 1)) {
         cubit.amountSink.add(int.parse(value));
         cubit.warnSink.add('');
         cubit.btnSink.add(true);
-        _nftBloc.quantity = int.parse(value);
+        _nftBloc?.quantity = int.parse(value);
       } else {
         cubit.warnSink.add(
           S.current.you_enter_greater,
@@ -73,11 +72,11 @@ class _BuyNFTState extends State<BuyNFT> {
         body: Align(
           alignment: Alignment.bottomCenter,
           child: StateStreamLayout(
-            stream: _nftBloc.stateStream,
+            stream: _nftBloc!.stateStream,
             error:
                 AppException(S.current.error, S.current.something_went_wrong),
             retry: () async {
-              await _nftBloc.callWeb3(
+              await _nftBloc?.callWeb3(
                 context,
                 cubit.amountValue,
                 MarketType.SALE,
@@ -120,8 +119,8 @@ class _BuyNFTState extends State<BuyNFT> {
                                   typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
                                   cubit: BuyNftCubit,
                                   txtController: txtQuantity,
-                                  quantityOfAll: _nftBloc.nftMarket.totalCopies,
-                                  imageAsset: _nftBloc.nftMarket.urlToken,
+                                  quantityOfAll: _nftBloc?.nftMarket.totalCopies,
+                                  imageAsset: _nftBloc?.nftMarket.urlToken,
                                   isTokenOrQuantity: false,
                                 ),
                                 warningAmount(),
@@ -134,7 +133,7 @@ class _BuyNFTState extends State<BuyNFT> {
                                 spaceH4,
                                 Text(
                                   '${S.current.your_balance} ${widget.balance} '
-                                  '${_nftBloc.nftMarket.symbolToken}',
+                                  '${_nftBloc?.nftMarket.symbolToken}',
                                   style: textNormalCustom(
                                     Colors.white.withOpacity(0.7),
                                     14,
@@ -161,7 +160,7 @@ class _BuyNFTState extends State<BuyNFT> {
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: ButtonGradient(
                             onPressed: () {
-                              _nftBloc.callWeb3(
+                              _nftBloc?.callWeb3(
                                 context,
                                 cubit.amountValue,
                                 MarketType.SALE,
@@ -242,14 +241,14 @@ class _BuyNFTState extends State<BuyNFT> {
     return StreamBuilder<int>(
       stream: cubit.amountStream,
       builder: (context, snapshot) {
-        final total = (_nftBloc.nftMarket.price ?? 0) * (snapshot.data ?? 0);
+        final total = (_nftBloc?.nftMarket.price ?? 0) * (snapshot.data ?? 0);
         if (total > widget.balance) {
           cubit.warnSink.add(S.current.insufficient_balance);
           cubit.btnSink.add(false);
         } else {
           cubit.warnSink.add('');
           cubit.btnSink.add(true);
-          _nftBloc.totalPayment = total;
+          _nftBloc?.totalPayment = total;
         }
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,11 +268,11 @@ class _BuyNFTState extends State<BuyNFT> {
                     SizedBox(
                       height: 20.h,
                       width: 20.w,
-                      child: Image.network(_nftBloc.nftMarket.urlToken ?? ''),
+                      child: Image.network(_nftBloc?.nftMarket.urlToken ?? ''),
                     ),
                     spaceW4,
                     Text(
-                      '$total ${_nftBloc.nftMarket.symbolToken}',
+                      '$total ${_nftBloc?.nftMarket.symbolToken}',
                       style: textNormalCustom(
                         AppTheme.getInstance().textThemeColor(),
                         20.sp,
@@ -315,11 +314,11 @@ class _BuyNFTState extends State<BuyNFT> {
                   SizedBox(
                     height: 20.h,
                     width: 20.w,
-                    child: Image.network(_nftBloc.nftMarket.urlToken ?? ''),
+                    child: Image.network(_nftBloc?.nftMarket.urlToken ?? ''),
                   ),
                   spaceW4,
                   Text(
-                    '${_nftBloc.nftMarket.price} ${_nftBloc.nftMarket.symbolToken}',
+                    '${_nftBloc?.nftMarket.price} ${_nftBloc?.nftMarket.symbolToken}',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
                       16.sp,
