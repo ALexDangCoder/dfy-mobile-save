@@ -64,14 +64,12 @@ class Approve extends StatefulWidget {
   final CreateCollectionCubit? createCollectionCubit;
   final String? payValue;
   final String? tokenAddress;
-  final double gasLimitInit;
 
   const Approve({
     Key? key,
     required this.title,
     this.listDetail,
     this.warning,
-    required this.gasLimitInit,
     this.needApprove = false,
     required this.textActiveButton,
     this.header,
@@ -81,8 +79,8 @@ class Approve extends StatefulWidget {
     this.flexContent,
     required this.typeApprove,
     this.createCollectionCubit,
-    this.payValue = '1',
-    this.tokenAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+    this.payValue,
+    this.tokenAddress,
     this.hexString,
   }) : super(key: key);
 
@@ -131,6 +129,7 @@ class _ApproveState extends State<Approve> {
     /// get wallet information
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
+    cubit.hexString = widget.hexString;
     cubit.tokenAddress = widget.tokenAddress ?? ' ';
     cubit.getListWallets();
     cubit.canActionSubject.listen((value) {
@@ -153,10 +152,7 @@ class _ApproveState extends State<Approve> {
 
     /// function approve
     unawaited(
-      cubit.approve(
-        context: context,
-        contractAddress: widget.tokenAddress ?? '',
-      ),
+      cubit.approve(),
     );
     cubit.isApprovedSubject.listen((value) async {
       final navigator = Navigator.of(context);
@@ -355,6 +351,7 @@ class _ApproveState extends State<Approve> {
 
   /// show  BottomSheet approve
   void showPopupApprove() {
+
     showModalBottomSheet(
       backgroundColor: Colors.black,
       shape: const RoundedRectangleBorder(

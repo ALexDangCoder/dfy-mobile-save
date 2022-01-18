@@ -20,29 +20,27 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   bool isCustomFee = false;
   double? gasPrice;
 
-  late double gasLimit;
-
+  double gasLimit=0;
 
   final TextEditingController _editGasPriceController = TextEditingController();
   final TextEditingController _editGasLimitController = TextEditingController();
 
   @override
   void initState() {
-    gasLimit = widget.cubit.gasLimitFirst ?? 0;
-    _editGasLimitController.text =
-        (widget.cubit.gasLimitFirst ?? 0).toInt().toString();
-    initData();
-    // TODO: implement initState
-    super.initState();
-  }
-
-  Future<void> initData() async {
-    await widget.cubit.getGasPrice();
+    widget.cubit.gasLimitFirstSubject.listen((value) {
+      setState(() {
+        gasLimit = widget.cubit.gasLimitFirst ?? 0;
+        _editGasLimitController.text =
+            (widget.cubit.gasLimitFirst ?? 0).toInt().toString();
+      });
+    });
     gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
     _editGasPriceController.text =
         ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) / 1000000000)
             .toInt()
             .toString();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

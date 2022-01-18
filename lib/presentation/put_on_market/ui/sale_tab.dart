@@ -209,7 +209,6 @@ class _SaleTabState extends State<SaleTab>
                           ],
                           textActiveButton: S.current.put_on_sale,
                           typeApprove: TYPE_CONFIRM_BASE.PUT_ON_MARKET,
-                          gasLimitInit: 100,
                         ),
                       ),
                     );

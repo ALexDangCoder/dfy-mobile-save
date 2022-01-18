@@ -69,6 +69,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? rawData;
 
+  String? hexString;
+
   ConfirmRepository get _confirmRepository => Get.find();
 
   bool needApprove = false;
@@ -92,6 +94,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   final BehaviorSubject<double> gasPriceFirstSubject =
       BehaviorSubject<double>();
 
+  final BehaviorSubject<double> gasLimitFirstSubject =
+  BehaviorSubject<double>();
+
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
 
   final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
@@ -108,6 +113,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Stream<bool> get canActionStream => canActionSubject.stream;
 
   Stream<double> get gasPriceFirstStream => gasPriceFirstSubject.stream;
+
+  Stream<double> get gasLimitFirstStream => gasLimitFirstSubject.stream;
 
   Future<Map<String, dynamic>> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
@@ -210,21 +217,19 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         await getGasLimitByType(type: type, hexString: hexString);
     gasLimitFirst = gasLimitFirstResult;
     gasLimit = gasLimitFirstResult;
+    gasLimitFirstSubject.sink.add(gasLimitFirstResult);
     gasPrice = gasPriceFirst;
     showContent();
   }
 
-  Future<void> approve({
-    required String contractAddress,
-    required BuildContext context,
-  }) async {
+  Future<void> approve() async {
     final nonce =
         await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
       gasLimit: (gasLimit ?? 0).toInt().toString(),
       gasPrice: ((gasPrice ?? 0) / 1e9).toInt().toString(),
       chainId: Get.find<AppConstants>().chaninId,
-      contractAddress: contractAddress,
+      contractAddress: tokenAddress ?? '',
       walletAddress: addressWallet ?? '',
       nonce: nonce.count.toString(),
       hexString: tokenApproveData ?? '',
@@ -251,6 +256,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
               payValue: payValue ?? '',
               tokenAddress: tokenAddress ?? ' ',
             );
+            if (result ){
+              await gesGasLimitFirst(hexString ?? '');
+            }
           }
           try {
             balanceWallet = await Web3Utils().getBalanceOfBnb(
