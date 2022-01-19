@@ -27,6 +27,7 @@ import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
+import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
@@ -291,7 +292,6 @@ class _ApproveState extends State<Approve> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocListener(
@@ -507,8 +507,7 @@ class _ApproveState extends State<Approve> {
                                               cubit.getGasLimitApprove(
                                                 context: context,
                                                 contractAddress:
-                                                widget.tokenAddress ??
-                                                    '',
+                                                    widget.tokenAddress ?? '',
                                               );
                                               showPopupApprove();
                                             }
@@ -674,8 +673,8 @@ class _ApproveState extends State<Approve> {
           context,
           MaterialPageRoute(
             builder: (BuildContext context) => CollectionList(
-              query: '',
-              isMyAcc: true,
+              typeScreen: PageRouter.MY_ACC,
+              addressWallet: cubit.addressWallet,
             ),
           ),
         );
