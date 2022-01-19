@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:math' hide log;
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -58,6 +56,7 @@ class _UploadProgressState extends State<UploadProgress>
           context,
           MaterialPageRoute(
             builder: (_) => Approve(
+              hexString: widget.bloc.transactionData,
               createCollectionCubit: widget.bloc,
               listDetail: [
                 DetailItemApproveModel(

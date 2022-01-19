@@ -23,8 +23,9 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
-import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
@@ -118,9 +119,23 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftKey.currentState?.bloc ?? NFTDetailBloc();
         break;
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        // TODO: Handle this case.
+        break;
     }
   }
-
 
   @override
   void initState() {
@@ -241,16 +256,18 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         {
+          cubit.showLoading();
+          final nonce = await cubit.getNonce();
           await cubit.signTransactionWithData(
             walletAddress: cubit.addressWallet ?? '',
             contractAddress: nft_sales_address_dev2,
-            nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
-                .toString(),
+            nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
             gasLimit: gasLimitString,
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
+          cubit.showContent();
         }
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
@@ -335,7 +352,7 @@ class _ApproveState extends State<Approve> {
                           }
                         },
                         child: Container(
-                          margin:const  EdgeInsets.only(top: 48),
+                          margin: const EdgeInsets.only(top: 48),
                           decoration: BoxDecoration(
                             color: AppTheme.getInstance().bgBtsColor(),
                             borderRadius: const BorderRadius.only(
@@ -444,7 +461,7 @@ class _ApproveState extends State<Approve> {
                                             }
                                           },
                                         ),
-                                        SizedBox(height : heightOfBottom)
+                                        SizedBox(height: heightOfBottom)
                                       ],
                                     ),
                                   ),
@@ -489,10 +506,10 @@ class _ApproveState extends State<Approve> {
                                                       : null,
                                                   border: isApproved
                                                       ? Border.all(
-                                                    color:
-                                                    borderApprovedButton,
-                                                    width: 2,
-                                                  )
+                                                          color:
+                                                              borderApprovedButton,
+                                                          width: 2,
+                                                        )
                                                       : null,
                                                   title: S.current.approve,
                                                   isEnable: true,
@@ -532,27 +549,28 @@ class _ApproveState extends State<Approve> {
                                       return StreamBuilder<bool>(
                                           stream: cubit.canActionStream,
                                           builder: (context, snapshot) {
-                                            final isCanAction = snapshot.data ?? false;
+                                            final isCanAction =
+                                                snapshot.data ?? false;
                                             return GestureDetector(
                                               child: ButtonGold(
                                                 textColor: (isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
-                                                    isCanAction
+                                                            !(widget.needApprove ??
+                                                                false)) &&
+                                                        isCanAction
                                                     ? null
                                                     : disableText,
                                                 fixSize: false,
                                                 haveMargin: false,
                                                 title: widget.textActiveButton,
                                                 isEnable: (isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
+                                                        !(widget.needApprove ??
+                                                            false)) &&
                                                     isCanAction,
                                               ),
                                               onTap: () {
                                                 if ((isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
+                                                        !(widget.needApprove ??
+                                                            false)) &&
                                                     isCanAction) {
                                                   signTransaction(
                                                     cubit.gasLimit ??
@@ -563,8 +581,7 @@ class _ApproveState extends State<Approve> {
                                                 }
                                               },
                                             );
-                                          }
-                                      );
+                                          });
                                     },
                                   ),
                                 ),
@@ -585,8 +602,6 @@ class _ApproveState extends State<Approve> {
       ),
     );
   }
-
-
 
   void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
     switch (type) {
@@ -651,10 +666,33 @@ class _ApproveState extends State<Approve> {
           ),
         );
         break;
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        cubit.createCollection(
+          type: widget.createCollectionCubit?.collectionType ?? 0,
+          mapRawData:
+              widget.createCollectionCubit?.getMapCreateCollection() ?? {},
+          txhHash: data,
+        );
+        break;
     }
   }
 
-  Widget loadingDataScreen (){
+  Widget loadingDataScreen() {
     return Container(
       margin: const EdgeInsets.only(top: 48),
       decoration: BoxDecoration(
@@ -671,10 +709,10 @@ class _ApproveState extends State<Approve> {
             thickness: 1,
             color: AppTheme.getInstance().divideColor(),
           ),
-          const SizedBox (height : 16),
+          const SizedBox(height: 16),
           Expanded(
             child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 children: [
                   Row(
@@ -685,26 +723,26 @@ class _ApproveState extends State<Approve> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 25,),
+                      const SizedBox(
+                        width: 25,
+                      ),
                       Expanded(
                         flex: 6,
                         child: Container(
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
@@ -713,26 +751,26 @@ class _ApproveState extends State<Approve> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 25,),
+                      const SizedBox(
+                        width: 25,
+                      ),
                       Expanded(
                         flex: 6,
                         child: Container(
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
@@ -741,26 +779,26 @@ class _ApproveState extends State<Approve> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 25,),
+                      const SizedBox(
+                        width: 25,
+                      ),
                       Expanded(
                         flex: 6,
                         child: Container(
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
@@ -769,31 +807,31 @@ class _ApproveState extends State<Approve> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 25,),
+                      const SizedBox(
+                        width: 25,
+                      ),
                       Expanded(
                         flex: 6,
                         child: Container(
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
+                            color: AppTheme.getInstance().skeletonLight(),
                           ),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   Divider(
                     thickness: 1,
                     color: AppTheme.getInstance().divideColor(),
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   containerWithBorder(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -819,17 +857,19 @@ class _ApproveState extends State<Approve> {
                                   height: 20,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
+                                    color:
+                                        AppTheme.getInstance().skeletonLight(),
                                   ),
                                 ),
-                                const SizedBox (height: 5,),
+                                const SizedBox(
+                                  height: 5,
+                                ),
                                 Container(
                                   height: 20,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
+                                    color:
+                                        AppTheme.getInstance().skeletonLight(),
                                   ),
                                 ),
                               ],
@@ -839,48 +879,47 @@ class _ApproveState extends State<Approve> {
                       ),
                     ),
                   ),
-                  const SizedBox (height : 16),
+                  const SizedBox(height: 16),
                   containerWithBorder(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column (
+                      child: Column(
                         children: [
                           Row(
                             children: [
                               Expanded(
-                                flex : 2,
+                                flex: 2,
                                 child: Container(
                                   height: 25,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
+                                    color:
+                                        AppTheme.getInstance().skeletonLight(),
                                   ),
                                 ),
                               ),
-                              Expanded (
+                              Expanded(
                                 flex: 2,
-                                child:  Container(),
+                                child: Container(),
                               ),
                               Expanded(
                                 child: Container(
                                   height: 25,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
+                                    color:
+                                        AppTheme.getInstance().skeletonLight(),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox (height : 5),
+                          const SizedBox(height: 5),
                           Container(
                             height: 20,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: AppTheme.getInstance()
-                                  .skeletonLight(),
+                              color: AppTheme.getInstance().skeletonLight(),
                             ),
                           ),
                         ],
@@ -922,8 +961,6 @@ class _ApproveState extends State<Approve> {
       ),
     );
   }
-
-
 
   Container containerWithBorder({required Widget child}) {
     return Container(

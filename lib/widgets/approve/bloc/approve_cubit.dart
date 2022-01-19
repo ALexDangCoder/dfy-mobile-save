@@ -68,7 +68,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? hexString;
 
-  ConfirmRepository get _confirmRepository => Get.find();
+  ConfirmRepository get confirmRepository => Get.find();
 
   bool needApprove = false;
 
@@ -92,14 +92,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       BehaviorSubject<double>();
 
   final BehaviorSubject<double> gasLimitFirstSubject =
-  BehaviorSubject<double>();
+      BehaviorSubject<double>();
 
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
 
   final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
 
-  Stream<String> get addressWalletCoreStream =>
-      addressWalletCoreSubject.stream;
+  Stream<String> get addressWalletCoreStream => addressWalletCoreSubject.stream;
 
   Stream<String> get nameWalletStream => nameWalletSubject.stream;
 
@@ -173,19 +172,18 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required int id,
     required String address,
   }) async {
-    final result = await web3Client
-        .getCollectionInfo(contract: contract, address: address, id: id);
+    final result = await web3Client.getCollectionInfo(
+        contract: contract, address: address, id: id);
     await importNftIntoWalletCore(
       jsonNft: json.encode(result),
       address: address,
     );
   }
 
-
   Future<void> gesGasLimitFirst(String hexString) async {
     showLoading();
     final gasLimitFirstResult =
-    await getGasLimitByType(type: type, hexString: hexString);
+        await getGasLimitByType(type: type, hexString: hexString);
     gasLimitFirst = gasLimitFirstResult;
     gasLimit = gasLimitFirstResult;
     gasLimitFirstSubject.sink.add(gasLimitFirstResult);
@@ -195,7 +193,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> approve() async {
     final nonce =
-    await web3Client.getTransactionCount(address: addressWallet ?? '');
+        await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
       gasLimit: (gasLimit ?? 0).toInt().toString(),
       gasPrice: ((gasPrice ?? 0) / 1e9).toInt().toString(),
@@ -208,19 +206,18 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   String getSpender() {
-    late String spender;
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        spender = nft_sales_address_dev2;
-        break;
+        return nft_sales_address_dev2;
       case TYPE_CONFIRM_BASE.PLACE_BID:
-        spender = nft_auction_dev2;
-        break;
+        return nft_auction_dev2;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        {
+          return nft_factory_dev2;
+        }
       default:
-        spender = '';
-        break;
+        return '';
     }
-    return spender;
   }
 
   int randomAvatar() {
@@ -240,28 +237,21 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
-  Future<void> confirmCancelSaleWithBE(
-      {required String txnHash, required String marketId}) async {
-    final result = await _confirmRepository.getCancelSaleResponse(
-      id: marketId,
-      txnHash: txnHash,
-    );
-    result.when(success: (suc) {}, error: (err) {});
-  }
+
 
   Future<void> importNft({
     required String contract,
     required String address,
     required int id,
   }) async {
-    final res = await
-        web3Client.importNFT(contract: contract, address: address, id: id);
+    final res = await web3Client.importNFT(
+        contract: contract, address: address, id: id);
     if (!res.isSuccess) {
     } else {
       await emitJsonNftToWalletCore(
-          contract: contract,
-          address: address,
-          id: id,
+        contract: contract,
+        address: address,
+        id: id,
       );
     }
   }

@@ -9,7 +9,7 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
-extension CallCoreExtensi on ApproveCubit{
+extension CallCoreExtensi on ApproveCubit {
   ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -30,11 +30,10 @@ extension CallCoreExtensi on ApproveCubit{
               payValue: payValue ?? '',
               tokenAddress: tokenAddress ?? ' ',
             );
-            if (result ){
+            if (result) {
               await gesGasLimitFirst(hexString ?? '');
             }
-          }
-          else {
+          } else {
             await gesGasLimitFirst(hexString ?? '');
           }
           try {
@@ -71,8 +70,14 @@ extension CallCoreExtensi on ApproveCubit{
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
               if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION),
+                );
                 showContent();
-              } else {}
+              } else {
+                showError();
+              }
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
@@ -87,7 +92,7 @@ extension CallCoreExtensi on ApproveCubit{
           }
         }
         break;
-    //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
@@ -153,5 +158,4 @@ extension CallCoreExtensi on ApproveCubit{
       //todo
     }
   }
-
 }
