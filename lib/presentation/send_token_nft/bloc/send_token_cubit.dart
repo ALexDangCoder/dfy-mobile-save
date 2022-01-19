@@ -65,6 +65,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     required String id,
     required BuildContext context,
   }) async {
+    emit(LoadingBeforeConfirm());
     final result = await Web3Utils().getNftGasLimit(
       from: fromAddress,
       to: toAddress,
@@ -74,6 +75,7 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       context: context,
     );
     gasLimitNft = double.parse(result);
+    emit(LoadSuccessBeforeConfirm());
   }
 
   //handle nft pending api
