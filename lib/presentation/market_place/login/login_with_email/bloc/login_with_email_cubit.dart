@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'login_with_email_state.dart';
 
@@ -17,43 +18,55 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
 
   NonceRepository get _nonceRepository => Get.find();
 
+  BehaviorSubject<String> validateTextSubject = BehaviorSubject.seeded('');
+
+  BehaviorSubject<int> timeCountDownSubject = BehaviorSubject();
+
+  BehaviorSubject<bool> isEnableResendSubject = BehaviorSubject.seeded(false);
+
+  Stream<String> get validateStream => validateTextSubject.stream;
+
+  Stream<int> get timeCountDownStream => timeCountDownSubject.stream;
+
+  Stream<bool> get isEnableResendStream => isEnableResendSubject.stream;
+
   void checkValidate(String email) {
     final bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     if (!emailValid) {
-      emit(EmailInvalid(errText: S.current.email_invalid));
+      validateTextSubject.sink.add(S.current.email_invalid);
       return;
     }
     if (email.length > 50) {
-      emit(EmailTooLong(errText: S.current.email_too_long));
+      validateTextSubject.sink.add(S.current.email_too_long);
       return;
     }
-    emit(ValidateSuccess());
+    validateTextSubject.sink.add('');
   }
 
   Future<void> getNonce({required String walletAddress}) async {
     final Result<NonceModel> result =
         await _nonceRepository.getNonce(walletAddress);
     result.when(
-        success: (res) {},
-        error: (err) {
-        });
+      success: (res) {},
+      error: (err) {},
+    );
   }
 
   void startTimer({int timeStart = 60}) {
     const oneSec = Duration(milliseconds: 1000);
-    emit(TimerCountDown(timeStart));
+    timeCountDownSubject.sink.add(60);
 
     Timer.periodic(
       oneSec,
       (Timer timer) {
         if (timeStart == 0) {
-            timer.cancel();
-            emit(TimerEnd(0));
+          timer.cancel();
+          timeCountDownSubject.sink.add(0);
         } else {
           timeStart--;
-          emit(TimerCountDown(timeStart));
+          timeCountDownSubject.sink.add(timeStart);
         }
       },
     );
