@@ -100,19 +100,20 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                               left: 41.5,
                             ),
                             child: StreamBuilder<LoginStatus>(
-                                stream: cubit.connectStatusStream,
-                                builder: (context, snapshot) {
-                                  final LoginStatus login =
-                                      snapshot.data ?? LoginStatus.CHECKING;
-                                  return Text(
-                                    login.convertToContentDialog(),
-                                    textAlign: TextAlign.center,
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      20.sp,
-                                    ).copyWith(fontWeight: FontWeight.w600),
-                                  );
-                                }),
+                              stream: cubit.connectStatusStream,
+                              builder: (context, snapshot) {
+                                final LoginStatus login =
+                                    snapshot.data ?? LoginStatus.CHECKING;
+                                return Text(
+                                  login.convertToContentDialog(),
+                                  textAlign: TextAlign.center,
+                                  style: textNormal(
+                                    AppTheme.getInstance().whiteColor(),
+                                    20.sp,
+                                  ).copyWith(fontWeight: FontWeight.w600),
+                                );
+                              },
+                            ),
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -165,59 +166,60 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                     ),
                                   ),
                                   child: StreamBuilder<LoginStatus>(
-                                      stream: cubit.connectStatusStream,
-                                      builder: (context, snapshot) {
-                                        final LoginStatus status =
-                                            snapshot.data ?? LoginStatus.CHECKING;
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            if (status ==
-                                                LoginStatus.HAVE_WALLET) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MainScreen(
-                                                    isFormConnectWlDialog: true,
-                                                    index: 2,
-                                                  ),
+                                    stream: cubit.connectStatusStream,
+                                    builder: (context, snapshot) {
+                                      final LoginStatus status =
+                                          snapshot.data ?? LoginStatus.CHECKING;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          if (status ==
+                                              LoginStatus.HAVE_WALLET) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MainScreen(
+                                                  isFormConnectWlDialog: true,
+                                                  index: 2,
                                                 ),
-                                              );
-                                            } else if (status ==
-                                                LoginStatus.HAS_NO_WALLET) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MainScreen(
-                                                    index: 3,
-                                                  ),
+                                              ),
+                                            );
+                                          } else if (status ==
+                                              LoginStatus.HAS_NO_WALLET) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MainScreen(
+                                                  index: 3,
                                                 ),
-                                              );
-                                            }
-                                          },
-                                          behavior: HitTestBehavior.opaque,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 19,
-                                              top: 17,
-                                            ),
-                                            child: Text(
-                                              //todo
-                                              status
-                                                  .convertToContentRightButton(),
-                                              style: textNormal(
-                                                AppTheme.getInstance()
-                                                    .fillColor(),
-                                                20.sp,
-                                              ).copyWith(
-                                                  fontWeight: FontWeight.w700),
-                                              textAlign: TextAlign.center,
-                                            ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        behavior: HitTestBehavior.opaque,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 19,
+                                            top: 17,
                                           ),
-                                        );
-                                      }),
+                                          child: Text(
+                                            status
+                                                .convertToContentRightButton(),
+                                            style: textNormal(
+                                              AppTheme.getInstance()
+                                                  .fillColor(),
+                                              20.sp,
+                                            ).copyWith(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ],

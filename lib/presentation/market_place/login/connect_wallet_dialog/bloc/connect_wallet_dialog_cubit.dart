@@ -52,7 +52,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
-    } on PlatformException catch (e) {
+    } on PlatformException {
       //nothing
     }
   }
@@ -86,7 +86,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     }
   }
 
-  void dispose(){
+  void dispose() {
     isLoginSubject.close();
     connectStatusSubject.close();
   }

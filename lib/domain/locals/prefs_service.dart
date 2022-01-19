@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -83,9 +81,7 @@ class PrefsService {
 
   static Future<bool> saveWalletLogin(String data) async {
     final prefs = await _instance;
-
     return prefs.setString(_PREF_WALLET_LOGIN, data);
-
   }
 
   static String getWalletLogin() {
@@ -140,20 +136,20 @@ class PrefsService {
 
   static String userProfileEmpty() {
     return userProfileToJson(
-        UserProfileModel(
-            email: '',
-            createdAt: 0,
-            id: 0,
-            activatedAt: 0,
-            address: '',
-            birthday: '',
-            isActive: false,
-            links: [],
-            name: '',
-            phoneNumber: '',
-            referredId: '',
-            roleType: -1
-        )
+      UserProfileModel(
+        email: '',
+        createdAt: 0,
+        id: 0,
+        activatedAt: 0,
+        address: '',
+        birthday: '',
+        isActive: false,
+        links: [],
+        name: '',
+        phoneNumber: '',
+        referredId: '',
+        roleType: -1,
+      ),
     );
   }
 }
