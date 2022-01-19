@@ -53,8 +53,11 @@ class ListNftHotAuction extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ListNft(marketType: MarketType.AUCTION),
+                            builder: (context) => ListNft(
+                              marketType: MarketType.AUCTION,
+                              pageRouter: PageRouter.MARKET,
+
+                            ),
                           ),
                         );
                 },
