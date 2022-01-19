@@ -144,6 +144,8 @@ class _MyAppState extends State<MyApp> {
   void callAllApi() {
     getConfig();
     // setLoginModel();
+    //todo: test show/hide connect wallet dialog:
+    clearLoginModel();
   }
 
   void getConfig() {

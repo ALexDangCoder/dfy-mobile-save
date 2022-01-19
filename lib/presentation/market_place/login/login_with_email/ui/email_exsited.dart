@@ -31,14 +31,7 @@ class _EmailExistedState extends State<EmailExisted> {
       floatingActionButton: ButtonLuxuryBigSize(
         title: S.current.confirm_account,
         isEnable: true,
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => ConnectWalletDialog(
-              navigationTo: LoginScreen(walletCubit: WalletCubit()),
-            ),
-          );
-        },
+        onTap: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BaseBottomSheet(
