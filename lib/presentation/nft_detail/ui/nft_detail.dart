@@ -48,8 +48,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
+
 part 'component.dart';
+
 part 'pawn.dart';
+
 part 'sale.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
@@ -161,6 +164,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
         ];
         break;
       case MarketType.SALE:
+      case MarketType.NOT_ON_MARKET:
         _tabPage = [
           StreamBuilder<List<HistoryNFT>>(
             stream: bloc.listHistoryStream,
@@ -596,6 +600,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value,
+                    duration: const Duration(milliseconds: 5),
+                    curve: Curves.ease);
+              },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -609,6 +618,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: _buildButtonSendOffer(context),
             content: [
               _nameNFT(
+                url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
                 context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
               ),

@@ -8,7 +8,9 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,9 +18,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
-  final bool isMyAcc;
+  PageRouter typeScreen;
 
-  CollectionBloc({required this.isMyAcc}) : super(CollectionState());
+  CollectionBloc(this.typeScreen) : super(CollectionState());
 
   static const int HIGHEST_TRADING_VOLUME = 0;
   static const int LOWEST_TRADING_VOLUME = 1;
@@ -31,7 +33,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
-  BehaviorSubject<List<CollectionMarketModel>> list = BehaviorSubject();
+  BehaviorSubject<List<CollectionMarketModel>> list =
+      BehaviorSubject.seeded([]);
   BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
@@ -94,16 +97,19 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     );
   }
 
-  String checkAddress(String address){
-    String data='';
-    if(address==S.current.all){
-      data=S.current.all;
-    }else{
-      data=address.formatAddressWalletConfirm();
+  String checkAddress(String address) {
+    String data = '';
+    if (address == S.current.all) {
+      data = S.current.all;
+    } else {
+      if (address.length > 20) {
+        data = address.formatAddressWalletConfirm();
+      }
     }
     return data;
   }
-  void chooseAddressFilter(String address){
+
+  void chooseAddressFilter(String address) {
     textAddressFilter.sink.add(
       address,
     );
@@ -115,7 +121,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       collectionType = SOFT_COLLECTION;
     } else if (isHardCollection.value && !isSoftCollection.value) {
       collectionType = HARD_COLLECTION;
-    } else  {
+    } else {
       collectionType = null;
     }
     addressWallet = textAddressFilter.value;
@@ -128,11 +134,8 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   }
 
   void funChooseFilter(int index) {
-    for (int i = 0; i < 8; i++) {
-      if (index == i) {
-      } else {
-        listCheckBoxFilter[i] = false;
-      }
+    for (int i = 0; i < listCheckBoxFilter.length; i++) {
+      listCheckBoxFilter[i] = false;
     }
     listCheckBoxFilter[index] = true;
     listCheckBoxFilterStream.add(listCheckBoxFilter);
@@ -195,13 +198,13 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getListCollection({
     String? name = '',
     int? sortFilter = 0,
-    int? size = 10,
+    int? size = 20,
   }) async {
     if (nextPage == 1) {
       nextPage = 2;
     }
     late final Result<List<CollectionMarketModel>> result;
-    if (isMyAcc) {
+    if (typeScreen==PageRouter.MY_ACC) {
       result = await _collectionDetailRepository.getListCollection(
         name: name,
         sort: sortFilter,
@@ -238,7 +241,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getCollection({
     String? name = '',
     int? sortFilter = 0,
-    int? size = 10,
+    int? size = 20,
     int? page = 0,
     bool isLoad = true,
   }) async {
@@ -246,7 +249,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
     late final Result<List<CollectionMarketModel>> result;
-    if (isMyAcc) {
+    if (typeScreen==PageRouter.MY_ACC) {
       if (collectionType?.isNaN ?? false) {
         result = await _collectionDetailRepository.getListCollection(
           name: name,

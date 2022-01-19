@@ -34,6 +34,8 @@ class NftMarketResponse extends Equatable {
   int? totalCopy;
   @JsonKey(name: 'file_type')
   String? fileType;
+  @JsonKey(name: 'cover_cid')
+  String? coverCid;
   @JsonKey(name: 'collection_address')
   String? collectionAddress;
   @JsonKey(name: 'pawn_id')
@@ -99,7 +101,9 @@ class NftMarketResponse extends Equatable {
         typeImage: getTypeImage(fileType ?? 'image'),
         price: price,
         typeNFT: getTypeNft(type),
-        image: getPath(avatarCid),
+        image: getTypeImage(fileType ?? 'image') == TypeImage.IMAGE
+            ? getPath(coverCid != '' ? coverCid ?? avatarCid : avatarCid)
+            : getPath(avatarCid),
         nftId: nftId,
         tokenBuyOut: token,
         name: name,

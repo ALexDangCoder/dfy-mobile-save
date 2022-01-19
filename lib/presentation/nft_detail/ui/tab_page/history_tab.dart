@@ -64,6 +64,7 @@ class _HistoryTabState extends State<HistoryTab> {
     } else {
       return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         shrinkWrap: true,
         itemCount: widget.listHistory.length,
         itemBuilder: (context, index) {
@@ -87,33 +88,27 @@ Widget _buildItemHistory(HistoryNFT historyNFT) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getHistory(historyNFT.historyType ?? 20),
-                Text(
-                  formatDateTime.format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                      historyNFT.eventDateTime ?? 0,
-                    ),
-                  ),
-                  style: textNormalCustom(
-                    Colors.white.withOpacity(0.5),
-                    14,
-                    FontWeight.w400,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              getHistory(historyNFT.historyType ?? 20),
+              Text(
+                formatDateTime.format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                    historyNFT.eventDateTime ?? 0,
                   ),
                 ),
-              ],
-            ),
+                style: textNormalCustom(
+                  Colors.white.withOpacity(0.5),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
           ),
           spaceH7,
-          Padding(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w),
-            child: status(
-              historyNFT,
-            ),
+          status(
+            historyNFT,
           ),
         ],
       ),

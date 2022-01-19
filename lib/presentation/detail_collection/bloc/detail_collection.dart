@@ -6,19 +6,21 @@ import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
+  final PageRouter typeScreen;
+
+  DetailCollectionBloc(this.typeScreen) : super(CollectionDetailState());
+
 // fillter nft
   static const int PUT_ON_MARKET = 0;
   static const int TRANSFER_ACTIVITY = 1;
@@ -46,22 +48,19 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String HTTPS = 'https://';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
+  static const int TAB_NFT = 0;
+  static const int ALL = 0;
+  static const int OWNER = 1;
+  static const bool ALL_FILTER_NFT = false;
+  static const bool OWNER_FILTER_NFT = true;
 
 //
-
-  BehaviorSubject<bool> isHardNft = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isSoftNft = BehaviorSubject.seeded(false);
+  List<bool> listViewTypeFilterNft = [false, false];
 
   BehaviorSubject<bool> isOnSale = BehaviorSubject.seeded(false); //1
   BehaviorSubject<bool> isOnPawn = BehaviorSubject.seeded(false); //3
   BehaviorSubject<bool> isOnAuction = BehaviorSubject.seeded(false); //2
   BehaviorSubject<bool> isNotOnMarket = BehaviorSubject.seeded(false); //0
-  BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
-  BehaviorSubject<String> textAddressFilter =
-      BehaviorSubject.seeded(S.current.all);
-  List<String> listAcc = [
-    S.current.all,
-  ];
   List<int> listFilter = [
     NOT_ON_MARKET,
     SALE,
@@ -71,6 +70,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
 
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isShowMoreStream = BehaviorSubject.seeded(false);
+  BehaviorSubject<List<bool>> listViewTypeFilterNftStream =
+      BehaviorSubject.seeded([false, false]);
 
   //filter activity
   BehaviorSubject<bool> isTransfer = BehaviorSubject.seeded(false);
@@ -92,8 +93,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   BehaviorSubject<CollectionDetailModel> collectionDetailModel =
       BehaviorSubject.seeded(CollectionDetailModel());
 
-  DetailCollectionBloc() : super(CollectionDetailState());
-
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
   CollectionDetailModel arg = CollectionDetailModel();
@@ -106,6 +105,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String collectionId = '';
   String collectionAddress = '';
   String typeActivity = '';
+  bool owner = false;
 
   void funFilterNft() {
     if (isOnSale.value) {
@@ -144,6 +144,31 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         collectionAddress: collectionAddress,
         name: textSearch.value.trim(),
       );
+    }
+  }
+
+  String checkAddress(String address) {
+    String data = '';
+    if (address == S.current.all) {
+      data = S.current.all;
+    } else {
+      if (address.length > 20) {
+        data = address.formatAddressWalletConfirm();
+      }
+    }
+    return data;
+  }
+
+  void chooseViewTypeFilterAll(int index) {
+    for (int i = 0; i < listViewTypeFilterNft.length; i++) {
+      listViewTypeFilterNft[i] = false;
+    }
+    listViewTypeFilterNft[index] = true;
+    listViewTypeFilterNftStream.add(listViewTypeFilterNft);
+    if (index == OWNER) {
+      owner = OWNER_FILTER_NFT;
+    } else {
+      owner = ALL_FILTER_NFT;
     }
   }
 
@@ -290,14 +315,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     isSignContract.sink.add(value);
   }
 
-  void reset() {
-    isHardNft.sink.add(false);
+  void resetFilterNFTMyAcc() {
     isOnSale.sink.add(false);
-    isSoftNft.sink.add(false);
     isOnPawn.sink.add(false);
     isOnAuction.sink.add(false);
     isNotOnMarket.sink.add(false);
     listFilter.clear();
+    listViewTypeFilterNft.clear();
+    listViewTypeFilterNft.addAll([false, false]);
+    listViewTypeFilterNftStream.add(listViewTypeFilterNft);
+    owner = ALL_FILTER_NFT;
   }
 
   Future<void> getListFilterCollectionDetail({
@@ -361,13 +388,25 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       listMarketType: listMarketType,
       size: size,
       page: page,
+      owner: owner,
     );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
           statusNft.add(ERORR);
         } else {
-          listNft.add(res);
+          if (typeScreen == PageRouter.MARKET) {
+            final List<NftMarket> listNftMyAcc = [];
+            for (final NftMarket value in res) {
+              if (value.marketType == MarketType.NOT_ON_MARKET) {
+              } else {
+                listNftMyAcc.add(value);
+              }
+            }
+            listNft.add(listNftMyAcc);
+          } else {
+            listNft.add(res);
+          }
           statusNft.add(SUCCESS);
         }
       },
@@ -522,36 +561,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     }
   }
 
-  Future<void> getListWallets() async {
-    try {
-      final data = {};
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      //nothing
-    }
-  }
-
-  List<Wallet> listWallet = [];
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWallet.add(Wallet.fromJson(element));
-        }
-        for (final element in listWallet) {
-          listAcc.add(element.address?.formatAddressWalletConfirm() ?? '');
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
   void dispone() {
-    isHardNft.close();
-    isSoftNft.close();
     isOnSale.close();
     isOnPawn.close();
     isOnAuction.close();

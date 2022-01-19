@@ -3,6 +3,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/collection_item.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_collection.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_collection.dart';
@@ -52,7 +53,7 @@ class ListOutstandingCollection extends StatelessWidget {
                             builder: (ctx) => CollectionList(
                               query: '',
                               title: '',
-                              isMyAcc: true,
+                              typeScreen: PageRouter.MARKET,
                             ),
                           ),
                         );
