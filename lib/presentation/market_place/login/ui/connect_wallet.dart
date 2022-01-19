@@ -21,7 +21,7 @@ class ConnectWallet extends StatelessWidget {
         onTap: () => showDialog(
           context: context,
           builder: (context) => const ConnectWalletDialog(
-            currentScreen: EmailExisted(
+            navigationTo: EmailExisted(
               email: 'vuhanam',
             ),
           ),
