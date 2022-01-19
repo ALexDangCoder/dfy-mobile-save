@@ -13,10 +13,8 @@ class ActivityCollection extends StatefulWidget {
   const ActivityCollection({
     Key? key,
     required this.detailCollectionBloc,
-    required this.addressWallet,
   }) : super(key: key);
   final DetailCollectionBloc detailCollectionBloc;
-  final String addressWallet;
 
   @override
   _ActivityCollectionState createState() => _ActivityCollectionState();
@@ -41,7 +39,8 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               padding: EdgeInsets.only(bottom: 24.h),
               child: ListActivity(
                 urlAvatar:
-                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ?? ''}',
+                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ??
+                        ''}',
                 copy: '${list[index].numberOfCopies ?? 0}',
                 auctionType: list[index].auctionType ?? 99,
                 addressWalletSend: list[index].fromAddress ?? '',

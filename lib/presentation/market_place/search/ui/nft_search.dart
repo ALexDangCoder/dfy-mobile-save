@@ -294,8 +294,7 @@ class _SearchNFTState extends State<SearchNFT> {
                               builder: (ctx) => DetailCollection(
                                 collectionAddress: searchCubit
                                     .collections[index]
-                                    .collectionAddress, // todo collection address
-                                walletAddress: 'alo alo', //todo address wallet
+                                    .collectionAddress,
                               ),
                             ),
                           );
@@ -334,7 +333,6 @@ class _SearchNFTState extends State<SearchNFT> {
                             builder: (builder) => CollectionList(
                               query: controller.text,
                               title: S.current.collection_search_result,
-                              isMyAcc: false,
                             ),
                           ),
                         );

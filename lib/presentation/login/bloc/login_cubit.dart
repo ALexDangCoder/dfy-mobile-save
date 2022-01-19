@@ -18,7 +18,18 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool hidePass = true;
   bool isAppLock = true;
   bool isFaceID = false;
+  String signature = '';
+  String walletAddress = '';
+  int nonce = 0;
   BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
+
+  BehaviorSubject<bool> isLoginSuccessSubject = BehaviorSubject();
+
+  BehaviorSubject<String> signatureSubject = BehaviorSubject();
+
+  Stream<bool> get isLoginSuccessStream => isLoginSuccessSubject.stream;
+
+  Stream<String> get signatureStream => signatureSubject.stream;
 
   bool hidePassword() {
     return hidePass = !hidePass;
@@ -40,6 +51,14 @@ class LoginCubit extends BaseCubit<LoginState> {
         isAppLock = await methodCall.arguments['isAppLock'];
         isFaceID = await methodCall.arguments['isFaceID'];
         isFaceIDStream.add(isFaceID);
+        break;
+      case 'getListWalletsCallback':
+        walletAddress = (methodCall.arguments as List)
+            .first['walletAddress'];
+        break;
+      case 'signWalletCallback':
+        signature = await methodCall.arguments['signature'];
+        signatureSubject.sink.add(signature);
         break;
       default:
         break;
@@ -91,12 +110,5 @@ class LoginCubit extends BaseCubit<LoginState> {
     if (authenticated == true) {
       emit(LoginSuccess());
     }
-  }
-
-  LoginRepository get _loginRepo => Get.find();
-
-  Future<void> loginMarketPlace() async {
-    final result = await _loginRepo.login('signature', '');
-    result.when(success: (data) {}, error: (err) {});
   }
 }

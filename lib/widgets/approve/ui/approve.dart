@@ -121,7 +121,6 @@ class _ApproveState extends State<Approve> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -130,6 +129,8 @@ class _ApproveState extends State<Approve> {
     accountImage = cubit.randomAvatar();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
+      heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
+      setState(() {});
     });
 
     trustWalletChannel
@@ -272,13 +273,6 @@ class _ApproveState extends State<Approve> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    cubit.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener(
       bloc: cubit,
@@ -311,282 +305,265 @@ class _ApproveState extends State<Approve> {
             await cubit.getListWallets();
           },
           textEmpty: '',
-          child: BlocBuilder<ApproveCubit, ApproveState>(
-            bloc: cubit,
-            builder: (context, state) {
-              if (state is ApproveInitState) {
-                return loadingDataScreen();
-              } else {
-                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                  heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
-                  setState(() {});
-                });
-                return Stack(
-                  children: [
-                    Scaffold(
-                      backgroundColor: Colors.transparent,
-                      resizeToAvoidBottomInset: true,
-                      body: GestureDetector(
-                        onTap: () {
-                          final FocusScopeNode currentFocus =
-                              FocusScope.of(context);
-                          if (!currentFocus.hasPrimaryFocus) {
-                            currentFocus.unfocus();
-                          }
-                        },
-                        child: Container(
-                          margin:const  EdgeInsets.only(top: 48),
-                          decoration: BoxDecoration(
-                            color: AppTheme.getInstance().bgBtsColor(),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              header(),
-                              Divider(
-                                thickness: 1,
-                                color: AppTheme.getInstance().divideColor(),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: heightScaffold,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        widget.header ??
-                                            const SizedBox(height: 0),
-                                        ...(widget.listDetail ?? []).map(
-                                          (item) => Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: widget.flexTitle ?? 4,
-                                                    child: Text(
-                                                      item.title,
-                                                      style: textNormal(
-                                                        AppTheme.getInstance()
-                                                            .whiteColor()
-                                                            .withOpacity(0.7),
-                                                        14,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex:
-                                                        widget.flexContent ?? 6,
-                                                    child: Text(
-                                                      item.value,
-                                                      style: item.isToken ??
-                                                              false
-                                                          ? textNormalCustom(
-                                                              AppTheme.getInstance()
-                                                                  .fillColor(),
-                                                              20,
-                                                              FontWeight.w600,
-                                                            )
-                                                          : textNormal(
-                                                              AppTheme.getInstance()
-                                                                  .whiteColor(),
-                                                              16,
-                                                            ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(height: 16)
-                                            ],
-                                          ),
-                                        ),
-                                        if (widget.warning != null)
-                                          Column(
-                                            children: [
-                                              const SizedBox(height: 4),
-                                              widget.warning ??
-                                                  const SizedBox(height: 0),
-                                              const SizedBox(height: 20),
-                                            ],
-                                          )
-                                        else
-                                          const SizedBox(height: 4),
-                                        Divider(
-                                          thickness: 1,
-                                          color: AppTheme.getInstance()
-                                              .divideColor(),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        walletView(),
-                                        const SizedBox(height: 16),
-                                        StreamBuilder<bool>(
-                                          stream: cubit.isApprovedStream,
-                                          builder: (context, snapshot) {
-                                            final data = snapshot.data ?? false;
-                                            if (data ||
-                                                !(widget.needApprove ??
-                                                    false)) {
-                                              return Column(
-                                                children: [
-                                                  EstimateGasFee(
-                                                    cubit: cubit,
-                                                  ),
-                                                ],
-                                              );
-                                            } else {
-                                              return const SizedBox(height: 0);
-                                            }
-                                          },
-                                        ),
-                                        SizedBox(height : heightOfBottom)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+          child: Stack(
+            children: [
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: true,
+                body: GestureDetector(
+                  onTap: () {
+                    final FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 48),
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().bgBtsColor(),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        key: bottomKey,
-                        decoration: BoxDecoration(
-                          color: AppTheme.getInstance().bgBtsColor(),
+                    child: Column(
+                      children: [
+                        header(),
+                        Divider(
+                          thickness: 1,
+                          color: AppTheme.getInstance().divideColor(),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(width: 16.w),
-                                if (widget.needApprove ?? false)
-                                  Expanded(
-                                    child: Row(
+                        Expanded(
+                          child: Container(
+                            height: heightScaffold,
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  widget.header ?? const SizedBox(height: 0),
+                                  ...(widget.listDetail ?? []).map(
+                                    (item) => Column(
                                       children: [
-                                        Expanded(
-                                          child: StreamBuilder<bool>(
-                                            stream: cubit.isApprovedStream,
-                                            builder: (context, snapshot) {
-                                              final isApproved =
-                                                  snapshot.data ?? false;
-                                              return GestureDetector(
-                                                child: ButtonGold(
-                                                  haveGradient: !isApproved,
-                                                  background: isApproved
-                                                      ? fillApprovedButton
-                                                      : null,
-                                                  textColor: isApproved
-                                                      ? borderApprovedButton
-                                                      : null,
-                                                  border: isApproved
-                                                      ? Border.all(
-                                                    color:
-                                                    borderApprovedButton,
-                                                    width: 2,
-                                                  )
-                                                      : null,
-                                                  title: S.current.approve,
-                                                  isEnable: true,
-                                                  fixSize: false,
-                                                  haveMargin: false,
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              flex: widget.flexTitle ?? 4,
+                                              child: Text(
+                                                item.title,
+                                                style: textNormal(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor()
+                                                      .withOpacity(0.7),
+                                                  14,
                                                 ),
-                                                onTap: () {
-                                                  // if (!isApproved) {
-                                                  //   cubit.getGasLimitApprove(
-                                                  //     context: context,
-                                                  //     contractAddress:
-                                                  //     widget.tokenAddress ??
-                                                  //         '',
-                                                  //   );
-                                                  //   showPopupApprove();
-                                                  // }
-                                                  showPopupApprove();
-                                                },
-                                              );
-                                            },
-                                          ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: widget.flexContent ?? 6,
+                                              child: Text(
+                                                item.value,
+                                                style: item.isToken ?? false
+                                                    ? textNormalCustom(
+                                                        AppTheme.getInstance()
+                                                            .fillColor(),
+                                                        20,
+                                                        FontWeight.w600,
+                                                      )
+                                                    : textNormal(
+                                                        AppTheme.getInstance()
+                                                            .whiteColor(),
+                                                        16,
+                                                      ),
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        const SizedBox(width: 25),
+                                        const SizedBox(height: 16)
                                       ],
                                     ),
-                                  )
-                                else
-                                  const SizedBox(
-                                    height: 0,
-                                    width: 0,
                                   ),
-                                Expanded(
-                                  child: StreamBuilder<bool>(
+                                  if (widget.warning != null)
+                                    Column(
+                                      children: [
+                                        const SizedBox(height: 4),
+                                        widget.warning ??
+                                            const SizedBox(height: 0),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    )
+                                  else
+                                    const SizedBox(height: 4),
+                                  Divider(
+                                    thickness: 1,
+                                    color: AppTheme.getInstance().divideColor(),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  walletView(),
+                                  const SizedBox(height: 16),
+                                  StreamBuilder<bool>(
                                     stream: cubit.isApprovedStream,
                                     builder: (context, snapshot) {
-                                      final isApproved = snapshot.data ?? false;
-                                      return StreamBuilder<bool>(
-                                          stream: cubit.canActionStream,
-                                          builder: (context, snapshot) {
-                                            final isCanAction = snapshot.data ?? false;
-                                            return GestureDetector(
-                                              child: ButtonGold(
-                                                textColor: (isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
-                                                    isCanAction
-                                                    ? null
-                                                    : disableText,
-                                                fixSize: false,
-                                                haveMargin: false,
-                                                title: widget.textActiveButton,
-                                                isEnable: (isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
-                                                    isCanAction,
-                                              ),
-                                              onTap: () {
-                                                if ((isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
-                                                    isCanAction) {
-                                                  signTransaction(
-                                                    cubit.gasLimit ??
-                                                        cubit.gasLimitFirst ??
-                                                        0,
-                                                    cubit.gasPrice ?? 1e9,
-                                                  );
-                                                }
-                                              },
-                                            );
-                                          }
-                                      );
+                                      final data = snapshot.data ?? false;
+                                      if (data ||
+                                          !(widget.needApprove ?? false)) {
+                                        return Column(
+                                          children: [
+                                            EstimateGasFee(
+                                              cubit: cubit,
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        return const SizedBox(height: 0);
+                                      }
                                     },
                                   ),
-                                ),
-                                SizedBox(width: 16.w),
-                              ],
+                                  SizedBox(
+                                    height: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom <=
+                                            160
+                                        ? heightOfBottom
+                                        : 0,
+                                  )
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 38)
-                          ],
+                          ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  key: bottomKey,
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 16.w),
+                          if (widget.needApprove ?? false)
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: StreamBuilder<bool>(
+                                      stream: cubit.isApprovedStream,
+                                      builder: (context, snapshot) {
+                                        final isApproved =
+                                            snapshot.data ?? false;
+                                        return GestureDetector(
+                                          child: ButtonGold(
+                                            haveGradient: !isApproved,
+                                            background: isApproved
+                                                ? fillApprovedButton
+                                                : null,
+                                            textColor: isApproved
+                                                ? borderApprovedButton
+                                                : null,
+                                            border: isApproved
+                                                ? Border.all(
+                                                    color: borderApprovedButton,
+                                                    width: 2,
+                                                  )
+                                                : null,
+                                            title: S.current.approve,
+                                            isEnable: true,
+                                            fixSize: false,
+                                            haveMargin: false,
+                                          ),
+                                          onTap: () {
+                                            if (!isApproved) {
+                                              cubit.getGasLimitApprove(
+                                                context: context,
+                                                contractAddress:
+                                                widget.tokenAddress ??
+                                                    '',
+                                              );
+                                              showPopupApprove();
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 25),
+                                ],
+                              ),
+                            )
+                          else
+                            const SizedBox(
+                              height: 0,
+                              width: 0,
+                            ),
+                          Expanded(
+                            child: StreamBuilder<bool>(
+                              stream: cubit.isApprovedStream,
+                              builder: (context, snapshot) {
+                                final isApproved = snapshot.data ?? false;
+                                return StreamBuilder<bool>(
+                                    stream: cubit.canActionStream,
+                                    builder: (context, snapshot) {
+                                      final isCanAction =
+                                          snapshot.data ?? false;
+                                      return GestureDetector(
+                                        child: ButtonGold(
+                                          textColor: (isApproved ||
+                                                      !(widget.needApprove ??
+                                                          false)) &&
+                                                  isCanAction
+                                              ? null
+                                              : disableText,
+                                          fixSize: false,
+                                          haveMargin: false,
+                                          title: widget.textActiveButton,
+                                          isEnable: (isApproved ||
+                                                  !(widget.needApprove ??
+                                                      false)) &&
+                                              isCanAction,
+                                        ),
+                                        onTap: () {
+                                          if ((isApproved ||
+                                                  !(widget.needApprove ??
+                                                      false)) &&
+                                              isCanAction) {
+                                            signTransaction(
+                                              cubit.gasLimit ??
+                                                  cubit.gasLimitFirst ??
+                                                  0,
+                                              cubit.gasPrice ?? 1e9,
+                                            );
+                                          }
+                                        },
+                                      );
+                                    });
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 16.w),
+                        ],
                       ),
-                    )
-                  ],
-                );
-              }
-            },
+                      const SizedBox(height: 38)
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
-
-
 
   void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
     switch (type) {
@@ -653,277 +630,6 @@ class _ApproveState extends State<Approve> {
         break;
     }
   }
-
-  Widget loadingDataScreen (){
-    return Container(
-      margin: const EdgeInsets.only(top: 48),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        children: [
-          header(),
-          Divider(
-            thickness: 1,
-            color: AppTheme.getInstance().divideColor(),
-          ),
-          const SizedBox (height : 16),
-          Expanded(
-            child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25,),
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox (height : 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25,),
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox (height : 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25,),
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox (height : 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25,),
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppTheme.getInstance()
-                                .skeletonLight(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox (height : 16),
-                  Divider(
-                    thickness: 1,
-                    color: AppTheme.getInstance().divideColor(),
-                  ),
-                  const SizedBox (height : 16),
-                  containerWithBorder(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.getInstance().skeletonLight(),
-                            ),
-                            height: 40,
-                            width: 40,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
-                                  ),
-                                ),
-                                const SizedBox (height: 5,),
-                                Container(
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox (height : 16),
-                  containerWithBorder(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column (
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex : 2,
-                                child: Container(
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
-                                  ),
-                                ),
-                              ),
-                              Expanded (
-                                flex: 2,
-                                child:  Container(),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme.getInstance()
-                                        .skeletonLight(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox (height : 5),
-                          Container(
-                            height: 20,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: AppTheme.getInstance()
-                                  .skeletonLight(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              SizedBox(width: 16.w),
-              if (widget.needApprove ?? false)
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 25),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      color: AppTheme.getInstance().skeletonLight(),
-                    ),
-                    height: 64,
-                  ),
-                ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(22),
-                    color: AppTheme.getInstance().skeletonLight(),
-                  ),
-                  height: 64,
-                ),
-              ),
-              SizedBox(width: 16.w),
-            ],
-          ),
-          const SizedBox(height: 38)
-        ],
-      ),
-    );
-  }
-
-
 
   Container containerWithBorder({required Widget child}) {
     return Container(
@@ -1137,17 +843,10 @@ extension PopUpApproveExtension on _ApproveState {
 
   /// show  BottomSheet approve
   void showPopupApprove() {
-    showModalBottomSheet(
-      backgroundColor: Colors.black,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
-      ),
-      isScrollControlled: true,
-      context: context,
-      builder: (_) {
-        return PopUpApprove(
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PopUpApprove(
           approve: () {
             approve();
           },
@@ -1159,8 +858,8 @@ extension PopUpApproveExtension on _ApproveState {
           purposeText: widget.purposeText ??
               S.current.give_this_site_permission_to_access_your_nft,
           cubit: cubit,
-        );
-      },
+        ),
+      ),
     );
   }
 }

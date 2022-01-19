@@ -31,13 +31,11 @@ import 'item_collection_load.dart';
 class CollectionList extends StatefulWidget {
   final String query;
   String? title;
-  final bool isMyAcc;
 
   CollectionList({
     Key? key,
     required this.query,
     this.title,
-    required this.isMyAcc,
   }) : super(key: key);
 
   @override
@@ -73,9 +71,8 @@ class _CollectionListState extends State<CollectionList> {
     } else {
       widget.title = S.current.collection_list;
     }
-    collectionBloc = CollectionBloc(
-      isMyAcc: widget.isMyAcc,
-    );
+
+    collectionBloc = CollectionBloc();
 
     searchCollection = TextEditingController();
     searchCollection.text = widget.query;
@@ -174,7 +171,7 @@ class _CollectionListState extends State<CollectionList> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (!widget.isMyAcc) {
+                        if (!collectionBloc.isMyAcc) {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
@@ -218,47 +215,34 @@ class _CollectionListState extends State<CollectionList> {
                 BlocBuilder<CollectionBloc, CollectionState>(
                   bloc: collectionBloc,
                   builder: (context, state) {
-                    if (state is LoadingData) {
+                    if (state is LoadingDataErorr) {
                       return Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          padding: EdgeInsets.only(
-                            left: 21.w,
-                            right: 21.w,
-                            top: 10.h,
-                            bottom: 20.h,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 150.h),
+                          child: Column(
+                            children: [
+                              Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
+                                ),
+                                height: 120.h,
+                                width: 120.w,
+                              ),
+                              SizedBox(
+                                height: 17.7.h,
+                              ),
+                              Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
+                                ),
+                              ),
+                            ],
                           ),
-                          mainAxisSpacing: 20.h,
-                          crossAxisSpacing: 26.w,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return const ItemCollectionLoad();
-                          },
-                          crossAxisCount: 2,
-                          staggeredTileBuilder: (int index) =>
-                              const StaggeredTile.fit(1),
                         ),
                       );
-                    } else if (state is LoadingDataFail) {
-                      return Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          padding: EdgeInsets.only(
-                            left: 21.w,
-                            right: 21.w,
-                            top: 10.h,
-                            bottom: 20.h,
-                          ),
-                          mainAxisSpacing: 20.h,
-                          crossAxisSpacing: 26.w,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return ItemCollectionError(cubit: collectionBloc);
-                          },
-                          crossAxisCount: 2,
-                          staggeredTileBuilder: (int index) =>
-                              const StaggeredTile.fit(1),
-                        ),
-                      );
-                    } else if (state is LoadingDataSuccess) {
+                    } else {
                       if (collectionBloc.list.value.length < 9) {
                         collectionBloc.isCanLoadMore.add(false);
                       }
@@ -293,47 +277,54 @@ class _CollectionListState extends State<CollectionList> {
                                       ),
                                       mainAxisSpacing: 20.h,
                                       crossAxisSpacing: 26.w,
-                                      itemCount: list.length,
+                                      itemCount: state is LoadingDataSuccess
+                                          ? list.length
+                                          : 20,
                                       itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return DetailCollection(
-                                                    collectionAddress:
-                                                        collectionBloc
-                                                                .list
-                                                                .value[index]
-                                                                .addressCollection ??
-                                                            '',
-                                                    walletAddress:
-                                                        'alo alo alo', //todo address wallet
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                          child: ItemCollection(
-                                            items:
-                                                '${list[index].totalNft ?? 0}',
-                                            text: list[index]
-                                                    .description
-                                                    ?.parseHtml() ??
-                                                '',
-                                            urlIcon: ApiConstants.URL_BASE +
-                                                (list[index].avatarCid ?? ''),
-                                            owners:
-                                                '${list[index].nftOwnerCount ?? 0}',
-                                            title: snapshot.data?[index].name
-                                                    ?.parseHtml() ??
-                                                '',
-                                            urlBackGround: ApiConstants
-                                                    .URL_BASE +
-                                                (list[index].coverCid ?? ''),
-                                          ),
-                                        );
+                                        if (state is LoadingDataSuccess) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return DetailCollection(
+                                                      collectionAddress:
+                                                          collectionBloc
+                                                                  .list
+                                                                  .value[index]
+                                                                  .addressCollection ??
+                                                              '',
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            child: ItemCollection(
+                                              items:
+                                                  '${list[index].totalNft ?? 0}',
+                                              text: list[index]
+                                                      .description
+                                                      ?.parseHtml() ??
+                                                  '',
+                                              urlIcon: ApiConstants.URL_BASE +
+                                                  (list[index].avatarCid ?? ''),
+                                              owners:
+                                                  '${list[index].nftOwnerCount ?? 0}',
+                                              title: snapshot.data?[index].name
+                                                      ?.parseHtml() ??
+                                                  '',
+                                              urlBackGround: ApiConstants
+                                                      .URL_BASE +
+                                                  (list[index].coverCid ?? ''),
+                                            ),
+                                          );
+                                        } else if (state is LoadingDataFail) {
+                                          return ItemCollectionError(
+                                              cubit: collectionBloc);
+                                        } else {
+                                          return const ItemCollectionLoad();
+                                        }
                                       },
                                       crossAxisCount: 2,
                                       staggeredTileBuilder: (int index) =>
@@ -366,33 +357,6 @@ class _CollectionListState extends State<CollectionList> {
                             ),
                           );
                         },
-                      );
-                    } else {
-                      return Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 150.h),
-                          child: Column(
-                            children: [
-                              Image(
-                                image: const AssetImage(
-                                  ImageAssets.img_search_empty,
-                                ),
-                                height: 120.h,
-                                width: 120.w,
-                              ),
-                              SizedBox(
-                                height: 17.7.h,
-                              ),
-                              Text(
-                                S.current.no_result_found,
-                                style: textNormal(
-                                  Colors.white54,
-                                  20.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       );
                     }
                   },

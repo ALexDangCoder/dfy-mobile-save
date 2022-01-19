@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -8,6 +10,7 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
@@ -49,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     controller = TextEditingController();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -62,6 +66,34 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     _cubit.getConfig();
     _cubit.checkBiometrics();
+
+    //login for market place:
+    if (widget.isFromConnectDialog) {
+      _cubit.getWallet();
+    }
+    _cubit.isLoginSuccessStream.listen((event) {
+      if (event) {
+        _cubit.getSignature(
+          walletAddress: _cubit.walletAddress,
+        );
+      }
+    });
+    _cubit.signatureStream.listen(
+      (event) {
+        if (event.isNotEmpty) {
+          _cubit
+              .loginAndSaveInfo(
+                walletAddress: _cubit.walletAddress,
+                signature: event,
+              )
+              .then(
+                (value) => Navigator.pop(
+                  context,
+                ),
+              );
+        }
+      },
+    );
   }
 
   @override
@@ -209,30 +241,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context, state) {
+                    listener: (context, state) async {
+                      final nav = Navigator.of(context);
                       //todo
                       if (state is LoginPasswordSuccess &&
                           widget.isFromConnectDialog) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                widget.navigationToScreen ??
-                                const MainScreen(
-                                  index: 1,
-                                ),
-                          ),
-                          (route) => route.isFirst,
-                        );
+                        _cubit.isLoginSuccessSubject.sink.add(true);
                         return;
                       }
                       if (state is LoginPasswordSuccess) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
+                        unawaited(
+                          nav.pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 1,
+                              ),
                             ),
+                            (route) => route.isFirst,
                           ),
-                          (route) => route.isFirst,
                         );
                       }
                       if (state is LoginPasswordError) {

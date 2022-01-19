@@ -11,7 +11,7 @@ class LoginResponse extends Equatable {
   @JsonKey(name: 'expires_in')
   int? expiresIn;
   @JsonKey(name: 'refresh_token')
-  dynamic refreshToken;
+  String? refreshToken;
   @JsonKey(name: 'scope')
   String? scope;
   @JsonKey(name: 'token_type')

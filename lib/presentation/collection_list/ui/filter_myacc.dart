@@ -265,9 +265,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                     width: 343.w,
                     height: 123.h,
                     child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        top: 24.h,
-                      ),
                       itemCount: bloc.listAcc.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -278,7 +275,14 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             height: 54.h,
                             padding: EdgeInsets.only(
                               left: 24.w,
+                              top: 15.h,
                             ),
+                            color: bloc.listAcc[index] ==
+                                    bloc.textAddressFilter.value
+                                ? AppTheme.getInstance()
+                                    .whiteColor()
+                                    .withOpacity(0.3)
+                                : Colors.transparent,
                             child: Text(
                               bloc.listAcc[index] == S.current.all
                                   ? S.current.all

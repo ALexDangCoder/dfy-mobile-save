@@ -20,7 +20,11 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   bool isCustomFee = false;
   double? gasPrice;
 
-  double gasLimit=0;
+  double gasLimit = 0;
+
+  String? errorTextGasLimit;
+
+  String? errorTextGasPrice;
 
   final TextEditingController _editGasPriceController = TextEditingController();
   final TextEditingController _editGasLimitController = TextEditingController();
@@ -100,7 +104,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                             '$gasFee BNB',
                             style: textNormal(
                               gasFee <= (widget.cubit.balanceWallet ?? 0) &&
-                                  gasFee > 0
+                                      gasFee > 0
                                   ? AppTheme.getInstance().whiteColor()
                                   : AppTheme.getInstance().redColor(),
                               16,
@@ -109,12 +113,15 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                             ),
                           ),
                           if (gasFee > (widget.cubit.balanceWallet ?? 0))
-                            Text(
-                              S.current.insufficient_balance,
-                              style: textNormalCustom(
-                                AppTheme.getInstance().redColor(),
-                                12,
-                                FontWeight.w400,
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                S.current.insufficient_balance,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().redColor(),
+                                  12,
+                                  FontWeight.w400,
+                                ),
                               ),
                             )
                           else
@@ -189,7 +196,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   16,
                                 ),
                                 cursorColor:
-                                AppTheme.getInstance().textThemeColor(),
+                                    AppTheme.getInstance().textThemeColor(),
                                 decoration: InputDecoration(
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().disableColor(),
@@ -208,10 +215,25 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                       gasLimit = 0;
                                     }
                                   });
+                                  if (gasLimit <
+                                      (widget.cubit.gasLimitFirst ?? 0)) {
+                                    setState(() {
+                                      widget.cubit.canActionSubject.sink
+                                          .add(false);
+                                      errorTextGasLimit =
+                                          '${S.current.min_value_is}${(widget.cubit.gasLimitFirst ?? 0).toInt()}';
+                                    });
+                                  } else {
+                                    widget.cubit.canActionSubject.sink
+                                        .add(true);
+                                    setState(() {
+                                      errorTextGasLimit = null;
+                                    });
+                                  }
                                   final gasFee =
                                       (gasPrice ?? 0) * gasLimit / 1000000000;
                                   if (gasFee <
-                                      (widget.cubit.balanceWallet ?? 0) &&
+                                          (widget.cubit.balanceWallet ?? 0) &&
                                       gasFee >=
                                           ((widget.cubit.gasLimitFirst ?? 0) *
                                               (widget.cubit.gasPriceFirst ??
@@ -231,6 +253,23 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        height: errorTextGasLimit == null ? 0 : 25,
+                        child: Text(
+                          errorTextGasLimit ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().redColor(),
+                            12,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -276,7 +315,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                   16,
                                 ),
                                 cursorColor:
-                                AppTheme.getInstance().textThemeColor(),
+                                    AppTheme.getInstance().textThemeColor(),
                                 decoration: InputDecoration(
                                   hintStyle: textNormal(
                                     AppTheme.getInstance().disableColor(),
@@ -292,12 +331,27 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                       gasPrice = 0;
                                     }
                                   });
+                                  if ((gasPrice ?? 0) <
+                                      (widget.cubit.gasPriceFirst ?? 0)) {
+                                    setState(() {
+                                      widget.cubit.canActionSubject.sink
+                                          .add(false);
+                                      errorTextGasPrice =
+                                          '${S.current.min_value_is}${(widget.cubit.gasPriceFirst ?? 0).toInt()}';
+                                    });
+                                  } else {
+                                    widget.cubit.canActionSubject.sink
+                                        .add(true);
+                                    setState(() {
+                                      errorTextGasPrice = null;
+                                    });
+                                  }
                                   widget.cubit.gasPrice =
                                       (gasPrice ?? 0) * 1000000000;
                                   final gasFee =
                                       (gasPrice ?? 0) * gasLimit / 1000000000;
                                   if (gasFee <
-                                      (widget.cubit.balanceWallet ?? 0) &&
+                                          (widget.cubit.balanceWallet ?? 0) &&
                                       gasFee >=
                                           ((widget.cubit.gasLimitFirst ?? 0) *
                                               (widget.cubit.gasPriceFirst ??
@@ -315,6 +369,23 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        height: errorTextGasPrice == null ? 0 : 25,
+                        child: Text(
+                          errorTextGasPrice ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().redColor(),
+                            12,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
