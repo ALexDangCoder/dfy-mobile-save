@@ -7,8 +7,10 @@ import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/collection_list/ui/item_error.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -106,7 +108,18 @@ class _CollectionListState extends State<CollectionList> {
             ),
           );
         },
-        nftCallBack: () {},
+        nftCallBack: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateNFTScreen(
+                  cubit: CreateNftCubit(),
+                );
+              },
+            ),
+          );
+        },
       ),
       backgroundColor: Colors.transparent,
       body: Align(

@@ -39,7 +39,7 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
                 spaceW4,
                 Text(
                   '${nftOnPawn.expectedLoanAmount} '
-                      '${nftOnPawn.expectedCollateralSymbol}',
+                  '${nftOnPawn.expectedCollateralSymbol}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
                     20,

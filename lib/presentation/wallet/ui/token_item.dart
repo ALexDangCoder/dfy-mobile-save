@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class TokenItem extends StatelessWidget {
-   TokenItem({
+  TokenItem({
     Key? key,
     required this.index,
     required this.bloc,
@@ -23,7 +23,7 @@ class TokenItem extends StatelessWidget {
   final WalletCubit bloc;
   final String walletAddress;
   final formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
-   final formatBalance = NumberFormat('###,###,###.######', 'en_US');
+  final formatBalance = NumberFormat('###,###,###.######', 'en_US');
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class TokenItem extends StatelessWidget {
                     children: [
                       Text(
                         '${formatBalance.format(modelToken.balanceToken)} '
-                            '${modelToken.nameShortToken}',
+                        '${modelToken.nameShortToken}',
                         style: textNormalCustom(
                           Colors.white,
                           20,
