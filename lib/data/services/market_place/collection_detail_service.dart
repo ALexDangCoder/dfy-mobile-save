@@ -42,6 +42,7 @@ abstract class CollectionDetailService {
     @Field('size') int? size,
     @Field('name') String? nameNft,
     @Field('market_type') List<int>? listMarketType,
+    @Field('owner') bool? owner,
   );
 
   @GET(ApiConstants.GET_LIST_COLLECTION)

@@ -9,6 +9,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
@@ -122,8 +123,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String tokenAddress,
   }) async {
     bool response = false;
-
     try {
+      if (payValue !='' && tokenAddress != '' && addressWallet != ''){
       final result = await web3Client.isApproved(
         payValue: payValue,
         tokenAddress: tokenAddress,
@@ -132,8 +133,12 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       );
       isApprovedSubject.sink.add(result);
       response = result;
+      }else{
+        AppException('title', S.current.error);
+      }
     } on PlatformException {
       isApprovedSubject.sink.add(false);
+      showError();
       response = false;
     }
     return response;
@@ -182,13 +187,17 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> gesGasLimitFirst(String hexString) async {
     showLoading();
-    final gasLimitFirstResult =
-        await getGasLimitByType(type: type, hexString: hexString);
-    gasLimitFirst = gasLimitFirstResult;
-    gasLimit = gasLimitFirstResult;
-    gasLimitFirstSubject.sink.add(gasLimitFirstResult);
-    gasPrice = gasPriceFirst;
-    showContent();
+    try {
+      final gasLimitFirstResult =
+          await getGasLimitByType(type: type, hexString: hexString);
+      gasLimitFirst = gasLimitFirstResult;
+      gasLimit = gasLimitFirstResult;
+      gasLimitFirstSubject.sink.add(gasLimitFirstResult);
+      gasPrice = gasPriceFirst;
+      showContent();
+    } catch (_) {
+      showError();
+    }
   }
 
   Future<void> approve() async {

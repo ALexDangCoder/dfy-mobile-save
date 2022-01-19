@@ -7,6 +7,7 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'estimate_gas_fee.dart';
 
@@ -37,184 +38,233 @@ class PopUpApprove extends StatefulWidget {
 }
 
 class _PopUpApproveState extends State<PopUpApprove> {
-  bool isCanAction = false;
+  GlobalKey bottomKey = GlobalKey();
+  double heightOfBottom = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
+      setState(() {});
+    });
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().bgBtsColor(),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor:  Colors.transparent,
+      body: Stack(
         children: [
-          const SizedBox(height: 18),
-          SizedBox(
-            height: 44,
-            width: 44,
-            child: Image.asset(ImageAssets.imgTokenDFY),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '• testnet',
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              14,
-              FontWeight.w400,
-            ),
-          ),
-          const SizedBox(height: 30),
-          Text(
-            widget.purposeText,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              20,
-              FontWeight.w700,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppTheme.getInstance().whiteBackgroundButtonColor(),
+          GestureDetector(
+            onTap: () {
+              final FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              margin: const EdgeInsets.only(top: 48),
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
               ),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          '${ImageAssets.image_avatar}${widget.imageAccount}'
-                          '.png',
-                        ),
-                      ),
-                    ),
-                    height: 40,
-                    width: 40,
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor:  Colors.transparent,
+                body: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            widget.accountName,
-                            style: textNormal(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                            ).copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            widget.addressWallet.formatAddressWallet(),
-                            style: textNormal(
-                              AppTheme.getInstance().currencyDetailTokenColor(),
-                              14,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 18),
+                      SizedBox(
+                        height: 44,
+                        width: 44,
+                        child: Image.asset(ImageAssets.imgTokenDFY),
                       ),
+                      const SizedBox(height: 8),
                       Text(
-                        '${S.current.balance}: ${widget.balanceWallet}',
-                        style: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
+                        '• testnet',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          14,
+                          FontWeight.w400,
                         ),
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        widget.purposeText,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          20,
+                          FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppTheme.getInstance().whiteBackgroundButtonColor(),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      '${ImageAssets.image_avatar}${widget.imageAccount}'
+                                      '.png',
+                                    ),
+                                  ),
+                                ),
+                                height: 40,
+                                width: 40,
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        widget.accountName,
+                                        style: textNormal(
+                                          AppTheme.getInstance().whiteColor(),
+                                          16,
+                                        ).copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        widget.addressWallet.formatAddressWallet(),
+                                        style: textNormal(
+                                          AppTheme.getInstance().currencyDetailTokenColor(),
+                                          14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '${S.current.balance}: ${widget.balanceWallet}',
+                                    style: textNormal(
+                                      AppTheme.getInstance().whiteColor(),
+                                      16,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      EstimateGasFee(
+                        cubit: widget.cubit,
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: MediaQuery.of(context)
+                            .viewInsets
+                            .bottom <=
+                            160
+                            ? heightOfBottom
+                            : 0,
                       )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          EstimateGasFee(
-            cubit: widget.cubit,
-          ),
-          const SizedBox(height: 36),
-          bottomButton(context),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: AppTheme.getInstance().bgBtsColor(),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  key: bottomKey,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: ButtonGold(
+                              haveGradient: false,
+                              textColor: AppTheme.getInstance().yellowColor(),
+                              border: Border.all(
+                                color: AppTheme.getInstance().yellowColor(),
+                              ),
+                              radiusButton: 15,
+                              textSize: 16,
+                              title: S.current.reject,
+                              isEnable: true,
+                              fixSize: false,
+                              height: 48.h,
+                              haveMargin: false,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 23),
+                        Expanded(
+                          child: StreamBuilder<bool>(
+                            stream: widget.cubit.canActionStream,
+                            builder: (context, snapshot) {
+                              final canAction = snapshot.data ?? false;
+                              return GestureDetector(
+                                onTap: () {
+                                  print (canAction);
+                                  if (canAction) {
+                                    widget.approve();
+                                  }
+                                },
+                                child: ButtonGold(
+                                  radiusButton: 15,
+                                  textSize: 16,
+                                  title: S.current.approve,
+                                  isEnable: canAction,
+                                  height: 48.h,
+                                  fixSize: false,
+                                  haveMargin: false,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 38),
+                  ],
+                ),
+            ),
+          )
         ],
       ),
     );
   }
 
-  Widget bottomButton(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: ButtonGold(
-                  haveGradient: false,
-                  textColor: AppTheme.getInstance().yellowColor(),
-                  border: Border.all(
-                    color: AppTheme.getInstance().yellowColor(),
-                  ),
-                  radiusButton: 15,
-                  textSize: 16,
-                  title: S.current.reject,
-                  isEnable: true,
-                  fixSize: false,
-                  height: 48,
-                  haveMargin: false,
-                ),
-              ),
-            ),
-            const SizedBox(width: 23),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  if (isCanAction) {
-                    widget.approve();
-                  }
-                },
-                child: StreamBuilder<bool>(
-                  stream: widget.cubit.canActionStream,
-                  builder: (context, snapshot) {
-                    final canAction = snapshot.data ?? false;
-                    return ButtonGold(
-                      radiusButton: 15,
-                      textSize: 16,
-                      title: S.current.approve,
-                      isEnable: canAction,
-                      height: 48,
-                      fixSize: false,
-                      haveMargin: false,
-                    );
-                  }
-                ),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 38),
-      ],
-    );
-  }
 }
 
 

@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/market_place/search/bloc/search_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/results_search.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -292,9 +293,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
                                 collectionAddress: searchCubit
-                                    .collections[index]
-                                    .collectionAddress, // todo collection address
-                                walletAddress: 'alo alo', //todo address wallet
+                                    .collections[index].collectionAddress, typeScreen: PageRouter.MARKET,
                               ),
                             ),
                           );
@@ -333,7 +332,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             builder: (builder) => CollectionList(
                               query: controller.text,
                               title: S.current.collection_search_result,
-                              isMyAcc: false,
+                              typeScreen: PageRouter.MARKET,
                             ),
                           ),
                         );

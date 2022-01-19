@@ -11,6 +11,7 @@
   "start_date": "Start date",
   "end_date": "End date",
   "start_time": "Start time",
+  "min_value_is" : "Min value is ",
   "end_time": "End time",
   "put_on_sale": "Put on Sale",
   "tab_home": "Home",
@@ -505,5 +506,6 @@
   "to_take_profit": "to take profit",
   "next": "Next",
   "get_started": "Get started",
+  "view_type": "View type",
   "custom_url" : "Custom URL"
 }

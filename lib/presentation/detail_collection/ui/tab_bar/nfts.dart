@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
@@ -12,10 +13,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class NFTSCollection extends StatefulWidget {
   final DetailCollectionBloc detailCollectionBloc;
+  final PageRouter typeScreen;
 
   const NFTSCollection({
     Key? key,
     required this.detailCollectionBloc,
+    required this.typeScreen,
   }) : super(key: key);
 
   @override
@@ -27,7 +30,6 @@ class _NFTSCollectionState extends State<NFTSCollection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

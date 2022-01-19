@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dar
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_nft_myacc.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/double_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -20,15 +21,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'widget/body_collection.dart';
-import 'widget/filter_nft.dart';
 
 class DetailCollection extends StatefulWidget {
+  final PageRouter typeScreen;
+
   const DetailCollection({
     Key? key,
-    this.walletAddress,
     required this.collectionAddress,
+    required this.typeScreen,
   }) : super(key: key);
-  final String? walletAddress;
   final String collectionAddress;
 
   @override
@@ -39,11 +40,12 @@ class _DetailCollectionState extends State<DetailCollection>
     with TickerProviderStateMixin {
   late final DetailCollectionBloc detailCollectionBloc;
   late TabController _tabController;
+  final bool isMyAcc = true;
 
   @override
   void initState() {
     super.initState();
-    detailCollectionBloc = DetailCollectionBloc();
+    detailCollectionBloc = DetailCollectionBloc(widget.typeScreen);
     detailCollectionBloc.getCollection(
       collectionAddressDetail: widget.collectionAddress,
     );
@@ -53,13 +55,6 @@ class _DetailCollectionState extends State<DetailCollection>
 
   @override
   Widget build(BuildContext context) {
-    bool isOwner = false;
-    if (detailCollectionBloc.arg.owner == widget.walletAddress) {
-      isOwner = true;
-    } else {
-      isOwner = false;
-    }
-
     return BlocBuilder<DetailCollectionBloc, CollectionDetailState>(
       bloc: detailCollectionBloc,
       builder: (context, state) {
@@ -208,7 +203,6 @@ class _DetailCollectionState extends State<DetailCollection>
               }
             },
             child: BaseCustomScrollViewDetail(
-              isOwner: isOwner,
               initHeight: 200.h,
               title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
@@ -233,26 +227,17 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   child: InkWell(
                     onTap: () {
-                      if (_tabController.index == 0) {
-                        if(isOwner){
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFTMyAcc(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        }else{
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFT(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        }
+                      if (_tabController.index ==
+                          DetailCollectionBloc.TAB_NFT) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterNFTMyAcc(
+                            collectionBloc: detailCollectionBloc,
+                            typeScreen: widget.typeScreen,
+                          ),
+                        );
                       } else {
                         showModalBottomSheet(
                           isScrollControlled: true,
@@ -339,10 +324,10 @@ class _DetailCollectionState extends State<DetailCollection>
                 children: [
                   NFTSCollection(
                     detailCollectionBloc: detailCollectionBloc,
+                    typeScreen: widget.typeScreen,
                   ),
                   ActivityCollection(
                     detailCollectionBloc: detailCollectionBloc,
-                    addressWallet: widget.walletAddress ?? '',
                   ),
                 ],
               ),

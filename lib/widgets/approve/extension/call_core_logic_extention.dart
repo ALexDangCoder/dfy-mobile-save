@@ -9,7 +9,7 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
-extension CallCoreExtensi on ApproveCubit {
+extension CallCoreExtension on ApproveCubit{
   ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -24,6 +24,15 @@ extension CallCoreExtensi on ApproveCubit {
           addressWallet = listWallet.first.address;
           nameWalletSubject.sink.add(listWallet.first.name!);
           nameWallet = listWallet.first.name;
+          try {
+            balanceWallet = await web3Client.getBalanceOfBnb(
+              ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
+            );
+            balanceWalletSubject.sink.add(balanceWallet ?? 0);
+          } catch (e) {
+            showError();
+            AppException('title', e.toString());
+          }
           await getGasPrice();
           if (needApprove) {
             final result = await checkApprove(
@@ -33,18 +42,12 @@ extension CallCoreExtensi on ApproveCubit {
             if (result) {
               await gesGasLimitFirst(hexString ?? '');
             }
-          } else {
-            await gesGasLimitFirst(hexString ?? '');
+            else {
+              showContent();
+            }
           }
-          try {
-            balanceWallet = await web3Client.getBalanceOfBnb(
-              ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
-            );
-            balanceWalletSubject.sink.add(balanceWallet ?? 0);
-            emit(GotDataApprove());
-          } catch (e) {
-            showError();
-            AppException('title', e.toString());
+          else {
+            await gesGasLimitFirst(hexString ?? '');
           }
         }
         break;
@@ -92,7 +95,7 @@ extension CallCoreExtensi on ApproveCubit {
           }
         }
         break;
-      //todo
+    //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
@@ -136,10 +139,12 @@ extension CallCoreExtensi on ApproveCubit {
   }
 
   Future<void> getListWallets() async {
+    showLoading();
     try {
       final data = {};
       await trustWalletChannel.invokeMethod('getListWallets', data);
     } on PlatformException {
+      showError();
       //nothing
     }
   }
@@ -158,4 +163,5 @@ extension CallCoreExtensi on ApproveCubit {
       //todo
     }
   }
+
 }

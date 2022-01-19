@@ -38,7 +38,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   DateTime? startTimeAuction;
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
-  late Timer timer;
+  Timer? timer;
   bool isShowStartTimeFtText = false;
   late int timeStartStamp;
   String textShowStartFtTime = '';
@@ -92,7 +92,9 @@ class _NFTItemState extends State<NFTItemWidget> {
     if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
       _controller!.dispose();
     }
-    timer.cancel();
+    if(timer != null) {
+      timer?.cancel();
+    }
     super.dispose();
   }
 
