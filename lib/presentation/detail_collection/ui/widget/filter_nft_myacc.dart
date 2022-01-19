@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,10 +16,12 @@ import 'check_box_select_one.dart';
 
 class FilterNFTMyAcc extends StatefulWidget {
   final DetailCollectionBloc collectionBloc;
+  final PageRouter typeScreen;
 
   const FilterNFTMyAcc({
     Key? key,
     required this.collectionBloc,
+    required this.typeScreen,
   }) : super(key: key);
 
   @override
@@ -132,28 +135,27 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                     ),
                   ),
                   StreamBuilder<List<bool>>(
-                    stream: collectionBloc.listViewTypeFilterNftStream,
-                    builder: (context, snapshot) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: IsCheckBoxSelectOne(
-                              title: S.current.all,
-                              index: DetailCollectionBloc.ALL,
-                              bloc: collectionBloc,
+                      stream: collectionBloc.listViewTypeFilterNftStream,
+                      builder: (context, snapshot) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: IsCheckBoxSelectOne(
+                                title: S.current.all,
+                                index: DetailCollectionBloc.ALL,
+                                bloc: collectionBloc,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: IsCheckBoxSelectOne(
-                              title: S.current.owner,
-                              bloc: collectionBloc,
-                              index: DetailCollectionBloc.OWNER,
+                            Expanded(
+                              child: IsCheckBoxSelectOne(
+                                title: S.current.owner,
+                                bloc: collectionBloc,
+                                index: DetailCollectionBloc.OWNER,
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                  ),
+                          ],
+                        );
+                      }),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
@@ -193,12 +195,16 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
                         ),
                       ),
                       Expanded(
-                        child: IsBaseCheckBox(
-                          title: S.current.not_on_market,
-                          stream: collectionBloc.isNotOnMarket,
-                          funCheckBox: () => collectionBloc.listFilter.clear(),
-                          funText: () => collectionBloc.listFilter.clear(),
-                        ),
+                        child: widget.typeScreen == PageRouter.MY_ACC
+                            ? IsBaseCheckBox(
+                                title: S.current.not_on_market,
+                                stream: collectionBloc.isNotOnMarket,
+                                funCheckBox: () =>
+                                    collectionBloc.listFilter.clear(),
+                                funText: () =>
+                                    collectionBloc.listFilter.clear(),
+                              )
+                            : const SizedBox.shrink(),
                       ),
                     ],
                   ),
