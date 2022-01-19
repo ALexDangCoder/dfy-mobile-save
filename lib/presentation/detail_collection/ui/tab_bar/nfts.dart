@@ -27,7 +27,6 @@ class _NFTSCollectionState extends State<NFTSCollection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

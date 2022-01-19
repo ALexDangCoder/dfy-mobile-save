@@ -20,15 +20,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'widget/body_collection.dart';
-import 'widget/filter_nft.dart';
 
 class DetailCollection extends StatefulWidget {
   const DetailCollection({
     Key? key,
-    this.walletAddress,
     required this.collectionAddress,
   }) : super(key: key);
-  final String? walletAddress;
   final String collectionAddress;
 
   @override
@@ -39,6 +36,7 @@ class _DetailCollectionState extends State<DetailCollection>
     with TickerProviderStateMixin {
   late final DetailCollectionBloc detailCollectionBloc;
   late TabController _tabController;
+  final bool isMyAcc = true;
 
   @override
   void initState() {
@@ -53,13 +51,6 @@ class _DetailCollectionState extends State<DetailCollection>
 
   @override
   Widget build(BuildContext context) {
-    bool isOwner = false;
-    if (detailCollectionBloc.arg.owner == widget.walletAddress) {
-      isOwner = true;
-    } else {
-      isOwner = false;
-    }
-
     return BlocBuilder<DetailCollectionBloc, CollectionDetailState>(
       bloc: detailCollectionBloc,
       builder: (context, state) {
@@ -208,7 +199,6 @@ class _DetailCollectionState extends State<DetailCollection>
               }
             },
             child: BaseCustomScrollViewDetail(
-              isOwner: isOwner,
               initHeight: 200.h,
               title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
@@ -233,26 +223,15 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   child: InkWell(
                     onTap: () {
-                      if (_tabController.index == 0) {
-                        if(isOwner){
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFTMyAcc(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        }else{
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => FilterNFT(
-                              collectionBloc: detailCollectionBloc,
-                            ),
-                          );
-                        }
+                      if (_tabController.index == DetailCollectionBloc.TAB_NFT) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterNFTMyAcc(
+                            collectionBloc: detailCollectionBloc,
+                          ),
+                        );
                       } else {
                         showModalBottomSheet(
                           isScrollControlled: true,
@@ -337,12 +316,13 @@ class _DetailCollectionState extends State<DetailCollection>
               tabBarView: TabBarView(
                 controller: _tabController,
                 children: [
+                  // Container(),
+                  // Container(),
                   NFTSCollection(
                     detailCollectionBloc: detailCollectionBloc,
                   ),
                   ActivityCollection(
                     detailCollectionBloc: detailCollectionBloc,
-                    addressWallet: widget.walletAddress ?? '',
                   ),
                 ],
               ),
