@@ -62,24 +62,28 @@ class _CollectionListState extends State<CollectionList> {
         collectionBloc.isCanLoadMore.add(true);
         collectionBloc.getListCollection(
           name: collectionBloc.textSearch.value,
-          sortFilter: collectionBloc.sortFilter, //todo
+          sortFilter: collectionBloc.sortFilter,
         );
       }
     }
   }
 
   late String tittleScreen;
+
   @override
   void initState() {
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
-      tittleScreen = widget.title??'';
+      tittleScreen = widget.title ?? '';
     } else {
       tittleScreen = S.current.collection_list;
     }
 
     collectionBloc = CollectionBloc(widget.typeScreen);
     collectionBloc.addressWallet = widget.addressWallet;
+    if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
     collectionBloc.textSearch.sink.add(widget.query ?? '');
@@ -268,6 +272,7 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
@@ -329,7 +334,8 @@ class _CollectionListState extends State<CollectionList> {
                                           );
                                         } else if (state is LoadingDataFail) {
                                           return ItemCollectionError(
-                                              cubit: collectionBloc);
+                                            cubit: collectionBloc,
+                                          );
                                         } else {
                                           return const ItemCollectionLoad();
                                         }
