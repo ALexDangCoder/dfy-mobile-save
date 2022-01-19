@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -22,14 +23,18 @@ extension LoginForMarketPlace on LoginCubit {
   Future<void> loginAndSaveInfo(
       {required String walletAddress, required String signature}) async {
     final result = await _loginRepo.login(signature, walletAddress);
+
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
+        await PrefsService.saveCurrentWallet(
+          walletAddress,
+        );
+        await getUserProfile();
       },
       error: (err) {
-        log(err.message);
         showError();
       },
     );
@@ -71,5 +76,17 @@ extension LoginForMarketPlace on LoginCubit {
     } on PlatformException {
       //
     }
+  }
+
+  Future<void> getUserProfile() async {
+    final result = await _loginRepo.getUserProfile();
+    await result.when(
+      success: (res) async {
+        final UserProfileModel userProfile =
+            UserProfileModel.fromJson(res.data ?? {});
+        await PrefsService.saveUserProfile(userProfileToJson(userProfile));
+      },
+      error: (err) {},
+    );
   }
 }

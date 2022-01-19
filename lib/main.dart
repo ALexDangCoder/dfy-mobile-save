@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
 
   void callAllApi() {
     getConfig();
-    setLoginModel();
+    // setLoginModel();
   }
 
   void getConfig() {

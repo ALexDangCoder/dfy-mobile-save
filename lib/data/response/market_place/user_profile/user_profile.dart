@@ -6,54 +6,80 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_profile.g.dart';
 
 @JsonSerializable()
-class UserProfileResponse extends Equatable {
-  @JsonKey(name: 'activatedAt')
-  int? activatedAt;
-  @JsonKey(name: 'address')
-  String? address;
-  @JsonKey(name: 'birthday')
-  String? birthday;
-  @JsonKey(name: 'id')
-  int? id;
-  @JsonKey(name: 'isActive')
-  bool? isActive;
-  @JsonKey(name: 'kyc')
-  dynamic kyc;
-  @JsonKey(name: 'links')
-  List<dynamic>? links;
-  @JsonKey(name: 'name')
-  String? name;
-  @JsonKey(name: 'pawnShop')
-  dynamic pawnShop;
-  @JsonKey(name: 'phoneNumber')
-  String? phoneNumber;
-  @JsonKey(name: 'referredId')
-  String? referredId;
-  @JsonKey(name: 'role_type')
-  int? roleType;
-  UserProfileResponse();
+class ProfileResponse extends Equatable {
+  @JsonKey(name: 'data')
+  Map<String,dynamic>? data;
 
-  factory UserProfileResponse.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileResponseFromJson(json);
+  ProfileResponse();
 
-  Map<String, dynamic> toJson() => _$UserProfileResponseToJson(this);
+  factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
+      _$ProfileResponseFromJson(json);
 
-  UserProfileModel toDomain() => UserProfileModel(
-    activatedAt: activatedAt,
-    address: address,
-    birthday : birthday,
-    id: id,
-    isActive: isActive,
-    kyc: kyc,
-    links: links,
-    name: name,
-    pawnShop: pawnShop,
-    phoneNumber: phoneNumber,
-    referredId: referredId,
-    roleType: roleType,
-  );
+  Map<String, dynamic> toJson() => _$ProfileResponseToJson(this);
+
+  ProfileModel toDomain() => ProfileModel(data: data);
 
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
+
+// class UserProfileResponse extends Equatable {
+
+//   @JsonKey(name: 'email')
+//   String? email;
+//   @JsonKey(name: 'birthday')
+//   dynamic birthday;
+//   @JsonKey(name: 'phoneNumber')
+//   String? phoneNumber;
+//   @JsonKey(name: 'address')
+//   dynamic address;
+//   @JsonKey(name: 'isActive')
+//   bool? isActive;
+//   @JsonKey(name: 'createdAt')
+//   int? createdAt;
+//   @JsonKey(name: 'activatedAt')
+//   int? activatedAt;
+//   @JsonKey(name: 'links')
+//   dynamic links;
+//   @JsonKey(name: 'pawnShop')
+//   dynamic pawnShop;
+//   @JsonKey(name: 'kyc')
+//   dynamic kyc;
+//   @JsonKey(name: 'id')
+//   int? id;
+//   @JsonKey(name: 'name')
+//   String? name;
+//   @JsonKey(name: 'role_type')
+//   int? roleType;
+//   @JsonKey(name: 'referredId')
+//   String? referredId;
+//
+//   UserProfileResponse();
+//
+//   factory UserProfileResponse.fromJson(Map<String, dynamic> json) =>
+//       _$UserProfileResponseFromJson(json);
+//
+//   Map<String, dynamic> toJson() => _$UserProfileResponseToJson(this);
+//
+//   UserProfileModel toDomain() => UserProfileModel(
+//     activatedAt: activatedAt,
+//     address: address,
+//     birthday: birthday,
+//     id: id,
+//     isActive: isActive,
+//     kyc: kyc,
+//     links: links,
+//     name: name,
+//     pawnShop: pawnShop,
+//     phoneNumber: phoneNumber,
+//     referredId: referredId,
+//     roleType: roleType,
+//     createdAt: createdAt,
+//     email: email,
+//   );
+//
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => throw UnimplementedError();
+// }

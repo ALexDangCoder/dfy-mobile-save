@@ -96,12 +96,13 @@ Dio provideDio({int connectionTimeOut = 60000}) {
   );
   final dio = Dio(options);
   dio.transformer = FlutterTransformer();
-  final walletLoginJson = PrefsService.getWalletLogin();
-  final accessToken = loginFromJson(walletLoginJson).accessToken ?? '';
+
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         options.baseUrl = appConstants.baseUrl;
+        final walletLoginJson = PrefsService.getWalletLogin();
+        final accessToken = loginFromJson(walletLoginJson).accessToken ?? '';
         if (accessToken.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $accessToken';
         }

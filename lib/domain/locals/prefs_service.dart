@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +13,8 @@ class PrefsService {
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
   static const _PREF_LIST_TOKEN_SUPPORT = '';
+  static const _PREF_CURRENT_WALLET = 'pref_current_wallet';
+  static const _PREF_USER_PROFILE = 'pref_user_info';
 
   static SharedPreferences? _prefsInstance;
 
@@ -78,7 +83,9 @@ class PrefsService {
 
   static Future<bool> saveWalletLogin(String data) async {
     final prefs = await _instance;
+
     return prefs.setString(_PREF_WALLET_LOGIN, data);
+
   }
 
   static String getWalletLogin() {
@@ -88,6 +95,8 @@ class PrefsService {
 
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
+    await prefs.setString(_PREF_CURRENT_WALLET, '');
+    await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
     return prefs.setString(
       _PREF_WALLET_LOGIN,
       jsonLoginModelEmpty(),
@@ -109,5 +118,42 @@ class PrefsService {
   Future<void> clearData() async {
     await _prefsInstance?.clear();
     return;
+  }
+
+  static Future<bool> saveCurrentWallet(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_WALLET, walletAddress);
+  }
+
+  static String getCurrentWallet() {
+    return _prefsInstance?.getString(_PREF_CURRENT_WALLET) ?? '';
+  }
+
+  static Future<bool> saveUserProfile(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_USER_PROFILE, data);
+  }
+
+  static String getUserProfile() {
+    return _prefsInstance?.getString(_PREF_USER_PROFILE) ?? userProfileEmpty();
+  }
+
+  static String userProfileEmpty() {
+    return userProfileToJson(
+        UserProfileModel(
+            email: '',
+            createdAt: 0,
+            id: 0,
+            activatedAt: 0,
+            address: '',
+            birthday: '',
+            isActive: false,
+            links: [],
+            name: '',
+            phoneNumber: '',
+            referredId: '',
+            roleType: -1
+        )
+    );
   }
 }
