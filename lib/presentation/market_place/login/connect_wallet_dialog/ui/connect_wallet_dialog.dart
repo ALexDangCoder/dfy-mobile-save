@@ -11,10 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConnectWalletDialog extends StatefulWidget {
-  final Widget currentScreen;
+  final Widget navigationTo;
 
-  const ConnectWalletDialog({Key? key, required this.currentScreen})
-      : super(key: key);
+  const ConnectWalletDialog({
+    Key? key,
+    required this.navigationTo,
+  }) : super(key: key);
 
   @override
   State<ConnectWalletDialog> createState() => _ConnectWalletDialogState();
@@ -22,8 +24,7 @@ class ConnectWalletDialog extends StatefulWidget {
 
 class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
   late final ConnectWalletDialogCubit cubit;
-  String contentDialog = '';
-  String contentRightBtn = '';
+
   @override
   void initState() {
     cubit = ConnectWalletDialogCubit();
@@ -49,126 +50,137 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: const BorderRadius.all(Radius.circular(36)),
               ),
-              child: BlocConsumer<ConnectWalletDialogCubit, ConnectWalletDialogState>(
-                bloc: cubit,
-                listener: (context, state) {},
-                builder: (context, state) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 32,
+                      right: 42.5,
+                      bottom: 24,
+                      left: 41.5,
+                    ),
+                    child: StreamBuilder<LoginStatus>(
+                        stream: cubit.connectStatusStream,
+                        builder: (context, snapshot) {
+                          final LoginStatus login =
+                              snapshot.data ?? LoginStatus.LOGGED;
+                          return Text(
+                            login.convertToContentDialog(),
+                            textAlign: TextAlign.center,
+                            style: textNormal(
+                              AppTheme.getInstance().whiteColor(),
+                              20.sp,
+                            ).copyWith(fontWeight: FontWeight.w600),
+                          );
+                        }),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 32,
-                          right: 42.5,
-                          bottom: 24,
-                          left: 41.5,
-                        ),
-                        child: Text(
-                          contentDialog,
-                          textAlign: TextAlign.center,
-                          style: textNormal(
-                            AppTheme.getInstance().whiteColor(),
-                            20,
-                          ).copyWith(fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                width: 1.w,
+                                color: AppTheme.getInstance()
+                                    .whiteBackgroundButtonColor(),
+                              ),
+                            ),
+                          ),
+                          child: GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            behavior: HitTestBehavior.opaque,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 19,
+                                top: 17,
+                              ),
+                              child: Text(
+                                S.current.cancel,
+                                style: textNormal(
+                                  AppTheme.getInstance().whiteColor(),
+                                  20.sp,
+                                ).copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    width: 1.w,
-                                    color: AppTheme.getInstance()
-                                        .whiteBackgroundButtonColor(),
-                                  ),
-                                ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                width: 1.w,
+                                color: AppTheme.getInstance()
+                                    .whiteBackgroundButtonColor(),
                               ),
-                              child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                behavior: HitTestBehavior.opaque,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: 19,
-                                    top: 17,
-                                  ),
-                                  child: Text(
-                                    S.current.cancel,
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      20,
-                                    ).copyWith(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                              left: BorderSide(
+                                width: 1.w,
+                                color: AppTheme.getInstance()
+                                    .whiteBackgroundButtonColor(),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    width: 1.w,
-                                    color: AppTheme.getInstance()
-                                        .whiteBackgroundButtonColor(),
-                                  ),
-                                  left: BorderSide(
-                                    width: 1.w,
-                                    color: AppTheme.getInstance()
-                                        .whiteBackgroundButtonColor(),
-                                  ),
-                                ),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  if (state is HasNoWallet) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const MainScreen(
-                                          index: 3,
+                          child: StreamBuilder<LoginStatus>(
+                              stream: cubit.connectStatusStream,
+                              builder: (context, snapshot) {
+                                final LoginStatus status =
+                                    snapshot.data ?? LoginStatus.LOGGED;
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    if (status == LoginStatus.HAVE_WALLET) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen(
+                                            isFormConnectWlDialog: true,
+                                            index: 2,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  } else if (state is NeedLoginToUse) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const MainScreen(
-                                          index: 2,
+                                      );
+                                    } else if (status ==
+                                        LoginStatus.HAS_NO_WALLET) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen(
+                                            index: 3,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                behavior: HitTestBehavior.opaque,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: 19,
-                                    top: 17,
+                                      );
+                                    }
+                                  },
+                                  behavior: HitTestBehavior.opaque,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 19,
+                                      top: 17,
+                                    ),
+                                    child: Text(
+                                      //todo
+                                      status.convertToContentRightButton(),
+                                      style: textNormal(
+                                        AppTheme.getInstance().fillColor(),
+                                        20.sp,
+                                      ).copyWith(fontWeight: FontWeight.w700),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
-                                  child: Text(
-                                    contentRightBtn,
-                                    style: textNormal(
-                                      AppTheme.getInstance().fillColor(),
-                                      20,
-                                    ).copyWith(fontWeight: FontWeight.w700),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                                );
+                              }),
+                        ),
                       ),
                     ],
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ),

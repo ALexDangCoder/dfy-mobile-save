@@ -26,7 +26,7 @@ class _StakingState extends State<StakingScreen> {
       onTap: () => showDialog(
           context: context,
           builder: (context) => const ConnectWalletDialog(
-                currentScreen: StakingScreen(),
+                navigationTo: StakingScreen(),
               )),
       child: const ComingScreen(),
     );
