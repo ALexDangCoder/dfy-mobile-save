@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
@@ -276,7 +275,7 @@ class _CollectionListState extends State<CollectionList> {
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
-                                    StaggeredGridView.countBuilder(
+                                    GridView.builder(
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -286,8 +285,13 @@ class _CollectionListState extends State<CollectionList> {
                                         top: 10.h,
                                         bottom: 16.h,
                                       ),
-                                      mainAxisSpacing: 20.h,
-                                      crossAxisSpacing: 26.w,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20.h,
+                                        crossAxisSpacing: 26.w,
+                                        childAspectRatio: 4 / 5,
+                                      ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length
                                           : 20,
@@ -340,9 +344,6 @@ class _CollectionListState extends State<CollectionList> {
                                           return const ItemCollectionLoad();
                                         }
                                       },
-                                      crossAxisCount: 2,
-                                      staggeredTileBuilder: (int index) =>
-                                          const StaggeredTile.fit(1),
                                     ),
                                     StreamBuilder<bool>(
                                       stream: collectionBloc.isCanLoadMore,
