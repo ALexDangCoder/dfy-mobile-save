@@ -6,6 +6,7 @@ import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/data/web3/model/token_info_model.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -695,6 +696,105 @@ class Web3Utils {
     return hex.encode(createCollection.data ?? []);
   }
 
+  //pawn
+  Future<String> getPutOnPawnData({
+    required String nftContract,
+    required String nftTokenId,
+    required String expectedlLoanAmount,
+    required String loanAsset,
+    required String nftTokenQuantity,
+    required String expectedDurationQty,
+    required int durationType,
+    required String beNFTId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final function = deployContract.function('putOnPawn');
+    final putOnPawn = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(nftContract),
+        BigInt.from(num.parse(nftTokenId)),
+        BigInt.from(num.parse(expectedlLoanAmount)),
+        EthereumAddress.fromHex(loanAsset),
+        BigInt.from(num.parse(nftTokenQuantity)),
+        BigInt.from(num.parse(expectedDurationQty)),
+        durationType,
+        beNFTId,
+      ],
+    );
+    return hex.encode(putOnPawn.data ?? []);
+  }
+
+  Future<String> getAcceptOfferData({
+    required String nftCollateralId,
+    required String offerId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final function = deployContract.function('acceptOffer');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(nftCollateralId)),
+        BigInt.from(num.parse(offerId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
+  }
+
+  Future<String> getCancelOfferData({
+    required String nftCollateralId,
+    required String offerId,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final function = deployContract.function('cancelOffer');
+    final cancelOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(offerId)),
+        BigInt.from(num.parse(nftCollateralId)),
+      ],
+    );
+    return hex.encode(cancelOffer.data ?? []);
+  }
+
+  Future<String> getCreateOfferData({
+    required String nftCollateralId,
+    required String repaymentAsset,
+    required String loanAmount,
+    required String interest,
+    required String duration,
+    required int loanDurationType,
+    required int repaymentCycleType,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final function = deployContract.function('createOffer');
+    final createOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(nftCollateralId)),
+        EthereumAddress.fromHex(repaymentAsset),
+        BigInt.from(num.parse(loanAmount)),
+        BigInt.from(num.parse(interest)),
+        BigInt.from(num.parse(duration)),
+        loanDurationType,
+        repaymentCycleType,
+      ],
+    );
+    return hex.encode(createOffer.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -743,6 +843,19 @@ class Web3Utils {
         .loadString('assets/abi/DefiForYouNFTFactory_ABI_DEV2.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'nftFactory'),
+      EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedNFTPawnContract(
+    String contract,
+    BuildContext context,
+  ) async {
+    final abiCode =
+        await rootBundle.loadString('assets/abi/PawnNFTABI_DEV2.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'nftPawn'),
       EthereumAddress.fromHex(contract),
     );
     return deployContract;
