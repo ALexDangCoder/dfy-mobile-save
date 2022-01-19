@@ -293,8 +293,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
                                 collectionAddress: searchCubit
-                                    .collections[index]
-                                    .collectionAddress,
+                                    .collections[index].collectionAddress, typeScreen: PageRouter.MARKET,
                               ),
                             ),
                           );
@@ -333,6 +332,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             builder: (builder) => CollectionList(
                               query: controller.text,
                               title: S.current.collection_search_result,
+                              typeScreen: PageRouter.MARKET,
                             ),
                           ),
                         );

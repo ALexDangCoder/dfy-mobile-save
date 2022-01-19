@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/detail_collection/ui/widget/base_collection.dar
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_activity.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/filter_nft_myacc.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/double_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -22,9 +23,12 @@ import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'widget/body_collection.dart';
 
 class DetailCollection extends StatefulWidget {
+  final PageRouter typeScreen;
+
   const DetailCollection({
     Key? key,
     required this.collectionAddress,
+    required this.typeScreen,
   }) : super(key: key);
   final String collectionAddress;
 
@@ -41,7 +45,7 @@ class _DetailCollectionState extends State<DetailCollection>
   @override
   void initState() {
     super.initState();
-    detailCollectionBloc = DetailCollectionBloc();
+    detailCollectionBloc = DetailCollectionBloc(widget.typeScreen);
     detailCollectionBloc.getCollection(
       collectionAddressDetail: widget.collectionAddress,
     );
@@ -223,13 +227,15 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   child: InkWell(
                     onTap: () {
-                      if (_tabController.index == DetailCollectionBloc.TAB_NFT) {
+                      if (_tabController.index ==
+                          DetailCollectionBloc.TAB_NFT) {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
                           context: context,
                           builder: (context) => FilterNFTMyAcc(
                             collectionBloc: detailCollectionBloc,
+                            typeScreen: widget.typeScreen,
                           ),
                         );
                       } else {
@@ -316,10 +322,9 @@ class _DetailCollectionState extends State<DetailCollection>
               tabBarView: TabBarView(
                 controller: _tabController,
                 children: [
-                  // Container(),
-                  // Container(),
                   NFTSCollection(
                     detailCollectionBloc: detailCollectionBloc,
+                    typeScreen: widget.typeScreen,
                   ),
                   ActivityCollection(
                     detailCollectionBloc: detailCollectionBloc,

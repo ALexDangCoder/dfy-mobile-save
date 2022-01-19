@@ -4,7 +4,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_categories_model.dart';
-import 'package:Dfy/domain/model/market_place/collection_detail.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/categories_detail/bloc/category_detail_cubit.dart';
@@ -12,6 +11,7 @@ import 'package:Dfy/presentation/categories_detail/bloc/category_detail_state.da
 import 'package:Dfy/presentation/collection_list/ui/item_collection_load.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
@@ -279,7 +279,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                       collectionAddress: data[
                                                                   index]
                                                               .collectionAddress ??
-                                                          '',
+                                                          '', typeScreen: PageRouter.MARKET,
                                                     ),
                                                   ),
                                                 );
