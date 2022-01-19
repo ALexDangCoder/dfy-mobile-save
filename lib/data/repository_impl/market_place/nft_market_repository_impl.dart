@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/nft_market/list_nft_my_acc_response.dart';
 import 'package:Dfy/data/response/nft_market/list_response_from_api.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
@@ -40,7 +41,7 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     String? page,
     String? walletAddress,
   }) {
-    return runCatchingAsync<ListNftResponseFromApi, List<NftMarket>>(
+    return runCatchingAsync<ListNftMyAccResponseFromApi, List<NftMarket>>(
           () => _client.getListNftMyAcc(
         status,
         nftType,

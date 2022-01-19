@@ -188,51 +188,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   String email = '';
   bool showDropdownAddress = true;
 
-  void getAddressWallet(MarketType? marketType , String? queryAllResult ) {
-    /// get SharePreF
-    walletAddress = '0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff';
-    email = '';
-    if(email.isEmpty){
-      showDropdownAddress = false;
-      addressStream.add(walletAddress);
-    }
-    else{
-      ///getListAddressToFilter
-      addressStream.add(walletAddress);
-      walletAddressFilter.add('All');
-      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
-      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
-      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
-    }
-    if (walletAddress == '') {
-      if (marketType != null) {
-        getListNft(status: status(marketType));
-      } else {
-        if (queryAllResult != null) {
-          getListNft(name: queryAllResult);
-        } else {
-          getListNft();
-        }
-      }
-    } else {
-      if (marketType != null) {
-        getListNft(
-          status: status(marketType),
-          walletAddress: walletAddress,
-        );
-      } else {
-        if (queryAllResult != null) {
-          getListNft(
-            name: queryAllResult,
-            walletAddress: walletAddress,
-          );
-        } else {
-          getListNft(walletAddress: walletAddress);
-        }
-      }
-    }
-  }
-
   Future<void> getListNft({
     String? status,
     String? nftType,

@@ -24,9 +24,13 @@ class ListNft extends StatefulWidget {
     Key? key,
     this.marketType,
     this.queryAllResult,
+    required this.pageRouter,
+    this.walletAddress,
   }) : super(key: key);
   final MarketType? marketType;
   final String? queryAllResult;
+  final PageRouter pageRouter;
+  final String? walletAddress;
 
   @override
   _ListNftState createState() => _ListNftState();
@@ -40,16 +44,42 @@ class _ListNftState extends State<ListNft> {
   @override
   void initState() {
     super.initState();
-    if(widget.queryAllResult?.isNotEmpty ?? false){
+    if (widget.queryAllResult?.isNotEmpty ?? false) {
       controller.text = widget.queryAllResult!;
     }
     _debounce = Timer(const Duration(milliseconds: 500), () {});
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
     _cubit.getTokenInf();
-    _cubit.getAddressWallet(widget.marketType, widget.queryAllResult);
     _cubit.getCollectionFilter();
-
+    if (widget.pageRouter == PageRouter.MARKET) {
+      if (widget.marketType != null) {
+        _cubit.getListNft(status: _cubit.status(widget.marketType));
+      } else {
+        if (widget.queryAllResult != null) {
+          _cubit.getListNft(name: widget.queryAllResult);
+        } else {
+          _cubit.getListNft();
+        }
+      }
+    } else {
+      _cubit.walletAddress = widget.walletAddress!;
+      if (widget.marketType != null) {
+        _cubit.getListNft(
+          status: _cubit.status(widget.marketType),
+          walletAddress: widget.walletAddress,
+        );
+      } else {
+        if (widget.queryAllResult != null) {
+          _cubit.getListNft(
+            name: widget.queryAllResult,
+            walletAddress: widget.walletAddress,
+          );
+        } else {
+          _cubit.getListNft(walletAddress: widget.walletAddress);
+        }
+      }
+    }
   }
 
   @override
@@ -97,7 +127,8 @@ class _ListNftState extends State<ListNft> {
                     context: context,
                     builder: (_) {
                       return FilterBts(
-                        listNftCubit: _cubit, isLogin:_cubit.getLogin(),
+                        listNftCubit: _cubit,
+                        isLogin: widget.pageRouter == PageRouter.MY_ACC,
                       );
                     },
                   );

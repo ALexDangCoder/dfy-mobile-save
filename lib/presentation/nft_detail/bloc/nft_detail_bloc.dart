@@ -1,7 +1,4 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';

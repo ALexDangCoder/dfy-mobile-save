@@ -64,6 +64,7 @@ class ListFeaturedSoftNft extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ListNft(
                               marketType: marketTypeEnum,
+                              pageRouter: PageRouter.MARKET,
                               ),
                           ),
                         );

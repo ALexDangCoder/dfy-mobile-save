@@ -1,4 +1,5 @@
 
+import 'package:Dfy/data/response/nft_market/list_nft_my_acc_response.dart';
 import 'package:Dfy/data/response/nft_market/list_response_from_api.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -22,7 +23,7 @@ abstract class NftMarketClient {
 
 
   @GET(ApiConstants.GET_LIST_NFT_MY_ACC)
-  Future<ListNftResponseFromApi> getListNftMyAcc(
+  Future<ListNftMyAccResponseFromApi> getListNftMyAcc(
       @Query('market_type') String? status,
       @Query('nft_type') String? nftType,
       @Query('name') String? name,

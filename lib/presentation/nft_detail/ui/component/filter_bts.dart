@@ -65,12 +65,15 @@ class _FilterBtsState extends State<FilterBts> {
           ),
           child: GestureDetector(
             onTap: () {
-              //widget.listNftCubit.isShowDropDownStream.add(false);
+              widget.listNftCubit.isShowDropDownStream.add(false);
+              FocusScope.of(context).unfocus();
             },
             child: Stack(
               children: [
                 SingleChildScrollView(
-                  physics: const ScrollPhysics(),
+                  physics: widget.listNftCubit.isShowDropDownStream.value
+                      ? const NeverScrollableScrollPhysics()
+                      : const ScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -305,7 +308,7 @@ class _FilterBtsState extends State<FilterBts> {
                     return Visibility(
                       visible: snapshot.data ?? false,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 16.w, top: 130.h),
+                        padding: EdgeInsets.only(top: 110.h),
                         child: selectAccount(),
                       ),
                     );
@@ -420,10 +423,10 @@ class _FilterBtsState extends State<FilterBts> {
 
   Widget selectAccount() {
     return Container(
-      width: 343.w,
+      clipBehavior: Clip.hardEdge,
       height: 177.h,
       decoration: BoxDecoration(
-        color: colorSelected,
+        color: dialogColor,
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
       child: Theme(
@@ -431,10 +434,13 @@ class _FilterBtsState extends State<FilterBts> {
           highlightColor: backgroundBottomSheet,
         ),
         child: Scrollbar(
+          radius: Radius.circular(1.5.r),
           child: ListView.builder(
             itemCount: widget.listNftCubit.walletAddressFilter.length,
+            shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return itemAddress(widget.listNftCubit.walletAddress[index]);
+              return itemAddress(
+                  widget.listNftCubit.walletAddressFilter[index]);
             },
           ),
         ),
@@ -453,11 +459,19 @@ class _FilterBtsState extends State<FilterBts> {
         height: 54.h,
         color: text == widget.listNftCubit.walletAddress
             ? Colors.white.withOpacity(0.3)
-            : colorSelected,
+            : Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.only(left: 24.w),
+          padding: EdgeInsets.only(
+            left: 24.w,
+            top: 15.h,
+          ),
           child: Text(
-            text.length == 3 ? text : text.formatAddress(index: 4),
+            text.length == 3 ? text : text.formatAddress(index: 9),
+            style: textNormalCustom(
+              Colors.white,
+              16,
+              FontWeight.w400,
+            ),
           ),
         ),
       ),
