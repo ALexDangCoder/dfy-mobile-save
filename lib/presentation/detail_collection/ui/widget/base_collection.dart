@@ -1,6 +1,8 @@
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/market_place/create_collection/bloc/create_collection_cubit.dart';
-import 'package:Dfy/presentation/market_place/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/widgets/common_bts/base_collection.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +64,18 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
             ),
           );
         },
-        nftCallBack: () {},
+        nftCallBack: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateNFTScreen(
+                  cubit: CreateNftCubit(),
+                );
+              },
+            ),
+          );
+        },
       ),
       body: MediaQuery.removePadding(
         context: context,

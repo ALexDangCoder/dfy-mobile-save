@@ -76,4 +76,8 @@ class ApiConstants {
 
   ///MyAcc
   static const String GET_LIST_NFT_MY_ACC = '/nft-market-svc/api/my-acc/my-nft';
+  //CREATE COLLECTION
+  static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
+  static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
+
 }

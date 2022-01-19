@@ -99,7 +99,7 @@ TextStyle textCustom({
   return GoogleFonts.sourceSansPro(
     color: color,
     fontWeight: weight,
-    fontStyle: FontStyle.normal,
+    fontStyle: fontStyle,
     fontSize: fontSize.sp,
     decoration: decoration,
   );

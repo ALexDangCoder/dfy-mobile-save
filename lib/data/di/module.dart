@@ -103,23 +103,19 @@ Dio provideDio({int connectionTimeOut = 60000}) {
   );
   final dio = Dio(options);
   dio.transformer = FlutterTransformer();
+  final walletLoginJson = PrefsService.getWalletLogin();
+  final accessToken = loginFromJson(walletLoginJson).accessToken ?? '';
   dio.interceptors.add(
     InterceptorsWrapper(
-      onRequest:
-          (RequestOptions options, RequestInterceptorHandler handler) async {
-        final accessToken =
-            loginFromJson(PrefsService.getWalletLogin()).accessToken;
+      onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         options.baseUrl = appConstants.baseUrl;
+        if (accessToken.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
         options.headers['Content-Type'] = 'application/json';
-        options.headers['Authorization'] = 'Bearer $accessToken';
-        // if ((accessToken ?? '').isNotEmpty) {
-        //   options.headers['Authorization'] = 'Bearer $accessToken';
-        // }
-        options.headers = {
-          'pinata_api_key': 'ac8828bff3bcd1c1b828',
-          'pinata_secret_api_key':
-              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
-        };
+        options.headers['pinata_api_key'] = 'ac8828bff3bcd1c1b828';
+        options.headers['pinata_secret_api_key'] =
+            'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df';
         return handler.next(options);
       },
       onResponse: (response, handler) {

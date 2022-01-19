@@ -492,7 +492,6 @@
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
-  "resend_code": "Resend code",
   "how_to_create_hard_nft": "How to create hard NFT",
   "skip": "Skip",
   "step": "Step",
@@ -505,8 +504,7 @@
   "marketplace": "Marketplace",
   "to_take_profit": "to take profit",
   "next": "Next",
-  "get_started": "Get started"
-
-
-
+  "get_started": "Get started",
+  "resend_code": "Resend code",
+  "custom_url" : "Custom URL"
 }
