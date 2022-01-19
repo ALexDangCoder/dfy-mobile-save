@@ -20,4 +20,7 @@ abstract class LoginClient {
   Future<NonceResponse> getNonce(
     @Query('walletAddress') String walletAddress,
   );
+
+  @GET(ApiConstants.GET_USER_PROFILE)
+  Future<NonceResponse> getUserProfile();
 }

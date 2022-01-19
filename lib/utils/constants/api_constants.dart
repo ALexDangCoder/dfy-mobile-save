@@ -78,4 +78,7 @@ class ApiConstants {
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
 
+  //GET PROFILE WHEN LOGIN:
+  static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
+
 }

@@ -26,4 +26,12 @@ class LoginImpl implements LoginRepository {
           (response) => response.toDomain(),
     );
   }
+
+  @override
+  Future<Result<NonceModel>> getUserProfile() {
+    return runCatchingAsync<NonceResponse, NonceModel>(
+          () => _loginClient.getUserProfile(),
+          (response) => response.toDomain(),
+    );
+  }
 }

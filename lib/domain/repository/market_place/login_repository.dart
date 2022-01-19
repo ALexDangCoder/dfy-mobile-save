@@ -7,4 +7,6 @@ mixin LoginRepository {
 
   Future<Result<NonceModel>> getNonce(String walletAddress);
 
+  Future<Result<NonceModel>> getUserProfile();
+
 }
