@@ -441,7 +441,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                     ],
                                   ),
                                   textActiveButton: S.current.cancel_sale,
-                                  gasLimitInit: double.parse(bloc.gasLimit),
                                   typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
                                 )),
                       );
