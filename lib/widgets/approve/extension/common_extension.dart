@@ -1,4 +1,5 @@
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 
 extension CommonExtension on ApproveCubit {
@@ -11,6 +12,21 @@ extension CommonExtension on ApproveCubit {
       return model.count;
     } catch (_) {
       return -1;
+    }
+  }
+
+  String getSpender() {
+    switch (type) {
+      case TYPE_CONFIRM_BASE.BUY_NFT:
+        return nft_sales_address_dev2;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        return nft_auction_dev2;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        {
+          return nft_factory_dev2;
+        }
+      default:
+        return '';
     }
   }
 }

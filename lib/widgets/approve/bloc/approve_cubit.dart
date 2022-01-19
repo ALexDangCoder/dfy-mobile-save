@@ -11,9 +11,9 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -205,20 +205,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     );
   }
 
-  String getSpender() {
-    switch (type) {
-      case TYPE_CONFIRM_BASE.BUY_NFT:
-        return nft_sales_address_dev2;
-      case TYPE_CONFIRM_BASE.PLACE_BID:
-        return nft_auction_dev2;
-      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-        {
-          return nft_factory_dev2;
-        }
-      default:
-        return '';
-    }
-  }
 
   int randomAvatar() {
     final Random rd = Random();

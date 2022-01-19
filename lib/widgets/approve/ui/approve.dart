@@ -11,6 +11,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -687,6 +688,15 @@ class _ApproveState extends State<Approve> {
           mapRawData:
               widget.createCollectionCubit?.getMapCreateCollection() ?? {},
           txhHash: data,
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => CollectionList(
+              query: '',
+              isMyAcc: true,
+            ),
+          ),
         );
         break;
     }

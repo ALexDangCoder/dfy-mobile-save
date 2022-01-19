@@ -2,6 +2,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/cupertino.dart';
 
 extension GetGasLimit on ApproveCubit {

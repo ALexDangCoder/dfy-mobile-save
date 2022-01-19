@@ -553,7 +553,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
           await generateRandomURL();
         }
       } else {
-        throw Exception('Get response fail');
+       showError();
       }
     } catch (e) {
       rethrow;
@@ -670,11 +670,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
       collectionCID: collectionIPFS,
       context: context,
     );
-    ///TODO: try get nonce from approve
-    // final TransactionCountResponse model = await _web3utils.getTransactionCount(
-    //   address: walletAddress,
-    // );
-    // transactionNonce = model.count;
     showContent();
   }
 

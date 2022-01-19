@@ -33,12 +33,10 @@ class _UploadProgressState extends State<UploadProgress>
   void initState() {
     // TODO: implement initState
     super.initState();
-    final int rdA = Random().nextInt(3);
     final int rdC = Random().nextInt(3);
-    final int rdF = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdA + 5),
+      duration: Duration(seconds: (rdC + 3)*2),
     );
     _coverAnimationController = AnimationController(
       vsync: this,
@@ -46,7 +44,7 @@ class _UploadProgressState extends State<UploadProgress>
     );
     _featureAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdF + 7),
+      duration: Duration(seconds: (rdC + 3)*3),
     );
     widget.bloc.cidCreate(context);
     widget.bloc.upLoadStatusSubject.listen((value) {
