@@ -16,6 +16,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -34,8 +35,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   int transactionNonce = 0;
   String transactionData = '';
 
-  String createType = '';
-  int collectionType = -1;
+  String createId = '';
+  int collectionStandard = -1;
+  int collectionType = 0;
 
   String collectionName = '';
   String customUrl = '';
@@ -53,6 +55,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   List<TypeNFTModel> listSoftNFT = [];
 
   String categoryId = '';
+  String categoryName = '';
   String avatarPath = '';
   String coverPhotoPath = '';
   String featurePhotoPath = '';
@@ -92,18 +95,18 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   NFTRepository get _nftRepo => Get.find();
 
-  CategoryRepository get _categoryRepository => Get.find();
+  CategoryRepository get categoryRepository => Get.find();
 
   //Stream
   ///Type NFT
-  final BehaviorSubject<String> _typeNFTSubject = BehaviorSubject();
+  final BehaviorSubject<String> typeNFTSubject = BehaviorSubject();
 
-  Stream<String> get typeNFTStream => _typeNFTSubject.stream;
+  Stream<String> get typeNFTStream => typeNFTSubject.stream;
 
   ///CreateButton
-  final BehaviorSubject<bool> _enableCreateSubject = BehaviorSubject();
+  final BehaviorSubject<bool> enableCreateSubject = BehaviorSubject();
 
-  Stream<bool> get enableCreateStream => _enableCreateSubject.stream;
+  Stream<bool> get enableCreateStream => enableCreateSubject.stream;
 
   ///Validate TextField
   BehaviorSubject<String> nameCollectionSubject = BehaviorSubject();
@@ -139,13 +142,13 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   BehaviorSubject<List<TypeNFTModel>> listHardNFTSubject = BehaviorSubject();
   BehaviorSubject<List<TypeNFTModel>> listSoftNFTSubject = BehaviorSubject();
 
-  ///Enable OK button upload Image
-  BehaviorSubject<bool> upLoadStatusSubject = BehaviorSubject();
+  ///Status upload image: -1 pending, 0 fail, 1 success
+  BehaviorSubject<int> upLoadStatusSubject = BehaviorSubject();
 
   //func
-  void changeSelectedItem(String type) {
-    createType = type;
-    _typeNFTSubject.sink.add(createType);
+  void changeSelectedItem(String _id) {
+    createId = _id;
+    typeNFTSubject.sink.add(createId);
   }
 
   void validateCreate() {
@@ -161,9 +164,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         mapCheck['twitter'] == false ||
         mapCheck['instagram'] == false ||
         mapCheck['telegram'] == false) {
-      _enableCreateSubject.sink.add(false);
+      enableCreateSubject.sink.add(false);
     } else {
-      _enableCreateSubject.sink.add(true);
+      enableCreateSubject.sink.add(true);
     }
   }
 
@@ -328,11 +331,22 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   void validateCategory(String value) {
     if (value.isNotEmpty) {
       categoryId = value;
+      getCategoryNameById(value);
       mapCheck['categories'] = true;
     } else {
       categoriesSubject.sink.add(S.current.category_require);
       mapCheck['categories'] = false;
     }
+  }
+
+  ///get category name by ID
+  void getCategoryNameById(String _id) {
+    categoryName = listCategory
+            .where((element) => element.id == categoryId)
+            .toList()
+            .first
+            .name ??
+        '';
   }
 
   ///validate custom URL
@@ -464,11 +478,17 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     return st.standard ?? 0;
   }
 
+  //type 0: soft, type 1: hard
+  int getTypeFromID(String id) {
+    final st = listNFT.where((element) => element.id == id).first;
+    return st.type ?? 0;
+  }
+
   /// get list category
   Future<void> getListCategory() async {
     List<Map<String, String>> menuItems = [];
     final Result<List<Category>> result =
-        await _categoryRepository.getListCategory();
+        await categoryRepository.getListCategory();
     result.when(
       success: (res) {
         listCategory = res;
@@ -571,8 +591,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   }
 
   ///Create CID map
-  Future<void> cidCreate() async {
-    upLoadStatusSubject.sink.add(false);
+  Future<void> cidCreate(BuildContext context) async {
+    upLoadStatusSubject.sink.add(-1);
     coverPhotoUploadStatusSubject.sink.add(-1);
     avatarUploadStatusSubject.sink.add(-1);
     featurePhotoUploadStatusSubject.sink.add(-1);
@@ -592,7 +612,14 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     cidMap['cover_cid'] = coverCid;
     cidMap['avatar_cid'] = avatarCid;
     cidMap['feature_cid'] = featureCid;
-    upLoadStatusSubject.sink.add(true);
+    if (coverPhotoUploadStatusSubject.value == 0 ||
+        avatarUploadStatusSubject.value == 0 ||
+        featurePhotoUploadStatusSubject.value == 0) {
+      upLoadStatusSubject.sink.add(0);
+    } else {
+      await sendDataWeb3(context);
+      upLoadStatusSubject.sink.add(1);
+    }
   }
 
   ///GET IPFS collection
@@ -657,21 +684,37 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   }
 
   ///Create Collection
-  Future<void> createCollection() async {
-    final String standard = collectionType == 0 ? 'ERC-721' : 'ERC-1155';
-    final Map<String, dynamic> sortParam = {
-      'avatar_cid': cidMap['avatar_cid'],
-      'category_id': categoryId,
-      'collection_standard': standard,
-      'cover_cid': cidMap['cover_cid'],
-      'custom_url': customUrl,
-      'description': description,
-      'feature_cid': cidMap['feature_cid'],
-      'name': collectionName,
-      'royalty': royalties,
-      'social_links': socialLinkMap,
-      'txn_hash': 'txnHash',
-    };
+  Map<String, dynamic> getMapCreateCollection() {
+    final String standard = collectionStandard == 0 ? 'ERC-721' : 'ERC-1155';
+    if (collectionType == 0) {
+      return {
+        'avatar_cid': cidMap['avatar_cid'],
+        'category_id': categoryId,
+        'collection_standard': standard,
+        'cover_cid': cidMap['cover_cid'],
+        'custom_url': customUrl,
+        'description': description,
+        'feature_cid': cidMap['feature_cid'],
+        'name': collectionName,
+        'royalty': royalties.toString(),
+        'social_links': socialLinkMap,
+        'txn_hash': 'txnHash',
+      };
+    } else {
+      return {
+        'avatar_cid': cidMap['avatar_cid'],
+        'bc_txn_hash': 'txnHash',
+        'category_id': categoryId,
+        'category_name': categoryName,
+        'collection_address': '',
+        'collection_cid': collectionIPFS,
+        'collection_type_id': 1,
+        'custom_url': customUrl,
+        'description': description,
+        'name': collectionName,
+        'social_links': socialLinkMap,
+      };
+    }
   }
 
   ///get Wallet Address
@@ -697,5 +740,51 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     try {
       await trustWalletChannel.invokeMethod('getListWallets', {});
     } on PlatformException {}
+  }
+
+  void dispose() {
+    typeNFTSubject.close();
+    enableCreateSubject.close();
+    nameCollectionSubject.close();
+    customURLSubject.close();
+    descriptionSubject.close();
+    categoriesSubject.close();
+    royaltySubject.close();
+    facebookSubject.close();
+    twitterSubject.close();
+    instagramSubject.close();
+    telegramSubject.close();
+    avatarMessSubject.close();
+    coverPhotoMessSubject.close();
+    featurePhotoMessSubject.close();
+    avatarSubject.close();
+    coverPhotoSubject.close();
+    featurePhotoSubject.close();
+    avatarUploadStatusSubject.close();
+    coverPhotoUploadStatusSubject.close();
+    featurePhotoUploadStatusSubject.close();
+    listCategorySubject.close();
+    listHardNFTSubject.close();
+    listSoftNFTSubject.close();
+    upLoadStatusSubject.close();
+  }
+}
+extension PickImage on CreateCollectionCubit{
+  Future<void> pickImage({
+    required String imageType,
+    required String tittle,
+  }) async {
+    final filePath = await pickImageFunc(imageType: imageType, tittle: tittle);
+    if (filePath.isNotEmpty) {
+      final imageTemp = File(filePath);
+      final imageSizeInMB =
+          imageTemp.readAsBytesSync().lengthInBytes / 1048576;
+      loadImage(
+        type: imageType,
+        imageSizeInMB: imageSizeInMB,
+        imagePath: imageTemp.path,
+        image: imageTemp,
+      );
+    }
   }
 }
