@@ -2,6 +2,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/cupertino.dart';
 
 extension GetGasLimit on ApproveCubit {
@@ -26,7 +27,6 @@ extension GetGasLimit on ApproveCubit {
           } catch (e) {
             AppException(S.current.error, e.toString());
           }
-          gasLimit = '';
           break;
         }
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
@@ -36,9 +36,29 @@ extension GetGasLimit on ApproveCubit {
           break;
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION : {
-        gasLimit = '30000';
+        try {
+          gasLimit = await web3Client.getGasLimitByData(
+            from: addressWallet ?? '',
+            toContractAddress: getSpender(),
+            dataString: hexString,
+          );
+        } catch (e) {
+          AppException(S.current.error, e.toString());
+        }
         break;
       }
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PLACE_BID:
+        // TODO: Handle this case.
+        break;
     }
     return double.parse(gasLimit);
   }

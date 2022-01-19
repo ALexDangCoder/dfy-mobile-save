@@ -12,9 +12,9 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -69,7 +69,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? hexString;
 
-  ConfirmRepository get _confirmRepository => Get.find();
+  ConfirmRepository get confirmRepository => Get.find();
 
   bool needApprove = false;
 
@@ -214,21 +214,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     );
   }
 
-  String getSpender() {
-    late String spender;
-    switch (type) {
-      case TYPE_CONFIRM_BASE.BUY_NFT:
-        spender = nft_sales_address_dev2;
-        break;
-      case TYPE_CONFIRM_BASE.PLACE_BID:
-        spender = nft_auction_dev2;
-        break;
-      default:
-        spender = '';
-        break;
-    }
-    return spender;
-  }
 
   int randomAvatar() {
     final Random rd = Random();
@@ -247,14 +232,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
-  Future<void> confirmCancelSaleWithBE(
-      {required String txnHash, required String marketId}) async {
-    final result = await _confirmRepository.getCancelSaleResponse(
-      id: marketId,
-      txnHash: txnHash,
-    );
-    result.when(success: (suc) {}, error: (err) {});
-  }
+
 
   Future<void> importNft({
     required String contract,

@@ -30,15 +30,16 @@ import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  String? query;
-  String? title;
-  String? addressWallet;
+  final String? query;
+  final String? title;
+  final String? addressWallet;
   final PageRouter typeScreen;
 
-  CollectionList({
+  const CollectionList({
     Key? key,
     this.query,
     this.title,
+    this.addressWallet,
     required this.typeScreen,
   }) : super(key: key);
 
@@ -67,13 +68,14 @@ class _CollectionListState extends State<CollectionList> {
     }
   }
 
+  late String tittleScreen;
   @override
   void initState() {
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
-      widget.title = S.current.collection_search_result;
+      tittleScreen = widget.title??'';
     } else {
-      widget.title = S.current.collection_list;
+      tittleScreen = S.current.collection_list;
     }
 
     collectionBloc = CollectionBloc(widget.typeScreen);
@@ -163,7 +165,7 @@ class _CollectionListState extends State<CollectionList> {
                       ),
                     ),
                     Text(
-                      widget.title ?? S.current.collection_list,
+                      tittleScreen,
                       style: textNormalCustom(
                         null,
                         20.sp,

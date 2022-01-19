@@ -11,6 +11,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -23,7 +24,9 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
@@ -117,6 +120,21 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftKey.currentState?.bloc ?? NFTDetailBloc();
+        break;
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        // TODO: Handle this case.
         break;
     }
   }
@@ -242,16 +260,18 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         {
+          cubit.showLoading();
+          final nonce = await cubit.getNonce();
           await cubit.signTransactionWithData(
             walletAddress: cubit.addressWallet ?? '',
             contractAddress: nft_sales_address_dev2,
-            nonce: (widget.createCollectionCubit?.transactionNonce ?? 0)
-                .toString(),
+            nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
             gasLimit: gasLimitString,
             hexString: widget.createCollectionCubit?.transactionData ?? '',
           );
+          cubit.showContent();
         }
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
@@ -487,8 +507,7 @@ class _ApproveState extends State<Approve> {
                                               cubit.getGasLimitApprove(
                                                 context: context,
                                                 contractAddress:
-                                                widget.tokenAddress ??
-                                                    '',
+                                                    widget.tokenAddress ?? '',
                                               );
                                               showPopupApprove();
                                             }
@@ -624,6 +643,38 @@ class _ApproveState extends State<Approve> {
                   ),
                 );
               },
+            ),
+          ),
+        );
+        break;
+      case TYPE_CONFIRM_BASE.SEND_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_TOKEN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        cubit.createCollection(
+          type: widget.createCollectionCubit?.collectionType ?? 0,
+          mapRawData:
+              widget.createCollectionCubit?.getMapCreateCollection() ?? {},
+          txhHash: data,
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => CollectionList(
+              typeScreen: PageRouter.MY_ACC,
+              addressWallet: cubit.addressWallet,
             ),
           ),
         );
