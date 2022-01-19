@@ -200,6 +200,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       ///getListAddressToFilter
       addressStream.add(walletAddress);
       walletAddressFilter.add('All');
+      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
+      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
+      walletAddressFilter.add('0xe3E354a41F01CC084679cb52d0EDC50C1C58EEff');
     }
     if (walletAddress == '') {
       if (marketType != null) {

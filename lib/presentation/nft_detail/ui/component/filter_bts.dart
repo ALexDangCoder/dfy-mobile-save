@@ -65,7 +65,7 @@ class _FilterBtsState extends State<FilterBts> {
           ),
           child: GestureDetector(
             onTap: () {
-              widget.listNftCubit.isShowDropDownStream.add(false);
+              //widget.listNftCubit.isShowDropDownStream.add(false);
             },
             child: Stack(
               children: [

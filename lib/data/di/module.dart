@@ -111,10 +111,10 @@ Dio provideDio({int connectionTimeOut = 60000}) {
             loginFromJson(PrefsService.getWalletLogin()).accessToken;
         options.baseUrl = appConstants.baseUrl;
         options.headers['Content-Type'] = 'application/json';
-        if ((accessToken ?? '').isNotEmpty) {
-          options.headers.remove('Authorization');
-          options.headers['Authorization'] = 'Bearer $accessToken';
-        }
+        options.headers['Authorization'] = 'Bearer $accessToken';
+        // if ((accessToken ?? '').isNotEmpty) {
+        //   options.headers['Authorization'] = 'Bearer $accessToken';
+        // }
         options.headers = {
           'pinata_api_key': 'ac8828bff3bcd1c1b828',
           'pinata_secret_api_key':
