@@ -28,7 +28,7 @@ class Copied extends StatelessWidget {
               height: 83.h,
               child: Center(
                 child: Text(
-                  'Copied address !',//todo text
+                  'Copied address !', //todo text
                   style: textNormal(
                     null,
                     20,

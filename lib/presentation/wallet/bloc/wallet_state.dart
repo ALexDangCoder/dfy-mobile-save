@@ -23,7 +23,7 @@ class NavigatorReset extends WalletState {
   List<Object?> get props => [];
 }
 
-class ImportNftSuccess extends WalletState{
+class ImportNftSuccess extends WalletState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
@@ -45,4 +45,3 @@ class NavigatorFirst extends WalletState {
   @override
   List<Object?> get props => [];
 }
-

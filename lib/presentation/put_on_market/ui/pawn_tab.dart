@@ -28,7 +28,6 @@ class PawnTab extends StatefulWidget {
 
 class _PawnTabState extends State<PawnTab>
     with AutomaticKeepAliveClientMixin<PawnTab> {
-
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
 
@@ -221,8 +220,6 @@ class _PawnTabState extends State<PawnTab>
                         context,
                         MaterialPageRoute(
                           builder: (context) => Approve(
-                            gasLimitInit: 10.0,
-                            needApprove: true,
                             title: S.current.put_on_sale,
                             listDetail: [
                               DetailItemApproveModel(

@@ -29,8 +29,6 @@ extension MapParse on Map {
       return vl;
     }
     return [];
-
-
   }
 
   Map<String, dynamic> mapValueOrEmpty(String key) {
@@ -41,11 +39,19 @@ extension MapParse on Map {
     return {};
   }
 
-  String compareWithZero(String key){
+  String compareWithZero(String key) {
     final int value = intValue(key);
-    if(value == 0){
+    if (value == 0) {
       return '';
     }
     return value.toString();
+  }
+
+  String getStringValue(String key) {
+    String vl = '';
+    try {
+      vl = this[key];
+    } catch (_) {}
+    return vl;
   }
 }

@@ -489,5 +489,19 @@
   "buy_fail": "Mua thất bại",
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
-  "resend_code": "Resend code"
+  "how_to_create_hard_nft": "How to create hard NFT",
+  "skip": "Skip",
+  "step": "Step",
+  "create_an_unauth_hard_nft": "Create an unauthenticated",
+  "send_evalue_to_evaluator": "Send evaluation request",
+  "to_evaluator": "to evaluator",
+  "receive_accept_result_blockchain": "Receive and accept evaluation result",
+  "on_blockchain": "on blockchain",
+  "put_hard_nft_market": "Put hard NFT on",
+  "marketplace": "Marketplace",
+  "to_take_profit": "to take profit",
+  "next": "Next",
+  "get_started": "Get started",
+  "resend_code": "Resend code",
+  "custom_url" : "Custom URL"
 }

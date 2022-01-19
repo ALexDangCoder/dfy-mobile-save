@@ -135,9 +135,8 @@ class NFTRepositoryImpl implements NFTRepository {
   @override
   Future<Result<Evaluation>> getEvaluation(String evaluationId) {
     return runCatchingAsync<EvaluationResponse, Evaluation>(
-          () => _nftClient.getEvaluation(evaluationId),
-          (response) => response.item!.toDomain(),
+      () => _nftClient.getEvaluation(evaluationId),
+      (response) => response.item!.toDomain(),
     );
   }
-
 }

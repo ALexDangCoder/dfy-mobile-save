@@ -1,20 +1,12 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/abi/token.g.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_state.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../main.dart';
 
 enum DurationType { MONTH, WEEK }
 
 class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   PutOnMarketCubit() : super(PutOnMarketInitState());
-
-
 
   // tab sale
 

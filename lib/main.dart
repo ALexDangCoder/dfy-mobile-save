@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:r_crypto/r_crypto.dart';
 
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
@@ -132,11 +135,15 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionWithDataCallback':
         print('signTransactionWithDataCallback ${methodCall.arguments}');
         break;
+      case 'signWalletCallback':
+        print('signWalletCallback ${methodCall.arguments}');
+        break;
     }
   }
 
   void callAllApi() {
     getConfig();
+    setLoginModel();
   }
 
   void getConfig() {
@@ -283,5 +290,20 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  void signWallet(String walletAddress, String nonce) {
+    try {
+      final List<int> listNonce = nonce.codeUnits;
+      final Uint8List bytesNonce = Uint8List.fromList(listNonce);
+      final List<int> listSha3 =
+          rHash.hashList(HashType.KECCAK_256, bytesNonce);
+      final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
+      final data = {
+        "walletAddress": walletAddress,
+        "bytesSha3": bytesSha3,
+      };
+      trustWalletChannel.invokeMethod('signWallet', data);
+    } on PlatformException {}
   }
 }

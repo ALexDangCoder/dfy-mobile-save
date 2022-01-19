@@ -25,7 +25,7 @@ class ResultCollectionSearch extends StatelessWidget {
         ),
         clipBehavior: Clip.hardEdge,
         child: Image.network(
-           collection.avatar,
+          collection.avatar,
           fit: BoxFit.cover,
           errorBuilder: (context, url, error) => const Icon(Icons.error),
         ),
@@ -62,8 +62,6 @@ class ResultNFTSearch extends StatelessWidget {
   }) : super(key: key);
 
   final NftItem nftItem;
-
-
 
   @override
   Widget build(BuildContext context) {
