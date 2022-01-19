@@ -37,9 +37,11 @@ class WalletScreen extends StatefulWidget {
     Key? key,
     required this.index,
     this.wallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
+  final bool isFromConnectWlDialog;
 
   @override
   _WalletState createState() => _WalletState();
@@ -361,6 +363,7 @@ class _WalletState extends State<WalletScreen>
     } else if (widget.index == 2) {
       return LoginScreen(
         walletCubit: cubit,
+        isFromConnectDialog: widget.isFromConnectWlDialog
       );
     } else {
       return const AddWalletFtSeedPharse();

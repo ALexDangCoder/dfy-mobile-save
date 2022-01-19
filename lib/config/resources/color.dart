@@ -94,6 +94,8 @@ const bgTranSubmitColor = Color(0xff585782);
 abstract class AppColor {
   Color bgTranSubmit();
 
+  Color yellowColor();
+
   List<Color> colorFab();
 
   Color bgErrorLoad();
@@ -213,6 +215,8 @@ abstract class AppColor {
   Color darkBgColor();
 
   Color gray3Color();
+
+  Color getPurpleColor();
 }
 
 class LightApp extends AppColor {
@@ -533,6 +537,18 @@ class LightApp extends AppColor {
   @override
   Color whiteOpacityDot5() {
     return whiteColor().withOpacity(0.5);
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement getPurpleColor
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
   }
 }
 
@@ -879,6 +895,18 @@ class DarkApp extends AppColor {
   @override
   Color whiteOpacityDot5() {
     return whiteColor().withOpacity(0.5);
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement getPurpleColor
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
   }
 }
 

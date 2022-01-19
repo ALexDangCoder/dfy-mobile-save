@@ -7,7 +7,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
-import 'package:Dfy/presentation/menu_account/ui/menu_account.dart';
+import 'package:Dfy/presentation/my_account/menu_account/ui/menu_account.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,11 +44,6 @@ class HeaderMarketPlace extends StatelessWidget {
                   ),
                 );
               },
-              onDoubleTap: () => showDialog(
-                  context: context,
-                  builder: (context) => const ConnectWalletDialog(
-                        currentScreen: HomeScreen(),
-                      )),
               onLongPress: () {
                 Navigator.push(
                   context,
