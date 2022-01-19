@@ -449,7 +449,14 @@ class _NFTItemState extends State<NFTItemWidget> {
           ),
         );
       default:
-        return Container();
+        return Text(
+          'Not on market',
+          style: textNormalCustom(
+            AppTheme.getInstance().successTransactionColors(),
+            13,
+            FontWeight.w600,
+          ),
+        );
     }
   }
 }

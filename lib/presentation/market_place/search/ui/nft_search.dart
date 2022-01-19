@@ -433,6 +433,7 @@ class _SearchNFTState extends State<SearchNFT> {
                             MaterialPageRoute(
                               builder: (ctx) => ListNft(
                                 queryAllResult: controller.text,
+                                pageRouter: PageRouter.MARKET,
                               ),
                             ),
                           );
