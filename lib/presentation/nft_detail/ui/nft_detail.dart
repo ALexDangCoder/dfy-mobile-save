@@ -771,7 +771,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: Row(
               children: [
                 Expanded(
-                  child: _buildButtonBuyOut(context),
+                  child: _buildButtonBuyOut(context, nftOnAuction),
                 ),
                 SizedBox(
                   width: 23.w,

@@ -17,6 +17,7 @@ Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
                   builder: (context) => PlaceBid(
                     nftOnAuction: nftOnAuction,
                     balance: value,
+                    typeBid: TypeBid.PLACE_BID,
                   ),
                 ),
               ),
@@ -52,7 +53,7 @@ Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
   }
 }
 
-Widget _buildButtonBuyOut(BuildContext context) {
+Widget _buildButtonBuyOut(BuildContext context, NFTOnAuction nftOnAuction) {
   return ButtonTransparent(
     child: Text(
       S.current.buy_out,
@@ -62,11 +63,22 @@ Widget _buildButtonBuyOut(BuildContext context) {
         FontWeight.w700,
       ),
     ),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OfferDetailScreen(),
+    onPressed: () async {
+      await bloc
+          .getBalanceToken(
+        ofAddress: bloc.wallets.first.address ?? '',
+        tokenAddress: bloc.nftOnAuction.token ?? '',
+      )
+          .then(
+            (value) => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaceBid(
+              nftOnAuction: nftOnAuction,
+              balance: value,
+              typeBid: TypeBid.BUY_OUT,
+            ),
+          ),
         ),
       );
     },
