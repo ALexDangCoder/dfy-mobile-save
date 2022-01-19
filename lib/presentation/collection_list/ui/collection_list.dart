@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/my_account/create_collection/ui/create_collecti
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
@@ -29,13 +30,16 @@ import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  final String query;
+  String? query;
   String? title;
+  String? addressWallet;
+  final PageRouter typeScreen;
 
   CollectionList({
     Key? key,
-    required this.query,
+    this.query,
     this.title,
+    required this.typeScreen,
   }) : super(key: key);
 
   @override
@@ -57,7 +61,7 @@ class _CollectionListState extends State<CollectionList> {
         collectionBloc.isCanLoadMore.add(true);
         collectionBloc.getListCollection(
           name: collectionBloc.textSearch.value,
-          sortFilter: collectionBloc.sortFilter,
+          sortFilter: collectionBloc.sortFilter, //todo
         );
       }
     }
@@ -72,14 +76,14 @@ class _CollectionListState extends State<CollectionList> {
       widget.title = S.current.collection_list;
     }
 
-    collectionBloc = CollectionBloc();
-
+    collectionBloc = CollectionBloc(widget.typeScreen);
+    collectionBloc.addressWallet = widget.addressWallet;
     searchCollection = TextEditingController();
-    searchCollection.text = widget.query;
-    collectionBloc.textSearch.sink.add(widget.query);
+    searchCollection.text = widget.query ?? '';
+    collectionBloc.textSearch.sink.add(widget.query ?? '');
     _listCollectionController.addListener(_onScroll);
     collectionBloc.getCollection(
-      name: widget.query.trim(),
+      name: widget.query?.trim(),
       sortFilter: collectionBloc.sortFilter,
     );
 
@@ -171,7 +175,7 @@ class _CollectionListState extends State<CollectionList> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (!collectionBloc.isMyAcc) {
+                        if (collectionBloc.typeScreen == PageRouter.MARKET) {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
@@ -295,6 +299,8 @@ class _CollectionListState extends State<CollectionList> {
                                                                   .value[index]
                                                                   .addressCollection ??
                                                               '',
+                                                      typeScreen:
+                                                          widget.typeScreen,
                                                     );
                                                   },
                                                 ),

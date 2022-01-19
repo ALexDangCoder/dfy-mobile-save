@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
-import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,17 +18,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
-  bool isMyAcc = false;
+  PageRouter typeScreen;
 
-  CollectionBloc() : super(CollectionState()) {
-    final login = PrefsService.getWalletLogin();
-    final LoginModel myLogin = loginFromJson(login);
-    if (myLogin.accessToken?.isEmpty ?? false) {
-      isMyAcc = false;
-    } else {
-      isMyAcc = true;
-    }
-  }
+  CollectionBloc(this.typeScreen) : super(CollectionState());
 
   static const int HIGHEST_TRADING_VOLUME = 0;
   static const int LOWEST_TRADING_VOLUME = 1;
@@ -212,7 +204,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       nextPage = 2;
     }
     late final Result<List<CollectionMarketModel>> result;
-    if (isMyAcc) {
+    if (typeScreen==PageRouter.MY_ACC) {
       result = await _collectionDetailRepository.getListCollection(
         name: name,
         sort: sortFilter,
@@ -257,7 +249,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
     late final Result<List<CollectionMarketModel>> result;
-    if (isMyAcc) {
+    if (typeScreen==PageRouter.MY_ACC) {
       if (collectionType?.isNaN ?? false) {
         result = await _collectionDetailRepository.getListCollection(
           name: name,

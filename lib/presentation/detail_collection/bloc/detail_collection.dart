@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/market_place/collection_detail_filter_model.dar
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,10 @@ import 'package:rxdart/rxdart.dart';
 import 'detail_collection_state.dart';
 
 class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
+  final PageRouter typeScreen;
+
+  DetailCollectionBloc(this.typeScreen) : super(CollectionDetailState());
+
 // fillter nft
   static const int PUT_ON_MARKET = 0;
   static const int TRANSFER_ACTIVITY = 1;
@@ -87,8 +92,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       BehaviorSubject.seeded([]);
   BehaviorSubject<CollectionDetailModel> collectionDetailModel =
       BehaviorSubject.seeded(CollectionDetailModel());
-
-  DetailCollectionBloc() : super(CollectionDetailState());
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -321,7 +324,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listViewTypeFilterNft.clear();
     listViewTypeFilterNft.addAll([false, false]);
     listViewTypeFilterNftStream.add(listViewTypeFilterNft);
-    owner=ALL_FILTER_NFT;
+    owner = ALL_FILTER_NFT;
   }
 
   Future<void> getListFilterCollectionDetail({
@@ -392,7 +395,18 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         if (res.isBlank ?? false) {
           statusNft.add(ERORR);
         } else {
-          listNft.add(res);
+          if (typeScreen == PageRouter.MARKET) {
+            final List<NftMarket> listNftMyAcc = [];
+            for (final NftMarket value in res) {
+              if (value.marketType == MarketType.NOT_ON_MARKET) {
+              } else {
+                listNftMyAcc.add(value);
+              }
+            }
+            listNft.add(listNftMyAcc);
+          } else {
+            listNft.add(res);
+          }
           statusNft.add(SUCCESS);
         }
       },
