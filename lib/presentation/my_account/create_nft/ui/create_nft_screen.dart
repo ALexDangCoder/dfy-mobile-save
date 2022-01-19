@@ -69,13 +69,13 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                     if (state is TypeNFT) {
                       final List<TypeNFTModel> list = state.listSoftNft;
                       return GridView.builder(
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: list.length,
                         shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 3.w / 4.h,
                         ),
                         itemBuilder: (context, index) {
                           return nftItem(
@@ -83,6 +83,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                             typeNFTModel: list[index],
                           );
                         },
+                        itemCount: list.length,
                       );
                     } else {
                       return const SizedBox.shrink();
@@ -144,6 +145,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
   }) {
     final bool isActive = typeNFTModel.standard == 0;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
           onTap: () {
@@ -186,33 +188,29 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
             ),
           ),
         ),
-        spaceH12,
-        Flexible(
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              unselectedWidgetColor: isActive
-                  ? AppTheme.getInstance().whiteColor()
-                  : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
-            ),
-            child: StreamBuilder<String>(
-              stream: widget.cubit.selectIdSubject,
-              builder: (context, snapshot) {
-                return Radio<String>(
-                  splashRadius: isActive ? null : 0,
-                  activeColor: AppTheme.getInstance().fillColor(),
-                  value: typeNFTModel.id ?? '',
-                  groupValue: widget.cubit.selectedId,
-                  onChanged: (value) {
-                    if (isActive) {
-                      widget.cubit.changeId(value ?? '');
-                    }
-                  },
-                );
-              },
-            ),
+        Theme(
+          data: Theme.of(context).copyWith(
+            unselectedWidgetColor: isActive
+                ? AppTheme.getInstance().whiteColor()
+                : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
+          ),
+          child: StreamBuilder<String>(
+            stream: widget.cubit.selectIdSubject,
+            builder: (context, snapshot) {
+              return Radio<String>(
+                splashRadius: isActive ? null : 0,
+                activeColor: AppTheme.getInstance().fillColor(),
+                value: typeNFTModel.id ?? '',
+                groupValue: widget.cubit.selectedId,
+                onChanged: (value) {
+                  if (isActive) {
+                    widget.cubit.changeId(value ?? '');
+                  }
+                },
+              );
+            },
           ),
         ),
-        spaceH12,
         Text(
           getName(typeNFTModel.name ?? ''),
           style: textCustom(
