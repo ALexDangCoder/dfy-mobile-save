@@ -10,7 +10,6 @@ class PrefsService {
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
   static const _PREF_LIST_TOKEN_SUPPORT = '';
-  static const _PREF_IS_LOGIN = 'pref_is_login';
 
   static SharedPreferences? _prefsInstance;
 

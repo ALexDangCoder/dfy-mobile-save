@@ -7,7 +7,6 @@ import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart'
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/market_place/nonce_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
@@ -20,7 +19,6 @@ import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
-import 'package:Dfy/data/services/market_place/nonce_service.dart';
 import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
@@ -54,11 +52,6 @@ void configureDependencies() {
   Get.put(MarketPlaceHomeClient(provideDio()));
   Get.put<MarketPlaceRepository>(
     MarketPlaceImpl(Get.find()),
-  );
-  //nonce
-  Get.put(NonceClient(provideDio()));
-  Get.put<NonceRepository>(
-    NonceImpl(Get.find()),
   );
   //login
   Get.put(LoginClient(provideDio()));
@@ -103,23 +96,19 @@ Dio provideDio({int connectionTimeOut = 60000}) {
   );
   final dio = Dio(options);
   dio.transformer = FlutterTransformer();
+  final walletLoginJson = PrefsService.getWalletLogin();
+  final accessToken = loginFromJson(walletLoginJson).accessToken ?? '';
   dio.interceptors.add(
     InterceptorsWrapper(
-      onRequest:
-          (RequestOptions options, RequestInterceptorHandler handler) async {
-        final accessToken =
-            loginFromJson(PrefsService.getWalletLogin()).accessToken;
+      onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         options.baseUrl = appConstants.baseUrl;
-        options.headers['Content-Type'] = 'application/json';
-        if ((accessToken ?? '').isNotEmpty) {
-          options.headers.remove('Authorization');
+        if (accessToken.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $accessToken';
         }
-        options.headers = {
-          'pinata_api_key': 'ac8828bff3bcd1c1b828',
-          'pinata_secret_api_key':
-              'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df'
-        };
+        options.headers['Content-Type'] = 'application/json';
+        options.headers['pinata_api_key'] = 'ac8828bff3bcd1c1b828';
+        options.headers['pinata_secret_api_key'] =
+            'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df';
         return handler.next(options);
       },
       onResponse: (response, handler) {

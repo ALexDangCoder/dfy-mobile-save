@@ -1,5 +1,5 @@
-class NonceModel{
-  String?  data;
+class NonceModel {
+  String? data;
   int? code;
 
   NonceModel({this.data, this.code});

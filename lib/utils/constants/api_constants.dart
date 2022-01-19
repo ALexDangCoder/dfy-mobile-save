@@ -22,8 +22,8 @@ class ApiConstants {
       'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_NONCE =
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
-  static const String LOGIN_EMAIL =
-      '/defi-user-service/public-api/v1.0.0/users/login';
+  static const String LOGIN_MARKET =
+      '/defi-user-service/public-api/v1.0.0/users/mobile/login';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
@@ -77,5 +77,8 @@ class ApiConstants {
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
+
+  //GET PROFILE WHEN LOGIN:
+  static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
 
 }
