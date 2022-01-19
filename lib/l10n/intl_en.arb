@@ -258,6 +258,7 @@
   "ltv_liquid_thres": "LTV Liquidation threshold:",
   "duration": "Duration:",
   "repayment_curr": "Repayment currency:",
+  "enter_repayment_curr": "Enter repayment currency:",
   "recurring_interest": "Recurring interest:",
   "send_offer": "Send Offer",
   "enter_msg": "Enter message",

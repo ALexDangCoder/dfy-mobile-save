@@ -101,14 +101,16 @@ Widget _durationRowOnPawn({
   );
 }
 
-Widget _buildButtonSendOffer(BuildContext context) {
+Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
   return ButtonGradient(
     onPressed: () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) {
-            return const SendOffer();
+            return SendOffer(
+              nftOnPawn: nftOnPawn,
+            );
           },
         ),
       );

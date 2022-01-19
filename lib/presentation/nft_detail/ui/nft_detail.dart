@@ -597,6 +597,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value){
+                pageController.animateToPage(value,
+                    duration: Duration(milliseconds: 5), curve: Curves.ease);
+              },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -607,7 +611,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonSendOffer(context),
+            bottomBar: _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
                 context: context,
