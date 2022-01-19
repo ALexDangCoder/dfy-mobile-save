@@ -16,7 +16,6 @@ class ListPriceTokenResponse extends Equatable {
   @JsonKey(name: 'rows')
   List<PriceTokenResponse>? rows;
 
-
   ListPriceTokenResponse(this.rc, this.rd, this.total, this.rows);
 
   factory ListPriceTokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -26,5 +25,6 @@ class ListPriceTokenResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
+
   List<TokenPrice>? toDomain() => rows?.map((e) => e.toDomain()).toList();
 }

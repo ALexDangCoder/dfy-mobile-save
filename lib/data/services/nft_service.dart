@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
@@ -24,6 +25,11 @@ abstract class NFTClient {
   @GET('${ApiConstants.GET_DETAIL_NFT_AUCTION}{marketId}')
   Future<AuctionResponse> getDetailNFTAuction(
     @Path('marketId') String marketID,
+  );
+
+  @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
+  Future<EvaluationResponse> getEvaluation(
+    @Path('evaluationId') String evaluationId,
   );
 
   @GET(ApiConstants.GET_LIST_TYPE_NFT)

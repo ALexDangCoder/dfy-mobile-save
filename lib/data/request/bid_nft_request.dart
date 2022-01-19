@@ -8,7 +8,6 @@ class BidNftRequest {
   final double bid_value;
   final String txn_hash;
 
-
   BidNftRequest(this.nft_market_id, this.bid_value, this.txn_hash);
 
   factory BidNftRequest.fromJson(Map<String, dynamic> json) =>

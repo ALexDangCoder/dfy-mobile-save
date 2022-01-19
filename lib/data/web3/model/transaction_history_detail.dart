@@ -11,19 +11,18 @@ class TransactionHistoryDetail {
   String? tokenAddress = '';
   String? name = 'Transaction Interaction';
 
-  TransactionHistoryDetail({
-    this.amount,
-    this.status,
-    this.gasFee,
-    this.time,
-    this.txhId,
-    this.from,
-    this.to,
-    this.nonce,
-    this.walletAddress,
-    this.tokenAddress,
-    this.name
-  });
+  TransactionHistoryDetail(
+      {this.amount,
+      this.status,
+      this.gasFee,
+      this.time,
+      this.txhId,
+      this.from,
+      this.to,
+      this.nonce,
+      this.walletAddress,
+      this.tokenAddress,
+      this.name});
 
   TransactionHistoryDetail.init();
 }

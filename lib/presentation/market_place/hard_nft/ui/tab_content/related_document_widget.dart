@@ -1,86 +1,100 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RelatedDocument extends StatelessWidget {
-  const RelatedDocument({Key? key}) : super(key: key);
+  const RelatedDocument({Key? key, required this.evaluation}) : super(key: key);
+  final Evaluation evaluation;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Related documents',
-          style: tokenDetailAmount(
-            color: AppTheme.getInstance().whiteColor(),
-            fontSize: 14,
+    if (evaluation.document?.isNotEmpty ?? false) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Related documents',
+            style: tokenDetailAmount(
+              color: AppTheme.getInstance().whiteColor(),
+              fontSize: 14,
+            ),
           ),
-        ),
-        documentWidget(
-          title: 'GiayPhepKinhDoanh.pdf',
-          type: DocumentType.PDF,
-          createDate: DateTime.now(),
-        ),
-        documentWidget(
-          title: 'dieukhoan.doc',
-          type: DocumentType.DOC,
-          createDate: DateTime.now(),
-        ),
-        documentWidget(
-          title: 'DanhSach.xls',
-          type: DocumentType.XLS,
-          createDate: DateTime.now(),
-        ),
-
-      ],
-    );
+          if (evaluation.document?.isNotEmpty ?? false)
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: evaluation.document!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return documentWidget(
+                  title: evaluation.document![index].name ?? '',
+                  type: evaluation.document![index].type ?? DocumentType.DOC,
+                  createDate: evaluation.evaluatedTime ?? 0,
+                  urlDocument: evaluation.document![index].urlDocument ?? '',
+                );
+              },
+            ),
+        ],
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget documentWidget({
     required String title,
     required DocumentType type,
-    required DateTime createDate,
+    required String urlDocument,
+    required int createDate,
   }) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 12.h,
-        bottom: 12.h,
-      ),
-      height: 61.h,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          sizedSvgImage(
-            w: 24,
-            h: 24,
-            image: type.getIcon,
-          ),
-          spaceW10,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().whiteColor(),
-                  fontSize: 16,
+    return InkWell(
+      onTap: () {
+        launch(urlDocument);
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 12.h,
+          bottom: 12.h,
+        ),
+        height: 61.h,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            sizedSvgImage(
+              w: 24,
+              h: 24,
+              image: type.getIcon,
+            ),
+            spaceW10,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().whiteColor(),
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-              Text(
-                'Created on ${createDate.stringFromDateTime}',
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 12,
+                Text(
+                  'Created on ' +
+                      formatDateTime.format(
+                        DateTime.fromMillisecondsSinceEpoch(createDate),
+                      ),
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

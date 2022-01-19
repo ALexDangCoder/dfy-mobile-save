@@ -4,32 +4,38 @@ import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
-class BidTab extends StatelessWidget {
+class BidTab extends StatefulWidget {
   const BidTab({Key? key, required this.listBidding, required this.symbolToken})
       : super(key: key);
   final List<BiddingNft> listBidding;
   final String symbolToken;
 
   @override
+  State<BidTab> createState() => _BidTabState();
+}
+
+class _BidTabState extends State<BidTab> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       physics: const ScrollPhysics(),
-      itemCount: listBidding.length,
+      itemCount: widget.listBidding.length,
       itemBuilder: (context, index) {
-        return _buildItemBid(listBidding[index]);
+        return _buildItemBid(widget.listBidding[index]);
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Widget _buildItemBid(BiddingNft biddingNft) {
     return BaseItem(
@@ -84,7 +90,7 @@ class BidTab extends StatelessWidget {
                     ),
                     spaceW4,
                     Text(
-                      '${biddingNft.bidValue} $symbolToken',
+                      '${biddingNft.bidValue} ${widget.symbolToken}',
                       style: textNormalCustom(
                         AppTheme.getInstance().textThemeColor(),
                         16,

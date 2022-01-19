@@ -19,7 +19,9 @@ class ListCategoryResponse extends Equatable {
 
   factory ListCategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$ListCategoryResponseFromJson(json);
+
   Map<String, dynamic> toJson() => _$ListCategoryResponseToJson(this);
+
   @override
   List<Object?> get props => [];
 }
@@ -46,10 +48,11 @@ class CategoryResponse {
   CategoryResponse(this.id, this.name, this.description, this.avatarCid,
       this.bannerCid, this.createAt, this.updateAt, this.totalCollection);
 
-
   factory CategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$CategoryResponseFromJson(json);
+
   Map<String, dynamic> toJson() => _$CategoryResponseToJson(this);
+
   Category toDomain() => Category(
         id,
         name,

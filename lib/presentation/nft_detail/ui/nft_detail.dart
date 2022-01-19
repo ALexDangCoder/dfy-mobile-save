@@ -5,15 +5,16 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/main_screen/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
@@ -38,6 +39,7 @@ import 'package:Dfy/widgets/count_down_view/ui/nft_countdownn.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +48,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
-
 part 'component.dart';
-
 part 'pawn.dart';
-
 part 'sale.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
@@ -79,13 +78,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final List<Widget> _tabPage;
   late final List<Widget> _tabTit;
   late final TabController _tabController;
-  late final NFTDetailBloc bloc;
   late final String walletAddress;
+  final PageController pageController = PageController();
+  final NFTDetailBloc bloc = NFTDetailBloc();
 
   @override
   void initState() {
     super.initState();
-    bloc = NFTDetailBloc();
     trustWalletChannel
         .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
     bloc.nftMarketId = widget.marketId ?? '';
@@ -121,7 +120,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc()),
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                return EvaluationTab(
+                  evaluation: snapshot.data ?? Evaluation(),
+                );
+              },
+            ),
           StreamBuilder<List<BiddingNft>>(
             stream: bloc.listBiddingStream,
             builder: (
@@ -176,7 +185,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc())
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                return EvaluationTab(
+                  evaluation: snapshot.data ?? Evaluation(),
+                );
+              },
+            ),
         ];
         _tabTit = [
           Tab(
@@ -216,7 +235,45 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
-            EvaluationTab(bloc: HardNFTBloc()),
+            StreamBuilder<Evaluation>(
+              stream: bloc.evaluationStream,
+              builder: (
+                context,
+                AsyncSnapshot<Evaluation> snapshot,
+              ) {
+                if (snapshot.data?.id!.isNotEmpty ?? false) {
+                  return EvaluationTab(
+                    evaluation: snapshot.data!,
+                  );
+                } else {
+                  return Center(
+                    child: ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(vertical: 100.h),
+                      children: [
+                        Center(
+                          child: sizedPngImage(
+                            w: 94,
+                            h: 94,
+                            image: ImageAssets.icNoTransaction,
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            S.current.no_transaction,
+                            style: tokenDetailAmount(
+                              color: AppTheme.getInstance()
+                                  .currencyDetailTokenColor(),
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
           StreamBuilder<List<OfferDetail>>(
             stream: bloc.listOfferStream,
             builder: (
@@ -303,11 +360,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: objSale.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value,
+                    duration: Duration(milliseconds: 5), curve: Curves.ease);
+              },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -321,6 +383,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: _buildButtonBuyOutOnSale(
               context,
               bloc,
+              objSale,
               objSale.isBoughtByOther ?? false,
             ),
             content: [
@@ -378,7 +441,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                     ],
                                   ),
                                   textActiveButton: S.current.cancel_sale,
-                                  gasLimitInit: double.parse(bloc.gasLimit),
                                   typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
                                 )),
                       );
@@ -393,6 +455,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   }
                 },
                 child: _nameNFT(
+                  context: context,
                   title: objSale.name ?? '',
                   quantity: objSale.totalCopies ?? 1,
                   url: objSale.image ?? '',
@@ -527,7 +590,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
@@ -545,6 +609,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             bottomBar: _buildButtonSendOffer(context),
             content: [
               _nameNFT(
+                context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
               ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
@@ -679,11 +744,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             title: nftOnAuction.name ?? '',
-            tabBarView: TabBarView(
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
               controller: _tabController,
               children: _tabPage,
             ),
             tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value,
+                    duration: Duration(milliseconds: 5), curve: Curves.ease);
+              },
               controller: _tabController,
               labelColor: Colors.white,
               unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
@@ -712,12 +782,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                       nftOnAuction.endTime ?? 0,
                     ),
                     bloc,
+                    nftOnAuction,
                   ),
                 ),
               ],
             ),
             content: [
               _nameNFT(
+                context: context,
                 title: nftOnAuction.name ?? '',
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: nftOnAuction.fileCid ?? '',

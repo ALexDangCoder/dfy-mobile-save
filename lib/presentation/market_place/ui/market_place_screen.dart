@@ -2,16 +2,20 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
-import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_featured.dart';
-import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_explore_category.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_buy_sell_collectible.dart';
+import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_featured.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_featured_soft.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_hard.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_hot_auction.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_on_pawn.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_on_sale.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_outstanding_collection.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
+import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -166,8 +170,30 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                 floatingActionButton: Padding(
                   padding: EdgeInsets.only(bottom: 114.h),
                   child: FABMarketBase(
-                    collectionCallBack: () {},
-                    nftCallBack: () {},
+                    collectionCallBack: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreateCollectionScreen(
+                              bloc: CreateCollectionCubit(),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    nftCallBack: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreateNFTScreen(
+                              cubit: CreateNftCubit(),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
                 body: Container(

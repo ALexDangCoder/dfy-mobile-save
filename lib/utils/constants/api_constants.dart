@@ -12,6 +12,8 @@ class ApiConstants {
   static const String GET_PRICE_TOKEN_BY_SYMBOL = '/nft-market-svc/public-api/market/coin-price';
   static const String GET_DETAIL_NFT_AUCTION =
       '/nft-market-svc/public-api/auction/detail/';
+  static const String GET_EVALUATION_HARD_NFT =
+      '/hard-nft-svc/public-api/evaluations/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
       '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
@@ -21,7 +23,7 @@ class ApiConstants {
   static const String GET_NONCE =
       '/defi-user-service/public-api/v1.0.0/users/nonce?';
   static const String LOGIN_EMAIL =
-      '/defi-user-service/public-api/v1.0.0/users/nonce?';
+      '/defi-user-service/public-api/v1.0.0/users/login';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
@@ -71,5 +73,9 @@ class ApiConstants {
   //cacel sale
   static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
   static const String BID_NFT = '/nft-market-svc/api/auction/bid';
+
+  //CREATE COLLECTION
+  static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
+  static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
 
 }

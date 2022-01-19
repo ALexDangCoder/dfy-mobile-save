@@ -25,6 +25,7 @@ class BiddingResponse extends Equatable {
 
   List<BiddingNft>? toDomain() => item?.map((e) => e.toDomain()).toList();
 }
+
 @JsonSerializable()
 class DetailBiddingResponse {
   @JsonKey(name: 'auction_id')
@@ -54,6 +55,7 @@ class DetailBiddingResponse {
     this.time,
     this.txnHash,
   );
+
   factory DetailBiddingResponse.fromJson(Map<String, dynamic> json) =>
       _$DetailBiddingResponseFromJson(json);
 
@@ -62,13 +64,13 @@ class DetailBiddingResponse {
   List<Object?> get props => [];
 
   BiddingNft toDomain() => BiddingNft(
-    auctionId: auctionId,
-    bidValue: bidValue,
-    biddingAccount: biddingAccount,
-    biddingWallet: biddingWallet,
-    nftRefId: nftRefId,
-    status: status,
-    time: time,
-    txnHash: txnHash,
-  );
+        auctionId: auctionId,
+        bidValue: bidValue,
+        biddingAccount: biddingAccount,
+        biddingWallet: biddingWallet,
+        nftRefId: nftRefId,
+        status: status,
+        time: time,
+        txnHash: txnHash,
+      );
 }

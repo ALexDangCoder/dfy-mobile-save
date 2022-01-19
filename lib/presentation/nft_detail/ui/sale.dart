@@ -71,29 +71,31 @@ Container _priceContainerOnSale({
 Widget _buildButtonBuyOutOnSale(
   BuildContext context,
   NFTDetailBloc bloc,
+  NftMarket nftMarket,
   bool isBought,
 ) {
   return ButtonGradient(
     onPressed: () async {
-      if(isBought){
-        _showDialog(context);
-      }
-      else{
+      if (isBought) {
+        _showDialog(context, nftMarket);
+      } else {
         await bloc
             .getBalanceToken(
-          ofAddress: bloc.wallets.first.address ?? '',
-          tokenAddress: bloc.nftMarket.token ?? '',
-        )
+              ofAddress: bloc.wallets.first.address ?? '',
+              tokenAddress: bloc.nftMarket.token ?? '',
+            )
             .then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BuyNFT(
-                balance: value,
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BuyNFT(
+                    nftMarket: nftMarket,
+                    balance: value,
+                    walletAddress: bloc.wallets.first.address ?? '',
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
       }
     },
     gradient: RadialGradient(
@@ -112,7 +114,7 @@ Widget _buildButtonBuyOutOnSale(
   );
 }
 
-void _showDialog(BuildContext context) {
+void _showDialog(BuildContext context, NftMarket nftMarket) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -220,7 +222,9 @@ void _showDialog(BuildContext context) {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BuyNFT(
+                                nftMarket: nftMarket,
                                 balance: value,
+                                walletAddress: bloc.wallets.first.address ?? '',
                               ),
                             ),
                           ),

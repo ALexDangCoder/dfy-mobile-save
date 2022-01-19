@@ -35,32 +35,35 @@ class _HistoryTabState extends State<HistoryTab> {
   Widget build(BuildContext context) {
     if (widget.listHistory.isEmpty) {
       return Center(
-        child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 100.h),
-          children: [
-            Center(
-              child: sizedPngImage(
-                w: 94,
-                h: 94,
-                image: ImageAssets.icNoTransaction,
-              ),
-            ),
-            Center(
-              child: Text(
-                S.current.no_transaction,
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 20,
+        child: SizedBox(
+          height: 300.h,
+          child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(vertical: 100.h),
+            children: [
+              Center(
+                child: sizedPngImage(
+                  w: 94,
+                  h: 94,
+                  image: ImageAssets.icNoTransaction,
                 ),
               ),
-            ),
-          ],
+              Center(
+                child: Text(
+                  S.current.no_transaction,
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
       return ListView.builder(
-        physics: const BouncingScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.listHistory.length,
         itemBuilder: (context, index) {
@@ -294,10 +297,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -320,10 +323,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.toAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -353,10 +356,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -386,10 +389,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -433,10 +436,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -487,10 +490,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -534,10 +537,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -567,10 +570,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -600,10 +603,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -647,10 +650,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -680,10 +683,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -706,10 +709,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.toAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -760,10 +763,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.fromAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -786,10 +789,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.toAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else
@@ -811,10 +814,10 @@ Widget status(HistoryNFT historyNFT) {
               text: historyNFT.fromAddress!.formatAddress(index: 4),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => launch(
-                  Get.find<AppConstants>().bscScan +
-                      ApiConstants.BSC_SCAN_ADDRESS +
-                      walletAddress,
-                ),
+                      Get.find<AppConstants>().bscScan +
+                          ApiConstants.BSC_SCAN_ADDRESS +
+                          walletAddress,
+                    ),
               style: richTextBlue,
             ),
           ],
@@ -829,10 +832,10 @@ Widget status(HistoryNFT historyNFT) {
                 text: historyNFT.walletAddress!.formatAddress(index: 4),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => launch(
-                    Get.find<AppConstants>().bscScan +
-                        ApiConstants.BSC_SCAN_ADDRESS +
-                        walletAddress,
-                  ),
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
                 style: richTextBlue,
               )
             else

@@ -42,7 +42,7 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
-const borderApprovedButton  = Color(0xff39984E);
+const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
@@ -78,6 +78,9 @@ const divideColor = Color(0xFF8f8fad);
 const unselectedTabLabel = Color(0xFF9997FF);
 const bgErrorLoadData = Color(0xFF474666);
 const bgTextField = Color(0x80A7A7A7);
+const yellowOpacity = Color(0x1AE4AC1A);
+const darkColor = Color(0xFF33324C);
+const grayBarColor = Color(0xFF828282);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
@@ -90,6 +93,8 @@ const bgTranSubmitColor = Color(0xff585782);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgTranSubmit();
+
+  Color yellowColor();
 
   List<Color> colorFab();
 
@@ -159,6 +164,8 @@ abstract class AppColor {
 
   Color textThemeColor();
 
+  Color whiteOpacityDot5();
+
   Color suffixColor();
 
   Color errorColorButton();
@@ -200,7 +207,16 @@ abstract class AppColor {
   List<Color> listBackgroundMarketColor();
 
   Color bgTextFormField();
+
   Color bgProgressingColors();
+
+  Color yellowOpacity10();
+
+  Color darkBgColor();
+
+  Color gray3Color();
+
+  Color getPurpleColor();
 }
 
 class LightApp extends AppColor {
@@ -462,6 +478,7 @@ class LightApp extends AppColor {
   Color bgTextFormField() {
     return bgTextField;
   }
+
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -470,13 +487,13 @@ class LightApp extends AppColor {
   @override
   Color whiteWithOpacitySevenZero() {
     // TODO: implement whiteWithOpacitySevenZero
-   return Colors.white.withOpacity(0.7);
+    return Colors.white.withOpacity(0.7);
   }
 
   @override
   Color amountTextColor() {
     // TODO: implement amountTextColor
-  return amountColor;
+    return amountColor;
   }
 
   @override
@@ -501,6 +518,38 @@ class LightApp extends AppColor {
   List<Color> colorFab() {
     // TODO: implement colorFab
     return colorsFab;
+  }
+
+  @override
+  Color yellowOpacity10() {
+    return yellowOpacity;
+  }
+
+  @override
+  Color darkBgColor() {
+    return darkColor;
+  }
+
+  @override
+  Color gray3Color() {
+    return grayBarColor;
+  }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement getPurpleColor
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
   }
 }
 
@@ -787,6 +836,7 @@ class DarkApp extends AppColor {
   Color bgTextFormField() {
     return bgTextField;
   }
+
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();
@@ -817,6 +867,21 @@ class DarkApp extends AppColor {
   }
 
   @override
+  Color yellowOpacity10() {
+    return yellowOpacity;
+  }
+
+  @override
+  Color darkBgColor() {
+    return darkColor;
+  }
+
+  @override
+  Color gray3Color() {
+    return grayBarColor;
+  }
+
+  @override
   Color bgProgressingColors() {
     // TODO: implement bgProgressingColors
     throw UnimplementedError();
@@ -826,6 +891,23 @@ class DarkApp extends AppColor {
   List<Color> colorFab() {
     // TODO: implement colorFab
     return colorsFab;
+  }
+
+  @override
+  Color whiteOpacityDot5() {
+    return whiteColor().withOpacity(0.5);
+  }
+
+  @override
+  Color getPurpleColor() {
+    // TODO: implement getPurpleColor
+    return purple;
+  }
+
+  @override
+  Color yellowColor() {
+    // TODO: implement yellowColor
+    return fillYellowColor;
   }
 }
 

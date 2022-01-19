@@ -55,23 +55,23 @@ class _CardNFTState extends State<CardNFT> {
               borderRadius: BorderRadius.all(Radius.circular(10.r)),
               child: (widget.objNFT.img ?? '').isEmpty
                   ? Container(
-                color: AppTheme.getInstance().selectDialogColor(),
-                child: Center(
-                  child: Text(
-                    '#${widget.objNFT.id ?? 'NFT ID'}',
-                    style: textNormal(null, null),
-                  ),
-                ),
-              )
+                      color: AppTheme.getInstance().selectDialogColor(),
+                      child: Center(
+                        child: Text(
+                          '#${widget.objNFT.id ?? 'NFT ID'}',
+                          style: textNormal(null, null),
+                        ),
+                      ),
+                    )
                   : CachedNetworkImage(
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().bgBtsColor(),
-                  ),
-                ),
-                imageUrl: widget.objNFT.img ?? '',
-                fit: BoxFit.cover,
-              ),
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                        ),
+                      ),
+                      imageUrl: widget.objNFT.img ?? '',
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           SizedBox(
@@ -95,23 +95,23 @@ class _CardNFTState extends State<CardNFT> {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: url.isEmpty
                   ? Container(
-                color: AppTheme.getInstance().selectDialogColor(),
-                child: Center(
-                  child: Text(
-                    '#${widget.objNFT.id ?? 'NFT ID'}',
-                    style: textNormal(null, 20),
-                  ),
-                ),
-              )
+                      color: AppTheme.getInstance().selectDialogColor(),
+                      child: Center(
+                        child: Text(
+                          '#${widget.objNFT.id ?? 'NFT ID'}',
+                          style: textNormal(null, 20),
+                        ),
+                      ),
+                    )
                   : CachedNetworkImage(
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.getInstance().bgBtsColor(),
-                  ),
-                ),
-                imageUrl: url,
-                fit: BoxFit.cover,
-              ),
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                        ),
+                      ),
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
         );
