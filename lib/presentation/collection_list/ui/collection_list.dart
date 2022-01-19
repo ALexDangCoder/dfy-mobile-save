@@ -31,13 +31,11 @@ import 'item_collection_load.dart';
 class CollectionList extends StatefulWidget {
   final String query;
   String? title;
-  final bool isMyAcc;
 
   CollectionList({
     Key? key,
     required this.query,
     this.title,
-    required this.isMyAcc,
   }) : super(key: key);
 
   @override
@@ -73,9 +71,8 @@ class _CollectionListState extends State<CollectionList> {
     } else {
       widget.title = S.current.collection_list;
     }
-    collectionBloc = CollectionBloc(
-      isMyAcc: widget.isMyAcc,
-    );
+
+    collectionBloc = CollectionBloc();
 
     searchCollection = TextEditingController();
     searchCollection.text = widget.query;
@@ -174,7 +171,7 @@ class _CollectionListState extends State<CollectionList> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (!widget.isMyAcc) {
+                        if (!collectionBloc.isMyAcc) {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
@@ -298,8 +295,6 @@ class _CollectionListState extends State<CollectionList> {
                                                                   .value[index]
                                                                   .addressCollection ??
                                                               '',
-                                                      walletAddress:
-                                                          'alo alo alo', //todo address wallet
                                                     );
                                                   },
                                                 ),

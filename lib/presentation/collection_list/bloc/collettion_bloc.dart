@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -16,9 +18,17 @@ import 'package:rxdart/rxdart.dart';
 import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
-  final bool isMyAcc;
+  bool isMyAcc = false;
 
-  CollectionBloc({required this.isMyAcc}) : super(CollectionState());
+  CollectionBloc() : super(CollectionState()) {
+    final login = PrefsService.getWalletLogin();
+    final LoginModel myLogin = loginFromJson(login);
+    if (myLogin.accessToken?.isEmpty ?? false) {
+      isMyAcc = false;
+    } else {
+      isMyAcc = true;
+    }
+  }
 
   static const int HIGHEST_TRADING_VOLUME = 0;
   static const int LOWEST_TRADING_VOLUME = 1;

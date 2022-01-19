@@ -24,10 +24,8 @@ import 'widget/body_collection.dart';
 class DetailCollection extends StatefulWidget {
   const DetailCollection({
     Key? key,
-    this.walletAddress,
     required this.collectionAddress,
   }) : super(key: key);
-  final String? walletAddress;
   final String collectionAddress;
 
   @override
@@ -53,13 +51,6 @@ class _DetailCollectionState extends State<DetailCollection>
 
   @override
   Widget build(BuildContext context) {
-    bool isOwner = false;
-    if (detailCollectionBloc.arg.owner == widget.walletAddress) {
-      isOwner = true;
-    } else {
-      isOwner = false;
-    }
-
     return BlocBuilder<DetailCollectionBloc, CollectionDetailState>(
       bloc: detailCollectionBloc,
       builder: (context, state) {
@@ -208,7 +199,6 @@ class _DetailCollectionState extends State<DetailCollection>
               }
             },
             child: BaseCustomScrollViewDetail(
-              isOwner: isOwner,
               initHeight: 200.h,
               title: list.name ?? '',
               imageVerified: ImageAssets.ic_dfy,
@@ -333,7 +323,6 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   ActivityCollection(
                     detailCollectionBloc: detailCollectionBloc,
-                    addressWallet: widget.walletAddress ?? '',
                   ),
                 ],
               ),

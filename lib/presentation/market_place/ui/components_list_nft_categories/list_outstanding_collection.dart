@@ -52,7 +52,6 @@ class ListOutstandingCollection extends StatelessWidget {
                             builder: (ctx) => CollectionList(
                               query: '',
                               title: '',
-                              isMyAcc: true,
                             ),
                           ),
                         );

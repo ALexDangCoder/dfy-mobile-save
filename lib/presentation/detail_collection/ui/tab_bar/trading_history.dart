@@ -13,10 +13,8 @@ class ActivityCollection extends StatefulWidget {
   const ActivityCollection({
     Key? key,
     required this.detailCollectionBloc,
-    required this.addressWallet,
   }) : super(key: key);
   final DetailCollectionBloc detailCollectionBloc;
-  final String addressWallet;
 
   @override
   _ActivityCollectionState createState() => _ActivityCollectionState();
