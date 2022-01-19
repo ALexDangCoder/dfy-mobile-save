@@ -4,8 +4,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
+import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
+import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
@@ -13,7 +15,9 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../main.dart';
 import 'component/Expansion_title_custom.dart';
 
 class MenuAccount extends StatefulWidget {
@@ -26,15 +30,15 @@ class MenuAccount extends StatefulWidget {
 class _MenuAccountState extends State<MenuAccount> {
   MenuAccountCubit cubit = MenuAccountCubit();
 
-  int currentTab = -1;
-  int selectedTab = -1;
-
   @override
   void initState() {
     // TODO: implement initState
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     for (int i = 0; i < listItemMenu.length; i++) {
       openTab.add(false);
     }
+    cubit.initData();
     super.initState();
   }
 
@@ -162,6 +166,13 @@ class _MenuAccountState extends State<MenuAccount> {
   ];
   List<bool> openTab = [];
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cubit.dispose();
+    super.dispose();
+  }
+
   //todo
   @override
   Widget build(BuildContext context) {
@@ -203,42 +214,78 @@ class _MenuAccountState extends State<MenuAccount> {
                       ),
                       child: Column(
                         children: [
-                          StreamBuilder<String?>(
-                            stream: cubit.addressWalletStream,
-                            builder: (context, snapshot) {
-                              final data = snapshot.data;
-                              if (data == null) {
-                                return const SizedBox(
-                                  height: 0,
-                                );
-                              } else {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const SizedBox(
-                                      height: 6,
-                                    ),
-                                    SizedBox(
-                                      height: 72,
-                                      width: 72,
-                                      child: Image.asset(
-                                        ImageAssets.ic_profile_circle,
+                          BlocBuilder<MenuAccountCubit, MenuAccountState>(
+                              bloc: cubit,
+                              builder: (context, state) {
+                                if (state is LogonState) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      StreamBuilder<String?>(
+                                        stream: cubit.addressWalletStream,
+                                        builder: (context, snapshot) {
+                                          final data = snapshot.data;
+                                          if (data == null) {
+                                            return const SizedBox(
+                                              height: 0,
+                                            );
+                                          } else {
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                SizedBox(
+                                                  height: 72,
+                                                  width: 72,
+                                                  child: Image.asset(
+                                                    ImageAssets
+                                                        .ic_profile_circle,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Text(
+                                                  data,
+                                                  style: textNormalCustom(
+                                                    AppTheme.getInstance()
+                                                        .whiteColor(),
+                                                    16,
+                                                    FontWeight.w400,
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          }
+                                        },
                                       ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      data,
-                                      style: textNormalCustom(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16,
-                                        FontWeight.w400,
+                                      StreamBuilder<String?>(
+                                        stream: cubit.emailStream,
+                                        builder: (context, snapshot) {
+                                          final data = snapshot.data;
+                                          if (data == null) {
+                                            return const SizedBox(
+                                              height: 0,
+                                            );
+                                          } else {
+                                            return Text(
+                                              data,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .whiteColor(),
+                                                16,
+                                                FontWeight.w400,
+                                              ),
+                                            );
+                                          }
+                                        },
                                       ),
-                                    )
-                                  ],
-                                );
-                              }
-                            },
-                          ),
+                                    ],
+                                  );
+                                } else {
+                                  return const SizedBox(height: 0);
+                                }
+                              }),
                           ...listItemMenu.indexedMap((e, index) {
                             if (e.children.isNotEmpty) {
                               return ExpansionTitleCustom(
@@ -438,13 +485,21 @@ class _MenuAccountState extends State<MenuAccount> {
                 },
                 child: Image.asset(ImageAssets.ic_back),
               ),
-              StreamBuilder<String?>(
-                stream: cubit.addressWalletStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data;
-                  if (data == null) {
+              BlocBuilder<MenuAccountCubit, MenuAccountState>(
+                bloc: cubit,
+                builder: (BuildContext context, state) {
+                  if (state is NoLoginState) {
                     return InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(
+                              index: cubit.getIndexLogin(),
+                            ),
+                          ),
+                        );
+                      },
                       child: Text(
                         S.current.login,
                         style: textNormalCustom(

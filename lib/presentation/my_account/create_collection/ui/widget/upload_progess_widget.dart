@@ -58,7 +58,6 @@ class _UploadProgressState extends State<UploadProgress>
           context,
           MaterialPageRoute(
             builder: (_) => Approve(
-              gasLimitInit: double.parse(widget.bloc.gasLimit),
               createCollectionCubit: widget.bloc,
               listDetail: [
                 DetailItemApproveModel(

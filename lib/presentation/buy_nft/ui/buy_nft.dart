@@ -189,7 +189,7 @@ class BuyNFT extends StatelessWidget {
             contractAddress: nft_sales_address_dev2,
           )
           .then(
-            (value) => Navigator.push(
+            (hexString) => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => Approve(
@@ -254,7 +254,7 @@ class BuyNFT extends StatelessWidget {
                     ],
                   ),
                   textActiveButton: S.current.buy_nft,
-                  gasLimitInit: double.parse(value),
+                  hexString: hexString,
                   typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                 ),
               ),
@@ -271,7 +271,7 @@ class BuyNFT extends StatelessWidget {
           stream: nftDetailCubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () {
-            //refresh();
+            refresh();
           },
           textEmpty: '',
           child: BaseBottomSheet(
@@ -351,7 +351,7 @@ class BuyNFT extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: ButtonGradient(
                           onPressed: () {
-                            // refresh();
+                            refresh();
                           },
                           gradient: RadialGradient(
                             center: const Alignment(0.5, -0.5),
