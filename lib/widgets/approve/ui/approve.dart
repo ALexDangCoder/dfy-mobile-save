@@ -16,6 +16,7 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
@@ -57,6 +58,7 @@ class Approve extends StatefulWidget {
   final List<DetailItemApproveModel>? listDetail;
   final Widget? warning;
   final Widget? header;
+  final PutOnMarketModel? putOnMarketModel;
   final bool? needApprove;
   final int? flexTitle;
   final int? flexContent;
@@ -86,7 +88,7 @@ class Approve extends StatefulWidget {
     this.createCollectionCubit,
     this.payValue,
     this.tokenAddress,
-    this.hexString,
+    this.hexString, this.putOnMarketModel,
   }) : super(key: key);
 
   @override
@@ -105,6 +107,8 @@ class _ApproveState extends State<Approve> {
   double heightOfBottom = 0;
 
   void initData(TYPE_CONFIRM_BASE typeBase) {
+    cubit.context = context;
+    cubit.putOnMarketModel = widget.putOnMarketModel;
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
     cubit.tokenAddress = widget.tokenAddress ?? '';
@@ -127,7 +131,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
@@ -274,7 +278,7 @@ class _ApproveState extends State<Approve> {
           cubit.showContent();
         }
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         {
           showLoading();
           Timer(const Duration(seconds: 2), () {
@@ -653,7 +657,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:

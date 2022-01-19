@@ -26,7 +26,7 @@ extension CommonExtension on ApproveCubit {
           return nft_factory_dev2;
         }
       default:
-        return '';
+        return nft_sales_address_dev2;
     }
   }
 }

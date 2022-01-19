@@ -6,6 +6,8 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -340,7 +342,15 @@ class _NFTDetailState extends State<NFTDetail> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ComingSoon(),
+                                builder: (context) => PutOnMarket(
+                                  putOnMarketModel: PutOnMarketModel.putOnSale(
+                                    nftTokenId: 4,
+                                    nftId: 'b788bffc-4500-49ab-9f0f-3cca223d5f29',
+                                    txtHash: '0x999509a82815f927b1e5c090684dcec4efceac9827570cb7d34403d9468f929f',
+                                    nftType: 0,
+                                    collectionId: nft.collectionId ?? '',
+                                  ),
+                                ),
                               ),
                             );
                           },

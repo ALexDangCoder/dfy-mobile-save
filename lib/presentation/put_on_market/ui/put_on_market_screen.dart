@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/put_on_market/ui/auction_tab.dart';
 import 'package:Dfy/presentation/put_on_market/ui/pawn_tab.dart';
 import 'package:Dfy/presentation/put_on_market/ui/sale_tab.dart';
@@ -12,9 +13,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PutOnMarket extends StatefulWidget {
   final bool? canSetQuantity;
   final int? quantity;
+  final PutOnMarketModel putOnMarketModel;
 
-  const PutOnMarket({Key? key, this.canSetQuantity = false, this.quantity = 1})
-      : super(key: key);
+  const PutOnMarket({
+    Key? key,
+    this.canSetQuantity = false,
+    this.quantity = 1,
+    required this.putOnMarketModel,
+  }) : super(key: key);
 
   @override
   _PutOnMarketState createState() => _PutOnMarketState();
@@ -112,7 +118,10 @@ class _PutOnMarketState extends State<PutOnMarket>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            SaleTab(cubit: cubit),
+                            SaleTab(
+                              cubit: cubit,
+                              putOnMarketModel: widget.putOnMarketModel,
+                            ),
                             PawnTab(
                               cubit: cubit,
                             ),

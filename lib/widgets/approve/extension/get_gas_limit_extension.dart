@@ -6,8 +6,10 @@ import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/cupertino.dart';
 
 extension GetGasLimit on ApproveCubit {
-  Future<double> getGasLimitByType(
-      {required TYPE_CONFIRM_BASE type, required String hexString,}) async {
+  Future<double> getGasLimitByType({
+    required TYPE_CONFIRM_BASE type,
+    required String hexString,
+  }) async {
     final web3Client = Web3Utils();
     String gasLimit = '';
     switch (type) {
@@ -29,24 +31,38 @@ extension GetGasLimit on ApproveCubit {
           }
           break;
         }
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         {
+          try {
+            gasLimit = await web3Client.getPutOnSaleGasLimit(
+              from: addressWallet ?? '',
+              toContractAddress: getSpender(),
+              context: context,
+              tokenId: 1,
+              price: putOnMarketModel?.price ?? '1',
+              currency: putOnMarketModel?.tokenAddress ?? '',
+              numberOfCopies: putOnMarketModel?.numberOfCopies ?? 1,
+              collectionAddress: putOnMarketModel?.collectionId ?? '',
+            );
+          } catch (e) {
+            AppException(S.current.error, e.toString());
+          }
 
-          gasLimit = '20000';
           break;
         }
-      case TYPE_CONFIRM_BASE.CREATE_COLLECTION : {
-        try {
-          gasLimit = await web3Client.getGasLimitByData(
-            from: addressWallet ?? '',
-            toContractAddress: getSpender(),
-            dataString: hexString,
-          );
-        } catch (e) {
-          AppException(S.current.error, e.toString());
+      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
+        {
+          try {
+            gasLimit = await web3Client.getGasLimitByData(
+              from: addressWallet ?? '',
+              toContractAddress: getSpender(),
+              dataString: hexString,
+            );
+          } catch (e) {
+            AppException(S.current.error, e.toString());
+          }
+          break;
         }
-        break;
-      }
       case TYPE_CONFIRM_BASE.SEND_NFT:
         // TODO: Handle this case.
         break;
@@ -82,7 +98,7 @@ extension GetGasLimit on ApproveCubit {
     );
     gasLimit = double.parse(gasLimitApprove);
     gasLimitFirst = double.parse(gasLimitApprove);
-    gasLimitFirstSubject.sink.add( double.parse(gasLimitApprove));
+    gasLimitFirstSubject.sink.add(double.parse(gasLimitApprove));
     gasPrice = gasPriceFirst;
     showContent();
   }
