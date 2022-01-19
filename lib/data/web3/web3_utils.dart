@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class ImportNftResponse {
   bool isSuccess;
@@ -309,8 +310,7 @@ class Web3Utils {
       );
       return '$gasLimit';
     } else {
-      final abiCode = await DefaultAssetBundle.of(context)
-          .loadString('assets/abi/erc20_abi.json');
+      final abiCode = await rootBundle.loadString('assets/abi/erc20_abi.json');
       final deployContract = DeployedContract(
         ContractAbi.fromJson(abiCode, symbol),
         EthereumAddress.fromHex(contract),
@@ -343,8 +343,7 @@ class Web3Utils {
     required int id,
     required BuildContext context,
   }) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/erc721_abi.json');
+    final abiCode = await rootBundle.loadString('assets/abi/erc721_abi.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, symbol),
       EthereumAddress.fromHex(contract),
@@ -700,8 +699,8 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/SellNFT_ABI_DEV2.json');
+    final abiCode =
+        await rootBundle.loadString('assets/abi/SellNFT_ABI_DEV2.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Sell NFT'),
       EthereumAddress.fromHex(contract),
@@ -714,8 +713,8 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/AuctionNFT_ABI.json');
+    final abiCode =
+        await rootBundle.loadString('assets/abi/AuctionNFT_ABI.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Aunction NFT'),
       EthereumAddress.fromHex(contract),
@@ -728,8 +727,7 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode = await DefaultAssetBundle.of(context)
-        .loadString('assets/abi/erc20_abi.json');
+    final abiCode = await rootBundle.loadString('assets/abi/erc20_abi.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'erc20'),
       EthereumAddress.fromHex(contract),
@@ -741,7 +739,7 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode = await DefaultAssetBundle.of(context)
+    final abiCode = await rootBundle
         .loadString('assets/abi/DefiForYouNFTFactory_ABI_DEV2.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'nftFactory'),
