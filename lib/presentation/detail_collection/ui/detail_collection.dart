@@ -233,7 +233,7 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                   child: InkWell(
                     onTap: () {
-                      if (_tabController.index == DetailCollectionBloc.TABNFT) {
+                      if (_tabController.index == DetailCollectionBloc.TAB_NFT) {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,

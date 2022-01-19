@@ -43,7 +43,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String HTTPS = 'https://';
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
-  static const int TABNFT = 0;
+  static const int TAB_NFT = 0;
   static const int ALL = 0;
   static const int OWNER = 1;
   static const bool ALL_FILTER_NFT = false;
@@ -321,6 +321,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     listViewTypeFilterNft.clear();
     listViewTypeFilterNft.addAll([false, false]);
     listViewTypeFilterNftStream.add(listViewTypeFilterNft);
+    owner=ALL_FILTER_NFT;
   }
 
   Future<void> getListFilterCollectionDetail({
