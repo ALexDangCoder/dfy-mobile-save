@@ -10,5 +10,13 @@ mixin NftMarketRepository {
     String? page,
   });
 
+  Future<Result<List<NftMarket>>> getListNftMyAcc({
+    String? name,
+    String? status,
+    String? nftType,
+    String? collectionId,
+    String? page,
+    String? walletAddress,
+  });
 
 }

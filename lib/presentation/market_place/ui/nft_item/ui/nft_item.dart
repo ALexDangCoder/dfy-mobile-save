@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/market_place/ui/nft_item/bloc/nft_item_cubit.da
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
@@ -37,7 +38,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   DateTime? startTimeAuction;
   DateTime? endTimeAuction;
   late NftItemCubit cubitNft;
-  late Timer timer;
+  Timer? timer;
   bool isShowStartTimeFtText = false;
   late int timeStartStamp;
   String textShowStartFtTime = '';
@@ -91,7 +92,9 @@ class _NFTItemState extends State<NFTItemWidget> {
     if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
       _controller!.dispose();
     }
-    timer.cancel();
+    if(timer != null) {
+      timer?.cancel();
+    }
     super.dispose();
   }
 
@@ -382,6 +385,17 @@ class _NFTItemState extends State<NFTItemWidget> {
     }
   }
 
+  Widget textStartForAuction(String text) {
+    return Text(
+      text,
+      style: textNormalCustom(
+        AppTheme.getInstance().whiteColor(),
+        13,
+        FontWeight.w600,
+      ),
+    );
+  }
+
   Widget playVideo(TypeImage? type) {
     if (type == TypeImage.VIDEO) {
       return Align(
@@ -438,7 +452,7 @@ class _NFTItemState extends State<NFTItemWidget> {
         return Text(
           'Not on market',
           style: textNormalCustom(
-            AppTheme.getInstance().fillColor(),
+            AppTheme.getInstance().successTransactionColors(),
             13,
             FontWeight.w600,
           ),

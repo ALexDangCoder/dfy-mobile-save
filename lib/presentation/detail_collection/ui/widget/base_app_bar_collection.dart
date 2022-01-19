@@ -138,7 +138,7 @@ class BaseSpace extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
+                Positioned(//todo verified
                   bottom: 6.h,
                   right: 6.w,
                   child: isOwner

@@ -28,6 +28,7 @@ mixin CollectionDetailRepository {
     int? size,
     String? nameNft,
     List<int>? listMarketType,
+    bool? owner,
   });
 
   Future<Result<List<CollectionMarketModel>>> getListCollection({
