@@ -159,6 +159,7 @@ class _SaleTabState extends State<SaleTab>
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
+                          needApprove: true,
                           warning: RichText(
                             text: TextSpan(
                               text:
