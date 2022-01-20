@@ -18,14 +18,7 @@ class ConnectWallet extends StatelessWidget {
       floatingActionButton: ButtonLuxuryBigSize(
         title: S.current.connect_wallet,
         isEnable: true,
-        onTap: () => showDialog(
-          context: context,
-          builder: (context) => const ConnectWalletDialog(
-            navigationTo: EmailExisted(
-              email: 'vuhanam',
-            ),
-          ),
-        ),
+        onTap: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BaseBottomSheet(

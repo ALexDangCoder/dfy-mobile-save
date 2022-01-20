@@ -17,7 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
-class CreateSuccessfully extends StatelessWidget {
+class CreateSuccessfully extends StatefulWidget {
   const CreateSuccessfully({
     Key? key,
     required this.bLocCreateSeedPhrase,
@@ -30,6 +30,13 @@ class CreateSuccessfully extends StatelessWidget {
   final KeyType type;
   final String passWord;
 
+  @override
+  State<CreateSuccessfully> createState() => _CreateSuccessfullyState();
+}
+
+class _CreateSuccessfullyState extends State<CreateSuccessfully> {
+
+  //TODO: Vũ code login cho market place
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +52,15 @@ class CreateSuccessfully extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => MainScreen(
                   index: 1,
-                  wallet: wallet,
+                  wallet: widget.wallet,
                 ),
               ),
             );
-            bLocCreateSeedPhrase.setConfig(
-              isAppLock: bLocCreateSeedPhrase.isCheckAppLock.value,
-              isFaceID: bLocCreateSeedPhrase.isCheckTouchID.value,
+            widget.bLocCreateSeedPhrase.setConfig(
+              isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
+              isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
             );
-            bLocCreateSeedPhrase.savePassword(password: passWord);
+            widget.bLocCreateSeedPhrase.savePassword(password: widget.passWord);
           },
           child: Container(
             margin: EdgeInsets.only(
@@ -73,10 +80,10 @@ class CreateSuccessfully extends StatelessWidget {
             height: 8.h,
           ),
           _Body(
-            bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-            type: type,
-            wallet: wallet,
-            passWord: passWord,
+            bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+            type: widget.type,
+            wallet: widget.wallet,
+            passWord: widget.passWord,
           )
         ],
       ),
