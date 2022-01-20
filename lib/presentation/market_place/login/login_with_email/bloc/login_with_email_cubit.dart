@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
@@ -32,8 +31,8 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
 
   void checkValidate(String email) {
     final bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(email);
     if (!emailValid) {
       validateTextSubject.sink.add(S.current.email_invalid);
       return;

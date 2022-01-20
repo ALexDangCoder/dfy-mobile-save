@@ -1,9 +1,11 @@
 import 'package:Dfy/data/response/market_place/login/login_response.dart';
 import 'package:Dfy/data/response/market_place/nonce/nonce_response.dart';
+import 'package:Dfy/data/response/market_place/user_profile/user_profile.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 
 class LoginImpl implements LoginRepository {
@@ -28,9 +30,17 @@ class LoginImpl implements LoginRepository {
   }
 
   @override
-  Future<Result<NonceModel>> getUserProfile() {
-    return runCatchingAsync<NonceResponse, NonceModel>(
+  Future<Result<ProfileModel>> getUserProfile() {
+    return runCatchingAsync<ProfileResponse, ProfileModel>(
           () => _loginClient.getUserProfile(),
+          (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<LoginModel>> refreshToken(String refreshToken) {
+    return runCatchingAsync<LoginResponse, LoginModel>(
+          () => _loginClient.refreshToken(refreshToken),
           (response) => response.toDomain(),
     );
   }

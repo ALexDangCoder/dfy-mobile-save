@@ -8,7 +8,3 @@ class LoginWithEmailInitial extends LoginWithEmailState {
   @override
   List<Object?> get props => [];
 }
-
-
-
-

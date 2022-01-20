@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
@@ -14,14 +11,11 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:r_crypto/r_crypto.dart';
-import 'package:rxdart/rxdart.dart';
+import '../../../../main.dart';
+import 'bloc_creare_seedphrase.dart';
 
-import '../../../main.dart';
-import 'login_cubit.dart';
-
-extension LoginForMarketPlace on LoginCubit {
+extension LoginForMarketPlace on BLocCreateSeedPhrase {
   LoginRepository get _loginRepo => Get.find();
 
   Future<void> loginAndSaveInfo(
@@ -75,18 +69,10 @@ extension LoginForMarketPlace on LoginCubit {
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
-        error: (error) {
-          showError();
-        },
+        error: (error) {},
       );
-    } on PlatformException catch (e) {
-      FToast().showToast(
-        child: Text(S.current.something_went_wrong),
-      );
-      throw AppException(
-        S.current.something_went_wrong,
-        e.message.toString(),
-      );
+    } on PlatformException {
+      //
     }
   }
 
@@ -98,11 +84,7 @@ extension LoginForMarketPlace on LoginCubit {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
-        );
-      },
+      error: (err) {},
     );
   }
 }
