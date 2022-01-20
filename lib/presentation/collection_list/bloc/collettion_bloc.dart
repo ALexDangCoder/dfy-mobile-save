@@ -57,7 +57,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   int nextPage = 1;
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
-  List<CollectionMarketModel> arg = [];
 
   List<String> listAcc = [
     S.current.all,
@@ -204,7 +203,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       nextPage = 2;
     }
     late final Result<List<CollectionMarketModel>> result;
-    if (typeScreen==PageRouter.MY_ACC) {
+    if (typeScreen == PageRouter.MY_ACC) {
       result = await _collectionDetailRepository.getListCollection(
         name: name,
         sort: sortFilter,
@@ -226,7 +225,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
-          list.sink.add([...currentList, ...res]);
+          final List<CollectionMarketModel> listCollection = [];
+          for (final CollectionMarketModel value in res) {
+            if (value.addressCollection?.isEmpty ?? false) {
+            } else {
+              listCollection.add(value);
+            }
+          }
+          list.sink.add([...currentList, ...listCollection]);
         } else {
           isCanLoadMore.add(false);
         }
@@ -249,7 +255,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     isCanLoadMore.add(isLoad);
     emit(LoadingData());
     late final Result<List<CollectionMarketModel>> result;
-    if (typeScreen==PageRouter.MY_ACC) {
+    if (typeScreen == PageRouter.MY_ACC) {
       if (collectionType?.isNaN ?? false) {
         result = await _collectionDetailRepository.getListCollection(
           name: name,
@@ -281,8 +287,18 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           emit(LoadingDataErorr());
         } else {
           emit(LoadingDataSuccess());
-          arg = res.toList();
-          list.sink.add(arg);
+          final List<CollectionMarketModel> listCollection = [];
+          for (final CollectionMarketModel value in res) {
+            if (value.addressCollection?.isEmpty ?? false) {
+              print(
+                  '-------------------------------------------------${value.addressCollection}');
+            } else {
+              print(
+                  '-------------------------------------------------${value.addressCollection}');
+              listCollection.add(value);
+            }
+          }
+          list.sink.add(listCollection);
         }
       },
       error: (error) {
