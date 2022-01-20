@@ -4,18 +4,15 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/fillterCollectionModel.dart';
-import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../main.dart';
 
 class CollectionBloc extends BaseCubit<CollectionState> {
   PageRouter typeScreen;
@@ -55,8 +52,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   BehaviorSubject<List<FilterCollectionModel>> listCategoryStream =
       BehaviorSubject.seeded([]);
   int nextPage = 1;
+  bool checkWalletAddress = false;
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
+
+  WalletAddressRepository get _walletAddressRepository => Get.find();
 
   List<String> listAcc = [
     S.current.all,
@@ -93,6 +93,31 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     getCollection(
       sortFilter: sortFilter,
       name: textSearch.value.trim(),
+    );
+  }
+
+  Future<void> getListWallet() async {
+    final Result<List<WalletAddressModel>> result =
+        await _walletAddressRepository.getListWalletAddress();
+
+    result.when(
+      success: (res) {
+        if (res.isEmpty) {
+        } else {
+          if (res.length < 2) {
+            for (final element in res) {
+              listAcc.add(element.walletAddress ?? '');
+            }
+            checkWalletAddress = false;
+          } else {
+            for (final element in res) {
+              listAcc.add(element.walletAddress ?? '');
+            }
+            checkWalletAddress = true;
+          }
+        }
+      },
+      error: (error) {},
     );
   }
 
@@ -301,33 +326,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         emit(LoadingDataFail());
       },
     );
-  }
-
-  Future<void> getListWallets() async {
-    try {
-      final data = {};
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      //nothing
-    }
-  }
-
-  List<Wallet> listWallet = [];
-
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        for (final element in data) {
-          listWallet.add(Wallet.fromJson(element));
-        }
-        for (final element in listWallet) {
-          listAcc.add(element.address ?? '');
-        }
-        break;
-      default:
-        break;
-    }
   }
 
   void dispone() {

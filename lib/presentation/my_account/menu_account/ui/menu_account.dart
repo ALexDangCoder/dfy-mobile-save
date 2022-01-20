@@ -73,6 +73,7 @@ class _MenuAccountState extends State<MenuAccount> {
             MaterialPageRoute(
               builder: (context) => const CollectionList(
                 typeScreen: PageRouter.MY_ACC,
+                addressWallet: '0xddfff5172a34677967c57b8a33d7b855185f93a1',//todo chuyền data vào đây nhé
               ),
             ),
           );
