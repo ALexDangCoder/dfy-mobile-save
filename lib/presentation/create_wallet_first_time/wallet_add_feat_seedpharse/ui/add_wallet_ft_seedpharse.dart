@@ -70,7 +70,7 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                       },
                     ),
                     SizedBox(height: 39.h),
-                    btnImportSeedPhrase(),
+                    btnImportSeedPhrase(widget.isFromConnectWlDialog),
                   ],
                 ),
               ),
@@ -81,14 +81,16 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
     );
   }
 
-  Widget btnImportSeedPhrase() {
+  Widget btnImportSeedPhrase(bool isFromConnectWlDialog) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const RestoreAccount();
+              return RestoreAccount(
+                isFromConnectWlDialog: isFromConnectWlDialog,
+              );
             },
           ),
         );

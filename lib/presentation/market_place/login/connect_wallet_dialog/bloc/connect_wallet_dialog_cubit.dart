@@ -10,7 +10,9 @@ import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -53,17 +55,19 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
   Wallet? wallet;
 
-  double? balance;
-
   BehaviorSubject<bool> isHaveWalletSubject = BehaviorSubject();
 
   BehaviorSubject<String> signatureSubject = BehaviorSubject();
-
-  Stream<bool> get isHaveWalletStream => isHaveWalletSubject.stream;
+  
+  BehaviorSubject<double> balanceSubject = BehaviorSubject.seeded(0);
 
   BehaviorSubject<LoginStatus> loginStatusSubject = BehaviorSubject();
 
+  Stream<bool> get isHaveWalletStream => isHaveWalletSubject.stream;
+
   Stream<String> get signatureStream => signatureSubject.stream;
+
+  Stream<double> get balanceStream => balanceSubject.stream;
 
   Stream<LoginStatus> get loginStatusStream => loginStatusSubject.stream;
 
@@ -78,8 +82,16 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
   Web3Utils client = Web3Utils();
 
-  Future<void> getBalance({required String walletAddress}) async {
-    balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
+  Future<void> getBalance({required String walletAddress, required BuildContext context}) async {
+    showLoading(context);
+    if(loginStatusSubject.hasValue){
+      if(loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG){
+        double balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
+        balanceSubject.sink.add(balance);
+      }
+    }
+    
+    hideLoading(context);
   }
 
   int randomAvatar() {
@@ -91,7 +103,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     final walletAddressCore = PrefsService.getCurrentWalletCore();
     final walletConnectBE = PrefsService.getCurrentBEWallet();
 
-    //Đã login core - chưa login BE
+    //Đã login core - chưa login BE => show dialog login với ví core đang login
     if (walletAddressCore.isNotEmpty && walletConnectBE.isEmpty) {
       loginStatusSubject.sink.add(LoginStatus.NEED_CONNECT_BY_DIALOG);
       return;
@@ -99,11 +111,17 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
     //Đã login core - đã login BE
     if (walletAddressCore.isNotEmpty && walletConnectBE.isNotEmpty) {
-      loginStatusSubject.sink.add(LoginStatus.LOGGED);
+      //ví trong core và BE giống nhau => đã login, tiếp tục luồng:
+      if (walletAddressCore == walletConnectBE) {
+        loginStatusSubject.sink.add(LoginStatus.LOGGED);
+      } else {
+        //ví core khác ví BE => ví BE cần login lại:
+        loginStatusSubject.sink.add(LoginStatus.NEED_CONNECT_BY_DIALOG);
+      }
       return;
     }
 
-    //Có ví, chưa login core - chưa login BE
+    //Có ví, chưa login core - chưa login BE => yêu cầu login
     if (walletAddressCore.isEmpty &&
         walletConnectBE.isEmpty &&
         (isHaveWalletSubject.value == true)) {
@@ -111,7 +129,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
       return;
     }
 
-    //Không có ví
+    //Không có ví => yêu cầu tạo account
     if (!isHaveWalletSubject.value) {
       loginStatusSubject.sink.add(LoginStatus.NEED_REGISTER);
       return;
@@ -170,8 +188,12 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     }
   }
 
-  Future<void> getSignature({required String walletAddress}) async {
+  Future<void> getSignature({
+    required String walletAddress,
+    required BuildContext context,
+  }) async {
     try {
+      showLoading(context);
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
@@ -188,6 +210,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
             'bytesSha3': bytesSha3,
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          hideLoading(context);
         },
         error: (error) {
           showError();
@@ -217,5 +240,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
   void dispose() {
     isHaveWalletSubject.close();
     loginStatusSubject.close();
+    balanceSubject.close();
+    signatureSubject.close();
   }
 }

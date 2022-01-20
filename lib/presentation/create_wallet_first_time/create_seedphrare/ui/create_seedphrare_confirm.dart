@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
@@ -78,6 +79,9 @@ class _BodyState extends State<_Body> {
       bloc: widget.bLocCreateSeedPhrase,
       listener: (ctx, state) {
         if (widget.bLocCreateSeedPhrase.isSuccess) {
+          PrefsService.saveCurrentWalletCore(
+            bLocCreateSeedPhrase.walletAddress,
+          );
           if (state is SeedNavState) {
             if (widget.typeScreen == TypeScreen.one) {
               widget.bLocCreateSeedPhrase.setFirstTime();
@@ -96,28 +100,6 @@ class _BodyState extends State<_Body> {
                 ),
               );
             } else {
-              if (widget.isFromConnectWlDialog) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      widget.bLocCreateSeedPhrase.setFirstTime();
-                      return CreateSuccessfully(
-                        type: KeyType.CREATE,
-                        wallet: Wallet(
-                          name: bLocCreateSeedPhrase.nameWallet.value,
-                          address: bLocCreateSeedPhrase.walletAddress,
-                        ),
-                        bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
-                        passWord: widget.bLocCreateSeedPhrase.passWord,
-                        isFromConnectWlDialog: widget.isFromConnectWlDialog,
-                      );
-                    },
-                  ),
-                  (Route<dynamic> route) => route.isFirst,
-                );
-                return;
-              }
               Navigator.push(
                 context,
                 MaterialPageRoute(

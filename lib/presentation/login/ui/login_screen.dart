@@ -371,8 +371,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.CREATE,
+                                  isFromConnectWlDialog: widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,
@@ -412,8 +413,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.IMPORT,
+                                  isFromConnectWlDialog: widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,
