@@ -5,7 +5,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemPawnSHop extends StatelessWidget {
+class ItemPawnShop extends StatelessWidget {
   final String avatarPawnShopUrl;
   final String namePawnShop;
   final bool isDeletePawnShop;
@@ -13,7 +13,7 @@ class ItemPawnSHop extends StatelessWidget {
   final String datePawnShop;
   final String statusPawnShop;
 
-  const ItemPawnSHop({
+  const ItemPawnShop({
     Key? key,
     required this.avatarPawnShopUrl,
     required this.namePawnShop,

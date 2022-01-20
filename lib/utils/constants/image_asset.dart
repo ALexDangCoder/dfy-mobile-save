@@ -93,6 +93,8 @@ class ImageAssets {
   static const String imgTokenUSDT = '$baseImg/USDT.png';
   static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
   static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
+  static const String img_star = '$baseImg/star.png';
+
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
