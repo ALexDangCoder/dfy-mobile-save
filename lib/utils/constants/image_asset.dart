@@ -189,6 +189,7 @@ class ImageAssets {
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
   static const String img_warning = '$baseImg/img_warning.png';
+  static const String ic_user_verified = '$baseImg/ic_user_verified.png';
 
   ///image for on boarding screen
   static const String content1 = '$baseImg/content1.png';

@@ -106,9 +106,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
-              return HistoryTab(
-                listHistory: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return HistoryTab(
+                  listHistory: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           StreamBuilder<List<OwnerNft>>(
@@ -117,9 +129,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
-              return OwnerTab(
-                listOwner: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return OwnerTab(
+                  listOwner: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
@@ -140,10 +164,22 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<BiddingNft>> snapshot,
             ) {
-              return BidTab(
-                listBidding: snapshot.data ?? [],
-                symbolToken: bloc.symbolToken,
-              );
+              if (snapshot.hasData) {
+                return BidTab(
+                  listBidding: snapshot.data ?? [],
+                  symbolToken: bloc.symbolToken,
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ];
@@ -172,9 +208,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
-              return HistoryTab(
-                listHistory: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return HistoryTab(
+                  listHistory: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           StreamBuilder<List<OwnerNft>>(
@@ -183,9 +231,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
-              return OwnerTab(
-                listOwner: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return OwnerTab(
+                  listOwner: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
@@ -222,9 +282,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<HistoryNFT>> snapshot,
             ) {
-              return HistoryTab(
-                listHistory: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return HistoryTab(
+                  listHistory: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           StreamBuilder<List<OwnerNft>>(
@@ -233,9 +305,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<OwnerNft>> snapshot,
             ) {
-              return OwnerTab(
-                listOwner: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return OwnerTab(
+                  listOwner: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
@@ -284,9 +368,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               context,
               AsyncSnapshot<List<OfferDetail>> snapshot,
             ) {
-              return OfferTab(
-                listOffer: snapshot.data ?? [],
-              );
+              if (snapshot.hasData) {
+                return OfferTab(
+                  listOffer: snapshot.data ?? [],
+                );
+              } else {
+                return SizedBox(
+                  height: 100.h,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: AppTheme.getInstance().whiteColor(),
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ];
@@ -355,6 +451,165 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
 
   Widget _content(MarketType type, NFTDetailState state) {
     switch (type) {
+      case MarketType.NOT_ON_MARKET:
+        if (state is NftNotOnMarketSuccess) {
+          final objSale = state.nftMarket;
+          print(objSale.typeImage);
+          return BaseCustomScrollView(
+            typeImage: objSale.typeImage ?? TypeImage.IMAGE,
+            image: objSale.image ?? '',
+            initHeight: 360.h,
+            leading: _leading(context),
+            title: objSale.name ?? '',
+            tabBarView: ExpandedPageViewWidget(
+              pageController: pageController,
+              controller: _tabController,
+              children: _tabPage,
+            ),
+            tabBar: TabBar(
+              onTap: (value) {
+                pageController.animateToPage(value,
+                    duration: const Duration(milliseconds: 5),
+                    curve: Curves.ease);
+              },
+              controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+              indicatorColor: AppTheme.getInstance().titleTabColor(),
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: _tabTit,
+            ),
+            bottomBar: _buildButtonPutOnMarket(
+              context,
+              bloc,
+              objSale,
+            ),
+            content: [
+              _nameNFT(
+                context: context,
+                title: objSale.name ?? '',
+                quantity: objSale.totalCopies ?? 1,
+                url: objSale.image ?? '',
+                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+              ),
+              _priceNotOnMarket(),
+              divide,
+              spaceH12,
+              _description(
+                objSale.description ?? '',
+              ),
+              spaceH20,
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    visible: !snapshot.data!,
+                    child: Column(
+                      children: [
+                        if (objSale.collectionName?.isEmpty ?? true)
+                          const SizedBox()
+                        else
+                          _rowCollection(
+                            objSale.symbolToken ?? '',
+                            objSale.collectionName ?? '',
+                            objSale.ticked == 1,
+                          ),
+                        spaceH20,
+                        additionalColumn(objSale.properties ?? []),
+                        spaceH20,
+                        ...[
+                          buildRow(
+                            title: S.current.collection_address,
+                            detail: objSale.collectionAddress ?? '',
+                            type: TextType.RICH_BLUE,
+                            isShowCopy: true,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.nft_token_id,
+                            detail: objSale.nftTokenId ?? '',
+                            type: TextType.NORMAL,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.nft_standard,
+                            detail: objSale.nftStandard == '0'
+                                ? 'ERC - 721'
+                                : 'ERC - 1155',
+                            type: TextType.NORMAL,
+                          ),
+                          spaceH12,
+                          buildRow(
+                            title: S.current.block_chain,
+                            detail: 'Binance smart chain',
+                            type: TextType.NORMAL,
+                          ),
+                        ],
+                        spaceH12,
+                      ],
+                    ),
+                  );
+                },
+              ),
+              StreamBuilder<bool>(
+                initialData: true,
+                stream: bloc.viewStream,
+                builder: (context, snapshot) {
+                  return Visibility(
+                    child: InkWell(
+                      onTap: () {
+                        bloc.viewSink.add(!snapshot.data!);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          right: 16.w,
+                          left: 16.w,
+                        ),
+                        height: 40.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),
+                            Text(
+                              !snapshot.data!
+                                  ? S.current.view_less
+                                  : S.current.view_more,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              divide,
+            ],
+          );
+        } else {
+          return const ModalProgressHUD(
+            inAsyncCall: true,
+            progressIndicator: CupertinoLoading(),
+            child: SizedBox(),
+          );
+        }
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
@@ -384,12 +639,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonBuyOutOnSale(
-              context,
-              bloc,
-              objSale,
-              objSale.isBoughtByOther ?? false,
-            ),
+            bottomBar: objSale.isOwner == false
+                ? _buildButtonBuyOutOnSale(
+                    context,
+                    bloc,
+                    objSale,
+                    objSale.isBoughtByOther ?? false,
+                  )
+                : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
               GestureDetector(
                 //todo: để tạm, sau check quyền button cancel hoặc buy
@@ -774,29 +1031,31 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: Row(
-              children: [
-                Expanded(
-                  child: _buildButtonBuyOut(context),
-                ),
-                SizedBox(
-                  width: 23.w,
-                ),
-                Expanded(
-                  child: _buildButtonPlaceBid(
-                    context,
-                    bloc.isStartAuction(
-                      nftOnAuction.startTime ?? 0,
-                    ),
-                    bloc.isStartAuction(
-                      nftOnAuction.endTime ?? 0,
-                    ),
-                    bloc,
-                    nftOnAuction,
+            bottomBar: (nftOnAuction.isOwner == true)
+                ? buttonCancelAuction(nftOnAuction.show ?? true)
+                : Row(
+                    children: [
+                      Expanded(
+                        child: _buildButtonBuyOut(context),
+                      ),
+                      SizedBox(
+                        width: 23.w,
+                      ),
+                      Expanded(
+                        child: _buildButtonPlaceBid(
+                          context,
+                          bloc.isStartAuction(
+                            nftOnAuction.startTime ?? 0,
+                          ),
+                          bloc.isStartAuction(
+                            nftOnAuction.endTime ?? 0,
+                          ),
+                          bloc,
+                          nftOnAuction,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             content: [
               _nameNFT(
                 context: context,

@@ -65,25 +65,38 @@ class _OwnerTabState extends State<OwnerTab>
 
   Widget _buildItemOwner(OwnerNft ownerNft) {
     final String walletAddress = ownerNft.walletAddress ?? '';
+    final bool hasKyc = ownerNft.hasKyc ?? false;
     return BaseItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            maxLines: 1,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: walletAddress.formatAddress(
-                    index: walletAddress.isNotEmpty ? 10 : 0,
-                  ),
-                  style: richTextWhite.copyWith(
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Row(
+            children: [
+              if (hasKyc)
+                Image.asset(
+                  ImageAssets.ic_user_verified,
+                  height: 24.h,
+                  width: 24.w,
+                )
+              else
+                Image.asset(
+                  ImageAssets.ic_profile_circle,
+                  height: 24.h,
+                  width: 24.w,
                 ),
-              ],
-            ),
+              spaceW10,
+              Text(
+                walletAddress.formatAddress(
+                  index: walletAddress.isNotEmpty ? 10 : 0,
+                ),
+                style: richTextWhite
+                    .copyWith(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.bold,
+                    )
+                    .copyWith(fontSize: 14.sp),
+              ),
+            ],
           ),
           spaceH7,
           getStatus(ownerNft),
