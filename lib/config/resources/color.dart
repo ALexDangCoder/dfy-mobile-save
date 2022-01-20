@@ -47,6 +47,7 @@ const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
+const dashedContainer = Color.fromRGBO(255, 255, 255, 0.5);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);
 const suffixFieldColor = Colors.white30;
@@ -83,6 +84,7 @@ const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
 const dividerCreateNFT = Color(0xffC4C4C4);
+final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
@@ -99,6 +101,10 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+  Color whiteDot2();
+
+  Color dashedColorContainer();
+
   List<Color> colorsCreateNFT();
 
   Color bgTranSubmit();
@@ -572,9 +578,29 @@ class LightApp extends AppColor {
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
   }
+
+  @override
+  Color dashedColorContainer() {
+    return dashedContainer;
+  }
+
+  @override
+  Color whiteDot2() {
+    return colorWhiteDot2;
+  }
 }
 
 class DarkApp extends AppColor {
+  @override
+  Color whiteDot2() {
+    return colorWhiteDot2;
+  }
+
+  @override
+  Color dashedColorContainer() {
+    return dashedContainer;
+  }
+
   @override
   Color primaryColor() {
     return Colors.black;

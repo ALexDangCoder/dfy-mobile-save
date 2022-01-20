@@ -30,12 +30,23 @@ class ImageAssets {
   static const String addFAB = '$baseImg/plus.png';
 
   static const String iconCheck = '$baseImg/check.png';
+  static const String createNft = '$baseImg/create_nft.png';
+  static const String addPropertiesNft = '$baseImg/add_pro_nft.png';
+
+  static const String btnDownArrow = '$baseImg/line_arrow_down.png';
+
+  ///create HARD NFT
+  static const String diamond = '$baseImg/diamond.png';
+  static const String artWork = '$baseImg/art.png';
+  static const String car = '$baseImg/Car.png';
+  static const String watch = '$baseImg/Watch.png';
+  static const String house = '$baseImg/House.png';
+  static const String others = '$baseImg/Other.png';
+
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
-
   // menu icon
-
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
   static const String ic_profile_circle = '$baseImg/ic_profile_circle.png';
@@ -48,7 +59,6 @@ class ImageAssets {
   static const String ic_graph = '$baseImg/ic_graph.png';
   static const String ic_nft = '$baseImg/ic_nft.png';
   static const String ic_setting = '$baseImg/ic_setting.png';
-
 
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';
@@ -310,12 +320,9 @@ class ImageAssets {
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
   static const String ic_star = '$baseImg/ic_star.png';
 
-
   //MyAccount
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
   static const String x_svg = '$baseImg/x_svg.svg';
-
-
 
   static SvgPicture svgAssets(
     String name, {

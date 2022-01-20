@@ -15,8 +15,8 @@ class CustomForm extends StatelessWidget {
   final Function(String value) textValue;
   final String hintText;
   final Widget? prefix;
-  final Widget suffix;
-  final TextInputType inputType;
+  final Widget? suffix;
+  final TextInputType? inputType;
 
   @override
   Widget build(BuildContext context) {

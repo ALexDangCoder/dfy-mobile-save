@@ -88,6 +88,7 @@ dependencies:
   #  vibration: ^1.7.3
   #  flutter_slidable: ^0.6.0
 
+
   shimmer: ^2.0.0
   local_auth:
 
