@@ -2,11 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
@@ -22,15 +27,21 @@ extension LoginForMarketPlace on LoginCubit {
   Future<void> loginAndSaveInfo(
       {required String walletAddress, required String signature}) async {
     final result = await _loginRepo.login(signature, walletAddress);
+
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
+        await PrefsService.saveCurrentWallet(
+          walletAddress,
+        );
+        await getUserProfile();
       },
       error: (err) {
-        log(err.message);
-        showError();
+        FToast().showToast(
+          child: Text(S.current.something_went_wrong),
+        );
       },
     );
   }
@@ -68,8 +79,30 @@ extension LoginForMarketPlace on LoginCubit {
           showError();
         },
       );
-    } on PlatformException {
-      //
+    } on PlatformException catch (e) {
+      FToast().showToast(
+        child: Text(S.current.something_went_wrong),
+      );
+      throw AppException(
+        S.current.something_went_wrong,
+        e.message.toString(),
+      );
     }
+  }
+
+  Future<void> getUserProfile() async {
+    final result = await _loginRepo.getUserProfile();
+    await result.when(
+      success: (res) async {
+        final UserProfileModel userProfile =
+            UserProfileModel.fromJson(res.data ?? {});
+        await PrefsService.saveUserProfile(userProfileToJson(userProfile));
+      },
+      error: (err) {
+        FToast().showToast(
+          child: Text(S.current.something_went_wrong),
+        );
+      },
+    );
   }
 }

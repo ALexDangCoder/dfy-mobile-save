@@ -1,5 +1,6 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +34,7 @@ class CollectionItem extends StatelessWidget {
               return DetailCollection(
                 // walletAddress: 'alo alo',//todo address wallet
                 collectionAddress: collectionAddress ?? '',
+                typeScreen: PageRouter.MARKET,
               );
             },
           ),

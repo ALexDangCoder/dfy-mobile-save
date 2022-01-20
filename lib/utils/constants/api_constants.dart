@@ -75,6 +75,8 @@ class ApiConstants {
   static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
   static const String BID_NFT = '/nft-market-svc/api/auction/bid';
 
+  ///MyAcc
+  static const String GET_LIST_NFT_MY_ACC = '/nft-market-svc/api/my-acc/my-nft';
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION =
       '/nft-market-svc/api/collection/create';
@@ -82,6 +84,14 @@ class ApiConstants {
       '/hard-nft-svc/api/collections/create-hard-collection';
 
   //GET PROFILE WHEN LOGIN:
+  static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
+
+  //REFRESH TOKEN:
+  static const String REFRESH_TOKEN = '/defi-user-service/public-api/v1.0.0/users/refresh_token';
+
+  //GET LIST WALLET
+  static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
+
   static const String GET_USER_PROFILE =
       '/defi-user-service/api/v1.0.0/users/profile';
 }

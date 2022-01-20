@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -81,10 +82,16 @@ const bgTextField = Color(0x80A7A7A7);
 const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
+const dividerCreateNFT = Color(0xffC4C4C4);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
   Color.fromRGBO(228, 172, 26, 1),
+];
+
+const List<Color> colorsCreateNft = [
+  Color(0xffFFE284),
+  Color(0xffE4AC1A),
 ];
 
 ///=========== Using to make change app theme ================================
@@ -92,7 +99,11 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+  List<Color> colorsCreateNFT();
+
   Color bgTranSubmit();
+
+  Color lineCreateNFT();
 
   Color yellowColor();
 
@@ -550,6 +561,16 @@ class LightApp extends AppColor {
     // TODO: implement yellowColor
     return fillYellowColor;
   }
+
+  @override
+  Color lineCreateNFT() {
+    return dividerCreateNFT;
+  }
+
+  @override
+  List<Color> colorsCreateNFT() {
+    return colorsCreateNft;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -907,6 +928,17 @@ class DarkApp extends AppColor {
   Color yellowColor() {
     // TODO: implement yellowColor
     return fillYellowColor;
+  }
+
+  @override
+  Color lineCreateNFT() {
+    // TODO: implement lineCreateNFT
+    return dividerCreateNFT;
+  }
+
+  @override
+  List<Color> colorsCreateNFT() {
+    return colorsCreateNft;
   }
 }
 

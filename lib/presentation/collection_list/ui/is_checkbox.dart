@@ -5,8 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class IsBaseCheckBox extends StatefulWidget {
+class IsBaseCheckBox extends StatelessWidget {
   final String title;
   final CollectionBloc bloc;
   final int index;
@@ -19,16 +18,10 @@ class IsBaseCheckBox extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<IsBaseCheckBox> createState() => _IsBaseCheckBoxState();
-}
-
-class _IsBaseCheckBoxState extends State<IsBaseCheckBox> {
-  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.bloc.funChooseFilter(widget.index);
-        setState(() {});
+        bloc.funChooseFilter(index);
       },
       child: Row(
         children: [
@@ -47,10 +40,9 @@ class _IsBaseCheckBoxState extends State<IsBaseCheckBox> {
                   width: 1.w,
                   color: AppTheme.getInstance().whiteColor(),
                 ),
-                value: widget.bloc.listCheckBoxFilter[widget.index],
+                value: bloc.listCheckBoxFilter[index],
                 onChanged: (value) {
-                  widget.bloc.funChooseFilter(widget.index);
-                  setState(() {});
+                  bloc.funChooseFilter(index);
                 },
               ),
             ),
@@ -61,7 +53,7 @@ class _IsBaseCheckBoxState extends State<IsBaseCheckBox> {
             child: Wrap(
               children: [
                 Text(
-                  widget.title,
+                  title,
                   style: textNormal(
                     AppTheme.getInstance().textThemeColor(),
                     16,

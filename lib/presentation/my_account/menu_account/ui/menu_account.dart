@@ -4,11 +4,13 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -64,6 +66,19 @@ class _MenuAccountState extends State<MenuAccount> {
           );
         }
         break;
+      case 'collection_list':
+        {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CollectionList(
+                typeScreen: PageRouter.MY_ACC,
+                addressWallet: '0xddfff5172a34677967c57b8a33d7b855185f93a1',//todo chuyền data vào đây nhé
+              ),
+            ),
+          );
+        }
+        break;
     }
   }
 
@@ -113,7 +128,7 @@ class _MenuAccountState extends State<MenuAccount> {
       ],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'collection_list',
       title: S.current.my_collection,
       icon: ImageAssets.ic_folder,
       children: [],

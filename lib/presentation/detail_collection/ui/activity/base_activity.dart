@@ -111,7 +111,7 @@ class BaseActivity extends StatelessWidget {
                   errorBuilder: (context, url, error) => Container(
                     color: Colors.yellow,
                     child: Text(
-                      title.substring(0, 1),
+                      title.isEmpty ? title  :title.substring(0, 1),
                       style: textNormalCustom(
                         Colors.black,
                         60,

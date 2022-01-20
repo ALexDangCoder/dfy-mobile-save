@@ -40,11 +40,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
         children: [
           GestureDetector(
             onTap: () {
-              final FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
+              if (bloc.checkWalletAddress) {
+                bloc.isChooseAcc.sink.add(false);
               }
-              bloc.isChooseAcc.sink.add(false);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -145,7 +143,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Center(
                             child: InkWell(
                               onTap: () {
-                                bloc.isChooseAcc.sink.add(true);
+                                if (bloc.checkWalletAddress) {
+                                  bloc.isChooseAcc.sink.add(true);
+                                }
                               },
                               child: StreamBuilder<String>(
                                 stream: bloc.textAddressFilter,
@@ -187,10 +187,17 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                             ),
                                           ],
                                         ),
-                                        Image.asset(
-                                          ImageAssets.ic_line_down,
-                                          height: 20.67.h,
-                                          width: 20.14.w,
+                                        SizedBox(
+                                          child: bloc.checkWalletAddress
+                                              ? Image.asset(
+                                                  ImageAssets.ic_line_down,
+                                                  height: 20.67.h,
+                                                  width: 20.14.w,
+                                                )
+                                              : SizedBox(
+                                                  height: 20.67.h,
+                                                  width: 20.14.w,
+                                                ),
                                         ),
                                       ],
                                     ),
@@ -265,9 +272,6 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                     width: 343.w,
                     height: 123.h,
                     child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        top: 24.h,
-                      ),
                       itemCount: bloc.listAcc.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -278,7 +282,14 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             height: 54.h,
                             padding: EdgeInsets.only(
                               left: 24.w,
+                              top: 15.h,
                             ),
+                            color: bloc.listAcc[index] ==
+                                    bloc.textAddressFilter.value
+                                ? AppTheme.getInstance()
+                                    .whiteColor()
+                                    .withOpacity(0.3)
+                                : Colors.transparent,
                             child: Text(
                               bloc.listAcc[index] == S.current.all
                                   ? S.current.all
