@@ -1,4 +1,4 @@
-import 'package:Dfy/config/resources/styles.dart';
+
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -10,6 +10,7 @@ const colorSelected = Color(0xFFE0F2F1);
 const mainTxtColor = Color(0xFF30536F);
 const dfTxtColor = Color(0xFF303742);
 const secondTxtColor = Color(0xFF808FA8);
+const textGray = Color(0xFFBEC0C3);
 const highlightTxtColor = Color(0xff303742);
 const backgroundBottomSheetColor = Color(0xff32324c);
 const textErrorLoad = Color(0xffE6E6E6);
@@ -83,6 +84,10 @@ const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
 const dividerCreateNFT = Color(0xffC4C4C4);
+const orangeMarketColor = Color(0xffFE951A);
+const redMarketColor = Color(0xffFF6C6C);
+const greenMarketColor = Color(0xff61c777);
+const blueMarketColor = Color(0xff46BCFF);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
@@ -106,6 +111,14 @@ abstract class AppColor {
   Color lineCreateNFT();
 
   Color yellowColor();
+
+  Color redMarketColors();
+
+  Color blueMarketColors();
+
+  Color greenMarketColors();
+
+  Color orangeMarketColors();
 
   List<Color> colorFab();
 
@@ -154,6 +167,8 @@ abstract class AppColor {
   Color disableColor();
 
   Color bgBtsColor();
+
+  Color grayTextColor();
 
   Color itemBtsColors();
 
@@ -403,7 +418,6 @@ class LightApp extends AppColor {
 
   @override
   Color whiteBackgroundButtonColor() {
-    // TODO: implement whiteBackgroundButtonColor
     return Colors.white.withOpacity(0.1);
   }
 
@@ -434,19 +448,16 @@ class LightApp extends AppColor {
 
   @override
   Color whiteWithOpacityFireZero() {
-    // TODO: implement whiteWithOpacityFireZero
     return whiteOpacityZeroFire;
   }
 
   @override
   Color backgroundBTSColor() {
-    // TODO: implement backgroundBTSColor
     return backgroundBottomSheetColor;
   }
 
   @override
   Color colorTextFieldZeroFire() {
-    // TODO: implement colorTextFieldZeroFire
     return colorTextField.withOpacity(0.5);
   }
 
@@ -457,31 +468,26 @@ class LightApp extends AppColor {
 
   @override
   Color bgTranSubmit() {
-    // TODO: implement bgTranSubmit
     return bgTranSubmitColor;
   }
 
   @override
   Color disableRadioColor() {
-    // TODO: implement disableRadioColor
     return const Color(0xFFE0E0E0);
   }
 
   @override
   Color skeleton() {
-    // TODO: implement skeleton
     return colorSkeleton;
   }
 
   @override
   Color skeletonLight() {
-    // TODO: implement skeletonLight
     return colorSkeletonLight;
   }
 
   @override
   Color bgErrorLoad() {
-    // TODO: implement bgErrorLoad
     return bgErrorLoadData;
   }
 
@@ -491,43 +497,36 @@ class LightApp extends AppColor {
   }
 
   Color activityDateColor() {
-    // TODO: implement activityDateColor
     return dateColor;
   }
 
   @override
   Color whiteWithOpacitySevenZero() {
-    // TODO: implement whiteWithOpacitySevenZero
     return Colors.white.withOpacity(0.7);
   }
 
   @override
   Color amountTextColor() {
-    // TODO: implement amountTextColor
     return amountColor;
   }
 
   @override
   Color blueText() {
-    // TODO: implement blueText
     return const Color(0xff46BCFF);
   }
 
   @override
   Color colorTextReset() {
-    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 
   @override
   Color bgProgressingColors() {
-    // TODO: implement bgProgressingColors
     return const Color(0xFF3E3D5C);
   }
 
   @override
   List<Color> colorFab() {
-    // TODO: implement colorFab
     return colorsFab;
   }
 
@@ -553,13 +552,11 @@ class LightApp extends AppColor {
 
   @override
   Color getPurpleColor() {
-    // TODO: implement getPurpleColor
     return purple;
   }
 
   @override
   Color yellowColor() {
-    // TODO: implement yellowColor
     return fillYellowColor;
   }
 
@@ -571,6 +568,31 @@ class LightApp extends AppColor {
   @override
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
+  }
+
+  @override
+  Color grayTextColor() {
+    return textGray;
+  }
+
+  @override
+  Color blueMarketColors() {
+    return blueMarketColor;
+  }
+
+  @override
+  Color greenMarketColors() {
+    return greenMarketColor;
+  }
+
+  @override
+  Color orangeMarketColors() {
+    return orangeMarketColor;
+  }
+
+  @override
+  Color redMarketColors() {
+   return redMarketColor;
   }
 }
 
@@ -940,6 +962,60 @@ class DarkApp extends AppColor {
   @override
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
+  }
+
+  @override
+  Color grayTextColor() {
+    // TODO: implement grayTextColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueMarketColor() {
+    // TODO: implement blueMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color greenMarketColor() {
+    // TODO: implement greenMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color orangeMarketColor() {
+    // TODO: implement orangeMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redMarketColor() {
+    // TODO: implement redMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueMarketColors() {
+    // TODO: implement blueMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color greenMarketColors() {
+    // TODO: implement greenMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color orangeMarketColors() {
+    // TODO: implement orangeMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redMarketColors() {
+    // TODO: implement redMarketColors
+    throw UnimplementedError();
   }
 }
 
