@@ -16,9 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PlaceBid extends StatelessWidget {
-  const PlaceBid({Key? key, required this.balance, required this.nftOnAuction}) : super(key: key);
+  const PlaceBid({Key? key, required this.balance, required this.nftOnAuction})
+      : super(key: key);
   final double balance;
   final NFTOnAuction nftOnAuction;
+
   @override
   Widget build(BuildContext context) {
     final NFTDetailBloc nftDetailBloc =

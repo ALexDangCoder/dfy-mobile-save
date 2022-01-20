@@ -83,4 +83,10 @@ class ApiConstants {
   //GET PROFILE WHEN LOGIN:
   static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
 
+  //REFRESH TOKEN:
+  static const String REFRESH_TOKEN = '/defi-user-service/public-api/v1.0.0/users/refresh_token';
+
+  //GET LIST WALLET
+  static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
+
 }

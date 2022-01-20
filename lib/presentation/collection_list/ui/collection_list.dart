@@ -23,8 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
 import 'item_collection_load.dart';
@@ -62,24 +60,28 @@ class _CollectionListState extends State<CollectionList> {
         collectionBloc.isCanLoadMore.add(true);
         collectionBloc.getListCollection(
           name: collectionBloc.textSearch.value,
-          sortFilter: collectionBloc.sortFilter, //todo
+          sortFilter: collectionBloc.sortFilter,
         );
       }
     }
   }
 
   late String tittleScreen;
+
   @override
   void initState() {
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
-      tittleScreen = widget.title??'';
+      tittleScreen = widget.title ?? '';
     } else {
       tittleScreen = S.current.collection_list;
     }
 
     collectionBloc = CollectionBloc(widget.typeScreen);
     collectionBloc.addressWallet = widget.addressWallet;
+    if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
     collectionBloc.textSearch.sink.add(widget.query ?? '');
@@ -88,10 +90,7 @@ class _CollectionListState extends State<CollectionList> {
       name: widget.query?.trim(),
       sortFilter: collectionBloc.sortFilter,
     );
-
-    trustWalletChannel
-        .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
-    collectionBloc.getListWallets();
+    collectionBloc.getListWallet();
   }
 
   @override
@@ -192,6 +191,7 @@ class _CollectionListState extends State<CollectionList> {
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) => FilterMyAcc(
+
                               collectionBloc: collectionBloc,
                             ),
                           );
@@ -268,10 +268,11 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
-                                    StaggeredGridView.countBuilder(
+                                    GridView.builder(
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -281,8 +282,13 @@ class _CollectionListState extends State<CollectionList> {
                                         top: 10.h,
                                         bottom: 16.h,
                                       ),
-                                      mainAxisSpacing: 20.h,
-                                      crossAxisSpacing: 26.w,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20.h,
+                                        crossAxisSpacing: 26.w,
+                                        childAspectRatio: 4 / 5,
+                                      ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length
                                           : 20,
@@ -329,14 +335,12 @@ class _CollectionListState extends State<CollectionList> {
                                           );
                                         } else if (state is LoadingDataFail) {
                                           return ItemCollectionError(
-                                              cubit: collectionBloc);
+                                            cubit: collectionBloc,
+                                          );
                                         } else {
                                           return const ItemCollectionLoad();
                                         }
                                       },
-                                      crossAxisCount: 2,
-                                      staggeredTileBuilder: (int index) =>
-                                          const StaggeredTile.fit(1),
                                     ),
                                     StreamBuilder<bool>(
                                       stream: collectionBloc.isCanLoadMore,

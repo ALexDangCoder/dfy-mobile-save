@@ -21,6 +21,10 @@ class NetworkHandler {
     if (errorCode == 503) {
       return MaintenanceException();
     }
+    if (errorCode == 401) {
+      eventBus.fire(UnAuthEvent(''));
+      return MaintenanceException();
+    }
     return parsedException;
   }
 
