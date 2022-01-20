@@ -2,6 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/ipfs_gen_url.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/validate_input.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/upload_progess_widget.dart';

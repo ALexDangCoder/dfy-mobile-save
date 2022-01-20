@@ -3,8 +3,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_core.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/create_detail_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -25,6 +27,16 @@ class CreateNFTScreen extends StatefulWidget {
 }
 
 class _CreateNFTScreenState extends State<CreateNFTScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    trustWalletChannel.setMethodCallHandler(
+      widget.cubit.nativeMethodCallBackTrustWallet,
+    );
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose

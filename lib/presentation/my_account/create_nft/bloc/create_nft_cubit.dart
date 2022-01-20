@@ -22,7 +22,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   VideoPlayerController? controller;
 
-  CollectionDetailRepository get _collectionDetailRepository => Get.find();
+  CollectionDetailRepository get collectionDetailRepository => Get.find();
 
   NFTRepository get _nftRepo => Get.find();
 
@@ -33,6 +33,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   String selectedId = '';
   int selectedNftType = 0;
+  String walletAddress = '';
 
   ///Detail NFT var
   String nftName = '';
@@ -92,23 +93,5 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
     videoFileSubject.close();
     controller?.dispose();
     listCollectionSubject.close();
-  }
-}
-
-/// Detail NFT logic
-extension CreateDetailNFF on CreateNftCubit {
-  ///get collection list (my acc)
-  Future<void> getListCollection() async {
-    final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollection(
-          addressWallet: '0x7Cf759534595a8059f25fc319f570A077c41F116',
-        );
-    result.when(
-      success: (res) {
-        final listDropDown = res.map((e) => e.toDropDownMap()).toList();
-        listCollectionSubject.sink.add(listDropDown);
-      },
-      error: (_) {},
-    );
   }
 }

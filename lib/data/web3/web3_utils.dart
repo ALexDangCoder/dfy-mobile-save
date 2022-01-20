@@ -817,7 +817,7 @@ class Web3Utils {
       function: function,
       parameters: [
         name,
-        'HARD-NFT',
+        'DFY-HARD-NFT',
         collectionCID,
       ],
     );

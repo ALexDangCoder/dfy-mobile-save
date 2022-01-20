@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/categories_dropdown_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
