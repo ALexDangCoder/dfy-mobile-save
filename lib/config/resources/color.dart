@@ -1,4 +1,4 @@
-import 'package:Dfy/config/resources/styles.dart';
+
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
