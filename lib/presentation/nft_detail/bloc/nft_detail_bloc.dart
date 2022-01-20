@@ -59,14 +59,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get viewSink => _viewSubject.sink;
 
-  final BehaviorSubject<List<HistoryNFT>> listHistoryStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<OwnerNft>> listOwnerStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<BiddingNft>> listBiddingStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<OfferDetail>> listOfferStream =
-      BehaviorSubject.seeded([]);
+  final BehaviorSubject<List<HistoryNFT>> listHistoryStream = BehaviorSubject();
+  final BehaviorSubject<List<OwnerNft>> listOwnerStream = BehaviorSubject();
+  final BehaviorSubject<List<BiddingNft>> listBiddingStream = BehaviorSubject();
+  final BehaviorSubject<List<OfferDetail>> listOfferStream = BehaviorSubject();
   final BehaviorSubject<Evaluation> evaluationStream = BehaviorSubject();
 
   String symbolToken = '';
@@ -174,6 +170,40 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required int pawnId,
   }) async {
     getTokenInf();
+    if (type == MarketType.NOT_ON_MARKET) {
+      showLoading();
+      final Result<NftMarket> result;
+      if (typeNFT == TypeNFT.SOFT_NFT) {
+        result = await _nftRepo.getDetailNftMyAccNotOnMarket(nftId, '0');
+      } else {
+        result = await _nftRepo.getDetailHardNftOnSale(nftId);
+      }
+      result.when(
+        success: (res) {
+          showContent();
+          nftMarket = res;
+          owner = res.owner ?? '';
+          emit(NftNotOnMarketSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
+          for (final value in listTokenSupport) {
+            final symbolToken = res.symbolToken ?? '';
+            final symbol = value.symbol ?? '';
+            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+            }
+          }
+        },
+        error: (error) {
+          showError();
+        },
+      );
+    }
     if (type == MarketType.SALE) {
       showLoading();
       final Result<NftMarket> result;
@@ -204,8 +234,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          emit(NftOnSaleFail());
-          updateStateError();
+          showError();
         },
       );
     }
@@ -240,7 +269,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          updateStateError();
+          showError();
         },
       );
     }
@@ -416,8 +445,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
     return hexString;
   }
-
-
 
   List<DetailItemApproveModel> initListApprove() {
     //todo: Vũ: tạm hardcode
