@@ -26,11 +26,13 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
     this.typeEarseWallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
 
   final TypeScreen typeScreen;
   final String? typeEarseWallet;
+  final bool isFromConnectWlDialog;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class CreateSeedPhraseConfirm extends StatelessWidget {
           typeScreen: typeScreen,
           bLocCreateSeedPhrase: bLocCreateSeedPhrase,
           typeEarseWallet: typeEarseWallet,
+          isFromConnectWlDialog: isFromConnectWlDialog,
         ),
       ),
     );
@@ -55,11 +58,13 @@ class _Body extends StatefulWidget {
     required this.bLocCreateSeedPhrase,
     required this.typeScreen,
     this.typeEarseWallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
 
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final TypeScreen typeScreen;
   final String? typeEarseWallet;
+  final bool isFromConnectWlDialog;
 
   @override
   _BodyState createState() => _BodyState();
@@ -91,6 +96,28 @@ class _BodyState extends State<_Body> {
                 ),
               );
             } else {
+              if (widget.isFromConnectWlDialog) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      widget.bLocCreateSeedPhrase.setFirstTime();
+                      return CreateSuccessfully(
+                        type: KeyType.CREATE,
+                        wallet: Wallet(
+                          name: bLocCreateSeedPhrase.nameWallet.value,
+                          address: bLocCreateSeedPhrase.walletAddress,
+                        ),
+                        bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+                        passWord: widget.bLocCreateSeedPhrase.passWord,
+                        isFromConnectWlDialog: widget.isFromConnectWlDialog,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) => route.isFirst,
+                );
+                return;
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -104,6 +131,7 @@ class _BodyState extends State<_Body> {
                       ),
                       bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
                       passWord: widget.bLocCreateSeedPhrase.passWord,
+                      isFromConnectWlDialog: widget.isFromConnectWlDialog,
                     );
                   },
                 ),

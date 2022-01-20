@@ -32,22 +32,8 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
         );
         await getUserProfile();
       },
-      error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
-        );
-      },
+      error: (err) {},
     );
-  }
-
-  //getListWallets
-  void getWallet() {
-    try {
-      final data = {};
-      trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      //
-    }
   }
 
   Future<void> getSignature({required String walletAddress}) async {
@@ -84,7 +70,11 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {},
+      error: (err) async {
+        await PrefsService.saveUserProfile(
+          PrefsService.userProfileEmpty(),
+        );
+      },
     );
   }
 }

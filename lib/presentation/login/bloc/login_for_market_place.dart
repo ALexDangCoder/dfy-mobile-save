@@ -38,11 +38,7 @@ extension LoginForMarketPlace on LoginCubit {
         );
         await getUserProfile();
       },
-      error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
-        );
-      },
+      error: (err) {},
     );
   }
 
@@ -80,9 +76,6 @@ extension LoginForMarketPlace on LoginCubit {
         },
       );
     } on PlatformException catch (e) {
-      FToast().showToast(
-        child: Text(S.current.something_went_wrong),
-      );
       throw AppException(
         S.current.something_went_wrong,
         e.message.toString(),
@@ -98,9 +91,9 @@ extension LoginForMarketPlace on LoginCubit {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
+      error: (err) async {
+        await PrefsService.saveUserProfile(
+          PrefsService.userProfileEmpty(),
         );
       },
     );

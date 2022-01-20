@@ -193,6 +193,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                                 builder: (context) =>
                                                     const MainScreen(
                                                   index: 3,
+                                                  isFormConnectWlDialog: true,
                                                 ),
                                               ),
                                             );

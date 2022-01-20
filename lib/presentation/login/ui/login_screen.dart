@@ -27,12 +27,10 @@ class LoginScreen extends StatefulWidget {
     Key? key,
     required this.walletCubit,
     this.isFromConnectDialog = false,
-    this.navigationToScreen,
   }) : super(key: key);
 
   final bool isFromConnectDialog;
   final WalletCubit walletCubit;
-  final Widget? navigationToScreen;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
