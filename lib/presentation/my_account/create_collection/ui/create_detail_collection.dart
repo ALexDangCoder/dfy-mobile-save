@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collec
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/categories_cool.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/upload_progess_widget.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -162,7 +163,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                       child: GestureDetector(
                         onTap: () async {
                           await widget.bloc.pickImage(
-                            imageType: 'cover_photo',
+                            imageType: COVER_PHOTO,
                             tittle: S.current.cover_photo,
                           );
                         },
@@ -180,7 +181,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
               return GestureDetector(
                 onTap: () async {
                   await widget.bloc.pickImage(
-                    imageType: 'cover_photo',
+                    imageType: COVER_PHOTO,
                     tittle: S.current.cover_photo,
                   );
                 },
@@ -260,7 +261,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                         child: GestureDetector(
                           onTap: () async {
                             await widget.bloc.pickImage(
-                              imageType: 'avatar',
+                              imageType: AVATAR_PHOTO,
                               tittle: S.current.upload_avatar,
                             );
                           },
@@ -281,7 +282,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                   GestureDetector(
                     onTap: () async {
                       await widget.bloc.pickImage(
-                        imageType: 'avatar',
+                        imageType: AVATAR_PHOTO,
                         tittle: S.current.upload_avatar,
                       );
                     },
@@ -332,7 +333,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
         GestureDetector(
           onTap: () async {
             await widget.bloc.pickImage(
-              imageType: 'feature_photo',
+              imageType: FEATURE_PHOTO,
               tittle: S.current.upload_featured_photo,
             );
           },

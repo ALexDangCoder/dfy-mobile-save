@@ -404,7 +404,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     required File image,
   }) {
     switch (type) {
-      case 'avatar':
+      case AVATAR_PHOTO:
         {
           if (imageSizeInMB > 15) {
             mapCheck['avatar'] = false;
@@ -419,7 +419,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
             break;
           }
         }
-      case 'cover_photo':
+      case COVER_PHOTO:
         {
           if (imageSizeInMB > 15) {
             mapCheck['cover_photo'] = false;
@@ -434,7 +434,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
             break;
           }
         }
-      case 'feature_photo':
+      case FEATURE_PHOTO:
         {
           if (imageSizeInMB > 15) {
             mapCheck['feature_photo'] = false;

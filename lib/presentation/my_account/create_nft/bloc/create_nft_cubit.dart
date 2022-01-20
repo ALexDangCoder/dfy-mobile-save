@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/material.dart';
@@ -94,12 +95,12 @@ extension CreateDetailNFF on CreateNftCubit {
     final path = mediaFile.getStringValue('path');
     mediaFileSubject.sink.add(type);
     switch (type) {
-      case 'image':
+      case MEDIA_IMAGE_FILE:
         {
           imageFileSubject.sink.add(path);
           break;
         }
-      case 'video':
+      case MEDIA_VIDEO_FILE:
         {
           if (_controller == null) {
             _controller = VideoPlayerController.file(File(path));
