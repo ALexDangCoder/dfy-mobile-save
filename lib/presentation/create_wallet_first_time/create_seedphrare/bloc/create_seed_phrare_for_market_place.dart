@@ -5,7 +5,10 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:r_crypto/r_crypto.dart';
@@ -30,6 +33,9 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
         await getUserProfile();
       },
       error: (err) {
+        FToast().showToast(
+          child: Text(S.current.something_went_wrong),
+        );
       },
     );
   }
@@ -55,7 +61,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           final List<int> listNonce = nonce.codeUnits;
           final Uint8List bytesNonce = Uint8List.fromList(listNonce);
           final List<int> listSha3 =
-          rHash.hashList(HashType.KECCAK_256, bytesNonce);
+              rHash.hashList(HashType.KECCAK_256, bytesNonce);
           final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
           final data = {
             'walletAddress': walletAddress,
@@ -63,8 +69,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
-        error: (error) {
-        },
+        error: (error) {},
       );
     } on PlatformException {
       //
@@ -76,7 +81,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
     await result.when(
       success: (res) async {
         final UserProfileModel userProfile =
-        UserProfileModel.fromJson(res.data ?? {});
+            UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
       error: (err) {},
