@@ -28,6 +28,8 @@ class ImageAssets {
   static const String folderFAB = '$baseImg/folder.png';
   static const String nftFAB = '$baseImg/NFT.png';
   static const String addFAB = '$baseImg/plus.png';
+
+  static const String iconCheck = '$baseImg/check.png';
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
