@@ -23,22 +23,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
 import 'item_collection_load.dart';
 
 class CollectionList extends StatefulWidget {
-  String? query;
-  String? title;
-  String? addressWallet;
+  final String? query;
+  final String? title;
+  final String? addressWallet;
   final PageRouter typeScreen;
 
-  CollectionList({
+  const CollectionList({
     Key? key,
     this.query,
     this.title,
+    this.addressWallet,
     required this.typeScreen,
   }) : super(key: key);
 
@@ -61,23 +61,28 @@ class _CollectionListState extends State<CollectionList> {
         collectionBloc.isCanLoadMore.add(true);
         collectionBloc.getListCollection(
           name: collectionBloc.textSearch.value,
-          sortFilter: collectionBloc.sortFilter, //todo
+          sortFilter: collectionBloc.sortFilter,
         );
       }
     }
   }
 
+  late String tittleScreen;
+
   @override
   void initState() {
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
-      widget.title = S.current.collection_search_result;
+      tittleScreen = widget.title ?? '';
     } else {
-      widget.title = S.current.collection_list;
+      tittleScreen = S.current.collection_list;
     }
 
     collectionBloc = CollectionBloc(widget.typeScreen);
     collectionBloc.addressWallet = widget.addressWallet;
+    if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
     collectionBloc.textSearch.sink.add(widget.query ?? '');
@@ -163,7 +168,7 @@ class _CollectionListState extends State<CollectionList> {
                       ),
                     ),
                     Text(
-                      widget.title ?? S.current.collection_list,
+                      tittleScreen,
                       style: textNormalCustom(
                         null,
                         20.sp,
@@ -266,10 +271,11 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
-                                    StaggeredGridView.countBuilder(
+                                    GridView.builder(
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -279,8 +285,13 @@ class _CollectionListState extends State<CollectionList> {
                                         top: 10.h,
                                         bottom: 16.h,
                                       ),
-                                      mainAxisSpacing: 20.h,
-                                      crossAxisSpacing: 26.w,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20.h,
+                                        crossAxisSpacing: 26.w,
+                                        childAspectRatio: 4 / 5,
+                                      ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length
                                           : 20,
@@ -327,14 +338,12 @@ class _CollectionListState extends State<CollectionList> {
                                           );
                                         } else if (state is LoadingDataFail) {
                                           return ItemCollectionError(
-                                              cubit: collectionBloc);
+                                            cubit: collectionBloc,
+                                          );
                                         } else {
                                           return const ItemCollectionLoad();
                                         }
                                       },
-                                      crossAxisCount: 2,
-                                      staggeredTileBuilder: (int index) =>
-                                          const StaggeredTile.fit(1),
                                     ),
                                     StreamBuilder<bool>(
                                       stream: collectionBloc.isCanLoadMore,

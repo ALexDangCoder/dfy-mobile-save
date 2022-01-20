@@ -1,7 +1,13 @@
+import 'package:Dfy/data/services/market_place/login_service.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/repository/market_place/login_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/dialog/dialog_utils.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class BaseScreen extends StatefulWidget {
@@ -44,21 +50,30 @@ abstract class BaseStateScreen<T extends BaseScreen> extends State<T>
     eventBus.on<TimeOutEvent>().listen((event) {
       _showTimeoutDialog(event.message);
     }).addTo(_unAuthSubscription);
+    eventBus.on<UnAuthEvent>().listen((event) {
+      _showUnAuthDialog();
+    }).addTo(_unAuthSubscription);
   }
-
 
   void _showTimeoutDialog(String msg) {
     Fluttertoast.showToast(msg: msg);
   }
 
-// void _showUnAuthDialog() {
-//   DialogUtils.showAlert(
-//     content: S.current.unauthorized,
-//     onConfirm: () {
-//       PrefsService.clearAuthData();
-//       //todo
-//       // openScreenAndRemoveUtil(context, AppRouter.);
-//     },
-//   );
-// }
+  LoginRepository get _loginRepo => Get.find();
+
+  Future<void> _showUnAuthDialog() async {
+    final login = PrefsService.getWalletLogin();
+    final loginModel = loginFromJson(login);
+    final String refreshToken = loginModel.refreshToken ?? '';
+    final result = await _loginRepo.refreshToken(refreshToken);
+    result.when(
+      success: (res) {
+        PrefsService.saveWalletLogin(
+          loginToJson(res),
+        );
+      },
+      error: (err) {},
+    );
+    return;
+  }
 }

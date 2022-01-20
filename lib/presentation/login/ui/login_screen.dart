@@ -12,8 +12,6 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/c
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
 import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
-import 'package:Dfy/presentation/market_place/login/ui/token_has_email.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -317,6 +315,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: BlocListener<LoginCubit, LoginState>(
                           bloc: _cubit,
                           listener: (context, state) {
+                            if (state is LoginSuccess &&
+                                widget.isFromConnectDialog) {
+                              _cubit.isLoginSuccessSubject.sink.add(true);
+                              return;
+                            }
                             if (state is LoginSuccess) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(

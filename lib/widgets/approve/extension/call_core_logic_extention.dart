@@ -9,7 +9,7 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
-extension CallCoreExtensi on ApproveCubit{
+extension CallCoreExtension on ApproveCubit{
   ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -39,7 +39,7 @@ extension CallCoreExtensi on ApproveCubit{
               payValue: payValue ?? '',
               tokenAddress: tokenAddress ?? ' ',
             );
-            if (result ){
+            if (result) {
               await gesGasLimitFirst(hexString ?? '');
             }
             else {
@@ -73,8 +73,14 @@ extension CallCoreExtensi on ApproveCubit{
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
               if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION),
+                );
                 showContent();
-              } else {}
+              } else {
+                showError();
+              }
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {

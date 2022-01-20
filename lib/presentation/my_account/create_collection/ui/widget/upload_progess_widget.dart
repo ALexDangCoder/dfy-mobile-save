@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:math' hide log;
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -35,12 +33,10 @@ class _UploadProgressState extends State<UploadProgress>
   void initState() {
     // TODO: implement initState
     super.initState();
-    final int rdA = Random().nextInt(3);
     final int rdC = Random().nextInt(3);
-    final int rdF = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdA + 5),
+      duration: Duration(seconds: (rdC + 3)*2),
     );
     _coverAnimationController = AnimationController(
       vsync: this,
@@ -48,7 +44,7 @@ class _UploadProgressState extends State<UploadProgress>
     );
     _featureAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: rdF + 7),
+      duration: Duration(seconds: (rdC + 3)*3),
     );
     widget.bloc.cidCreate(context);
     widget.bloc.upLoadStatusSubject.listen((value) {
@@ -58,6 +54,7 @@ class _UploadProgressState extends State<UploadProgress>
           context,
           MaterialPageRoute(
             builder: (_) => Approve(
+              hexString: widget.bloc.transactionData,
               createCollectionCubit: widget.bloc,
               listDetail: [
                 DetailItemApproveModel(
