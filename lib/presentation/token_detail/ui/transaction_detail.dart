@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -9,6 +11,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionHistoryDetailScreen extends StatelessWidget {
@@ -23,6 +26,7 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appConstants = Get.find<AppConstants>();
     return BaseBottomSheet(
       title: S.current.detail_transaction,
       child: Container(
@@ -98,8 +102,9 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                final String url =
-                    'https://bscscan.com/tx/${transaction.txhID ?? ''}';
+                final String url = appConstants.bscScan +
+                    ApiConstants.BSC_SCAN_ADDRESS +
+                    (transaction.txhID ?? '');
                 await launch(url);
               },
               child: Text(

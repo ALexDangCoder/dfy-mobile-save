@@ -8,23 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<Map<String, dynamic>> pickMediaFile() async {
+Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
+  final List<String> allowedExtensions = isCoverPhoto
+      ? ['JPG', 'PNG', 'GIF', 'JPEG']
+      : ['mp4', 'WEBM', 'mp3', 'WAV', 'OGG', 'png', 'jpg', 'jpeg', 'GIF'];
+
   String filePath = '';
   String mediaType = '';
   int fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
-    allowedExtensions: [
-      'mp4',
-      'WEBM',
-      'mp3',
-      'WAV',
-      'OGG',
-      'png',
-      'jpg',
-      'jpeg',
-      'GIF'
-    ],
+    allowedExtensions: allowedExtensions,
   );
   if (result != null) {
     final fileExtension = result.files.single.extension;

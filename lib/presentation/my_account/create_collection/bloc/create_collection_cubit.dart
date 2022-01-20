@@ -32,7 +32,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   String walletAddress = '';
   String gasLimit = '';
-  // int transactionNonce = 0;
   String transactionData = '';
 
   String createId = '';
@@ -663,13 +662,16 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   Future<void> sendDataWeb3(BuildContext context) async {
     showLoading();
     await getCollectionIPFS();
-    transactionData = await _web3utils.getCreateCollectionData(
-      contractAddress: nft_factory_dev2,
-      name: collectionName,
-      royaltyRate: royalties.toString(),
-      collectionCID: collectionIPFS,
-      context: context,
-    );
+    if(collectionType==0)
+    {
+      transactionData = await _web3utils.getCreateCollectionData(
+        contractAddress: nft_factory_dev2,
+        name: collectionName,
+        royaltyRate: royalties.toString(),
+        collectionCID: collectionIPFS,
+        context: context,
+      );
+    }
     showContent();
   }
 

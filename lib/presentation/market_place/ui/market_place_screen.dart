@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_explore_category.dart';
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_buy_sell_collectible.dart';
@@ -171,14 +172,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                   padding: EdgeInsets.only(bottom: 114.h),
                   child: FABMarketBase(
                     collectionCallBack: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return CreateCollectionScreen(
-                              bloc: CreateCollectionCubit(),
-                            );
-                          },
+                      showDialog(
+                        context: context,
+                        builder: (_) => ConnectWalletDialog(
+                          currentScreen: const MarketPlaceScreen(),
+                          navigationTo: CreateCollectionScreen(
+                            bloc: CreateCollectionCubit(),
+                          ),
                         ),
                       );
                     },
