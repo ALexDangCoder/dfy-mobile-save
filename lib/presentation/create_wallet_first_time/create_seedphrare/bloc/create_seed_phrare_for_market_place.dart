@@ -27,7 +27,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
-        await PrefsService.saveCurrentWallet(
+        await PrefsService.saveCurrentBEWallet(
           walletAddress,
         );
         await getUserProfile();

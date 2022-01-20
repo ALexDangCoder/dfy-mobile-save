@@ -1,25 +1,22 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConnectWalletDialog extends StatefulWidget {
-  /// The current screen, which call show dialog
-  ///
-  final Widget currentScreen;
-
   /// The screen you want navigator to if user  has login
   final Widget navigationTo;
 
   const ConnectWalletDialog({
     Key? key,
-    required this.currentScreen,
     required this.navigationTo,
   }) : super(key: key);
 
@@ -34,10 +31,14 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
   void initState() {
     super.initState();
     cubit = ConnectWalletDialogCubit();
-    cubit.checkStatusLogin();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getListWallet();
+    cubit.isHaveWalletStream.listen((event) {
+      cubit.checkStatusLogin();
+      cubit.getBalance(walletAddress: cubit.wallet?.address ?? '');
+    });
+
   }
 
   @override
@@ -48,16 +49,16 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: cubit.isLoginStream,
+    return StreamBuilder<LoginStatus>(
+      stream: cubit.loginStatusSubject,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(
             color: Colors.transparent,
           );
         } else {
-          final bool isLogin = snapshot.data ?? false;
-          if (isLogin) {
+          final LoginStatus loginStatus = snapshot.data!;
+          if (loginStatus == LoginStatus.LOGGED) {
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.pushReplacement(
                 context,
@@ -72,7 +73,8 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 ),
               ),
             );
-          } else {
+          } else if (loginStatus == LoginStatus.NEED_REGISTER ||
+              loginStatus == LoginStatus.NEED_LOGIN) {
             return GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Scaffold(
@@ -99,20 +101,13 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                               bottom: 24,
                               left: 41.5,
                             ),
-                            child: StreamBuilder<LoginStatus>(
-                              stream: cubit.connectStatusStream,
-                              builder: (context, snapshot) {
-                                final LoginStatus login =
-                                    snapshot.data ?? LoginStatus.CHECKING;
-                                return Text(
-                                  login.convertToContentDialog(),
-                                  textAlign: TextAlign.center,
-                                  style: textNormal(
-                                    AppTheme.getInstance().whiteColor(),
-                                    20.sp,
-                                  ).copyWith(fontWeight: FontWeight.w600),
-                                );
-                              },
+                            child: Text(
+                              loginStatus.convertToContentDialog(),
+                              textAlign: TextAlign.center,
+                              style: textNormal(
+                                AppTheme.getInstance().whiteColor(),
+                                20.sp,
+                              ).copyWith(fontWeight: FontWeight.w600),
                             ),
                           ),
                           Row(
@@ -165,61 +160,53 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                       ),
                                     ),
                                   ),
-                                  child: StreamBuilder<LoginStatus>(
-                                    stream: cubit.connectStatusStream,
-                                    builder: (context, snapshot) {
-                                      final LoginStatus status =
-                                          snapshot.data ?? LoginStatus.CHECKING;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          if (status ==
-                                              LoginStatus.HAVE_WALLET) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MainScreen(
-                                                  isFormConnectWlDialog: true,
-                                                  index: 2,
-                                                ),
-                                              ),
-                                            );
-                                          } else if (status ==
-                                              LoginStatus.HAS_NO_WALLET) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MainScreen(
-                                                  index: 3,
-                                                  isFormConnectWlDialog: true,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        behavior: HitTestBehavior.opaque,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 19,
-                                            top: 17,
-                                          ),
-                                          child: Text(
-                                            status
-                                                .convertToContentRightButton(),
-                                            style: textNormal(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              20.sp,
-                                            ).copyWith(
-                                              fontWeight: FontWeight.w700,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      if (loginStatus ==
+                                          LoginStatus.NEED_LOGIN) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MainScreen(
+                                              isFormConnectWlDialog: true,
+                                              index: 2,
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } else if (loginStatus ==
+                                          LoginStatus.NEED_REGISTER) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MainScreen(
+                                              index: 3,
+                                              isFormConnectWlDialog: true,
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 19,
+                                        top: 17,
+                                      ),
+                                      child: Text(
+                                        loginStatus
+                                            .convertToContentRightButton(),
+                                        style: textNormal(
+                                          AppTheme.getInstance().fillColor(),
+                                          20.sp,
+                                        ).copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -231,6 +218,12 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                   ),
                 ),
               ),
+            );
+          } else {
+            return WalletDialogWhenLoggedCore(
+              balance: cubit.balance ?? 0,
+              cubit: cubit,
+              wallet: cubit.wallet ?? Wallet(),
             );
           }
         }
