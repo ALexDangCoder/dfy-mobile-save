@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDropDown extends StatelessWidget {
-  const CustomDropDown({Key? key, required this.listValue}) : super(key: key);
+  const CustomDropDown({
+    Key? key,
+    required this.listValue,
+    required this.onChange,
+  }) : super(key: key);
   final List<Map<String, String>> listValue;
+  final Function(Map<String, String>) onChange;
 
   @override
   Widget build(BuildContext context) {
     return CoolDropdown(
+      isAnimation: false,
       resultTS: textNormalCustom(
         AppTheme.getInstance().textThemeColor(),
         16,
@@ -27,7 +33,6 @@ class CustomDropDown extends StatelessWidget {
         16,
         FontWeight.w400,
       ),
-      isAnimation: false,
       dropdownBD: BoxDecoration(
         color: AppTheme.getInstance().colorTextReset(),
         borderRadius: BorderRadius.only(
@@ -49,7 +54,9 @@ class CustomDropDown extends StatelessWidget {
       dropdownHeight: 113.h,
       dropdownItemHeight: 54.h,
       dropdownWidth: 85.w,
-      onChange: (value) {},
+      onChange: (value) {
+        onChange(value);
+      },
       dropdownItemBottomGap: 0,
       dropdownItemTopGap: 0,
       dropdownList: listValue,

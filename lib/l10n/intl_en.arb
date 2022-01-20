@@ -507,5 +507,27 @@
   "next": "Next",
   "get_started": "Get started",
   "custom_url" : "Custom URL",
-  "current_price": "Current price"
+  "process_create": "Process create",
+  "failed_create": "Failed create",
+  "open": "Open",
+  "processing_accept": "Processing accept",
+  "processing_reject": "Processing reject",
+  "processing_cancel": "Processing cancel",
+  "accepted": "Accepted",
+  "rejected": "Rejected",
+  "canceled": "Canceled",
+  "current_price": "Current price ",
+  "loading": "Loading",
+  "invalid_message": "Invalid message",
+  "invalid_amount": "Invalid amount",
+  "invalid_interest_rate": "Invalid Interest Rate",
+  "invalid_duration_week": "Duration by day can not greater than 5200",
+  "invalid_duration": "Invalid duration",
+  "invalid_repayment": "Invalid_repayment",
+  "invalid_duration_month": "Duration by month can not greater than 1200",
+  "monthly": "Monthly",
+  "weekly": "Weekly"
+
+
+
 }

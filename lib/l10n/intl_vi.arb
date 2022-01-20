@@ -392,8 +392,6 @@
   "message": "Tin nhắn",
   "repayment_token": "Token trả nợ",
   "offer_create_by_day": "Để nghị tạo ngày",
-  "accept": "Chấp thuận",
-  "reject": "Từ chối",
   "copied_address": "Sao chép địa chỉ!",
   "copied_private_key": "Sao chép private key!",
   "copied_seed_phrase": "Sao chép seed phrase!",
@@ -498,5 +496,28 @@
   "to_take_profit": "để thu lợi nhuận",
   "next": "Tiếp theo",
   "get_started": "Bắt đầu",
-  "current_price": "Giá hiện tại"
+  "current_price": "Giá hiện tại",
+  "process_create": "Qúa trình tạo",
+  "failed_create": "Tạo thất bại",
+  "open": "Mở",
+  "processing_accept": "Đang xử lí chấp nhận",
+  "processing_reject": "Đang xử lí từ chối",
+  "processing_cancel": "Đang sử lí huỷ",
+  "accepted": "Đã chấp thuận",
+  "rejected": "Đã từ chối",
+  "canceled": "Đã huỷ",
+  "reject": "Reject",
+  "accept": "Accept",
+  "loading": "Đang tải",
+  "invalid_message": "Tin nhắn không hợp lệ",
+  "invalid_amount": "Số lượng không hợp lệ",
+  "invalid_interest_rate": "Lãi suất không hợp lệ",
+  "invalid_duration_week": "Thời gian theo ngày không thể lớn hơn 5200",
+  "invalid_duration": "Invalid duration",
+  "invalid_duration_month": "Thời gian theo tháng không thể lớn hơn 1200",
+  "invalid_repayment": "Khoản vay không hợp lệ",
+  "monthly": "Hàng tháng",
+  "weekly": "Hàng tuần"
+
+
 }

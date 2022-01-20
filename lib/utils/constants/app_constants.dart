@@ -35,8 +35,8 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
-const String ID_MONTH = '1';
-const String ID_WEEK = '1';
+const int ID_MONTH = 0;
+const int ID_WEEK = 1;
 
 const int secondShowPopUp = 2;
 
@@ -75,4 +75,26 @@ class DateTimeFormat {
   static const CREATE_FORMAT = _dtFormat3;
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
+}
+const PERCENT = '%';
+const DFY = 'DFY';
+const PROCESSING_CREATE = 1;
+const FAILED_CREATE = 2;
+const OPEN = 3;
+const PROCESSING_ACCEPT = 4;
+const PROCESSING_REJECT = 5;
+const PROCESSING_CANCEL = 6;
+const ACCEPTED = 7;
+const REJECTED = 8;
+const CANCELED = 9;
+enum StatusOffer {
+  PROCESSING_CREATE,
+  FAILED_CREATE,
+  OPEN,
+  PROCESSING_ACCEPT,
+  PROCESSING_REJECT,
+  PROCESSING_CANCEL,
+  ACCEPTED,
+  REJECTED,
+  CANCELED,
 }

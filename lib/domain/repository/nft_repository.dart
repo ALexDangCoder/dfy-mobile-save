@@ -9,6 +9,7 @@ import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
+import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
 
 mixin NFTRepository {
@@ -37,9 +38,10 @@ mixin NFTRepository {
   Future<Result<List<BiddingNft>>> getBidding(
     String auctionId,
   );
+
   Future<Result<Evaluation>> getEvaluation(
-      String evaluationId,
-      );
+    String evaluationId,
+  );
 
   Future<Result<String>> buyNftRequest(
     BuyNftRequest nftRequest,
@@ -51,5 +53,9 @@ mixin NFTRepository {
 
   Future<Result<List<OfferDetail>>> getOffer(
     String collateralId,
+  );
+
+  Future<Result<OfferDetailModel>> getDetailOffer(
+    int id,
   );
 }
