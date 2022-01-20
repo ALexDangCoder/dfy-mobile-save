@@ -14,7 +14,7 @@ enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
 enum MarketType { SALE, AUCTION, PAWN, NOT_ON_MARKET }
-enum PageRouter {MARKET,MY_ACC}
+enum PageRouter { MARKET, MY_ACC }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 
@@ -65,6 +65,8 @@ const nft_factory_dev2 =
 const nft_auction_dev2 =
     '0xdE92A451d22C1D84E874b6B8A5A70AC5f91b6D86'; // auction
 const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
+const hard_nft_factory_address_dev2 =
+    '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
