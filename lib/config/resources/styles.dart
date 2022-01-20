@@ -18,8 +18,12 @@ final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
 final spaceH15 = SizedBox(height: 15.h);
-final spaceH32 = SizedBox(height: 32.h,);
-final spaceH27 = SizedBox(height: 27.h,);
+final spaceH32 = SizedBox(
+  height: 32.h,
+);
+final spaceH27 = SizedBox(
+  height: 27.h,
+);
 
 final spaceH14 = SizedBox(height: 14.h);
 final spaceH16 = SizedBox(height: 16.h);
@@ -72,6 +76,22 @@ TextStyle textNormal(Color? color, double? fontSize) {
 }
 
 final divider = Divider(thickness: 1, color: Colors.white.withOpacity(0.1));
+
+final dividerCreateNFT = SizedBox(
+  width: 66.w,
+  child: Divider(
+    thickness: 1,
+    color: AppTheme.getInstance().lineCreateNFT(),
+  ),
+);
+
+final dividerSuccessCreateNFT = SizedBox(
+  width: 66.w,
+  child: Divider(
+    thickness: 1,
+    color: AppTheme.getInstance().successTransactionColors(),
+  ),
+);
 
 TextStyle tokenDetailAmount({
   Color color = Colors.white,

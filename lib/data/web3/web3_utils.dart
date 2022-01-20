@@ -680,8 +680,7 @@ class Web3Utils {
     required String collectionCID,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedNFTCollectionContract(contractAddress, context);
+    final deployContract = await deployedNFTCollectionContract(contractAddress);
     final function = deployContract.function('createCollection');
     final createCollection = Transaction.callContract(
       contract: deployContract,
@@ -708,8 +707,7 @@ class Web3Utils {
     required String beNFTId,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
     final function = deployContract.function('putOnPawn');
     final putOnPawn = Transaction.callContract(
       contract: deployContract,
@@ -733,8 +731,7 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
     final function = deployContract.function('acceptOffer');
     final acceptOffer = Transaction.callContract(
       contract: deployContract,
@@ -752,8 +749,7 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
     final function = deployContract.function('cancelOffer');
     final cancelOffer = Transaction.callContract(
       contract: deployContract,
@@ -776,8 +772,7 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedNFTCollectionContract(nft_pawn_dev2, context);
+    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
     final function = deployContract.function('createOffer');
     final createOffer = Transaction.callContract(
       contract: deployContract,
@@ -793,6 +788,40 @@ class Web3Utils {
       ],
     );
     return hex.encode(createOffer.data ?? []);
+  }
+
+  //hardNFT
+  Future<DeployedContract> deployedHardNftCollectionAddress(
+    String contract,
+  ) async {
+    final abiCode =
+        await rootBundle.loadString('assets/abi/Hard_NFT_Factory721_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'Hard Nft'),
+      EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<String> getCreateHardCollectionData({
+    required String name,
+    required String royaltyRate,
+    required String collectionCID,
+    required BuildContext context,
+  }) async {
+    final deployContract =
+        await deployedHardNftCollectionAddress(hard_nft_factory_address_dev2);
+    final function = deployContract.function('createCollection');
+    final createCollection = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        name,
+        'HARD-NFT',
+        collectionCID,
+      ],
+    );
+    return hex.encode(createCollection.data ?? []);
   }
 
   Future<DeployedContract> deployedContractAddress(
@@ -837,7 +866,6 @@ class Web3Utils {
 
   Future<DeployedContract> deployedNFTCollectionContract(
     String contract,
-    BuildContext context,
   ) async {
     final abiCode = await rootBundle
         .loadString('assets/abi/DefiForYouNFTFactory_ABI_DEV2.json');
