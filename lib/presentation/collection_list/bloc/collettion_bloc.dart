@@ -290,11 +290,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
             if (value.addressCollection?.isEmpty ?? false) {
-              print(
-                  '-------------------------------------------------${value.addressCollection}');
             } else {
-              print(
-                  '-------------------------------------------------${value.addressCollection}');
               listCollection.add(value);
             }
           }
