@@ -2,10 +2,11 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/categories_dropdown_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget_create_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -61,7 +62,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    uploadWidget(widget.cubit),
+                    uploadWidgetCreateNft(widget.cubit),
                     spaceH16,
                     CategoriesDropDown(
                       cubit: widget.cubit,

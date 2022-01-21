@@ -49,6 +49,15 @@ class _UploadProgressState extends State<UploadProgress>
     widget.bloc.cidCreate(context);
     widget.bloc.upLoadStatusSubject.listen((value) {
       if(value==1){
+        if(_avatarAnimationController.isAnimating) {
+          _avatarAnimationController.stop();
+        }
+        if(_featureAnimationController.isAnimating) {
+          _featureAnimationController.stop();
+        }
+        if(_coverAnimationController.isAnimating) {
+          _coverAnimationController.stop();
+        }
         Navigator.pop(context);
         Navigator.push(
           context,
