@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -38,17 +39,44 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-            (Position position) {
-          print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
-          print('-----------------------------------------${position.latitude}');
-        });
-
+    // getLocationUpdates();
   }
+
+  // void getLocationUpdates() {
+  //   final LocationSettings locationSettings = LocationSettings(
+  //     accuracy: LocationAccuracy.high,
+  //     distanceFilter: 100,
+  //   );
+  //   StreamSubscription<Position> homeTabPostionStream;
+  //   homeTabPostionStream =
+  //       Geolocator.getPositionStream(locationSettings: locationSettings)
+  //           .listen((position) {
+  //     print(position == null
+  //         ? 'Unknown'
+  //         : position.latitude.toString() +
+  //             ', ' +
+  //             position.longitude.toString());
+  //     print('-----------------------------------------${position.latitude}');
+  //   });
+  // }
+  // void _currentLocation() async {
+  //   final GoogleMapController controller = await _controller.future;
+  //   LocationData currentLocation;
+  //   var location = Location();
+  //   try {
+  //     currentLocation = await location.getLocation();
+  //   } on Exception {
+  //     currentLocation = null;
+  //   }
+  //
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(
+  //     CameraPosition(
+  //       bearing: 0,
+  //       target: LatLng(currentLocation.latitude, currentLocation.longitude),
+  //       zoom: 17.0,
+  //     ),
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +178,7 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
                 height: 193.h,
                 width: 343.w,
                 child: GoogleMap(
+                  myLocationEnabled: true,
                   zoomControlsEnabled: false,
                   initialCameraPosition: _kGooglePlex,
                   onMapCreated: (GoogleMapController controller) {
