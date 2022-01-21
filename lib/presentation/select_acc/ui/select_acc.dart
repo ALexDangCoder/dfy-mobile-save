@@ -112,25 +112,14 @@ class _SelectAccState extends State<SelectAcc> {
                                     listAcc[index].addressWallet ?? '',
                               );
                               bloc.click(index);
-                              if (widget.typeScreen2 == TypeScreen2.detail) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(
-                                      index: 1,
-                                    ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(
+                                    index: 1,
                                   ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(
-                                      index: 1,
-                                    ),
-                                  ),
-                                );
-                              }
+                                ),
+                              );
                             },
                             onLongPress: () {
                               Navigator.of(context)
