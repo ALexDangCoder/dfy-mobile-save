@@ -24,7 +24,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   final BehaviorSubject<List<CheckBoxFilter>> listCheckBox =
       BehaviorSubject<List<CheckBoxFilter>>();
   final BehaviorSubject<String> addressStream = BehaviorSubject.seeded('');
-  final BehaviorSubject<bool> isShowDropDownStream = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> isShowDropDownStream =
+      BehaviorSubject.seeded(false);
 
   CollectionFilterRepository get _collectionRepo => Get.find();
 
@@ -50,15 +51,14 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       title.add(getTitleStream(selectStatus.first));
     }
   }
-  bool getLogin(){
-    if(walletAddress == ''){
+
+  bool getLogin() {
+    if (walletAddress == '') {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
-
 
   String getTitleStream(int num) {
     if (num == 2) {
@@ -67,11 +67,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else if (num == 3) {
       selectStatus.add(3);
       return S.current.nft_on_pawn;
-    } else if(num == 1){
+    } else if (num == 1) {
       selectStatus.add(1);
       return S.current.nft_on_sell;
-    }
-    else {
+    } else {
       selectStatus.add(0);
       return S.current.not_on_market;
     }
@@ -90,6 +89,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       checkFilterArr.add(S.current.on_sell);
       selectStatus.add(1);
       return '1';
+    } else if (type == MarketType.NOT_ON_MARKET) {
+      checkFilterArr.add(S.current.not_on_market);
+      selectStatus.add(0);
+      return '0';
     } else {
       return '';
     }
@@ -103,23 +106,50 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void searchNft(String? name, String? status,) {
+  void searchNft(
+    String? name,
+    String? status,
+    PageRouter pageRouter,
+  ) {
     page = 1;
-    if (walletAddress == '') {
+    if (pageRouter == PageRouter.MARKET) {
       if (status!.isEmpty) {
-        getListNft(name: name);
+        getListNft(
+          name: name,
+          pageRouter: PageRouter.MARKET,
+        );
       } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
-        getListNft(name: name, status: status);
+        getListNft(
+          name: name,
+          status: status,
+          pageRouter: PageRouter.MARKET,
+        );
       } else {
-        getListNft(status: status);
+        getListNft(
+          status: status,
+          pageRouter: PageRouter.MARKET,
+        );
       }
     } else {
       if (status!.isEmpty) {
-        getListNft(name: name, walletAddress: walletAddress);
+        getListNft(
+          name: name,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
-        getListNft(name: name, status: status, walletAddress: walletAddress);
+        getListNft(
+          name: name,
+          status: status,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       } else {
-        getListNft(status: status, walletAddress: walletAddress);
+        getListNft(
+          status: status,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       }
     }
   }
@@ -129,8 +159,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   bool canLoadMoreListNft = true;
   bool refresh = false;
 
-  void loadMorePosts() {
-    if (walletAddress == '') {
+  void loadMorePosts(PageRouter pageRouter) {
+    checkStatus();
+    if (pageRouter == PageRouter.MARKET) {
       if (!loadMore) {
         page += 1;
         canLoadMoreListNft = true;
@@ -139,6 +170,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
+          pageRouter: PageRouter.MARKET,
         );
       }
     } else {
@@ -151,21 +183,24 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
           walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
         );
       }
     }
   }
 
-  void refreshPosts() {
+  void refreshPosts(PageRouter pageRouter) {
+    checkStatus();
     canLoadMoreListNft = true;
     page = 1;
-    if (walletAddress == '') {
+    if (pageRouter == PageRouter.MARKET) {
       if (!refresh) {
         refresh = true;
         getListNft(
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
+          pageRouter: PageRouter.MARKET,
         );
       }
     } else {
@@ -176,6 +211,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
           walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
         );
       }
     }
@@ -194,6 +230,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     String? name,
     String? collectionId,
     String? walletAddress,
+    required PageRouter pageRouter,
   }) async {
     if (loadMore) {
       emit(ListNftLoadMore());
@@ -203,7 +240,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       emit(ListNftLoading());
     }
     final Result<List<NftMarket>> result;
-    if (walletAddress?.isEmpty ?? true) {
+    if (pageRouter == PageRouter.MARKET) {
       result = await _nftRepo.getListNft(
         status: status,
         name: name,
@@ -213,11 +250,13 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       );
     } else {
       result = await _nftRepo.getListNftMyAcc(
-        status: status,
+        status: status![0],
         name: name,
-        nftType: nftType,
+        nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
+            ? ''
+            : nftType?[0],
         walletAddress: walletAddress,
-        collectionId: collectionId,
+        collectionId: '',
         page: page.toString(),
       );
     }
@@ -442,6 +481,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       return S.current.nft_on_sell;
     } else if (type == MarketType.AUCTION) {
       return S.current.on_auction;
+    } else if (type == MarketType.NOT_ON_MARKET) {
+      return S.current.not_on_market;
     } else {
       return S.current.on_pawn;
     }

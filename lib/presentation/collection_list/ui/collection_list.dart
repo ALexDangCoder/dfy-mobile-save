@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../main.dart';
 import 'filter.dart';
 import 'filter_myacc.dart';
 import 'item_collection_load.dart';
@@ -91,10 +90,7 @@ class _CollectionListState extends State<CollectionList> {
       name: widget.query?.trim(),
       sortFilter: collectionBloc.sortFilter,
     );
-
-    trustWalletChannel
-        .setMethodCallHandler(collectionBloc.nativeMethodCallBackTrustWallet);
-    collectionBloc.getListWallets();
+    collectionBloc.getListWallet();
   }
 
   @override
@@ -195,6 +191,7 @@ class _CollectionListState extends State<CollectionList> {
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) => FilterMyAcc(
+
                               collectionBloc: collectionBloc,
                             ),
                           );

@@ -105,6 +105,7 @@ class BaseSpace extends StatelessWidget {
             height: 145.h,
             errorBuilder: (context, url, error) => Container(
               color: AppTheme.getInstance().selectDialogColor(),
+              height: 145.h,
             ),
           ),
           Positioned(
@@ -138,7 +139,8 @@ class BaseSpace extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(//todo verified
+                Positioned(
+                  //todo verified
                   bottom: 6.h,
                   right: 6.w,
                   child: isOwner

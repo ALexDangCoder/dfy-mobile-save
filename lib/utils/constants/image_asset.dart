@@ -28,6 +28,8 @@ class ImageAssets {
   static const String folderFAB = '$baseImg/folder.png';
   static const String nftFAB = '$baseImg/NFT.png';
   static const String addFAB = '$baseImg/plus.png';
+
+  static const String iconCheck = '$baseImg/check.png';
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
@@ -189,6 +191,7 @@ class ImageAssets {
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
   static const String img_warning = '$baseImg/img_warning.png';
+  static const String ic_user_verified = '$baseImg/ic_user_verified.png';
 
   ///image for on boarding screen
   static const String content1 = '$baseImg/content1.png';
