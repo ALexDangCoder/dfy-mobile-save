@@ -1,7 +1,12 @@
 part of 'nft_detail.dart';
 
-Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
-    NFTDetailBloc bloc, NFTOnAuction nftOnAuction) {
+Widget _buildButtonPlaceBid(
+  BuildContext context,
+  bool start,
+  bool end,
+  NFTDetailBloc bloc,
+  NFTOnAuction nftOnAuction,
+) {
   if (!start && end) {
     return ButtonGradient(
       onPressed: () async {
@@ -72,12 +77,38 @@ Widget _buildButtonBuyOut(BuildContext context) {
     },
   );
 }
+Widget buttonCancelAuction(bool approveAdmin) {
+  if(!approveAdmin){
+    return ButtonGradient(
+      onPressed: () async {
+        /// TODO: handle cancel sale buy nftMarket.isOwner == true
+
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: Text(
+        S.current.cancel_sale,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
+  else{
+    return const SizedBox();
+  }
+}
 
 Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
   required bool isEnd,
 }) {
-  final bool isBidding = nftOnAuction.isBidByOther ?? false;
+  final bool isBidding = nftOnAuction.numberBid != 0 ;
   return Container(
     width: 343.w,
     height: 64.h,
@@ -87,7 +118,7 @@ Container _priceContainerOnAuction({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isBidding
+          !isBidding
               ? S.current.reserve_price
               : (isEnd ? S.current.auction_win : S.current.is_bid),
           style: textNormalCustom(
@@ -117,7 +148,7 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
+                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

@@ -1,40 +1,35 @@
 import 'dart:io';
 
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<Map<String, dynamic>> pickMediaFile() async {
+Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
+  final List<String> allowedExtensions = isCoverPhoto
+      ? ['JPG', 'PNG', 'GIF', 'JPEG']
+      : ['mp4', 'WEBM', 'mp3', 'WAV', 'OGG', 'png', 'jpg', 'jpeg', 'GIF'];
+
   String filePath = '';
   String mediaType = '';
   int fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
-    allowedExtensions: [
-      'mp4',
-      'WEBM',
-      'mp3',
-      'WAV',
-      'OGG',
-      'png',
-      'jpg',
-      'jpeg',
-      'GIF'
-    ],
+    allowedExtensions: allowedExtensions,
   );
   if (result != null) {
     final fileExtension = result.files.single.extension;
     if (fileExtension == 'mp4' || fileExtension == 'webm') {
-      mediaType = 'video';
+      mediaType = MEDIA_VIDEO_FILE;
     } else if (fileExtension == 'mp3' ||
         fileExtension == 'wav' ||
         fileExtension == 'OOG') {
-      mediaType = 'audio';
+      mediaType = MEDIA_AUDIO_FILE;
     } else {
-      mediaType = 'image';
+      mediaType = MEDIA_IMAGE_FILE;
     }
     filePath = result.files.single.path ?? '';
     fileSize = result.files.single.size;
@@ -54,7 +49,7 @@ Future<String> pickImageFunc({
     if (newImage == null) {
       return '';
     }
-    final List<CropAspectRatioPreset> presetAndroid = imageType == 'avatar'
+    final List<CropAspectRatioPreset> presetAndroid = imageType == AVATAR_PHOTO
         ? [
             CropAspectRatioPreset.square,
           ]
@@ -65,7 +60,7 @@ Future<String> pickImageFunc({
             CropAspectRatioPreset.ratio4x3,
             CropAspectRatioPreset.ratio16x9
           ];
-    final List<CropAspectRatioPreset> presetIos = imageType == 'avatar'
+    final List<CropAspectRatioPreset> presetIos = imageType == AVATAR_PHOTO
         ? [
             CropAspectRatioPreset.square,
           ]
@@ -81,7 +76,8 @@ Future<String> pickImageFunc({
           ];
     final File? croppedFile = await ImageCropper.cropImage(
       sourcePath: newImage.path,
-      cropStyle: imageType == 'avatar' ? CropStyle.circle : CropStyle.rectangle,
+      cropStyle:
+          imageType == AVATAR_PHOTO ? CropStyle.circle : CropStyle.rectangle,
       aspectRatioPresets: Platform.isAndroid ? presetAndroid : presetIos,
       androidUiSettings: AndroidUiSettings(
         activeControlsWidgetColor: AppTheme.getInstance().bgBtsColor(),
@@ -90,10 +86,10 @@ Future<String> pickImageFunc({
         statusBarColor: Colors.black,
         toolbarTitle: tittle,
         toolbarWidgetColor: Colors.white,
-        initAspectRatio: imageType == 'avatar'
+        initAspectRatio: imageType == AVATAR_PHOTO
             ? CropAspectRatioPreset.square
             : CropAspectRatioPreset.original,
-        lockAspectRatio: imageType == 'avatar',
+        lockAspectRatio: imageType == AVATAR_PHOTO,
       ),
       iosUiSettings: IOSUiSettings(
         title: tittle,

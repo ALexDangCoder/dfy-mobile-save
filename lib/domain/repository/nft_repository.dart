@@ -18,6 +18,12 @@ mixin NFTRepository {
 
   Future<Result<NftMarket>> getDetailNftOnSale(String marketId);
 
+
+  Future<Result<NftMarket>> getDetailNftMyAccNotOnMarket(
+    String nftId,
+    String type,
+  );
+
   Future<Result<NftOnPawn>> getDetailNftOnPawn(String pawnId);
 
   Future<Result<NftMarket>> getDetailHardNftOnSale(String nftId);
@@ -37,9 +43,10 @@ mixin NFTRepository {
   Future<Result<List<BiddingNft>>> getBidding(
     String auctionId,
   );
+
   Future<Result<Evaluation>> getEvaluation(
-      String evaluationId,
-      );
+    String evaluationId,
+  );
 
   Future<Result<String>> buyNftRequest(
     BuyNftRequest nftRequest,

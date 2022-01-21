@@ -75,7 +75,7 @@ extension CallCoreExtension on ApproveCubit{
               if (result['isSuccess']) {
                 emit(
                   SignSuccess(
-                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION),
+                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION,),
                 );
                 showContent();
               } else {

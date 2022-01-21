@@ -89,6 +89,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   PutOnMarketModel? putOnMarketModel;
 
+  bool isSoftCollection = false;
+
+
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> addressWalletCoreSubject =
       BehaviorSubject<String>();

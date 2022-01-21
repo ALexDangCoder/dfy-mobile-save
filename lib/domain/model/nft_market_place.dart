@@ -27,7 +27,7 @@ class NftMarket {
   String? owner;
   String? collectionID;
   String? collectionName;
-  int? isOwner;
+  bool? isOwner;
   String? nftStandard;
   double? marketFee;
   double? royalties;
@@ -48,13 +48,19 @@ class NftMarket {
   bool? isWhitelist;
   int? pawnId;
   bool? isBoughtByOther;
+  String? walletAddress;
+  int? processStatus;
+  int? marketStatus;
 
   NftMarket.init();
 
   NftMarket({
     this.id,
     this.token,
+    this.walletAddress,
+    this.processStatus,
     this.nftId,
+    this.marketStatus,
     this.tokenBuyOut,
     this.isBoughtByOther,
     this.name,

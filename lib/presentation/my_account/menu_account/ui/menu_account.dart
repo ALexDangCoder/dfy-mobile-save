@@ -11,6 +11,8 @@ import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubi
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -49,6 +51,62 @@ class _MenuAccountState extends State<MenuAccount> {
 
   void pushRoute(String routeName, BuildContext context) {
     switch (routeName) {
+      case 'nft_not_on_market':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ListNft(
+                marketType: MarketType.NOT_ON_MARKET,
+                pageRouter: PageRouter.MY_ACC,
+                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+              ),
+            ),
+          );
+        }
+        break;
+      case 'nft_on_sale':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ListNft(
+                marketType: MarketType.SALE,
+                pageRouter: PageRouter.MY_ACC,
+                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+              ),
+            ),
+          );
+        }
+        break;
+      case 'nft_on_auction':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ListNft(
+                marketType: MarketType.AUCTION,
+                pageRouter: PageRouter.MY_ACC,
+                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+              ),
+            ),
+          );
+        }
+        break;
+      case 'nft_on_pawn':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ListNft(
+                marketType: MarketType.PAWN,
+                pageRouter: PageRouter.MY_ACC,
+                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+              ),
+            ),
+          );
+        }
+        break;
       case 'about_us':
         {
           Navigator.pushReplacement(
@@ -89,18 +147,22 @@ class _MenuAccountState extends State<MenuAccount> {
       children: [
         ItemMenuModel.createChild(
           routeName: 'about_us',
+          routeName: 'nft_not_on_market',
           title: S.current.not_on_market,
         ),
         ItemMenuModel.createChild(
           routeName: 'about_us',
+          routeName: 'nft_on_sale',
           title: S.current.on_sale,
         ),
         ItemMenuModel.createChild(
           routeName: 'about_us',
+          routeName: 'nft_on_pawn',
           title: S.current.on_pawn,
         ),
         ItemMenuModel.createChild(
           routeName: 'about_us',
+          routeName: 'nft_on_auction',
           title: S.current.on_auction,
         ),
       ],

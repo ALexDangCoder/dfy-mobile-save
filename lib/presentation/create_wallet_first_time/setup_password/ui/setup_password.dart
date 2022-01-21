@@ -10,8 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SetupPassWord extends StatefulWidget {
-  const SetupPassWord({Key? key, this.typeEarseWallet}) : super(key: key);
+  const SetupPassWord({
+    Key? key,
+    this.typeEarseWallet,
+    this.isFormConnectWlDialog = false,
+  }) : super(key: key);
   final String? typeEarseWallet;
+  final bool isFormConnectWlDialog;
 
   @override
   _SetupPassWordState createState() => _SetupPassWordState();
@@ -118,6 +123,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
                                     bloc: BLocCreateSeedPhrase(password.text),
                                     type: TypeScreen.two,
                                     typeEarseWallet: widget.typeEarseWallet,
+                                    isFromConnectWlDialog: widget.isFormConnectWlDialog,
                                   );
                                 },
                               ),

@@ -7,8 +7,6 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -22,9 +20,9 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
     getListTypeNFT();
   }
 
-  VideoPlayerController? _controller;
+  VideoPlayerController? controller;
 
-  CollectionDetailRepository get _collectionDetailRepository => Get.find();
+  CollectionDetailRepository get collectionDetailRepository => Get.find();
 
   NFTRepository get _nftRepo => Get.find();
 
@@ -35,6 +33,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   String selectedId = '';
   int selectedNftType = 0;
+  String walletAddress = '';
 
   ///Detail NFT var
   String nftName = '';
@@ -51,6 +50,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   final BehaviorSubject<VideoPlayerController> videoFileSubject =
       BehaviorSubject();
   final BehaviorSubject<File> audioFileSubject = BehaviorSubject();
+  final BehaviorSubject<String> coverPhotoSubject = BehaviorSubject();
 
   ///Error text image file size
   final BehaviorSubject<String> fileErrorTextSubject = BehaviorSubject();
@@ -84,61 +84,6 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
     selectedNftType =
         listNft.where((element) => element.id == id).toList().first.type ?? 1;
   }
-}
-
-/// Detail NFT logic
-extension CreateDetailNFF on CreateNftCubit {
-  Future<void> pickFile() async {
-    final Map<String, dynamic> mediaFile = await pickMediaFile();
-    final type = mediaFile.getStringValue('type');
-    final path = mediaFile.getStringValue('path');
-    mediaFileSubject.sink.add(type);
-    switch (type) {
-      case 'image':
-        {
-          imageFileSubject.sink.add(path);
-          break;
-        }
-      case 'video':
-        {
-          if (_controller == null) {
-            _controller = VideoPlayerController.file(File(path));
-            await _controller?.setLooping(true);
-            await _controller?.initialize();
-            await _controller?.play();
-            videoFileSubject.sink.add(_controller!);
-          }
-          break;
-        }
-      default:
-        {
-          break;
-        }
-    }
-  }
-
-  void clearData() {
-    try {
-      _controller?.pause();
-      _controller = null;
-    } catch (_) {}
-    mediaFileSubject.sink.add('');
-  }
-
-  ///get collection list (my acc)
-  Future<void> getListCollection() async {
-    final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollection(
-          addressWallet: '0x7Cf759534595a8059f25fc319f570A077c41F116',
-        );
-    result.when(
-      success: (res) {
-        final listDropDown = res.map((e) => e.toDropDownMap()).toList();
-        listCollectionSubject.sink.add(listDropDown);
-      },
-      error: (_) {},
-    );
-  }
 
   void dispose() {
     selectIdSubject.close();
@@ -146,7 +91,7 @@ extension CreateDetailNFF on CreateNftCubit {
     imageFileSubject.close();
     fileErrorTextSubject.close();
     videoFileSubject.close();
-    _controller?.dispose();
+    controller?.dispose();
     listCollectionSubject.close();
   }
 }

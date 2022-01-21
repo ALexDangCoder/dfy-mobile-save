@@ -1,22 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:r_crypto/r_crypto.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';
 import 'login_cubit.dart';
@@ -33,15 +27,14 @@ extension LoginForMarketPlace on LoginCubit {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
-        await PrefsService.saveCurrentWallet(
+        await PrefsService.saveCurrentBEWallet(
           walletAddress,
         );
         await getUserProfile();
+        isSaveInfoSuccessSubject.sink.add(true);
       },
       error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
-        );
+        isSaveInfoSuccessSubject.sink.add(false);
       },
     );
   }
@@ -58,6 +51,7 @@ extension LoginForMarketPlace on LoginCubit {
 
   Future<void> getSignature({required String walletAddress}) async {
     try {
+      showLoading();
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
@@ -80,13 +74,11 @@ extension LoginForMarketPlace on LoginCubit {
         },
       );
     } on PlatformException catch (e) {
-      FToast().showToast(
-        child: Text(S.current.something_went_wrong),
-      );
       throw AppException(
         S.current.something_went_wrong,
         e.message.toString(),
       );
+
     }
   }
 
@@ -98,9 +90,9 @@ extension LoginForMarketPlace on LoginCubit {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
+      error: (err) async {
+        await PrefsService.saveUserProfile(
+          PrefsService.userProfileEmpty(),
         );
       },
     );

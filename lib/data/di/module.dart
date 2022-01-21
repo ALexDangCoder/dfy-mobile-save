@@ -107,11 +107,10 @@ Dio provideDio({int connectionTimeOut = 60000}) {
     InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
         options.baseUrl = appConstants.baseUrl;
+
         final walletLoginJson = PrefsService.getWalletLogin();
         final accessToken = loginFromJson(walletLoginJson).accessToken ?? '';
-        if (accessToken.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $accessToken';
-        }
+        options.headers['Authorization'] = 'Bearer $accessToken';
         options.headers['Content-Type'] = 'application/json';
         options.headers['pinata_api_key'] = 'ac8828bff3bcd1c1b828';
         options.headers['pinata_secret_api_key'] =

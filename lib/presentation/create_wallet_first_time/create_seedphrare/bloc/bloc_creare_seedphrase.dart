@@ -31,6 +31,9 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
   BehaviorSubject<bool> isSeedPhraseImportFailed =
       BehaviorSubject.seeded(false);
 
+  BehaviorSubject<String> signatureSubject = BehaviorSubject.seeded('');
+
+  Stream<String> get signatureStream => signatureSubject.stream;
   Future<void> setFirstTime() async {
     await PrefsService.saveFirstAppConfig('false');
   }
@@ -126,9 +129,7 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
   Future<void> generateWallet(String? typeEarseWallet) async {
     try {
-      final data = {
-        'typeEarseWallet': typeEarseWallet
-      };
+      final data = {'typeEarseWallet': typeEarseWallet};
       await trustWalletChannel.invokeMethod('generateWallet', data);
     } on PlatformException {}
   }
@@ -178,6 +179,11 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
       case 'savePasswordCallback':
         // bool isSuccess = await methodCall.arguments['isSuccess'];
         break;
+      case 'signWalletCallback':
+        final signature = await methodCall.arguments['signature'];
+        signatureSubject.sink.add(signature);
+        break;
+
       default:
         break;
     }
@@ -213,5 +219,6 @@ class BLocCreateSeedPhrase extends Cubit<SeedState> {
 
     listTitle.close();
     listSeedPhrase.close();
+    signatureSubject.close();
   }
 }

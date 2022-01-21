@@ -23,6 +23,7 @@ import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
@@ -138,7 +139,8 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-        // TODO: Handle this case.
+        cubit.isSoftCollection =
+            (widget.createCollectionCubit?.collectionType ?? 0) == 0;
         break;
     }
   }
@@ -268,7 +270,7 @@ class _ApproveState extends State<Approve> {
           final nonce = await cubit.getNonce();
           await cubit.signTransactionWithData(
             walletAddress: cubit.addressWallet ?? '',
-            contractAddress: nft_sales_address_dev2,
+            contractAddress: cubit.getSpender(),
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
@@ -673,8 +675,8 @@ class _ApproveState extends State<Approve> {
               widget.createCollectionCubit?.getMapCreateCollection() ?? {},
           txhHash: data,
         );
-        Navigator.pushReplacement(
-          context,
+        popToFirst(context);
+        Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => CollectionList(
               typeScreen: PageRouter.MY_ACC,
