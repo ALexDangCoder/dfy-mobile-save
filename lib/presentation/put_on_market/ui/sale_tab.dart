@@ -114,7 +114,7 @@ class _SaleTabState extends State<SaleTab>
                       hintText: S.current.enter_price,
                       onChangeType: (index) {
                         widget.cubit.changeTokenSale(
-                          token: null,
+                          indexToken: index,
                         );
                         _putOnMarketModel.tokenAddress =
                         '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
@@ -123,7 +123,7 @@ class _SaleTabState extends State<SaleTab>
                         widget.cubit.changeTokenSale(
                           value: value != '' ? double.parse(value) : null,
                         );
-                        _putOnMarketModel.price = value != '' ? value : '1';
+                        _putOnMarketModel.price = value;
                       },
                     ),
                     const SizedBox(

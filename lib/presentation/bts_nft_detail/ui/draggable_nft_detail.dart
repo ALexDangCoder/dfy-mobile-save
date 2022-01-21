@@ -6,6 +6,7 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
@@ -236,31 +237,31 @@ class _NFTDetailState extends State<NFTDetail> {
                           final int len = snapshot.data ?? initLen;
                           return len == 0
                               ? Column(
-                                  children: [
-                                    sizedPngImage(
-                                      w: 94,
-                                      h: 94,
-                                      image: ImageAssets.icNoTransaction,
-                                    ),
-                                    Text(
-                                      S.current.no_transaction,
-                                      style: tokenDetailAmount(
-                                        color: AppTheme.getInstance()
-                                            .currencyDetailTokenColor(),
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                )
+                            children: [
+                              sizedPngImage(
+                                w: 94,
+                                h: 94,
+                                image: ImageAssets.icNoTransaction,
+                              ),
+                              Text(
+                                S.current.no_transaction,
+                                style: tokenDetailAmount(
+                                  color: AppTheme.getInstance()
+                                      .currencyDetailTokenColor(),
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          )
                               : ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: len,
-                                  itemBuilder: (ctx, index) {
-                                    return itemTransition(index);
-                                  },
-                                );
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: len,
+                            itemBuilder: (ctx, index) {
+                              return itemTransition(index);
+                            },
+                          );
                         },
                       ),
                       StreamBuilder<bool>(
@@ -293,11 +294,11 @@ class _NFTDetailState extends State<NFTDetail> {
                                   border: Border(
                                     top: BorderSide(
                                       color:
-                                          AppTheme.getInstance().divideColor(),
+                                      AppTheme.getInstance().divideColor(),
                                     ),
                                     bottom: BorderSide(
                                       color:
-                                          AppTheme.getInstance().divideColor(),
+                                      AppTheme.getInstance().divideColor(),
                                     ),
                                   ),
                                 ),
@@ -336,21 +337,25 @@ class _NFTDetailState extends State<NFTDetail> {
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
                             colors:
-                                AppTheme.getInstance().gradientButtonColor(),
+                            AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {
+                            //showDialog(context: context, builder: (context) =>ConnectWalletDialog(navigationTo: navigationTo, isRequireLoginEmail: isRequireLoginEmail));
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PutOnMarket(
-                                  putOnMarketModel: PutOnMarketModel.putOnSale(
-                                    nftTokenId: 4,
-                                    nftId: 'b788bffc-4500-49ab-9f0f-3cca223d5f29',
-                                    txtHash: '0x999509a82815f927b1e5c090684dcec4efceac9827570cb7d34403d9468f929f',
-                                    nftType: 0,
-                                    collectionId: nft.collectionId ?? '',
-                                  ),
-                                ),
+                                builder: (context) =>
+                                    PutOnMarket(
+                                      putOnMarketModel: PutOnMarketModel
+                                          .putOnSale(
+                                        nftTokenId: 28,
+                                        nftId: 'b670e08f-94f8-4455-b7fd-0e3ab2ec9ab9',
+                                        nftType: 0,
+                                        collectionAddress: '0xCa2fD3Ea22f5B11fCC4d19DDB80E7CDDae644db5',
+                                      ),
+                                    ),
+                                settings: const RouteSettings(
+                                  name: 'put_on_market',),
                               ),
                             );
                           },
@@ -386,9 +391,10 @@ class _NFTDetailState extends State<NFTDetail> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TransactionDetail(
-              obj: objHistory,
-            ),
+            builder: (context) =>
+                TransactionDetail(
+                  obj: objHistory,
+                ),
           ),
         );
       },
@@ -435,7 +441,9 @@ class _NFTDetailState extends State<NFTDetail> {
                 ],
               ),
               Text(
-                DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
+                DateTime
+                    .parse(objHistory.dateTime ?? '')
+                    .stringFromDateTime,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],
@@ -455,10 +463,11 @@ class _NFTDetailState extends State<NFTDetail> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Receive(
-                  walletAddress: widget.walletAddress,
-                  type: TokenType.NFT,
-                ),
+                builder: (context) =>
+                    Receive(
+                      walletAddress: widget.walletAddress,
+                      type: TokenType.NFT,
+                    ),
               ),
             );
           },
@@ -472,12 +481,13 @@ class _NFTDetailState extends State<NFTDetail> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SendNft(
-                  nftInfo: widget.nftInfo,
-                  addressFrom: widget.walletAddress,
-                  imageWallet: '',
-                  nameWallet: widget.nameWallet,
-                ),
+                builder: (context) =>
+                    SendNft(
+                      nftInfo: widget.nftInfo,
+                      addressFrom: widget.walletAddress,
+                      imageWallet: '',
+                      nameWallet: widget.nameWallet,
+                    ),
               ),
             ).whenComplete(() {
               widget.walletCubit.getNFT(
@@ -534,7 +544,9 @@ class _NFTDetailState extends State<NFTDetail> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             launch(
-                              Get.find<AppConstants>().bscScan +
+                              Get
+                                  .find<AppConstants>()
+                                  .bscScan +
                                   ApiConstants.BSC_SCAN_ADDRESS +
                                   detail,
                             );

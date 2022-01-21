@@ -6,33 +6,29 @@ class PutOnMarketModel {
   int? numberOfCopies;
   int? nftType;
   String? price;
-  String? txtHash;
-  String? collectionId;
+  String? collectionAddress;
 
   PutOnMarketModel({
     this.tokenAddress,
-    this.collectionId,
+    this.collectionAddress,
     this.nftId,
     this.nftTokenId,
     this.nftType,
     this.numberOfCopies,
     this.price,
-    this.txtHash,
   });
 
   factory PutOnMarketModel.putOnSale({
     required int nftTokenId,
     required String  nftId,
-    required String txtHash,
     required int nftType,
-    required String collectionId,
+    required String collectionAddress,
   }) {
     return PutOnMarketModel(
       nftId:  nftId,
       nftTokenId: nftTokenId,
-      txtHash:  txtHash,
       nftType:  nftType,
-      collectionId:  collectionId,
+      collectionAddress:  collectionAddress,
     );
   }
 }

@@ -7,74 +7,18 @@ import 'package:flutter/cupertino.dart';
 
 extension GetGasLimit on ApproveCubit {
   Future<double> getGasLimitByType({
-    required TYPE_CONFIRM_BASE type,
     required String hexString,
   }) async {
     final web3Client = Web3Utils();
     String gasLimit = '';
-    switch (type) {
-      case TYPE_CONFIRM_BASE.BUY_NFT:
-        {
-          gasLimit = '1000';
-          break;
-        }
-      case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        {
-          try {
-            gasLimit = await web3Client.getGasLimitByData(
-              from: addressWallet ?? '',
-              toContractAddress: tokenAddress ?? '',
-              dataString: hexString,
-            );
-          } catch (e) {
-            AppException(S.current.error, e.toString());
-          }
-          break;
-        }
-      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
-        {
-          try {
-            gasLimit = await web3Client.getPutOnSaleGasLimit(
-              from: addressWallet ?? '',
-              toContractAddress: getSpender(),
-              context: context,
-              tokenId: 1,
-              price: putOnMarketModel?.price ?? '1',
-              currency: putOnMarketModel?.tokenAddress ?? '',
-              numberOfCopies: putOnMarketModel?.numberOfCopies ?? 1,
-              collectionAddress: putOnMarketModel?.collectionId ?? '',
-            );
-          } catch (e) {
-            AppException(S.current.error, e.toString());
-          }
-
-          break;
-        }
-      case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-        {
-          try {
-            gasLimit = await web3Client.getGasLimitByData(
-              from: addressWallet ?? '',
-              toContractAddress: getSpender(),
-              dataString: hexString,
-            );
-          } catch (e) {
-            AppException(S.current.error, e.toString());
-          }
-          break;
-        }
-      case TYPE_CONFIRM_BASE.SEND_NFT:
-        // TODO: Handle this case.
-        break;
-      case TYPE_CONFIRM_BASE.SEND_TOKEN:
-        // TODO: Handle this case.
-        break;
-      case TYPE_CONFIRM_BASE.SEND_OFFER:
-        // TODO: Handle this case.
-        break;
-      case TYPE_CONFIRM_BASE.PLACE_BID:
-        // TODO: Handle this case.
-        break;
+    try {
+      gasLimit = await web3Client.getGasLimitByData(
+        from: addressWallet ?? '',
+        toContractAddress: getSpender(),
+        dataString: hexString,
+      );
+    } catch (e) {
+      AppException(S.current.error, e.toString());
     }
     return double.parse(gasLimit);
   }

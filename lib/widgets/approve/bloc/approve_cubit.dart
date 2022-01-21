@@ -106,7 +106,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   final BehaviorSubject<double> gasLimitFirstSubject =
       BehaviorSubject<double>();
 
-  final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> canActionSubject = BehaviorSubject.seeded(false);
 
   final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
 
@@ -200,7 +200,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     showLoading();
     try {
       final gasLimitFirstResult =
-          await getGasLimitByType(type: type, hexString: hexString);
+          await getGasLimitByType( hexString: hexString);
       gasLimitFirst = gasLimitFirstResult;
       gasLimit = gasLimitFirstResult;
       gasLimitFirstSubject.sink.add(gasLimitFirstResult);

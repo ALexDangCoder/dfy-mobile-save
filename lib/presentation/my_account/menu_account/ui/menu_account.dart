@@ -122,9 +122,9 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const CollectionList(
+              builder: (context) => CollectionList(
                 typeScreen: PageRouter.MY_ACC,
-                addressWallet: '0xddfff5172a34677967c57b8a33d7b855185f93a1',//todo chuyền data vào đây nhé
+                addressWallet: cubit.addressWalletSubject.valueOrNull ?? '',
               ),
             ),
           );
@@ -146,22 +146,18 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_nft,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'about_us',
           routeName: 'nft_not_on_market',
           title: S.current.not_on_market,
         ),
         ItemMenuModel.createChild(
-          routeName: 'about_us',
           routeName: 'nft_on_sale',
           title: S.current.on_sale,
         ),
         ItemMenuModel.createChild(
-          routeName: 'about_us',
           routeName: 'nft_on_pawn',
           title: S.current.on_pawn,
         ),
         ItemMenuModel.createChild(
-          routeName: 'about_us',
           routeName: 'nft_on_auction',
           title: S.current.on_auction,
         ),
@@ -585,6 +581,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                 MaterialPageRoute(
                                   builder: (context) => MainScreen(
                                     index: cubit.getIndexLogin(),
+                                    isFormConnectWlDialog: true,
                                   ),
                                 ),
                               );
