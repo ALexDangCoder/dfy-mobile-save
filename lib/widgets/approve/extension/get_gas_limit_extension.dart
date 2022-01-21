@@ -21,7 +21,7 @@ extension GetGasLimit on ApproveCubit {
           try {
             gasLimit = await web3Client.getGasLimitByData(
               from: addressWallet ?? '',
-              toContractAddress: tokenAddress ?? '',
+              toContractAddress: getSpender(),
               dataString: hexString,
             );
           } catch (e) {

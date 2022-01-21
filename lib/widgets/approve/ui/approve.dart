@@ -8,6 +8,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -121,6 +122,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftKey.currentState?.bloc ?? NFTDetailBloc();
+        getNonce();
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
         // TODO: Handle this case.
@@ -246,12 +248,11 @@ class _ApproveState extends State<Approve> {
         }
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
-          unawaited(showLoading());
-          final int nonceFinal = await nftDetailBloc.getNonceWeb3();
+          final String wallet = PrefsService.getCurrentBEWallet();
           await cubit.signTransactionWithData(
             walletAddress: nftDetailBloc.walletAddress,
             contractAddress: nft_sales_address_dev2,
-            nonce: nonceFinal.toString(),
+            nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
             gasLimit: gasLimitString,

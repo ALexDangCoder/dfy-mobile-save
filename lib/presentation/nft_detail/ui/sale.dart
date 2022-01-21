@@ -163,6 +163,17 @@ Widget _buildButtonCancelOnSale(
   return ButtonGradient(
     onPressed: () async {
       /// TODO: handle cancel sale buy nftMarket.isOwner == true
+      final nav = Navigator.of(context);
+      final double gas = await bloc.getGasLimitForCancel(context: context);
+      if (gas > 0) {
+        unawaited(
+          nav.push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(),
+            ),
+          ),
+        );
+      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
@@ -399,7 +410,7 @@ Approve approveWidget() {
       ],
     ),
     textActiveButton: S.current.cancel_sale,
-    gasLimitInit: double.parse(bloc.gasLimit),
     typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+    hexString: '', //todo
   );
 }

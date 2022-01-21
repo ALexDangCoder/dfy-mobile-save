@@ -68,7 +68,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 final LoginStatus loginStatus = snapshot.data!;
                 if (loginStatus == LoginStatus.LOGGED) {
                   Future.delayed(const Duration(milliseconds: 300), () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     if(widget.isRequireLoginEmail){
                       
                     }
