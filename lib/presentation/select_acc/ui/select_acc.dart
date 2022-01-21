@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
@@ -108,6 +109,9 @@ class _SelectAccState extends State<SelectAcc> {
                               widget.bloc.chooseWallet(
                                 walletAddress:
                                     snapshot.data?[index].addressWallet ?? '',
+                              );
+                              PrefsService.saveCurrentWalletCore(
+                                snapshot.data?[index].addressWallet ?? '',
                               );
                               widget.bloc.click(index);
                               if (widget.typeScreen2 == TypeScreen2.detail) {

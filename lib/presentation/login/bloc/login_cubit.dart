@@ -25,9 +25,13 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   BehaviorSubject<bool> isLoginSuccessSubject = BehaviorSubject();
 
+  BehaviorSubject<bool> isSaveInfoSuccessSubject = BehaviorSubject();
+
   BehaviorSubject<String> signatureSubject = BehaviorSubject();
 
   Stream<bool> get isLoginSuccessStream => isLoginSuccessSubject.stream;
+
+  Stream<bool> get isSaveInfoSuccessStream => isSaveInfoSuccessSubject.stream;
 
   Stream<String> get signatureStream => signatureSubject.stream;
 

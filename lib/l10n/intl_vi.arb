@@ -500,5 +500,8 @@
   "marketplace": "Marketplace",
   "to_take_profit": "để thu lợi nhuận",
   "next": "Tiếp theo",
-  "get_started": "Bắt đầu"
+  "get_started": "Bắt đầu",
+  "login_to_your_email" : "Bạn có muốn đăng nhập vào email ",
+  "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
+  "yes": "Đồng ý"
 }
