@@ -75,7 +75,7 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                           if (snapshot.hasData) {
                             final data = snapshot.data ?? '';
                             return Text(
-                              data.toContent(),
+                              'data.toContent(),',
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().whiteColor(),
