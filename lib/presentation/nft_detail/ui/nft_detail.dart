@@ -1043,7 +1043,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: (nftOnAuction.isOwner == true)
-                ? buttonCancelAuction(nftOnAuction.show ?? true)
+                ? buttonCancelAuction(
+                    nftOnAuction.show ?? true,
+                    context,
+                    bloc,
+                    nftOnAuction,
+                  )
                 : Row(
                     children: [
                       Expanded(

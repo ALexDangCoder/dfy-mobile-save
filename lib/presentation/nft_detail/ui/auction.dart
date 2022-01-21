@@ -77,29 +77,35 @@ Widget _buildButtonBuyOut(BuildContext context) {
     },
   );
 }
-Widget buttonCancelAuction(bool approveAdmin) {
-  if(!approveAdmin){
+
+Widget buttonCancelAuction(
+  bool approveAdmin,
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NFTOnAuction nftMarket,
+) {
+  if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
-        /// TODO: handle cancel sale buy nftMarket.isOwner == true
-
+        /// TODO: handle cancel auction buy nftOnAuction.isOwner == true
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
         radius: 4,
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
-      child: Text(
-        S.current.cancel_sale,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
-        ),
-      ),
+      child: nftMarket.marketStatus == 8
+          ? processing()
+          : Text(
+              S.current.cancel_sale,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
     );
-  }
-  else{
+  } else {
     return const SizedBox();
   }
 }
@@ -108,7 +114,7 @@ Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
   required bool isEnd,
 }) {
-  final bool isBidding = nftOnAuction.numberBid != 0 ;
+  final bool isBidding = nftOnAuction.numberBid != 0;
   return Container(
     width: 343.w,
     height: 64.h,

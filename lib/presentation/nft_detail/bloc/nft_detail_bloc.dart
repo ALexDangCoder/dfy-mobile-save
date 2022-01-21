@@ -19,10 +19,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
-import 'package:Dfy/widgets/approve/ui/approve.dart';
-import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -90,11 +86,19 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return balance;
   }
 
-  Future<void> getHistory(String collectionAddress, String nftTokenId) async {
+  final walletAddressCheck = '';
+
+  Future<void> getHistory({
+    required String collectionAddress,
+    required String nftTokenId,
+  }) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
+        for(final value in res){
+          value.walletAddressCheck = walletAddressCheck;
+        }
         listHistoryStream.add(res);
       },
       error: (error) {
@@ -181,10 +185,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           showContent();
-          nftMarket = res;
-          owner = res.owner ?? '';
           emit(NftNotOnMarketSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
@@ -215,10 +220,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           showContent();
-          nftMarket = res;
-          owner = res.owner ?? '';
           emit(NftOnSaleSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
@@ -254,7 +260,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
           }
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
           for (final value in listTokenSupport) {
@@ -290,12 +299,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
           emit(NftOnPawnSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.nftCollateralDetailDTO?.evaluationId ?? '',
-                res.urlToken ?? '');
+            getEvaluation(
+              res.nftCollateralDetailDTO?.evaluationId ?? '',
+              res.urlToken ?? '',
+            );
           }
           getHistory(
-            res.nftCollateralDetailDTO?.collectionAddress ?? '',
-            res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
+            collectionAddress:
+                res.nftCollateralDetailDTO?.collectionAddress ?? '',
+            nftTokenId: res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
           );
           getOwner(
             res.nftCollateralDetailDTO?.collectionAddress ?? '',

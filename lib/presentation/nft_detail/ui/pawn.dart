@@ -130,3 +130,31 @@ Widget _buildButtonSendOffer(BuildContext context) {
     ),
   );
 }
+
+Widget _buildButtonCancelOnPawn(
+    BuildContext context,
+    NFTDetailBloc bloc,
+    NftOnPawn nftMarket,
+    ) {
+  return ButtonGradient(
+    onPressed: () async {
+      /// TODO: handle cancel sale buy nftMarket.isOwner == true
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftMarket.status == 7
+        ? processing()
+        : Text(
+      S.current.cancel_sale,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        16,
+        FontWeight.w700,
+      ),
+    ),
+  );
+}
+
