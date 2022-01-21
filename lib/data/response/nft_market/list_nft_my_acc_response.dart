@@ -32,22 +32,22 @@ class ListNftMyAccResponseFromApi extends Equatable {
 
 @JsonSerializable()
 class NftMyAccResponse extends Equatable {
+  @JsonKey(name: 'id')
+  String? id;
   @JsonKey(name: 'market_id')
   String? marketId;
+  @JsonKey(name: 'pawn_id')
+  String? pawnId;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'file_cid')
   String? fileCid;
   @JsonKey(name: 'type')
   int? type;
-  @JsonKey(name: 'price')
-  double? price;
-  @JsonKey(name: 'token')
-  String? token;
   @JsonKey(name: 'standard')
-  String? standard;
-  @JsonKey(name: 'market_type')
-  int? marketType;
+  int? standard;
+  @JsonKey(name: 'process_status')
+  int? processStatus;
   @JsonKey(name: 'number_of_copies')
   int? numberOfCopies;
   @JsonKey(name: 'total_of_copies')
@@ -56,34 +56,28 @@ class NftMyAccResponse extends Equatable {
   String? fileType;
   @JsonKey(name: 'market_status')
   int? marketStatus;
-  @JsonKey(name: 'is_reserve_price')
-  bool isReservePrice;
-  @JsonKey(name: 'start_time')
-  int? startTime;
-  @JsonKey(name: 'end_time')
-  int? endTime;
   @JsonKey(name: 'collection_address')
   String? collectionAddress;
+  @JsonKey(name: 'wallet_address')
+  String? walletAddress;
   @JsonKey(name: 'nft_token_id')
-  int? nftTokenId;
+  String? nftTokenId;
 
   NftMyAccResponse(
+    this.id,
     this.marketId,
+    this.pawnId,
     this.name,
     this.fileCid,
     this.type,
-    this.price,
-    this.token,
     this.standard,
-    this.marketType,
+    this.processStatus,
     this.numberOfCopies,
     this.totalOfCopies,
     this.fileType,
     this.marketStatus,
-    this.isReservePrice,
-    this.startTime,
-    this.endTime,
     this.collectionAddress,
+    this.walletAddress,
     this.nftTokenId,
   );
 
@@ -120,28 +114,37 @@ class NftMyAccResponse extends Equatable {
       return MarketType.AUCTION;
     } else if (type == 3) {
       return MarketType.PAWN;
-    } else if(type == 1){
+    } else if (type == 1) {
       return MarketType.SALE;
     } else {
       return MarketType.NOT_ON_MARKET;
     }
   }
+  int returnPawnId(String pawnId){
+    if(pawnId == ''){
+      return 0;
+    }
+    else {
+      return int.parse(pawnId);
+    }
+  }
 
   NftMarket toDomain() => NftMarket(
         marketId: marketId,
-        marketType: getTypeMarket(marketType ?? 0),
+        marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? 'image'),
-        price: price,
         typeNFT: getTypeNft(type ?? 0),
         image: getPath(fileCid ?? ''),
-        nftId: '',
-        nftTokenId: (nftTokenId ?? 0).toString(),
-        tokenBuyOut: token,
+        nftId: id,
+        nftTokenId: nftTokenId,
+        price: 0,
         name: name,
+        pawnId: returnPawnId(pawnId ?? ''),
         totalCopies: totalOfCopies,
-        endTime: endTime,
-        startTime: startTime,
         numberOfCopies: numberOfCopies,
+        walletAddress: walletAddress,
+        processStatus: processStatus,
+        nftStandard: (standard == 0) ? 'ERC-721':'ERC-1155',
         collectionAddress: collectionAddress,
       );
 }

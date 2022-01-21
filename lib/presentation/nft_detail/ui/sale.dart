@@ -1,5 +1,46 @@
 part of 'nft_detail.dart';
 
+Container _priceNotOnMarket() => Container(
+      width: 343.w,
+      height: 64.h,
+      margin: EdgeInsets.only(top: 12.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.current.price,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+              14,
+              FontWeight.normal,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '0',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  20,
+                  FontWeight.w600,
+                ),
+              ),
+              Text(
+                '0',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+                  14,
+                  FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
 Container _priceContainerOnSale({
   required double price,
   String shortName = 'DFY',
@@ -111,6 +152,58 @@ Widget _buildButtonBuyOutOnSale(
         FontWeight.w700,
       ),
     ),
+  );
+}
+
+Widget _buildButtonCancelOnSale(
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NftMarket nftMarket,
+) {
+  return ButtonGradient(
+    onPressed: () async {
+      /// TODO: handle cancel sale buy nftMarket.isOwner == true
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftMarket.marketStatus == 7
+        ? processing()
+        : Text(
+            S.current.cancel_sale,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
+  );
+}
+
+Widget processing() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SizedBox(
+        width: 24.w,
+        height: 24.h,
+        child: CircularProgressIndicator(
+          strokeWidth: 4.r,
+          color: AppTheme.getInstance().whiteColor(),
+        ),
+      ),
+      spaceW10,
+      Text(
+        'Processing',
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    ],
   );
 }
 
@@ -237,5 +330,30 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
         ],
       );
     },
+  );
+}
+
+Widget _buildButtonPutOnMarket(
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NftMarket nftMarket,
+) {
+  return ButtonGradient(
+    onPressed: () async {},
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftMarket.processStatus == 5
+        ? processing()
+        : Text(
+            S.current.put_on_market,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
   );
 }

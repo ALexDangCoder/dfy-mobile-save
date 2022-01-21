@@ -24,7 +24,7 @@ abstract class NftMarketClient {
 
   @GET(ApiConstants.GET_LIST_NFT_MY_ACC)
   Future<ListNftMyAccResponseFromApi> getListNftMyAcc(
-      @Query('market_type') String? status,
+      @Query('status') String? status,
       @Query('nft_type') String? nftType,
       @Query('name') String? name,
       @Query('wallet_address') String? walletAddress,

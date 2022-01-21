@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddWalletFtSeedPharse extends StatefulWidget {
-  const AddWalletFtSeedPharse({Key? key}) : super(key: key);
+  const AddWalletFtSeedPharse({
+    Key? key,
+    this.isFromConnectWlDialog = false,
+  }) : super(key: key);
+  final bool isFromConnectWlDialog;
 
   @override
   _AddWalletFtSeedPharseState createState() => _AddWalletFtSeedPharseState();
@@ -56,14 +60,17 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return const SetupPassWord();
+                              return SetupPassWord(
+                                isFormConnectWlDialog:
+                                    widget.isFromConnectWlDialog,
+                              );
                             },
                           ),
                         );
                       },
                     ),
                     SizedBox(height: 39.h),
-                    btnImportSeedPhrase(),
+                    btnImportSeedPhrase(widget.isFromConnectWlDialog),
                   ],
                 ),
               ),
@@ -74,14 +81,16 @@ class _AddWalletFtSeedPharseState extends State<AddWalletFtSeedPharse> {
     );
   }
 
-  Widget btnImportSeedPhrase() {
+  Widget btnImportSeedPhrase(bool isFromConnectWlDialog) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const RestoreAccount();
+              return RestoreAccount(
+                isFromConnectWlDialog: isFromConnectWlDialog,
+              );
             },
           ),
         );

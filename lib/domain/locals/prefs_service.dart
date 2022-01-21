@@ -11,8 +11,11 @@ class PrefsService {
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
   static const _PREF_LIST_TOKEN_SUPPORT = '';
-  static const _PREF_CURRENT_WALLET = 'pref_current_wallet';
+  static const _PREF_CURRENT_BE_WALLET = 'pref_current_wallet';
   static const _PREF_USER_PROFILE = 'pref_user_info';
+  static const _PREF_CURRENT_WALLET_CORE = 'pref_is_wallet_core_logged';
+  static const _PREF_IS_WALLET_BE_LOGGED = 'pref_is_wallet_be_logged';
+
 
   static SharedPreferences? _prefsInstance;
 
@@ -91,7 +94,9 @@ class PrefsService {
 
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
-    await prefs.setString(_PREF_CURRENT_WALLET, '');
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
+    await prefs.setString(_PREF_CURRENT_WALLET_CORE, '');
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
     await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
     return prefs.setString(
       _PREF_WALLET_LOGIN,
@@ -114,15 +119,6 @@ class PrefsService {
   Future<void> clearData() async {
     await _prefsInstance?.clear();
     return;
-  }
-
-  static Future<bool> saveCurrentWallet(String walletAddress) async {
-    final prefs = await _instance;
-    return prefs.setString(_PREF_CURRENT_WALLET, walletAddress);
-  }
-
-  static String getCurrentWallet() {
-    return _prefsInstance?.getString(_PREF_CURRENT_WALLET) ?? '';
   }
 
   static Future<bool> saveUserProfile(String data) async {
@@ -152,4 +148,23 @@ class PrefsService {
       ),
     );
   }
+
+  static Future<bool> saveCurrentBEWallet(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_BE_WALLET, walletAddress);
+  }
+
+  static String getCurrentBEWallet() {
+    return _prefsInstance?.getString(_PREF_CURRENT_BE_WALLET) ?? '';
+  }
+
+  static Future<bool> saveCurrentWalletCore(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_WALLET_CORE, walletAddress);
+  }
+
+  static String getCurrentWalletCore() {
+    return _prefsInstance?.getString(_PREF_CURRENT_WALLET_CORE) ?? '';
+  }
+
 }

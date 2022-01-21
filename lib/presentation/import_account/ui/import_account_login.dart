@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -64,6 +65,7 @@ class _ImportAccountState extends State<ImportAccount> {
       bloc: importCubit,
       listener: (ctx, state) {
         if (state is NavState) {
+          PrefsService.saveCurrentWalletCore(importCubit.wallet?.address ?? '');
           Navigator.push(
             context,
             MaterialPageRoute(

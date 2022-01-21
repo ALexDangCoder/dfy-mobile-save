@@ -19,6 +19,7 @@ class HistoryNFT {
   String? token;
   String? txnHash;
   String? walletAddress;
+  String? walletAddressCheck;
 
   HistoryNFT({
     this.collectionAddress,
@@ -35,6 +36,7 @@ class HistoryNFT {
     this.nftTokenId,
     this.price,
     this.priceSymbol,
+    this.walletAddressCheck,
     this.processing,
     this.quantity,
     this.toAddress,

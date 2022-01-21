@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -23,11 +24,11 @@ const String PASS_PHRASE = 'PASS_PHRASE';
 const String PRIVATE_KEY = 'PRIVATE_KEY';
 
 class RestoreAccount extends StatefulWidget {
-  const RestoreAccount({
-    Key? key,
-    this.typeEarseWallet,
-  }) : super(key: key);
+  const RestoreAccount(
+      {Key? key, this.typeEarseWallet, this.isFromConnectWlDialog = false})
+      : super(key: key);
   final String? typeEarseWallet;
+  final bool isFromConnectWlDialog;
 
   @override
   _RestoreAccountState createState() => _RestoreAccountState();
@@ -84,6 +85,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
       bloc: restoreCubit,
       listener: (ctx, state) {
         if (state is NavState) {
+          PrefsService.saveCurrentWalletCore(
+            restoreCubit.wallet?.address ?? '',
+          );
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
@@ -94,6 +98,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   wallet: restoreCubit.wallet ?? Wallet(),
                   type: KeyType.IMPORT,
                   passWord: passwordController.text,
+                  isFromConnectWlDialog: widget.isFromConnectWlDialog,
                 );
               },
             ),

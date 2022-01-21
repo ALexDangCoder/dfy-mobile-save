@@ -6,6 +6,7 @@ import 'package:Dfy/data/response/nft/data_detail_offer_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
+import 'package:Dfy/data/response/nft/nft_my_acc_detail_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_pawn_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_sale_response.dart';
@@ -139,6 +140,15 @@ class NFTRepositoryImpl implements NFTRepository {
     return runCatchingAsync<EvaluationResponse, Evaluation>(
       () => _nftClient.getEvaluation(evaluationId),
       (response) => response.item!.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<NftMarket>> getDetailNftMyAccNotOnMarket(
+      String nftId, String type) {
+    return runCatchingAsync<NftMyAccResponse, NftMarket>(
+      () => _nftClient.getDetailNftNotOnMarket(nftId,type),
+      (response) => response.item!.toNotOnMarket(),
     );
   }
 
