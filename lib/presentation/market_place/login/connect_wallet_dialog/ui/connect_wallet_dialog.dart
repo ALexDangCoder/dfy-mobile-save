@@ -4,7 +4,6 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
 import 'package:Dfy/widgets/stream_consumer/stream_consumer.dart';
@@ -73,17 +72,17 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     if(widget.isRequireLoginEmail){
                       
                     }
-                    showDialog(
-                      context: context,
-                      builder: (context) => ConnectEmailDialog(
-                        navigationTo: widget.navigationTo,
-                      ),
-                    );
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => widget.navigationTo),
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (context) => ConnectEmailDialog(
+                    //     navigationTo: widget.navigationTo,
+                    //   ),
                     // );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => widget.navigationTo),
+                    );
                   });
                   return Container(
                     color: Colors.transparent,

@@ -175,10 +175,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                       showDialog(
                         context: context,
                         builder: (_) => ConnectWalletDialog(
-                          currentScreen: const MarketPlaceScreen(),
                           navigationTo: CreateCollectionScreen(
                             bloc: CreateCollectionCubit(),
-                          ),
+                          ), isRequireLoginEmail: false,
                         ),
                       );
                     },

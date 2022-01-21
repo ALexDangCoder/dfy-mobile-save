@@ -90,7 +90,6 @@ extension LoginForMarketPlace on LoginCubit {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {
       error: (err) async {
         await PrefsService.saveUserProfile(
           PrefsService.userProfileEmpty(),
