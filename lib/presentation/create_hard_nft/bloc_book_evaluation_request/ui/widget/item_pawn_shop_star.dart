@@ -38,36 +38,61 @@ class ItemPawnShopStar extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: 46.h,
-            width: 46.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            clipBehavior: Clip.hardEdge,
-            child: Image.network(
-              avatarPawnShopUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-          spaceW8,
-          Column(
+          Row(
             children: [
-              Text(
-                namePawnShop,
-                style: textNormalCustom(
-                  null,
-                  16,
-                  FontWeight.w600,
+              Container(
+                height: 46.h,
+                width: 46.w,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
                 ),
+                clipBehavior: Clip.hardEdge,
+                child: Image.network(
+                  avatarPawnShopUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              spaceW8,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    namePawnShop,
+                    style: textNormalCustom(
+                      null,
+                      16,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  spaceH4,
+                  Row(
+                    children: [
+                      Image.asset(ImageAssets.img_star),
+                      spaceW4,
+                      Text(
+                        starNumber,
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          null,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
-          Row(
-            children: [
-              Image.asset(ImageAssets.img_star)
-            ],
+          GestureDetector(
+            onTap: function(),
+            child: Image.asset(
+              ImageAssets.ic_line_right,
+              width: 24.w,
+              height: 24.h,
+              color: AppTheme.getInstance().whiteWithOpacityFireZero(),
+            ),
           ),
         ],
       ),

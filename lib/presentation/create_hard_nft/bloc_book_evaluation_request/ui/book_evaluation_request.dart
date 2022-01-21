@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -14,6 +16,8 @@ import 'package:Dfy/widgets/item/successCkcCreateNft.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BookEvaluationRequest extends StatefulWidget {
   const BookEvaluationRequest({Key? key}) : super(key: key);
@@ -23,10 +27,27 @@ class BookEvaluationRequest extends StatefulWidget {
 }
 
 class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(20.547441679107266, 105.90781651516276), //,
+    zoom: 14.4746,
+  );
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+            (Position position) {
+          print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
+          print('-----------------------------------------${position.latitude}');
+        });
+
   }
 
   @override
@@ -82,7 +103,8 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
                 ),
               ),
             ),
-            spaceH32,
+            //  spaceH32,
+
             // ListView.builder(
             //   shrinkWrap: true,
             //   physics: const NeverScrollableScrollPhysics(),
@@ -114,6 +136,29 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
             //     ),
             //   ),
             // ),
+            // todo
+            Center(
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      20.r,
+                    ),
+                  ),
+                ),
+                height: 193.h,
+                width: 343.w,
+                child: GoogleMap(
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                ),
+              ),
+            ),
+            spaceH32,
             Container(
               padding: EdgeInsets.all(16.w),
               child: Align(
@@ -128,13 +173,19 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
                 ),
               ),
             ),
-            ItemPawnShopStar(
-              starNumber: '5.0',
-              namePawnShop: 'Tima - Online Pawnshop',
-              avatarPawnShopUrl:
-                  'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
-              function: () {},
-            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) => ItemPawnShopStar(
+                starNumber: '5.0',
+                namePawnShop: 'Tima - Online Pawnshop',
+                avatarPawnShopUrl:
+                    'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
+                function: () {},
+              ),
+              itemCount: 10,
+              shrinkWrap: true,
+            )
           ],
         ),
       ),
