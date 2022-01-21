@@ -61,7 +61,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               ),
             ),
           );
-        } else if (statusActivity == DetailCollectionBloc.FAILD) {
+        } else if (statusActivity == DetailCollectionBloc.FAILED) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

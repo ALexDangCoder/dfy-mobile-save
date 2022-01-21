@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
@@ -62,7 +63,8 @@ class CategoriesDropDown extends StatelessWidget {
                 16,
               ),
               onChange: (selected) {
-                log(selected['value']);
+                log(selected.toString());
+                cubit.voidCheckCollectionId(selected['value']);
               },
               resultIcon: Container(
                 margin: EdgeInsets.symmetric(horizontal: 16.w),

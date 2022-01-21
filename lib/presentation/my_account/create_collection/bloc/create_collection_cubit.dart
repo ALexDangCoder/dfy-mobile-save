@@ -6,12 +6,12 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/ipfs_gen_url.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/web3_create_collection.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,12 +24,10 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   final Web3Utils web3utils = Web3Utils();
 
-  String walletAddress = '';
-  String gasLimit = '';
   String transactionData = '';
 
   String createId = '';
-  int collectionStandard = -1;
+  int collectionStandard = ERC721;
   int collectionType = 0;
 
   String collectionName = '';
@@ -279,8 +277,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Create parameter Map
   Map<String, dynamic> getMapCreateCollection() {
-    final String standard = collectionStandard == 0 ? 'ERC-721' : 'ERC-1155';
-    if (collectionType == 0) {
+    final String standard =
+        collectionStandard == ERC721 ? 'ERC-721' : 'ERC-1155';
+    if (collectionType == SOFT_COLLECTION) {
       return {
         'avatar_cid': cidMap['avatar_cid'],
         'category_id': categoryId,
@@ -308,25 +307,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'name': collectionName,
         'social_links': socialLinkMap,
       };
-    }
-  }
-
-  ///get Wallet Address
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        if (data.isEmpty) {
-        } else {
-          final List<Wallet> listWallet = [];
-          for (final element in data) {
-            listWallet.add(Wallet.fromJson(element));
-          }
-          walletAddress = listWallet.first.address ?? '';
-        }
-        break;
-      default:
-        break;
     }
   }
 

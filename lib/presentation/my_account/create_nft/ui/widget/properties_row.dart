@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +35,7 @@ Widget propertyRow() {
                 // onChange(value);
               },
               decoration: InputDecoration(
-                hintText: 'Properties',
+                hintText: S.current.properties,
                 hintStyle: textNormal(
                   Colors.white.withOpacity(0.5),
                   16,
@@ -64,7 +65,7 @@ Widget propertyRow() {
                 // onChange(value);
               },
               decoration: InputDecoration(
-                hintText: 'Value',
+                hintText: S.current.value,
                 hintStyle: textNormal(
                   Colors.white.withOpacity(0.5),
                   16,

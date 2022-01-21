@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 
 extension CallApiBE on ApproveCubit {
@@ -8,7 +9,7 @@ extension CallApiBE on ApproveCubit {
     required Map<String, dynamic> mapRawData,
     required String txhHash,
   }) async {
-    if (type == 0) {
+    if (type == SOFT_COLLECTION) {
       mapRawData['txn_hash'] = txhHash;
       final CreateSoftCollectionRequest data =
           CreateSoftCollectionRequest.fromJson(mapRawData);
