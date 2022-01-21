@@ -507,5 +507,8 @@
   "next": "Next",
   "get_started": "Get started",
   "view_type": "View type",
-  "custom_url" : "Custom URL"
+  "custom_url" : "Custom URL",
+  "login_to_your_email" : "Do you want to log in to your email ",
+  "associate_email": "Do you want to associate an email to get notification/email?",
+  "yes": "Yes"
 }

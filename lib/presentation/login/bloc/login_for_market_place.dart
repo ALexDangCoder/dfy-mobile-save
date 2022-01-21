@@ -27,12 +27,14 @@ extension LoginForMarketPlace on LoginCubit {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
-        await PrefsService.saveCurrentWallet(
+        await PrefsService.saveCurrentBEWallet(
           walletAddress,
         );
         await getUserProfile();
+        isSaveInfoSuccessSubject.sink.add(true);
       },
       error: (err) {
+        isSaveInfoSuccessSubject.sink.add(false);
       },
     );
   }
@@ -49,6 +51,7 @@ extension LoginForMarketPlace on LoginCubit {
 
   Future<void> getSignature({required String walletAddress}) async {
     try {
+      showLoading();
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
@@ -75,6 +78,7 @@ extension LoginForMarketPlace on LoginCubit {
         S.current.something_went_wrong,
         e.message.toString(),
       );
+
     }
   }
 
@@ -87,6 +91,10 @@ extension LoginForMarketPlace on LoginCubit {
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
       error: (err) {
+      error: (err) async {
+        await PrefsService.saveUserProfile(
+          PrefsService.userProfileEmpty(),
+        );
       },
     );
   }

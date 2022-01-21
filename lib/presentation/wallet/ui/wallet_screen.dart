@@ -366,7 +366,7 @@ class _WalletState extends State<WalletScreen>
         isFromConnectDialog: widget.isFromConnectWlDialog
       );
     } else {
-      return const AddWalletFtSeedPharse();
+      return AddWalletFtSeedPharse(isFromConnectWlDialog: widget.isFromConnectWlDialog,);
     }
   }
 

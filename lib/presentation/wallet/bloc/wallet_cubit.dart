@@ -217,7 +217,6 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   int randomAvatar() {
     final Random rd = Random();
-
     return rd.nextInt(10);
   }
 

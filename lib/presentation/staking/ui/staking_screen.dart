@@ -29,8 +29,8 @@ class _StakingState extends State<StakingScreen> {
       onTap: () => showDialog(
         context: context,
         builder: (context) => ConnectWalletDialog(
-          currentScreen: StakingScreen(),
           navigationTo: EnterEmail(cubit: LoginWithEmailCubit()),
+          isRequireLoginEmail: true,
         ),
       ),
       child: const ComingScreen(),
