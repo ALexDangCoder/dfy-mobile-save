@@ -1,12 +1,17 @@
+import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_successfully.dart';
 import 'package:Dfy/presentation/login/bloc/login_cubit.dart';
+import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
@@ -17,18 +22,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
     Key? key,
     required this.walletCubit,
     this.isFromConnectDialog = false,
-    this.navigationToScreen,
   }) : super(key: key);
 
   final bool isFromConnectDialog;
   final WalletCubit walletCubit;
-  final Widget? navigationToScreen;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -46,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     controller = TextEditingController();
     trustWalletChannel
         .setMethodCallHandler(_cubit.nativeMethodCallBackTrustWallet);
+
     controller.addListener(() {
       if (mounted) {
         setState(() {
@@ -59,6 +64,47 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     _cubit.getConfig();
     _cubit.checkBiometrics();
+
+    //login for market place:
+    _cubit.getWallet();
+    if (widget.isFromConnectDialog) {
+      _cubit.isLoginSuccessStream.listen((event) {
+        if (event) {
+          _cubit.getSignature(
+            walletAddress: _cubit.walletAddress,
+          );
+        }
+      });
+      _cubit.signatureStream.listen(
+        (event) {
+          if (event.isNotEmpty) {
+            _cubit.loginAndSaveInfo(
+              walletAddress: _cubit.walletAddress,
+              signature: event,
+            );
+          }
+        },
+      );
+      _cubit.isSaveInfoSuccessStream.listen(
+        (event) {
+          if (event) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(
+                  index: 1,
+                ),
+              ),
+              (route) => route.isFirst,
+            );
+          } else {
+            FToast().showToast(
+              child: Text(S.current.something_went_wrong),
+            );
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -125,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ImageIcon(
                             const AssetImage(ImageAssets.ic_lock),
                             color: AppTheme.getInstance().whiteColor(),
-                            size: 24.sp,
+                            size: 24,
                           ),
                           SizedBox(
                             width: 20.5.w,
@@ -207,29 +253,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
                     listener: (context, state) {
-                      //todo
-                      if (state is LoginPasswordSuccess &&
-                          widget.isFromConnectDialog) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                widget.navigationToScreen ?? const MainScreen(
-                                  index: 1,
-                                ),
-                          ),
-                          (route) => route.isFirst,
-                        );
-                        return;
-                      }
+                      final nav = Navigator.of(context);
                       if (state is LoginPasswordSuccess) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(
-                              index: 1,
-                            ),
-                          ),
-                          (route) => route.isFirst,
+                        PrefsService.saveCurrentWalletCore(
+                          _cubit.walletAddress,
                         );
+                        if (widget.isFromConnectDialog) {
+                          _cubit.isLoginSuccessSubject.sink.add(true);
+                        } else {
+                          nav.pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(
+                                index: 1,
+                              ),
+                            ),
+                            (route) => route.isFirst,
+                          );
+                        }
                       }
                       if (state is LoginPasswordError) {
                         _showDialog();
@@ -287,6 +327,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: BlocListener<LoginCubit, LoginState>(
                           bloc: _cubit,
                           listener: (context, state) {
+                            if (state is LoginSuccess &&
+                                widget.isFromConnectDialog) {
+                              _cubit.isLoginSuccessSubject.sink.add(true);
+                              return;
+                            }
                             if (state is LoginSuccess) {
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
@@ -326,8 +371,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.CREATE,
+                                  isFromConnectWlDialog: widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,
@@ -367,8 +413,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.IMPORT,
+                                  isFromConnectWlDialog: widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,

@@ -1,25 +1,10 @@
 part of 'login_with_email_cubit.dart';
 
 @immutable
-abstract class LoginWithEmailState {
-  final String errText = '';
+abstract class LoginWithEmailState extends Equatable {
 }
 
 class LoginWithEmailInitial extends LoginWithEmailState {
-}
-
-class ValidateSuccess extends LoginWithEmailState{}
-
-class EmailInvalid extends LoginWithEmailState{
   @override
-  String get errText => S.current.email_invalid;
+  List<Object?> get props => [];
 }
-
-class EmailTooLong extends LoginWithEmailState{
-  @override
-  String get errText => S.current.email_too_long;
-}
-
-class EmailHasExist extends LoginWithEmailState{}
-
-

@@ -31,8 +31,8 @@ class _OfferTabState extends State<OfferTab> {
     if (widget.listOffer.isEmpty) {
       return Center(
         child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 100.h),
           children: [
             Center(
               child: sizedPngImage(
@@ -81,12 +81,25 @@ class _OfferTabState extends State<OfferTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${objOffer.addressLender}'.handleString(),
-                      style: richTextWhite.copyWith(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          ImageAssets
+                              .ic_user_verified,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                        spaceW12,
+                        Text(
+                          '${objOffer.addressLender}'.handleString(),
+                          style: richTextWhite
+                              .copyWith(
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              )
+                              .copyWith(fontSize: 14.sp),
+                        ),
+                      ],
                     ),
                     spaceH6,
                     RichText(

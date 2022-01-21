@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/strings.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/di/module.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:r_crypto/r_crypto.dart';
 
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
@@ -131,11 +135,15 @@ class _MyAppState extends State<MyApp> {
       case 'signTransactionWithDataCallback':
         print('signTransactionWithDataCallback ${methodCall.arguments}');
         break;
+      case 'signWalletCallback':
+        print('signWalletCallback ${methodCall.arguments}');
+        break;
     }
   }
 
   void callAllApi() {
     getConfig();
+    clearLoginModel();
   }
 
   void getConfig() {
@@ -256,6 +264,44 @@ class _MyAppState extends State<MyApp> {
         'walletAddress': '0x6A587Aa17b562d0714650e0E7DCC7E964d3Dc148',
       };
       await trustWalletChannel.invokeMethod('getTokens', data);
+    } on PlatformException {}
+  }
+
+  Future<LoginModel> getLoginModel() async {
+    final login = PrefsService.getWalletLogin();
+    return loginFromJson(login);
+  }
+
+  Future<void> clearLoginModel() async {
+    await PrefsService.clearWalletLogin();
+  }
+
+  Future<void> setLoginModel() async {
+    await PrefsService.saveWalletLogin(
+      loginToJson(
+        LoginModel(
+          accessToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4ZTc3YzE0Y2RmMTM4ODVlMTkwOTE0OWI2ZDliNjU3MzRhZWZkZWFlZiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweGU3N2MxNGNkZjEzODg1ZTE5MDkxNDliNmQ5YjY1NzM0YWVmZGVhZWYiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjU5MjIwNSwianRpIjoiMzA2NWFmNjctODc3ZS00ZGY0LThhOGItN2Q0YTNmOGU4ZjQzIiwiY2xpZW50X2lkIjoidGFpbmQifQ.uJ6MEmZHUZs5Fcu9m2LIkefBboZyT7QzcCv-e5tT-TYDneDfPCtjZZUUAx4jKmBJcibCafiH0eUh9v-Ho2EqBJfcKcm9z_5VdKzJT5eqwL6-AAe3zWUKJEu_8hkP7h49pxJsx2NO_1z2OdoweGfVHUDAJgwipZwF11-_C2zM69o5hzeXZWY4Q97xsRilKTsk0eNOicJv0YBWUNWWKCy3_arAc4kcJwKuPbGc8kdCy_GkqpWq5jJBG8tOeoxK03VE0NpNEjEpecEa3WNChLfRIq9o_VVLjAa1M8dEFTu3pRG-evj2sst3ynNr8tNB3lqD4PQHlFBn1NWvl8MhOYQNmw',
+          expiresIn: 0,
+          refreshToken:'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4ZTc3YzE0Y2RmMTM4ODVlMTkwOTE0OWI2ZDliNjU3MzRhZWZkZWFlZiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweGU3N2MxNGNkZjEzODg1ZTE5MDkxNDliNmQ5YjY1NzM0YWVmZGVhZWYiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjU5MjIwNSwianRpIjoiMzA2NWFmNjctODc3ZS00ZGY0LThhOGItN2Q0YTNmOGU4ZjQzIiwiY2xpZW50X2lkIjoidGFpbmQifQ.uJ6MEmZHUZs5Fcu9m2LIkefBboZyT7QzcCv-e5tT-TYDneDfPCtjZZUUAx4jKmBJcibCafiH0eUh9v-Ho2EqBJfcKcm9z_5VdKzJT5eqwL6-AAe3zWUKJEu_8hkP7h49pxJsx2NO_1z2OdoweGfVHUDAJgwipZwF11-_C2zM69o5hzeXZWY4Q97xsRilKTsk0eNOicJv0YBWUNWWKCy3_arAc4kcJwKuPbGc8kdCy_GkqpWq5jJBG8tOeoxK03VE0NpNEjEpecEa3WNChLfRIq9o_VVLjAa1M8dEFTu3pRG-evj2sst3ynNr8tNB3lqD4PQHlFBn1NWvl8MhOYQNmw',
+          scope: 'DEFAULT',
+          tokenType: 'Bearer',
+        ),
+      ),
+    );
+  }
+
+  void signWallet(String walletAddress, String nonce) {
+    try {
+      final List<int> listNonce = nonce.codeUnits;
+      final Uint8List bytesNonce = Uint8List.fromList(listNonce);
+      final List<int> listSha3 =
+          rHash.hashList(HashType.KECCAK_256, bytesNonce);
+      final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
+      final data = {
+        "walletAddress": walletAddress,
+        "bytesSha3": bytesSha3,
+      };
+      trustWalletChannel.invokeMethod('signWallet', data);
     } on PlatformException {}
   }
 }

@@ -23,12 +23,14 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
             Row(
               children: [
                 if (nftOnPawn.urlToken?.isNotEmpty ?? false)
-                  Image(
-                    image: NetworkImage(
-                      nftOnPawn.urlToken ?? '',
+                  ClipRRect(
+                    child: Image(
+                      image: NetworkImage(
+                        nftOnPawn.urlToken ?? '',
+                      ),
+                      width: 20.w,
+                      height: 20.h,
                     ),
-                    width: 20.w,
-                    height: 20.h,
                   )
                 else
                   Image(
@@ -39,7 +41,7 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
                 spaceW4,
                 Text(
                   '${nftOnPawn.expectedLoanAmount} '
-                      '${nftOnPawn.expectedCollateralSymbol}',
+                  '${nftOnPawn.expectedCollateralSymbol}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
                     20,

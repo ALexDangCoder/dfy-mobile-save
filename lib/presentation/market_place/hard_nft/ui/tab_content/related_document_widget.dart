@@ -14,7 +14,7 @@ class RelatedDocument extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(evaluation.document?.isNotEmpty ?? false){
+    if (evaluation.document?.isNotEmpty ?? false) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -41,8 +41,7 @@ class RelatedDocument extends StatelessWidget {
             ),
         ],
       );
-    }
-    else {
+    } else {
       return const SizedBox();
     }
   }

@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrare_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -17,18 +18,46 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
-class CreateSuccessfully extends StatelessWidget {
+class CreateSuccessfully extends StatefulWidget {
   const CreateSuccessfully({
     Key? key,
     required this.bLocCreateSeedPhrase,
     required this.wallet,
     required this.type,
     required this.passWord,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
   final KeyType type;
   final String passWord;
+  final bool isFromConnectWlDialog;
+
+  @override
+  State<CreateSuccessfully> createState() => _CreateSuccessfullyState();
+}
+
+class _CreateSuccessfullyState extends State<CreateSuccessfully> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isFromConnectWlDialog) {
+      widget.bLocCreateSeedPhrase.getSignature(
+        walletAddress: widget.wallet.address ?? '',
+      );
+      widget.bLocCreateSeedPhrase.signatureStream.listen(
+        (event) {
+          if(event.isNotEmpty){
+            widget.bLocCreateSeedPhrase.loginAndSaveInfo(
+              walletAddress: widget.wallet.address ?? '',
+              signature: event,
+            );
+          }
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +74,15 @@ class CreateSuccessfully extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => MainScreen(
                   index: 1,
-                  wallet: wallet,
+                  wallet: widget.wallet,
                 ),
               ),
             );
-            bLocCreateSeedPhrase.setConfig(
-              isAppLock: bLocCreateSeedPhrase.isCheckAppLock.value,
-              isFaceID: bLocCreateSeedPhrase.isCheckTouchID.value,
+            widget.bLocCreateSeedPhrase.setConfig(
+              isAppLock: widget.bLocCreateSeedPhrase.isCheckAppLock.value,
+              isFaceID: widget.bLocCreateSeedPhrase.isCheckTouchID.value,
             );
-            bLocCreateSeedPhrase.savePassword(password: passWord);
+            widget.bLocCreateSeedPhrase.savePassword(password: widget.passWord);
           },
           child: Container(
             margin: EdgeInsets.only(
@@ -73,10 +102,10 @@ class CreateSuccessfully extends StatelessWidget {
             height: 8.h,
           ),
           _Body(
-            bLocCreateSeedPhrase: bLocCreateSeedPhrase,
-            type: type,
-            wallet: wallet,
-            passWord: passWord,
+            bLocCreateSeedPhrase: widget.bLocCreateSeedPhrase,
+            type: widget.type,
+            wallet: widget.wallet,
+            passWord: widget.passWord,
           )
         ],
       ),

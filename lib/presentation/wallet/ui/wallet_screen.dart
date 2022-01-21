@@ -37,9 +37,11 @@ class WalletScreen extends StatefulWidget {
     Key? key,
     required this.index,
     this.wallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final int index;
   final Wallet? wallet;
+  final bool isFromConnectWlDialog;
 
   @override
   _WalletState createState() => _WalletState();
@@ -239,19 +241,21 @@ class _WalletState extends State<WalletScreen>
                               spaceH24,
                               StreamBuilder(
                                 stream: cubit.listTokenStream,
-                                builder: (context,
-                                    AsyncSnapshot<List<ModelToken>> snapshot,) {
+                                builder: (
+                                  context,
+                                  AsyncSnapshot<List<ModelToken>> snapshot,
+                                ) {
                                   if (snapshot.data?.isNotEmpty ?? true) {
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       physics:
-                                      const NeverScrollableScrollPhysics(),
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: snapshot.data?.length ?? 0,
                                       itemBuilder: (context, index) {
                                         return TokenItem(
                                           walletAddress:
-                                          cubit.addressWalletCore,
+                                              cubit.addressWalletCore,
                                           index: index,
                                           bloc: cubit,
                                           modelToken: snapshot.data![index],
@@ -265,7 +269,7 @@ class _WalletState extends State<WalletScreen>
                                       child: CircularProgressIndicator(
                                         strokeWidth: 3.r,
                                         color:
-                                        AppTheme.getInstance().whiteColor(),
+                                            AppTheme.getInstance().whiteColor(),
                                       ),
                                     ),
                                   );
@@ -294,14 +298,15 @@ class _WalletState extends State<WalletScreen>
                             spaceH24,
                             StreamBuilder<List<CollectionShow>>(
                               stream: cubit.listNFTStream,
-                              builder: (context,
-                                  AsyncSnapshot<
-                                      List<CollectionShow>> snapshot,) {
+                              builder: (
+                                context,
+                                AsyncSnapshot<List<CollectionShow>> snapshot,
+                              ) {
                                 if (snapshot.data?.isNotEmpty ?? true) {
                                   return ListView.builder(
                                     padding: EdgeInsets.zero,
                                     physics:
-                                    const NeverScrollableScrollPhysics(),
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data?.length ?? 0,
                                     itemBuilder: (context, index) {
@@ -323,7 +328,7 @@ class _WalletState extends State<WalletScreen>
                                     child: CircularProgressIndicator(
                                       strokeWidth: 3.r,
                                       color:
-                                      AppTheme.getInstance().whiteColor(),
+                                          AppTheme.getInstance().whiteColor(),
                                     ),
                                   ),
                                 );
@@ -358,9 +363,10 @@ class _WalletState extends State<WalletScreen>
     } else if (widget.index == 2) {
       return LoginScreen(
         walletCubit: cubit,
+        isFromConnectDialog: widget.isFromConnectWlDialog
       );
     } else {
-      return const AddWalletFtSeedPharse();
+      return AddWalletFtSeedPharse(isFromConnectWlDialog: widget.isFromConnectWlDialog,);
     }
   }
 
@@ -386,7 +392,7 @@ class _WalletState extends State<WalletScreen>
                         },
                       ),
                     ).whenComplete(
-                          () async {
+                      () async {
                         cubit.listTokenStream.add([]);
                         await cubit.getListWallets();
                         cubit.getListAcc();
@@ -400,7 +406,7 @@ class _WalletState extends State<WalletScreen>
                       image: DecorationImage(
                         image: AssetImage(
                           '${ImageAssets.image_avatar}${cubit.randomAvatar()}'
-                              '.png',
+                          '.png',
                         ),
                       ),
                       shape: BoxShape.circle,
@@ -540,12 +546,11 @@ class _WalletState extends State<WalletScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          Receive(
-                            walletAddress:
+                      builder: (context) => Receive(
+                        walletAddress:
                             widget.wallet?.address ?? cubit.addressWalletCore,
-                            type: TokenType.QR,
-                          ),
+                        type: TokenType.QR,
+                      ),
                     ),
                   );
                 },

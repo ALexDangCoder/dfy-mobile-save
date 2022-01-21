@@ -38,8 +38,8 @@ class ListNftHotAuction extends StatelessWidget {
                 isLoading
                     ? S.current.loading_text
                     : (isLoadFail
-                    ? S.current.error_text
-                    : S.current.hot_auction),
+                        ? S.current.error_text
+                        : S.current.hot_auction),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
@@ -53,8 +53,11 @@ class ListNftHotAuction extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ListNft(marketType: MarketType.AUCTION),
+                            builder: (context) => ListNft(
+                              marketType: MarketType.AUCTION,
+                              pageRouter: PageRouter.MARKET,
+
+                            ),
                           ),
                         );
                 },
@@ -123,7 +126,6 @@ class ListNftHotAuction extends StatelessWidget {
                                     builder: (context) => NFTDetailScreen(
                                       key: nftKey,
                                       typeMarket: MarketType.AUCTION,
-
                                     ),
                                   ),
                                 );

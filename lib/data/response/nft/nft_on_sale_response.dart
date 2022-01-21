@@ -25,7 +25,6 @@ class OnSaleResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
-
 }
 
 @JsonSerializable()
@@ -50,6 +49,8 @@ class DetailOnSaleResponse {
   String fileCid;
   @JsonKey(name: 'market_type')
   int marketType;
+  @JsonKey(name: 'market_status')
+  int? marketStatus;
   @JsonKey(name: 'estimated_price')
   double? estimatedPrice;
   @JsonKey(name: 'collection_id')
@@ -182,7 +183,8 @@ class DetailOnSaleResponse {
         estimatePrice: estimatedPrice,
         collectionID: collectionId,
         collectionName: collectionName,
-        isOwner: getBool(isOwner),
+        isOwner: isOwner,
+        marketStatus: marketStatus,
         nftStandard: nftStandard,
         numberOfCopies: numberOfCopies,
         totalCopies: totalCopies,

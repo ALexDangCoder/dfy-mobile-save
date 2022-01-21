@@ -20,11 +20,17 @@ const int tabMarketingPlaceIndex = 3;
 const int tabStakingIndex = 4;
 
 class MainScreen extends BaseScreen {
-  const MainScreen({Key? key, this.index, this.wallet, this.checkExist})
-      : super(key: key);
+  const MainScreen({
+    Key? key,
+    this.index,
+    this.wallet,
+    this.checkExist,
+    this.isFormConnectWlDialog = false,
+  }) : super(key: key);
   final int? index;
   final Wallet? wallet;
   final bool? checkExist;
+  final bool isFormConnectWlDialog;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -71,6 +77,7 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
       WalletScreen(
         index: widget.index ?? 1,
         wallet: widget.wallet,
+        isFromConnectWlDialog: widget.isFormConnectWlDialog,
       ),
       const PawnScreen(),
       const HomeScreen(),
@@ -89,6 +96,7 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
       selectPage(event.tabIndex);
     }).addTo(compositeSubscription);
   }
+
   @override
   void dispose() {
     compositeSubscription.clear();

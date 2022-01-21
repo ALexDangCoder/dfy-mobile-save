@@ -14,6 +14,7 @@ enum AuthMode { LOGIN, REGISTER }
 
 enum AuthType { ACCOUNT, PHONE }
 enum MarketType { SALE, AUCTION, PAWN, NOT_ON_MARKET }
+enum PageRouter { MARKET, MY_ACC }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 
@@ -36,7 +37,6 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
 
-
 const int secondShowPopUp = 2;
 
 const String TRANSACTION_TOKEN = '0';
@@ -58,11 +58,24 @@ const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //contract
-const nft_sales_address_dev2 = '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7'; /// buy
-const nft_factory_dev2 = '0x0bcA4DCddE35d2F2aC5a3fAF0baD966639e6EB41';
-const nft_auction_dev2 = '0xdE92A451d22C1D84E874b6B8A5A70AC5f91b6D86';
-const bearTokenViNhieuTien =
-    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRfYWRkcmVzcyI6IjB4MzllZTRjMjhlMDljZTZkOTA4NjQzZGRkZWVhZWVmMjM0MTEzOGViYiIsImdyYW50X3R5cGUiOiJ3YWxsZXQiLCJ1c2VyX25hbWUiOiIweDM5ZWU0YzI4ZTA5Y2U2ZDkwODY0M2RkZGVlYWVlZjIzNDExMzhlYmIiLCJzY29wZSI6WyJERUZBVUxUIl0sImV4cCI6MTY0MjQzMzU5NywianRpIjoiNTVkNjYyNjktNDc1OC00YTc2LTlhYTItMTM1YTdmZWU5MGM2IiwiY2xpZW50X2lkIjoidGFpbmQifQ.NM3TgC7x7iqwwhNJzKT_e7Z5vqMK56xDzVsCparo4HdUhi3Fu-rSWNbmYeSdRU0wd2NxgvuDaegn60Yb6UcZ53aM6g4Lak6Abc5i0eVhTxcPy2tcjg4ki8XLeQcOagDCBaiMqYcQcSNFhjFPa_yPkh3rGxKNm7HIieannPSXy8uOxNmZGOKX8Pvav9EVHtYmBgE2w1Nsz4XCaZsXK_upMZ0dUqogSfQv4pcAnCuTwpMWzb3brGI5Y83BPJodkL3vUSOyohPuJ39ipDVQ64IBI9g4ELen9fcWqMfk4vxDRs3SQ2KIagw1pX4RDXQ6u0_5aRDWk_HTUmP01U2o9RAjmQ';
+const nft_sales_address_dev2 =
+    '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7'; // buy
+const nft_factory_dev2 =
+    '0x0bcA4DCddE35d2F2aC5a3fAF0baD966639e6EB41'; // tao collection
+const nft_auction_dev2 =
+    '0xdE92A451d22C1D84E874b6B8A5A70AC5f91b6D86'; // auction
+const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
+const hard_nft_factory_address_dev2 =
+    '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
+
+//Media file type
+const String MEDIA_VIDEO_FILE = 'VIDEO';
+const String MEDIA_IMAGE_FILE = 'IMAGE';
+const String MEDIA_AUDIO_FILE = 'AUDIO';
+const String AVATAR_PHOTO = 'AVATAR';
+const String COVER_PHOTO = 'COVER_PHOTO';
+const String FEATURE_PHOTO = 'FEATURE_PHOTO';
+
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;

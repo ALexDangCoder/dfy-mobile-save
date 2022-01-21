@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,9 +34,14 @@ class BaseCustomScrollView extends StatefulWidget {
   _BaseCustomScrollViewState createState() => _BaseCustomScrollViewState();
 }
 
-class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
+class _BaseCustomScrollViewState extends State<BaseCustomScrollView>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
+    scrollController.addListener(() {});
     super.initState();
   }
 
@@ -74,35 +80,44 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
                   topRight: Radius.circular(30.r),
                 ),
               ),
-              child: NestedScrollView(
-                physics: const BouncingScrollPhysics(),
-                headerSliverBuilder: (context, innerScroll) => [
-                  BaseAppBar(
-                    image: widget.image,
-                    title: widget.title,
-                    initHeight: widget.initHeight,
-                    leading: widget.leading,
-                    actions: widget.actions,
-                    typeImage: widget.typeImage,
+              child: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: CustomScrollView(
+                    slivers: [
+                      BaseAppBar(
+                        image: widget.image,
+                        title: widget.title,
+                        initHeight: widget.initHeight,
+                        leading: widget.leading,
+                        actions: widget.actions,
+                        typeImage: widget.typeImage,
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Column(
+                                children: widget.content,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: BaseSliverHeader(
+                          widget.tabBar ?? const SizedBox(),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: widget.tabBarView ?? const SizedBox(),
+                      )
+                    ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: Column(
-                            children: widget.content,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: BaseSliverHeader(widget.tabBar ?? Container()),
-                    pinned: true,
-                  ),
-                ],
-                body: widget.tabBarView ?? Container(),
+                ),
               ),
             ),
           ),
@@ -110,6 +125,46 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView> {
       ),
     );
   }
+}
+
+class ExpandedPageViewWidget extends StatefulWidget {
+  final List<Widget> children;
+  final TabController controller;
+  final PageController pageController;
+
+  const ExpandedPageViewWidget({
+    Key? key,
+    required this.children,
+    required this.controller,
+    required this.pageController,
+  }) : super(key: key);
+
+  @override
+  _ExpandedPageViewWidgetState createState() => _ExpandedPageViewWidgetState();
+}
+
+class _ExpandedPageViewWidgetState extends State<ExpandedPageViewWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return ExpandablePageView(
+      allowImplicitScrolling: true,
+      onPageChanged: (value) {
+        widget.controller.animateTo(
+          value,
+          duration: const Duration(milliseconds: 0),
+          curve: Curves.ease,
+        );
+      },
+      controller: widget.pageController,
+      children: widget.children,
+    );
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class BaseSliverHeader extends SliverPersistentHeaderDelegate {

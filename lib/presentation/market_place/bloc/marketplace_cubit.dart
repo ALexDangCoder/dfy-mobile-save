@@ -46,7 +46,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   Future<void> getListNftCollectionExplore() async {
     emit(LoadingDataLoading());
     final Result<List<ListTypeNftCollectionExploreModel>> result =
-    await _marketPlaceRepo.getListTypeNftCollectionExplore();
+        await _marketPlaceRepo.getListTypeNftCollectionExplore();
     result.when(
       success: (res) {
         getNftCollectionExplore(res);
@@ -85,34 +85,33 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   /// pawn 3
 
   void getNftCollectionExplore(
-      List<ListTypeNftCollectionExploreModel> response,) {
+    List<ListTypeNftCollectionExploreModel> response,
+  ) {
     for (final e in response) {
       if (e.name == 'Buy, sell, and create collectible NFTs') {
         e.items?.forEach(
-              (element) =>
-              nftsBuySellCreateCollectible.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsBuySellCreateCollectible.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -122,30 +121,28 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         });
       } else if (e.name == 'Featured NFTs') {
         e.items?.forEach(
-              (element) =>
-              nftsFeaturedNfts.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsFeaturedNfts.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -153,34 +150,31 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           'nfts': nftsFeaturedNfts,
           'market_type': getMarketType(e.url!) //todo,
         });
-      }
-      else if (e.name == 'Featured Soft NFTs') {
+      } else if (e.name == 'Featured Soft NFTs') {
         //hard nft chưa có
         e.items?.forEach(
-              (element) =>
-              nftsFeaturedSoft.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsFeaturedSoft.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -190,30 +184,28 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         });
       } else if (e.name == 'Hot auction') {
         e.items?.forEach(
-              (element) =>
-              nftsHotAution.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsHotAution.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -223,20 +215,19 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         });
       } else if (e.name == 'Outstanding collection') {
         e.items?.forEach(
-              (e) =>
-              outstandingCollection.add(
-                OutstandingCollection(
-                  collectionAddress: e.collectionAddress,
-                  collectionType: e.collectionType,
-                  id: e.id,
-                  name: e.name,
-                  itemId: e.itemId,
-                  avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
-                  coverCid: ApiConstants.BASE_URL_IMAGE + (e.coverCid ?? ''),
-                  nftOwnerCount: e.nftOwnerCount,
-                  totalNft: e.totalNft,
-                ),
-              ),
+          (e) => outstandingCollection.add(
+            OutstandingCollection(
+              collectionAddress: e.collectionAddress,
+              collectionType: e.collectionType,
+              id: e.id,
+              name: e.name,
+              itemId: e.itemId,
+              avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
+              coverCid: ApiConstants.BASE_URL_IMAGE + (e.coverCid ?? ''),
+              nftOwnerCount: e.nftOwnerCount,
+              totalNft: e.totalNft,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -245,30 +236,28 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         });
       } else if (e.name == 'Sale items' || e.name == 'Sell items') {
         e.items?.forEach(
-              (element) =>
-              nftsSale.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsSale.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -278,30 +267,28 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         });
       } else if (e.name == 'NFTs collateral') {
         e.items?.forEach(
-              (element) =>
-              nftsCollateral.add(
-                NftMarket(
-                  marketId: element.id,
-                  nftId: element.nftId ?? '',
-                  tokenBuyOut: element.token ?? '',
-                  name: element.name ?? '',
-                  image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-                  price: element.price ?? 0,
-                  marketType: element.marketType == 1
-                      ? MarketType.SALE
-                      : (element.marketType == 2
+          (element) => nftsCollateral.add(
+            NftMarket(
+              marketId: element.id,
+              nftId: element.nftId ?? '',
+              tokenBuyOut: element.token ?? '',
+              name: element.name ?? '',
+              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+              price: element.price ?? 0,
+              marketType: element.marketType == 1
+                  ? MarketType.SALE
+                  : (element.marketType == 2
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
-                  typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT
-                      .HARD_NFT,
-                  typeImage: (element.fileType == 'image/jpeg' ||
+              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              typeImage: (element.fileType == 'image/jpeg' ||
                       element.fileType == 'image/gif')
-                      ? TypeImage.IMAGE
-                      : TypeImage.VIDEO,
-                  numberOfCopies: element.numberOfCopies,
-                  totalCopies: element.totalCopies ?? 0,
-                ),
-              ),
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
+              numberOfCopies: element.numberOfCopies,
+              totalCopies: element.totalCopies ?? 0,
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,
@@ -312,19 +299,18 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
       } //this else is explore categories
       else {
         e.items?.forEach(
-              (e) =>
-              exploreCategories.add(
-                ExploreCategory(
-                  itemId: e.itemId,
-                  id: e.id,
-                  name: e.name,
-                  bannerCid: ApiConstants.BASE_URL_IMAGE + (e.bannerCid ?? ''),
-                  displayRow: e.displayRow,
-                  displayCol: e.displayCol,
-                  position: e.position,
-                  avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
-                ),
-              ),
+          (e) => exploreCategories.add(
+            ExploreCategory(
+              itemId: e.itemId,
+              id: e.id,
+              name: e.name,
+              bannerCid: ApiConstants.BASE_URL_IMAGE + (e.bannerCid ?? ''),
+              displayRow: e.displayRow,
+              displayCol: e.displayCol,
+              position: e.position,
+              avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
+            ),
+          ),
         );
         listCollectionFtExploreFtNft.add({
           'name': e.name,

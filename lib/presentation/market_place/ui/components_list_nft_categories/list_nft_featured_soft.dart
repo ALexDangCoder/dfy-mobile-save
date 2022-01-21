@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -63,8 +62,10 @@ class ListFeaturedSoftNft extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ListNft(marketType: marketTypeEnum),
+                            builder: (context) => ListNft(
+                              marketType: marketTypeEnum,
+                              pageRouter: PageRouter.MARKET,
+                              ),
                           ),
                         );
                 },

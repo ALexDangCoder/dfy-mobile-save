@@ -23,8 +23,10 @@ class AlertPopUp extends StatefulWidget {
   const AlertPopUp({
     Key? key,
     required this.type,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final KeyType type;
+  final bool isFromConnectWlDialog;
 
   @override
   _AlertPopUpState createState() => _AlertPopUpState();
@@ -226,9 +228,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RestoreAccount(
+                                          builder: (context) => RestoreAccount(
                                             typeEarseWallet: ERASE_WALLET,
+                                            isFromConnectWlDialog:
+                                                widget.isFromConnectWlDialog,
                                           ),
                                         ),
                                       ).then((_) => Navigator.pop(context));
@@ -237,9 +240,10 @@ class _AlertPopUpState extends State<AlertPopUp> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SetupPassWord(
+                                          builder: (context) => SetupPassWord(
                                             typeEarseWallet: ERASE_WALLET,
+                                            isFormConnectWlDialog:
+                                                widget.isFromConnectWlDialog,
                                           ),
                                         ),
                                       ).then((_) => Navigator.pop(context));

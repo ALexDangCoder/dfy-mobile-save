@@ -5,6 +5,7 @@ import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
+import 'package:Dfy/data/response/nft/nft_my_acc_detail_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_auction_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_pawn_response.dart';
 import 'package:Dfy/data/response/nft/nft_on_sale_response.dart';
@@ -29,9 +30,8 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
   Future<EvaluationResponse> getEvaluation(
-      @Path('evaluationId') String evaluationId,
-      );
-
+    @Path('evaluationId') String evaluationId,
+  );
 
   @GET(ApiConstants.GET_LIST_TYPE_NFT)
   Future<ListTypeNFTResponse> getListTypeNFT();
@@ -40,6 +40,12 @@ abstract class NFTClient {
   Future<OnSaleResponse> getDetailNftOnSale(
     @Path('marketId') String marketID,
   );
+
+  @GET('${ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET}{nftId}')
+  Future<NftMyAccResponse> getDetailNftNotOnMarket(
+      @Path('nftId') String nftId,
+      @Query('type') String type,
+      );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(

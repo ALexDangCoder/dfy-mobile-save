@@ -9,15 +9,14 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:flutter/material.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
+import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -62,11 +61,15 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   double? gasLimit;
 
+  double? gasLimitFirst;
+
   double? gasPrice;
 
   String? rawData;
 
-  ConfirmRepository get _confirmRepository => Get.find();
+  String? hexString;
+
+  ConfirmRepository get confirmRepository => Get.find();
 
   bool needApprove = false;
 
@@ -76,33 +79,42 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   bool checkingApprove = false;
 
+  String? tokenApproveData;
+
+  bool isSoftCollection = false;
+
+
   final Web3Utils web3Client = Web3Utils();
-  final BehaviorSubject<String> _addressWalletCoreSubject =
+  final BehaviorSubject<String> addressWalletCoreSubject =
       BehaviorSubject<String>();
-  final BehaviorSubject<String> _nameWalletSubject = BehaviorSubject<String>();
-  final BehaviorSubject<double> _balanceWalletSubject =
+  final BehaviorSubject<String> nameWalletSubject = BehaviorSubject<String>();
+  final BehaviorSubject<double> balanceWalletSubject =
       BehaviorSubject<double>();
 
   /// [gasPriceSubject] contain gas price init, not gas price final
   final BehaviorSubject<double> gasPriceFirstSubject =
       BehaviorSubject<double>();
 
+  final BehaviorSubject<double> gasLimitFirstSubject =
+      BehaviorSubject<double>();
+
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
 
   final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
 
-  Stream<String> get addressWalletCoreStream =>
-      _addressWalletCoreSubject.stream;
+  Stream<String> get addressWalletCoreStream => addressWalletCoreSubject.stream;
 
-  Stream<String> get nameWalletStream => _nameWalletSubject.stream;
+  Stream<String> get nameWalletStream => nameWalletSubject.stream;
 
   Stream<bool> get isApprovedStream => isApprovedSubject.stream;
 
-  Stream<double> get balanceWalletStream => _balanceWalletSubject.stream;
+  Stream<double> get balanceWalletStream => balanceWalletSubject.stream;
 
   Stream<bool> get canActionStream => canActionSubject.stream;
 
   Stream<double> get gasPriceFirstStream => gasPriceFirstSubject.stream;
+
+  Stream<double> get gasLimitFirstStream => gasLimitFirstSubject.stream;
 
   Future<Map<String, dynamic>> sendRawData(String rawData) async {
     final result = await web3Client.sendRawTransaction(transaction: rawData);
@@ -113,10 +125,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String payValue,
     required String tokenAddress,
   }) async {
-    showLoading();
     bool response = false;
-
     try {
+      if (payValue !='' && tokenAddress != '' && addressWallet != ''){
       final result = await web3Client.isApproved(
         payValue: payValue,
         tokenAddress: tokenAddress,
@@ -125,11 +136,14 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       );
       isApprovedSubject.sink.add(result);
       response = result;
+      }else{
+        AppException('title', S.current.error);
+      }
     } on PlatformException {
       isApprovedSubject.sink.add(false);
+      showError();
       response = false;
     }
-    showContent();
     return response;
   }
 
@@ -163,208 +177,46 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> emitJsonNftToWalletCore({
     required String contract,
-    int? id,
+    required int id,
     required String address,
   }) async {
-    final listNft = <Map<String, dynamic>>[];
-    listNft.add({
-      'id': '${nftMarket.nftTokenId}',
-      'contract': '${nftMarket.collectionAddress}',
-      'uri': nftMarket.image,
-    });
-    final result = {
-      'name': nftMarket.name,
-      'symbol': nftMarket.symbolToken,
-      'contract': nftMarket.collectionAddress,
-      'listNft': listNft,
-    };
+    final result = await web3Client.getCollectionInfo(
+        contract: contract, address: address, id: id);
     await importNftIntoWalletCore(
       jsonNft: json.encode(result),
       address: address,
     );
   }
 
-  Future<void> importNftIntoWalletCore({
-    required String jsonNft,
-    required String address,
-  }) async {
+  Future<void> gesGasLimitFirst(String hexString) async {
+    showLoading();
     try {
-      final data = {
-        'jsonNft': jsonNft,
-        'walletAddress': address,
-      };
-      await trustWalletChannel.invokeMethod('importNft', data);
-    } on PlatformException {
-      //todo
+      final gasLimitFirstResult =
+          await getGasLimitByType(type: type, hexString: hexString);
+      gasLimitFirst = gasLimitFirstResult;
+      gasLimit = gasLimitFirstResult;
+      gasLimitFirstSubject.sink.add(gasLimitFirstResult);
+      gasPrice = gasPriceFirst;
+      showContent();
+    } catch (_) {
+      showError();
     }
   }
 
-  Future<void> approve({
-    required String contractAddress,
-    required BuildContext context,
-  }) async {
-    final data = await web3Client.getTokenApproveData(
-      context: context,
-      spender: getSpender(),
-      contractAddress: contractAddress,
-    );
-    final gasLimitApprove = await web3Client.getGasLimitByData(
-      dataString: data,
-      from: addressWallet ?? '',
-      toContractAddress: contractAddress,
-    );
+  Future<void> approve() async {
     final nonce =
         await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
-      gasLimit: gasLimitApprove,
-      gasPrice: ((gasPriceFirst ?? 0) / 1e9).toInt().toString(),
+      gasLimit: (gasLimit ?? 0).toInt().toString(),
+      gasPrice: ((gasPrice ?? 0) / 1e9).toInt().toString(),
       chainId: Get.find<AppConstants>().chaninId,
-      contractAddress: contractAddress,
+      contractAddress: tokenAddress ?? '',
       walletAddress: addressWallet ?? '',
       nonce: nonce.count.toString(),
-      hexString: data,
+      hexString: tokenApproveData ?? '',
     );
   }
 
-  ///
-  /// //biến check success hay không
-  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
-    switch (methodCall.method) {
-      case 'getListWalletsCallback':
-        final List<dynamic> data = methodCall.arguments;
-        if (data.isEmpty) {
-        } else {
-          for (final element in data) {
-            listWallet.add(Wallet.fromJson(element));
-          }
-          _addressWalletCoreSubject.sink.add(listWallet.first.address!);
-          addressWallet = listWallet.first.address;
-          _nameWalletSubject.sink.add(listWallet.first.name!);
-          nameWallet = listWallet.first.name;
-          if (needApprove) {
-            await checkApprove(
-              payValue: payValue ?? '',
-              tokenAddress: tokenAddress ?? ' ',
-            );
-          }
-          try {
-            balanceWallet = await Web3Utils().getBalanceOfBnb(
-              ofAddress: _addressWalletCoreSubject.valueOrNull ?? '',
-            );
-            showContent();
-          } catch (e) {
-            showError();
-            AppException('title', e.toString());
-          }
-          _balanceWalletSubject.sink.add(balanceWallet ?? 0);
-        }
-        break;
-      case 'signTransactionWithDataCallback':
-        rawData = methodCall.arguments['signedTransaction'];
-        if (checkingApprove) {
-          final resultApprove = await web3Client.sendRawTransaction(
-            transaction: rawData ?? '',
-          );
-          checkingApprove = false;
-          isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
-        } else {
-          final result = await sendRawData(rawData ?? '');
-          switch (type) {
-            case TYPE_CONFIRM_BASE.BUY_NFT:
-              if (result['isSuccess']) {
-                showContent();
-                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
-              } else {
-                showContent();
-                emit(SignFail());
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-              if (result['isSuccess']) {
-                showContent();
-              } else {}
-              break;
-            case TYPE_CONFIRM_BASE.CANCEL_SALE:
-              if (result['isSuccess']) {
-                emit(SendRawData(result['txHash'], isSuccess: true));
-              } else {
-                emit(SendRawData(result['txHash']));
-              }
-              break;
-            default:
-              break;
-          }
-        }
-        break;
-      //todo
-      case 'importNftCallback':
-        final int code = await methodCall.arguments['code'];
-        switch (code) {
-          case 200:
-            Fluttertoast.showToast(msg: 'Success');
-            break;
-          case 400:
-            Fluttertoast.showToast(msg: 'Fail');
-            break;
-          case 401:
-            Fluttertoast.showToast(msg: 'Fail');
-            break;
-        }
-        break;
-    }
-  }
-
-  Future<void> signTransactionWithData({
-    required String walletAddress,
-    required String contractAddress,
-    required String nonce,
-    required String chainId,
-    required String gasPrice,
-    required String gasLimit,
-    required String hexString,
-  }) async {
-    try {
-      final data = {
-        'walletAddress': walletAddress,
-        'contractAddress': contractAddress,
-        'nonce': nonce,
-        'chainId': chainId,
-        'gasPrice': gasPrice,
-        'gasLimit': gasLimit,
-        'withData': hexString,
-      };
-      await trustWalletChannel.invokeMethod('signTransactionWithData', data);
-    } on PlatformException {
-      //print ('â');
-    }
-  }
-
-  Future<void> getListWallets() async {
-    try {
-      final data = {};
-      showLoading();
-      await trustWalletChannel.invokeMethod('getListWallets', data);
-      showContent();
-    } on PlatformException {
-      //nothing
-    }
-  }
-
-  String getSpender() {
-    late String spender;
-    switch (type) {
-      case TYPE_CONFIRM_BASE.BUY_NFT:
-        spender = nft_sales_address_dev2;
-        break;
-      case TYPE_CONFIRM_BASE.PLACE_BID:
-        spender = nft_auction_dev2;
-        break;
-      default:
-        spender = '';
-        break;
-    }
-    return spender;
-  }
 
   int randomAvatar() {
     final Random rd = Random();
@@ -383,22 +235,30 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
-  Future<void> confirmCancelSaleWithBE({
-    required String txnHash,
-    required String marketId,
+
+
+  Future<void> importNft({
+    required String contract,
+    required String address,
+    required int id,
   }) async {
-    final result = await _confirmRepository.getCancelSaleResponse(
-      id: marketId,
-      txnHash: txnHash,
-    );
-    result.when(success: (suc) {}, error: (err) {});
+    final res = await web3Client.importNFT(
+        contract: contract, address: address, id: id);
+    if (!res.isSuccess) {
+    } else {
+      await emitJsonNftToWalletCore(
+        contract: contract,
+        address: address,
+        id: id,
+      );
+    }
   }
 
   void dispose() {
     gasPriceFirstSubject.close();
-    _addressWalletCoreSubject.close();
-    _balanceWalletSubject.close();
-    _nameWalletSubject.close();
+    addressWalletCoreSubject.close();
+    balanceWalletSubject.close();
+    nameWalletSubject.close();
     isApprovedSubject.close();
   }
 }

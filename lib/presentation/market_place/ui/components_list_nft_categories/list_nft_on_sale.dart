@@ -9,6 +9,7 @@ import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../nft_item/ui/nft_item.dart';
 
 class ListNftOnSale extends StatelessWidget {
@@ -52,8 +53,10 @@ class ListNftOnSale extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ListNft(
+                            builder: (context) => const ListNft(
                               marketType: MarketType.SALE,
+                              pageRouter: PageRouter.MARKET,
+
                             ),
                           ),
                         );

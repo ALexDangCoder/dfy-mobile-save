@@ -8,6 +8,11 @@ class ApproveInitState extends ApproveState {
   List<Object?> get props => [];
 }
 
+class GotDataApprove extends ApproveState {
+  @override
+  List<Object?> get props => [];
+}
+
 class SignSuccess extends ApproveState {
   final String txh;
   final TYPE_CONFIRM_BASE type;
@@ -19,17 +24,21 @@ class SignSuccess extends ApproveState {
 }
 
 class SignFail extends ApproveState {
+  final String message;
+
+  SignFail(this.message);
+
   @override
   List<Object?> get props => [];
 }
 
-class SendRawData extends ApproveState {
-  final String txnHash;
-  final bool isSuccess;
+class SendRawDataSuccess extends ApproveState{
+  String txnHash;
 
-  SendRawData(this.txnHash, {this.isSuccess = false});
+  SendRawDataSuccess(this.txnHash);
 
   @override
   // TODO: implement props
-  List<Object?> get props => [txnHash, isSuccess];
+  List<Object?> get props => [txnHash];
+
 }

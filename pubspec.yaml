@@ -111,7 +111,9 @@ dependencies:
   sticky_headers: ^0.2.0
   flutter_sticky_header: ^0.6.0
   #flutter_appavailability: ^0.0.21
-  photo_view: ^0.13.0
+  #photo_view: ^0.13.0
+  file_picker: ^4.3.2
+  image_cropper: ^1.4.1
 
   url_launcher: ^6.0.17
   #web3
@@ -119,6 +121,7 @@ dependencies:
   http: ^0.13.4
   keyboard_dismisser: ^2.0.0
   dotted_border: ^2.0.0+1
+  r_crypto: ^0.5.0
 
   #OTP input
   pin_code_fields: ^7.3.0
@@ -126,6 +129,8 @@ dependencies:
   html: ^0.15.0
   cool_dropdown: ^1.4.1
   progress_indicators: ^1.0.0
+  loading_gifs: ^0.3.0
+  expandable_page_view: ^1.0.10
 dev_dependencies:
   flutter_test:
     sdk: flutter

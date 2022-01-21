@@ -1,12 +1,15 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
 import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/on_boarding/ui/on_boarding.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
@@ -65,7 +68,9 @@ class _SettingWalletState extends State<SettingWallet> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return ComingSoon();
+                            return const ComingSoon();
+                            return const ProvideHardNftInfo();
+                            // return OnBoardingScreen(callbackSkip: () {  },);
                           },
                         ),
                       );
@@ -244,6 +249,7 @@ class _SettingWalletState extends State<SettingWallet> {
           return Flexible(
             child: InkWell(
               onTap: () {
+                PrefsService.clearWalletLogin();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(

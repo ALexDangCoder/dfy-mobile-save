@@ -1,3 +1,7 @@
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
+import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
 import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +25,15 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const ComingScreen();
+    return GestureDetector(
+      onTap: () => showDialog(
+        context: context,
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: EnterEmail(cubit: LoginWithEmailCubit()),
+          isRequireLoginEmail: true,
+        ),
+      ),
+      child: const ComingScreen(),
+    );
   }
 }

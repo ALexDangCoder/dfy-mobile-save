@@ -1,7 +1,4 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/config/resources/dimen.dart';
-import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -62,16 +59,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get viewSink => _viewSubject.sink;
 
-  final BehaviorSubject<List<HistoryNFT>> listHistoryStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<OwnerNft>> listOwnerStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<BiddingNft>> listBiddingStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<List<OfferDetail>> listOfferStream =
-      BehaviorSubject.seeded([]);
-  final BehaviorSubject<Evaluation> evaluationStream =
-      BehaviorSubject();
+  final BehaviorSubject<List<HistoryNFT>> listHistoryStream = BehaviorSubject();
+  final BehaviorSubject<List<OwnerNft>> listOwnerStream = BehaviorSubject();
+  final BehaviorSubject<List<BiddingNft>> listBiddingStream = BehaviorSubject();
+  final BehaviorSubject<List<OfferDetail>> listOfferStream = BehaviorSubject();
+  final BehaviorSubject<Evaluation> evaluationStream = BehaviorSubject();
 
   String symbolToken = '';
 
@@ -178,6 +170,40 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required int pawnId,
   }) async {
     getTokenInf();
+    if (type == MarketType.NOT_ON_MARKET) {
+      showLoading();
+      final Result<NftMarket> result;
+      if (typeNFT == TypeNFT.SOFT_NFT) {
+        result = await _nftRepo.getDetailNftMyAccNotOnMarket(nftId, '0');
+      } else {
+        result = await _nftRepo.getDetailHardNftOnSale(nftId);
+      }
+      result.when(
+        success: (res) {
+          showContent();
+          nftMarket = res;
+          owner = res.owner ?? '';
+          emit(NftNotOnMarketSuccess(res));
+          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+          }
+          for (final value in listTokenSupport) {
+            final symbolToken = res.symbolToken ?? '';
+            final symbol = value.symbol ?? '';
+            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+            }
+          }
+        },
+        error: (error) {
+          showError();
+        },
+      );
+    }
     if (type == MarketType.SALE) {
       showLoading();
       final Result<NftMarket> result;
@@ -208,8 +234,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          emit(NftOnSaleFail());
-          updateStateError();
+          showError();
         },
       );
     }
@@ -244,7 +269,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          updateStateError();
+          showError();
         },
       );
     }
@@ -420,213 +445,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
     return hexString;
   }
-
-  Future<String> getBidData({
-    required String contractAddress,
-    required String auctionId,
-    required String bidValue,
-    required BuildContext context,
-  }) async {
-    try {
-      hexString = await web3Client.getBidData(
-        contractAddress: contractAddress,
-        auctionId: auctionId,
-        bidValue: bidValue,
-        context: context,
-      );
-    } catch (e) {
-      throw AppException(S.current.error, e.toString());
-    }
-    return hexString;
-  }
-
-  Future<String> getGasLimitByData({
-    required String fromAddress,
-    required String toAddress,
-    required String hexString,
-  }) async {
-    try {
-      gasLimit = await web3Client.getGasLimitByData(
-        from: fromAddress,
-        toContractAddress: toAddress,
-        dataString: hexString,
-      );
-    } catch (e) {
-      throw AppException(S.current.error, e.toString());
-    }
-    return gasLimit;
-  }
-
-  Future<void> callWeb3(
-    BuildContext context,
-    dynamic quantity,
-    MarketType type,
-  ) async {
-    showLoading();
-    try {
-      switch (type) {
-        case MarketType.SALE:
-          await getBuyNftData(
-            contractAddress: nft_sales_address_dev2,
-            orderId: nftMarket.orderId.toString(),
-            numberOfCopies: quantity.toString(),
-            context: context,
-          ).then(
-            (value) => getGasLimitByData(
-              fromAddress: wallets.first.address ?? '',
-              toAddress: nft_sales_address_dev2,
-              hexString: value,
-            ).then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    needApprove: true,
-                    payValue: totalPayment.toString(),
-                    tokenAddress: nftMarket.token,
-                    title: S.current.buy_nft,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.from}:',
-                          child: Text(
-                            walletAddress.formatAddressWalletConfirm(),
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.to}:',
-                          child: Text(
-                            owner.formatAddressWalletConfirm(),
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        spaceH20,
-                        line,
-                        spaceH20,
-                        buildRowCustom(
-                          isPadding: false,
-                          title: S.current.price,
-                          child: Text(
-                            '${nftMarket.price} ${nftMarket.symbolToken}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              20,
-                              FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.total_payment_normal}:',
-                          child: Text(
-                            '${quantity * nftMarket.price} '
-                            '${nftMarket.symbolToken}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().fillColor(),
-                              20,
-                              FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    textActiveButton: S.current.buy_nft,
-                    gasLimitInit: double.parse(value),
-                    typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
-                  ),
-                ),
-              ),
-            ),
-          );
-          showContent();
-          break;
-        case MarketType.AUCTION:
-          await getBidData(
-            contractAddress: nft_auction_dev2,
-            auctionId: nftOnAuction.auctionId.toString(),
-            bidValue: quantity.toString(),
-            context: context,
-          ).then(
-            (value) => getGasLimitByData(
-              fromAddress: wallets.first.address ?? '',
-              toAddress: nft_auction_dev2,
-              hexString: value,
-            ).then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    needApprove: true,
-                    tokenAddress: nftOnAuction.token,
-                    payValue: bidValue.toString(),
-                    title: S.current.place_a_bid,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          title: S.current.from,
-                          child: Text(
-                            walletAddress.formatAddressWalletConfirm(),
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          title: S.current.to.formatAddressWalletConfirm(),
-                          child: Text(
-                            owner,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          title: S.current.amount,
-                          child: Text(
-                            quantity,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().fillColor(),
-                              20,
-                              FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    textActiveButton: S.current.approve,
-                    gasLimitInit: double.parse(value),
-                    typeApprove: TYPE_CONFIRM_BASE.PLACE_BID,
-                  ),
-                ),
-              ),
-            ),
-          );
-          showContent();
-          break;
-      }
-    } catch (e) {
-      showError();
-      throw AppException(S.current.error, e.toString());
-    }
-  }
-
-  //////////////////////
-  ///CANCEL SALE
 
   List<DetailItemApproveModel> initListApprove() {
     //todo: Vũ: tạm hardcode

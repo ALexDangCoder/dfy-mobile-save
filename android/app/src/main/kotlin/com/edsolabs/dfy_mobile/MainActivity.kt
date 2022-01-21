@@ -393,6 +393,18 @@ class MainActivity : FlutterFragmentActivity() {
                         walletAddress = walletAddress
                     )
                 }
+                "signWallet" -> {
+                    val walletAddress =
+                        call.argument<String>("walletAddress")
+                            ?: return@setMethodCallHandler
+                    val bytesSha3 = call.argument<ByteArray>("bytesSha3")
+                        ?: return@setMethodCallHandler
+                    this.signWallet(
+                        channel = channel,
+                        walletAddress = walletAddress,
+                        bytesSha3 = bytesSha3,
+                    )
+                }
             }
         }
     }

@@ -1,4 +1,8 @@
-import 'package:Dfy/data/response/login/login_response.dart';
+import 'package:Dfy/data/response/market_place/login/login_response.dart';
+import 'package:Dfy/data/response/market_place/nonce/nonce_response.dart';
+import 'package:Dfy/data/response/market_place/user_profile/user_profile.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -11,7 +15,20 @@ abstract class LoginClient {
   @factoryMethod
   factory LoginClient(Dio dio, {String baseUrl}) = _LoginClient;
 
-  @POST(ApiConstants.LOGIN_EMAIL)
+  @POST(ApiConstants.LOGIN_MARKET)
   Future<LoginResponse> login(@Field('signature') String signature,
       @Field('walletAddress') String walletAddress);
+
+  @GET(ApiConstants.GET_NONCE)
+  Future<NonceResponse> getNonce(
+    @Query('walletAddress') String walletAddress,
+  );
+
+  @GET(ApiConstants.GET_USER_PROFILE)
+  Future<ProfileResponse> getUserProfile();
+
+  @POST(ApiConstants.REFRESH_TOKEN)
+  Future<LoginResponse> refreshToken(
+    @Field('refresh_token') String refreshToken,
+  );
 }

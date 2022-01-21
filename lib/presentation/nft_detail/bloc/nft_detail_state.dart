@@ -1,5 +1,4 @@
 import 'package:Dfy/config/base/base_state.dart';
-import 'package:Dfy/data/web3/abi/nft.g.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
@@ -15,6 +14,15 @@ class NftOnSaleSuccess extends NFTDetailState {
   final NftMarket nftMarket;
 
   NftOnSaleSuccess(this.nftMarket);
+
+  @override
+  List<Object?> get props => [nftMarket];
+}
+
+class NftNotOnMarketSuccess extends NFTDetailState {
+  final NftMarket nftMarket;
+
+  NftNotOnMarketSuccess(this.nftMarket);
 
   @override
   List<Object?> get props => [nftMarket];

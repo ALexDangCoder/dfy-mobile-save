@@ -1,8 +1,11 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +18,23 @@ class LoginCubit extends BaseCubit<LoginState> {
   bool hidePass = true;
   bool isAppLock = true;
   bool isFaceID = false;
+  String signature = '';
+  String walletAddress = '';
+  int nonce = 0;
   BehaviorSubject<bool> isFaceIDStream = BehaviorSubject();
+
+  BehaviorSubject<bool> isLoginSuccessSubject = BehaviorSubject();
+
+  BehaviorSubject<bool> isSaveInfoSuccessSubject = BehaviorSubject();
+
+  BehaviorSubject<String> signatureSubject = BehaviorSubject();
+
+  Stream<bool> get isLoginSuccessStream => isLoginSuccessSubject.stream;
+
+  Stream<bool> get isSaveInfoSuccessStream => isSaveInfoSuccessSubject.stream;
+
+  Stream<String> get signatureStream => signatureSubject.stream;
+
   bool hidePassword() {
     return hidePass = !hidePass;
   }
@@ -37,6 +56,14 @@ class LoginCubit extends BaseCubit<LoginState> {
         isFaceID = await methodCall.arguments['isFaceID'];
         isFaceIDStream.add(isFaceID);
         break;
+      case 'getListWalletsCallback':
+        walletAddress = (methodCall.arguments as List)
+            .first['walletAddress'];
+        break;
+      case 'signWalletCallback':
+        signature = await methodCall.arguments['signature'];
+        signatureSubject.sink.add(signature);
+        break;
       default:
         break;
     }
@@ -44,8 +71,7 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   Future<void> getConfig() async {
     try {
-      final data = {
-      };
+      final data = {};
       await trustWalletChannel.invokeMethod('getConfig', data);
     } on PlatformException {
       //nothing

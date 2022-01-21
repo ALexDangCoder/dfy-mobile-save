@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/change_password/ui/components/form_setup_passwo
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +69,9 @@ class _ChangePasswordState extends State<ChangePassword> {
               context: context,
             );
           } else {
-            _showDialog(alert: S.current.change_pw_fail,);
+            _showDialog(
+              alert: S.current.change_pw_fail,
+            );
           }
         },
         builder: (context, state) {
@@ -89,7 +92,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                           // oldPassWordFetch: oldPWFetchFromApi,
                           cubit: passwordCubit,
                           type: typeForm.OLD,
-
                         ),
                         showTextValidateOldPassword(),
                         SizedBox(

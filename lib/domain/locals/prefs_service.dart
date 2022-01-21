@@ -1,13 +1,21 @@
+import 'package:Dfy/domain/model/market_place/login_model.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsService {
   static const _PREF_TRANSACTION_HISTORY = 'pref_transaction_history';
+  static const _PREF_WALLET_LOGIN = 'pref_wallet_login';
   static const _PREF_LANGUAGE = 'pref_language';
   static const _PREF_APPLOCK = 'pref_appLock';
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
   static const _PREF_LIST_TOKEN_SUPPORT = '';
+  static const _PREF_CURRENT_BE_WALLET = 'pref_current_wallet';
+  static const _PREF_USER_PROFILE = 'pref_user_info';
+  static const _PREF_CURRENT_WALLET_CORE = 'pref_is_wallet_core_logged';
+  static const _PREF_IS_WALLET_BE_LOGGED = 'pref_is_wallet_be_logged';
+
 
   static SharedPreferences? _prefsInstance;
 
@@ -74,8 +82,89 @@ class PrefsService {
     return _prefsInstance?.getString(_PREF_TRANSACTION_HISTORY) ?? '';
   }
 
+  static Future<bool> saveWalletLogin(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_WALLET_LOGIN, data);
+  }
+
+  static String getWalletLogin() {
+    return _prefsInstance?.getString(_PREF_WALLET_LOGIN) ??
+        jsonLoginModelEmpty();
+  }
+
+  static Future<bool> clearWalletLogin() async {
+    final prefs = await _instance;
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
+    await prefs.setString(_PREF_CURRENT_WALLET_CORE, '');
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
+    await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
+    return prefs.setString(
+      _PREF_WALLET_LOGIN,
+      jsonLoginModelEmpty(),
+    );
+  }
+
+  static String jsonLoginModelEmpty() {
+    return loginToJson(
+      LoginModel(
+        accessToken: '',
+        expiresIn: 0,
+        refreshToken: '',
+        scope: '',
+        tokenType: '',
+      ),
+    );
+  }
+
   Future<void> clearData() async {
     await _prefsInstance?.clear();
     return;
   }
+
+  static Future<bool> saveUserProfile(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_USER_PROFILE, data);
+  }
+
+  static String getUserProfile() {
+    return _prefsInstance?.getString(_PREF_USER_PROFILE) ?? userProfileEmpty();
+  }
+
+  static String userProfileEmpty() {
+    return userProfileToJson(
+      UserProfileModel(
+        email: '',
+        createdAt: 0,
+        id: 0,
+        activatedAt: 0,
+        address: '',
+        birthday: '',
+        isActive: false,
+        links: [],
+        name: '',
+        phoneNumber: '',
+        referredId: '',
+        roleType: -1,
+      ),
+    );
+  }
+
+  static Future<bool> saveCurrentBEWallet(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_BE_WALLET, walletAddress);
+  }
+
+  static String getCurrentBEWallet() {
+    return _prefsInstance?.getString(_PREF_CURRENT_BE_WALLET) ?? '';
+  }
+
+  static Future<bool> saveCurrentWalletCore(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_WALLET_CORE, walletAddress);
+  }
+
+  static String getCurrentWalletCore() {
+    return _prefsInstance?.getString(_PREF_CURRENT_WALLET_CORE) ?? '';
+  }
+
 }
