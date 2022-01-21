@@ -19,6 +19,15 @@ class NftOnSaleSuccess extends NFTDetailState {
   List<Object?> get props => [nftMarket];
 }
 
+class NftNotOnMarketSuccess extends NFTDetailState {
+  final NftMarket nftMarket;
+
+  NftNotOnMarketSuccess(this.nftMarket);
+
+  @override
+  List<Object?> get props => [nftMarket];
+}
+
 class NftOnSaleFail extends NFTDetailState {
   @override
   List<Object?> get props => [];

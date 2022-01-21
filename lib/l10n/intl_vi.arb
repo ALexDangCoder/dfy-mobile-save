@@ -514,5 +514,9 @@
   "your_appointment_with": "Cuộc hẹn của bạn với Thẩm định viên ",
   "evaluator_tima_online": "Tima-Tiệm cầm đồ trực tuyến",
   "pawnshop_will_be_rejected": " sẽ bị từ chối. Bạn có muốn tiếp tục?",
-  "evaluators_near_you": "TIỆM ĐÁNH GIÁ GẦN BẠN"
+  "evaluators_near_you": "TIỆM ĐÁNH GIÁ GẦN BẠN",
+  "get_started": "Bắt đầu",
+  "login_to_your_email" : "Bạn có muốn đăng nhập vào email ",
+  "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
+  "yes": "Đồng ý"
 }
