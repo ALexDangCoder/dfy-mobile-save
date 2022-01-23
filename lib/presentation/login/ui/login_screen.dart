@@ -15,6 +15,7 @@ import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -70,9 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (widget.isFromConnectDialog) {
       _cubit.isLoginSuccessStream.listen((event) {
         if (event) {
+          showLoading(context);
           _cubit.getSignature(
             walletAddress: _cubit.walletAddress,
           );
+          hideLoading(context);
         }
       });
       _cubit.signatureStream.listen(
@@ -81,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
             _cubit.loginAndSaveInfo(
               walletAddress: _cubit.walletAddress,
               signature: event,
+              context: context,
             );
           }
         },
