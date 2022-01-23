@@ -121,7 +121,7 @@ class _ApproveState extends State<Approve> {
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        nftKey.currentState?.bloc ?? NFTDetailBloc();
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
@@ -249,14 +249,15 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         {
           final String wallet = PrefsService.getCurrentBEWallet();
+          unawaited(showLoading());
           await cubit.signTransactionWithData(
-            walletAddress: nftDetailBloc.walletAddress,
+            walletAddress: wallet,
             contractAddress: nft_sales_address_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
             gasLimit: gasLimitString,
-            hexString: nftDetailBloc.hexString,
+            hexString: widget.hexString ?? '',
           );
           break;
         }
@@ -303,6 +304,10 @@ class _ApproveState extends State<Approve> {
           caseNavigator(state.type, state.txh);
         }
         if (state is SignFail) {
+          if(widget.typeApprove == TYPE_CONFIRM_BASE.CANCEL_SALE){
+            showLoadFail();
+            return;
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -586,7 +591,7 @@ class _ApproveState extends State<Approve> {
     );
   }
 
-  void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
+  void caseNavigator(TYPE_CONFIRM_BASE type, String data){
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         cubit.importNft(
@@ -662,7 +667,29 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        // TODO: Handle this case.
+        cubit.confirmCancelSaleWithBE(
+          txnHash: data,
+          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BaseSuccess(
+              title: S.current.cancel_sale,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
         break;
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         cubit.createCollection(

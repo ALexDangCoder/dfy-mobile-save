@@ -13,13 +13,6 @@ abstract class ConfirmClient {
   @factoryMethod
   factory ConfirmClient(Dio dio, {String baseUrl}) = _ConfirmClient;
 
-  //Confirm cancel  sale:
-  @POST(ApiConstants.CANCEL_SALE)
-  Future<ConfirmResponse> cancelSale(
-    @Field('market_id') String marketId,
-    @Field('txn_hash') String txnHash,
-  );
-
   //CreateSoftCollection
   @POST(ApiConstants.CREATE_SOFT_COLLECTION)
   Future<ConfirmResponse> createSoftCollection(

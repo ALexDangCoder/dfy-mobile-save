@@ -12,17 +12,6 @@ class ConfirmImplement implements ConfirmRepository {
   ConfirmImplement(this._confirmClient);
 
   @override
-  Future<Result<ConfirmModel>> getCancelSaleResponse({
-    required String id,
-    required String txnHash,
-  }) {
-    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-      () => _confirmClient.cancelSale(id, txnHash),
-      (response) => response.toDomain(),
-    );
-  }
-
-  @override
   Future<Result<ConfirmModel>> createSoftCollection(
       {required CreateSoftCollectionRequest data}) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(

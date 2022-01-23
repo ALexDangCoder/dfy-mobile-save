@@ -98,9 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               (route) => route.isFirst,
             );
           } else {
-            FToast().showToast(
-              child: Text(S.current.something_went_wrong),
-            );
+            //TODO: hander err
           }
         },
       );
@@ -373,7 +371,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) {
                                 return AlertPopUp(
                                   type: KeyType.CREATE,
-                                  isFromConnectWlDialog: widget.isFromConnectDialog,
+                                  isFromConnectWlDialog:
+                                      widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,
@@ -415,7 +414,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) {
                                 return AlertPopUp(
                                   type: KeyType.IMPORT,
-                                  isFromConnectWlDialog: widget.isFromConnectDialog,
+                                  isFromConnectWlDialog:
+                                      widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,

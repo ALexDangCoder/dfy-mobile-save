@@ -84,10 +84,9 @@ extension CallCoreExtension on ApproveCubit{
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
-                emit(SendRawDataSuccess(result['txHash']));
-                showContent();
+                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_SALE));
               } else {
-                showError();
+                emit(SignFail(S.current.cancel_sale));
               }
               break;
             default:

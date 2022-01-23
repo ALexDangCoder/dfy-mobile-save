@@ -164,16 +164,15 @@ Widget _buildButtonCancelOnSale(
     onPressed: () async {
       /// TODO: handle cancel sale buy nftMarket.isOwner == true
       final nav = Navigator.of(context);
-      final double gas = await bloc.getGasLimitForCancel(context: context);
-      if (gas > 0) {
-        unawaited(
-          nav.push(
-            MaterialPageRoute(
-              builder: (context) => approveWidget(),
-            ),
+      final String dataString =
+          await bloc.getDataStringForCancel(context: context);
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(dataString: dataString),
           ),
-        );
-      }
+        ),
+      );
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
@@ -369,7 +368,7 @@ Widget _buildButtonPutOnMarket(
   );
 }
 
-Approve approveWidget() {
+Approve approveWidget({required String dataString}) {
   return Approve(
     listDetail: bloc.initListApprove(),
     title: S.current.cancel_sale,
@@ -411,6 +410,6 @@ Approve approveWidget() {
     ),
     textActiveButton: S.current.cancel_sale,
     typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
-    hexString: '', //todo
+    hexString: dataString,
   );
 }
