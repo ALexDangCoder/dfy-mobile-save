@@ -511,5 +511,8 @@
   "associate_email": "Do you want to associate an email to get notification/email?",
   "yes": "Yes",
   "cancel_success": "Cancel sale successfully",
-  "custom_url" : "Custom URL"
+  "custom_url" : "Custom URL",
+  "cancel_aution": "Cancel auction",
+  "auction_cancel_info": "Auction information will be cancelled",
+  "cancel_auction_warning": "Customer can not buy your NFT anymore"
 }

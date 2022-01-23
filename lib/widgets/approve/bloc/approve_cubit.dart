@@ -16,6 +16,7 @@ import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -29,6 +30,7 @@ enum TYPE_CONFIRM_BASE {
   PLACE_BID,
   CANCEL_SALE,
   CREATE_COLLECTION,
+  CANCEL_AUCTION
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -193,6 +195,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     try {
       final gasLimitFirstResult =
           await getGasLimitByType(type: type, hexString: hexString);
+
       gasLimitFirst = gasLimitFirstResult;
       gasLimit = gasLimitFirstResult;
       gasLimitFirstSubject.sink.add(gasLimitFirstResult);
@@ -253,6 +256,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       );
     }
   }
+
 
   void dispose() {
     gasPriceFirstSubject.close();

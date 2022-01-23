@@ -140,6 +140,10 @@ class _ApproveState extends State<Approve> {
         cubit.isSoftCollection =
             (widget.createCollectionCubit?.collectionType ?? 0) == 0;
         break;
+      case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        getNonce();
+        break;
     }
   }
 
@@ -190,7 +194,7 @@ class _ApproveState extends State<Approve> {
       if (!value && !cubit.checkingApprove) {
         if (isShowLoading) {
           navigator.pop();
-          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
+          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''),);
         }
         await showLoadFail();
         navigator.pop();
@@ -292,6 +296,21 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         // TODO: Handle this case.
         break;
+      case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+        {
+          final String wallet = PrefsService.getCurrentBEWallet();
+          unawaited(showLoading());
+          await cubit.signTransactionWithData(
+            walletAddress: wallet,
+            contractAddress: nft_sales_address_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
+            hexString: widget.hexString ?? '',
+          );
+          break;
+        }
     }
   }
 
@@ -704,6 +723,31 @@ class _ApproveState extends State<Approve> {
             builder: (BuildContext context) => CollectionList(
               typeScreen: PageRouter.MY_ACC,
               addressWallet: cubit.addressWallet,
+            ),
+          ),
+        );
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+        cubit.confirmCancelAuctionWithBE(
+          txnHash: data,
+          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BaseSuccess(
+              title: S.current.cancel_sale,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         );

@@ -6,8 +6,10 @@ import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/cupertino.dart';
 
 extension GetGasLimit on ApproveCubit {
-  Future<double> getGasLimitByType(
-      {required TYPE_CONFIRM_BASE type, required String hexString,}) async {
+  Future<double> getGasLimitByType({
+    required TYPE_CONFIRM_BASE type,
+    required String hexString,
+  }) async {
     final web3Client = Web3Utils();
     String gasLimit = '';
     switch (type) {
@@ -31,7 +33,6 @@ extension GetGasLimit on ApproveCubit {
         }
       case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
         {
-
           gasLimit = '20000';
           break;
         }
@@ -59,6 +60,20 @@ extension GetGasLimit on ApproveCubit {
       case TYPE_CONFIRM_BASE.PLACE_BID:
         // TODO: Handle this case.
         break;
+      case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+        {
+          try {
+            gasLimit = await web3Client.getGasLimitByData(
+              from: addressWallet ?? '',
+              toContractAddress: getSpender(),
+              dataString: hexString,
+            );
+          } catch (e) {
+            AppException(S.current.error, e.toString());
+            rethrow;
+          }
+          break;
+        }
     }
     return double.parse(gasLimit);
   }
@@ -82,7 +97,7 @@ extension GetGasLimit on ApproveCubit {
     );
     gasLimit = double.parse(gasLimitApprove);
     gasLimitFirst = double.parse(gasLimitApprove);
-    gasLimitFirstSubject.sink.add( double.parse(gasLimitApprove));
+    gasLimitFirstSubject.sink.add(double.parse(gasLimitApprove));
     gasPrice = gasPriceFirst;
     showContent();
   }

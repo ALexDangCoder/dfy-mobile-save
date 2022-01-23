@@ -92,5 +92,6 @@ class ApiConstants {
 
   //GET LIST WALLET
   static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
-
+  //cancel auction
+  static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
 }
