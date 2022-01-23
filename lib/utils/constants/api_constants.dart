@@ -95,6 +95,4 @@ class ApiConstants {
   //GET LIST WALLET
   static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
 
-  static const String GET_USER_PROFILE =
-      '/defi-user-service/api/v1.0.0/users/profile';
 }

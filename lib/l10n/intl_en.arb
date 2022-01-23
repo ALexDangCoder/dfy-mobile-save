@@ -296,6 +296,8 @@
   "tran_submit": "Transaction submitted",
   "authentic":"Authentic",
   "fake":"Fake",
+   "nft_success": "NFT successfully transferred to your wallet",
+    "nft_fail": "An error occurred while transferring NFT to your wallet",
   "not_on_market":"not_on_market",
   "waiting_for_cf": "Waiting for confirmation",
   "buy_nft": "Buy NFT",

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -93,10 +94,8 @@ void showLoading(BuildContext context, {Function? close}) {
       barrierDismissible: false,
       builder: (ctx) {
         return WillPopScope(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: AppTheme.getInstance().primaryColor(),
-            ),
+          child: const Center(
+            child: CupertinoLoading()
           ),
           onWillPop: () async => false,
         );

@@ -9,9 +9,9 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/wallet.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
@@ -124,16 +124,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }) async {
     bool response = false;
     try {
-      if (payValue !='' && tokenAddress != '' && addressWallet != ''){
-      final result = await web3Client.isApproved(
-        payValue: payValue,
-        tokenAddress: tokenAddress,
-        walletAddres: addressWallet ?? '',
-        spenderAddress: getSpender(),
-      );
-      isApprovedSubject.sink.add(result);
-      response = result;
-      }else{
+      if (payValue != '' && tokenAddress != '' && addressWallet != '') {
+        final result = await web3Client.isApproved(
+          payValue: payValue,
+          tokenAddress: tokenAddress,
+          walletAddres: addressWallet ?? '',
+          spenderAddress: getSpender(),
+        );
+        isApprovedSubject.sink.add(result);
+        response = result;
+      } else {
         AppException('title', S.current.error);
       }
     } on PlatformException {
@@ -188,8 +188,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   Future<void> gesGasLimitFirst(String hexString) async {
     showLoading();
     try {
-      final gasLimitFirstResult =
-          await getGasLimitByType(type: type, hexString: hexString);
+      final gasLimitFirstResult = await getGasLimitByType(hexString: hexString);
       gasLimitFirst = gasLimitFirstResult;
       gasLimit = gasLimitFirstResult;
       gasLimitFirstSubject.sink.add(gasLimitFirstResult);
@@ -214,7 +213,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     );
   }
 
-
   int randomAvatar() {
     final Random rd = Random();
     return rd.nextInt(10);
@@ -232,15 +230,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     }
   }
 
-
-
   Future<void> importNft({
     required String contract,
     required String address,
     required int id,
   }) async {
     final res = await web3Client.importNFT(
-        contract: contract, address: address, id: id);
+      contract: contract,
+      address: address,
+      id: id,
+    );
     if (!res.isSuccess) {
     } else {
       await emitJsonNftToWalletCore(

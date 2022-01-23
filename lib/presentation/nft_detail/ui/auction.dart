@@ -9,24 +9,17 @@ Widget _buildButtonPlaceBid(
 ) {
   if (!start && end) {
     return ButtonGradient(
-      onPressed: () async {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftOnAuction.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PlaceBid(
-                    nftOnAuction: nftOnAuction,
-                    balance: value,
-                    typeBid: TypeBid.PLACE_BID,
-                  ),
-                ),
-              ),
-            );
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: PlaceBid(
+              nftOnAuction: nftOnAuction,
+              typeBid: TypeBid.PLACE_BID,
+            ),
+            isRequireLoginEmail: false,
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -68,33 +61,26 @@ Widget _buildButtonBuyOut(BuildContext context, NFTOnAuction nftOnAuction) {
         FontWeight.w700,
       ),
     ),
-    onPressed: () async {
-      await bloc
-          .getBalanceToken(
-        ofAddress: bloc.wallets.first.address ?? '',
-        tokenAddress: bloc.nftOnAuction.token ?? '',
-      )
-          .then(
-            (value) => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlaceBid(
-              nftOnAuction: nftOnAuction,
-              balance: value,
-              typeBid: TypeBid.BUY_OUT,
-            ),
+    onPressed: () {
+      showDialog(
+        context: context,
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: PlaceBid(
+            nftOnAuction: nftOnAuction,
+            typeBid: TypeBid.BUY_OUT,
           ),
+          isRequireLoginEmail: false,
         ),
       );
     },
   );
 }
+
 Widget buttonCancelAuction(bool approveAdmin) {
-  if(!approveAdmin){
+  if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
         /// TODO: handle cancel sale buy nftMarket.isOwner == true
-
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -110,8 +96,7 @@ Widget buttonCancelAuction(bool approveAdmin) {
         ),
       ),
     );
-  }
-  else{
+  } else {
     return const SizedBox();
   }
 }
@@ -120,7 +105,7 @@ Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
   required bool isEnd,
 }) {
-  final bool isBidding = nftOnAuction.numberBid != 0 ;
+  final bool isBidding = nftOnAuction.numberBid != 0;
   return Container(
     width: 343.w,
     height: 64.h,

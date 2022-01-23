@@ -2,11 +2,10 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/buy_nft/bloc/buy_nft_cubit.dart';
-import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -21,24 +20,51 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BuyNFT extends StatelessWidget {
+class BuyNFT extends StatefulWidget {
   const BuyNFT({
     Key? key,
-    required this.balance,
     required this.nftMarket,
-    required this.walletAddress,
   }) : super(key: key);
-  final double balance;
   final NftMarket nftMarket;
-  final String walletAddress;
+
+  @override
+  State<BuyNFT> createState() => _BuyNFTState();
+}
+
+class _BuyNFTState extends State<BuyNFT> {
+  late final BuyNftCubit cubit;
+
+  @override
+  void initState() {
+    cubit = BuyNftCubit();
+    getBalance();
+    super.initState();
+  }
+
+  Future<void> getBalance() async {
+    await cubit
+        .getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress: widget.nftMarket.token ?? '',
+    )
+        .then((value) {
+      if (widget.nftMarket.nftStandard == 'ERC-721') {
+        if (value > (widget.nftMarket.price ?? 0)) {
+          cubit.warnSink.add('');
+          cubit.btnSink.add(true);
+        } else {
+          cubit.warnSink.add(S.current.insufficient_balance);
+          cubit.btnSink.add(false);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BuyNftCubit();
-    final nftDetailCubit = nftKey.currentState?.bloc ?? NFTDetailBloc();
     void emitValue(String value) {
       if (value.isNotEmpty) {
-        if (int.parse(value) <= (nftMarket.totalCopies ?? 1)) {
+        if (int.parse(value) <= (widget.nftMarket.totalCopies ?? 1)) {
           cubit.amountSink.add(int.parse(value));
           cubit.warnSink.add('');
           cubit.btnSink.add(true);
@@ -84,55 +110,93 @@ class BuyNFT extends StatelessWidget {
     }
 
     Widget showTotalPayment() {
-      return StreamBuilder<int>(
-        stream: cubit.amountStream,
-        builder: (context, snapshot) {
-          final total = (nftMarket.price ?? 0) * (snapshot.data ?? 0);
-          cubit.total = total;
-          if (total > balance) {
-            cubit.warnSink.add(S.current.insufficient_balance);
-            cubit.btnSink.add(false);
-          } else {
-            cubit.warnSink.add('');
-            cubit.btnSink.add(true);
-          }
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                S.current.total_payment_upper,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  16.sp,
-                  FontWeight.w600,
-                ),
-              ),
-              Wrap(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                        width: 20.w,
-                        child: Image.network(nftMarket.urlToken ?? ''),
-                      ),
-                      spaceW4,
-                      Text(
-                        '$total ${nftMarket.symbolToken}',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          20.sp,
-                          FontWeight.w600,
-                        ),
-                      ),
-                    ],
+      return widget.nftMarket.nftStandard == 'ERC-721'
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  S.current.total_payment_upper,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().textThemeColor(),
+                    16.sp,
+                    FontWeight.w600,
                   ),
-                ],
-              )
-            ],
-          );
-        },
-      );
+                ),
+                Wrap(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 20.h,
+                          width: 20.w,
+                          child: Image.network(widget.nftMarket.urlToken ?? ''),
+                        ),
+                        spaceW4,
+                        Text(
+                          '${widget.nftMarket.price} ${widget.nftMarket.symbolToken}',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            20.sp,
+                            FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            )
+          : StreamBuilder<int>(
+              stream: cubit.amountStream,
+              builder: (context, snapshot) {
+                final total =
+                    (widget.nftMarket.price ?? 0) * (snapshot.data ?? 0);
+                cubit.total = total;
+                if (total > cubit.balanceValue) {
+                  cubit.warnSink.add(S.current.insufficient_balance);
+                  cubit.btnSink.add(false);
+                } else {
+                  cubit.warnSink.add('');
+                  cubit.btnSink.add(true);
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      S.current.total_payment_upper,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().textThemeColor(),
+                        16.sp,
+                        FontWeight.w600,
+                      ),
+                    ),
+                    Wrap(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                              width: 20.w,
+                              child: Image.network(
+                                  widget.nftMarket.urlToken ?? ''),
+                            ),
+                            spaceW4,
+                            Text(
+                              '$total ${widget.nftMarket.symbolToken}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                20.sp,
+                                FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              },
+            );
     }
 
     ConstrainedBox pricePerOne() {
@@ -160,11 +224,11 @@ class BuyNFT extends StatelessWidget {
                     SizedBox(
                       height: 20.h,
                       width: 20.w,
-                      child: Image.network(nftMarket.urlToken ?? ''),
+                      child: Image.network(widget.nftMarket.urlToken ?? ''),
                     ),
                     spaceW4,
                     Text(
-                      '${nftMarket.price} ${nftMarket.symbolToken}',
+                      '${widget.nftMarket.price} ${widget.nftMarket.symbolToken}',
                       style: textNormalCustom(
                         AppTheme.getInstance().textThemeColor(),
                         16.sp,
@@ -184,7 +248,7 @@ class BuyNFT extends StatelessWidget {
       await cubit
           .getBuyNftData(
             context: context,
-            orderId: nftMarket.orderId.toString(),
+            orderId: widget.nftMarket.orderId.toString(),
             numberOfCopies: cubit.amountValue.toString(),
             contractAddress: nft_sales_address_dev2,
           )
@@ -193,9 +257,12 @@ class BuyNFT extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => Approve(
+                  quantity: widget.nftMarket.nftStandard == 'ERC-721'
+                      ? 1
+                      : cubit.amountValue,
                   needApprove: true,
                   payValue: cubit.total.toString(),
-                  tokenAddress: nftMarket.token,
+                  tokenAddress: widget.nftMarket.token,
                   title: S.current.buy_nft,
                   header: Column(
                     children: [
@@ -203,7 +270,8 @@ class BuyNFT extends StatelessWidget {
                         isPadding: false,
                         title: '${S.current.from}:',
                         child: Text(
-                          walletAddress.formatAddressWalletConfirm(),
+                          PrefsService.getCurrentBEWallet()
+                              .formatAddressWalletConfirm(),
                           style: textNormalCustom(
                             AppTheme.getInstance().textThemeColor(),
                             16,
@@ -215,7 +283,8 @@ class BuyNFT extends StatelessWidget {
                         isPadding: false,
                         title: '${S.current.to}:',
                         child: Text(
-                          (nftMarket.owner ?? '').formatAddressWalletConfirm(),
+                          (widget.nftMarket.owner ?? '')
+                              .formatAddressWalletConfirm(),
                           style: textNormalCustom(
                             AppTheme.getInstance().textThemeColor(),
                             16,
@@ -230,7 +299,7 @@ class BuyNFT extends StatelessWidget {
                         isPadding: false,
                         title: S.current.price,
                         child: Text(
-                          '${nftMarket.price} ${nftMarket.symbolToken}',
+                          '${widget.nftMarket.price} ${widget.nftMarket.symbolToken}',
                           style: textNormalCustom(
                             AppTheme.getInstance().textThemeColor(),
                             20,
@@ -242,8 +311,8 @@ class BuyNFT extends StatelessWidget {
                         isPadding: false,
                         title: '${S.current.total_payment_normal}:',
                         child: Text(
-                          '${cubit.amountValue.toDouble() * (nftMarket.price ?? 0)} '
-                          '${nftMarket.symbolToken}',
+                          '${cubit.amountValue.toDouble() * (widget.nftMarket.price ?? 0)} '
+                          '${widget.nftMarket.symbolToken}',
                           style: textNormalCustom(
                             AppTheme.getInstance().fillColor(),
                             20,
@@ -262,13 +331,59 @@ class BuyNFT extends StatelessWidget {
           );
     }
 
+    Widget form() {
+      return widget.nftMarket.nftStandard == 'ERC-721'
+          ? Container(
+              height: 64.h,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().itemBtsColors(),
+                borderRadius: BorderRadius.all(Radius.circular(20.r)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.nftMarket.totalCopies.toString(),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      16.sp,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    '${widget.nftMarket.totalCopies} ${S.current.of_all}'
+                    ' ${widget.nftMarket.totalCopies}',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      16.sp,
+                      FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : FormWithOutPrefix(
+              textValue: (value) {
+                emitValue(value);
+              },
+              hintText: S.current.enter_quantity,
+              typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
+              cubit: BuyNftCubit,
+              txtController: TextEditingController(),
+              quantityOfAll: widget.nftMarket.totalCopies,
+              imageAsset: widget.nftMarket.urlToken,
+              isTokenOrQuantity: false,
+            );
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       body: Align(
         alignment: Alignment.bottomCenter,
         child: StateStreamLayout(
-          stream: nftDetailCubit.stateStream,
+          stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () {
             refresh();
@@ -302,18 +417,7 @@ class BuyNFT extends StatelessWidget {
                                 ),
                               ),
                               spaceH4,
-                              FormWithOutPrefix(
-                                textValue: (value) {
-                                  emitValue(value);
-                                },
-                                hintText: S.current.enter_quantity,
-                                typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
-                                cubit: BuyNftCubit,
-                                txtController: TextEditingController(),
-                                quantityOfAll: nftMarket.totalCopies,
-                                imageAsset: nftMarket.urlToken,
-                                isTokenOrQuantity: false,
-                              ),
+                              form(),
                               warningAmount(),
                               spaceH20,
                               pricePerOne(),
@@ -322,15 +426,19 @@ class BuyNFT extends StatelessWidget {
                               spaceH12,
                               showTotalPayment(),
                               spaceH4,
-                              Text(
-                                '${S.current.your_balance} ${balance} '
-                                '${nftMarket.symbolToken}',
-                                style: textNormalCustom(
-                                  Colors.white.withOpacity(0.7),
-                                  14,
-                                  FontWeight.w400,
-                                ),
-                              ),
+                              StreamBuilder<double>(
+                                  stream: cubit.balanceStream,
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      '${S.current.your_balance} ${snapshot.data}'
+                                      '${widget.nftMarket.symbolToken}',
+                                      style: textNormalCustom(
+                                        Colors.white.withOpacity(0.7),
+                                        14,
+                                        FontWeight.w400,
+                                      ),
+                                    );
+                                  }),
                               SizedBox(
                                 height: 300.h,
                               ),

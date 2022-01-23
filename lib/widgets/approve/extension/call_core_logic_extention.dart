@@ -64,10 +64,8 @@ extension CallCoreExtension on ApproveCubit{
           switch (type) {
             case TYPE_CONFIRM_BASE.BUY_NFT:
               if (result['isSuccess']) {
-                showContent();
                 emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
               } else {
-                showContent();
                 emit(SignFail(S.current.buy_nft));
               }
               break;
@@ -134,7 +132,6 @@ extension CallCoreExtension on ApproveCubit{
       };
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
     } on PlatformException {
-      //print ('â');
     }
   }
 

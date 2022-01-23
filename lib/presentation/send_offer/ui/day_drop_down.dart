@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:cool_dropdown/cool_dropdown.dart';
+import 'package:Dfy/widgets/cool_drop_down/cool_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,14 +9,16 @@ class CustomDropDown extends StatelessWidget {
   const CustomDropDown({
     Key? key,
     required this.listValue,
-    required this.onChange,
+    required this.onChange, required this.index,
   }) : super(key: key);
   final List<Map<String, String>> listValue;
   final Function(Map<String, String>) onChange;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return CoolDropdown(
+      key: UniqueKey(),
       isAnimation: false,
       resultTS: textNormalCustom(
         AppTheme.getInstance().textThemeColor(),
@@ -47,7 +49,7 @@ class CustomDropDown extends StatelessWidget {
       selectedItemBD: const BoxDecoration(
         color: Colors.transparent,
       ),
-      defaultValue: listValue.first,
+      defaultValue: listValue[index],
       gap: 10.h,
       resultIcon: Image.asset(ImageAssets.ic_expanded),
       isTriangle: false,

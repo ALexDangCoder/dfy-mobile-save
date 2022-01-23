@@ -16,6 +16,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
 import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -1046,7 +1048,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : Row(
                     children: [
                       Expanded(
-                        child: _buildButtonBuyOut(context),
+                        child: _buildButtonBuyOut(context, nftOnAuction),
                       ),
                       SizedBox(
                         width: 23.w,

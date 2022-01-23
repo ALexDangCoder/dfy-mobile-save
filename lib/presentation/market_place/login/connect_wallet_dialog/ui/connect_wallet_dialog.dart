@@ -73,17 +73,17 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     if(widget.isRequireLoginEmail){
                       
                     }
-                    showDialog(
-                      context: context,
-                      builder: (context) => ConnectEmailDialog(
-                        navigationTo: widget.navigationTo,
-                      ),
-                    );
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => widget.navigationTo),
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (context) => ConnectEmailDialog(
+                    //     navigationTo: widget.navigationTo,
+                    //   ),
                     // );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => widget.navigationTo),
+                    );
                   });
                   return Container(
                     color: Colors.transparent,
