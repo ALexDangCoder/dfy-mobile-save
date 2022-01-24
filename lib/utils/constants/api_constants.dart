@@ -58,6 +58,8 @@ class ApiConstants {
   static const String BUY_NFT =
       '/nft-market-svc/api/market/buy';
 
+  static const String GET_CRYPTO_ASSET  ='/nft-market-svc/public-api/crypto-asset';
+
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
 
@@ -77,6 +79,7 @@ class ApiConstants {
   static const String GET_LIST_NFT_MY_ACC = '/inventory-svc/api/v1.0.0/nfts';
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
+  static const String PUT_ON_SALE = '/nft-market-svc/api/market/put-on-sale';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
   //Get Nonce để ký login
   static const String GET_NONCE =
