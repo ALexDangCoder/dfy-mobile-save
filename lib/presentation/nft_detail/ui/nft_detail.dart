@@ -661,7 +661,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 onTap: () async {
                   final nav = Navigator.of(context);
                   final String dataString =
-                      await bloc.getDataStringForCancelAuction(context: context, orderId: '124');
+                      await bloc.getDataStringForCancelAuction(context: context, orderId: '137');
                   unawaited(
                     nav.push(
                       MaterialPageRoute(

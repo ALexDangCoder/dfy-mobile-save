@@ -313,7 +313,7 @@ class _ApproveState extends State<Approve> {
           unawaited(showLoading());
           await cubit.signTransactionWithData(
             walletAddress: wallet,
-            contractAddress: nft_sales_address_dev2,
+            contractAddress: nft_auction_dev2,
             nonce: nonce.toString(),
             chainId: Get.find<AppConstants>().chaninId,
             gasPrice: gasPriceString,
