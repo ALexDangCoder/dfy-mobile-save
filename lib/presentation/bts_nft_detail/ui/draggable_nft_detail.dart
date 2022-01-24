@@ -340,24 +340,7 @@ class _NFTDetailState extends State<NFTDetail> {
                             AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {
-                            //showDialog(context: context, builder: (context) =>ConnectWalletDialog(navigationTo: navigationTo, isRequireLoginEmail: isRequireLoginEmail));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PutOnMarket(
-                                      putOnMarketModel: PutOnMarketModel
-                                          .putOnSale(
-                                        nftTokenId: 73,
-                                        nftId: '9bcc345b-f2eb-4dab-850c-8bd56115f489',
-                                        nftType: 0,
-                                        collectionAddress: '0xCa2fD3Ea22f5B11fCC4d19DDB80E7CDDae644db5',
-                                      ),
-                                    ),
-                                settings: const RouteSettings(
-                                  name: 'put_on_market',),
-                              ),
-                            );
+
                           },
                           child: Text(
                             S.current.put_on_market,

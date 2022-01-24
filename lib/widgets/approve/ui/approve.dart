@@ -730,17 +730,6 @@ class _ApproveState extends State<Approve> {
             return route.settings.name == 'put_on_market';
           });
           navigator.pop();
-          // unawaited(
-          //   navigator.pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (context) => NFTDetailScreen(
-          //         typeMarket: MarketType.SALE,
-          //         nftId: widget.putOnMarketModel?.nftId ?? '',
-          //         typeNft: TypeNFT.SOFT_NFT,
-          //       ),
-          //     ),
-          //   ),
-          // );
         } else {
           await showLoadFail();
         }

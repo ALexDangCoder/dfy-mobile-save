@@ -355,9 +355,29 @@ Widget _buildButtonPutOnMarket(
   BuildContext context,
   NFTDetailBloc bloc,
   NftMarket nftMarket,
+  String? nftId,
+  Function reload,
 ) {
   return ButtonGradient(
-    onPressed: () async {},
+    onPressed: () async {
+      final navigator = Navigator.of(context);
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (context) => PutOnMarketScreen(
+            putOnMarketModel: PutOnMarketModel.putOnSale(
+              nftTokenId: int.parse(bloc.nftMarket.nftTokenId ?? '0'),
+              nftId: nftId ?? '',
+              nftType: bloc.nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
+              collectionAddress: bloc.nftMarket.collectionAddress ?? '',
+            ),
+          ),
+          settings: const RouteSettings(
+            name: 'put_on_market',
+          ),
+        ),
+      );
+      reload();
+    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
