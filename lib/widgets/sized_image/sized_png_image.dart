@@ -25,8 +25,10 @@ Widget sizedSvgImage({
   return SizedBox(
     height: h.h,
     width: w.w,
-    child: SvgPicture.asset(
-      image,
+    child: Center(
+      child: SvgPicture.asset(
+        image,
+      ),
     ),
   );
 }

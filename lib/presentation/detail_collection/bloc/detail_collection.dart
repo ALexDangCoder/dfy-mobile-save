@@ -33,8 +33,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int RECEIVE_OFFER = 8;
   static const int SIGN_CONTRACT = 9;
   static const int SUCCESS = 1;
-  static const int FAILD = 3;
-  static const int ERORR = 2;
+  static const int FAILED = 3;
+  static const int ERROR = 2;
   static const int LOADING = 0;
   static const int NOT_ON_MARKET = 0;
   static const int SALE = 1;
@@ -46,8 +46,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const String TELEGRAM = 'TELEGRAM';
   static const String TWITTER = 'TWITTER';
   static const String HTTPS = 'https://';
-  static const int SOFT_COLLECTION = 0;
-  static const int HARD_COLLECTION = 1;
   static const int TAB_NFT = 0;
   static const int ALL = 0;
   static const int OWNER = 1;
@@ -189,9 +187,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String funGetTypeNFT(int collectionType) {
     String typeNft = '';
     if (collectionType == SOFT_COLLECTION) {
-      typeNft = S.current.erc_721;
+      typeNft = S.current.collection_soft;
     } else {
-      typeNft = S.current.erc_1155;
+      typeNft = S.current.collection_hard;
     }
     return typeNft;
   }
@@ -393,7 +391,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
-          statusNft.add(ERORR);
+          statusNft.add(ERROR);
         } else {
           if (typeScreen == PageRouter.MARKET) {
             final List<NftMarket> listNftMyAcc = [];
@@ -411,7 +409,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         }
       },
       error: (error) {
-        statusNft.add(FAILD);
+        statusNft.add(FAILED);
       },
     );
   }
@@ -434,7 +432,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
       success: (res) {
         if (res.isBlank ?? false) {
           listActivity.add([]);
-          statusActivity.add(ERORR);
+          statusActivity.add(ERROR);
         } else {
           argActivity.addAll(res);
           listActivity.add(res);
@@ -442,7 +440,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         }
       },
       error: (error) {
-        statusActivity.add(FAILD);
+        statusActivity.add(FAILED);
       },
     );
   }
