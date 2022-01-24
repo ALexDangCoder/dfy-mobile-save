@@ -118,7 +118,7 @@ class _NFTSCollectionState extends State<NFTSCollection> {
             builder: (context, snapshot) {
               final statusNft = snapshot.data ?? 0;
               final list = bloc.listNft.value;
-              if (statusNft == DetailCollectionBloc.ERORR) {
+              if (statusNft == DetailCollectionBloc.ERROR) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

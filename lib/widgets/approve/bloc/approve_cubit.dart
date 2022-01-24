@@ -34,7 +34,8 @@ enum TYPE_CONFIRM_BASE {
   PLACE_BID,
   CANCEL_SALE,
   CREATE_COLLECTION,
-  CANCEL_AUCTION
+  CANCEL_AUCTION,
+  CANCEL_PAWN
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {

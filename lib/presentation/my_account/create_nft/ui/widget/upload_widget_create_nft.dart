@@ -19,7 +19,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'Upload file',
+        S.current.upload_file,
         style: uploadText,
       ),
       spaceH22,
@@ -231,8 +231,9 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                         ),
                         spaceH16,
                         Text(
-                          S.current.format_image,
+                          S.current.format_media_file,
                           style: normalText,
+                          textAlign: TextAlign.center,
                         )
                       ],
                     ),

@@ -313,8 +313,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   Future<int> getNonceWeb3() async {
-    final result = await web3Client.getTransactionCount(
-        address: PrefsService.getCurrentBEWallet());
+    final String walletAddress = PrefsService.getCurrentBEWallet();
+    final result = await web3Client.getTransactionCount(address: walletAddress);
     return result.count;
   }
 
@@ -425,29 +425,56 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  List<DetailItemApproveModel> initListApprove() {
+  List<DetailItemApproveModel> initListApprove({
+    required TYPE_CONFIRM_BASE type,
+  }) {
     final List<DetailItemApproveModel> listApprove = [];
-    if (nftMarket.nftStandard == 'ERC-721') {
-      listApprove.add(
-        DetailItemApproveModel(
-          title: 'NTF',
-          value: nftMarket.name ?? '',
-        ),
-      );
-      listApprove.add(
-        DetailItemApproveModel(
-          title: S.current.quantity,
-          value: '${nftMarket.numberOfCopies}',
-        ),
-      );
-    } else {
-      listApprove.add(
-        DetailItemApproveModel(
-          title: 'NTF',
-          value: nftMarket.name ?? '',
-        ),
-      );
+    if(type == TYPE_CONFIRM_BASE.CANCEL_SALE){
+      if (nftMarket.nftStandard == 'ERC-721') {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.name ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftMarket.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.name ?? '',
+          ),
+        );
+      }
+    }else if(type == TYPE_CONFIRM_BASE.CANCEL_AUCTION){
+      if (nftOnAuction.nftStandard == 'ERC-721') {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftOnAuction.name ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftOnAuction.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftOnAuction.name ?? '',
+          ),
+        );
+      }
     }
+
     return listApprove;
   }
 
@@ -470,14 +497,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
   }
 
-  Future<String> getDataStringForCancelAuction(
-      {required BuildContext context, required String orderId}) async {
+  Future<String> getDataStringForCancelAuction({
+    required BuildContext context,
+  }) async {
     try {
       showLoading();
       hexString = await web3Client.getCancelAuctionData(
         contractAddress: nft_auction_dev2,
         context: context,
-        auctionId: orderId,
+        auctionId: nftOnAuction.auctionId.toString(),
       );
       showContent();
       return hexString;

@@ -162,7 +162,9 @@ Widget _buildButtonCancelOnSale(
           MaterialPageRoute(
             builder: (context) => approveWidget(
               dataString: dataString,
-              dataInfo: bloc.initListApprove(),
+              dataInfo: bloc.initListApprove(
+                type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              ),
               type: TYPE_CONFIRM_BASE.CANCEL_SALE,
               cancelInfo: S.current.cancel_sale_info,
               cancelWarning: S.current.customer_cannot,
@@ -358,15 +360,16 @@ Widget _buildButtonPutOnMarket(
   );
 }
 
-Approve approveWidget(
-    {required String dataString,
-    required String title,
-    required String cancelInfo,
-    required String cancelWarning,
-    required TYPE_CONFIRM_BASE type,
-    required List<DetailItemApproveModel> dataInfo}) {
+Approve approveWidget({
+  required String dataString,
+  required String title,
+  required String cancelInfo,
+  required String cancelWarning,
+  required TYPE_CONFIRM_BASE type,
+  required List<DetailItemApproveModel> dataInfo,
+}) {
   return Approve(
-    listDetail: bloc.initListApprove(),
+    listDetail: dataInfo,
     title: title,
     header: Container(
       padding: EdgeInsets.only(

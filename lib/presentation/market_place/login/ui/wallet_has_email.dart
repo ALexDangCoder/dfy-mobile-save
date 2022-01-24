@@ -10,11 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TokenHasEmail extends StatelessWidget {
+class WalletHasEmail extends StatelessWidget {
   final String token;
   final String email;
 
-  const TokenHasEmail({Key? key, required this.token, required this.email})
+  const WalletHasEmail({Key? key, required this.token, required this.email})
       : super(key: key);
 
   @override
@@ -24,15 +24,8 @@ class TokenHasEmail extends StatelessWidget {
         title: S.current.login,
         isEnable: true,
         onTap: () {
-          //todo:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EnterEmail(
-                cubit: LoginWithEmailCubit(),
-              ),
-            ),
-          );
+          //TODO: CALL API LOGIN EMAIL
+          Navigator.pop(context);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

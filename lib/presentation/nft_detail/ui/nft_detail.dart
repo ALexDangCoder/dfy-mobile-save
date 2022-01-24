@@ -658,34 +658,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   )
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
-              //TODO: ĐỂ TẠM ĐỂ CANCEL AUCTION
-              GestureDetector(
-                onTap: () async {
-                  final nav = Navigator.of(context);
-                  final String dataString =
-                      await bloc.getDataStringForCancelAuction(context: context, orderId: '137');
-                  unawaited(
-                    nav.push(
-                      MaterialPageRoute(
-                        builder: (context) => approveWidget(
-                          dataString: dataString,
-                          dataInfo: bloc.initListApprove(),
-                          type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                          cancelInfo: S.current.auction_cancel_info,
-                          cancelWarning: S.current.cancel_auction_warning,
-                          title: S.current.cancel_aution,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: _nameNFT(
-                  title: objSale.name ?? '',
-                  quantity: objSale.totalCopies ?? 1,
-                  url: objSale.image ?? '',
-                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
-                  context: context,
-                ),
+              _nameNFT(
+                title: objSale.name ?? '',
+                quantity: objSale.totalCopies ?? 1,
+                url: objSale.image ?? '',
+                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                context: context,
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,

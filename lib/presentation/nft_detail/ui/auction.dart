@@ -84,16 +84,18 @@ Widget buttonCancelAuction({
   if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
-        /// TODO: handle cancel sale buy nftMarket.isOwner == true
         final nav = Navigator.of(context);
-        final String dataString =
-        await bloc.getDataStringForCancel(context: context);
+        final String dataString = await bloc.getDataStringForCancelAuction(
+          context: context,
+        );
         unawaited(
           nav.push(
             MaterialPageRoute(
               builder: (context) => approveWidget(
                 dataString: dataString,
-                dataInfo: bloc.initListApprove(),
+                dataInfo: bloc.initListApprove(
+                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                ),
                 type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
                 cancelInfo: S.current.auction_cancel_info,
                 cancelWarning: S.current.cancel_auction_warning,
@@ -109,7 +111,7 @@ Widget buttonCancelAuction({
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
       child: Text(
-        S.current.cancel_sale,
+        S.current.cancel_aution,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
           16,

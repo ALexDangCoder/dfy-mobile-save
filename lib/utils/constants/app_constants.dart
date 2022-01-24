@@ -78,6 +78,12 @@ const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';
 
+//Collection type, standard
+const int SOFT_COLLECTION = 0;
+const int HARD_COLLECTION = 1;
+const int ERC721 = 0;
+const int ERC1155 = 1;
+
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
