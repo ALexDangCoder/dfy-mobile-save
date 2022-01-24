@@ -99,6 +99,13 @@ extension CallCoreExtension on ApproveCubit {
                 emit(SignFail(S.current.put_on_sale));
               }
               break;
+            case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+              if (result['isSuccess']) {
+                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_AUCTION));
+              } else {
+                emit(SignFail(S.current.cancel_aution));
+              }
+              break;
             default:
               break;
           }

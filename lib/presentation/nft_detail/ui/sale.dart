@@ -168,7 +168,14 @@ Widget _buildButtonCancelOnSale(
       unawaited(
         nav.push(
           MaterialPageRoute(
-            builder: (context) => approveWidget(dataString: dataString),
+            builder: (context) => approveWidget(
+              dataString: dataString,
+              dataInfo: bloc.initListApprove(),
+              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              cancelInfo: S.current.cancel_sale_info,
+              cancelWarning: S.current.customer_cannot,
+              title: S.current.cancel_sale,
+            ),
           ),
         ),
       );
@@ -367,10 +374,16 @@ Widget _buildButtonPutOnMarket(
   );
 }
 
-Approve approveWidget({required String dataString}) {
+Approve approveWidget(
+    {required String dataString,
+    required String title,
+    required String cancelInfo,
+    required String cancelWarning,
+    required TYPE_CONFIRM_BASE type,
+    required List<DetailItemApproveModel> dataInfo}) {
   return Approve(
     listDetail: bloc.initListApprove(),
-    title: S.current.cancel_sale,
+    title: title,
     header: Container(
       padding: EdgeInsets.only(
         top: 16.h,
@@ -378,7 +391,7 @@ Approve approveWidget({required String dataString}) {
       ),
       alignment: Alignment.centerLeft,
       child: Text(
-        S.current.cancel_sale_info,
+        cancelInfo,
         style: textNormal(
           AppTheme.getInstance().whiteColor(),
           16,
@@ -390,13 +403,16 @@ Approve approveWidget({required String dataString}) {
     warning: Row(
       children: [
         sizedSvgImage(
-            w: 16.67.w, h: 16.67.h, image: ImageAssets.ic_warning_canel),
+          w: 16.67.w,
+          h: 16.67.h,
+          image: ImageAssets.ic_warning_canel,
+        ),
         SizedBox(
           width: 5.w,
         ),
         Expanded(
           child: Text(
-            S.current.customer_cannot,
+            cancelWarning,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: textNormal(
@@ -407,8 +423,8 @@ Approve approveWidget({required String dataString}) {
         ),
       ],
     ),
-    textActiveButton: S.current.cancel_sale,
-    typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+    textActiveButton: title,
+    typeApprove: type,
     hexString: dataString,
   );
 }

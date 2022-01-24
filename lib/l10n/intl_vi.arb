@@ -505,6 +505,10 @@
   "yes": "Đồng ý",
   "end_in": "Kết thúc",
   "cancel_success": "Hủy bán thành công",
+  "cancel_aution": "Hủy đấu giá",
+  "auction_cancel_info": "Thông tin đấu giá sẽ bị hủy",
+  "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
+  "cancel_success": "Hủy bán thành công",
   "no_continue": "Không, tiếp tục"
 
 }

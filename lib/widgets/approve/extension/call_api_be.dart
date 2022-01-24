@@ -74,4 +74,19 @@ extension CallApiBE on ApproveCubit {
 
     },);
   }
+
+  Future<void> confirmCancelAuctionWithBE({
+    required String txnHash,
+    required String marketId,
+  }) async {
+    final result = await nftRepo.cancelAuction(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(success: (res) {
+
+    }, error: (err) {
+
+    },);
+  }
 }

@@ -447,7 +447,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   List<DetailItemApproveModel> initListApprove() {
-    //todo: Vũ: tạm hardcode
     final List<DetailItemApproveModel> listApprove = [];
     if (nftMarket.nftStandard == 'ERC-721') {
       listApprove.add(
@@ -473,7 +472,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return listApprove;
   }
 
-
   //get dataString
   Future<String> getDataStringForCancel({
     required BuildContext context,
@@ -487,10 +485,26 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       );
       showContent();
       return hexString;
-    }catch (e){
+    } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
     }
   }
 
+  Future<String> getDataStringForCancelAuction(
+      {required BuildContext context, required String orderId}) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getCancelAuctionData(
+        contractAddress: nft_auction_dev2,
+        context: context,
+        auctionId: orderId,
+      );
+      showContent();
+      return hexString;
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 }
