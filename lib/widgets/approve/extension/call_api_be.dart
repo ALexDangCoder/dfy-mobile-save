@@ -61,6 +61,10 @@ extension CallApiBE on ApproveCubit {
     return res;
   }
 
+  Future<bool> putOnAuction ({ required String txHash})async {
+    return true;
+  }
+
   Future<void> confirmCancelSaleWithBE({
     required String txnHash,
     required String marketId,

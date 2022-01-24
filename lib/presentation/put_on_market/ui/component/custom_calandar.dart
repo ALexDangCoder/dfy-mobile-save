@@ -12,14 +12,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
-  const CustomCalendar({Key? key}) : super(key: key);
+  final DateTime? selectDate;
+  const CustomCalendar({Key? key, this.selectDate}) : super(key: key);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime _selectedDay = DateTime(2022, 01, 12);
+  DateTime _selectedDay = DateTime.now();
 
   @override
   void initState() {
@@ -204,13 +205,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Center(
-                                child: Text(
-                                  S.current.cancel,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().whiteColor(),
-                                    20,
-                                    FontWeight.w700,
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: Text(
+                                    S.current.cancel,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().whiteColor(),
+                                      20,
+                                      FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -225,15 +229,18 @@ class _CustomCalendarState extends State<CustomCalendar> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                Navigator.pop(context, _selectedDay);
                               },
-                              child: Center(
-                                child: Text(
-                                  S.current.ok,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().yellowColor(),
-                                    20,
-                                    FontWeight.w700,
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: Text(
+                                    S.current.ok,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().yellowColor(),
+                                      20,
+                                      FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ),

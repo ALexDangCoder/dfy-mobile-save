@@ -135,7 +135,10 @@ class _PutOnMarketState extends State<PutOnMarket>
                               PawnTab(
                                 cubit: cubit,
                               ),
-                              AuctionTab(cubit: cubit),
+                              AuctionTab(
+                                cubit: cubit,
+                                putOnMarketModel: widget.putOnMarketModel,
+                              ),
                             ],
                           ),
                         )

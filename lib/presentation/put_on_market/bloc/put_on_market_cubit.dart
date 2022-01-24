@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_state.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -16,27 +17,25 @@ enum DurationType { MONTH, WEEK }
 
 class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   PutOnMarketCubit() : super(PutOnMarketInitState());
+
   // common
 
-
-  final BehaviorSubject<List<TokenInf>> _listTokenSubject = BehaviorSubject<List<TokenInf>>();
+  final BehaviorSubject<List<TokenInf>> _listTokenSubject =
+      BehaviorSubject<List<TokenInf>>();
 
   Stream<List<TokenInf>> get listTokenStream => _listTokenSubject.stream;
 
-  List<TokenInf>? listToken ;
+  late List<TokenInf> listToken;
+
   // tab sale
 
   TokenInf? tokenSale;
   double? valueTokenInputSale;
   int quantitySale = 1;
 
-  final BehaviorSubject<bool> _canContinueSale = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> _canContinueSale = BehaviorSubject.seeded(false);
 
   Stream<bool> get canContinueSaleStream => _canContinueSale.stream;
-
-
-
-
 
   // tab pawn
 
@@ -45,7 +44,6 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   DurationType? typeDuration;
   int? valueDuration;
   int quantityPawn = 1;
-
 
   TokenRepository get tokenRepository => Get.find();
 
@@ -57,17 +55,25 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
 
   TokenInf? tokenAuction;
   double? valueTokenInputAuction;
+  bool timeValidate = false;
+  bool priceValidate = true;
+
+  final BehaviorSubject<bool> _canContinueAuction = BehaviorSubject<bool>();
+
+  Stream<bool> get canContinueAuctionStream => _canContinueAuction.stream;
 
   // function sale
   void changeTokenSale({int? indexToken, double? value}) {
-    tokenSale = listToken?[indexToken ?? 0];
-    valueTokenInputSale = value;
+    if (indexToken != null) {
+      tokenSale = listToken[indexToken];
+    }
+    if (value != null) {
+      valueTokenInputSale = value;
+    }
     updateStreamContinueSale();
   }
 
-
-
-  Future<void> getListToken ()async {
+  Future<void> getListToken() async {
     showLoading();
     final Result<List<TokenInf>> result = await tokenRepository.getListToken();
     result.when(
@@ -121,8 +127,12 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
 
   // function pawn
   void changeTokenPawn({int? indexToken, double? value}) {
-    tokenPawn = listToken?[indexToken ?? 0];
-    valueTokenInputPawn = value;
+    if (indexToken != null) {
+      tokenPawn = listToken[indexToken];
+    }
+    if (value != null) {
+      valueTokenInputPawn = value;
+    }
 
     updateStreamContinuePawn();
   }
@@ -145,6 +155,57 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       _canContinuePawn.sink.add(true);
     } else {
       _canContinuePawn.sink.add(false);
+    }
+  }
+
+  // auction function
+  Future<String> getHexStringPutOnAuction(
+    PutOnMarketModel putOnMarketModel,
+    BuildContext context,
+  ) async {
+    showLoading();
+    try {
+      final data = await Web3Utils().getPutOnAuctionData(
+        startingPrice: putOnMarketModel.price ?? '',
+        startTime: putOnMarketModel.startTime ?? '',
+        priceStep: '0',
+        buyOutPrice: '0',
+        contractAddress: nft_sales_address_dev2,
+        collectionAddress: putOnMarketModel.collectionAddress ?? '',
+        currencyAddress: putOnMarketModel.tokenAddress ?? '',
+        endTime: putOnMarketModel.endTime ?? '',
+        context: context,
+        tokenId:  (putOnMarketModel.nftTokenId ?? 0).toString(),
+        // tokenId: putOnMarketModel.nftTokenId ?? 0,
+        // context: context,
+        // currency: putOnMarketModel.tokenAddress ?? '',
+        // numberOfCopies: putOnMarketModel.numberOfCopies ?? 1,
+        // price: putOnMarketModel.price ?? '',
+        // collectionAddress: putOnMarketModel.collectionAddress ?? '',
+      );
+      showContent();
+      return data;
+    } catch (_) {
+      showError();
+      return '';
+    }
+  }
+
+  void changeTokenAuction({int? indexToken, double? value}) {
+    if (indexToken != null) {
+      tokenAuction = listToken[indexToken];
+    }
+    if (value != null) {
+      valueTokenInputAuction = value;
+    }
+    updateStreamContinueAuction();
+  }
+
+  void updateStreamContinueAuction() {
+    if (valueTokenInputAuction != null && timeValidate && priceValidate) {
+      _canContinueAuction.sink.add(true);
+    } else {
+      _canContinueAuction.sink.add(false);
     }
   }
 

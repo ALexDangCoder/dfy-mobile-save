@@ -348,8 +348,8 @@ class _NFTDetailState extends State<NFTDetail> {
                                     PutOnMarket(
                                       putOnMarketModel: PutOnMarketModel
                                           .putOnSale(
-                                        nftTokenId: 28,
-                                        nftId: 'b670e08f-94f8-4455-b7fd-0e3ab2ec9ab9',
+                                        nftTokenId: 73,
+                                        nftId: '9bcc345b-f2eb-4dab-850c-8bd56115f489',
                                         nftType: 0,
                                         collectionAddress: '0xCa2fD3Ea22f5B11fCC4d19DDB80E7CDDae644db5',
                                       ),
