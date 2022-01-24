@@ -15,12 +15,13 @@ import 'menu_account_state.dart';
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   MenuAccountCubit() : super(NoLoginState());
 
-  final BehaviorSubject<String> _addressWalletSubject =
-      BehaviorSubject();
-  Stream<String> get addressWalletStream => _addressWalletSubject.stream;
+  final BehaviorSubject<String> addressWalletSubject = BehaviorSubject();
 
-  final BehaviorSubject<String> _emailSubject =
-  BehaviorSubject();
+  Stream<String> get addressWalletStream => addressWalletSubject.stream;
+
+  final BehaviorSubject<String> _emailSubject = BehaviorSubject();
+
+  bool haveWalletInCore = false;
 
   Stream<String> get emailStream => _emailSubject.stream;
 
@@ -36,21 +37,9 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         if (data.isNotEmpty) {
-          for (final element in data) {
-            final wallet = Wallet.fromJson(element);
-            if ((wallet.address?.length ?? 0) > 18){
-              _addressWalletSubject.sink.add(wallet.address!.handleString());
-            }
-            else {
-              _addressWalletSubject.sink.add(wallet.address ?? '');
-            }
-            if (state is LogonState){
-              await getEmail();
-            }else{
-              showContent();
-            }
-          }
+          haveWalletInCore = true;
         }
+        showContent();
         break;
     }
   }
@@ -68,24 +57,23 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
     final account = PrefsService.getWalletLogin();
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
     if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
+      final userInfo = PrefsService.getUserProfile();
+      final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
+      if (mapProfileUser.stringValueOrEmpty('address') != '') {
+        addressWalletSubject.sink.add(
+          mapProfileUser.stringValueOrEmpty('address').handleString(),
+        );
+      }
+      if (mapProfileUser.stringValueOrEmpty('email') != '') {
+        _emailSubject.sink.add(mapProfileUser.stringValueOrEmpty('email'));
+      }
       emit(LogonState());
     }
     getWallets();
   }
 
-  int  getIndexLogin (){
-    if (_addressWalletSubject.valueOrNull  == null) {
-      return 3;
-    }else {
-      return 2;
-    }
-  }
-
-  Future<void> getEmail() async {
-    Future.delayed(Duration(seconds: 2), (){
-      _emailSubject.sink.add('edsolabs@edsolabs.com');
-      showContent();
-    });
+  int getIndexLogin() {
+    return haveWalletInCore ? 2 : 3;
   }
 
   void initData() {
@@ -93,7 +81,7 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   }
 
   void dispose() {
-    _addressWalletSubject.close();
+    addressWalletSubject.close();
     _emailSubject.close();
   }
 }

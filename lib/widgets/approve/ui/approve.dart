@@ -16,6 +16,7 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
@@ -58,6 +59,7 @@ class Approve extends StatefulWidget {
   final List<DetailItemApproveModel>? listDetail;
   final Widget? warning;
   final Widget? header;
+  final PutOnMarketModel? putOnMarketModel;
   final bool? needApprove;
   final int? flexTitle;
   final int? flexContent;
@@ -88,6 +90,7 @@ class Approve extends StatefulWidget {
     this.payValue,
     this.tokenAddress,
     this.hexString,
+    this.putOnMarketModel,
   }) : super(key: key);
 
   @override
@@ -106,6 +109,8 @@ class _ApproveState extends State<Approve> {
   double heightOfBottom = 0;
 
   void initData(TYPE_CONFIRM_BASE typeBase) {
+    cubit.context = context;
+    cubit.putOnMarketModel = widget.putOnMarketModel;
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
     cubit.tokenAddress = widget.tokenAddress ?? '';
@@ -128,7 +133,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
@@ -276,13 +281,19 @@ class _ApproveState extends State<Approve> {
           cubit.showContent();
         }
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         {
-          showLoading();
-          Timer(const Duration(seconds: 2), () {
-            Navigator.pop(context);
-            showLoadFail();
-          });
+          unawaited(showLoading());
+          final nonce = await cubit.getNonce();
+          await cubit.signTransactionWithData(
+            walletAddress: cubit.addressWallet ?? '',
+            contractAddress: cubit.getSpender(),
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
+            hexString: widget.hexString ?? '',
+          );
         }
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
@@ -586,7 +597,8 @@ class _ApproveState extends State<Approve> {
     );
   }
 
-  void caseNavigator(TYPE_CONFIRM_BASE type, String data) {
+  Future<void> caseNavigator(TYPE_CONFIRM_BASE type, String data) async {
+    final navigator = Navigator.of(context);
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         cubit.importNft(
@@ -655,7 +667,30 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_MARKET:
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+        final result = await cubit.putOnSale(txHash: data);
+        navigator.pop();
+        if (result) {
+          await showLoadSuccess();
+          navigator.popUntil((route) {
+            return route.settings.name == 'put_on_market';
+          });
+          navigator.pop();
+          // unawaited(
+          //   navigator.pushReplacement(
+          //     MaterialPageRoute(
+          //       builder: (context) => NFTDetailScreen(
+          //         typeMarket: MarketType.SALE,
+          //         nftId: widget.putOnMarketModel?.nftId ?? '',
+          //         typeNft: TypeNFT.SOFT_NFT,
+          //       ),
+          //     ),
+          //   ),
+          // );
+        } else {
+          await showLoadFail();
+        }
+        break;
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:

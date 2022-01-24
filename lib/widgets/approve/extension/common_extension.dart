@@ -27,6 +27,8 @@ extension CommonExtension on ApproveCubit {
               ? nft_factory_dev2
               : hard_nft_factory_address_dev2;
         }
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+        return nft_sales_address_dev2;
       default:
         return nft_factory_dev2;
     }

@@ -12,11 +12,13 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,7 +26,9 @@ enum TYPE_CONFIRM_BASE {
   SEND_NFT,
   SEND_TOKEN,
   BUY_NFT,
-  PUT_ON_MARKET,
+  PUT_ON_SALE,
+  PUT_ON_PAWN,
+  PUT_ON_AUCTION,
   SEND_OFFER,
   PLACE_BID,
   CANCEL_SALE,
@@ -59,6 +63,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   /// [balanceWallet] get in web3
   double? gasPriceFirst;
 
+  late BuildContext context;
+
   double? gasLimit;
 
   double? gasLimitFirst;
@@ -81,6 +87,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? tokenApproveData;
 
+  PutOnMarketModel? putOnMarketModel;
+
   bool isSoftCollection = false;
 
 
@@ -98,7 +106,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   final BehaviorSubject<double> gasLimitFirstSubject =
       BehaviorSubject<double>();
 
-  final BehaviorSubject<bool> canActionSubject = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> canActionSubject = BehaviorSubject.seeded(false);
 
   final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
 
@@ -188,11 +196,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     );
   }
 
-  Future<void> gesGasLimitFirst(String hexString) async {
+  Future<void> gesGasLimitFirst(String hexString,{BuildContext? buildContext}) async {
     showLoading();
     try {
       final gasLimitFirstResult =
-          await getGasLimitByType(type: type, hexString: hexString);
+          await getGasLimitByType( hexString: hexString);
       gasLimitFirst = gasLimitFirstResult;
       gasLimit = gasLimitFirstResult;
       gasLimitFirstSubject.sink.add(gasLimitFirstResult);
