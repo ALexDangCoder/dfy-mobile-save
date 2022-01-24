@@ -707,7 +707,7 @@ class Web3Utils {
     required String beNFTId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
     final function = deployContract.function('putOnPawn');
     final putOnPawn = Transaction.callContract(
       contract: deployContract,
@@ -731,7 +731,7 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
     final function = deployContract.function('acceptOffer');
     final acceptOffer = Transaction.callContract(
       contract: deployContract,
@@ -749,7 +749,7 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
     final function = deployContract.function('cancelOffer');
     final cancelOffer = Transaction.callContract(
       contract: deployContract,
@@ -772,7 +772,7 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTCollectionContract(nft_pawn_dev2);
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
     final function = deployContract.function('createOffer');
     final createOffer = Transaction.callContract(
       contract: deployContract,
@@ -780,8 +780,8 @@ class Web3Utils {
       parameters: [
         BigInt.from(num.parse(nftCollateralId)),
         EthereumAddress.fromHex(repaymentAsset),
-        BigInt.from(num.parse(loanAmount)),
-        BigInt.from(num.parse(interest)),
+        BigInt.from(num.parse(_handleAmount(18, loanAmount))),
+        BigInt.from(num.parse(_handleAmount(5, interest))),
         BigInt.from(num.parse(duration)),
         loanDurationType,
         repaymentCycleType,
@@ -878,7 +878,6 @@ class Web3Utils {
 
   Future<DeployedContract> deployedNFTPawnContract(
     String contract,
-    BuildContext context,
   ) async {
     final abiCode =
         await rootBundle.loadString('assets/abi/PawnNFTABI_DEV2.json');
