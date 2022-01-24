@@ -250,6 +250,8 @@
   "auction": "Auction",
   "reserve_price": "Reserve price",
   "price_step": "Price step",
+  "price_step_error": "Price step is not null",
+  "buy_out_price_error" : "Buyout price must greater than Reserve price",
   "your_balance_bid": "Your balance",
   "your_bid": "Your bid",
   "loan_to_vl": "Loan to value:",

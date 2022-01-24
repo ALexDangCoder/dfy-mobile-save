@@ -51,7 +51,7 @@ extension CallCoreExtension on ApproveCubit {
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
-        if (checkingApprove) {
+        if (checkingApprove ?? false) {
           final resultApprove = await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );

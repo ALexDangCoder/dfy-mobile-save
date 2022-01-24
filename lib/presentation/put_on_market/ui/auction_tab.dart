@@ -78,6 +78,12 @@ class _AuctionTabState extends State<AuctionTab>
       _putOnMarketModel.endTime =
           (endTime.millisecondsSinceEpoch / 1000).toInt().toString();
       final difference = endTime.difference(startTime).inHours;
+      if (endTime.difference(startTime).inMinutes < 10){
+        return null;
+      }
+      else {
+        return S.current.min_duration_auction;
+      }
       if (difference < 12) {
         return S.current.min_duration_auction;
       }
@@ -86,6 +92,36 @@ class _AuctionTabState extends State<AuctionTab>
       }
     }
     return null;
+  }
+
+  bool validatePriceStep() {
+    if (priceStep &&
+        (_putOnMarketModel.priceStep == null ||
+            _putOnMarketModel.priceStep == '')) {
+      widget.cubit.priceStepValidate = false;
+      widget.cubit.updateStreamContinueAuction();
+      return false;
+    } else {
+      widget.cubit.priceStepValidate = true;
+      widget.cubit.updateStreamContinueAuction();
+      return true;
+    }
+  }
+
+  bool validateBuyOutPrice() {
+    if (outPrice &&
+            (_putOnMarketModel.buyOutPrice == null ||
+                _putOnMarketModel.buyOutPrice == '') ||
+        (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
+            double.parse(_putOnMarketModel.price ?? '0'))) {
+      widget.cubit.buyOutPriceValidate = false;
+      widget.cubit.updateStreamContinueAuction();
+      return false;
+    } else {
+      widget.cubit.buyOutPriceValidate = true;
+      widget.cubit.updateStreamContinueAuction();
+      return true;
+    }
   }
 
   @override
@@ -211,6 +247,17 @@ class _AuctionTabState extends State<AuctionTab>
                           value: value != '' ? double.parse(value) : null,
                         );
                         _putOnMarketModel.price = value;
+                        if (!validateBuyOutPrice()) {
+                          setState(() {
+                            buyOutPriceErrorText =
+                                S.current.buy_out_price_error;
+                          });
+                        }
+                        else {
+                          setState(() {
+                            buyOutPriceErrorText = null;
+                          });
+                        }
                       },
                     );
                   }),
@@ -314,16 +361,16 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         outPrice = value;
                       });
-                      // if ((_putOnMarketModel.buyOutPrice == null ||
-                      //     buyOutPriceErrorText != null) && value){
-                      //   widget.cubit.priceValidate  = false;
-                      //   widget.cubit.updateStreamContinueAuction();
-                      // }
-                      // else {
-                      //   widget.cubit.priceValidate  = true;
-                      //   widget.cubit.updateStreamContinueAuction();
-                      //
-                      // }
+                      if (!validateBuyOutPrice()) {
+                        setState(() {
+                          buyOutPriceErrorText = S.current.buy_out_price_error;
+                        });
+                      }else {
+                        setState(() {
+                          buyOutPriceErrorText = null;
+                        });
+                      }
+
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: outPrice,
@@ -363,7 +410,18 @@ class _AuctionTabState extends State<AuctionTab>
                           maxLength: 100,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            // _putOnMarketModel.buyOutPrice = value;
+                            _putOnMarketModel.buyOutPrice = value;
+                            if (!validateBuyOutPrice()) {
+                              setState(() {
+                                buyOutPriceErrorText =
+                                    S.current.buy_out_price_error;
+                              });
+                            }
+                            else {
+                              setState(() {
+                                buyOutPriceErrorText = null;
+                              });
+                            }
                           },
                           cursorColor: AppTheme.getInstance().whiteColor(),
                           style: textNormal(
@@ -424,6 +482,30 @@ class _AuctionTabState extends State<AuctionTab>
                 const SizedBox(
                   height: 0,
                 ),
+              if (outPrice)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 4),
+                    child: SizedBox(
+                      height: buyOutPriceErrorText == null ? 0 : 25,
+                      child: Text(
+                        buyOutPriceErrorText ?? '',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().redColor(),
+                          12,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              else
+                const SizedBox(
+                  height: 0,
+                ),
               const SizedBox(
                 height: 16,
               ),
@@ -446,14 +528,15 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         priceStep = value;
                       });
-                      if ((_putOnMarketModel.priceStep == null ||
-                              priceStepErrorText != null) &&
-                          value) {
-                        widget.cubit.priceValidate = false;
-                        widget.cubit.updateStreamContinueAuction();
-                      } else {
-                        widget.cubit.priceValidate = true;
-                        widget.cubit.updateStreamContinueAuction();
+                      if (!validatePriceStep()) {
+                        setState(() {
+                          priceStepErrorText = S.current.price_step_error;
+                        });
+                      }
+                      else {
+                        setState(() {
+                          priceStepErrorText = null;
+                        });
                       }
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
@@ -497,7 +580,16 @@ class _AuctionTabState extends State<AuctionTab>
                           maxLength: 100,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            // _putOnMarketModel.priceStep = value;
+                            _putOnMarketModel.priceStep = value;
+                            if (!validatePriceStep()) {
+                              setState(() {
+                                priceStepErrorText = S.current.price_step_error;
+                              });
+                            }else {
+                              setState(() {
+                                priceStepErrorText = null;
+                              });
+                            }
                           },
                           cursorColor: AppTheme.getInstance().whiteColor(),
                           style: textNormal(
@@ -558,30 +650,30 @@ class _AuctionTabState extends State<AuctionTab>
                 const SizedBox(
                   height: 0,
                 ),
-              // if (priceStep)
-              //   Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: Padding(
-              //       padding:
-              //       const EdgeInsets.symmetric(
-              //           horizontal: 15, vertical: 4),
-              //       child: SizedBox(
-              //         height: priceStepErrorText == null ? 0 : 25,
-              //         child: Text(
-              //           priceStepErrorText ?? '',
-              //           style: textNormalCustom(
-              //             AppTheme.getInstance().redColor(),
-              //             12,
-              //             FontWeight.w400,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   )
-              // else
-              //   const SizedBox(
-              //     height: 0,
-              //   ),
+              if (priceStep)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 4),
+                    child: SizedBox(
+                      height: priceStepErrorText == null ? 0 : 25,
+                      child: Text(
+                        priceStepErrorText ?? '',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().redColor(),
+                          12,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              else
+                const SizedBox(
+                  height: 0,
+                ),
               const SizedBox(
                 height: 20,
               ),
@@ -599,8 +691,7 @@ class _AuctionTabState extends State<AuctionTab>
             StreamBuilder<bool>(
               stream: widget.cubit.canContinueAuctionStream,
               builder: (context, snapshot) {
-                //final data = snapshot.data ?? false;
-                final data = true;
+                final data = snapshot.data ?? false;
                 return GestureDetector(
                   onTap: () async {
                     final navigator = Navigator.of(context);
@@ -714,6 +805,10 @@ class _AuctionTabState extends State<AuctionTab>
                               timeStartController.text != '' &&
                               timeEndController.text != '') {
                             widget.cubit.timeValidate = true;
+                            setState(() {
+                              errorTextStartTime = errorText;
+                              errorTextEndTime = errorText;
+                            });
                           } else {
                             widget.cubit.timeValidate = false;
                           }
@@ -797,6 +892,10 @@ class _AuctionTabState extends State<AuctionTab>
                               timeStartController.text != '' &&
                               timeEndController.text != '') {
                             widget.cubit.timeValidate = true;
+                            setState(() {
+                              errorTextStartTime = errorText;
+                              errorTextEndTime = errorText;
+                            });
                           } else {
                             widget.cubit.timeValidate = false;
                           }

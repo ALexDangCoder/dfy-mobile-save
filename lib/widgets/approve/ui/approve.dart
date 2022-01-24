@@ -188,21 +188,23 @@ class _ApproveState extends State<Approve> {
     );
     cubit.isApprovedSubject.listen((value) async {
       final navigator = Navigator.of(context);
-      if (value && !cubit.checkingApprove) {
-        if (isShowLoading) {
-          Navigator.pop(context);
+      if (cubit.checkingApprove != null){
+        if (value && !(cubit.checkingApprove ?? true)) {
+          if (isShowLoading) {
+            Navigator.pop(context);
+          }
           unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
-        }
-        await showLoadSuccess();
-        navigator.pop();
-      }
-      if (!value && !cubit.checkingApprove) {
-        if (isShowLoading) {
+          await showLoadSuccess();
           navigator.pop();
-          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''),);
         }
-        await showLoadFail();
-        navigator.pop();
+        if (!value && !(cubit.checkingApprove ?? true)) {
+          if (isShowLoading) {
+            navigator.pop();
+          }
+          await showLoadFail();
+          navigator.pop();
+        }
+        cubit.checkingApprove = null;
       }
     });
     isShowLoading = true;

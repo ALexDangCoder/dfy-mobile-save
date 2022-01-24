@@ -56,7 +56,8 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   TokenInf? tokenAuction;
   double? valueTokenInputAuction;
   bool timeValidate = false;
-  bool priceValidate = true;
+  bool buyOutPriceValidate = true;
+  bool priceStepValidate = true;
 
   final BehaviorSubject<bool> _canContinueAuction = BehaviorSubject<bool>();
 
@@ -175,13 +176,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
         currencyAddress: putOnMarketModel.tokenAddress ?? '',
         endTime: putOnMarketModel.endTime ?? '',
         context: context,
-        tokenId:  (putOnMarketModel.nftTokenId ?? 0).toString(),
-        // tokenId: putOnMarketModel.nftTokenId ?? 0,
-        // context: context,
-        // currency: putOnMarketModel.tokenAddress ?? '',
-        // numberOfCopies: putOnMarketModel.numberOfCopies ?? 1,
-        // price: putOnMarketModel.price ?? '',
-        // collectionAddress: putOnMarketModel.collectionAddress ?? '',
+        tokenId: (putOnMarketModel.nftTokenId ?? 0).toString(),
       );
       showContent();
       return data;
@@ -202,7 +197,10 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   }
 
   void updateStreamContinueAuction() {
-    if (valueTokenInputAuction != null && timeValidate && priceValidate) {
+    if (valueTokenInputAuction != null &&
+        timeValidate &&
+        priceStepValidate &&
+        buyOutPriceValidate) {
       _canContinueAuction.sink.add(true);
     } else {
       _canContinueAuction.sink.add(false);

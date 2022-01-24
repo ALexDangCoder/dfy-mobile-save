@@ -548,13 +548,11 @@ class _MenuAccountState extends State<MenuAccount> {
             top: 0,
             left: 0,
             right: 0,
-            child: Container(
-              child: Center(
-                child: Text(
-                  S.current.my_account,
-                  style: textNormal(AppTheme.getInstance().textThemeColor(), 20)
-                      .copyWith(fontWeight: FontWeight.w700),
-                ),
+            child: Center(
+              child: Text(
+                S.current.my_account,
+                style: textNormal(AppTheme.getInstance().textThemeColor(), 20)
+                    .copyWith(fontWeight: FontWeight.w700),
               ),
             ),
           ),

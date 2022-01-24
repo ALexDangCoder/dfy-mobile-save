@@ -86,7 +86,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? tokenAddress;
 
-  bool checkingApprove = false;
+  bool? checkingApprove;
 
   String? tokenApproveData;
 
@@ -111,7 +111,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject.seeded(false);
 
-  final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
+  final PublishSubject<bool> isApprovedSubject = PublishSubject<bool>();
 
   Stream<String> get addressWalletCoreStream => addressWalletCoreSubject.stream;
 
