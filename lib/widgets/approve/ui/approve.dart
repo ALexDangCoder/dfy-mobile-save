@@ -322,6 +322,21 @@ class _ApproveState extends State<Approve> {
           );
           break;
         }
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        {
+          final String wallet = PrefsService.getCurrentBEWallet();
+          unawaited(showLoading());
+          await cubit.signTransactionWithData(
+            walletAddress: wallet,
+            contractAddress: nft_pawn_dev2,
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
+            hexString: widget.hexString ?? '',
+          );
+          break;
+        }
     }
   }
 
@@ -765,7 +780,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         cubit.confirmCancelAuctionWithBE(
           txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+          marketId: nftDetailBloc.nftOnAuction.id ?? '',
         );
         Navigator.push(
           context,
