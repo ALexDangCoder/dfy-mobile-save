@@ -514,5 +514,6 @@
   "custom_url" : "Custom URL",
   "cancel_aution": "Cancel auction",
   "auction_cancel_info": "Auction information will be cancelled",
-  "cancel_auction_warning": "Customer can not buy your NFT anymore"
+  "cancel_auction_warning": "Customer can not buy your NFT anymore",
+  "no_continue": "No, continue"
 }
