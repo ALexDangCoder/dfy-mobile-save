@@ -780,8 +780,8 @@ class Web3Utils {
       parameters: [
         BigInt.from(num.parse(nftCollateralId)),
         EthereumAddress.fromHex(repaymentAsset),
-        BigInt.from(num.parse(loanAmount)),
-        BigInt.from(num.parse(interest)),
+        BigInt.from(num.parse(_handleAmount(18, loanAmount))),
+        BigInt.from(num.parse(_handleAmount(5, loanAmount))),
         BigInt.from(num.parse(duration)),
         loanDurationType,
         repaymentCycleType,
