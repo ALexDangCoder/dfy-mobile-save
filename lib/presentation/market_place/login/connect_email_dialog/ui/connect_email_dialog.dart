@@ -1,13 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_email_dialog/bloc/connect_email_cubit.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
-import 'package:Dfy/widgets/stream_consumer/stream_consumer.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -55,8 +50,7 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
               width: 312.w,
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(36)),
+                borderRadius: const BorderRadius.all(Radius.circular(36)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,11 +65,12 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                     ),
                     child: StreamBuilder<ConnectEmailStatus>(
                         stream: cubit.connectEmailStatusStream,
-                        builder: (context, snapshot) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<ConnectEmailStatus> snapshot) {
                           if (snapshot.hasData) {
-                            final data = snapshot.data ?? '';
+                            final ConnectEmailStatus data = snapshot.data!;
                             return Text(
-                              'data.toContent(),',
+                              data.toContent(),
                               textAlign: TextAlign.center,
                               style: textNormal(
                                 AppTheme.getInstance().whiteColor(),
@@ -84,8 +79,7 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                             );
                           }
                           return Container();
-                        }
-                    ),
+                        }),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -102,7 +96,12 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                             ),
                           ),
                           child: GestureDetector(
-                            onTap: () => Navigator.pop(context),
+                            onTap: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => widget.navigationTo,
+                              ),
+                            ),
                             behavior: HitTestBehavior.opaque,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -110,13 +109,11 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                                 top: 17,
                               ),
                               child: Text(
-                                S.current.cancel,
+                                S.current.no_continue,
                                 style: textNormal(
-                                  AppTheme.getInstance()
-                                      .whiteColor(),
+                                  AppTheme.getInstance().whiteColor(),
                                   20.sp,
-                                ).copyWith(
-                                    fontWeight: FontWeight.bold),
+                                ).copyWith(fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -139,54 +136,54 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                               ),
                             ),
                           ),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navigator.pop(context);
-                              // if (loginStatus ==
-                              //     LoginStatus.NEED_LOGIN) {
-                              //   Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) =>
-                              //       const MainScreen(
-                              //         isFormConnectWlDialog: true,
-                              //         index: 2,
-                              //       ),
-                              //     ),
-                              //   );
-                              // } else if (loginStatus ==
-                              //     LoginStatus.NEED_REGISTER) {
-                              //   Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) =>
-                              //       const MainScreen(
-                              //         index: 3,
-                              //         isFormConnectWlDialog: true,
-                              //       ),
-                              //     ),
-                              //   );
-                              // }
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 19,
-                                top: 17,
-                              ),
-                              child: Text(
-                                S.current.yes,
-                                style: textNormal(
-                                  AppTheme.getInstance()
-                                      .fillColor(),
-                                  20.sp,
-                                ).copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
+                          child: StreamBuilder<ConnectEmailStatus>(
+                              stream: cubit.connectEmailStatusStream,
+                              builder: (context, snapshot) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data! ==
+                                          ConnectEmailStatus.CONNECTED) {
+                                        //ví đã liên kết email:
+                                        //TODO: GỌI API CONNECT EMAIL
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                widget.navigationTo,
+                                          ),
+                                        );
+                                      } else {
+                                        //ví chưa liên kết email
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const EnterEmail(),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  behavior: HitTestBehavior.opaque,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 19,
+                                      top: 17,
+                                    ),
+                                    child: Text(
+                                      S.current.yes,
+                                      style: textNormal(
+                                        AppTheme.getInstance().fillColor(),
+                                        20.sp,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
                       ),
                     ],

@@ -18,10 +18,10 @@ import 'bloc_creare_seedphrase.dart';
 extension LoginForMarketPlace on BLocCreateSeedPhrase {
   LoginRepository get _loginRepo => Get.find();
 
-  Future<void> loginAndSaveInfo(
+  Future<bool> loginAndSaveInfo(
       {required String walletAddress, required String signature}) async {
     final result = await _loginRepo.login(signature, walletAddress);
-
+    bool isSuccess = false;
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
@@ -31,9 +31,13 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           walletAddress,
         );
         await getUserProfile();
+        isSuccess = true;
       },
-      error: (err) {},
+      error: (err) {
+        isSuccess = false;
+      },
     );
+    return isSuccess;
   }
 
   Future<void> getSignature({required String walletAddress}) async {

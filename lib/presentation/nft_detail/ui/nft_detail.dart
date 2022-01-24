@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -16,7 +20,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
-import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
@@ -45,6 +48,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -652,81 +656,33 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   )
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
+              //TODO: ĐỂ TẠM ĐỂ CANCEL AUCTION
               GestureDetector(
-                //todo: để tạm, sau check quyền button cancel hoặc buy
                 onTap: () async {
-                  var nav = Navigator.of(context);
-                  if (bloc.walletAddress.toLowerCase() ==
-                      bloc.nftMarket.owner?.toLowerCase()) {
-                    double gas =
-                        await bloc.getGasLimitForCancel(context: context);
-                    if (gas > 0) {
-                      nav.push(
-                        MaterialPageRoute(
-                          builder: (context) => Approve(
-                            listDetail: bloc.initListApprove(),
-                            title: S.current.cancel_sale,
-                            header: Container(
-                              padding: EdgeInsets.only(
-                                top: 16.h,
-                                bottom: 20.h,
-                              ),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                S.current.cancel_sale_info,
-                                style: textNormal(
-                                  AppTheme.getInstance().whiteColor(),
-                                  16,
-                                ).copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            warning: Row(
-                              children: [
-                                sizedSvgImage(
-                                  w: 16.67.w,
-                                  h: 16.67.h,
-                                  image: ImageAssets.ic_warning_canel,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    S.current.customer_cannot,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: textNormal(
-                                      AppTheme.getInstance()
-                                          .currencyDetailTokenColor(),
-                                      14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            textActiveButton: S.current.cancel_sale,
-                            typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
-                          ),
+                  final nav = Navigator.of(context);
+                  final String dataString =
+                      await bloc.getDataStringForCancelAuction(context: context, orderId: '137');
+                  unawaited(
+                    nav.push(
+                      MaterialPageRoute(
+                        builder: (context) => approveWidget(
+                          dataString: dataString,
+                          dataInfo: bloc.initListApprove(),
+                          type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                          cancelInfo: S.current.auction_cancel_info,
+                          cancelWarning: S.current.cancel_auction_warning,
+                          title: S.current.cancel_aution,
                         ),
-                      );
-                    }
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => WarningDialog(
-                        walletAdress: bloc.nftMarket.owner ?? '',
                       ),
-                    );
-                  }
+                    ),
+                  );
                 },
                 child: _nameNFT(
-                  context: context,
                   title: objSale.name ?? '',
                   quantity: objSale.totalCopies ?? 1,
                   url: objSale.image ?? '',
                   price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                  context: context,
                 ),
               ),
               _priceContainerOnSale(
@@ -1043,7 +999,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: (nftOnAuction.isOwner == true)
-                ? buttonCancelAuction(nftOnAuction.show ?? true)
+                ? buttonCancelAuction(
+                    approveAdmin: nftOnAuction.show ?? true,
+                    context: context,
+                    bloc: bloc,
+                  )
                 : Row(
                     children: [
                       Expanded(

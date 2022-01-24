@@ -474,12 +474,11 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
-  "address": "Address",
+  "address":"Địa chỉ",
   "item_price": "Giá",
   "start_in": "Bắt đầu trong",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
   "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
-  "end_in": "Kết thúc",
   "view_type": "Xem theo",
    "connect": "Kết nối",
   "buy_fail": "Mua thất bại",
@@ -516,5 +515,12 @@
   "accept_file_type" : "Chỉ chấp nhận t PNG, JPG, JPEG, GIF, MP4, WEBM, MP3, WAV, OGG",
   "collection_require" : "Bộ sưu tập là bắt buộc",
   "collection_soft" : "Collection Soft",
-  "collection_hard" : "Collection Hard"
+  "collection_hard" : "Collection Hard",
+  "end_in": "Kết thúc",
+  "cancel_aution": "Hủy đấu giá",
+  "auction_cancel_info": "Thông tin đấu giá sẽ bị hủy",
+  "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
+  "cancel_success": "Hủy bán thành công",
+  "no_continue": "Không, tiếp tục"
+
 }

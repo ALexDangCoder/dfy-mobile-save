@@ -14,7 +14,10 @@ extension ParseConnectEmailEnum on ConnectEmailStatus {
   String toContent() {
     switch (this) {
       case ConnectEmailStatus.CONNECTED:
-        return S.current.login_to_your_email;
+        UserProfileModel userProfile =
+            userProfileFromJson(PrefsService.getUserProfile());
+        final email = userProfile.email ?? '';
+        return '${S.current.login_to_your_email} $email';
       case ConnectEmailStatus.NOT_CONNECTED:
         return S.current.associate_email;
       default:
@@ -36,9 +39,9 @@ class ConnectEmailCubit extends BaseCubit<ConnectEmailState> {
     final data = PrefsService.getUserProfile();
     final userProfile = userProfileFromJson(data);
     String email = userProfile.email ?? '';
-    if(email.isEmpty){
+    if (email.isEmpty) {
       connectEmailStatusSubject.sink.add(ConnectEmailStatus.NOT_CONNECTED);
-    }else{
+    } else {
       connectEmailStatusSubject.sink.add(ConnectEmailStatus.CONNECTED);
     }
   }
