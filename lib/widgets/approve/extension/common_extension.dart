@@ -21,12 +21,20 @@ extension CommonExtension on ApproveCubit {
         return nft_sales_address_dev2;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         return nft_auction_dev2;
+      case TYPE_CONFIRM_BASE.CANCEL_SALE:
+        return nft_sales_address_dev2;
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         {
-          return nft_factory_dev2;
+          return isSoftCollection
+              ? nft_factory_dev2
+              : hard_nft_factory_address_dev2;
         }
+      case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+        return nft_sales_address_dev2;
+      case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+        return nft_auction_dev2;
       default:
-        return '';
+        return nft_factory_dev2;
     }
   }
 }

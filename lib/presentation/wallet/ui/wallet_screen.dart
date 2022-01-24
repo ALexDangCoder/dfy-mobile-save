@@ -362,11 +362,12 @@ class _WalletState extends State<WalletScreen>
       );
     } else if (widget.index == 2) {
       return LoginScreen(
-        walletCubit: cubit,
-        isFromConnectDialog: widget.isFromConnectWlDialog
-      );
+          walletCubit: cubit,
+          isFromConnectDialog: widget.isFromConnectWlDialog);
     } else {
-      return AddWalletFtSeedPharse(isFromConnectWlDialog: widget.isFromConnectWlDialog,);
+      return AddWalletFtSeedPharse(
+        isFromConnectWlDialog: widget.isFromConnectWlDialog,
+      );
     }
   }
 

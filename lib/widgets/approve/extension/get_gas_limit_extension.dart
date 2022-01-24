@@ -42,7 +42,7 @@ extension GetGasLimit on ApproveCubit {
     );
     gasLimit = double.parse(gasLimitApprove);
     gasLimitFirst = double.parse(gasLimitApprove);
-    gasLimitFirstSubject.sink.add( double.parse(gasLimitApprove));
+    gasLimitFirstSubject.sink.add(double.parse(gasLimitApprove));
     gasPrice = gasPriceFirst;
     showContent();
   }

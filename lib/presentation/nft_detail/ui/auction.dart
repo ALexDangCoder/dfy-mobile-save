@@ -76,11 +76,32 @@ Widget _buildButtonBuyOut(BuildContext context, NFTOnAuction nftOnAuction) {
   );
 }
 
-Widget buttonCancelAuction(bool approveAdmin) {
+Widget buttonCancelAuction({
+  required bool approveAdmin,
+  required NFTDetailBloc bloc,
+  required BuildContext context,
+}) {
   if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
         /// TODO: handle cancel sale buy nftMarket.isOwner == true
+        final nav = Navigator.of(context);
+        final String dataString =
+        await bloc.getDataStringForCancel(context: context);
+        unawaited(
+          nav.push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(
+                dataString: dataString,
+                dataInfo: bloc.initListApprove(),
+                type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                cancelInfo: S.current.auction_cancel_info,
+                cancelWarning: S.current.cancel_auction_warning,
+                title: S.current.cancel_aution,
+              ),
+            ),
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
