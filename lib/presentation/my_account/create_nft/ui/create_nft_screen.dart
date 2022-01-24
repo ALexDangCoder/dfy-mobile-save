@@ -36,6 +36,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
     trustWalletChannel.setMethodCallHandler(
       widget.cubit.nativeMethodCallBackTrustWallet,
     );
+    widget.cubit.getListTypeNFT();
   }
 
   @override

@@ -6,7 +6,6 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/select_nft_type_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,9 +17,7 @@ import 'package:video_player/video_player.dart';
 part 'create_nft_state.dart';
 
 class CreateNftCubit extends BaseCubit<CreateNftState> {
-  CreateNftCubit() : super(CreateNftInitial()) {
-    getListTypeNFT();
-  }
+  CreateNftCubit() : super(CreateNftInitial());
 
   VideoPlayerController? controller;
 
@@ -71,6 +68,12 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   ///Error String
   final BehaviorSubject<String> collectionMessSubject = BehaviorSubject();
 
+  ///List Map value - properties
+  final BehaviorSubject<List<Map<String, String>>> listPropertySubject =
+      BehaviorSubject();
+
+  List<Map<String, String>> listProperty = [];
+
   Map<String, bool> createNftMapCheck = {
     'media_file': false,
     'cover_photo': false,
@@ -78,16 +81,6 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
     'collection': false,
     'properties': true
   };
-
-  void dispose() {
-    selectIdSubject.close();
-    mediaFileSubject.close();
-    imageFileSubject.close();
-    fileErrorTextSubject.close();
-    videoFileSubject.close();
-    controller?.dispose();
-    listCollectionSubject.close();
-  }
 
   void validateCreate() {
     log('Media type: $mediaType');
@@ -112,5 +105,15 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
         createNftButtonSubject.sink.add(true);
       }
     }
+  }
+
+  void dispose() {
+    selectIdSubject.close();
+    mediaFileSubject.close();
+    imageFileSubject.close();
+    fileErrorTextSubject.close();
+    videoFileSubject.close();
+    controller?.dispose();
+    listCollectionSubject.close();
   }
 }

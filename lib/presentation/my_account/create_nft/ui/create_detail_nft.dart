@@ -56,6 +56,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                   margin: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       uploadWidgetCreateNft(widget.cubit),
                       spaceH16,
@@ -78,12 +79,28 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                         ),
                       ),
                       spaceH16,
-                      propertyRow(),
-                      spaceH16,
+                      StreamBuilder<List<Map<String, String>>>(
+                        stream: widget.cubit.listPropertySubject,
+                        builder: (context, snapshot) {
+                          final list = snapshot.data ?? [];
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: list.length,
+                            itemBuilder: (context, index) {
+                              return propertyRow(
+                                property: list[index],
+                                cubit: widget.cubit,
+                                index: index,
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
-                addPropertyButton(),
+                addPropertyButton(widget.cubit),
                 SizedBox(
                   height: 28.h,
                 ),

@@ -55,21 +55,23 @@ extension UploadExtension on CreateNftCubit {
     } else {
       createNftMapCheck['cover_photo'] = false;
     }
+    validateCreate();
   }
 
   void clearCoverPhoto() {
     coverPhotoPath = '';
     coverPhotoSubject.sink.add(coverPhotoPath);
     createNftMapCheck['cover_photo'] = false;
+    validateCreate();
   }
 
   void clearMainData() {
-    clearCoverPhoto();
     createNftMapCheck['media_file'] = false;
     try {
       controller?.pause();
       controller = null;
     } catch (_) {}
     mediaFileSubject.sink.add('');
+    clearCoverPhoto();
   }
 }
