@@ -64,10 +64,14 @@ extension CallApiBE on ApproveCubit {
     required String txnHash,
     required String marketId,
   }) async {
-    final result = await confirmRepository.getCancelSaleResponse(
+    final result = await nftRepo.cancelSale(
       id: marketId,
       txnHash: txnHash,
     );
-    result.when(success: (suc) {}, error: (err) {});
+    result.when(success: (res) {
+
+    }, error: (err) {
+
+    },);
   }
 }

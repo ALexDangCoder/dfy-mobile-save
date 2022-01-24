@@ -162,7 +162,16 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      /// TODO: handle cancel sale buy nftMarket.isOwner == true
+      final nav = Navigator.of(context);
+      final String dataString =
+          await bloc.getDataStringForCancel(context: context);
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(dataString: dataString),
+          ),
+        ),
+      );
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
@@ -355,5 +364,51 @@ Widget _buildButtonPutOnMarket(
               FontWeight.w700,
             ),
           ),
+  );
+}
+
+Approve approveWidget({required String dataString}) {
+  return Approve(
+    listDetail: bloc.initListApprove(),
+    title: S.current.cancel_sale,
+    header: Container(
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 20.h,
+      ),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        S.current.cancel_sale_info,
+        style: textNormal(
+          AppTheme.getInstance().whiteColor(),
+          16,
+        ).copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    warning: Row(
+      children: [
+        sizedSvgImage(
+            w: 16.67.w, h: 16.67.h, image: ImageAssets.ic_warning_canel),
+        SizedBox(
+          width: 5.w,
+        ),
+        Expanded(
+          child: Text(
+            S.current.customer_cannot,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: textNormal(
+              AppTheme.getInstance().currencyDetailTokenColor(),
+              14,
+            ),
+          ),
+        ),
+      ],
+    ),
+    textActiveButton: S.current.cancel_sale,
+    typeApprove: TYPE_CONFIRM_BASE.CANCEL_SALE,
+    hexString: dataString,
   );
 }

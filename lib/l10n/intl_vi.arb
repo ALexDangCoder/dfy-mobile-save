@@ -474,12 +474,11 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
-  "address": "Address",
+  "address":"Địa chỉ",
   "item_price": "Giá",
   "start_in": "Bắt đầu trong",
   "purchase_being_processed": "Nft đang được giao dịch bởi một ai đó.",
   "error_might_occur": "Có lỗi có thể xảy ra nếu bạn tiếp tục",
-  "end_in": "Kết thúc",
   "view_type": "Xem theo",
    "connect": "Kết nối",
   "buy_fail": "Mua thất bại",
@@ -503,5 +502,7 @@
   "get_started": "Bắt đầu",
   "login_to_your_email" : "Bạn có muốn đăng nhập vào email ",
   "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
-  "yes": "Đồng ý"
+  "yes": "Đồng ý",
+  "end_in": "Kết thúc",
+  "cancel_success": "Hủy bán thành công"
 }

@@ -155,11 +155,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     return response;
   }
 
-  NFTRepository get _nftRepo => Get.find();
+  NFTRepository get nftRepo => Get.find();
 
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
     showLoading();
-    final result = await _nftRepo.buyNftRequest(buyNftRequest);
+    final result = await nftRepo.buyNftRequest(buyNftRequest);
     result.when(
       success: (res) {
         showContent();
@@ -172,7 +172,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
     showLoading();
-    final result = await _nftRepo.bidNftRequest(bidNftRequest);
+    final result = await nftRepo.bidNftRequest(bidNftRequest);
     result.when(
       success: (res) {
         showContent();

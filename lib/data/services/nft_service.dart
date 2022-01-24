@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
@@ -88,4 +89,10 @@ abstract class NFTClient {
   Future<String> bidNftRequest(
     @Body() BidNftRequest bidNftRequest,
   );
+
+  @POST(ApiConstants.CANCEL_SALE)
+  Future<ConfirmResponse> cancelSale(
+      @Field('market_id') String marketId,
+      @Field('txn_hash') String txnHash,
+      );
 }
