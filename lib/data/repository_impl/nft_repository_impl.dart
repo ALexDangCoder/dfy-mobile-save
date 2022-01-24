@@ -162,4 +162,12 @@ class NFTRepositoryImpl implements NFTRepository {
           (response) => response.toDomain(),
     );
   }
+
+  @override
+  Future<Result<ConfirmModel>> cancelAuction({required String id, required String txnHash}) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+          () => _nftClient.cancelAuction(id,txnHash),
+          (response) => response.toDomain(),
+    );
+  }
 }

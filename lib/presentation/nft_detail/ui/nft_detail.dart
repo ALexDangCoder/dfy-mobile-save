@@ -6,7 +6,9 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -654,12 +656,34 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                   )
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
-              _nameNFT(
-                title: objSale.name ?? '',
-                quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
-                price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
-                context: context,
+              //TODO: ĐỂ TẠM ĐỂ CANCEL AUCTION
+              GestureDetector(
+                onTap: () async {
+                  final nav = Navigator.of(context);
+                  final String dataString =
+                      await bloc.getDataStringForCancelAuction(context: context, orderId: '137');
+                  unawaited(
+                    nav.push(
+                      MaterialPageRoute(
+                        builder: (context) => approveWidget(
+                          dataString: dataString,
+                          dataInfo: bloc.initListApprove(),
+                          type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                          cancelInfo: S.current.auction_cancel_info,
+                          cancelWarning: S.current.cancel_auction_warning,
+                          title: S.current.cancel_aution,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: _nameNFT(
+                  title: objSale.name ?? '',
+                  quantity: objSale.totalCopies ?? 1,
+                  url: objSale.image ?? '',
+                  price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                  context: context,
+                ),
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
@@ -975,7 +999,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: (nftOnAuction.isOwner == true)
-                ? buttonCancelAuction(nftOnAuction.show ?? true)
+                ? buttonCancelAuction(
+                    approveAdmin: nftOnAuction.show ?? true,
+                    context: context,
+                    bloc: bloc,
+                  )
                 : Row(
                     children: [
                       Expanded(
