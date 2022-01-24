@@ -765,7 +765,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         cubit.confirmCancelAuctionWithBE(
           txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+          marketId: nftDetailBloc.nftOnAuction.id ?? '',
         );
         Navigator.push(
           context,
