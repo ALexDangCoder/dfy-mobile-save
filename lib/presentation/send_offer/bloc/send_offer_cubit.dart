@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_state.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -43,24 +41,19 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    late final String hexString;
     showLoading();
-    try {
-      hexString = await _web3utils.getCreateOfferData(
-        nftCollateralId: nftCollateralId,
-        repaymentAsset: repaymentAsset,
-        loanAmount: loanAmount,
-        interest: interest,
-        duration: duration,
-        loanDurationType: loanDurationType,
-        repaymentCycleType: repaymentCycleType,
-        context: context,
-      );
-      showContent();
-    } catch (e) {
-      showError();
-      throw AppException(S.current.error, S.current.something_went_wrong);
-    }
+    String hexString = await _web3utils.getCreateOfferData(
+      nftCollateralId: nftCollateralId,
+      repaymentAsset: repaymentAsset,
+      loanAmount: loanAmount,
+      interest: interest,
+      duration: duration,
+      loanDurationType: loanDurationType,
+      repaymentCycleType: repaymentCycleType,
+      context: context,
+    );
+    showContent();
+
     return hexString;
   }
 }

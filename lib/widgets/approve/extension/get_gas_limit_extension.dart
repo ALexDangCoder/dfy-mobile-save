@@ -13,7 +13,7 @@ extension GetGasLimit on ApproveCubit {
     String gasLimit = '';
     try {
       gasLimit = await web3Client.getGasLimitByData(
-        from: PrefsService.getCurrentBEWallet(),
+        from: addressWallet ?? '',
         toContractAddress: getSpender(),
         dataString: hexString,
       );

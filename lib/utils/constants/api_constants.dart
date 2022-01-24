@@ -87,11 +87,6 @@ class ApiConstants {
   static const String PUT_ON_SALE = '/nft-market-svc/api/market/put-on-sale';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
   //Get Nonce để ký login
-  static const String GET_NONCE =
-      '/defi-user-service/public-api/v1.0.0/users/nonce?';
-  //login
-  static const String LOGIN_MARKET =
-      '/defi-user-service/public-api/v1.0.0/users/mobile/login';
   //GET PROFILE WHEN LOGIN:
   static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
 
