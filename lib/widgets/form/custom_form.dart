@@ -9,6 +9,7 @@ class CustomForm extends StatelessWidget {
     required this.textValue,
     required this.hintText,
     this.prefix,
+    this.isSelectNumPrefix,
     required this.suffix,
     required this.inputType,
   }) : super(key: key);
@@ -17,6 +18,7 @@ class CustomForm extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final TextInputType? inputType;
+  final bool? isSelectNumPrefix;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,14 @@ class CustomForm extends StatelessWidget {
       height: 64.h,
       padding: EdgeInsets.only(left: 12.w, right: 12.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
+        borderRadius: isSelectNumPrefix ?? false
+            ? BorderRadius.only(
+                topRight: Radius.circular(20.r),
+                bottomRight: Radius.circular(20.r),
+              )
+            : BorderRadius.all(
+                Radius.circular(20.r),
+              ),
         color: AppTheme.getInstance().itemBtsColors(),
       ),
       child: Center(

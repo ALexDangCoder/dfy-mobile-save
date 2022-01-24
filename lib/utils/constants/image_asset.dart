@@ -42,6 +42,7 @@ class ImageAssets {
   static const String watch = '$baseImg/Watch.png';
   static const String house = '$baseImg/House.png';
   static const String others = '$baseImg/Other.png';
+  static const String addFormProperties = '$baseImg/add_form_pro.png';
 
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken

@@ -84,6 +84,7 @@ const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
 const dividerCreateNFT = Color(0xffC4C4C4);
+const bgDropdown = Color(0xff585782);
 final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 
 const List<Color> colorsFab = [
@@ -101,6 +102,9 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+
+  Color bgDropdownBtn();
+
   Color whiteDot2();
 
   Color dashedColorContainer();
@@ -588,9 +592,20 @@ class LightApp extends AppColor {
   Color whiteDot2() {
     return colorWhiteDot2;
   }
+
+  @override
+  Color bgDropdownBtn() {
+    return bgDropdown;
+  }
 }
 
 class DarkApp extends AppColor {
+
+  @override
+  Color bgDropdownBtn() {
+    return bgDropdown;
+  }
+
   @override
   Color whiteDot2() {
     return colorWhiteDot2;
