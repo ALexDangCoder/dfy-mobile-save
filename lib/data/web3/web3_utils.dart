@@ -783,8 +783,8 @@ class Web3Utils {
         BigInt.from(num.parse(_handleAmount(18, loanAmount))),
         BigInt.from(num.parse(_handleAmount(5, interest))),
         BigInt.from(num.parse(duration)),
-        loanDurationType,
-        repaymentCycleType,
+        BigInt.from(loanDurationType),
+        BigInt.from(repaymentCycleType),
       ],
     );
     return hex.encode(createOffer.data ?? []);
