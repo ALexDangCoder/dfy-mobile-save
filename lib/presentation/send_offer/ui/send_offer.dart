@@ -1,7 +1,7 @@
-import 'dart:developer';
-
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/send_offer/bloc/send_offer_cubit.dart';
@@ -9,9 +9,13 @@ import 'package:Dfy/presentation/send_offer/ui/day_drop_down.dart';
 import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form_validate.dart';
+import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +36,7 @@ class _SendOfferState extends State<SendOffer> {
   String loanAmount = '';
   int repaymentCycleType = 0;
   String interest = '';
-  String repaymentAsset = DFY;
+  String shortName = DFY;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +102,7 @@ class _SendOfferState extends State<SendOffer> {
                             .getPawnHexString(
                               nftCollateralId:
                                   widget.nftOnPawn.bcCollateralId.toString(),
-                              repaymentAsset: repaymentAsset,
+                              repaymentAsset: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
                               loanAmount: loanAmount,
                               interest: interest,
                               duration: duration,
@@ -106,7 +110,109 @@ class _SendOfferState extends State<SendOffer> {
                               repaymentCycleType: repaymentCycleType,
                               context: context,
                             )
-                            .then((value) => log(value));
+                            .then(
+                              (value) => Approve(
+                                title: S.current.place_a_bid,
+                                needApprove: true,
+                                payValue: '1',
+                                header: Column(
+                                  children: [
+                                    buildRowCustom(
+                                      title: S.current.from,
+                                      child: Text(
+                                        PrefsService.getCurrentBEWallet()
+                                            .formatAddressWalletConfirm(),
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance()
+                                              .textThemeColor(),
+                                          16,
+                                          FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    buildRowCustom(
+                                      title: S.current.to,
+                                      child: Text(
+                                        (widget.nftOnPawn.walletAddress ?? '')
+                                            .formatAddressWalletConfirm(),
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance()
+                                              .textThemeColor(),
+                                          16,
+                                          FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    spaceH20,
+                                    line,
+                                    spaceH20,
+                                    buildRowCustom(
+                                      title: S.current.loan_amount,
+                                      child: Text(
+                                        loanAmount + shortName,
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().fillColor(),
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    buildRowCustom(
+                                      title: S.current.interest_rate,
+                                      child: Text(
+                                        '$interest%',
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().fillColor(),
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    buildRowCustom(
+                                      title: S.current.duration,
+                                      child: Text(
+                                        duration +
+                                            (repaymentCycleType == 1
+                                                ? S.current.month
+                                                : S.current.week),
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().fillColor(),
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    buildRowCustom(
+                                      title: S.current.repayment_curr,
+                                      child: Text(
+                                        shortName,
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().fillColor(),
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    buildRowCustom(
+                                      title: S.current.recurring_interest,
+                                      child: Text(
+                                        repaymentCycleType == 1
+                                            ? S.current.month
+                                            : S.current.week,
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().fillColor(),
+                                          20,
+                                          FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textActiveButton: S.current.approve,
+                                hexString: value,
+                                typeApprove: TYPE_CONFIRM_BASE.SEND_OFFER,
+                              ),
+                            );
                       }
                     : () {},
                 child: ButtonGold(
@@ -310,7 +416,7 @@ class _SendOfferState extends State<SendOffer> {
                     BigDropDown(
                       listValue: listValueToken,
                       textValue: (value) {
-                        repaymentAsset = value['label'];
+                        shortName = value['label'];
                       },
                       index: 0,
                     ),
