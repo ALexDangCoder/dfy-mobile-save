@@ -45,14 +45,19 @@ class _EnterEmailState extends State<EnterEmail> {
         onTap: () {
           //todo:
           if(isValidateSuccess){
-            final String walletAddress = PrefsService.getCurrentBEWallet();
-            cubit.checkValidate(emailEditingController.value.text);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ConfirmEmail(),
-              ),
-            );
+            final bool checkValidate = cubit.checkValidate(emailEditingController.value.text);
+            if(checkValidate){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ConfirmEmail(),
+                ),
+              ).then((value) => {
+                if(value){
+                  Navigator.pop(context,true)
+                }
+              });
+            }
           }
         },
       ),

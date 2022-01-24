@@ -27,19 +27,20 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
 
   Stream<bool> get isEnableResendStream => isEnableResendSubject.stream;
 
-  void checkValidate(String email) {
+  bool checkValidate(String email) {
     final bool emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(email);
     if (!emailValid) {
       validateTextSubject.sink.add(S.current.email_invalid);
-      return;
+      return false;
     }
     if (email.length > 50) {
       validateTextSubject.sink.add(S.current.email_too_long);
-      return;
+      return false;
     }
     validateTextSubject.sink.add('');
+    return true;
   }
 
   void startTimer({int timeStart = 60}) {
@@ -52,9 +53,11 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
         if (timeStart == 0) {
           timer.cancel();
           timeCountDownSubject.sink.add(0);
+          isEnableResendSubject.sink.add(true);
         } else {
           timeStart--;
           timeCountDownSubject.sink.add(timeStart);
+          isEnableResendSubject.sink.add(false);
         }
       },
     );

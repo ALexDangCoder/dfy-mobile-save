@@ -144,8 +144,17 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                                     if (snapshot.hasData) {
                                       if (snapshot.data! ==
                                           ConnectEmailStatus.CONNECTED) {
+                                        //ví đã liên kết email:
                                         //TODO: GỌI API CONNECT EMAIL
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                widget.navigationTo,
+                                          ),
+                                        );
                                       } else {
+                                        //ví chưa liên kết email
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(

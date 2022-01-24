@@ -4,7 +4,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -20,11 +22,13 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
     required this.wallet,
     required this.balance,
     required this.navigationTo,
+    required this.isRequireLoginEmail,
   }) : super(key: key);
   final ConnectWalletDialogCubit cubit;
   final Wallet wallet;
   final double balance;
   final Widget navigationTo;
+  final bool isRequireLoginEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +42,22 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
         );
         hideLoading(context);
         if (checkSuccess) {
-          unawaited(
-            nav.pushReplacement(
-              MaterialPageRoute(builder: (context) => navigationTo),
-            ),
-          );
+          if (!isRequireLoginEmail) {
+            //không yêu cầu login email:
+            nav.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) => ConnectEmailDialog(
+                navigationTo: navigationTo,
+              ),
+            );
+          } else {
+            await nav.pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const ConnectWallet(),
+              ),
+            );
+           }
         } else {
           unawaited(
             nav.pushReplacement(
