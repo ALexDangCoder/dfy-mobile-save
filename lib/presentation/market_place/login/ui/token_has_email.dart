@@ -25,14 +25,7 @@ class TokenHasEmail extends StatelessWidget {
         isEnable: true,
         onTap: () {
           //todo:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EnterEmail(
-                cubit: LoginWithEmailCubit(),
-              ),
-            ),
-          );
+
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -6,9 +6,10 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:Dfy/utils/app_utils.dart';
-import 'package:Dfy/widgets/stream_consumer/stream_listener.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,16 +32,32 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
       listen: (value) async {
         final nav = Navigator.of(context);
         showLoading(context);
-        await cubit.loginAndSaveInfo(
+        final bool checkSuccess = await cubit.loginAndSaveInfo(
           walletAddress: cubit.wallet?.address ?? '',
           signature: value,
         );
         hideLoading(context);
-        unawaited(
-          nav.pushReplacement(
-            MaterialPageRoute(builder: (context) => navigationTo),
-          ),
-        );
+        if (checkSuccess) {
+          unawaited(
+            nav.pushReplacement(
+              MaterialPageRoute(builder: (context) => navigationTo),
+            ),
+          );
+        } else {
+          unawaited(
+            nav.pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => BaseFail(
+                  title: S.current.login,
+                  content: S.current.something_went_wrong,
+                  onTapBtn: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+          );
+        }
       },
       stream: cubit.signatureStream,
       child: GestureDetector(

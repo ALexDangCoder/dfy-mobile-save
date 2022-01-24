@@ -504,5 +504,7 @@
   "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
   "yes": "Đồng ý",
   "end_in": "Kết thúc",
-  "cancel_success": "Hủy bán thành công"
+  "cancel_success": "Hủy bán thành công",
+  "no_continue": "Không, tiếp tục"
+
 }

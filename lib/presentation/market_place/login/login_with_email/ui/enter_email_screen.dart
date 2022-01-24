@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_email.dart';
@@ -13,20 +14,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class EnterEmail extends StatefulWidget {
-  const EnterEmail({Key? key, required this.cubit}) : super(key: key);
-  final LoginWithEmailCubit cubit;
+  const EnterEmail({Key? key,}) : super(key: key);
 
   @override
   State<EnterEmail> createState() => _EnterEmailState();
 }
 
 class _EnterEmailState extends State<EnterEmail> {
+  late final LoginWithEmailCubit cubit;
   final TextEditingController emailEditingController = TextEditingController();
   bool isValidateSuccess = false;
   @override
   void initState() {
     super.initState();
-    widget.cubit.validateStream.listen((event) {
+    cubit = LoginWithEmailCubit();
+    cubit.validateStream.listen((event) {
       if(event == ''){
         isValidateSuccess = true;
       }
@@ -43,10 +45,8 @@ class _EnterEmailState extends State<EnterEmail> {
         onTap: () {
           //todo:
           if(isValidateSuccess){
-            widget.cubit.checkValidate(emailEditingController.value.text);
-            widget.cubit.getNonce(
-              walletAddress: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-            );
+            final String walletAddress = PrefsService.getCurrentBEWallet();
+            cubit.checkValidate(emailEditingController.value.text);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -98,7 +98,7 @@ class _EnterEmailState extends State<EnterEmail> {
                         16,
                       ),
                       onChanged: (value) {
-                        widget.cubit.checkValidate(value);
+                        cubit.checkValidate(value);
                       },
                       controller: emailEditingController,
                       cursorColor: AppTheme.getInstance().textThemeColor(),
@@ -119,7 +119,7 @@ class _EnterEmailState extends State<EnterEmail> {
                     ),
                   ),
                   StreamBuilder<String>(
-                    stream: widget.cubit.validateStream,
+                    stream: cubit.validateStream,
                     builder: (context, snapshot) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(

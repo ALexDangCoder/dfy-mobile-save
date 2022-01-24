@@ -28,9 +28,9 @@ class _StakingState extends State<StakingScreen> {
     return GestureDetector(
       onTap: () => showDialog(
         context: context,
-        builder: (context) => ConnectWalletDialog(
-          navigationTo: EnterEmail(cubit: LoginWithEmailCubit()),
-          isRequireLoginEmail: true,
+        builder: (context) => const ConnectWalletDialog(
+          navigationTo: EnterEmail(),
+          isRequireLoginEmail: false,
         ),
       ),
       child: const ComingScreen(),

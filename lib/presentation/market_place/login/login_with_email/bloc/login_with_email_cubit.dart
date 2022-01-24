@@ -15,8 +15,6 @@ part 'login_with_email_state.dart';
 class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
   LoginWithEmailCubit() : super(LoginWithEmailInitial());
 
-  NonceRepository get _nonceRepository => Get.find();
-
   BehaviorSubject<String> validateTextSubject = BehaviorSubject.seeded('');
 
   BehaviorSubject<int> timeCountDownSubject = BehaviorSubject();
@@ -42,15 +40,6 @@ class LoginWithEmailCubit extends Cubit<LoginWithEmailState> {
       return;
     }
     validateTextSubject.sink.add('');
-  }
-
-  Future<void> getNonce({required String walletAddress}) async {
-    final Result<NonceModel> result =
-        await _nonceRepository.getNonce(walletAddress);
-    result.when(
-      success: (res) {},
-      error: (err) {},
-    );
   }
 
   void startTimer({int timeStart = 60}) {
