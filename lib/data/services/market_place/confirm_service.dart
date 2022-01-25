@@ -23,13 +23,12 @@ abstract class ConfirmClient {
   //CreateHardCollection
   @POST(ApiConstants.CREATE_HARD_COLLECTION)
   Future<ConfirmResponse> createHardCollection(
-      @Body() CreateHardCollectionRequest data,
-      );
-
+    @Body() CreateHardCollectionRequest data,
+  );
 
   //CreateSoftCollection
   @POST(ApiConstants.PUT_ON_SALE)
   Future<ConfirmResponse> putOnSale(
-      @Body() PutOnSaleRequest data,
-      );
+    @Body() PutOnSaleRequest data,
+  );
 }

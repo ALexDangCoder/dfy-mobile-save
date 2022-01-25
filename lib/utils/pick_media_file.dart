@@ -15,13 +15,14 @@ Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
 
   String filePath = '';
   String mediaType = '';
+  String fileExtension = '';
   int fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: allowedExtensions,
   );
   if (result != null) {
-    final fileExtension = result.files.single.extension;
+    fileExtension = result.files.single.extension ?? '';
     if (fileExtension == 'mp4' || fileExtension == 'webm') {
       mediaType = MEDIA_VIDEO_FILE;
     } else if (fileExtension == 'mp3' ||
@@ -36,7 +37,12 @@ Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
   } else {
     // User canceled the picker
   }
-  return {'type': mediaType, 'path': filePath, 'size': fileSize};
+  return {
+    'type': mediaType,
+    'path': filePath,
+    'size': fileSize,
+    'extension': fileExtension,
+  };
 }
 
 Future<String> pickImageFunc({

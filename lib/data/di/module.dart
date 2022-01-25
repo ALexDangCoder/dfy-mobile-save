@@ -87,7 +87,6 @@ void configureDependencies() {
   Get.put(ConfirmClient(provideDio()));
   Get.put<ConfirmRepository>(ConfirmImplement(Get.find()));
 
-
   Get.put(WalletAddressClient(provideDio()));
   Get.put<WalletAddressRepository>(WalletAddressImpl(Get.find()));
 }

@@ -1,11 +1,14 @@
 import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -51,154 +54,164 @@ class _PopUpApproveState extends State<PopUpApprove> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor:  Colors.transparent,
-      body: Stack(
-        children: [
-          GestureDetector(
-            onTap: () {
-              final FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              margin: const EdgeInsets.only(top: 48),
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().bgBtsColor(),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+    return StateStreamLayout(
+      stream: widget.cubit.stateStream,
+      error: AppException('', S.current.something_went_wrong),
+      retry: () async {
+        await widget.cubit.getGasLimitApprove(
+          contractAddress: widget.cubit.tokenAddress ?? '',
+          context: context,
+        );
+      },
+      textEmpty: '',
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            GestureDetector(
+              onTap: () {
+                final FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.only(top: 48),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-              child: Scaffold(
-                resizeToAvoidBottomInset: true,
-                backgroundColor:  Colors.transparent,
-                body: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 18),
-                      SizedBox(
-                        height: 44,
-                        width: 44,
-                        child: Image.asset(ImageAssets.imgTokenDFY),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '• testnet',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          14,
-                          FontWeight.w400,
+                child: Scaffold(
+                  resizeToAvoidBottomInset: true,
+                  backgroundColor: Colors.transparent,
+                  body: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 18),
+                        SizedBox(
+                          height: 44,
+                          width: 44,
+                          child: Image.asset(ImageAssets.imgTokenDFY),
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      Text(
-                        widget.purposeText,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          20,
-                          FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 24),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppTheme.getInstance().whiteBackgroundButtonColor(),
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16),
+                        const SizedBox(height: 8),
+                        Text(
+                          '• testnet',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            14,
+                            FontWeight.w400,
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      '${ImageAssets.image_avatar}${widget.imageAccount}'
-                                      '.png',
+                        const SizedBox(height: 30),
+                        Text(
+                          widget.purposeText,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().textThemeColor(),
+                            20,
+                            FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 24),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppTheme.getInstance()
+                                  .whiteBackgroundButtonColor(),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(16),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        '${ImageAssets.image_avatar}${widget.imageAccount}'
+                                        '.png',
+                                      ),
                                     ),
                                   ),
+                                  height: 40,
+                                  width: 40,
                                 ),
-                                height: 40,
-                                width: 40,
-                              ),
-                              const SizedBox(width: 8),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        widget.accountName,
-                                        style: textNormal(
-                                          AppTheme.getInstance().whiteColor(),
-                                          16,
-                                        ).copyWith(
-                                          fontWeight: FontWeight.w700,
+                                const SizedBox(width: 8),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          widget.accountName,
+                                          style: textNormal(
+                                            AppTheme.getInstance().whiteColor(),
+                                            16,
+                                          ).copyWith(
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        widget.addressWallet.formatAddressWallet(),
-                                        style: textNormal(
-                                          AppTheme.getInstance().currencyDetailTokenColor(),
-                                          14,
+                                        const SizedBox(
+                                          width: 8,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    '${S.current.balance}: ${widget.balanceWallet}',
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      16,
+                                        Text(
+                                          widget.addressWallet
+                                              .formatAddressWallet(),
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .currencyDetailTokenColor(),
+                                            14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  )
-                                ],
-                              )
-                            ],
+                                    Text(
+                                      '${S.current.balance}: ${widget.balanceWallet}',
+                                      style: textNormal(
+                                        AppTheme.getInstance().whiteColor(),
+                                        16,
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      EstimateGasFee(
-                        cubit: widget.cubit,
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: MediaQuery.of(context)
-                            .viewInsets
-                            .bottom <=
-                            160
-                            ? heightOfBottom
-                            : 0,
-                      )
-                    ],
+                        const SizedBox(height: 16),
+                        EstimateGasFee(
+                          cubit: widget.cubit,
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).viewInsets.bottom <= 160
+                                  ? heightOfBottom
+                                  : 0,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              color: AppTheme.getInstance().bgBtsColor(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                color: AppTheme.getInstance().bgBtsColor(),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   key: bottomKey,
@@ -235,7 +248,7 @@ class _PopUpApproveState extends State<PopUpApprove> {
                               final canAction = snapshot.data ?? false;
                               return GestureDetector(
                                 onTap: () {
-                                  print (canAction);
+                                  print(canAction);
                                   if (canAction) {
                                     widget.approve();
                                   }
@@ -258,13 +271,11 @@ class _PopUpApproveState extends State<PopUpApprove> {
                     const SizedBox(height: 38),
                   ],
                 ),
-            ),
-          )
-        ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
-
 }
-
-

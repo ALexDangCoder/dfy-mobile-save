@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
+import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
@@ -22,7 +23,6 @@ class OfferTab extends StatefulWidget {
 class _OfferTabState extends State<OfferTab> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -73,7 +73,14 @@ class _OfferTabState extends State<OfferTab> {
     return BaseItem(
       child: GestureDetector(
         onTap: () {
-          /// push to Offer detail
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OfferDetailScreen(
+                id: objOffer.id ?? -1,
+              ),
+            ),
+          );
         },
         child: Padding(
           padding: EdgeInsets.only(left: 16.w, right: 16.w),

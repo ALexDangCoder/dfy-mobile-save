@@ -38,7 +38,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String hexString = '';
   String gasLimit = '';
   String rawData = '';
-  String nftMarketId = '';
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
@@ -69,28 +68,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get pairSink => _pairSubject.sink;
 
-  Future<double> getBalanceToken({
-    required String ofAddress,
-    required String tokenAddress,
-  }) async {
-    showLoading();
-    try {
-      balance = await web3Client.getBalanceOfToken(
-        ofAddress: ofAddress,
-        tokenAddress: tokenAddress,
-      );
-      showContent();
-    } catch (e) {
-      showError();
-      throw AppException(S.current.error, e.toString());
-    }
-    return balance;
-  }
-
-  Future<void> getHistory({
-    required String collectionAddress,
-    required String nftTokenId,
-  }) async {
+  Future<void> getHistory({String collectionAddress, String nftTokenId}) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
@@ -303,6 +281,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               res.urlToken = value.iconUrl;
               res.usdExchange = value.usdExchange;
+              res.repaymentAsset = value.address;
             }
           }
           emit(NftOnPawnSuccess(res));

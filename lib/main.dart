@@ -18,6 +18,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:r_crypto/r_crypto.dart';
 
+import 'data/web3/web3_utils.dart';
+
 MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
 Future<void> mainApp() async {
@@ -145,7 +147,6 @@ class _MyAppState extends State<MyApp> {
     getConfig();
     clearLoginModel();
   }
-
   void getConfig() {
     try {
       final data = {};

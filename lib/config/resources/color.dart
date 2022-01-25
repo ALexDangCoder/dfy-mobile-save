@@ -143,6 +143,8 @@ abstract class AppColor {
 
   Color secondTxtColor();
 
+  Color getAmountColor();
+
   Color dfBtnColor();
 
   Color dfBtnTxtColor();
@@ -228,6 +230,8 @@ abstract class AppColor {
   Color gray3Color();
 
   Color getPurpleColor();
+
+  Color logoColor();
 }
 
 class LightApp extends AppColor {
@@ -515,7 +519,6 @@ class LightApp extends AppColor {
 
   @override
   Color colorTextReset() {
-    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 
@@ -572,12 +575,27 @@ class LightApp extends AppColor {
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
   }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
 }
 
 class DarkApp extends AppColor {
   @override
   Color primaryColor() {
     return Colors.black;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
   }
 
   @override
@@ -940,6 +958,11 @@ class DarkApp extends AppColor {
   @override
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
   }
 }
 

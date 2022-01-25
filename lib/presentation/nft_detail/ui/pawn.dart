@@ -103,16 +103,17 @@ Widget _durationRowOnPawn({
   );
 }
 
-Widget _buildButtonSendOffer(BuildContext context) {
+Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
   return ButtonGradient(
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return const SendOffer();
-          },
+      showDialog(
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: SendOffer(
+            nftOnPawn: nftOnPawn,
+          ),
+          isRequireLoginEmail: false,
         ),
+        context: context,
       );
     },
     gradient: RadialGradient(

@@ -9,10 +9,10 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class ImportNftResponse {
   bool isSuccess;
@@ -790,6 +790,21 @@ class Web3Utils {
     return hex.encode(createOffer.data ?? []);
   }
 
+  Future<String> getWithdrawCollateralData({
+    required String nftCollateralId,
+  }) async {
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final function = deployContract.function('withdrawCollateral');
+    final withdrawCollateral = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(nftCollateralId)),
+      ],
+    );
+    return hex.encode(withdrawCollateral.data ?? []);
+  }
+
   //hardNFT
   Future<DeployedContract> deployedHardNftCollectionAddress(
     String contract,
@@ -822,6 +837,26 @@ class Web3Utils {
       ],
     );
     return hex.encode(createCollection.data ?? []);
+  }
+
+  Future<String> getCreateErc721NftData({
+    required String collectionAddress,
+    required String owner,
+    required String royaltyRate,
+    required String tokenCID,
+  }) async {
+    final deployContract = await deployedErc721Contract(collectionAddress);
+    final function = deployContract.function('safeMint');
+    final safeMint = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(owner),
+        BigInt.from(num.parse(_handleAmount(5, royaltyRate))),
+        tokenCID,
+      ],
+    );
+    return hex.encode(safeMint.data ?? []);
   }
 
   Future<DeployedContract> deployedContractAddress(
@@ -883,6 +918,17 @@ class Web3Utils {
         await rootBundle.loadString('assets/abi/PawnNFTABI_DEV2.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'nftPawn'),
+      EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedErc721Contract(
+    String contract,
+  ) async {
+    final abiCode = await rootBundle.loadString('assets/abi/erc721_abi.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'erc721'),
       EthereumAddress.fromHex(contract),
     );
     return deployContract;
