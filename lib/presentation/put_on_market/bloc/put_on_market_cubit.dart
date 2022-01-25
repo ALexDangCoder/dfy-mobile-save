@@ -127,6 +127,14 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   }
 
   // function pawn
+
+  Future<String> getHexStringPutOnPawn(
+    PutOnMarketModel putOnMarketModel,
+    BuildContext context,
+  ) async {
+    return '';
+  }
+
   void changeTokenPawn({int? indexToken, double? value}) {
     if (indexToken != null) {
       tokenPawn = listToken[indexToken];

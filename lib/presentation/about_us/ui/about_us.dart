@@ -71,13 +71,7 @@ class AboutUs extends StatelessWidget {
               Expanded(
                   child: SingleChildScrollView(
                 child: Column(
-                  children: [
-                    Container(
-                      height: 200,
-                      width: 200,
-                      color: Colors.red,
-                    )
-                  ],
+                  children: [],
                 ),
               ))
             ],

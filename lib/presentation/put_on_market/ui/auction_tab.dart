@@ -55,6 +55,8 @@ class _AuctionTabState extends State<AuctionTab>
   String? priceStepErrorText;
   String? errorTextEndTime;
 
+  int? durationTime;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -78,10 +80,10 @@ class _AuctionTabState extends State<AuctionTab>
       _putOnMarketModel.endTime =
           (endTime.millisecondsSinceEpoch / 1000).toInt().toString();
       final difference = endTime.difference(startTime).inHours;
-      if (endTime.difference(startTime).inMinutes < 10){
+      durationTime = endTime.difference(startTime).inMinutes;
+      if ((durationTime ?? 0) < 10 && (durationTime ?? 0) >0) {
         return null;
-      }
-      else {
+      } else {
         return S.current.min_duration_auction;
       }
       if (difference < 12) {
@@ -111,9 +113,9 @@ class _AuctionTabState extends State<AuctionTab>
   bool validateBuyOutPrice() {
     if (outPrice &&
             (_putOnMarketModel.buyOutPrice == null ||
-                _putOnMarketModel.buyOutPrice == '') ||
+                _putOnMarketModel.buyOutPrice == '' ||
         (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
-            double.parse(_putOnMarketModel.price ?? '0'))) {
+            double.parse(_putOnMarketModel.price ?? '0')))) {
       widget.cubit.buyOutPriceValidate = false;
       widget.cubit.updateStreamContinueAuction();
       return false;
@@ -252,8 +254,7 @@ class _AuctionTabState extends State<AuctionTab>
                             buyOutPriceErrorText =
                                 S.current.buy_out_price_error;
                           });
-                        }
-                        else {
+                        } else {
                           setState(() {
                             buyOutPriceErrorText = null;
                           });
@@ -361,16 +362,18 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         outPrice = value;
                       });
+                      if (!value){
+                        _putOnMarketModel.buyOutPrice = null;
+                      }
                       if (!validateBuyOutPrice()) {
                         setState(() {
                           buyOutPriceErrorText = S.current.buy_out_price_error;
                         });
-                      }else {
+                      } else {
                         setState(() {
                           buyOutPriceErrorText = null;
                         });
                       }
-
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: outPrice,
@@ -416,8 +419,7 @@ class _AuctionTabState extends State<AuctionTab>
                                 buyOutPriceErrorText =
                                     S.current.buy_out_price_error;
                               });
-                            }
-                            else {
+                            } else {
                               setState(() {
                                 buyOutPriceErrorText = null;
                               });
@@ -487,8 +489,7 @@ class _AuctionTabState extends State<AuctionTab>
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                     child: SizedBox(
                       height: buyOutPriceErrorText == null ? 0 : 25,
                       child: Text(
@@ -528,12 +529,14 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         priceStep = value;
                       });
+                      if (!value){
+                        _putOnMarketModel.priceStep = null;
+                      }
                       if (!validatePriceStep()) {
                         setState(() {
                           priceStepErrorText = S.current.price_step_error;
                         });
-                      }
-                      else {
+                      } else {
                         setState(() {
                           priceStepErrorText = null;
                         });
@@ -585,7 +588,7 @@ class _AuctionTabState extends State<AuctionTab>
                               setState(() {
                                 priceStepErrorText = S.current.price_step_error;
                               });
-                            }else {
+                            } else {
                               setState(() {
                                 priceStepErrorText = null;
                               });
@@ -655,8 +658,7 @@ class _AuctionTabState extends State<AuctionTab>
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                     child: SizedBox(
                       height: priceStepErrorText == null ? 0 : 25,
                       child: Text(
@@ -718,11 +720,30 @@ class _AuctionTabState extends State<AuctionTab>
                                       '${widget.cubit.valueTokenInputAuction ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
                                   isToken: true,
                                 ),
-                                // DetailItemApproveModel(
-                                //   title: '${S.current.duration} :',
-                                //   value:
-                                //       '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == DurationType.WEEK ? S.current.week : S.current.month}',
-                                // ),
+                                if (outPrice)
+                                  DetailItemApproveModel(
+                                    title: '${S.current.buy_out_price} :',
+                                    value:
+                                        '${_putOnMarketModel.buyOutPrice ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
+                                    isToken: true,
+                                  ),
+                                if (priceStep)
+                                  DetailItemApproveModel(
+                                    title: '${S.current.price_step} :',
+                                    value:
+                                        '${_putOnMarketModel.priceStep ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
+                                    isToken: true,
+                                  ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.duration} :',
+                                  value:
+                                      '${durationTime ?? 0 / 60} ${S.current.hour} '
+                                          '${(durationTime ?? 0 % 60) > 0 ?
+                                      (durationTime ?? 0 % 60).toInt().toString()+' ' + S.current.minute
+                                          : ''} \n '
+                                          '${S.current.from} ${timeStartController.text} '
+                                          '${dateStartController.text} ',
+                                ),
                               ],
                               textActiveButton: S.current.put_on_auction,
                               typeApprove: TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
