@@ -542,5 +542,6 @@
   "min_duration_auction" : "Minimum duration is 12hrs",
   "no_continue": "No, continue",
   "number_of_copies": "Number of copies",
-  "minting_fee": "Minting fee"
+  "minting_fee": "Minting fee",
+  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard"
 }

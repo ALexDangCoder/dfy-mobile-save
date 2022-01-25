@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<String> pinJsonToIPFS(
-    {required Map<String, dynamic> bodyMap}) async {
+Future<String> pinJsonToIPFS({
+  required Map<String, dynamic> bodyMap,
+}) async {
   String ipfsHash = '';
   final Map<String, dynamic> body = bodyMap;
   final headers = {

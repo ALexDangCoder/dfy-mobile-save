@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
@@ -23,6 +24,8 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
 
+  Web3Utils web3utils = Web3Utils();
+
   NFTRepository get nftRepo => Get.find();
 
   List<TypeNFTModel> listNft = [];
@@ -36,6 +39,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   String nftIPFS = '';
   String transactionData = '';
+  String tokenAddress = '';
 
   ///Detail NFT var
   String mediaType = '';
@@ -49,9 +53,11 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   int mintingFeeNumber = 10;
   String mintingFeeToken = 'DFY';
 
-  ///mediaFilePath
+  ///mediaFilePath,Size
   String mediaFilePath = '';
   String coverPhotoPath = '';
+  int mediaFileUploadTime = 0;
+  int coverFileSize = 0;
 
 
   ///Stream

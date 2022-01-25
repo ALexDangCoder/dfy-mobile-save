@@ -31,3 +31,10 @@ Future<String> pinFileToIPFS({
   }
   return ipfsHash;
 }
+
+int uploadTimeCalculate(int fileSize){
+  if(fileSize!=0){
+    return (fileSize/1000000).round() + 1;
+  }
+  return 0;
+}

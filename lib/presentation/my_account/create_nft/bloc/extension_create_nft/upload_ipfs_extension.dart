@@ -1,4 +1,5 @@
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_json_to_ipfs.dart';
@@ -40,12 +41,13 @@ extension UploadIPFS on CreateNftCubit {
       'description': description,
       'file_cid': mediaFileCid,
       'file_type': fileType,
-      'minting_fee_number': mintingFeeNumber,
+      'minting_fee_number': mintingFeeNumber.toString(),
       'minting_fee_token': mintingFeeToken,
       'name': nftName,
-      'properties': listProperty,
+      'properties': listProperty.toString(),
       'royalties': royalty.toString(),
     };
     nftIPFS = await pinJsonToIPFS(bodyMap: jsonMap);
+    await getTransactionData();
   }
 }

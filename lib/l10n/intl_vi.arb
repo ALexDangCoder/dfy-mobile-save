@@ -535,5 +535,6 @@
   "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ",
   "no_continue": "Không, tiếp tục",
   "number_of_copies" : "Số lượng bản sao",
-  "minting_fee": "Phí khởi tạo"
+  "minting_fee": "Phí khởi tạo",
+  "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155"
 }

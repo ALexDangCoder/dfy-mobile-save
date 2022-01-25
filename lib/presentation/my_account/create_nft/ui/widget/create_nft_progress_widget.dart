@@ -1,5 +1,3 @@
-import 'dart:math' hide log;
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -7,9 +5,11 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -17,16 +17,18 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CreateNftUpload extends StatefulWidget {
+class CreateNftUploadProgress extends StatefulWidget {
   final CreateNftCubit cubit;
 
-  const CreateNftUpload({Key? key, required this.cubit}) : super(key: key);
+  const CreateNftUploadProgress({Key? key, required this.cubit})
+      : super(key: key);
 
   @override
-  State<CreateNftUpload> createState() => _CreateNftUploadState();
+  State<CreateNftUploadProgress> createState() =>
+      _CreateNftUploadProgressState();
 }
 
-class _CreateNftUploadState extends State<CreateNftUpload>
+class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
     with TickerProviderStateMixin {
   late AnimationController _mediaFileAnimationController;
   late AnimationController _coverAnimationController;
@@ -35,14 +37,29 @@ class _CreateNftUploadState extends State<CreateNftUpload>
   void initState() {
     // TODO: implement initState
     super.initState();
-    final int rdC = Random().nextInt(3);
+    if (widget.cubit.coverFileSize != 0) {
+      final int coverFileUploadTime =
+          uploadTimeCalculate(widget.cubit.coverFileSize) + 3;
+      _coverAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: coverFileUploadTime,
+        ),
+      );
+      widget.cubit.mediaFileUploadTime =
+          widget.cubit.mediaFileUploadTime + coverFileUploadTime;
+    } else {
+      _coverAnimationController = AnimationController(
+        vsync: this,
+        duration: const Duration(
+          seconds: 1,
+        ),
+      );
+      widget.cubit.mediaFileUploadTime = widget.cubit.mediaFileUploadTime + 3;
+    }
     _mediaFileAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: (rdC + 3) * 2),
-    );
-    _coverAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: rdC + 3),
+      duration: Duration(seconds: widget.cubit.mediaFileUploadTime),
     );
     widget.cubit.uploadFileToIFPS();
     widget.cubit.upLoadStatusSubject.listen((value) {
@@ -53,6 +70,7 @@ class _CreateNftUploadState extends State<CreateNftUpload>
         if (_coverAnimationController.isAnimating) {
           _coverAnimationController.stop();
         }
+        widget.cubit.getDfyTokenInf();
         Navigator.pop(context);
         Navigator.push(
           context,
@@ -81,6 +99,9 @@ class _CreateNftUploadState extends State<CreateNftUpload>
               title: S.current.create_collection,
               textActiveButton: S.current.create,
               typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+              payValue: 10.toString(),
+              tokenAddress: widget.cubit.tokenAddress,
+              spender: widget.cubit.tokenAddress,
             ),
           ),
         );
