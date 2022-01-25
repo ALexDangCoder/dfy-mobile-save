@@ -24,6 +24,8 @@
   "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
+  "waiting_accept_auction":"Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
+  "withdraw_nft":"Rút NFT",
   "tab_home": "Home",
   "tab_market_place": "Marketplace",
   "confirm": "Xác Nhận",

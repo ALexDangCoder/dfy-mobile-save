@@ -19,6 +19,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -283,6 +284,12 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           await _nftRepo.getDetailNftOnPawn(pawnId.toString());
       result.when(
         success: (res) {
+          final String wallet = PrefsService.getCurrentBEWallet();
+          if(res.walletAddress?.toLowerCase() == wallet.toLowerCase()){
+            res.isYou = true;
+          } else{
+            res.isYou = false;
+          }
           getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';

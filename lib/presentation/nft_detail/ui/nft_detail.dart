@@ -812,7 +812,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonSendOffer(context),
+            bottomBar: nftOnPawn.isYou ?? false
+                ? _buildButtonCancelOnPawn(context, bloc, nftOnPawn)
+                : _buildButtonSendOffer(context),
             content: [
               _nameNFT(
                 url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
@@ -976,10 +978,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: (nftOnAuction.isOwner == true)
                 ? buttonCancelAuction(
-                    nftOnAuction.show ?? true,
-                    context,
-                    bloc,
-                    nftOnAuction,
+                    approveAdmin: nftOnAuction.show ?? true,
+                    context: context,
+                    bloc: bloc,
+                    nftMarket: nftOnAuction,
                   )
                 : Row(
                     children: [
@@ -1023,6 +1025,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 bloc.isStartAuction(nftOnAuction.endTime ?? 0),
                 bloc.getTimeCountDown(nftOnAuction.endTime ?? 0),
               ),
+              if(nftOnAuction.marketStatus == 9)
+                waitingAcceptAuction(),
               divide,
               spaceH12,
               _description(

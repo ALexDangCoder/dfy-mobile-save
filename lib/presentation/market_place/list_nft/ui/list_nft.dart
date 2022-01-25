@@ -71,8 +71,9 @@ class _ListNftState extends State<ListNft> {
         }
       }
     } else {
-      _cubit.walletAddress = widget.walletAddress!;
-      _cubit.addressStream.add(widget.walletAddress!);
+      _cubit.getListWallet();
+      _cubit.walletAddress = widget.walletAddress!.toLowerCase();
+      _cubit.addressStream.add(widget.walletAddress!.toLowerCase());
       if (widget.marketType != null) {
         _cubit.getListNft(
           status: _cubit.status(widget.marketType),

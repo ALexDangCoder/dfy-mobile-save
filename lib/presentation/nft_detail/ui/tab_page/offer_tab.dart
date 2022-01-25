@@ -29,28 +29,31 @@ class _OfferTabState extends State<OfferTab> {
   @override
   Widget build(BuildContext context) {
     if (widget.listOffer.isEmpty) {
-      return Center(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Center(
-              child: sizedPngImage(
-                w: 94,
-                h: 94,
-                image: ImageAssets.icNoTransaction,
-              ),
-            ),
-            Center(
-              child: Text(
-                'No offer',
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 20,
+      return SizedBox(
+        height: 150.h,
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Center(
+                child: sizedPngImage(
+                  w: 94,
+                  h: 94,
+                  image: ImageAssets.icNoTransaction,
                 ),
               ),
-            ),
-          ],
+              Center(
+                child: Text(
+                  'No offer',
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -94,9 +97,9 @@ class _OfferTabState extends State<OfferTab> {
                           '${objOffer.addressLender}'.handleString(),
                           style: richTextWhite
                               .copyWith(
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              )
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          )
                               .copyWith(fontSize: 14.sp),
                         ),
                       ],
@@ -123,7 +126,7 @@ class _OfferTabState extends State<OfferTab> {
                           ),
                           TextSpan(
                             text:
-                                ' with a ${objOffer.duration ?? ''} $duration',
+                            ' with a ${objOffer.duration ?? ''} $duration',
                             style: textNormalCustom(
                               AppTheme.getInstance().textThemeColor(),
                               14,

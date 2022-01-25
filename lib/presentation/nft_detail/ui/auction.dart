@@ -57,6 +57,19 @@ Widget _buildButtonPlaceBid(
   }
 }
 
+Widget waitingAcceptAuction() {
+  return Text(
+    S.current.waiting_accept_auction,
+    style: textNormalCustom(
+      Colors.red,
+      14,
+      FontWeight.w400,
+    ),
+    textAlign: TextAlign.start,
+    maxLines: 2,
+  );
+}
+
 Widget _buildButtonBuyOut(BuildContext context) {
   return ButtonTransparent(
     child: Text(
@@ -82,7 +95,7 @@ Widget buttonCancelAuction({
   required bool approveAdmin,
   required NFTDetailBloc bloc,
   required BuildContext context,
-  NFTOnAuction nftMarket,
+  required NFTOnAuction nftMarket,
 }) {
   if (!approveAdmin) {
     return ButtonGradient(
@@ -116,13 +129,13 @@ Widget buttonCancelAuction({
       child: nftMarket.marketStatus == 8
           ? processing()
           : Text(
-        S.current.cancel_aution,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
-        ),
-      ),
+              S.current.cancel_aution,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
     );
   } else {
     return const SizedBox();

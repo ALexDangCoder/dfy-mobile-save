@@ -148,7 +148,7 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7
         ? processing()
         : Text(
-      S.current.cancel_sale,
+      S.current.withdraw_nft,
       style: textNormalCustom(
         AppTheme.getInstance().textThemeColor(),
         16,

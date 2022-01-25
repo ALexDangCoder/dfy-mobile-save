@@ -457,7 +457,7 @@ class _FilterBtsState extends State<FilterBts> {
     return InkWell(
       onTap: () {
         widget.listNftCubit.addressStream.add(text);
-        widget.listNftCubit.walletAddress = text == 'All' ? '' : text;
+        widget.listNftCubit.walletAddress = text;
         widget.listNftCubit.isShowDropDownStream.add(false);
       },
       child: Container(

@@ -26,6 +26,7 @@ class NftOnPawn {
   num? completeContracts;
   bool? isActive;
   int? type;
+  bool? isYou;
   NftCollateralDetailDTO? nftCollateralDetailDTO;
 
   NftOnPawn({
@@ -52,6 +53,7 @@ class NftOnPawn {
     this.isActive,
     this.type,
     this.nftCollateralDetailDTO,
+    this.isYou,
   });
 }
 
