@@ -70,6 +70,7 @@ class _CollectionListState extends State<CollectionList> {
 
   @override
   void initState() {
+    print (widget.addressWallet);
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
       tittleScreen = widget.title ?? '';

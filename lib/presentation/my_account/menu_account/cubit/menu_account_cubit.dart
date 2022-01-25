@@ -59,7 +59,7 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
       final userInfo = PrefsService.getUserProfile();
       final String wallet = PrefsService.getCurrentBEWallet();
       final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
-      addressWalletSubject.sink.add(wallet.handleString(),);
+      addressWalletSubject.sink.add(wallet);
       if (mapProfileUser.stringValueOrEmpty('email') != '') {
         _emailSubject.sink.add(mapProfileUser.stringValueOrEmpty('email'));
       }

@@ -16,6 +16,7 @@ import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -312,7 +313,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                               ),
                                               const SizedBox(height: 6),
                                               Text(
-                                                data,
+                                                data.handleString(),
                                                 style: textNormalCustom(
                                                   AppTheme.getInstance()
                                                       .whiteColor(),

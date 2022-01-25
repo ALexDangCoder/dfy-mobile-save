@@ -11,7 +11,17 @@ Future<void> launchURL(String url) async {
   }
 }
 
+Future<void> launchMail(
+    {required String email, String? subject = '', String? body = '',}) async {
+  try {
+    await launch('mailto:$email?subject=$subject&body=$body');
+  } catch (e) {
+    rethrow;
+  }
+}
+
+
 void updateLocale() {
   Get.updateLocale(
-      Locale.fromSubtags(languageCode: PrefsService.getLanguage()),);
+    Locale.fromSubtags(languageCode: PrefsService.getLanguage()),);
 }
