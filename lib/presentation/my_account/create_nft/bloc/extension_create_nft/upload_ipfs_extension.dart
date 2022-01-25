@@ -1,8 +1,6 @@
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
-import 'package:Dfy/utils/upload_ipfs/pin_json_to_ipfs.dart';
 
 extension UploadIPFS on CreateNftCubit {
   Future<void> uploadFileToIFPS() async {
@@ -10,11 +8,11 @@ extension UploadIPFS on CreateNftCubit {
       upLoadStatusSubject.sink.add(-1);
       mediaFileUploadStatusSubject.sink.add(-1);
       coverPhotoUploadStatusSubject.sink.add(-1);
-      coverCid = await pinFileToIPFS(pathFile: coverPhotoPath);
+      coverCid = await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
       coverCid.isNotEmpty
           ? coverPhotoUploadStatusSubject.sink.add(1)
           : coverPhotoUploadStatusSubject.sink.add(0);
-      mediaFileCid = await pinFileToIPFS(pathFile: mediaFilePath);
+      mediaFileCid = await ipfsService.pinFileToIPFS(pathFile: mediaFilePath);
       mediaFileCid.isNotEmpty
           ? mediaFileUploadStatusSubject.sink.add(1)
           : mediaFileUploadStatusSubject.sink.add(0);
@@ -27,7 +25,7 @@ extension UploadIPFS on CreateNftCubit {
     } else {
       upLoadStatusSubject.sink.add(-1);
       mediaFileUploadStatusSubject.sink.add(-1);
-      mediaFileCid = await pinFileToIPFS(pathFile: mediaFilePath);
+      mediaFileCid = await ipfsService.pinFileToIPFS(pathFile: mediaFilePath);
       mediaFileCid.isNotEmpty
           ? mediaFileUploadStatusSubject.sink.add(1)
           : mediaFileUploadStatusSubject.sink.add(0);
@@ -47,7 +45,7 @@ extension UploadIPFS on CreateNftCubit {
       'properties': listProperty.toString(),
       'royalties': royalty.toString(),
     };
-    nftIPFS = await pinJsonToIPFS(bodyMap: jsonMap);
+    nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
     await getTransactionData();
   }
 }

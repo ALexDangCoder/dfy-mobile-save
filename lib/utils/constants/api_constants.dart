@@ -97,4 +97,12 @@ class ApiConstants {
   static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
   //cancel auction
   static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
+  //IPFS
+  static const String PINATA_API_KEY = 'ac8828bff3bcd1c1b828';
+  static const String PINATA_SECRET_API_KEY = 'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df';
+  static const String PIN_FILE_TO_IPFS = 'https://api.pinata.cloud/pinning/pinFileToIPFS?file';
+  static const String PIN_JSON_TO_IPFS = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
+
+
+
 }

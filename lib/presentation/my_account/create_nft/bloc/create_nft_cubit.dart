@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -23,6 +24,8 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   VideoPlayerController? controller;
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
+
+  final PinToIPFS ipfsService = PinToIPFS();
 
   Web3Utils web3utils = Web3Utils();
 

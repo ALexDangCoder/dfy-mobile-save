@@ -9,7 +9,7 @@ import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -39,7 +39,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
     super.initState();
     if (widget.cubit.coverFileSize != 0) {
       final int coverFileUploadTime =
-          uploadTimeCalculate(widget.cubit.coverFileSize) + 3;
+          PinToIPFS().uploadTimeCalculate(widget.cubit.coverFileSize) + 3;
       _coverAnimationController = AnimationController(
         vsync: this,
         duration: Duration(
@@ -91,7 +91,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                   value: widget.cubit.collectionAddress,
                 ),
                 DetailItemApproveModel(
-                  title: '${S.current.royalties}:',
+                  title: '${S.current.minting_fee}:',
                   value:
                       '${widget.cubit.mintingFeeNumber.toString()} ${widget.cubit.mintingFeeToken}',
                 ),

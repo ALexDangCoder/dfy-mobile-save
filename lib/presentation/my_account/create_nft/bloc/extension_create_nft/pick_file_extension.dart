@@ -4,7 +4,6 @@ import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dar
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
-import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
 import 'package:video_player/video_player.dart';
 
 extension PickFileExtension on CreateNftCubit {
@@ -17,7 +16,7 @@ extension PickFileExtension on CreateNftCubit {
     fileType = '$mediaType/$extension';
     mediaFileSubject.sink.add(mediaType);
     if (path.isNotEmpty) {
-      mediaFileUploadTime = uploadTimeCalculate(mediaFile.intValue('size'));
+      mediaFileUploadTime = ipfsService.uploadTimeCalculate(mediaFile.intValue('size'));
       mediaFilePath = path;
       createNftMapCheck['media_file'] = true;
       switch (mediaType) {
