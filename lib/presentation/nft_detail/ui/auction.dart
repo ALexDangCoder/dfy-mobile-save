@@ -77,12 +77,35 @@ Widget _buildButtonBuyOut(BuildContext context) {
     },
   );
 }
-Widget buttonCancelAuction(bool approveAdmin) {
-  if(!approveAdmin){
+
+Widget buttonCancelAuction({
+  required bool approveAdmin,
+  required NFTDetailBloc bloc,
+  required BuildContext context,
+}) {
+  if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
-        /// TODO: handle cancel sale buy nftMarket.isOwner == true
-
+        final nav = Navigator.of(context);
+        final String dataString = await bloc.getDataStringForCancelAuction(
+          context: context,
+        );
+        unawaited(
+          nav.push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(
+                dataString: dataString,
+                dataInfo: bloc.initListApprove(
+                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                ),
+                type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                cancelInfo: S.current.auction_cancel_info,
+                cancelWarning: S.current.cancel_auction_warning,
+                title: S.current.cancel_aution,
+              ),
+            ),
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -90,7 +113,7 @@ Widget buttonCancelAuction(bool approveAdmin) {
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
       child: Text(
-        S.current.cancel_sale,
+        S.current.cancel_aution,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
           16,
@@ -98,8 +121,7 @@ Widget buttonCancelAuction(bool approveAdmin) {
         ),
       ),
     );
-  }
-  else{
+  } else {
     return const SizedBox();
   }
 }
@@ -108,7 +130,7 @@ Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
   required bool isEnd,
 }) {
-  final bool isBidding = nftOnAuction.numberBid != 0 ;
+  final bool isBidding = nftOnAuction.numberBid != 0;
   return Container(
     width: 343.w,
     height: 64.h,

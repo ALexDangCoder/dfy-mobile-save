@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -13,7 +14,6 @@ void hideKeyboard(BuildContext context) {
 bool isEmail(String email) {
   return RegExp(EMAIL_REGEX).hasMatch(email);
 }
-
 
 /// validate vietnam phone number
 bool isVNPhone(String phone) {
@@ -89,18 +89,17 @@ Future<String> getDeviceId() async {
 
 void showLoading(BuildContext context, {Function? close}) {
   showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) {
-        return WillPopScope(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: AppTheme.getInstance().primaryColor(),
-            ),
-          ),
-          onWillPop: () async => false,
-        );
-      },).then(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) {
+      return WillPopScope(
+        child: const Center(
+          child: CupertinoLoading(),
+        ),
+        onWillPop: () async => false,
+      );
+    },
+  ).then(
     (value) {
       if (close != null) close(value);
     },

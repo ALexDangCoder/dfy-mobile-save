@@ -9,7 +9,7 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
-extension CallCoreExtension on ApproveCubit{
+extension CallCoreExtension on ApproveCubit {
   ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -41,19 +41,17 @@ extension CallCoreExtension on ApproveCubit{
             );
             if (result) {
               await gesGasLimitFirst(hexString ?? '');
-            }
-            else {
+            } else {
               showContent();
             }
-          }
-          else {
+          } else {
             await gesGasLimitFirst(hexString ?? '');
           }
         }
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
-        if (checkingApprove) {
+        if (checkingApprove ?? false) {
           final resultApprove = await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );
@@ -84,10 +82,40 @@ extension CallCoreExtension on ApproveCubit{
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
-                emit(SendRawDataSuccess(result['txHash']));
-                showContent();
+                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_SALE));
               } else {
-                showError();
+                emit(SignFail(S.current.cancel_sale));
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
+                  ),
+                );
+              } else {
+                emit(SignFail(S.current.put_on_sale));
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              } else {
+                emit(SignFail(S.current.put_on_auction));
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+              if (result['isSuccess']) {
+                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_AUCTION));
+              } else {
+                emit(SignFail(S.current.cancel_aution));
               }
               break;
             default:
@@ -95,7 +123,7 @@ extension CallCoreExtension on ApproveCubit{
           }
         }
         break;
-    //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
@@ -163,5 +191,4 @@ extension CallCoreExtension on ApproveCubit{
       //todo
     }
   }
-
 }

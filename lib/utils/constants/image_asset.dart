@@ -323,6 +323,8 @@ class ImageAssets {
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
   static const String x_svg = '$baseImg/x_svg.svg';
   static const String circle_x_svg = '$baseImg/circle_x_svg.svg';
+  static const String delete_svg = '$baseImg/delete_svg.svg';
+
 
   static SvgPicture svgAssets(
     String name, {

@@ -44,16 +44,6 @@ class HeaderMarketPlace extends StatelessWidget {
                   ),
                 );
               },
-              onLongPress: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EnterEmail(
-                      cubit: LoginWithEmailCubit(),
-                    ),
-                  ),
-                );
-              },
             ),
             searchBar(context, cubit),
             GestureDetector(

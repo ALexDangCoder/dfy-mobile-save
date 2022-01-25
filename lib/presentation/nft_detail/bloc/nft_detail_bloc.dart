@@ -321,8 +321,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             wallets.add(Wallet.fromJson(element));
           }
           walletAddress = wallets.first.address ?? '';
-
-          if (wallets.first.address == owner) {
+          //todo: sau khi có login cần sửa
+          if (wallets.first.address?.toLowerCase() == owner.toLowerCase()) {
             pairSink.add(false);
           } else {
             pairSink.add(true);
@@ -335,6 +335,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   Future<int> getNonceWeb3() async {
+    final String walletAddress = PrefsService.getCurrentBEWallet();
     final result = await web3Client.getTransactionCount(address: walletAddress);
     return result.count;
   }
@@ -446,37 +447,61 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  List<DetailItemApproveModel> initListApprove() {
-    //todo: Vũ: tạm hardcode
+  List<DetailItemApproveModel> initListApprove({
+    required TYPE_CONFIRM_BASE type,
+  }) {
     final List<DetailItemApproveModel> listApprove = [];
-    if (nftMarket.nftStandard == 'ERC-721') {
-      listApprove.add(
-        DetailItemApproveModel(
-          title: 'NTF',
-          value: nftMarket.name ?? '',
-        ),
-      );
-      listApprove.add(
-        DetailItemApproveModel(
-          title: S.current.quantity,
-          value: '${nftMarket.numberOfCopies}',
-        ),
-      );
-    } else {
-      listApprove.add(
-        DetailItemApproveModel(
-          title: 'NTF',
-          value: nftMarket.name ?? '',
-        ),
-      );
+    if(type == TYPE_CONFIRM_BASE.CANCEL_SALE){
+      if (nftMarket.nftStandard == 'ERC-721') {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.name ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftMarket.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.name ?? '',
+          ),
+        );
+      }
+    }else if(type == TYPE_CONFIRM_BASE.CANCEL_AUCTION){
+      if (nftOnAuction.nftStandard == 'ERC-721') {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftOnAuction.name ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftOnAuction.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftOnAuction.name ?? '',
+          ),
+        );
+      }
     }
+
     return listApprove;
   }
 
-  //get limit gas
-
   //get dataString
-  Future<double> getGasLimitForCancel({
+  Future<String> getDataStringForCancel({
     required BuildContext context,
   }) async {
     try {
@@ -486,24 +511,29 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         orderId: nftMarket.orderId.toString(),
         context: context,
       );
-      gasLimit = await web3Client.getGasLimitByData(
-        from: '0x39ee4c28E09ce6d908643dDdeeAeEF2341138eBB',
-        toContractAddress: nft_sales_address_dev2,
-        dataString: hexString,
-      );
-
       showContent();
-      return double.parse(gasLimit);
+      return hexString;
     } catch (e) {
       showError();
       throw AppException(S.current.error, e.toString());
     }
   }
 
-  //cancel sale:
-  Future<Map<String, dynamic>> cancelSale({required String transaction}) async {
-    final Map<String, dynamic> res =
-        await web3Client.sendRawTransaction(transaction: transaction);
-    return res;
+  Future<String> getDataStringForCancelAuction({
+    required BuildContext context,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getCancelAuctionData(
+        contractAddress: nft_auction_dev2,
+        context: context,
+        auctionId: nftOnAuction.auctionId.toString(),
+      );
+      showContent();
+      return hexString;
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
   }
 }

@@ -31,7 +31,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
 
   @override
   void initState() {
-    widget.cubit.gasLimitFirstSubject.listen((value) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) { widget.cubit.gasLimitFirstSubject.listen((value) {
       setState(() {
         gasLimit = widget.cubit.gasLimitFirst ?? 0;
         _editGasLimitController.text =
@@ -46,7 +46,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                 .toInt()
                 .toString();
       });
-    });
+    });});
     // TODO: implement initState
     super.initState();
   }

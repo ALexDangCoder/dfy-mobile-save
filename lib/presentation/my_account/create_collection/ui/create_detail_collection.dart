@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/ipfs_gen_url.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/validate_input.dart';
@@ -51,9 +50,6 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
     widget.bloc.getListCategory();
     widget.bloc.collectionStandard = widget.collectionStandard;
     widget.bloc.collectionType = widget.collectionType;
-    trustWalletChannel.setMethodCallHandler(
-      widget.bloc.nativeMethodCallBackTrustWallet,
-    );
   }
 
   @override

@@ -162,7 +162,25 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      /// TODO: handle cancel sale buy nftMarket.isOwner == true
+      final nav = Navigator.of(context);
+      final String dataString =
+          await bloc.getDataStringForCancel(context: context);
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              dataString: dataString,
+              dataInfo: bloc.initListApprove(
+                type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              ),
+              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              cancelInfo: S.current.cancel_sale_info,
+              cancelWarning: S.current.customer_cannot,
+              title: S.current.cancel_sale,
+            ),
+          ),
+        ),
+      );
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
@@ -337,9 +355,29 @@ Widget _buildButtonPutOnMarket(
   BuildContext context,
   NFTDetailBloc bloc,
   NftMarket nftMarket,
+  String? nftId,
+  Function reload,
 ) {
   return ButtonGradient(
-    onPressed: () async {},
+    onPressed: () async {
+      final navigator = Navigator.of(context);
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (context) => PutOnMarketScreen(
+            putOnMarketModel: PutOnMarketModel.putOnSale(
+              nftTokenId: int.parse(bloc.nftMarket.nftTokenId ?? '0'),
+              nftId: nftId ?? '',
+              nftType: bloc.nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
+              collectionAddress: bloc.nftMarket.collectionAddress ?? '',
+            ),
+          ),
+          settings: const RouteSettings(
+            name: 'put_on_market',
+          ),
+        ),
+      );
+      reload();
+    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
@@ -355,5 +393,61 @@ Widget _buildButtonPutOnMarket(
               FontWeight.w700,
             ),
           ),
+  );
+}
+
+Approve approveWidget({
+  required String dataString,
+  required String title,
+  required String cancelInfo,
+  required String cancelWarning,
+  required TYPE_CONFIRM_BASE type,
+  required List<DetailItemApproveModel> dataInfo,
+}) {
+  return Approve(
+    listDetail: dataInfo,
+    title: title,
+    header: Container(
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 20.h,
+      ),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        cancelInfo,
+        style: textNormal(
+          AppTheme.getInstance().whiteColor(),
+          16,
+        ).copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    warning: Row(
+      children: [
+        sizedSvgImage(
+          w: 16.67.w,
+          h: 16.67.h,
+          image: ImageAssets.ic_warning_canel,
+        ),
+        SizedBox(
+          width: 5.w,
+        ),
+        Expanded(
+          child: Text(
+            cancelWarning,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: textNormal(
+              AppTheme.getInstance().currencyDetailTokenColor(),
+              14,
+            ),
+          ),
+        ),
+      ],
+    ),
+    textActiveButton: title,
+    typeApprove: type,
+    hexString: dataString,
   );
 }

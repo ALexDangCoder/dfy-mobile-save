@@ -7,6 +7,8 @@ import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/app_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -18,8 +20,12 @@ import 'login_cubit.dart';
 extension LoginForMarketPlace on LoginCubit {
   LoginRepository get _loginRepo => Get.find();
 
-  Future<void> loginAndSaveInfo(
-      {required String walletAddress, required String signature}) async {
+  Future<void> loginAndSaveInfo({
+    required String walletAddress,
+    required String signature,
+    required BuildContext context,
+  }) async {
+    showLoading(context);
     final result = await _loginRepo.login(signature, walletAddress);
 
     await result.when(
@@ -37,6 +43,7 @@ extension LoginForMarketPlace on LoginCubit {
         isSaveInfoSuccessSubject.sink.add(false);
       },
     );
+    hideLoading(context);
   }
 
   //getListWallets
@@ -51,7 +58,6 @@ extension LoginForMarketPlace on LoginCubit {
 
   Future<void> getSignature({required String walletAddress}) async {
     try {
-      showLoading();
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
@@ -78,7 +84,6 @@ extension LoginForMarketPlace on LoginCubit {
         S.current.something_went_wrong,
         e.message.toString(),
       );
-
     }
   }
 
