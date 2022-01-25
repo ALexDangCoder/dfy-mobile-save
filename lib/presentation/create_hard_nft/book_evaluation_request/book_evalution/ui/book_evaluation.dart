@@ -1,37 +1,31 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_hard_nft/bloc_book_evaluation_request/ui/widget/dialog_cancel.dart';
-import 'package:Dfy/presentation/create_hard_nft/bloc_book_evaluation_request/ui/widget/item_pawn_shop.dart';
-import 'package:Dfy/presentation/create_hard_nft/bloc_book_evaluation_request/ui/widget/item_pawn_shop_star.dart';
-import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
-import 'package:Dfy/presentation/wallet/ui/hero.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
-import 'package:Dfy/widgets/item/successCkcCreateNft.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class BookEvaluationRequest extends StatefulWidget {
-  const BookEvaluationRequest({Key? key}) : super(key: key);
+
+
+class BookEvaluation extends StatefulWidget {
+  const BookEvaluation({Key? key}) : super(key: key);
 
   @override
-  _BookEvaluationRequestState createState() => _BookEvaluationRequestState();
+  _BookEvaluationState createState() => _BookEvaluationState();
 }
 
-class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
+class _BookEvaluationState extends State<BookEvaluation> {
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(20.547441679107266, 105.90781651516276), //,
+    target: LatLng(20.547441679107266, 105.90781651516276),
     zoom: 14.4746,
   );
 
@@ -87,36 +81,12 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
         //todo add event
       },
       title: S.current.book_evaluation_request,
-      bottomBar: Container(
-        padding: EdgeInsets.only(
-          bottom: 38.h,
-        ),
-        color: AppTheme.getInstance().bgBtsColor(),
-        child: ButtonGold(
-          isEnable: true,
-          title: S.current.book_evaluation,
-        ),
-      ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             spaceH24,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SuccessCkcCreateNft(),
-                dividerSuccessCreateNFT,
-                CircleStepCreateNft(
-                    circleStatus: CircleStatus.IS_CREATING, stepCreate: '2'),
-                dividerCreateNFT,
-                CircleStepCreateNft(
-                    circleStatus: CircleStatus.IS_NOT_CREATE, stepCreate: '3'),
-                dividerCreateNFT,
-                CircleStepCreateNft(
-                    circleStatus: CircleStatus.IS_NOT_CREATE, stepCreate: '4'),
-              ],
-            ),
+            const StepAppBar(),
             spaceH32,
             SizedBox(
               child: Padding(
@@ -131,40 +101,6 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
                 ),
               ),
             ),
-            //  spaceH32,
-
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   itemCount: 10,
-            //   // shrinkWrap: true,
-            //   padding: EdgeInsets.only(
-            //     bottom: 24.h,
-            //   ),
-            //   itemBuilder: (context, index) => GestureDetector(
-            //     onTap: () {
-            //       //todo add event
-            //       Navigator.of(context).push(
-            //         HeroDialogRoute(
-            //           builder: (context) {
-            //             return DialogCancel();
-            //           },
-            //           isNonBackground: false,
-            //         ),
-            //       );
-            //     },
-            //     child: ItemPawnSHop(
-            //       statusPawnShop: S.current.your_appointment_request,
-            //       namePawnShop: 'Doanh 88',
-            //       isViewReason: true,
-            //       avatarPawnShopUrl:
-            //           'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
-            //       isDeletePawnShop: true,
-            //       datePawnShop: '09:15 - 14/12/2021',
-            //     ),
-            //   ),
-            // ),
-            // todo
             Center(
               child: Container(
                 clipBehavior: Clip.hardEdge,
@@ -178,6 +114,7 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
                 height: 193.h,
                 width: 343.w,
                 child: GoogleMap(
+                  // zoomGesturesEnabled: false,
                   myLocationEnabled: true,
                   zoomControlsEnabled: false,
                   initialCameraPosition: _kGooglePlex,
@@ -205,14 +142,24 @@ class _BookEvaluationRequestState extends State<BookEvaluationRequest> {
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemBuilder: (context, index) => ItemPawnShopStar(
-                starNumber: '5.0',
-                namePawnShop: 'Tima - Online Pawnshop',
-                avatarPawnShopUrl:
-                    'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
-                function: () {},
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreateBookEvaluation(),
+                    ),
+                  );
+                },
+                child: ItemPawnShopStar(
+                  starNumber: '5.0',
+                  namePawnShop: 'Tima - Online Pawnshop',
+                  avatarPawnShopUrl:
+                      'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
+                  function: () {},
+                ),
               ),
-              itemCount: 10,
+              itemCount: 4,
               shrinkWrap: true,
             )
           ],

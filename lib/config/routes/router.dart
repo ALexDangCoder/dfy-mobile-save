@@ -1,4 +1,4 @@
-import 'package:Dfy/presentation/create_hard_nft/bloc_book_evaluation_request/ui/book_evaluation_request.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -26,7 +26,7 @@ class AppRouter {
     switch (settings.name) {
       case bookEvaluationRequest:
         return MaterialPageRoute(
-            builder: (ctx) => const BookEvaluationRequest());
+            builder: (ctx) => const ListBookEvaluation());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
 

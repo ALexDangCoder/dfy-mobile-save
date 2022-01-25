@@ -94,7 +94,13 @@ class ImageAssets {
   static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
   static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
   static const String img_star = '$baseImg/star.png';
-
+  static const String ic_calendar_create_book = '$baseImg/calendar_create_book.png';
+  static const String ic_edit_square = '$baseImg/edit_square.png';
+  static const String ic_location = '$baseImg/Location.png';
+  static const String ic_mail = '$baseImg/mail.png';
+  static const String ic_time = '$baseImg/time.png';
+  static const String ic_global_market = '$baseImg/global.png';
+  static const String ic_phone = '$baseImg/phone.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
