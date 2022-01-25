@@ -99,7 +99,7 @@ class ImageAssets {
   static const String ic_location = '$baseImg/Location.png';
   static const String ic_mail = '$baseImg/mail.png';
   static const String ic_time = '$baseImg/time.png';
-  static const String ic_global_market = '$baseImg/global.png';
+  static const String ic_global_market = '$baseImg/ic_global_market.png';
   static const String ic_phone = '$baseImg/phone.png';
 
   static const String icTabMarketPlaceSelected =
