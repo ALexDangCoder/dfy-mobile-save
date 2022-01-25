@@ -157,4 +157,3 @@ Widget _buildButtonCancelOnPawn(
     ),
   );
 }
-

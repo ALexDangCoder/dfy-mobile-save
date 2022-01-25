@@ -14,7 +14,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HistoryTab extends StatefulWidget {
@@ -398,7 +397,7 @@ Widget status(HistoryNFT historyNFT) {
               ),
             ),
             TextSpan(
-              text: expectedLoan,
+              text: price,
               style: textNormal(
                 amountColor,
                 14,
@@ -550,7 +549,7 @@ Widget status(HistoryNFT historyNFT) {
               ),
             ),
             TextSpan(
-              text: historyNFT.walletAddress!.formatAddress(index: 4),
+              text: historyNFT.toAddress!.formatAddress(index: 4),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => launch(
                       Get.find<AppConstants>().bscScan +

@@ -186,7 +186,8 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
+                  '${!isBidding ? nftOnAuction.reservePrice :
+                  nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

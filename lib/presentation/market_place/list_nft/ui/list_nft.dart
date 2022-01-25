@@ -392,7 +392,10 @@ class _ListNftState extends State<ListNft> {
     if (_debounce.isActive) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 900), () {
       _cubit.searchNft(
-          query, _cubit.getParam(_cubit.selectStatus), widget.pageRouter);
+        query,
+        _cubit.getParam(_cubit.selectStatus),
+        widget.pageRouter,
+      );
     });
   }
 }

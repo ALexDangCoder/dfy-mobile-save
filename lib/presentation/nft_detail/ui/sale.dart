@@ -363,7 +363,9 @@ Widget _buildButtonPutOnMarket(
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
-    child: (nftMarket.processStatus == 5 || nftMarket.processStatus == 6)
+    child: (nftMarket.processStatus == 5 ||
+            nftMarket.processStatus == 6 ||
+            nftMarket.processStatus == 3)
         ? processing()
         : Text(
             S.current.put_on_market,

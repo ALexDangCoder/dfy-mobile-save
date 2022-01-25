@@ -485,11 +485,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonPutOnMarket(
+            bottomBar: objSale.isOwner == true ? _buildButtonPutOnMarket(
               context,
               bloc,
               objSale,
-            ),
+            ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,

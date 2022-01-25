@@ -188,8 +188,10 @@ class _FilterBtsState extends State<FilterBts> {
                           width: double.infinity,
                           child: StreamBuilder<List<CheckBoxFilter>>(
                             stream: widget.listNftCubit.listCheckBox,
-                            builder: (context,
-                                AsyncSnapshot<List<CheckBoxFilter>> snapshot) {
+                            builder: (
+                              context,
+                              AsyncSnapshot<List<CheckBoxFilter>> snapshot,
+                            ) {
                               if (snapshot.hasData) {
                                 final itemCount = snapshot.data?.length ?? 0;
                                 if (itemCount != 0) {
@@ -445,7 +447,8 @@ class _FilterBtsState extends State<FilterBts> {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               return itemAddress(
-                  widget.listNftCubit.walletAddressFilter[index]);
+                widget.listNftCubit.walletAddressFilter[index],
+              );
             },
           ),
         ),
