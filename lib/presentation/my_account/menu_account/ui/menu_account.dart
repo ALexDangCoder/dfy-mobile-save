@@ -566,7 +566,12 @@ class _MenuAccountState extends State<MenuAccount> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Image.asset(ImageAssets.ic_back),
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(ImageAssets.ic_back),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerRight,
