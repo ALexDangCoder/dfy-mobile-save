@@ -16,6 +16,7 @@ class BlocListBookEvaluation {
         await _createHardNFTRepository.getListAppointment(
       assetId,
     );
+
     result.when(
       success: (res) {
         if (res.isNotEmpty) {
