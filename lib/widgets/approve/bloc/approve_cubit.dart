@@ -36,8 +36,8 @@ enum TYPE_CONFIRM_BASE {
   CREATE_COLLECTION,
   CANCEL_AUCTION,
   CREATE_SOFT_NFT,
-  CANCEL_AUCTION,
   CANCEL_PAWN
+  CREATE_NFT
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -78,6 +78,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? rawData;
 
+  String? spender;
+
   String? hexString;
 
   ConfirmRepository get confirmRepository => Get.find();
@@ -88,7 +90,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? tokenAddress;
 
-  bool checkingApprove = false;
+  bool? checkingApprove;
 
   String? tokenApproveData;
 
@@ -113,7 +115,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   final BehaviorSubject<bool> canActionSubject = BehaviorSubject.seeded(false);
 
-  final BehaviorSubject<bool> isApprovedSubject = BehaviorSubject<bool>();
+  final PublishSubject<bool> isApprovedSubject = PublishSubject<bool>();
 
   Stream<String> get addressWalletCoreStream => addressWalletCoreSubject.stream;
 

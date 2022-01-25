@@ -228,6 +228,8 @@ abstract class AppColor {
   Color gray3Color();
 
   Color getPurpleColor();
+
+  Color logoColor();
 }
 
 class LightApp extends AppColor {
@@ -572,12 +574,22 @@ class LightApp extends AppColor {
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
   }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
+  }
 }
 
 class DarkApp extends AppColor {
   @override
   Color primaryColor() {
     return Colors.black;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
   }
 
   @override

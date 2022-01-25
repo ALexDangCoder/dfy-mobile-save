@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -80,22 +81,62 @@ class _PawnTabState extends State<PawnTab>
               const SizedBox(
                 height: 4,
               ),
-              InputWithSelectType(
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d+\.?\d{0,5}'),
-                    ),
-                  ],
-                  maxSize: 100,
-                  keyboardType: TextInputType.number,
-                  typeInput: typeInput(),
-                  hintText: S.current.enter_price,
-                  onChangeType: (index) {},
-                  onchangeText: (value) {
-                    widget.cubit.changeTokenPawn(
-                      value: value != '' ? double.parse(value) : null,
+              StreamBuilder<List<TokenInf>>(
+                  stream: widget.cubit.listTokenStream,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data ?? [];
+                    return InputWithSelectType(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,5}'),
+                        ),
+                      ],
+                      maxSize: 100,
+                      keyboardType: TextInputType.number,
+                      typeInput: data
+                          .map(
+                            (e) => SizedBox(
+                          height: 64,
+                          width: 70,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: Image.network(
+                                  e.iconUrl ?? '',
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Flexible(
+                                child: Text(
+                                  e.symbol ?? '',
+                                  style: textValueNFT.copyWith(
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                          .toList(),
+                      hintText: S.current.enter_price,
+                      onChangeType: (index) {
+                        // widget.cubit.changeTokenSale(
+                        //   indexToken: index,
+                        // );
+                        // _putOnMarketModel.tokenAddress =
+                        // '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+                      },
+                      onchangeText: (value) {
+                        // widget.cubit.changeTokenSale(
+                        //   value: value != '' ? double.parse(value) : null,
+                        // );
+                        // _putOnMarketModel.price = value;
+                      },
                     );
-                  }),
+                  },),
               const SizedBox(
                 height: 16,
               ),
@@ -262,98 +303,6 @@ class _PawnTabState extends State<PawnTab>
     );
   }
 
-  List<Widget> typeInput() {
-    return [
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/DFY.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'DFY',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BTC.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'BTC',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BNB.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'BNB',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/ETH.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'ETH',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-    ];
-  }
 
   @override
   // TODO: implement wantKeepAlive
