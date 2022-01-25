@@ -34,7 +34,7 @@ extension CommonExtension on ApproveCubit {
       case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
         return nft_auction_dev2;
       case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
-        return nft_sales_address_dev2;
+        return nft_pawn_dev2;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         return nft_auction_dev2;
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:

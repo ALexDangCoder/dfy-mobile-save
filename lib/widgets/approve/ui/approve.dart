@@ -333,6 +333,21 @@ class _ApproveState extends State<Approve> {
           );
         }
         break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        {
+          unawaited(showLoading());
+          final nonce = await cubit.getNonce();
+          await cubit.signTransactionWithData(
+            walletAddress: cubit.addressWallet ?? '',
+            contractAddress: cubit.getSpender(),
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
+            hexString: widget.hexString ?? '',
+          );
+        }
+        break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
         // TODO: Handle this case.
         break;
