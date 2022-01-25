@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -373,7 +374,7 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
-        // TODO: Handle this case.
+        log('CREATE SOFT NFT LOGIC');
         break;
     }
   }

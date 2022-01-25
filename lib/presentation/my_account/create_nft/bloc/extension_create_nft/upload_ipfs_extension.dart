@@ -1,5 +1,4 @@
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 
 extension UploadIPFS on CreateNftCubit {
@@ -46,6 +45,5 @@ extension UploadIPFS on CreateNftCubit {
       'royalties': royalty.toString(),
     };
     nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
-    await getTransactionData();
   }
 }
