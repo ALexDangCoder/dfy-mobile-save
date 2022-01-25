@@ -217,7 +217,7 @@ class _ApproveState extends State<Approve> {
     );
     cubit.isApprovedSubject.listen((value) async {
       final navigator = Navigator.of(context);
-      if (cubit.checkingApprove != null){
+      if (cubit.checkingApprove != null) {
         if (value && !(cubit.checkingApprove ?? true)) {
           if (isShowLoading) {
             Navigator.pop(context);
@@ -703,25 +703,25 @@ class _ApproveState extends State<Approve> {
         );
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseSuccess(
-                title: S.current.buy_nft,
-                content: S.current.congratulation,
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(
-                        index: 1,
-                      ),
-                    ),
-                  );
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.buy_nft,
+                    content: S.current.congratulation,
+                    callback: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 1,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
 
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
@@ -754,10 +754,10 @@ class _ApproveState extends State<Approve> {
         );
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_TOKEN:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         final result = await cubit.putOnSale(txHash: data);
@@ -796,31 +796,31 @@ class _ApproveState extends State<Approve> {
           await showLoadFail();
         }
         break;
-    // TODO: Handle this case.
+      // TODO: Handle this case.
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         widget.request?.latestBlockchainTxn = data;
         cubit.sendOffer(offerRequest: widget.request!);
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseSuccess(
-                title: S.current.send_offer,
-                content: S.current.congratulation,
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(
-                        index: 1,
-                      ),
-                    ),
-                  );
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.send_offer,
+                    content: S.current.congratulation,
+                    callback: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                            index: 1,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
 
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
@@ -852,7 +852,7 @@ class _ApproveState extends State<Approve> {
         cubit.createCollection(
           type: widget.createCollectionCubit?.collectionType ?? 0,
           mapRawData:
-          widget.createCollectionCubit?.getMapCreateCollection() ?? {},
+              widget.createCollectionCubit?.getMapCreateCollection() ?? {},
           txhHash: data,
         );
         popToFirst(context);
@@ -892,6 +892,7 @@ class _ApproveState extends State<Approve> {
         break;
     }
   }
+
   Future<void> caseNavigatorFail(TYPE_CONFIRM_BASE type, String data) async {
     final navigator = Navigator.of(context);
     switch (type) {
@@ -899,35 +900,35 @@ class _ApproveState extends State<Approve> {
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseFail(
-                title: S.current.buy_nft,
-                content: S.current.buy_fail,
-                onTapBtn: () {
-                  Navigator.pop(context);
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.buy_nft,
+                    content: S.current.buy_fail,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseFail(
-                title: S.current.place_a_bid,
-                content: S.current.failed,
-                onTapBtn: () {
-                  Navigator.pop(context);
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.place_a_bid,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         final result = await cubit.putOnSale(txHash: data);
@@ -957,18 +958,18 @@ class _ApproveState extends State<Approve> {
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseFail(
-                title: S.current.send_offer,
-                content: S.current.failed,
-                onTapBtn: () {
-                  Navigator.pop(context);
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.send_offer,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         cubit.confirmCancelSaleWithBE(
@@ -999,7 +1000,7 @@ class _ApproveState extends State<Approve> {
         cubit.createCollection(
           type: widget.createCollectionCubit?.collectionType ?? 0,
           mapRawData:
-          widget.createCollectionCubit?.getMapCreateCollection() ?? {},
+              widget.createCollectionCubit?.getMapCreateCollection() ?? {},
           txhHash: data,
         );
         popToFirst(context);
@@ -1039,6 +1040,7 @@ class _ApproveState extends State<Approve> {
         break;
     }
   }
+
   Container containerWithBorder({required Widget child}) {
     return Container(
       decoration: BoxDecoration(

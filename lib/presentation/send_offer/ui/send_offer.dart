@@ -357,7 +357,7 @@ class _SendOfferState extends State<SendOffer> {
                     CustomFormValidate(
                       validator: validator,
                       formatter: [
-                        DecimalTextInputFormatter(decimalRange: 2)
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                       ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
@@ -371,7 +371,7 @@ class _SendOfferState extends State<SendOffer> {
                         return null;
                       },
                       hintText: S.current.enter_interest_rate,
-                      inputType: TextInputType.number,
+                      inputType: const TextInputType.numberWithOptions(decimal: true),
                       suffix: SizedBox(
                         width: 20.w,
                         child: Center(
