@@ -13,12 +13,13 @@ class CustomFormValidate extends StatefulWidget {
     this.suffix,
     required this.inputType,
     required this.validator,
-    this.onChange,
+    this.onChange, this.formatter = const [],
   }) : super(key: key);
   final String? Function(String? value) validatorValue;
   final String hintText;
   final Widget? prefix;
   final Widget? suffix;
+  final List<TextInputFormatter>? formatter;
   final TextInputType inputType;
   final Function(String)? onChange;
   final Map<GlobalKey, bool> validator;

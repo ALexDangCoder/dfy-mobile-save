@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -355,6 +356,9 @@ class _SendOfferState extends State<SendOffer> {
                     spaceH4,
                     CustomFormValidate(
                       validator: validator,
+                      formatter: [
+                        DecimalTextInputFormatter(decimalRange: 2)
+                      ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
                       },

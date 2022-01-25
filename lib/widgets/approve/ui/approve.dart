@@ -678,7 +678,7 @@ class _ApproveState extends State<Approve> {
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.buy_nft,
-                    content: S.current.congratulation,
+                    content: S.current.buy_fail,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -704,12 +704,6 @@ class _ApproveState extends State<Approve> {
               ),
             );
         break;
-      case TYPE_CONFIRM_BASE.SEND_NFT:
-        // TODO: Handle this case.
-        break;
-      case TYPE_CONFIRM_BASE.SEND_TOKEN:
-        // TODO: Handle this case.
-        break;
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         final result = await cubit.putOnSale(txHash: data);
         navigator.pop();
@@ -734,7 +728,6 @@ class _ApproveState extends State<Approve> {
           await showLoadFail();
         }
         break;
-      // TODO: Handle this case.
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
