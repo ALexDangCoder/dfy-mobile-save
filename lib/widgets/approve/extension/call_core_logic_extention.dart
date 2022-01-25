@@ -1,11 +1,11 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
@@ -62,18 +62,39 @@ extension CallCoreExtension on ApproveCubit {
           switch (type) {
             case TYPE_CONFIRM_BASE.BUY_NFT:
               if (result['isSuccess']) {
-                showContent();
                 emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
               } else {
-                showContent();
-                emit(SignFail(S.current.buy_nft));
+                emit(SignFail(S.current.buy_nft, TYPE_CONFIRM_BASE.BUY_NFT));
+              }
+              break;
+            case TYPE_CONFIRM_BASE.SEND_OFFER:
+              if (result['isSuccess']) {
+                emit(SignSuccess(
+                    result['txHash'], TYPE_CONFIRM_BASE.SEND_OFFER));
+              } else {
+                emit(
+                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PLACE_BID:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.PLACE_BID),
+                );
+              } else {
+                emit(
+                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
+                );
               }
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
               if (result['isSuccess']) {
                 emit(
                   SignSuccess(
-                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION,),
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+                  ),
                 );
                 showContent();
               } else {
@@ -82,9 +103,14 @@ extension CallCoreExtension on ApproveCubit {
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
-                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_SALE));
+                emit(
+                  SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_SALE),
+                );
               } else {
-                emit(SignFail(S.current.cancel_sale));
+                emit(
+                  SignFail(
+                      S.current.cancel_sale, TYPE_CONFIRM_BASE.CANCEL_SALE),
+                );
               }
               break;
             case TYPE_CONFIRM_BASE.PUT_ON_SALE:
@@ -96,26 +122,27 @@ extension CallCoreExtension on ApproveCubit {
                   ),
                 );
               } else {
-                emit(SignFail(S.current.put_on_sale));
-              }
-              break;
-            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
-              if (result['isSuccess']) {
                 emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  SignFail(
+                    S.current.put_on_sale,
+                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
                   ),
                 );
-              } else {
-                emit(SignFail(S.current.put_on_auction));
               }
               break;
             case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
               if (result['isSuccess']) {
-                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_AUCTION));
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  ),
+                );
               } else {
-                emit(SignFail(S.current.cancel_aution));
+                emit(SignFail(
+                  S.current.cancel_aution,
+                  TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                ));
               }
               break;
             default:
@@ -161,9 +188,7 @@ extension CallCoreExtension on ApproveCubit {
         'withData': hexString,
       };
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
-    } on PlatformException {
-      //print ('â');
-    }
+    } on PlatformException {}
   }
 
   Future<void> getListWallets() async {

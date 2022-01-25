@@ -102,7 +102,7 @@ dependencies:
   #  get_storage: ^2.0.2
   # Loading style
   tuple: ^2.0.0
-  image_res: ^0.3.0
+  image_res: ^0.3.0  #flutter packages pub run image_res:main watch
   auto_size_text_field: ^1.0.1
   get_it: ^7.2.0
   qr_flutter: ^4.0.0

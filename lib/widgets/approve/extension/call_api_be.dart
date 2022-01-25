@@ -1,7 +1,8 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 
 extension CallApiBE on ApproveCubit {
@@ -16,12 +17,8 @@ extension CallApiBE on ApproveCubit {
           CreateSoftCollectionRequest.fromJson(mapRawData);
       final result = await confirmRepository.createSoftCollection(data: data);
       result.when(
-        success: (suc) {
-
-        },
-        error: (err) {
-
-        },
+        success: (suc) {},
+        error: (err) {},
       );
     } else {
       mapRawData['bc_txn_hash'] = txhHash;
@@ -37,25 +34,24 @@ extension CallApiBE on ApproveCubit {
     return '';
   }
 
-  Future<bool> putOnSale ({ required String txHash})async {
+  Future<bool> putOnSale({required String txHash}) async {
     final Map<String, dynamic> mapRawData = {
-      "nft_id" : putOnMarketModel?.nftId ?? '',
-      "token" : putOnMarketModel?.tokenAddress ?? '',
-      "txn_hash" : txHash,
-      "nft_type" : putOnMarketModel?.nftType ?? 0,
-      "number_of_copies" : putOnMarketModel?.numberOfCopies ?? 1,
-      "price" : int.parse( putOnMarketModel?.price ?? ''),
+      "nft_id": putOnMarketModel?.nftId ?? '',
+      "token": putOnMarketModel?.tokenAddress ?? '',
+      "txn_hash": txHash,
+      "nft_type": putOnMarketModel?.nftType ?? 0,
+      "number_of_copies": putOnMarketModel?.numberOfCopies ?? 1,
+      "price": int.parse(putOnMarketModel?.price ?? ''),
     };
-    final PutOnSaleRequest data =
-    PutOnSaleRequest.fromJson(mapRawData);
+    final PutOnSaleRequest data = PutOnSaleRequest.fromJson(mapRawData);
     final result = await confirmRepository.putOnSale(data: data);
     bool res = false;
     result.when(
       success: (suc) {
-        res= true;
+        res = true;
       },
       error: (err) {
-        res= false;
+        res = false;
       },
     );
     return res;
@@ -73,11 +69,10 @@ extension CallApiBE on ApproveCubit {
       id: marketId,
       txnHash: txnHash,
     );
-    result.when(success: (res) {
-
-    }, error: (err) {
-
-    },);
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
   }
 
   Future<void> confirmCancelAuctionWithBE({
@@ -88,10 +83,19 @@ extension CallApiBE on ApproveCubit {
       id: marketId,
       txnHash: txnHash,
     );
-    result.when(success: (res) {
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
+  }
 
-    }, error: (err) {
-
-    },);
+  Future<void> sendOffer({
+    required SendOfferRequest offerRequest,
+  }) async {
+    final result = await nftRepo.sendOffer(offerRequest);
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
   }
 }
