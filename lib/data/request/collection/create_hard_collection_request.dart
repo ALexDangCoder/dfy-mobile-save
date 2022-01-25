@@ -1,4 +1,3 @@
-
 import 'package:Dfy/data/request/collection/social_link_map_request.dart';
 import 'package:json_annotation/json_annotation.dart';
 

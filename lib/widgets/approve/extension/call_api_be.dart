@@ -3,6 +3,8 @@ import 'package:Dfy/data/request/collection/create_soft_collection_request.dart'
 import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 
 extension CallApiBE on ApproveCubit {
@@ -113,6 +115,16 @@ extension CallApiBE on ApproveCubit {
       id: marketId,
       txnHash: txnHash,
     );
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
+  }
+
+  Future<void> sendOffer({
+    required SendOfferRequest offerRequest,
+  }) async {
+    final result = await nftRepo.sendOffer(offerRequest);
     result.when(
       success: (res) {},
       error: (err) {},

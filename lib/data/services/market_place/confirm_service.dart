@@ -24,8 +24,8 @@ abstract class ConfirmClient {
   //CreateHardCollection
   @POST(ApiConstants.CREATE_HARD_COLLECTION)
   Future<ConfirmResponse> createHardCollection(
-      @Body() CreateHardCollectionRequest data,
-      );
+    @Body() CreateHardCollectionRequest data,
+  );
 
 
   //putOnSale

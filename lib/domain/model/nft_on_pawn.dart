@@ -13,6 +13,7 @@ class NftOnPawn {
   int? status;
   String? urlToken;
   double? usdExchange;
+  String? repaymentAsset;
   int? durationType;
   int? durationQuantity;
   int? bcCollateralId;
@@ -27,7 +28,6 @@ class NftOnPawn {
   bool? isActive;
   int? type;
   NftCollateralDetailDTO? nftCollateralDetailDTO;
-
   NftOnPawn({
     this.id,
     this.userId,
