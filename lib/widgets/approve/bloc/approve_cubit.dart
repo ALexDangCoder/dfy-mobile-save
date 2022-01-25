@@ -17,6 +17,7 @@ import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,8 @@ enum TYPE_CONFIRM_BASE {
   PLACE_BID,
   CANCEL_SALE,
   CREATE_COLLECTION,
+  CANCEL_AUCTION,
+  CANCEL_PAWN
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {

@@ -158,10 +158,11 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
   LoginRepository get _loginRepo => Get.find();
 
-  Future<void> loginAndSaveInfo({
+  Future<bool> loginAndSaveInfo({
     required String walletAddress,
     required String signature,
   }) async {
+    bool isSuccess = false;
     final result = await _loginRepo.login(signature, walletAddress);
 
     await result.when(
@@ -173,9 +174,13 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
           walletAddress,
         );
         await getUserProfile();
+        isSuccess = true;
       },
-      error: (err) {},
+      error: (err) {
+        isSuccess = false;
+      },
     );
+    return isSuccess;
   }
 
   //getListWallets

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
@@ -50,16 +51,17 @@ class _MenuAccountState extends State<MenuAccount> {
   }
 
   void pushRoute(String routeName, BuildContext context) {
+    final String walletAddress = PrefsService.getCurrentBEWallet();
     switch (routeName) {
       case 'nft_not_on_market':
         {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ListNft(
+              builder: (context) => ListNft(
                 marketType: MarketType.NOT_ON_MARKET,
                 pageRouter: PageRouter.MY_ACC,
-                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                walletAddress: walletAddress,
               ),
             ),
           );
@@ -70,10 +72,10 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ListNft(
+              builder: (context) => ListNft(
                 marketType: MarketType.SALE,
                 pageRouter: PageRouter.MY_ACC,
-                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                walletAddress: walletAddress,
               ),
             ),
           );
@@ -84,10 +86,10 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ListNft(
+              builder: (context) => ListNft(
                 marketType: MarketType.AUCTION,
                 pageRouter: PageRouter.MY_ACC,
-                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                walletAddress: walletAddress,
               ),
             ),
           );
@@ -98,10 +100,10 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ListNft(
+              builder: (context) => ListNft(
                 marketType: MarketType.PAWN,
                 pageRouter: PageRouter.MY_ACC,
-                walletAddress: '0xe77c14cdF13885E1909149B6D9B65734aefDEAEf',
+                walletAddress: walletAddress,
               ),
             ),
           );

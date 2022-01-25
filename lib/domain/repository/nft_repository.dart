@@ -65,4 +65,10 @@ mixin NFTRepository {
     required String id,
     required String txnHash,
   });
+
+  Future<Result<ConfirmModel>> cancelAuction({
+    required String id,
+    required String txnHash,
+  });
+
 }

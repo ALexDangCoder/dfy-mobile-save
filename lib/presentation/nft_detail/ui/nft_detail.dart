@@ -6,7 +6,9 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -975,7 +977,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: (nftOnAuction.isOwner == true)
-                ? buttonCancelAuction(nftOnAuction.show ?? true)
+                ? buttonCancelAuction(
+                    approveAdmin: nftOnAuction.show ?? true,
+                    context: context,
+                    bloc: bloc,
+                  )
                 : Row(
                     children: [
                       Expanded(

@@ -95,4 +95,11 @@ abstract class NFTClient {
       @Field('market_id') String marketId,
       @Field('txn_hash') String txnHash,
       );
+
+  //Confirm cancel  auction:
+  @POST(ApiConstants.CANCEL_AUCTION)
+  Future<ConfirmResponse> cancelAuction(
+      @Field('auction_id') String marketId,
+      @Field('txn_hash') String txnHash,
+  );
 }

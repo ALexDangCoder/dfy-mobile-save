@@ -1,12 +1,19 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
-import 'package:Dfy/widgets/stream_consumer/stream_listener.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
+import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
+import 'package:Dfy/presentation/market_place/login/ui/wallet_has_email.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -66,21 +73,26 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
           } else {
             final LoginStatus loginStatus = snapshot.data!;
             if (loginStatus == LoginStatus.LOGGED) {
+              // đã login ví
               Future.delayed(const Duration(milliseconds: 300), () {
-                // Navigator.pop(context);
-                if (widget.isRequireLoginEmail) {}
-                // showDialog(
-                //   context: context,
-                //   builder: (context) => ConnectEmailDialog(
-                //     navigationTo: widget.navigationTo,
-                //   ),
-                // );
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => widget.navigationTo,
-                  ),
-                );
+                Navigator.pop(context);
+                if (!widget.isRequireLoginEmail) {
+                  //không yêu cầu login email
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConnectEmailDialog(
+                      navigationTo: widget.navigationTo,
+                    ),
+                  );
+                } else {
+                  //yêu cầu login email:
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ConnectWallet(),
+                    ),
+                  );
+                }
               });
               return Container(
                 color: Colors.transparent,
@@ -244,6 +256,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 cubit: cubit,
                 wallet: cubit.wallet ?? Wallet(),
                 navigationTo: widget.navigationTo,
+                isRequireLoginEmail: widget.isRequireLoginEmail,
               );
             }
           }
