@@ -130,18 +130,6 @@ extension CallCoreExtension on ApproveCubit {
                 );
               }
               break;
-            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
-                  ),
-                );
-              } else {
-                emit(SignFail(S.current.put_on_auction));
-              }
-              break;
             case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
               if (result['isSuccess']) {
                 emit(
