@@ -52,6 +52,19 @@ Widget _buildButtonPlaceBid(
     );
   }
 }
+Widget waitingAcceptAuction() {
+  return Text(
+    S.current.waiting_accept_auction,
+    style: textNormalCustom(
+      Colors.red,
+      14,
+      FontWeight.w400,
+    ),
+    textAlign: TextAlign.start,
+    maxLines: 2,
+  );
+}
+
 
 Widget _buildButtonBuyOut(
   BuildContext context,

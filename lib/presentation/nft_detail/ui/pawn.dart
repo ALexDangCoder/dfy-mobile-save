@@ -104,6 +104,7 @@ Widget _durationRowOnPawn({
 }
 
 Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
+  /// TODO: if un login => login => send offer
   return ButtonGradient(
     onPressed: () {
       showDialog(

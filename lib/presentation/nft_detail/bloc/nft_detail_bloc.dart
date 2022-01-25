@@ -68,7 +68,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get pairSink => _pairSubject.sink;
 
-  Future<void> getHistory({String collectionAddress, String nftTokenId}) async {
+  Future<void> getHistory(
+      {required String collectionAddress, required String nftTokenId}) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
@@ -159,9 +160,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           final String wallet = PrefsService.getCurrentBEWallet();
-          if(res.owner?.toLowerCase() == wallet.toLowerCase()){
+          if (res.owner?.toLowerCase() == wallet.toLowerCase()) {
             res.isOwner = true;
-          } else{
+          } else {
             res.isOwner = false;
           }
           showContent();
@@ -269,9 +270,9 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           final String wallet = PrefsService.getCurrentBEWallet();
-          if(res.walletAddress?.toLowerCase() == wallet.toLowerCase()){
+          if (res.walletAddress?.toLowerCase() == wallet.toLowerCase()) {
             res.isYou = true;
-          } else{
+          } else {
             res.isYou = false;
           }
           getOffer(pawnId.toString());
@@ -450,7 +451,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required TYPE_CONFIRM_BASE type,
   }) {
     final List<DetailItemApproveModel> listApprove = [];
-    if(type == TYPE_CONFIRM_BASE.CANCEL_SALE){
+    if (type == TYPE_CONFIRM_BASE.CANCEL_SALE) {
       if (nftMarket.nftStandard == 'ERC-721') {
         listApprove.add(
           DetailItemApproveModel(
@@ -472,7 +473,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           ),
         );
       }
-    }else if(type == TYPE_CONFIRM_BASE.CANCEL_AUCTION){
+    } else if (type == TYPE_CONFIRM_BASE.CANCEL_AUCTION) {
       if (nftOnAuction.nftStandard == 'ERC-721') {
         listApprove.add(
           DetailItemApproveModel(

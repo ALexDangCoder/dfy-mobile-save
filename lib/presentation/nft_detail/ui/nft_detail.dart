@@ -21,7 +21,6 @@ import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_put_on_market.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
@@ -817,7 +816,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: nftOnPawn.isYou ?? false
                 ? _buildButtonCancelOnPawn(context, bloc, nftOnPawn)
-                : _buildButtonSendOffer(context),
+                : _buildButtonSendOffer(context,nftOnPawn),
             content: [
               _nameNFT(
                 url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',

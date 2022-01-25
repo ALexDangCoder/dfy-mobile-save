@@ -118,6 +118,7 @@ Widget _buildButtonBuyOutOnSale(
 ) {
   return ButtonGradient(
     onPressed: () {
+      /// TODO: Handle if un login => push to login => buy
       if (isBought) {
         _showDialog(
           context,
