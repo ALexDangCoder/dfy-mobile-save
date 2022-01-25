@@ -103,6 +103,24 @@ Widget _durationRowOnPawn({
   );
 }
 
+Widget _buttonAction(
+    {required BuildContext context,
+    required NFTDetailBloc bloc,
+    required NftOnPawn nftOnPawn}) {
+  final profileJson = PrefsService.getUserProfile();
+  final UserProfileModel userProfile = userProfileFromJson(profileJson);
+  final userId = userProfile.id ?? -1;
+  if (userId == nftOnPawn.userId) {
+    return _buildButtonCancelOnPawn(
+      context,
+      bloc,
+      nftOnPawn,
+    );
+  } else {
+    return _buildButtonSendOffer(context);
+  }
+}
+
 Widget _buildButtonSendOffer(BuildContext context) {
   return ButtonGradient(
     onPressed: () {
@@ -128,5 +146,51 @@ Widget _buildButtonSendOffer(BuildContext context) {
         FontWeight.w700,
       ),
     ),
+  );
+}
+
+Widget _buildButtonCancelOnPawn(
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NftOnPawn nftOnPawn,
+) {
+  return ButtonGradient(
+    onPressed: () async {
+      final nav = Navigator.of(context);
+      final String dataString = await bloc.getDataStringForCancelPawn(
+        pawnId: nftOnPawn.nftCollateralDetailDTO?.nftId ?? '',
+      );
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              dataString: dataString,
+              dataInfo: bloc.initListApprove(
+                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              ),
+              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              cancelInfo: S.current.pawn_cancel_info,
+              cancelWarning: S.current.pawn_cancel_warning,
+              title: S.current.cancel_pawn,
+            ),
+          ),
+        ),
+      );
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftOnPawn.status == 7
+        ? processing()
+        : Text(
+            S.current.cancel_pawn,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
   );
 }

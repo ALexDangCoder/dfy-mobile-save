@@ -11,7 +11,13 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConfirmEmail extends StatefulWidget {
-  const ConfirmEmail({Key? key}) : super(key: key);
+  const ConfirmEmail({
+    Key? key,
+    required this.transactionId,
+    required this.email,
+  }) : super(key: key);
+  final String transactionId;
+  final String email;
 
   @override
   State<ConfirmEmail> createState() => _ConfirmEmailState();
@@ -35,12 +41,19 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
         floatingActionButton: ButtonLuxuryBigSize(
           title: S.current.confirm_account,
           isEnable: true,
-          onTap: () {
-            if(otpController.text.length != 6){
+          onTap: () async {
+            if (otpController.value.text.length != 6) {
               //todo: Handler
-            }else{
-              //TODO: CALL API VERIFY OTP
-              Navigator.pop(context,true);
+            } else {
+              bool isSuccess = await cubit.verifyOTP(
+                otp: otpController.value.text,
+                transactionID: widget.transactionId,
+              );
+              if(isSuccess){
+                Navigator.pop(context, true);
+              }else{
+
+              }
             }
           },
         ),
@@ -132,7 +145,11 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                   builder: (context, snapshot) {
                     return GestureDetector(
                       onTap: () {
-                        if(snapshot.data ?? false){
+                        if (snapshot.data ?? false) {
+                          cubit.sendOTP(
+                            email: widget.email,
+                            type: 1,
+                          );
                           cubit.startTimer();
                         }
                       },

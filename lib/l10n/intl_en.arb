@@ -540,5 +540,8 @@
   "enter" : "Enter",
   "max_duration_auction" : "Maximum duration is 7 days (168 hrs)",
   "put_on_auction" : "Put on auction",
-  "min_duration_auction" : "Minimum duration is 12hrs"
+  "min_duration_auction" : "Minimum duration is 12hrs",
+  "cancel_pawn" : "Cancel pawn",
+  "pawn_cancel_info": "Pawn information will be cancelled",
+  "pawn_cancel_warning": "Customer can not find your NFT anymore"
 }

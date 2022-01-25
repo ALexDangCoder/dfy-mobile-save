@@ -369,7 +369,7 @@ class _ApproveState extends State<Approve> {
           caseNavigator(state.type, state.txh);
         }
         if (state is SignFail) {
-          if(widget.typeApprove == TYPE_CONFIRM_BASE.CANCEL_SALE){
+          if (widget.typeApprove == TYPE_CONFIRM_BASE.CANCEL_SALE) {
             showLoadFail();
             return;
           }
@@ -771,22 +771,23 @@ class _ApproveState extends State<Approve> {
           txnHash: data,
           marketId: nftDetailBloc.nftMarket.marketId ?? '',
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -809,26 +810,27 @@ class _ApproveState extends State<Approve> {
         );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        cubit.confirmCancelAuctionWithBE(
+        await cubit.confirmCancelAuctionWithBE(
           txnHash: data,
           marketId: nftDetailBloc.nftOnAuction.id ?? '',
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );

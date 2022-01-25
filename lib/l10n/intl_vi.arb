@@ -529,9 +529,12 @@
   "end_in": "Kết thúc",
   "cancel_aution": "Hủy đấu giá",
   "auction_cancel_info": "Thông tin đấu giá sẽ bị hủy",
-  "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
+  "cancel_auction_warning": "Khách hàng sẽ không thể mua NFT của bạn nữa",
   "cancel_success": "Hủy bán thành công",
   "no_continue": "Không, tiếp tục",
   "max_duration_auction" : "Thời lượng tối đa là 7 ngày (168 giờ)",
-  "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ"
+  "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ",
+  "cancel_pawn" : "Hủy thế chấp",
+  "pawn_cancel_info": "Thông tin thế chấp sẽ bị hủy",
+  "pawn_cancel_warning": "Khách hàng sẽ không thể tìn thấy NFT của bạn nữa"
 }

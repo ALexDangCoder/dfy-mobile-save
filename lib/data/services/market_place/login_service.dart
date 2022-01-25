@@ -1,6 +1,7 @@
 import 'package:Dfy/data/response/market_place/login/login_response.dart';
-import 'package:Dfy/data/response/market_place/nonce/nonce_response.dart';
-import 'package:Dfy/data/response/market_place/user_profile/user_profile.dart';
+import 'package:Dfy/data/response/market_place/login/nonce_response.dart';
+import 'package:Dfy/data/response/market_place/login/otp_response.dart';
+import 'package:Dfy/data/response/market_place/login/user_profile.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -30,5 +31,17 @@ abstract class LoginClient {
   @POST(ApiConstants.REFRESH_TOKEN)
   Future<LoginResponse> refreshToken(
     @Field('refresh_token') String refreshToken,
+  );
+
+  @POST(ApiConstants.GET_OTP)
+  Future<OTPResponse> getOTP(
+    @Field('email') String email,
+    @Field('type') int type,
+  );
+
+  @PUT(ApiConstants.VERIFY_OTP)
+  Future<LoginResponse> verifyOTP(
+    @Field('otp') String otp,
+    @Field('transaction_id') String transactionId,
   );
 }
