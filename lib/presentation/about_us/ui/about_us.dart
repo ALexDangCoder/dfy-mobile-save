@@ -1,10 +1,14 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+//ic_email , ic_address , ic_global
+
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -31,14 +35,12 @@ class AboutUs extends StatelessWidget {
                     top: 0,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      child: Center(
-                        child: Text(
-                          S.current.about_us,
-                          style: textNormal(
-                                  AppTheme.getInstance().textThemeColor(), 20)
-                              .copyWith(fontWeight: FontWeight.w700),
-                        ),
+                    child: Center(
+                      child: Text(
+                        S.current.about_us,
+                        style: textNormal(
+                                AppTheme.getInstance().textThemeColor(), 20)
+                            .copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
@@ -69,11 +71,158 @@ class AboutUs extends StatelessWidget {
                 color: AppTheme.getInstance().divideColor(),
               ),
               Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25,
+                    horizontal: 16,
+                  ),
                   child: SingleChildScrollView(
-                child: Column(
-                  children: [],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 52,
+                              width: 52,
+                              child: Image.asset(ImageAssets.imgTokenDFY),
+                            ),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  child: Text(
+                                    appName,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      31,
+                                      FontWeight.w700,
+                                    ).copyWith(height: 1.0),
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      appURL,
+                                      style: textNormalOswaldCustom(
+                                        AppTheme.getInstance().logoColor(),
+                                        18,
+                                        FontWeight.w300,
+                                      ).copyWith(height: 1.0),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: appName,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().getAmountColor(),
+                              16,
+                              FontWeight.w600,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: S.current.about_us_content,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_global),
+                            const SizedBox (width: 8,),
+                            GestureDetector(
+                              onTap: (){
+                                launchURL(defiLink);
+                              },
+                              child: SizedBox(
+                                child: Text(
+                                    appURL,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox (height: 16,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_global),
+                            const SizedBox (width: 8,),
+                            GestureDetector(
+                              onTap: (){
+                                launchMail(email: mailAsk);
+                              },
+                              child: SizedBox(
+                                child: Text(
+                                  mailAsk,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox (height: 16,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_global),
+                            const SizedBox (width: 8,),
+                            GestureDetector(
+                              onTap: (){
+                                launchMail(email: mailSupport);
+                              },
+                              child: SizedBox(
+                                child: Text(
+                                  mailSupport,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox (height: 24,),
+                        SizedBox (
+                          child: Text(
+                            '$appName - ${S.current.hanoi_office}',
+                            style: ,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ))
+              )
             ],
           ),
         ),

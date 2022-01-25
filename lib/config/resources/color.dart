@@ -156,6 +156,8 @@ abstract class AppColor {
 
   Color secondTxtColor();
 
+  Color getAmountColor();
+
   Color dfBtnColor();
 
   Color dfBtnTxtColor();
@@ -243,6 +245,8 @@ abstract class AppColor {
   Color gray3Color();
 
   Color getPurpleColor();
+
+  Color logoColor();
 }
 
 class LightApp extends AppColor {
@@ -468,26 +472,31 @@ class LightApp extends AppColor {
 
   @override
   Color bgTranSubmit() {
+    // TODO: implement bgTranSubmit
     return bgTranSubmitColor;
   }
 
   @override
   Color disableRadioColor() {
+    // TODO: implement disableRadioColor
     return const Color(0xFFE0E0E0);
   }
 
   @override
   Color skeleton() {
+    // TODO: implement skeleton
     return colorSkeleton;
   }
 
   @override
   Color skeletonLight() {
+    // TODO: implement skeletonLight
     return colorSkeletonLight;
   }
 
   @override
   Color bgErrorLoad() {
+    // TODO: implement bgErrorLoad
     return bgErrorLoadData;
   }
 
@@ -497,36 +506,43 @@ class LightApp extends AppColor {
   }
 
   Color activityDateColor() {
+    // TODO: implement activityDateColor
     return dateColor;
   }
 
   @override
   Color whiteWithOpacitySevenZero() {
+    // TODO: implement whiteWithOpacitySevenZero
     return Colors.white.withOpacity(0.7);
   }
 
   @override
   Color amountTextColor() {
+    // TODO: implement amountTextColor
     return amountColor;
   }
 
   @override
   Color blueText() {
+    // TODO: implement blueText
     return const Color(0xff46BCFF);
   }
 
   @override
   Color colorTextReset() {
+    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 
   @override
   Color bgProgressingColors() {
+    // TODO: implement bgProgressingColors
     return const Color(0xFF3E3D5C);
   }
 
   @override
   List<Color> colorFab() {
+    // TODO: implement colorFab
     return colorsFab;
   }
 
@@ -552,11 +568,13 @@ class LightApp extends AppColor {
 
   @override
   Color getPurpleColor() {
+    // TODO: implement getPurpleColor
     return purple;
   }
 
   @override
   Color yellowColor() {
+    // TODO: implement yellowColor
     return fillYellowColor;
   }
 
@@ -594,12 +612,27 @@ class LightApp extends AppColor {
   Color redMarketColors() {
    return redMarketColor;
   }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
 }
 
 class DarkApp extends AppColor {
   @override
   Color primaryColor() {
     return Colors.black;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
   }
 
   @override
@@ -1016,6 +1049,11 @@ class DarkApp extends AppColor {
   Color redMarketColors() {
     // TODO: implement redMarketColors
     throw UnimplementedError();
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
   }
 }
 

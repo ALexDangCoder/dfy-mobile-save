@@ -6,39 +6,42 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:video_player/video_player.dart';
 
-extension UploadExtension on CreateNftCubit {
+extension PickFileExtension on CreateNftCubit {
   Future<void> pickFile() async {
     mediaType = '';
     final Map<String, dynamic> mediaFile = await pickMediaFile();
     mediaType = mediaFile.getStringValue('type');
+    final extension = mediaFile.getStringValue('extension');
     final path = mediaFile.getStringValue('path');
+    fileType = '$mediaType/$extension';
+    mediaFileSubject.sink.add(mediaType);
     if (path.isNotEmpty) {
+      mediaFileUploadTime = ipfsService.uploadTimeCalculate(mediaFile.intValue('size'));
+      mediaFilePath = path;
       createNftMapCheck['media_file'] = true;
+      switch (mediaType) {
+        case MEDIA_IMAGE_FILE:
+          {
+            imageFileSubject.sink.add(path);
+            break;
+          }
+        case MEDIA_VIDEO_FILE:
+          {
+            if (controller == null) {
+              controller = VideoPlayerController.file(File(path));
+              await controller?.initialize();
+              await controller?.play();
+              videoFileSubject.sink.add(controller!);
+            }
+            break;
+          }
+        default:
+          {
+            break;
+          }
+      }
     } else {
       createNftMapCheck['media_file'] = false;
-    }
-    mediaFileSubject.sink.add(mediaType);
-    switch (mediaType) {
-      case MEDIA_IMAGE_FILE:
-        {
-          imageFileSubject.sink.add(path);
-          break;
-        }
-      case MEDIA_VIDEO_FILE:
-        {
-          if (controller == null) {
-            controller = VideoPlayerController.file(File(path));
-            await controller?.setLooping(true);
-            await controller?.initialize();
-            await controller?.play();
-            videoFileSubject.sink.add(controller!);
-          }
-          break;
-        }
-      default:
-        {
-          break;
-        }
     }
     validateCreate();
   }
@@ -49,6 +52,7 @@ extension UploadExtension on CreateNftCubit {
     );
     final path = mediaFile.getStringValue('path');
     if (path.isNotEmpty) {
+      coverFileSize = mediaFile.intValue('size');
       createNftMapCheck['cover_photo'] = true;
       coverPhotoPath = path;
       coverPhotoSubject.sink.add(coverPhotoPath);
@@ -63,6 +67,7 @@ extension UploadExtension on CreateNftCubit {
     coverPhotoSubject.sink.add(coverPhotoPath);
     createNftMapCheck['cover_photo'] = false;
     validateCreate();
+    coverFileSize = 0;
   }
 
   void clearMainData() {

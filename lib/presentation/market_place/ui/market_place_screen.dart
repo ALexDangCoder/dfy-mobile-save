@@ -182,14 +182,12 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                       );
                     },
                     nftCallBack: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return CreateNFTScreen(
-                              cubit: CreateNftCubit(),
-                            );
-                          },
+                      showDialog(
+                        context: context,
+                        builder: (_) => ConnectWalletDialog(
+                          navigationTo: CreateNFTScreen(
+                            cubit: CreateNftCubit(),
+                          ), isRequireLoginEmail: false,
                         ),
                       );
                     },

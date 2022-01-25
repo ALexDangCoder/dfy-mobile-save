@@ -66,6 +66,7 @@ class Approve extends StatefulWidget {
   final int? flexContent;
   final String? purposeText;
   final String textActiveButton;
+  final String? spender;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
@@ -79,6 +80,7 @@ class Approve extends StatefulWidget {
     Key? key,
     required this.title,
     this.listDetail,
+    this.spender,
     this.warning,
     this.needApprove = false,
     required this.textActiveButton,
@@ -115,6 +117,7 @@ class _ApproveState extends State<Approve> {
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
     cubit.tokenAddress = widget.tokenAddress ?? '';
+    cubit.spender = widget.spender;
     cubit.hexString = widget.hexString;
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
@@ -148,6 +151,18 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        // TODO: Handle this case.
         break;
     }
   }
@@ -354,6 +369,12 @@ class _ApproveState extends State<Approve> {
           );
           break;
         }
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -657,7 +678,7 @@ class _ApproveState extends State<Approve> {
     final navigator = Navigator.of(context);
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        cubit.importNft(
+        await cubit.importNft(
           contract: nftDetailBloc.nftMarket.collectionAddress ?? '',
           id: int.parse(nftDetailBloc.nftMarket.nftTokenId ?? ''),
           address: nftDetailBloc.walletAddress,
@@ -829,6 +850,15 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        // TODO: Handle this case.
         break;
     }
   }
