@@ -1,22 +1,32 @@
-
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BlocListBookEvaluation {
-  BehaviorSubject<List<PawnShopModel>> listPawnSHop =
-      BehaviorSubject.seeded([]);
+  BehaviorSubject<List<AppointmentModel>> listPawnShop = BehaviorSubject();
 
-  void getListPawnShop() {
-    List<PawnShopModel> list = [];
-    list.add(
-      PawnShopModel(
-        date: '09:15 - 14/12/2021',
-        avatar:
-            'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
-        namePawnShop: 'Doanh 88',
-        status: 'The evaluator has rejected your evaluation request',
-      ),
+  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+
+  Future<void> getListPawnShop({
+    required String assetId,
+  }) async {
+    final Result<List<AppointmentModel>> result =
+        await _createHardNFTRepository.getListAppointment(
+      assetId,
     );
-    listPawnSHop.sink.add(list);
+    result.when(
+      success: (res) {
+        if (res.isNotEmpty) {
+          listPawnShop.sink.add(res);
+        } else {
+          listPawnShop.sink.add([]);
+        }
+      },
+      error: (error) {
+        listPawnShop.sink.add([]);
+      },
+    );
   }
 }

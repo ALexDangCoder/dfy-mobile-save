@@ -27,7 +27,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   void initState() {
     super.initState();
     _bloc = BlocListBookEvaluation();
-    _bloc.getListPawnShop();
+    _bloc.getListPawnShop(assetId: '61e9096a4aec3d3977856bf9');
   }
 
   @override
@@ -66,69 +66,69 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             spaceH24,
             const StepAppBar(),
             spaceH32,
-            StreamBuilder<List<PawnShopModel>>(
-              stream: _bloc.listPawnSHop,
+            StreamBuilder<List<AppointmentModel>>(
+              stream: _bloc.listPawnShop,
               builder: (context, snapshot) {
                 final _list = snapshot.data ?? [];
-                if (_list.isEmpty) {
-                  return Column(
-                    children: [
-                      Image.asset(ImageAssets.img_search_empty),
-                      SizedBox(
-                        child: Padding(
-                          padding: EdgeInsets.all(16.w),
-                          child: Text(
-                            S.current.no_meeting_with_evaluator,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().grayTextColor(),
-                              20,
-                              FontWeight.bold,
+                if (snapshot.hasData) {
+                  if (snapshot.data?.isNotEmpty ?? false) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Text(
+                              S.current.to_mint_hard_nft_you,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().grayTextColor(),
+                                14,
+                                null,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
+                        spaceH32,
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _list.length,
+                          padding: EdgeInsets.only(
+                            bottom: 24.h,
+                          ),
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              //todo add event
+                            },
+                            child: ItemPawnShop(
+                              bloc: _bloc,
+                              appointment: _list[index],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        Image.asset(ImageAssets.img_search_empty),
+                        SizedBox(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Text(
+                              S.current.no_meeting_with_evaluator,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().grayTextColor(),
+                                20,
+                                FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
                 } else {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        child: Padding(
-                          padding: EdgeInsets.all(16.w),
-                          child: Text(
-                            S.current.to_mint_hard_nft_you,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().grayTextColor(),
-                              14,
-                              null,
-                            ),
-                          ),
-                        ),
-                      ),
-                      spaceH32,
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _list.length,
-                        padding: EdgeInsets.only(
-                          bottom: 24.h,
-                        ),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            //todo add event
-                          },
-                          child: ItemPawnShop(
-                            statusPawnShop: S.current.your_appointment_request,
-                            namePawnShop: _list[index].namePawnShop ?? '',
-                            isViewReason: true,
-                            avatarPawnShopUrl: _list[index].avatar ?? '',
-                            isDeletePawnShop: true,
-                            datePawnShop: _list[index].date ?? '',
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                  return const SizedBox.shrink();
                 }
               },
             ),

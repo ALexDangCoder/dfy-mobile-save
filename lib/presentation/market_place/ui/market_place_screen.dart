@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
@@ -14,8 +15,6 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_outstanding_collection.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
@@ -177,19 +176,18 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
                         builder: (_) => ConnectWalletDialog(
                           navigationTo: CreateCollectionScreen(
                             bloc: CreateCollectionCubit(),
-                          ), isRequireLoginEmail: false,
+                          ),
+                          isRequireLoginEmail: false,
                         ),
                       );
                     },
                     nftCallBack: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => ConnectWalletDialog(
-                          navigationTo: CreateNFTScreen(
-                            cubit: CreateNftCubit(),
-                          ), isRequireLoginEmail: false,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListBookEvaluation(),
                         ),
-                      );
+                      ); //todo tesst nhowf
                     },
                   ),
                 ),

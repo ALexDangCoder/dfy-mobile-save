@@ -107,6 +107,9 @@ class ApiConstants {
 
   //Custom URL
   static const String PREFIX_CUSTOM_URL = 'https://marketplace.defiforyou.uk/';
+//createHard NFT
 
+  static const String GET_LIST_APPOINTMENTS =
+      '/hard-nft-svc/api/appointments';
 
 }

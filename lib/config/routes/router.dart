@@ -1,4 +1,3 @@
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -18,16 +17,12 @@ class AppRouter {
   static const sendToken = '/sendToken';
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
-  static const bookEvaluationRequest = '/BookEvaluationRequest';
   static const putOnSale = '/put_on_market';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
 
     switch (settings.name) {
-      case bookEvaluationRequest:
-        return MaterialPageRoute(
-            builder: (ctx) => const ListBookEvaluation());
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
 

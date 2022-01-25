@@ -1,8 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,21 +14,13 @@ import 'dialog_cancel.dart';
 import 'dialog_reason_detail.dart';
 
 class ItemPawnShop extends StatelessWidget {
-  final String avatarPawnShopUrl;
-  final String namePawnShop;
-  final bool isDeletePawnShop;
-  final bool isViewReason;
-  final String datePawnShop;
-  final String statusPawnShop;
+  final BlocListBookEvaluation bloc;
+  final AppointmentModel appointment;
 
   const ItemPawnShop({
     Key? key,
-    required this.avatarPawnShopUrl,
-    required this.namePawnShop,
-    required this.isDeletePawnShop,
-    required this.isViewReason,
-    required this.datePawnShop,
-    required this.statusPawnShop,
+    required this.bloc,
+    required this.appointment,
   }) : super(key: key);
 
   @override
@@ -62,13 +58,13 @@ class ItemPawnShop extends StatelessWidget {
                     ),
                     clipBehavior: Clip.hardEdge,
                     child: Image.network(
-                      avatarPawnShopUrl,
+                      '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                       fit: BoxFit.cover,
                     ),
                   ),
                   spaceW8,
                   Text(
-                    namePawnShop,
+                    appointment.evaluator?.name ?? '',
                     style: textNormalCustom(
                       null,
                       16,
@@ -88,7 +84,7 @@ class ItemPawnShop extends StatelessWidget {
                   ),
                   spaceW15,
                   Text(
-                    datePawnShop,
+                    0.formatDateTimeMy(appointment.appointmentTime ?? 0),
                     style: textNormalCustom(
                       null,
                       20,
@@ -101,9 +97,9 @@ class ItemPawnShop extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  statusPawnShop,
+                  "statusPawnShop", //toddo status
                   style: textNormalCustom(
-                    checkColor(statusPawnShop),
+                    checkColor("statusPawnShop"),
                     12,
                     null,
                   ),
@@ -114,7 +110,7 @@ class ItemPawnShop extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
-                  child: isViewReason
+                  child: true //todo
                       ? InkWell(
                           onTap: () {
                             Navigator.of(context).push(
@@ -122,7 +118,8 @@ class ItemPawnShop extends StatelessWidget {
                                 builder: (context) {
                                   return DialogReasonDetail(
                                     contentDetail: 'sdfsadf', //todo content
-                                    dateDetail: datePawnShop,
+                                    dateDetail: 0.formatDateTimeMy(
+                                        appointment.appointmentTime ?? 0),
                                   );
                                 },
                                 isNonBackground: false,
@@ -147,21 +144,23 @@ class ItemPawnShop extends StatelessWidget {
           Positioned(
             top: -4.h,
             right: -4.w,
-            child: isDeletePawnShop
+            child: true
                 ? InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         HeroDialogRoute(
                           builder: (context) {
                             return DialogCancel(
-                              title: 'asdfasdfa dsfsdfsadfds afdsafs dafasdfsadfsdafdsdafdsaf',
-                              urlAvatar: avatarPawnShopUrl,
+                              title: appointment.evaluator?.name ?? '',
+                              urlAvatar:
+                                  '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                               //todo body
-                              date: datePawnShop,
-                              location: 'asdfasdfsdafdsaf',
-                              mail: 'asdfadsfdasfsadf',
-                              numPhone: '123432142314324',
-                              status: 'dsfasdfsdafsadfdsafdsafsadf',
+                              date: 0.formatDateTimeMy(
+                                  appointment.appointmentTime ?? 0),
+                              location: appointment.evaluator?.address ?? '',
+                              mail: appointment.evaluator?.email ?? '',
+                              numPhone: appointment.evaluator?.phone ?? '',
+                              status: "appointment.evaluator?.", //todo
                             );
                           },
                           isNonBackground: false,

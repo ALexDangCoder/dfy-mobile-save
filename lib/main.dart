@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: S.delegate.supportedLocales,
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.bookEvaluationRequest,
+        initialRoute: AppRouter.splash,
       ),
     );
   }
