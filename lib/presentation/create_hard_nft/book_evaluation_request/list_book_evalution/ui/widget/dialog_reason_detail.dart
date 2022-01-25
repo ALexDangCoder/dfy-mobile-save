@@ -57,7 +57,8 @@ class DialogReasonDetail extends StatelessWidget {
                               null,
                               24,
                               FontWeight.bold,
-                            ),
+                            ).copyWith(overflow: TextOverflow.ellipsis),
+                            maxLines: 1,
                           ),
                         ),
                       ),
@@ -80,15 +81,15 @@ class DialogReasonDetail extends StatelessWidget {
                                 TextSpan(
                                   text: S.current.rejected.toUpperCase(),
                                   style: textNormalCustom(
-                                    AppTheme.getInstance().redColor(),
+                                    AppTheme.getInstance().redMarketColors(),
                                     14,
                                     FontWeight.w600,
                                   ),
                                 ),
                                 TextSpan(
                                   text:
-                                      '${S.current.by_evaluator_at} $dateDetail'
-                                ,),
+                                      '${S.current.by_evaluator_at} $dateDetail',
+                                ),
                               ],
                             ),
                           ),

@@ -569,5 +569,7 @@
   "asset_accepted": "Asset accepted",
   "contact": "Contact",
   "working_time": "Working time",
-  "location": "Location"
+  "location": "Location",
+  "close": "Close"
+
 }

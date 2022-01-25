@@ -121,7 +121,7 @@ class ItemPawnShop extends StatelessWidget {
                               HeroDialogRoute(
                                 builder: (context) {
                                   return DialogReasonDetail(
-                                    contentDetail: 'sdfsadf',//todo content
+                                    contentDetail: 'sdfsadf', //todo content
                                     dateDetail: datePawnShop,
                                   );
                                 },
@@ -153,7 +153,16 @@ class ItemPawnShop extends StatelessWidget {
                       Navigator.of(context).push(
                         HeroDialogRoute(
                           builder: (context) {
-                            return const DialogCancel();
+                            return DialogCancel(
+                              title: 'asdfasdfa dsfsdfsadfds afdsafs dafasdfsadfsdafdsdafdsaf',
+                              urlAvatar: avatarPawnShopUrl,
+                              //todo body
+                              date: datePawnShop,
+                              location: 'asdfasdfsdafdsaf',
+                              mail: 'asdfadsfdasfsadf',
+                              numPhone: '123432142314324',
+                              status: 'dsfasdfsdafsadfdsafdsafsadf',
+                            );
                           },
                           isNonBackground: false,
                         ),
