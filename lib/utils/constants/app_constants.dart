@@ -57,6 +57,7 @@ const _dtFormat1 = 'yyyy-MM-dd HH:mm:ss';
 const _dtFormat2 = 'hh:mm a';
 const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
+const _dtFormat6 = 'yyyy-MM-dd hh : mm';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //contract
@@ -86,12 +87,21 @@ const int HARD_COLLECTION = 1;
 const int ERC721 = 0;
 const int ERC1155 = 1;
 
+
+
+// App name
+
+const String appName = "DeFi For You";
+const String appURL = "defiforyou.uk";
+
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;
   static const CREATE_FORMAT = _dtFormat3;
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
+  static const DATE_TIME_AUCTION_FORMAT = _dtFormat6;
 }
 
 const PERCENT = '%';

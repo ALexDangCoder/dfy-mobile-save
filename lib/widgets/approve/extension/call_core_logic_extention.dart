@@ -51,7 +51,7 @@ extension CallCoreExtension on ApproveCubit {
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
-        if (checkingApprove) {
+        if (checkingApprove ?? false) {
           final resultApprove = await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );
@@ -128,6 +128,18 @@ extension CallCoreExtension on ApproveCubit {
                     TYPE_CONFIRM_BASE.PUT_ON_SALE,
                   ),
                 );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              } else {
+                emit(SignFail(S.current.put_on_auction));
               }
               break;
             case TYPE_CONFIRM_BASE.CANCEL_AUCTION:

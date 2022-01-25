@@ -8,6 +8,12 @@ class PutOnMarketModel {
   String? price;
   String? collectionAddress;
 
+  // auction
+  String? buyOutPrice;
+  String? priceStep;
+  String? startTime;
+  String? endTime;
+
   PutOnMarketModel({
     this.tokenAddress,
     this.collectionAddress,
@@ -16,6 +22,8 @@ class PutOnMarketModel {
     this.nftType,
     this.numberOfCopies,
     this.price,
+    this.buyOutPrice,
+    this.priceStep,
   });
 
   factory PutOnMarketModel.putOnSale({
