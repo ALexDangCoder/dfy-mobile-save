@@ -177,8 +177,14 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       final data = await Web3Utils().getPutOnAuctionData(
         startingPrice: putOnMarketModel.price ?? '',
         startTime: putOnMarketModel.startTime ?? '',
-        priceStep: '0',
-        buyOutPrice: '0',
+        priceStep: (putOnMarketModel.priceStep == null ||
+                putOnMarketModel.priceStep == '')
+            ? putOnMarketModel.priceStep ?? '0'
+            : '0',
+        buyOutPrice: (putOnMarketModel.buyOutPrice == null ||
+            putOnMarketModel.buyOutPrice == '')
+            ? putOnMarketModel.buyOutPrice ?? '0'
+            : '0',
         contractAddress: nft_sales_address_dev2,
         collectionAddress: putOnMarketModel.collectionAddress ?? '',
         currencyAddress: putOnMarketModel.tokenAddress ?? '',
