@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -69,11 +70,61 @@ class AboutUs extends StatelessWidget {
                 color: AppTheme.getInstance().divideColor(),
               ),
               Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25,
+                    horizontal: 16,
+                  ),
                   child: SingleChildScrollView(
-                child: Column(
-                  children: [],
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 52,
+                              width: 52,
+                              child: Image.asset(ImageAssets.imgTokenDFY),
+                            ),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox  (
+                                  child: Text(
+                                    appName,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      31,
+                                      FontWeight.w700,
+                                    ).copyWith(height: 1.0),
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      appURL,
+                                      style: textNormalOswaldCustom(
+                                        AppTheme.getInstance().logoColor(),
+                                        18,
+                                        FontWeight.w300,
+                                      ).copyWith(height: 1.0),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ))
+              )
             ],
           ),
         ),

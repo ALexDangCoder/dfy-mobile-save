@@ -66,6 +66,7 @@ class Approve extends StatefulWidget {
   final int? flexContent;
   final String? purposeText;
   final String textActiveButton;
+  final String? spender;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
@@ -79,6 +80,7 @@ class Approve extends StatefulWidget {
     Key? key,
     required this.title,
     this.listDetail,
+    this.spender,
     this.warning,
     this.needApprove = false,
     required this.textActiveButton,
@@ -115,6 +117,7 @@ class _ApproveState extends State<Approve> {
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
     cubit.tokenAddress = widget.tokenAddress ?? '';
+    cubit.spender = widget.spender;
     cubit.hexString = widget.hexString;
     switch (typeBase) {
       case TYPE_CONFIRM_BASE.BUY_NFT:

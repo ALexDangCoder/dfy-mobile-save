@@ -155,6 +155,7 @@ flutter:
   assets:
     - assets/images/
     - assets/abi/
+    - assets/fonts/
 flutter_intl:
   enabled: true
 

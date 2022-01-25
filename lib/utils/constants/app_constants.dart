@@ -84,6 +84,13 @@ const int ERC721 = 0;
 const int ERC1155 = 1;
 
 
+
+// App name
+
+const String appName = "DeFi For You";
+const String appURL = "defiforyou.uk";
+
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;

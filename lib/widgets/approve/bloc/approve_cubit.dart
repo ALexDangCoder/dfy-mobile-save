@@ -35,7 +35,8 @@ enum TYPE_CONFIRM_BASE {
   CANCEL_SALE,
   CREATE_COLLECTION,
   CANCEL_AUCTION,
-  CANCEL_PAWN
+  CANCEL_PAWN,
+  CREATE_NFT
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {
@@ -75,6 +76,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   double? gasPrice;
 
   String? rawData;
+
+  String? spender;
 
   String? hexString;
 
