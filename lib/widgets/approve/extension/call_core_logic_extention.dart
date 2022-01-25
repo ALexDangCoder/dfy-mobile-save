@@ -139,7 +139,12 @@ extension CallCoreExtension on ApproveCubit {
                   ),
                 );
               } else {
-                emit(SignFail(S.current.put_on_auction));
+                emit(
+                  SignFail(
+                    S.current.cancel_sale,
+                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  ),
+                );
               }
               break;
             case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
@@ -151,10 +156,12 @@ extension CallCoreExtension on ApproveCubit {
                   ),
                 );
               } else {
-                emit(SignFail(
-                  S.current.cancel_aution,
-                  TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                ));
+                emit(
+                  SignFail(
+                    S.current.put_on_pawn,
+                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                  ),
+                );
               }
               break;
             default:
