@@ -476,7 +476,7 @@ class _PlaceBidState extends State<PlaceBid> {
               ],
               balanceWidget(),
               spaceH344,
-              _spaceButton(context, widget.marketId ?? ''),
+              _spaceButton(context, widget.marketId),
             ],
           ),
         ),

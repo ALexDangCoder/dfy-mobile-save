@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
@@ -107,5 +108,22 @@ abstract class NFTClient {
   Future<ConfirmResponse> cancelAuction(
     @Field('auction_id') String marketId,
     @Field('txn_hash') String txnHash,
+  ); //Confirm cancel  auction:¬
+  @PUT(ApiConstants.ACCEPT_OFFER)
+  Future<String> acceptOffer(
+    @Path('idCollateral') int idCollateral,
+    @Path('idOfer') int idOffer,
+    @Query('wallet-address') String addressWallet,
+  ); //Confirm cancel  auction:
+  @PUT(ApiConstants.REJECT_OFFER)
+  Future<String> rejectOffer(
+    @Path('idCollateral') int idCollateral,
+    @Path('idOfer') int idOffer,
+    @Query('wallet-address') String addressWallet,
+  );
+
+  @POST(ApiConstants.SEND_OFFER)
+  Future<String> sendOffer(
+    @Body() SendOfferRequest request,
   );
 }

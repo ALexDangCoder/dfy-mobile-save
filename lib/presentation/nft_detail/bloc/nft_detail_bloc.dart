@@ -264,6 +264,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               res.urlToken = value.iconUrl;
               res.usdExchange = value.usdExchange;
+              res.repaymentAsset = value.address;
             }
           }
           emit(NftOnPawnSuccess(res));

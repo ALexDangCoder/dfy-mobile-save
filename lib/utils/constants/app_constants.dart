@@ -69,6 +69,8 @@ const nft_auction_dev2 =
 const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
 const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
+const contract_defy =
+    '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
 
 //Media file type
 const String MEDIA_VIDEO_FILE = 'VIDEO';
@@ -84,7 +86,6 @@ const int HARD_COLLECTION = 1;
 const int ERC721 = 0;
 const int ERC1155 = 1;
 
-
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;
@@ -92,6 +93,7 @@ class DateTimeFormat {
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
 }
+
 const PERCENT = '%';
 const DFY = 'DFY';
 const PROCESSING_CREATE = 1;

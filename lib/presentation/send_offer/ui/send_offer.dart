@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -37,6 +38,9 @@ class _SendOfferState extends State<SendOffer> {
   int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
+  String repaymentAsset = contract_defy;
+
+  String message = '';
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,8 @@ class _SendOfferState extends State<SendOffer> {
         'icon': SizedBox(
           height: 20.h,
           child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
-        )
+        ),
+        'contract': contract_defy
       },
       {
         'value': ID_WEEK.toString(),
@@ -79,7 +84,8 @@ class _SendOfferState extends State<SendOffer> {
               widget.nftOnPawn.expectedCollateralSymbol ?? '',
             ),
           ),
-        )
+        ),
+        'contract': widget.nftOnPawn.repaymentAsset
       }
     ];
 
@@ -98,12 +104,24 @@ class _SendOfferState extends State<SendOffer> {
               return GestureDetector(
                 onTap: isEnable
                     ? () async {
+                        final sendOfferRequest = SendOfferRequest(
+                          collateralId: widget.nftOnPawn.id ?? 0,
+                          message: message,
+                          duration: int.parse(duration),
+                          durationType: loanDurationType,
+                          interestRate: num.parse(interest),
+                          loanAmount: num.parse(loanAmount),
+                          repaymentCycleType: repaymentCycleType,
+                          walletAddress: PrefsService.getCurrentBEWallet(),
+                          repaymentToken: shortName,
+                          supplyCurrency:
+                              widget.nftOnPawn.expectedCollateralSymbol ?? '',
+                        );
                         await _cubit
                             .getPawnHexString(
                               nftCollateralId:
                                   widget.nftOnPawn.bcCollateralId.toString(),
-                              repaymentAsset:
-                                  '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+                              repaymentAsset: repaymentAsset,
                               loanAmount: loanAmount,
                               interest: interest,
                               duration: duration,
@@ -116,6 +134,8 @@ class _SendOfferState extends State<SendOffer> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Approve(
+                                    request: sendOfferRequest,
+                                    nftOnPawn: widget.nftOnPawn,
                                     title: S.current.place_a_bid,
                                     needApprove: true,
                                     payValue: loanAmount,
@@ -177,9 +197,7 @@ class _SendOfferState extends State<SendOffer> {
                                         buildRowCustom(
                                           title: S.current.duration,
                                           child: Text(
-                                            '$duration ${repaymentCycleType == 0
-                                                    ? S.current.month
-                                                    : S.current.week}',
+                                            '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
                                             style: textNormalCustom(
                                               AppTheme.getInstance()
                                                   .textThemeColor(),
@@ -217,7 +235,7 @@ class _SendOfferState extends State<SendOffer> {
                                       ],
                                     ),
                                     textActiveButton: S.current.approve,
-                                    tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+                                    tokenAddress: repaymentAsset,
                                     hexString: value,
                                     typeApprove: TYPE_CONFIRM_BASE.SEND_OFFER,
                                   ),
@@ -265,7 +283,7 @@ class _SendOfferState extends State<SendOffer> {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_message;
                         } else {
-                          _cubit.message = value!;
+                          message = value!;
                         }
                         return null;
                       },
@@ -434,6 +452,7 @@ class _SendOfferState extends State<SendOffer> {
                       listValue: listValueToken,
                       textValue: (value) {
                         shortName = value['label'];
+                        repaymentAsset = value['contract'];
                       },
                       index: 0,
                     ),

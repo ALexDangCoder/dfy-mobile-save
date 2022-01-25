@@ -23,7 +23,6 @@ class OfferTab extends StatefulWidget {
 class _OfferTabState extends State<OfferTab> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

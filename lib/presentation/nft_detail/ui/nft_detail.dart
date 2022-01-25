@@ -86,6 +86,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final String walletAddress;
   final PageController pageController = PageController();
   final NFTDetailBloc bloc = NFTDetailBloc();
+  late String owner;
 
   @override
   void initState() {
@@ -777,6 +778,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.PAWN:
         if (state is NftOnPawnSuccess) {
           final nftOnPawn = state.nftOnPawn;
+          owner = nftOnPawn.walletAddress ?? '';
           return BaseCustomScrollView(
             typeImage:
                 nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,

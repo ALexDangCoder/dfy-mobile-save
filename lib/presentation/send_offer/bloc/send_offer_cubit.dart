@@ -14,14 +14,6 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
   Stream<bool> get btnStream => _btnSubject.stream;
 
   Sink<bool> get btnSink => _btnSubject.sink;
-  String message = '';
-  num loanAmount = 0;
-  num interestRate = 0;
-  num duration = 0;
-  num typeDuration = 0;
-  num repayment = 0;
-  num repaymentString = 0;
-  num recurringInterest = 0;
 
   final _streamController = BehaviorSubject<int>.seeded(0);
 

@@ -7,10 +7,12 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
@@ -63,6 +65,7 @@ class Approve extends StatefulWidget {
   final Widget? header;
   final PutOnMarketModel? putOnMarketModel;
   final NftMarket? nftMarket;
+  final NftOnPawn? nftOnPawn;
   final bool? needApprove;
   final int? flexTitle;
   final int? flexContent;
@@ -78,6 +81,7 @@ class Approve extends StatefulWidget {
   final CreateCollectionCubit? createCollectionCubit;
   final String? payValue;
   final String? tokenAddress;
+  final SendOfferRequest? request;
 
   const Approve({
     Key? key,
@@ -97,7 +101,10 @@ class Approve extends StatefulWidget {
     this.hexString,
     this.putOnMarketModel,
     this.quantity,
-    this.nftMarket, this.marketId,
+    this.nftMarket,
+    this.marketId,
+    this.nftOnPawn,
+    this.request,
   }) : super(key: key);
 
   @override
@@ -898,6 +905,8 @@ class _ApproveState extends State<Approve> {
         break;
       // TODO: Handle this case.
       case TYPE_CONFIRM_BASE.SEND_OFFER:
+        widget.request?.latestBlockchainTxn = data;
+        cubit.sendOffer(offerRequest: widget.request!);
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
               (value) => Navigator.push(
                 context,
