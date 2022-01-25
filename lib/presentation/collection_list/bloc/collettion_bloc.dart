@@ -206,7 +206,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   void resetFilterMyAcc() {
     isHardCollection.add(false);
     isSoftCollection.add(false);
-    textAddressFilter.add(S.current.all);
+    if (checkWalletAddress) {
+      textAddressFilter.add(S.current.all);
+    }
   }
 
   void funOnSearch(String value) {
