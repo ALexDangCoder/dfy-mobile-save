@@ -7,7 +7,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
@@ -24,15 +23,15 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/detail_collection/ui/activity/activity_put_on_market.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
-import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/bid_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
-import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
+import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -52,7 +51,6 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -92,13 +90,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final String walletAddress;
   final PageController pageController = PageController();
   final NFTDetailBloc bloc = NFTDetailBloc();
+  late String owner;
 
   @override
   void initState() {
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
-    bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);
@@ -654,12 +652,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: objSale.isOwner == false
-                ? _buildButtonBuyOutOnSale(
-                    context,
-                    bloc,
-                    objSale,
-                    objSale.isBoughtByOther ?? false,
-                  )
+                ? _buildButtonBuyOutOnSale(context, bloc, objSale,
+                    objSale.isBoughtByOther ?? false, widget.marketId ?? '')
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
               _nameNFT(
@@ -790,6 +784,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.PAWN:
         if (state is NftOnPawnSuccess) {
           final nftOnPawn = state.nftOnPawn;
+          owner = nftOnPawn.walletAddress ?? '';
           return BaseCustomScrollView(
             typeImage:
                 nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
@@ -820,7 +815,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonSendOffer(context),
+            bottomBar: _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
                 url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
@@ -991,7 +986,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : Row(
                     children: [
                       Expanded(
-                        child: _buildButtonBuyOut(context),
+                        child: _buildButtonBuyOut(
+                          context,
+                          nftOnAuction,
+                          widget.marketId ?? '',
+                        ),
                       ),
                       SizedBox(
                         width: 23.w,
@@ -1007,6 +1006,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           ),
                           bloc,
                           nftOnAuction,
+                          widget.marketId ?? '',
                         ),
                       ),
                     ],

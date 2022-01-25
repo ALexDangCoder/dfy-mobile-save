@@ -114,29 +114,27 @@ Widget _buildButtonBuyOutOnSale(
   NFTDetailBloc bloc,
   NftMarket nftMarket,
   bool isBought,
+  String marketId,
 ) {
   return ButtonGradient(
-    onPressed: () async {
+    onPressed: () {
       if (isBought) {
-        _showDialog(context, nftMarket);
+        _showDialog(
+          context,
+          nftMarket,
+          marketId,
+        );
       } else {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftMarket.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BuyNFT(
-                    nftMarket: nftMarket,
-                    balance: value,
-                    walletAddress: bloc.wallets.first.address ?? '',
-                  ),
-                ),
-              ),
-            );
+        showDialog(
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: BuyNFT(
+              nftMarket: nftMarket,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+          ),
+          context: context,
+        );
       }
     },
     gradient: RadialGradient(
@@ -225,7 +223,7 @@ Widget processing() {
   );
 }
 
-void _showDialog(BuildContext context, NftMarket nftMarket) {
+void _showDialog(BuildContext context, NftMarket nftMarket, String marketId) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -322,24 +320,17 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
                       ),
                     ),
                   ),
-                  onTap: () async {
-                    await bloc
-                        .getBalanceToken(
-                          ofAddress: bloc.wallets.first.address ?? '',
-                          tokenAddress: bloc.nftMarket.token ?? '',
-                        )
-                        .then(
-                          (value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BuyNFT(
-                                nftMarket: nftMarket,
-                                balance: value,
-                                walletAddress: bloc.wallets.first.address ?? '',
-                              ),
-                            ),
-                          ),
-                        );
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ConnectWalletDialog(
+                        navigationTo: BuyNFT(
+                          nftMarket: nftMarket,
+                          marketId: marketId,
+                        ),
+                        isRequireLoginEmail: false,
+                      ),
+                    );
                   },
                 ),
               ),
