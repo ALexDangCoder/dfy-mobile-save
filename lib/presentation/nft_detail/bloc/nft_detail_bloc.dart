@@ -86,8 +86,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return balance;
   }
 
-  final walletAddressCheck = '';
-
   Future<void> getHistory({
     required String collectionAddress,
     required String nftTokenId,
@@ -96,9 +94,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
       success: (res) {
-        for(final value in res){
-          value.walletAddressCheck = walletAddressCheck;
-        }
         listHistoryStream.add(res);
       },
       error: (error) {
