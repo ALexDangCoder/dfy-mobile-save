@@ -319,6 +319,18 @@ class ImageAssets {
   static const String delete_svg = '$baseImg/delete_svg.svg';
 
 
+  // about us
+  static const String ic_flag_vn = '$baseImg/flag_vn.png';
+  static const String ic_flag_gb = '$baseImg/flag_gb.png';
+  static const String ic_git = '$baseImg/exclude.png';
+  static const String icon_send = '$baseImg/icon_send.png';
+  static const String icon_fb = '$baseImg/icon_fb.png';
+  static const String icon_youtube = '$baseImg/youtube.png';
+  static const String icon_linkedin = '$baseImg/linkedin.png';
+  static const String icon_twitter = '$baseImg/icon_twitter.png';
+
+
+
 
 
   static SvgPicture svgAssets(
