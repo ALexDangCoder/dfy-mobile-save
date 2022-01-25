@@ -790,6 +790,21 @@ class Web3Utils {
     return hex.encode(createOffer.data ?? []);
   }
 
+  Future<String> getWithdrawCollateralData({
+    required String nftCollateralId,
+  }) async {
+    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final function = deployContract.function('withdrawCollateral');
+    final withdrawCollateral = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(nftCollateralId)),
+      ],
+    );
+    return hex.encode(withdrawCollateral.data ?? []);
+  }
+
   //hardNFT
   Future<DeployedContract> deployedHardNftCollectionAddress(
     String contract,
