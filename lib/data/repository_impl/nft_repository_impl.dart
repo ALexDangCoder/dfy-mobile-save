@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
@@ -16,6 +17,7 @@ import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/confirm_model.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -145,8 +147,27 @@ class NFTRepositoryImpl implements NFTRepository {
   Future<Result<NftMarket>> getDetailNftMyAccNotOnMarket(
       String nftId, String type) {
     return runCatchingAsync<NftMyAccResponse, NftMarket>(
-      () => _nftClient.getDetailNftNotOnMarket(nftId,type),
+      () => _nftClient.getDetailNftNotOnMarket(nftId, type),
       (response) => response.item!.toNotOnMarket(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> cancelSale({
+    required String id,
+    required String txnHash,
+  }) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+          () => _nftClient.cancelSale(id, txnHash),
+          (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> cancelAuction({required String id, required String txnHash}) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+          () => _nftClient.cancelAuction(id,txnHash),
+          (response) => response.toDomain(),
     );
   }
 }

@@ -24,12 +24,14 @@ class CreateSeedPhrase extends StatelessWidget {
   final BLocCreateSeedPhrase bloc;
   final TypeScreen type;
   final String? typeEarseWallet;
+  final bool isFromConnectWlDialog;
 
   const CreateSeedPhrase({
     Key? key,
     required this.bloc,
     required this.type,
     this.typeEarseWallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class CreateSeedPhrase extends StatelessWidget {
           bloc: bloc,
           typeScreen: type,
           typeEarseWallet: typeEarseWallet,
+          isFromConnectWlDialog: isFromConnectWlDialog,
         ),
       ),
     );
@@ -61,10 +64,12 @@ class _Body extends StatefulWidget {
     required this.bloc,
     required this.typeScreen,
     this.typeEarseWallet,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final BLocCreateSeedPhrase bloc;
   final TypeScreen typeScreen;
   final String? typeEarseWallet;
+  final bool isFromConnectWlDialog;
 
   @override
   _BodyState createState() => _BodyState();
@@ -308,6 +313,7 @@ class _BodyState extends State<_Body> {
                                   typeScreen: widget.typeScreen,
                                   bLocCreateSeedPhrase: widget.bloc,
                                   typeEarseWallet: widget.typeEarseWallet,
+                                  isFromConnectWlDialog: widget.isFromConnectWlDialog,
                                 );
                               },
                             ),

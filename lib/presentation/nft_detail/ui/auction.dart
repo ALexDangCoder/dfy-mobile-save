@@ -78,16 +78,35 @@ Widget _buildButtonBuyOut(BuildContext context) {
   );
 }
 
-Widget buttonCancelAuction(
-  bool approveAdmin,
-  BuildContext context,
-  NFTDetailBloc bloc,
+Widget buttonCancelAuction({
+  required bool approveAdmin,
+  required NFTDetailBloc bloc,
+  required BuildContext context,
   NFTOnAuction nftMarket,
-) {
+}) {
   if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
-        /// TODO: handle cancel auction buy nftOnAuction.isOwner == true
+        final nav = Navigator.of(context);
+        final String dataString = await bloc.getDataStringForCancelAuction(
+          context: context,
+        );
+        unawaited(
+          nav.push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(
+                dataString: dataString,
+                dataInfo: bloc.initListApprove(
+                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                ),
+                type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                cancelInfo: S.current.auction_cancel_info,
+                cancelWarning: S.current.cancel_auction_warning,
+                title: S.current.cancel_aution,
+              ),
+            ),
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -97,13 +116,13 @@ Widget buttonCancelAuction(
       child: nftMarket.marketStatus == 8
           ? processing()
           : Text(
-              S.current.cancel_sale,
-              style: textNormalCustom(
-                AppTheme.getInstance().textThemeColor(),
-                16,
-                FontWeight.w700,
-              ),
-            ),
+        S.current.cancel_aution,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
     );
   } else {
     return const SizedBox();

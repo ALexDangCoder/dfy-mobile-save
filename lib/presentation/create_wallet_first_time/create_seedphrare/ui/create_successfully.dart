@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrare_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -24,19 +25,40 @@ class CreateSuccessfully extends StatefulWidget {
     required this.wallet,
     required this.type,
     required this.passWord,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
   final KeyType type;
   final String passWord;
+  final bool isFromConnectWlDialog;
 
   @override
   State<CreateSuccessfully> createState() => _CreateSuccessfullyState();
 }
 
 class _CreateSuccessfullyState extends State<CreateSuccessfully> {
+  @override
+  void initState() {
+    super.initState();
 
-  //TODO: Vũ code login cho market place
+    if (widget.isFromConnectWlDialog) {
+      widget.bLocCreateSeedPhrase.getSignature(
+        walletAddress: widget.wallet.address ?? '',
+      );
+      widget.bLocCreateSeedPhrase.signatureStream.listen(
+        (event) {
+          if(event.isNotEmpty){
+            widget.bLocCreateSeedPhrase.loginAndSaveInfo(
+              walletAddress: widget.wallet.address ?? '',
+              signature: event,
+            );
+          }
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -19,7 +19,6 @@ class CreateCollectionScreen extends StatelessWidget {
   const CreateCollectionScreen({Key? key, required this.bloc})
       : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     bloc.getListTypeNFT();
@@ -34,90 +33,85 @@ class CreateCollectionScreen extends StatelessWidget {
         title: S.current.create_collection,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 16.h,
-                  ),
-                  child: Text(
+          body: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
                     S.current.soft_nft,
                     style: textLabelNFT,
                   ),
-                ),
-                StreamBuilder<List<TypeNFTModel>>(
-                  stream: bloc.listSoftNFTSubject,
-                  builder: (context, snapshot) {
-                    final list = snapshot.data ?? [];
-                    if (list.isNotEmpty) {
-                      return GridView.builder(
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: list.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          return nftItem(
-                            context: context,
-                            typeNFTModel: list[index],
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
-                spaceH24,
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 16.h,
+                  StreamBuilder<List<TypeNFTModel>>(
+                    stream: bloc.listSoftNFTSubject,
+                    builder: (context, snapshot) {
+                      final list = snapshot.data ?? [];
+                      if (list.isNotEmpty) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 3.w / 4.h,
+                          ),
+                          itemBuilder: (context, index) {
+                            return nftItem(
+                              context: context,
+                              typeNFTModel: list[index],
+                            );
+                          },
+                          itemCount: list.length,
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
                   ),
-                  child: Text(
+                  spaceH24,
+                  Text(
                     S.current.hard_nft,
                     style: textLabelNFT,
                   ),
-                ),
-                StreamBuilder<List<TypeNFTModel>>(
-                  stream: bloc.listHardNFTSubject,
-                  builder: (context, snapshot) {
-                    final list = snapshot.data ?? [];
-                    if (list.isNotEmpty) {
-                      return GridView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: list.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          return nftItem(
-                            context: context,
-                            typeNFTModel: list[index],
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
-
-                ///Space bottom + space top + height of the button
-                SizedBox(
-                  height: (64 + 38 + 24).h,
-                )
-              ],
+                  StreamBuilder<List<TypeNFTModel>>(
+                    stream: bloc.listHardNFTSubject,
+                    builder: (context, snapshot) {
+                      final list = snapshot.data ?? [];
+                      if (list.isNotEmpty) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 3.w / 4.h,
+                          ),
+                          itemBuilder: (context, index) {
+                            return nftItem(
+                              context: context,
+                              typeNFTModel: list[index],
+                            );
+                          },
+                          itemCount: list.length,
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  ///Space bottom + space top + height of the button
+                  SizedBox(
+                    height: (64 + 38 + 24).h,
+                  )
+                ],
+              ),
             ),
           ),
           floatingActionButton: StreamBuilder<String>(
@@ -181,6 +175,7 @@ class CreateCollectionScreen extends StatelessWidget {
   }) {
     final bool isActive = typeNFTModel.standard == 0;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
           onTap: () {
@@ -223,36 +218,32 @@ class CreateCollectionScreen extends StatelessWidget {
             ),
           ),
         ),
-        spaceH12,
-        Flexible(
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              unselectedWidgetColor: isActive
-                  ? AppTheme.getInstance().whiteColor()
-                  : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
-            ),
-            child: StreamBuilder<String>(
-              stream: bloc.typeNFTStream,
-              initialData: '',
-              builder: (context, snapshot) {
-                return Radio<String>(
-                  splashRadius: isActive ? null : 0,
-                  activeColor: AppTheme.getInstance().fillColor(),
-                  value: typeNFTModel.id ?? '',
-                  groupValue: bloc.createId,
-                  onChanged: (value) {
-                    if (isActive) {
-                      bloc.changeSelectedItem(
-                        value ?? '',
-                      );
-                    }
-                  },
-                );
-              },
-            ),
+        Theme(
+          data: Theme.of(context).copyWith(
+            unselectedWidgetColor: isActive
+                ? AppTheme.getInstance().whiteColor()
+                : AppTheme.getInstance().disableRadioColor().withOpacity(0.5),
+          ),
+          child: StreamBuilder<String>(
+            stream: bloc.typeNFTStream,
+            initialData: '',
+            builder: (context, snapshot) {
+              return Radio<String>(
+                splashRadius: isActive ? null : 0,
+                activeColor: AppTheme.getInstance().fillColor(),
+                value: typeNFTModel.id ?? '',
+                groupValue: bloc.createId,
+                onChanged: (value) {
+                  if (isActive) {
+                    bloc.changeSelectedItem(
+                      value ?? '',
+                    );
+                  }
+                },
+              );
+            },
           ),
         ),
-        spaceH12,
         Text(
           getName(typeNFTModel.name ?? ''),
           style: textCustom(
@@ -260,7 +251,7 @@ class CreateCollectionScreen extends StatelessWidget {
                 ? AppTheme.getInstance().whiteColor()
                 : AppTheme.getInstance().whiteColor().withOpacity(0.5),
           ),
-        )
+        ),
       ],
     );
   }

@@ -1,11 +1,8 @@
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,9 +22,13 @@ class LoginCubit extends BaseCubit<LoginState> {
 
   BehaviorSubject<bool> isLoginSuccessSubject = BehaviorSubject();
 
+  BehaviorSubject<bool> isSaveInfoSuccessSubject = BehaviorSubject();
+
   BehaviorSubject<String> signatureSubject = BehaviorSubject();
 
   Stream<bool> get isLoginSuccessStream => isLoginSuccessSubject.stream;
+
+  Stream<bool> get isSaveInfoSuccessStream => isSaveInfoSuccessSubject.stream;
 
   Stream<String> get signatureStream => signatureSubject.stream;
 

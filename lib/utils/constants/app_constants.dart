@@ -68,6 +68,21 @@ const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
 const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
 
+//Media file type
+const String MEDIA_VIDEO_FILE = 'VIDEO';
+const String MEDIA_IMAGE_FILE = 'IMAGE';
+const String MEDIA_AUDIO_FILE = 'AUDIO';
+const String AVATAR_PHOTO = 'AVATAR';
+const String COVER_PHOTO = 'COVER_PHOTO';
+const String FEATURE_PHOTO = 'FEATURE_PHOTO';
+
+//Collection type, standard
+const int SOFT_COLLECTION = 0;
+const int HARD_COLLECTION = 1;
+const int ERC721 = 0;
+const int ERC1155 = 1;
+
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;

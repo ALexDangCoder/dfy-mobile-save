@@ -18,36 +18,26 @@ import 'bloc_creare_seedphrase.dart';
 extension LoginForMarketPlace on BLocCreateSeedPhrase {
   LoginRepository get _loginRepo => Get.find();
 
-  Future<void> loginAndSaveInfo(
+  Future<bool> loginAndSaveInfo(
       {required String walletAddress, required String signature}) async {
     final result = await _loginRepo.login(signature, walletAddress);
-
+    bool isSuccess = false;
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
           loginToJson(res),
         );
-        await PrefsService.saveCurrentWallet(
+        await PrefsService.saveCurrentBEWallet(
           walletAddress,
         );
         await getUserProfile();
+        isSuccess = true;
       },
       error: (err) {
-        FToast().showToast(
-          child: Text(S.current.something_went_wrong),
-        );
+        isSuccess = false;
       },
     );
-  }
-
-  //getListWallets
-  void getWallet() {
-    try {
-      final data = {};
-      trustWalletChannel.invokeMethod('getListWallets', data);
-    } on PlatformException {
-      //
-    }
+    return isSuccess;
   }
 
   Future<void> getSignature({required String walletAddress}) async {
@@ -84,7 +74,11 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
             UserProfileModel.fromJson(res.data ?? {});
         await PrefsService.saveUserProfile(userProfileToJson(userProfile));
       },
-      error: (err) {},
+      error: (err) async {
+        await PrefsService.saveUserProfile(
+          PrefsService.userProfileEmpty(),
+        );
+      },
     );
   }
 }

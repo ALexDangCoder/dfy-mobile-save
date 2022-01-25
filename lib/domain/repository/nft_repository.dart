@@ -4,6 +4,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/confirm_model.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
@@ -59,4 +60,15 @@ mixin NFTRepository {
   Future<Result<List<OfferDetail>>> getOffer(
     String collateralId,
   );
+
+  Future<Result<ConfirmModel>> cancelSale({
+    required String id,
+    required String txnHash,
+  });
+
+  Future<Result<ConfirmModel>> cancelAuction({
+    required String id,
+    required String txnHash,
+  });
+
 }
