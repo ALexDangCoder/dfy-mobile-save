@@ -372,7 +372,7 @@ Widget _buildButtonPutOnMarket(
             ),
           ),
           settings: const RouteSettings(
-            name: 'put_on_market',
+            name: AppRouter.putOnSale,
           ),
         ),
       );

@@ -8,6 +8,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -70,11 +71,11 @@ class _AuctionTabState extends State<AuctionTab>
 
   String? validateDuration() {
     if (timeStartController.text != '' && timeEndController.text != '') {
-      DateTime startTime = DateFormat('yyyy-MM-dd hh : mm')
+      DateTime startTime = DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
           .parse('${dateStartController.text} ${timeStartController.text}');
       _putOnMarketModel.startTime =
           (startTime.millisecondsSinceEpoch / 1000).toInt().toString();
-      DateTime endTime = DateFormat('yyyy-MM-dd hh : mm')
+      DateTime endTime = DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
           .parse('${dateEndController.text} ${timeEndController.text}');
 
       _putOnMarketModel.endTime =

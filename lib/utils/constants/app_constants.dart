@@ -55,6 +55,7 @@ const _dtFormat1 = 'yyyy-MM-dd HH:mm:ss';
 const _dtFormat2 = 'hh:mm a';
 const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
+const _dtFormat6 = 'yyyy-MM-dd hh : mm';
 const _dtFormat5 = 'MMM dd, yyyy';
 
 //contract
@@ -89,4 +90,5 @@ class DateTimeFormat {
   static const CREATE_FORMAT = _dtFormat3;
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
+  static const DATE_TIME_AUCTION_FORMAT = _dtFormat6;
 }
