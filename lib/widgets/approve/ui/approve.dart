@@ -188,21 +188,23 @@ class _ApproveState extends State<Approve> {
     );
     cubit.isApprovedSubject.listen((value) async {
       final navigator = Navigator.of(context);
-      if (value && !cubit.checkingApprove) {
-        if (isShowLoading) {
-          Navigator.pop(context);
+      if (cubit.checkingApprove != null){
+        if (value && !(cubit.checkingApprove ?? true)) {
+          if (isShowLoading) {
+            Navigator.pop(context);
+          }
           unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
-        }
-        await showLoadSuccess();
-        navigator.pop();
-      }
-      if (!value && !cubit.checkingApprove) {
-        if (isShowLoading) {
+          await showLoadSuccess();
           navigator.pop();
-          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''),);
         }
-        await showLoadFail();
-        navigator.pop();
+        if (!value && !(cubit.checkingApprove ?? true)) {
+          if (isShowLoading) {
+            navigator.pop();
+          }
+          await showLoadFail();
+          navigator.pop();
+        }
+        cubit.checkingApprove = null;
       }
     });
     isShowLoading = true;
@@ -287,6 +289,21 @@ class _ApproveState extends State<Approve> {
         }
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+        {
+          unawaited(showLoading());
+          final nonce = await cubit.getNonce();
+          await cubit.signTransactionWithData(
+            walletAddress: cubit.addressWallet ?? '',
+            contractAddress: cubit.getSpender(),
+            nonce: nonce.toString(),
+            chainId: Get.find<AppConstants>().chaninId,
+            gasPrice: gasPriceString,
+            gasLimit: gasLimitString,
+            hexString: widget.hexString ?? '',
+          );
+        }
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
         {
           unawaited(showLoading());
           final nonce = await cubit.getNonce();
@@ -715,6 +732,19 @@ class _ApproveState extends State<Approve> {
             return route.settings.name == 'put_on_market';
           });
           navigator.pop();
+        } else {
+          await showLoadFail();
+        }
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+        final result = await cubit.putOnAuction(txHash: data);
+        navigator.pop();
+        if (result) {
+          await showLoadSuccess();
+          navigator.popUntil((route) {
+            return route.settings.name == 'put_on_market';
+          });
+          navigator.pop();
           // unawaited(
           //   navigator.pushReplacement(
           //     MaterialPageRoute(
@@ -729,8 +759,6 @@ class _ApproveState extends State<Approve> {
         } else {
           await showLoadFail();
         }
-        break;
-        // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         // TODO: Handle this case.

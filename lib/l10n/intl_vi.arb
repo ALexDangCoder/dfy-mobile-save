@@ -7,10 +7,17 @@
   "error": "Lỗi",
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",
+  "price_step_error": "Bước nhảy không được bỏ ",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "buy_out_price_error" : "Giá mua phải lớn hơn giá khởi điểm",
   "set_the_fixed_price_and_sell_your_nft": "Thiết lập giá và bán NFT của bạn",
   "Set_a_duration_for_the_desired_loan_term": "Đặt thời hạn cho thời hạn vay mong muốn",
+  "duration_content" : "Đặt thời lượng cho phiên đấu giá và ngày bắt đầu",
+  "buy_out_price" : "Bán ngoài giá",
+  "price_step_content" : "Đây là khoảng giá mà người trả giá sau phải đặt cao hơn người đặt giá trước",
+  "buy_out_price_content" : "Phiên đấu giá sẽ kết thúc ngay lập tức nếu có người mua với giá này",
   "search": "Tìm kiếm...",
+  "enter" : "Nhập",
   "start_date": "Ngày bắt đầu",
   "end_date": "Ngày kết thúc",
   "start_time": "Thời gian bắt đầu ",
@@ -499,6 +506,7 @@
   "marketplace": "Marketplace",
   "to_take_profit": "để thu lợi nhuận",
   "next": "Tiếp theo",
+  "put_on_auction" : "Đưa ra đấu giá",
   "get_started": "Bắt đầu",
   "login_to_your_email" : "Bạn có muốn đăng nhập vào email ",
   "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
@@ -521,6 +529,7 @@
   "auction_cancel_info": "Thông tin đấu giá sẽ bị hủy",
   "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
   "cancel_success": "Hủy bán thành công",
-  "no_continue": "Không, tiếp tục"
-
+  "no_continue": "Không, tiếp tục",
+  "max_duration_auction" : "Thời lượng tối đa là 7 ngày (168 giờ)",
+  "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ"
 }
