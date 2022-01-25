@@ -35,8 +35,8 @@ enum TYPE_CONFIRM_BASE {
   CANCEL_SALE,
   CREATE_COLLECTION,
   CANCEL_AUCTION,
+  CREATE_SOFT_NFT,
   CANCEL_PAWN,
-  CREATE_NFT
 }
 
 class ApproveCubit extends BaseCubit<ApproveState> {

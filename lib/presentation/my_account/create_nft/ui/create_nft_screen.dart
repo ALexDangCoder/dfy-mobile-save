@@ -6,7 +6,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_core.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/select_nft_type_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/create_detail_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -31,19 +31,17 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     trustWalletChannel.setMethodCallHandler(
       widget.cubit.nativeMethodCallBackTrustWallet,
     );
     widget.cubit.getListTypeNFT();
+    super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     widget.cubit.dispose();
+    super.dispose();
   }
 
   @override
@@ -106,7 +104,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                 ),
                 spaceH24,
                 Text(
-                  'Defi For You system has not supported NFT transactions on the ERC-1155 standard',
+                  S.current.not_supported_standard,
                   style: textCustom(
                     fontStyle: FontStyle.italic,
                     fontSize: 14,

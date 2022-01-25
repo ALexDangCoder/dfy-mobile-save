@@ -39,7 +39,7 @@ extension CommonExtension on ApproveCubit {
         return nft_sales_address_dev2;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         return nft_auction_dev2;
-      case TYPE_CONFIRM_BASE.CREATE_NFT:
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         return spender ?? '';
       default:
         return nft_factory_dev2;
