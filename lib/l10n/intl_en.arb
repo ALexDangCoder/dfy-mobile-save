@@ -253,6 +253,7 @@
   "price_step_error": "Price step is not null",
   "buy_out_price_error" : "Buyout price must greater than Reserve price",
   "your_balance_bid": "Your balance",
+  "put_on_pawn" : "Put on pawn",
   "your_bid": "Your bid",
   "loan_to_vl": "Loan to value:",
   "loan_amount": "Loan amount:",

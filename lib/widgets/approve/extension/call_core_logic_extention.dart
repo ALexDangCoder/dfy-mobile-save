@@ -29,23 +29,23 @@ extension CallCoreExtension on ApproveCubit {
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
             );
             balanceWalletSubject.sink.add(balanceWallet ?? 0);
+            await getGasPrice();
+            if (needApprove) {
+              final result = await checkApprove(
+                payValue: payValue ?? '',
+                tokenAddress: tokenAddress ?? ' ',
+              );
+              if (result) {
+                await gesGasLimitFirst(hexString ?? '');
+              } else {
+                showContent();
+              }
+            } else {
+              await gesGasLimitFirst(hexString ?? '');
+            }
           } catch (e) {
             showError();
             AppException('title', e.toString());
-          }
-          await getGasPrice();
-          if (needApprove) {
-            final result = await checkApprove(
-              payValue: payValue ?? '',
-              tokenAddress: tokenAddress ?? ' ',
-            );
-            if (result) {
-              await gesGasLimitFirst(hexString ?? '');
-            } else {
-              showContent();
-            }
-          } else {
-            await gesGasLimitFirst(hexString ?? '');
           }
         }
         break;

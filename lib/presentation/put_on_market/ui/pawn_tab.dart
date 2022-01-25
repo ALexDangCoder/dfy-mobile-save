@@ -325,8 +325,8 @@ class _PawnTabState extends State<PawnTab>
                                       '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
                                 )
                               ],
-                              textActiveButton: S.current.put_on_sale,
-                              typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                              textActiveButton: S.current.put_on_pawn,
+                              typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
                             ),
                           ),
                         ),
