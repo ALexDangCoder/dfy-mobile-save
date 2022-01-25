@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -23,6 +25,10 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
 
+  final PinToIPFS ipfsService = PinToIPFS();
+
+  Web3Utils web3utils = Web3Utils();
+
   NFTRepository get nftRepo => Get.find();
 
   List<TypeNFTModel> listNft = [];
@@ -34,16 +40,28 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   int selectedNftType = 0;
   String walletAddress = '';
 
+  String nftIPFS = '';
+  String transactionData = '';
+  String tokenAddress = '';
+
   ///Detail NFT var
   String mediaType = '';
   String nftName = '';
   String collectionAddress = '';
   String description = '';
   int royalty = 0;
+  String mediaFileCid = '';
+  String coverCid = '';
+  String fileType = '';
+  int mintingFeeNumber = 10;
+  String mintingFeeToken = 'DFY';
 
-  ///mediaFilePath
+  ///mediaFilePath,Size
   String mediaFilePath = '';
   String coverPhotoPath = '';
+  int mediaFileUploadTime = 0;
+  int coverFileSize = 0;
+
 
   ///Stream
   ///id of nft
@@ -59,11 +77,18 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
       BehaviorSubject();
   final BehaviorSubject<File> audioFileSubject = BehaviorSubject();
   final BehaviorSubject<String> coverPhotoSubject = BehaviorSubject();
+  final BehaviorSubject<bool> playButtonSubject = BehaviorSubject();
 
   ///Error text image file size
   final BehaviorSubject<String> fileErrorTextSubject = BehaviorSubject();
   final BehaviorSubject<List<Map<String, dynamic>>> listCollectionSubject =
       BehaviorSubject();
+
+  ///upload IPFS progress bar
+  BehaviorSubject<int> mediaFileUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> coverPhotoUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> upLoadStatusSubject = BehaviorSubject();
+
 
   ///Error String
   final BehaviorSubject<String> collectionMessSubject = BehaviorSubject();

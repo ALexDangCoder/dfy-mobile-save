@@ -317,6 +317,8 @@ class ImageAssets {
   static const String x_svg = '$baseImg/x_svg.svg';
   static const String circle_x_svg = '$baseImg/circle_x_svg.svg';
   static const String delete_svg = '$baseImg/delete_svg.svg';
+  static const String play_btn_svg = '$baseImg/play_btn_svg.svg';
+
 
 
   // about us

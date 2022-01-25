@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -63,7 +61,6 @@ class CategoriesDropDown extends StatelessWidget {
                 16,
               ),
               onChange: (selected) {
-                log(selected.toString());
                 cubit.voidCheckCollectionId(selected['value']);
               },
               resultIcon: Container(

@@ -152,6 +152,18 @@ class _ApproveState extends State<Approve> {
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         getNonce();
         break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -357,6 +369,12 @@ class _ApproveState extends State<Approve> {
           );
           break;
         }
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -660,7 +678,7 @@ class _ApproveState extends State<Approve> {
     final navigator = Navigator.of(context);
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
-        cubit.importNft(
+        await cubit.importNft(
           contract: nftDetailBloc.nftMarket.collectionAddress ?? '',
           id: int.parse(nftDetailBloc.nftMarket.nftTokenId ?? ''),
           address: nftDetailBloc.walletAddress,
@@ -832,6 +850,15 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+        // TODO: Handle this case.
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        // TODO: Handle this case.
         break;
     }
   }

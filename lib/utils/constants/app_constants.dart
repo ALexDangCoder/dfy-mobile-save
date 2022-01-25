@@ -70,9 +70,9 @@ const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
 
 //Media file type
-const String MEDIA_VIDEO_FILE = 'VIDEO';
-const String MEDIA_IMAGE_FILE = 'IMAGE';
-const String MEDIA_AUDIO_FILE = 'AUDIO';
+const String MEDIA_VIDEO_FILE = 'video';
+const String MEDIA_IMAGE_FILE = 'image';
+const String MEDIA_AUDIO_FILE = 'audio';
 const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';

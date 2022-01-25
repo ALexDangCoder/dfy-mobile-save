@@ -217,7 +217,7 @@
   "items": "items",
   "owners": "Owners",
   "volume_traded": "volume traded",
-  "search.": "Search",
+  "search_wo_dot": "Search",
   "category": "Category",
   "hard_nft": "Hard NFT",
   "outstanding_collection": "Outstanding collection",
@@ -537,10 +537,13 @@
   "cancel_aution": "Cancel auction",
   "auction_cancel_info": "Auction information will be cancelled",
   "cancel_auction_warning": "Customer can not buy your NFT anymore",
-  "no_continue": "No, continue",
   "yes": "Yes",
   "enter" : "Enter",
   "max_duration_auction" : "Maximum duration is 7 days (168 hrs)",
   "put_on_auction" : "Put on auction",
-  "min_duration_auction" : "Minimum duration is 12hrs"
+  "min_duration_auction" : "Minimum duration is 12hrs",
+  "no_continue": "No, continue",
+  "number_of_copies": "Number of copies",
+  "minting_fee": "Minting fee",
+  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard"
 }
