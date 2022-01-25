@@ -495,6 +495,7 @@
   "connect": "Connect",
   "end_in": "End In",
   "hanoi_office" : "Hanoi office",
+  "london_office" : "London office",
   "buy_fail": "Mua thất bại",
   "dont_have_wallet": "You don’t have any wallet. Create now",
   "need_login": "You are not logged in.\nLog in",
