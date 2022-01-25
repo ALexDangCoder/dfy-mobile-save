@@ -18,6 +18,7 @@ class AppRouter {
   static const sendToken = '/sendToken';
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
+  static const putOnSale = '/put_on_market';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

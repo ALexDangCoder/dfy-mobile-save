@@ -237,7 +237,7 @@ class _SaleTabState extends State<SaleTab>
                             warning: RichText(
                               text: TextSpan(
                                 text:
-                                    'Listing is free. The the time of the sale, ',
+                                     '${S.current.listing_is_free} ',
                                 style: textNormal(
                                   AppTheme.getInstance()
                                       .whiteColor()
@@ -256,7 +256,7 @@ class _SaleTabState extends State<SaleTab>
                                   ),
                                   TextSpan(
                                     text:
-                                        ' value of each copy will be deducted',
+                                        S.current.value_of_each_copy,
                                     style: textNormal(
                                       AppTheme.getInstance()
                                           .whiteColor()

@@ -147,6 +147,19 @@ TextStyle textNormalCustom(
   );
 }
 
+TextStyle textNormalOswaldCustom(
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+    ) {
+  return GoogleFonts.oswald(
+    color: color ?? Colors.white,
+    fontWeight: fontWeight ?? FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    fontSize: fontSize?.sp ?? 14.sp,
+  );
+}
+
 TextStyle textNormalCustomUnderline(
   Color? color,
   double? fontSize,

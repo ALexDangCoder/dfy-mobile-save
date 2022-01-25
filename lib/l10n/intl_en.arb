@@ -519,6 +519,8 @@
   "format_media_file" : "Format: MP4, WEBM, MP3, WAV,\n OGG, PNG, JPG, JPEG, GIF",
   "add_more_trait_to_properties" : "Properties (add more trait for your NFT)",
   "properties" : "Properties",
+  "listing_is_free": "Listing is free. The the time of the sale,",
+  "value_of_each_copy" : " value of each copy will be deducted.",
   "value" : "Value",
   "add_more_properties" : "Add more properties",
   "nft_name_require": "Name is required",
