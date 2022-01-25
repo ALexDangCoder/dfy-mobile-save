@@ -217,7 +217,7 @@
   "items": "items",
   "owners": "Owners",
   "volume_traded": "volume traded",
-  "search.": "Search",
+  "search_wo_dot": "Search",
   "category": "Category",
   "hard_nft": "Hard NFT",
   "outstanding_collection": "Outstanding collection",
@@ -528,5 +528,8 @@
   "cancel_aution": "Cancel auction",
   "auction_cancel_info": "Auction information will be cancelled",
   "cancel_auction_warning": "Customer can not buy your NFT anymore",
-  "no_continue": "No, continue"
+  "no_continue": "No, continue",
+  "number_of_copies": "Number of copies",
+
+  "minting_fee": "Minting fee"
 }

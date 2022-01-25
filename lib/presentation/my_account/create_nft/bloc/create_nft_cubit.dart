@@ -34,16 +34,25 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   int selectedNftType = 0;
   String walletAddress = '';
 
+  String nftIPFS = '';
+  String transactionData = '';
+
   ///Detail NFT var
   String mediaType = '';
   String nftName = '';
   String collectionAddress = '';
   String description = '';
   int royalty = 0;
+  String mediaFileCid = '';
+  String coverCid = '';
+  String fileType = '';
+  int mintingFeeNumber = 10;
+  String mintingFeeToken = 'DFY';
 
   ///mediaFilePath
   String mediaFilePath = '';
   String coverPhotoPath = '';
+
 
   ///Stream
   ///id of nft
@@ -59,11 +68,18 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
       BehaviorSubject();
   final BehaviorSubject<File> audioFileSubject = BehaviorSubject();
   final BehaviorSubject<String> coverPhotoSubject = BehaviorSubject();
+  final BehaviorSubject<bool> playButtonSubject = BehaviorSubject();
 
   ///Error text image file size
   final BehaviorSubject<String> fileErrorTextSubject = BehaviorSubject();
   final BehaviorSubject<List<Map<String, dynamic>>> listCollectionSubject =
       BehaviorSubject();
+
+  ///upload IPFS progress bar
+  BehaviorSubject<int> mediaFileUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> coverPhotoUploadStatusSubject = BehaviorSubject();
+  BehaviorSubject<int> upLoadStatusSubject = BehaviorSubject();
+
 
   ///Error String
   final BehaviorSubject<String> collectionMessSubject = BehaviorSubject();

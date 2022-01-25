@@ -31,19 +31,17 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     trustWalletChannel.setMethodCallHandler(
       widget.cubit.nativeMethodCallBackTrustWallet,
     );
     widget.cubit.getListTypeNFT();
+    super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     widget.cubit.dispose();
+    super.dispose();
   }
 
   @override

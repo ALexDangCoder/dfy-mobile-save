@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/categories_dropdown_widget.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/widget/create_nft_upload_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/input_information_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget_create_nft.dart';
@@ -117,6 +118,12 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                       fontSize: 20,
                       onTap: () {
                         if (statusButton) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CreateNftUpload(
+                              cubit: widget.cubit,
+                            ),
+                          );
                         } else {}
                       },
                     );

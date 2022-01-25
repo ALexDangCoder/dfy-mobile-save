@@ -9,9 +9,9 @@ import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/ipfs_gen_url.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/web3_create_collection.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_file_to_ipfs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -250,15 +250,15 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     avatarUploadStatusSubject.sink.add(-1);
     featurePhotoUploadStatusSubject.sink.add(-1);
 
-    final coverCid = await uploadImageToIPFS(bin: avatarPath);
+    final coverCid = await pinFileToIPFS(pathFile: avatarPath);
     coverCid.isEmpty
         ? coverPhotoUploadStatusSubject.sink.add(0)
         : coverPhotoUploadStatusSubject.sink.add(1);
-    final avatarCid = await uploadImageToIPFS(bin: avatarPath);
+    final avatarCid = await pinFileToIPFS(pathFile: avatarPath);
     avatarCid.isEmpty
         ? avatarUploadStatusSubject.sink.add(0)
         : avatarUploadStatusSubject.sink.add(1);
-    final featureCid = await uploadImageToIPFS(bin: avatarPath);
+    final featureCid = await pinFileToIPFS(pathFile: avatarPath);
     featureCid.isEmpty
         ? featurePhotoUploadStatusSubject.sink.add(0)
         : featurePhotoUploadStatusSubject.sink.add(1);

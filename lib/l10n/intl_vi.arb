@@ -261,7 +261,7 @@
   "items": "mặt hàng",
   "owners": "số chủ sở hữu",
   "volume_traded": "khối lượng giao dịch",
-  "search.": "Tìm kiếm",
+  "search_wo_dot": "Tìm kiếm",
   "category": "Loại",
   "hard_nft": "Hard NFT",
   "private_warning": "Private key không hợp lệ",
@@ -521,6 +521,7 @@
   "auction_cancel_info": "Thông tin đấu giá sẽ bị hủy",
   "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
   "cancel_success": "Hủy bán thành công",
-  "no_continue": "Không, tiếp tục"
-
+  "no_continue": "Không, tiếp tục",
+  "number_of_copies" : "Số lượng bản sao",
+  "minting_fee": "Phí khởi tạo"
 }

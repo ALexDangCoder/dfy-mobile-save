@@ -74,7 +74,9 @@ dependencies:
   carousel_slider: ^4.0.0-nullsafety.0
   dots_indicator: ^2.0.0
   scrollable_positioned_list: ^0.2.3
+  #mediaPlayer
   video_player: ^2.2.10
+  audioplayers: ^0.20.1
   flutter_countdown_timer: ^4.1.0
   #svg
   flutter_svg: ^0.22.0
