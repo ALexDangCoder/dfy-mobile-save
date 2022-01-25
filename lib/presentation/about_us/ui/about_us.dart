@@ -7,8 +7,6 @@ import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/generated/l10n.dart';
 
-//ic_email , ic_address , ic_global
-
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -170,7 +168,7 @@ class AboutUs extends StatelessWidget {
                         const SizedBox (height: 16,),
                         Row (
                           children: [
-                            Image.asset(ImageAssets.ic_global),
+                            Image.asset(ImageAssets.ic_email),
                             const SizedBox (width: 8,),
                             GestureDetector(
                               onTap: (){
@@ -192,7 +190,7 @@ class AboutUs extends StatelessWidget {
                         const SizedBox (height: 16,),
                         Row (
                           children: [
-                            Image.asset(ImageAssets.ic_global),
+                            Image.asset(ImageAssets.ic_email),
                             const SizedBox (width: 8,),
                             GestureDetector(
                               onTap: (){
@@ -215,9 +213,91 @@ class AboutUs extends StatelessWidget {
                         SizedBox (
                           child: Text(
                             '$appName - ${S.current.hanoi_office}',
-                            style: ,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w700,
+                            ),
                           ),
-                        )
+                        ),
+                        const SizedBox (height: 16,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_email),
+                            const SizedBox (width: 8,),
+                            GestureDetector(
+                              onTap: (){
+                                launchMail(email: mailAskHanoi);
+                              },
+                              child: SizedBox(
+                                child: Text(
+                                  mailAskHanoi,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().getAmountColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox (width: 8,),
+                            Image.asset(ImageAssets.ic_flag_vn),
+                          ],
+                        ),
+                        const SizedBox (height: 16,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_email),
+                            const SizedBox (width: 8,),
+                            GestureDetector(
+                              onTap: (){
+                                launchMail(email: mailMarketingHanoi);
+                              },
+                              child: SizedBox(
+                                child: Text(
+                                  mailMarketingHanoi,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().getAmountColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox (width: 8,),
+                            Image.asset(ImageAssets.ic_flag_gb),
+                          ],
+                        ),
+                        const SizedBox (height: 16,),
+                        Row (
+                          children: [
+                            Image.asset(ImageAssets.ic_address),
+                            const SizedBox (width: 8,),
+                            Expanded(
+                              child: SizedBox(
+                                child: Text(
+                                  locationHanoi,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox (height: 24,),
+                        SizedBox (
+                          child: Text(
+                            '$appName - ${S.current.london_office}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
