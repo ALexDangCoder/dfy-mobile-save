@@ -114,16 +114,22 @@ Widget _buildButtonBuyOutOnSale(
   NFTDetailBloc bloc,
   NftMarket nftMarket,
   bool isBought,
+  String marketId,
 ) {
   return ButtonGradient(
     onPressed: () {
       if (isBought) {
-        _showDialog(context, nftMarket);
+        _showDialog(
+          context,
+          nftMarket,
+          marketId,
+        );
       } else {
         showDialog(
           builder: (context) => ConnectWalletDialog(
             navigationTo: BuyNFT(
               nftMarket: nftMarket,
+              marketId: marketId,
             ),
             isRequireLoginEmail: false,
           ),
@@ -217,7 +223,7 @@ Widget processing() {
   );
 }
 
-void _showDialog(BuildContext context, NftMarket nftMarket) {
+void _showDialog(BuildContext context, NftMarket nftMarket, String marketId) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -320,6 +326,7 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
                       builder: (context) => ConnectWalletDialog(
                         navigationTo: BuyNFT(
                           nftMarket: nftMarket,
+                          marketId: marketId,
                         ),
                         isRequireLoginEmail: false,
                       ),

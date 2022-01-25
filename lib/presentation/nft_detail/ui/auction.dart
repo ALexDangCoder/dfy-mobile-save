@@ -6,6 +6,7 @@ Widget _buildButtonPlaceBid(
   bool end,
   NFTDetailBloc bloc,
   NFTOnAuction nftOnAuction,
+  String marketId,
 ) {
   if (!start && end) {
     return ButtonGradient(
@@ -16,6 +17,7 @@ Widget _buildButtonPlaceBid(
             navigationTo: PlaceBid(
               nftOnAuction: nftOnAuction,
               typeBid: TypeBid.PLACE_BID,
+              marketId: marketId,
             ),
             isRequireLoginEmail: false,
           ),
@@ -51,7 +53,11 @@ Widget _buildButtonPlaceBid(
   }
 }
 
-Widget _buildButtonBuyOut(BuildContext context, NFTOnAuction nftOnAuction) {
+Widget _buildButtonBuyOut(
+  BuildContext context,
+  NFTOnAuction nftOnAuction,
+  String marketId,
+) {
   return ButtonTransparent(
     child: Text(
       S.current.buy_out,
@@ -68,6 +74,7 @@ Widget _buildButtonBuyOut(BuildContext context, NFTOnAuction nftOnAuction) {
           navigationTo: PlaceBid(
             nftOnAuction: nftOnAuction,
             typeBid: TypeBid.BUY_OUT,
+            marketId: marketId,
           ),
           isRequireLoginEmail: false,
         ),

@@ -69,6 +69,7 @@ class Approve extends StatefulWidget {
   final String? purposeText;
   final String textActiveButton;
   final num? quantity;
+  final String? marketId;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
@@ -96,7 +97,7 @@ class Approve extends StatefulWidget {
     this.hexString,
     this.putOnMarketModel,
     this.quantity,
-    this.nftMarket,
+    this.nftMarket, this.marketId,
   }) : super(key: key);
 
   @override
@@ -665,18 +666,18 @@ class _ApproveState extends State<Approve> {
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseFail(
-                title: S.current.place_a_bid,
-                content: S.current.failed,
-                onTapBtn: () {
-                  Navigator.pop(context);
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.place_a_bid,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
         // TODO: Handle this case.
@@ -713,18 +714,18 @@ class _ApproveState extends State<Approve> {
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
               (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseFail(
-                title: S.current.send_offer,
-                content: S.current.failed,
-                onTapBtn: () {
-                  Navigator.pop(context);
-                },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.send_offer,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         cubit.confirmCancelSaleWithBE(
@@ -806,6 +807,13 @@ class _ApproveState extends State<Approve> {
           id: int.parse(widget.nftMarket?.nftTokenId ?? ''),
           address: PrefsService.getCurrentBEWallet(),
         );
+        cubit.buyNftRequest(
+          BuyNftRequest(
+            widget.marketId ?? '',
+            widget.quantity?.toInt() ?? 0,
+            data,
+          ),
+        );
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
               (value) => Navigator.push(
                 context,
@@ -827,13 +835,7 @@ class _ApproveState extends State<Approve> {
                 ),
               ),
             );
-        cubit.buyNftRequest(
-          BuyNftRequest(
-            nftDetailBloc.nftMarketId,
-            widget.quantity?.toInt() ?? 0,
-            data,
-          ),
-        );
+
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
@@ -858,7 +860,7 @@ class _ApproveState extends State<Approve> {
         );
         cubit.bidNftRequest(
           BidNftRequest(
-            nftDetailBloc.nftMarketId,
+            widget.marketId ?? '',
             widget.quantity?.toDouble() ?? 0,
             data,
           ),
@@ -917,13 +919,7 @@ class _ApproveState extends State<Approve> {
                 ),
               ),
             );
-        cubit.buyNftRequest(
-          BuyNftRequest(
-            nftDetailBloc.nftMarketId,
-            widget.quantity?.toInt() ?? 0,
-            data,
-          ),
-        );
+
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         cubit.confirmCancelSaleWithBE(

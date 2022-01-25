@@ -6,7 +6,6 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
@@ -21,8 +20,6 @@ import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
-import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
-import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
@@ -50,7 +47,6 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -96,7 +92,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
-    bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);
@@ -650,12 +645,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: objSale.isOwner == false
-                ? _buildButtonBuyOutOnSale(
-                    context,
-                    bloc,
-                    objSale,
-                    objSale.isBoughtByOther ?? false,
-                  )
+                ? _buildButtonBuyOutOnSale(context, bloc, objSale,
+                    objSale.isBoughtByOther ?? false, widget.marketId ?? '')
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
               _nameNFT(
@@ -987,7 +978,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : Row(
                     children: [
                       Expanded(
-                        child: _buildButtonBuyOut(context, nftOnAuction),
+                        child: _buildButtonBuyOut(
+                          context,
+                          nftOnAuction,
+                          widget.marketId ?? '',
+                        ),
                       ),
                       SizedBox(
                         width: 23.w,
@@ -1003,6 +998,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           ),
                           bloc,
                           nftOnAuction,
+                          widget.marketId ?? '',
                         ),
                       ),
                     ],

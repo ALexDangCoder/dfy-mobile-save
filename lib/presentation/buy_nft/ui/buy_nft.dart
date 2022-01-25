@@ -24,8 +24,10 @@ class BuyNFT extends StatefulWidget {
   const BuyNFT({
     Key? key,
     required this.nftMarket,
+    required this.marketId,
   }) : super(key: key);
   final NftMarket nftMarket;
+  final String marketId;
 
   @override
   State<BuyNFT> createState() => _BuyNFTState();
@@ -257,6 +259,7 @@ class _BuyNFTState extends State<BuyNFT> {
               context,
               MaterialPageRoute(
                 builder: (context) => Approve(
+                  marketId: widget.marketId,
                   quantity: widget.nftMarket.nftStandard == 'ERC-721'
                       ? 1
                       : cubit.amountValue,
@@ -324,6 +327,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   textActiveButton: S.current.buy_nft,
                   hexString: hexString,
+                  nftMarket: widget.nftMarket,
                   typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
                 ),
               ),

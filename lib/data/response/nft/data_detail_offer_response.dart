@@ -1,5 +1,4 @@
 import 'package:Dfy/domain/model/offer_detail.dart';
-import 'package:Dfy/utils/enum_ext.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'data_detail_offer_response.g.dart';

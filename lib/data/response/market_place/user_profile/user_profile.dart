@@ -1,4 +1,3 @@
-import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,7 +7,7 @@ part 'user_profile.g.dart';
 @JsonSerializable()
 class ProfileResponse extends Equatable {
   @JsonKey(name: 'data')
-  Map<String,dynamic>? data;
+  Map<String, dynamic>? data;
 
   ProfileResponse();
 

@@ -45,9 +45,9 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET}{nftId}')
   Future<NftMyAccResponse> getDetailNftNotOnMarket(
-      @Path('nftId') String nftId,
-      @Query('type') String type,
-      );
+    @Path('nftId') String nftId,
+    @Query('type') String type,
+  );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(
@@ -98,14 +98,14 @@ abstract class NFTClient {
 
   @POST(ApiConstants.CANCEL_SALE)
   Future<ConfirmResponse> cancelSale(
-      @Field('market_id') String marketId,
-      @Field('txn_hash') String txnHash,
-      );
+    @Field('market_id') String marketId,
+    @Field('txn_hash') String txnHash,
+  );
 
   //Confirm cancel  auction:
   @POST(ApiConstants.CANCEL_AUCTION)
   Future<ConfirmResponse> cancelAuction(
-      @Field('auction_id') String marketId,
-      @Field('txn_hash') String txnHash,
+    @Field('auction_id') String marketId,
+    @Field('txn_hash') String txnHash,
   );
 }

@@ -19,6 +19,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String hexString = '';
   String gasLimit = '';
   String rawData = '';
-  String nftMarketId = '';
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
