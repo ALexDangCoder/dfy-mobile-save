@@ -11,11 +11,13 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_
 import 'package:Dfy/presentation/put_on_market/ui/component/custom_calandar.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 class CreateBookEvaluation extends StatefulWidget {
   const CreateBookEvaluation({Key? key}) : super(key: key);
@@ -84,7 +86,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: 661.h,
+            height: 660.h,
             width: 375.w,
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
@@ -262,7 +264,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                               ),
                             ),
                             spaceH16,
-                            //todo input
                             GestureDetector(
                               onTap: () async {
                                 final result = await Navigator.push(
@@ -275,8 +276,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                     },
                                   ),
                                 );
-                                print('----------------$result');
-                                _bloc.dateStream.add(result);
+                                if (result != null) {
+                                  final date =
+                                      DateFormat('dd/MM/yyyy').format(result);
+                                  _bloc.dateStream.add(date);
+                                }
                               },
                               child: StreamBuilder<String>(
                                   stream: _bloc.dateStream,
@@ -299,8 +303,10 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         child: RichText(
                                           text: TextSpan(
                                             style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .whiteWithOpacityFireZero(),
+                                              dateInput == ''
+                                                  ? AppTheme.getInstance()
+                                                      .whiteWithOpacityFireZero()
+                                                  : null,
                                               16,
                                               FontWeight.w400,
                                             ),
@@ -349,7 +355,13 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                     ),
                                   ),
                                 );
-                                // _bloc.timeStream.add(result);
+                                if (result != null) {
+                                  final String hour =
+                                      result.stringValueOrEmpty('hour');
+                                  final String minute =
+                                      result.stringValueOrEmpty('minute');
+                                  _bloc.timeStream.add('$hour:$minute');
+                                }
                               },
                               child: StreamBuilder<String>(
                                 stream: _bloc.timeStream,
@@ -372,8 +384,10 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       child: RichText(
                                         text: TextSpan(
                                           style: textNormalCustom(
-                                            AppTheme.getInstance()
-                                                .whiteWithOpacityFireZero(),
+                                            timeInput == ''
+                                                ? AppTheme.getInstance()
+                                                    .whiteWithOpacityFireZero()
+                                                : null,
                                             16,
                                             FontWeight.w400,
                                           ),
@@ -519,7 +533,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 ],
                               ),
                             ),
-
                             spaceH32,
                             Text(
                               S.current.working_time.toUpperCase(),
@@ -611,7 +624,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 ],
                               ),
                             ),
-
                             spaceH16,
                             Center(
                               child: Container(

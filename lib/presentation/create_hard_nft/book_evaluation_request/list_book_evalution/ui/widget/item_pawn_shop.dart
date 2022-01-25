@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dialog_cancel.dart';
+import 'dialog_reason_detail.dart';
 
 class ItemPawnShop extends StatelessWidget {
   final String avatarPawnShopUrl;
@@ -116,7 +117,17 @@ class ItemPawnShop extends StatelessWidget {
                   child: isViewReason
                       ? InkWell(
                           onTap: () {
-                            // todo add even vào đây
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return DialogReasonDetail(
+                                    contentDetail: 'sdfsadf',//todo content
+                                    dateDetail: datePawnShop,
+                                  );
+                                },
+                                isNonBackground: false,
+                              ),
+                            );
                           },
                           child: Text(
                             S.current.view_reason,
