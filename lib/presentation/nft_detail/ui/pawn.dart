@@ -22,7 +22,7 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
           children: [
             Row(
               children: [
-                if (nftOnPawn.urlToken?.isNotEmpty ?? false)
+                if (nftOnPawn.urlToken != null)
                   ClipRRect(
                     child: Image(
                       image: NetworkImage(
@@ -81,7 +81,7 @@ Widget _durationRowOnPawn({
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${S.current.duration}:',
+            S.current.duration,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor().withOpacity(0.7),
               14,

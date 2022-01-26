@@ -159,7 +159,7 @@ class _SaleTabState extends State<SaleTab>
                           },
                           onchangeText: (value) {
                             widget.cubit.changeTokenSale(
-                              value: value != '' ? double.parse(value) : null,
+                              value: value != '' ? double.parse(value) : 0,
                             );
                             _putOnMarketModel.price = value;
                           },
