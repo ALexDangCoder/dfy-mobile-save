@@ -173,7 +173,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         showContent();
       },
       error: (error) {
-        showError();
       },
     );
   }
@@ -186,7 +185,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         showContent();
       },
       error: (error) {
-        showError();
+
       },
     );
   }

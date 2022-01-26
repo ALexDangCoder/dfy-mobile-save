@@ -14,11 +14,11 @@ class BaseFail extends StatelessWidget {
   const BaseFail({
     Key? key,
     required this.title,
-    required this.content,
+    this.content,
     required this.onTapBtn,
   }) : super(key: key);
   final String title;
-  final String content;
+  final String? content;
   final Function() onTapBtn;
 
   @override
@@ -41,7 +41,7 @@ class BaseFail extends StatelessWidget {
             ),
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Text(
-              content,
+              content ?? S.current.oopps_omething_went_wrong,
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 32,

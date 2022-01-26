@@ -4,8 +4,6 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/login/ui/dialog/warrning_dialog.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -37,7 +35,6 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
   void initState() {
     _cubit = OfferDetailCubit();
     onRefresh();
-    owner = nftKey.currentState?.owner ?? '';
     super.initState();
   }
 
@@ -82,7 +79,10 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                         ),
                         spaceH20,
                         ..._buildTable(offer),
-                        if (offer?.status == 3) ...[
+                        if (offer?.status == 3 &&
+                            PrefsService.getOwnerPawn().toLowerCase() ==
+                                PrefsService.getCurrentBEWallet()
+                                    .toLowerCase()) ...[
                           Container(
                             margin: EdgeInsets.only(top: 152.h),
                             padding: EdgeInsets.only(
@@ -302,18 +302,11 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         ),
       ),
       onPressed: () {
-        if (owner != PrefsService.getCurrentBEWallet()) {
-          showDialog(
-            context: context,
-            builder: (context) => WarningDialog(walletAddress: owner),
-          );
-        } else {
-          _cubit.rejectOffer(
-            data.collateralId?.toInt() ?? 0,
-            data.id?.toInt() ?? 0,
-            data.walletAddress ?? '',
-          );
-        }
+        _cubit.rejectOffer(
+          data.collateralId?.toInt() ?? 0,
+          data.id?.toInt() ?? 0,
+          data.walletAddress ?? '',
+        );
       },
     );
   }
@@ -321,18 +314,11 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
   Widget _buildButtonAccept(BuildContext context, OfferDetailModel data) {
     return ButtonGradient(
       onPressed: () {
-        if (owner != PrefsService.getCurrentBEWallet()) {
-          showDialog(
-            context: context,
-            builder: (context) => WarningDialog(walletAddress: owner),
-          );
-        } else {
-          _cubit.acceptOffer(
-            data.collateralId?.toInt() ?? 0,
-            data.id?.toInt() ?? 0,
-            data.walletAddress ?? '',
-          );
-        }
+        _cubit.acceptOffer(
+          data.collateralId?.toInt() ?? 0,
+          data.id?.toInt() ?? 0,
+          data.walletAddress ?? '',
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
