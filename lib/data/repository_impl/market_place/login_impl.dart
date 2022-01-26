@@ -9,6 +9,7 @@ import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/model/market_place/otp_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 
 class LoginImpl implements LoginRepository {
   final LoginClient _loginClient;
@@ -60,6 +61,14 @@ class LoginImpl implements LoginRepository {
     return runCatchingAsync<LoginResponse, LoginModel>(
       () => _loginClient.verifyOTP(otp, transactionId),
       (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<void> logout() {
+    return runCatchingAsync(
+      () => _loginClient.logout(),
+      (response) => response,
     );
   }
 }

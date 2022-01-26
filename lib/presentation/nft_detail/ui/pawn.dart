@@ -140,8 +140,26 @@ Widget _buildButtonCancelOnPawn(
     ) {
   return ButtonGradient(
     onPressed: () async {
-      /// TODO: handle cancel sale buy nftMarket.isOwner == true
-    },
+      final nav = Navigator.of(context);
+      final String dataString = await bloc.getDataStringForCancelPawn(
+        pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
+      );
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              dataString: dataString,
+              dataInfo: bloc.initListApprove(
+                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              ),
+              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              cancelInfo: S.current.pawn_cancel_info,
+              cancelWarning: S.current.pawn_cancel_warning,
+              title: S.current.cancel_pawn,
+            ),
+          ),
+        ),
+      );    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
@@ -160,48 +178,3 @@ Widget _buildButtonCancelOnPawn(
   );
 }
 
-Widget _buildButtonCancelOnPawn(
-  BuildContext context,
-  NFTDetailBloc bloc,
-  NftOnPawn nftOnPawn,
-) {
-  return ButtonGradient(
-    onPressed: () async {
-      final nav = Navigator.of(context);
-      final String dataString = await bloc.getDataStringForCancelPawn(
-        pawnId: nftOnPawn.nftCollateralDetailDTO?.nftId ?? '',
-      );
-      unawaited(
-        nav.push(
-          MaterialPageRoute(
-            builder: (context) => approveWidget(
-              dataString: dataString,
-              dataInfo: bloc.initListApprove(
-                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-              ),
-              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-              cancelInfo: S.current.pawn_cancel_info,
-              cancelWarning: S.current.pawn_cancel_warning,
-              title: S.current.cancel_pawn,
-            ),
-          ),
-        ),
-      );
-    },
-    gradient: RadialGradient(
-      center: const Alignment(0.5, -0.5),
-      radius: 4,
-      colors: AppTheme.getInstance().gradientButtonColor(),
-    ),
-    child: nftOnPawn.status == 7
-        ? processing()
-        : Text(
-            S.current.cancel_pawn,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
-  );
-}

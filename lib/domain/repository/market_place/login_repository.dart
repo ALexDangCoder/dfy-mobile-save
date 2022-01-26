@@ -17,4 +17,6 @@ mixin LoginRepository {
 
   Future<Result<LoginModel>> verifyOTP(String otp, String transactionId);
 
+  Future<void> logout();
+
 }

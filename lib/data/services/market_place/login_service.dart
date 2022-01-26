@@ -42,4 +42,7 @@ abstract class LoginClient {
     @Field('otp') String otp,
     @Field('transaction_id') String transactionId,
   );
+
+  @PUT(ApiConstants.LOG_OUT)
+  Future<void> logout();
 }

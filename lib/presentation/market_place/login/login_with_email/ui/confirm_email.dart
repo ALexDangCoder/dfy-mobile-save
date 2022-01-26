@@ -45,7 +45,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
             if (otpController.value.text.length != 6) {
               //todo: Handler
             } else {
-              bool isSuccess = await cubit.verifyOTP(
+              final bool isSuccess = await cubit.verifyOTP(
                 otp: otpController.value.text,
                 transactionID: widget.transactionId,
               );
@@ -99,14 +99,19 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                     fieldHeight: 60,
                     borderWidth: 1,
                     fieldWidth: 50,
-                    inactiveFillColor: const Color(0xFF33324C),
-                    inactiveColor: const Color(0xFF585782),
-                    activeFillColor: const Color(0x1AE4AC1A),
-                    activeColor: const Color(0XFFE4AC1A),
-                    selectedColor: const Color(0x1AE4AC1A),
-                    selectedFillColor: const Color(0x1AE4AC1A),
-                    errorBorderColor: const Color(0xFF585782),
-                    disabledColor: const Color(0XFF33324C),
+                    //backgound khi đã truyền param
+                    activeFillColor: AppTheme.getInstance().yellowOpacity10(),
+                    //border khi đã truyền param
+                    activeColor: AppTheme.getInstance().fillColor(),
+                    //màu border khi click vào
+                    selectedColor: AppTheme.getInstance().colorTextReset(),
+                    //bg color của input đang focus
+                    selectedFillColor: AppTheme.getInstance().darkBgColor(),
+                    //bg color của input chưa có giá trị
+                    inactiveFillColor: AppTheme.getInstance().darkBgColor(),
+                    //border  color của input chưa có giá trị
+                    inactiveColor: AppTheme.getInstance().bgTranSubmit(),
+
                   ),
                   animationDuration: const Duration(milliseconds: 300),
                   enableActiveFill: true,
