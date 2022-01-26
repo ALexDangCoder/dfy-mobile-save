@@ -2,8 +2,8 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
-import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -52,14 +52,14 @@ extension CallCoreExtension on ApproveCubit {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         if (checkingApprove ?? false) {
-          await web3Client.sendRawTransaction(
+          final resultApprove =  await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );
-          await loopCheckApprove().timeout(
-            const Duration(milliseconds: 5000),
-          );
+          // await loopCheckApprove().timeout(
+          //   const Duration(milliseconds: 5000),
+          // );
           checkingApprove = false;
-          isApprovedSubject.sink.add(isApprove);
+          isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
         } else {
           final result = await sendRawData(rawData ?? '');
           switch (type) {
