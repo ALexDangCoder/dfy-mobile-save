@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,7 @@ class DialogCancel extends StatelessWidget {
   final String date;
   final String status;
   final String title;
+  final BlocListBookEvaluation bloc;
 
   const DialogCancel({
     Key? key,
@@ -29,6 +31,7 @@ class DialogCancel extends StatelessWidget {
     required this.date,
     required this.status,
     required this.title,
+    required this.bloc,
   }) : super(key: key);
 
   @override
@@ -125,7 +128,9 @@ class DialogCancel extends StatelessWidget {
                             Text(
                               status,
                               style: textNormalCustom(
-                                null,
+                                bloc.checkColor(
+                                  status,
+                                ),
                                 12,
                                 FontWeight.w400,
                               ),

@@ -319,7 +319,6 @@
   "shape": "Hình dạng:",
   "cut_grade": "Cắt lớp:",
   "information": "Thông tin",
-  "not_on_market": "Không trên sàn",
   "not_on_market":"Không trên sàn",
   "listing_is_free": "Việc đăng tải các sản phẩm là hoàn toàn miễn phí. Mỗi lần bán ,",
   "view_all_result": "Xem tất cả",
@@ -551,7 +550,6 @@
   "cancel_auction_warning": "Khác hàng sẽ không thể mua NFT của bạn nữa",
   "cancel_success": "Hủy bán thành công",
   "max_duration_auction" : "Thời lượng tối đa là 7 ngày (168 giờ)",
-  "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ",
   "step2": "2",
   "step3": "3",
   "step4": "4",
@@ -573,5 +571,9 @@
   "no_continue": "Không, tiếp tục",
   "number_of_copies" : "Số lượng bản sao",
   "minting_fee": "Phí khởi tạo",
-  "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155"
+  "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155",
+  "chosen_date": "Ngày đã chọn không nằm trong giờ làm việc của người đánh giá",
+  "date_is_required": "Ngày tháng là bắt buộc",
+  "chosen_time": "Thời gian đã chọn không nằm trong giờ làm việc của người đánh giá",
+  "time_is_required": "Thời gian là bắt buộc"
 }

@@ -97,9 +97,17 @@ class ItemPawnShop extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  "statusPawnShop", //toddo status
+                  bloc.getTextStatus(
+                    appointment.status ?? 0,
+                    appointment.acceptedTime ?? 0,
+                  ),
                   style: textNormalCustom(
-                    checkColor("statusPawnShop"),
+                    bloc.checkColor(
+                      bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      ),
+                    ),
                     12,
                     null,
                   ),
@@ -119,7 +127,8 @@ class ItemPawnShop extends StatelessWidget {
                                   return DialogReasonDetail(
                                     contentDetail: 'sdfsadf', //todo content
                                     dateDetail: 0.formatDateTimeMy(
-                                        appointment.appointmentTime ?? 0),
+                                      appointment.appointmentTime ?? 0,
+                                    ),
                                   );
                                 },
                                 isNonBackground: false,
@@ -154,13 +163,16 @@ class ItemPawnShop extends StatelessWidget {
                               title: appointment.evaluator?.name ?? '',
                               urlAvatar:
                                   '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
-                              //todo body
                               date: 0.formatDateTimeMy(
                                   appointment.appointmentTime ?? 0),
                               location: appointment.evaluator?.address ?? '',
                               mail: appointment.evaluator?.email ?? '',
                               numPhone: appointment.evaluator?.phone ?? '',
-                              status: "appointment.evaluator?.", //todo
+                              status: bloc.getTextStatus(
+                                appointment.status ?? 0,
+                                appointment.acceptedTime ?? 0,
+                              ),
+                              bloc: bloc,
                             );
                           },
                           isNonBackground: false,
@@ -178,19 +190,5 @@ class ItemPawnShop extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Color checkColor(String status) {
-    if (S.current.your_appointment_request == status) {
-      return AppTheme.getInstance().orangeMarketColors();
-    } else if (S.current.the_evaluator_has_rejected == status) {
-      return AppTheme.getInstance().redMarketColors();
-    } else if (S.current.the_evaluator_has_accepted == status) {
-      return AppTheme.getInstance().greenMarketColors();
-    } else if (S.current.evaluator_has_suggested == status) {
-      return AppTheme.getInstance().blueMarketColors();
-    } else {
-      return AppTheme.getInstance().redMarketColors();
-    }
   }
 }
