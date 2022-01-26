@@ -889,7 +889,7 @@ class _ApproveState extends State<Approve> {
                 MaterialPageRoute(
                   builder: (_) => BaseSuccess(
                     title: S.current.create_collection,
-                    content: S.current.congratulation,
+                    content: S.current.create_collection_successfully,
                     callback: () {
                       navigator.pop();
                       navigator.push(
@@ -947,7 +947,7 @@ class _ApproveState extends State<Approve> {
             MaterialPageRoute(
               builder: (_) => BaseSuccess(
                 title: S.current.create_nft,
-                content: S.current.congratulation,
+                content: S.current.create_nft_successfully,
                 callback: () {
                   navigator.pop();
                   navigator.push(

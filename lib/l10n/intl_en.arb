@@ -507,7 +507,6 @@
   "resend_code": "Resend code",
   "registration_number" : "Registration number",
   "find_us_on" : "Find us on",
-  "put_on_pawn" : "Put on pawn",
   "how_to_create_hard_nft": "How to create hard NFT",
   "skip": "Skip",
   "step": "Step",
@@ -573,5 +572,8 @@
   "no_continue": "No, continue",
   "number_of_copies": "Number of copies",
   "minting_fee": "Minting fee",
-  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard"
+  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard",
+  "create_collection_successfully": "Create collection successfully!",
+  "create_nft_successfully": "Create NFT successfully!",
+  "processing" : "Your request is being processed!"
 }
