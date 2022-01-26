@@ -86,6 +86,7 @@
   "or_scan": "hoặc quét mã QR",
   "scan_qr_code": "Quét mã QR",
   "approve": "Chấp thuận",
+  "approved": "Đã chấp thuận",
   "send": "Gửi",
   "estimate_gas_fee": "Ước tính phí gas",
   "insufficient_balance": "Số dư không đủ",

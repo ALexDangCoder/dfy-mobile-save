@@ -621,7 +621,9 @@ class _ApproveState extends State<Approve> {
                                                     width: 2,
                                                   )
                                                 : null,
-                                            title: S.current.approve,
+                                            title: isApproved
+                                                ? S.current.approved
+                                                : S.current.approve,
                                             isEnable: true,
                                             fixSize: false,
                                             haveMargin: false,
@@ -978,25 +980,25 @@ class _ApproveState extends State<Approve> {
             .then((value) => navigator.popUntil((route) => route.isFirst))
             .then(
               (value) => navigator.push(
-            MaterialPageRoute(
-              builder: (_) => BaseSuccess(
-                title: S.current.create_nft,
-                content: S.current.create_nft_successfully,
-                callback: () {
-                  navigator.pop();
-                  navigator.push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => CollectionList(
-                        typeScreen: PageRouter.MY_ACC,
-                        addressWallet: cubit.addressWallet,
-                      ),
-                    ),
-                  );
-                },
+                MaterialPageRoute(
+                  builder: (_) => BaseSuccess(
+                    title: S.current.create_nft,
+                    content: S.current.create_nft_successfully,
+                    callback: () {
+                      navigator.pop();
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CollectionList(
+                            typeScreen: PageRouter.MY_ACC,
+                            addressWallet: cubit.addressWallet,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
         // TODO: Handle this case.
