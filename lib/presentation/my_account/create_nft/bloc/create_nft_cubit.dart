@@ -74,7 +74,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   final BehaviorSubject<String> imageFileSubject = BehaviorSubject();
   final BehaviorSubject<VideoPlayerController> videoFileSubject =
       BehaviorSubject();
-  final BehaviorSubject<File> audioFileSubject = BehaviorSubject();
+  final BehaviorSubject<String> audioFileSubject = BehaviorSubject();
   final BehaviorSubject<String> coverPhotoSubject = BehaviorSubject();
   final BehaviorSubject<bool> playButtonSubject = BehaviorSubject();
 
@@ -91,6 +91,8 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   ///Error String
   final BehaviorSubject<String> collectionMessSubject = BehaviorSubject();
+  final BehaviorSubject<String> coverPhotoMessSubject = BehaviorSubject();
+
 
   ///List Map value - properties
   final BehaviorSubject<List<Map<String, String>>> listPropertySubject =

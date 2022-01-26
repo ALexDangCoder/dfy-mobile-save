@@ -226,7 +226,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                     },
                   ),
                   StreamBuilder<String>(
-                    stream: null,
+                    stream: cubit.coverPhotoMessSubject,
                     initialData: '',
                     builder: (context, snapshot) {
                       final mess = snapshot.data ?? '';
@@ -241,38 +241,51 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
               );
             }
           } else {
-            return GestureDetector(
-              onTap: () {
-                cubit.pickFile();
-              },
-              child: DottedBorder(
-                borderType: BorderType.RRect,
-                radius: const Radius.circular(20),
-                color: AppTheme.getInstance().whiteColor().withOpacity(0.5),
-                strokeWidth: 1.5,
-                dashPattern: const [5],
-                child: SizedBox(
-                  height: 133.h,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        sizedSvgImage(
-                          w: 44,
-                          h: 44,
-                          image: ImageAssets.icon_add_image_svg,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    cubit.pickFile();
+                  },
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(20),
+                    color: AppTheme.getInstance().whiteColor().withOpacity(0.5),
+                    strokeWidth: 1.5,
+                    dashPattern: const [5],
+                    child: SizedBox(
+                      height: 133.h,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sizedSvgImage(
+                              w: 44,
+                              h: 44,
+                              image: ImageAssets.icon_add_image_svg,
+                            ),
+                            spaceH16,
+                            Text(
+                              S.current.format_media_file,
+                              style: normalText,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
                         ),
-                        spaceH16,
-                        Text(
-                          S.current.format_media_file,
-                          style: normalText,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+                StreamBuilder<String>(
+                  stream: cubit.collectionMessSubject,
+                  initialData: '',
+                  builder: (context, snapshot) {
+                    final mess = snapshot.data ?? '';
+                    return errorMessage(mess);
+                  },
+                ),
+              ],
             );
           }
         },
