@@ -68,7 +68,7 @@ Container _priceContainerOnSale({
             children: [
               Row(
                 children: [
-                  if (urlToken.isNotEmpty)
+                  if (urlToken != ApiConstants.BASE_URL_IMAGE)
                     Image(
                       image: NetworkImage(
                         urlToken,

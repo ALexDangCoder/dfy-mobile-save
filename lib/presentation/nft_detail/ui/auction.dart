@@ -175,7 +175,7 @@ Container _priceContainerOnAuction({
           children: [
             Row(
               children: [
-                if (nftOnAuction.urlToken?.isNotEmpty ?? true)
+                if (nftOnAuction.urlToken != ApiConstants.BASE_URL_IMAGE)
                   Image(
                     image: NetworkImage(
                       nftOnAuction.urlToken ?? '',
