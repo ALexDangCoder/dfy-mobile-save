@@ -13,6 +13,7 @@ import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -178,7 +179,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   ),
                                 ),
                                 Text(
-                                  nft.standard == 'ERC-721'
+                                  nft.standard == ERC_721
                                       ? '1 ${S.current.of_all} 1'
                                       : '1 of 10',
                                   style: textNormal(

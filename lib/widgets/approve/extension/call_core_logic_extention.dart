@@ -84,7 +84,7 @@ extension CallCoreExtension on ApproveCubit {
                 );
               } else {
                 emit(
-                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
+                  SignFail(S.current.place_a_bid, TYPE_CONFIRM_BASE.PLACE_BID),
                 );
               }
               break;

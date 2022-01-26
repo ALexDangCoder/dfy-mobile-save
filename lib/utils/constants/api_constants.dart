@@ -100,7 +100,7 @@ class ApiConstants {
   static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
   //send offer
   static const String ACCEPT_OFFER = 'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/acceptOffer/{idOffer}';
-  static const String REJECT_OFFER   = 'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/acceptOffer/{idOffer}';
+  static const String REJECT_OFFER   = 'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/rejectOffer/{idOffer}';
   static const String SEND_OFFER   = 'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
 
 

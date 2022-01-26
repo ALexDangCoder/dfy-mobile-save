@@ -27,18 +27,15 @@ abstract class ConfirmClient {
     @Body() CreateHardCollectionRequest data,
   );
 
-
   //putOnSale
   @POST(ApiConstants.PUT_ON_SALE)
   Future<ConfirmResponse> putOnSale(
-      @Body() PutOnSaleRequest data,
-      );
-
+    @Body() PutOnSaleRequest data,
+  );
 
   //putOnAuction
   @POST(ApiConstants.PUT_ON_AUCTION)
   Future<ConfirmResponse> putOnAuction(
-      @Body() PutOnAuctionRequest data,
-      );
-
+    @Body() PutOnAuctionRequest data,
+  );
 }

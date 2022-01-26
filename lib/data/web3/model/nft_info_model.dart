@@ -1,3 +1,5 @@
+import 'package:Dfy/utils/constants/app_constants.dart';
+
 class NftInfo {
   String? contract;
   String? collectionId;
@@ -5,7 +7,7 @@ class NftInfo {
   String? id;
   String? img;
   String? description;
-  String? standard = 'ERC-721';
+  String? standard = ERC_721;
   String? blockchain = 'Binance smart chain';
   String? collectionSymbol;
   String? collectionName;
