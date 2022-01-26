@@ -303,7 +303,7 @@
   "fake": "Fake",
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
-  "not_on_market": "not_on_market",
+  "not_on_market": "Not on market",
   "waiting_for_cf": "Waiting for confirmation",
   "buy_nft": "Buy NFT",
   "oopps_omething_went_wrong": "Oopps! \nSomething went wrong",

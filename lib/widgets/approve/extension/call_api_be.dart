@@ -2,15 +2,13 @@ import 'dart:convert';
 
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
-import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_auction_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_pawn_request.dart';
+import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:Dfy/data/request/send_offer_request.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 
 extension CallApiBE on ApproveCubit {
