@@ -48,25 +48,25 @@ class NftCollectionResponse extends Equatable {
   String? expectedLoanSymbol;
 
   NftCollectionResponse(
-    this.type,
-    this.token,
-    this.standard,
-    this.name,
-    this.idRef,
-    this.marketId,
-    this.marketType,
-    this.fileCid,
-    this.coverCid,
-    this.numberOfCopies,
-    this.totalOfCopies,
-    this.fileType,
-    this.marketStatus,
-    this.isReservePrice,
-    this.startTime,
-    this.endTime,
-    this.expectedLoanAmount,
-    this.expectedLoanSymbol,
-  );
+      this.type,
+      this.token,
+      this.standard,
+      this.name,
+      this.idRef,
+      this.marketId,
+      this.marketType,
+      this.fileCid,
+      this.coverCid,
+      this.numberOfCopies,
+      this.totalOfCopies,
+      this.fileType,
+      this.marketStatus,
+      this.isReservePrice,
+      this.startTime,
+      this.endTime,
+      this.expectedLoanAmount,
+      this.expectedLoanSymbol,
+      );
 
   factory NftCollectionResponse.fromJson(Map<String, dynamic> json) =>
       _$NftCollectionResponseFromJson(json);
@@ -109,18 +109,19 @@ class NftCollectionResponse extends Equatable {
   }
 
   NftMarket toDomain() => NftMarket(
-        id: id ?? '',
-        marketId: marketId ?? '',
-        marketType: getTypeMarket(marketStatus ?? 0),
-        typeImage: getTypeImage(fileType ?? ''),
-        price: expectedLoanAmount ?? 0,
-        typeNFT: getTypeNft(type ?? 0),
-        image: getPath(fileCid ?? ''),
-        tokenBuyOut: token,
-        name: name ?? '',
-        totalCopies: totalOfCopies ?? 0,
-        endTime: endTime ?? 0,
-        startTime: startTime ?? 0,
-        numberOfCopies: numberOfCopies ?? 0,
-      );
+    id: id ?? '',
+    marketId: marketId,
+    nftId: idRef,
+    marketType: getTypeMarket(marketStatus ?? 0),
+    typeImage: getTypeImage(fileType ?? ''),
+    price: expectedLoanAmount ?? 0,
+    typeNFT: getTypeNft(type ?? 0),
+    image: getPath(fileCid ?? ''),
+    tokenBuyOut: token,
+    name: name ?? '',
+    totalCopies: totalOfCopies ?? 0,
+    endTime: endTime ?? 0,
+    startTime: startTime ?? 0,
+    numberOfCopies: numberOfCopies ?? 0,
+  );
 }

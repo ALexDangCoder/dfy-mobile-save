@@ -21,7 +21,6 @@ import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_put_on_market.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
@@ -489,13 +488,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonPutOnMarket(
+            bottomBar: objSale.isOwner == true ? _buildButtonPutOnMarket(
               context,
               bloc,
               objSale,
               widget.nftId,
               onRefresh,
-            ),
+            ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,
@@ -815,7 +814,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonSendOffer(context, nftOnPawn),
+            bottomBar: nftOnPawn.isYou ?? false
+                ? _buildButtonCancelOnPawn(context, bloc, nftOnPawn)
+                : _buildButtonSendOffer(context,nftOnPawn),
             content: [
               _nameNFT(
                 url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
@@ -982,6 +983,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     approveAdmin: nftOnAuction.show ?? true,
                     context: context,
                     bloc: bloc,
+                    nftMarket: nftOnAuction,
                   )
                 : Row(
                     children: [
@@ -1030,6 +1032,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 bloc.isStartAuction(nftOnAuction.endTime ?? 0),
                 bloc.getTimeCountDown(nftOnAuction.endTime ?? 0),
               ),
+              if(nftOnAuction.marketStatus == 9)
+                waitingAcceptAuction(),
               divide,
               spaceH12,
               _description(
