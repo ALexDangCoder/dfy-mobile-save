@@ -2,10 +2,12 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/collection_filter.dart';
+import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
+import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -28,6 +30,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       BehaviorSubject.seeded(false);
 
   CollectionFilterRepository get _collectionRepo => Get.find();
+  WalletAddressRepository get _walletAddressRepository => Get.find();
 
   NftMarketRepository get _nftRepo => Get.find();
 
@@ -52,13 +55,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  bool getLogin() {
-    if (walletAddress == '') {
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   String getTitleStream(int num) {
     if (num == 2) {
@@ -219,10 +215,33 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   ///My account
 
-  List<String> walletAddressFilter = [];
+  List<String> walletAddressFilter = ['All'];
   String walletAddress = '';
-  String email = '';
   bool showDropdownAddress = true;
+
+  Future<void> getListWallet() async {
+    final Result<List<WalletAddressModel>> result =
+    await _walletAddressRepository.getListWalletAddress();
+    result.when(
+      success: (res) {
+        if (res.isEmpty) {
+        } else {
+          if (res.length < 2) {
+            for (final element in res) {
+              walletAddressFilter.add(element.walletAddress ?? '');
+            }
+            showDropdownAddress = false;
+          } else {
+            for (final element in res) {
+              walletAddressFilter.add(element.walletAddress ?? '');
+            }
+            showDropdownAddress = true;
+          }
+        }
+      },
+      error: (error) {},
+    );
+  }
 
   Future<void> getListNft({
     String? status,
@@ -255,7 +274,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
             ? ''
             : nftType?[0],
-        walletAddress: walletAddress,
+        walletAddress: walletAddress == 'All' ? '' : walletAddress,
         collectionId: '',
         page: page.toString(),
       );

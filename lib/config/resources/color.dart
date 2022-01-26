@@ -522,7 +522,6 @@ class LightApp extends AppColor {
 
   @override
   Color colorTextReset() {
-    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 

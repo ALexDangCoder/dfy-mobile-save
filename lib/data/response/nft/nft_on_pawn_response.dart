@@ -235,7 +235,7 @@ class NftCollateralDetailResponse {
         evaluationId: evaluationId,
         image: getPath(
           (getTypeImage(typeImage ?? 'image') == TypeImage.IMAGE)
-              ? (image != '' ? (image ?? ''):(nftAvatarCid ?? ''))
+              ? (image != '' ? (image ?? '') : (nftAvatarCid ?? ''))
               : (nftAvatarCid ?? ''),
         ),
         properties: propertiesResponse?.map((e) => e.toDomain()).toList(),
