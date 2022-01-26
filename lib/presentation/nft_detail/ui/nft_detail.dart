@@ -985,7 +985,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     bloc: bloc,
                     nftMarket: nftOnAuction,
                   )
-                : Row(
+                : bloc.isStartAuction(nftOnAuction.endTime ?? 0) ? Row(
                     children: [
                       Expanded(
                         child: _buildButtonBuyOut(
@@ -1012,7 +1012,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         ),
                       ),
                     ],
-                  ),
+                  ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,
