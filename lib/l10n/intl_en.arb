@@ -66,6 +66,7 @@
   "warning_seed": "Secret seed phrases contain 12, 15, 18, 21, or 24 words",
   "out_app": "Press again Back Button exit",
   "approve": "Approve",
+  "approved": "Approved",
   "send": "Send",
   "txh_id": "Txh ID",
   "estimate_gas_fee": "Estimate gas fee",

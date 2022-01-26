@@ -15,6 +15,19 @@ extension CommonExtension on ApproveCubit {
     }
   }
 
+  Future<void > loopCheckApprove() async {
+    await checkApprove(
+        payValue: payValue ?? '',
+        tokenAddress: tokenAddress ?? '',
+      ).then(
+            (value) async => {
+          if (!value){
+            await loopCheckApprove()
+          }
+        },
+      );
+  }
+
   String getSpender() {
     switch (type) {
       case TYPE_CONFIRM_BASE.BUY_NFT:
