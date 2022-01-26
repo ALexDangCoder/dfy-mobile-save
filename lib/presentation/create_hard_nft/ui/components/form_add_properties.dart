@@ -23,6 +23,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: 333.h,

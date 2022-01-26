@@ -13,7 +13,7 @@ enum DropDownBtnType {
 class ProvideHardNftCubit extends Cubit<ProvideHardNftState> {
   ProvideHardNftCubit() : super(ProvideHardNftInitial());
 
-  BehaviorSubject<bool> visibleDropDownCity = BehaviorSubject();
+  BehaviorSubject<bool> visibleDropDownCountry = BehaviorSubject();
 
   void showHideDropDownBtn({
     DropDownBtnType? typeDropDown,
@@ -24,13 +24,13 @@ class ProvideHardNftCubit extends Cubit<ProvideHardNftState> {
         case DropDownBtnType.CITY:
           break;
         case DropDownBtnType.COUNTRY:
-          visibleDropDownCity.sink.add(value ?? true);
+          visibleDropDownCountry.sink.add(value ?? true);
           break;
         default:
           break;
       }
     } else {
-      visibleDropDownCity.sink.add(false);
+      visibleDropDownCountry.sink.add(false);
     }
   }
 }

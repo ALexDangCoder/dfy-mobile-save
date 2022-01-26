@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
-import 'package:Dfy/presentation/create_hard_nft/ui/components/form_add_properties.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'components/dashed_btn_add_img_vid.dart';
+import 'components/form_add_properties.dart';
 
 enum CircleStatus {
   IS_CREATING,
@@ -20,66 +21,6 @@ enum CircleStatus {
 List<String> brands = ['gucci, luis vuituoi, prada, zara,'];
 
 List<String> countries = ['Viet nam', 'UK', 'England'];
-
-List<String> cities = ['Vinh', 'Hanoi', 'Nam Dinh'];
-
-class Token {
-  final String shortName;
-  final String image;
-
-  Token(this.shortName, this.image);
-}
-
-List<Token> tokens = [
-  Token(
-    'Dfy',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'NFY',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'lgf',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'fuk',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '123',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '312',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '1',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '2',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '3',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '66',
-    ImageAssets.ic_dfy,
-  )
-];
-
-List<String> phoneNumber = [
-  '+84',
-  '+11',
-  '+44',
-  '+23',
-  '+10',
-];
 
 class ProvideHardNftInfo extends StatefulWidget {
   const ProvideHardNftInfo({Key? key}) : super(key: key);
@@ -91,6 +32,7 @@ class ProvideHardNftInfo extends StatefulWidget {
 class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   late Token firstValueDropdown;
   late String firstPhoneNumDropdown;
+  late String cityFirstValue;
   late ProvideHardNftCubit cubit;
   String hardNftName = '';
   String additionalInfo = '';
@@ -100,7 +42,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     super.initState();
     cubit = ProvideHardNftCubit();
     firstValueDropdown = tokens[0];
-    firstPhoneNumDropdown = phoneNumber[1];
   }
 
   @override
@@ -121,15 +62,15 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
               onTap: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (_) => Dialog(
-                //     backgroundColor: Colors.transparent,
-                //     child: Container(),
-                //   ),
-                // );
+                showDialog(
+                  context: context,
+                  builder: (_) => const Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: FormAddProperties(),
+                  ),
+                );
               },
-              child: ButtonGold(
+              child: const ButtonGold(
                 title: 'NEXT',
                 isEnable: true,
               ),
@@ -268,26 +209,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
 
                 ///form select condition
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: CustomForm(
-                    textValue: (value) {
-                      print(value);
-                    },
-                    hintText: 'Select condition',
-                    suffix: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Image.asset(
-                          ImageAssets.btnDownArrow,
-                        ),
-                      ],
-                    ),
-                    inputType: null,
-                  ),
+                FormDropDown(
+                  typeDrop: TYPE_FORM_DROPDOWN.CONDITION,
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -319,55 +242,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           height: 32.h,
                           color: AppTheme.getInstance().whiteDot2(),
                         ),
-                        spaceW10,
-                        DropdownButton<Token>(
-                          focusColor: ,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10.r),
-                            bottomRight: Radius.circular(10.r),
-                            bottomLeft: Radius.circular(10.r),
-                          ),
-                          icon: Image.asset(
-                            ImageAssets.btnDownArrow,
-                          ),
-                          dropdownColor: AppTheme.getInstance().itemBtsColors(),
-                          underline: const SizedBox(),
-                          value: firstValueDropdown,
-                          onChanged: (value) {
-                            setState(() {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              firstValueDropdown = value!;
-                            });
-                          },
-                          items: tokens
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SizedBox(
-                                        height: 20.h,
-                                        width: 20.w,
-                                        child: Image.asset(e.image),
-                                      ),
-                                      spaceW5,
-                                      Text(
-                                        e.shortName,
-                                        style: textNormalCustom(
-                                          AppTheme.getInstance().whiteColor(),
-                                          16,
-                                          FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
+                        FormDropDown(typeDrop: TYPE_FORM_DROPDOWN.PRICE),
                       ],
                     ),
                     inputType: null,
@@ -485,74 +360,74 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
 
                 ///FORM NUMBER
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 5.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.getInstance().itemBtsColors(),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.r),
-                            bottomLeft: Radius.circular(20.r),
-                          ),
-                        ),
-                        height: 64.h,
-                        width: 55.w,
-                        child: Center(
-                          child: DropdownButton<String>(
-                            icon: Image.asset(
-                              ImageAssets.btnDownArrow,
-                            ),
-                            dropdownColor:
-                                AppTheme.getInstance().itemBtsColors(),
-                            underline: const SizedBox(),
-                            value: firstPhoneNumDropdown,
-                            onChanged: (value) {
-                              setState(() {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                firstPhoneNumDropdown = value ?? '';
-                              });
-                            },
-                            items: phoneNumber
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Text(
-                                      e,
-                                      style: textNormalCustom(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16,
-                                        FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: CustomForm(
-                          isSelectNumPrefix: true,
-                          textValue: (value) {
-                            print(value);
-                          },
-                          hintText: 'Enter phone number',
-                          suffix: null,
-                          prefix: null,
-                          inputType: null,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 16.w,
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: EdgeInsets.only(
+                //           left: 5.w,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: AppTheme.getInstance().itemBtsColors(),
+                //           borderRadius: BorderRadius.only(
+                //             topLeft: Radius.circular(20.r),
+                //             bottomLeft: Radius.circular(20.r),
+                //           ),
+                //         ),
+                //         height: 64.h,
+                //         width: 55.w,
+                //         child: Center(
+                //           child: DropdownButton<String>(
+                //             icon: Image.asset(
+                //               ImageAssets.btnDownArrow,
+                //             ),
+                //             dropdownColor:
+                //                 AppTheme.getInstance().itemBtsColors(),
+                //             underline: const SizedBox(),
+                //             value: firstPhoneNumDropdown,
+                //             onChanged: (value) {
+                //               setState(() {
+                //                 FocusScope.of(context)
+                //                     .requestFocus(FocusNode());
+                //                 firstPhoneNumDropdown = value ?? '';
+                //               });
+                //             },
+                //             items: phoneNumber
+                //                 .map(
+                //                   (e) => DropdownMenuItem(
+                //                     value: e,
+                //                     child: Text(
+                //                       e,
+                //                       style: textNormalCustom(
+                //                         AppTheme.getInstance().whiteColor(),
+                //                         16,
+                //                         FontWeight.w400,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 )
+                //                 .toList(),
+                //           ),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: CustomForm(
+                //           isSelectNumPrefix: true,
+                //           textValue: (value) {
+                //             print(value);
+                //           },
+                //           hintText: 'Enter phone number',
+                //           suffix: null,
+                //           prefix: null,
+                //           inputType: null,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 spaceH16,
                 textShowWithPadding(
                   textShow: 'Country',
@@ -563,67 +438,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH4,
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Focus(
-                    onFocusChange: (value) {
-                      cubit.showHideDropDownBtn(
-                        typeDropDown: DropDownBtnType.COUNTRY,
-                        value: value,
-                      );
-                    },
-                    child: CustomForm(
-                      textValue: (value) {
-                        cubit.showHideDropDownBtn(
-                          typeDropDown: DropDownBtnType.COUNTRY,
-                        );
-                        print(value);
-                      },
-                      hintText: 'Select country',
-                      suffix: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Image.asset(
-                            ImageAssets.btnDownArrow,
-                          ),
-                        ],
-                      ),
-                      inputType: null,
-                    ),
-                  ),
-                ),
-                StreamBuilder<bool>(
-                  stream: cubit.visibleDropDownCity.stream,
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      visible: snapshot.data ?? false,
-                      child: Container(
-                        width: 343.w,
-                        height: 203.h,
-                        decoration: BoxDecoration(
-                          color: AppTheme.getInstance().bgDropdownBtn(),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: ListView.builder(
-                          itemCount: cities.length,
-                          itemBuilder: (ctx, index) {
-                            return Text(
-                              cities[index],
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                10,
-                                FontWeight.w400,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
+                FormDropDown(
+                  typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -635,26 +451,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH4,
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: CustomForm(
-                    textValue: (value) {
-                      print(value);
-                    },
-                    hintText: 'Select city',
-                    suffix: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Image.asset(
-                          ImageAssets.btnDownArrow,
-                        ),
-                      ],
-                    ),
-                    inputType: null,
-                  ),
+                FormDropDown(
+                  typeDrop: TYPE_FORM_DROPDOWN.CITY,
                 ),
                 spaceH16,
                 textShowWithPadding(
