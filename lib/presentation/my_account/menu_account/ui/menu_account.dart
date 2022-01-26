@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
@@ -48,63 +49,121 @@ class _MenuAccountState extends State<MenuAccount> {
     super.initState();
   }
 
-  void pushRoute(String routeName, BuildContext context) {
+  void pushRoute(
+      MenuAccountState state, String routeName, BuildContext context) {
     final String walletAddress = PrefsService.getCurrentBEWallet();
+
     switch (routeName) {
       case 'nft_not_on_market':
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListNft(
-                marketType: MarketType.NOT_ON_MARKET,
-                pageRouter: PageRouter.MY_ACC,
-                walletAddress: walletAddress,
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.NOT_ON_MARKET,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
               ),
-            ),
-          );
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.NOT_ON_MARKET,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
         }
         break;
       case 'nft_on_sale':
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListNft(
-                marketType: MarketType.SALE,
-                pageRouter: PageRouter.MY_ACC,
-                walletAddress: walletAddress,
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.SALE,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
               ),
-            ),
-          );
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.SALE,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
         }
         break;
       case 'nft_on_auction':
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListNft(
-                marketType: MarketType.AUCTION,
-                pageRouter: PageRouter.MY_ACC,
-                walletAddress: walletAddress,
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.AUCTION,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
               ),
-            ),
-          );
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.AUCTION,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
         }
         break;
       case 'nft_on_pawn':
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListNft(
-                marketType: MarketType.PAWN,
-                pageRouter: PageRouter.MY_ACC,
-                walletAddress: walletAddress,
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.PAWN,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
               ),
-            ),
-          );
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.PAWN,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
         }
         break;
       case 'about_us':
@@ -425,6 +484,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                               return GestureDetector(
                                                 onTap: () {
                                                   pushRoute(
+                                                    cubit.state,
                                                     element.routeName,
                                                     context,
                                                   );
@@ -477,6 +537,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                       });
                                     }
                                     pushRoute(
+                                      cubit.state,
                                       e.routeName,
                                       context,
                                     );

@@ -31,6 +31,7 @@ import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -985,7 +986,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     bloc: bloc,
                     nftMarket: nftOnAuction,
                   )
-                : Row(
+                : bloc.isStartAuction(nftOnAuction.endTime ?? 0) ? Row(
                     children: [
                       Expanded(
                         child: _buildButtonBuyOut(
@@ -1012,7 +1013,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         ),
                       ),
                     ],
-                  ),
+                  ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,

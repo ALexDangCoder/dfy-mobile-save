@@ -2,6 +2,8 @@ import 'package:Dfy/data/request/collection/create_hard_collection_request.dart'
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
+import 'package:Dfy/data/request/put_on_market/put_on_auction_request.dart';
+import 'package:Dfy/data/request/put_on_market/put_on_pawn_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -55,6 +57,16 @@ class ConfirmImplement implements ConfirmRepository {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
       () => _confirmClient.createSoftNft(data),
       (response) => response.toDomain(),
+          () => _confirmClient.punOnAuction(data),
+          (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> putOnPawn({required PutOnPawnRequest data}) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+          () => _confirmClient.punOnAuPawn(data),
+          (response) => response.toDomain(),
     );
   }
 }
