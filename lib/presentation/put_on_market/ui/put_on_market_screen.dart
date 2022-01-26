@@ -133,6 +133,7 @@ class _PutOnMarketScreenState extends State<PutOnMarketScreen>
                                 putOnMarketModel: widget.putOnMarketModel,
                               ),
                               PawnTab(
+                                putOnMarketModel: widget.putOnMarketModel,
                                 cubit: cubit,
                               ),
                               AuctionTab(

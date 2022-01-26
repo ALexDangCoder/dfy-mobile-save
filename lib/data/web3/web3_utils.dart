@@ -719,7 +719,7 @@ class Web3Utils {
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(nftTokenQuantity)),
         BigInt.from(num.parse(expectedDurationQty)),
-        durationType,
+        BigInt.from(durationType),
         beNFTId,
       ],
     );

@@ -29,23 +29,23 @@ extension CallCoreExtension on ApproveCubit {
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
             );
             balanceWalletSubject.sink.add(balanceWallet ?? 0);
+            await getGasPrice();
+            if (needApprove) {
+              final result = await checkApprove(
+                payValue: payValue ?? '',
+                tokenAddress: tokenAddress ?? ' ',
+              );
+              if (result) {
+                await gesGasLimitFirst(hexString ?? '');
+              } else {
+                showContent();
+              }
+            } else {
+              await gesGasLimitFirst(hexString ?? '');
+            }
           } catch (e) {
             showError();
             AppException('title', e.toString());
-          }
-          await getGasPrice();
-          if (needApprove) {
-            final result = await checkApprove(
-              payValue: payValue ?? '',
-              tokenAddress: tokenAddress ?? ' ',
-            );
-            if (result) {
-              await gesGasLimitFirst(hexString ?? '');
-            } else {
-              showContent();
-            }
-          } else {
-            await gesGasLimitFirst(hexString ?? '');
           }
         }
         break;
@@ -139,10 +139,29 @@ extension CallCoreExtension on ApproveCubit {
                   ),
                 );
               } else {
-                emit(SignFail(
-                  S.current.cancel_aution,
-                  TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                ));
+                emit(
+                  SignFail(
+                    S.current.cancel_sale,
+                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.put_on_pawn,
+                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                  ),
+                );
               }
               break;
             default:

@@ -151,7 +151,7 @@ Widget getHistory(int historyType) {
       );
     case 4:
       return Text(
-        'Put on pawn',
+        'pawnPut on pawn',
         style: textNormal(
           Colors.white,
           14,
