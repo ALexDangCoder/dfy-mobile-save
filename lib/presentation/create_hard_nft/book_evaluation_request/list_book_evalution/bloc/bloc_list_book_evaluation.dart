@@ -10,11 +10,13 @@ import 'package:rxdart/rxdart.dart';
 
 class BlocListBookEvaluation {
   static const int OPEN = 1;
-  static const int REJECTED = 3;
+  static const int REJECTED = 3; // tu choi
   static const int ACCEPTED = 7;
-  static const int CANCELLED = 5;
+  static const int CANCELLED = 5; //huy
 
   BehaviorSubject<List<AppointmentModel>> listPawnShop = BehaviorSubject();
+  bool isCancel = true;
+  bool isDetail = false;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
@@ -35,18 +37,30 @@ class BlocListBookEvaluation {
   String getTextStatus(int status, int time) {
     switch (status) {
       case OPEN:
+        isCancel = true;
+        isDetail = false;
         return S.current.your_appointment_request;
       case REJECTED:
+        isDetail = true;
+        isCancel = false;
         return S.current.the_evaluator_has_rejected;
       case ACCEPTED:
         if (time != 0) {
+          isDetail = false;
+          isCancel = true;
           return S.current.evaluator_has_suggested;
         } else {
+          isDetail = false;
+          isCancel = true;
           return S.current.the_evaluator_has_accepted;
         }
       case CANCELLED:
+        isDetail = false;
+        isCancel = false;
         return S.current.you_have_rejected;
       default:
+        isDetail = false;
+        isCancel = true;
         return '';
     }
   }

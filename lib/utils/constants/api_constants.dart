@@ -112,4 +112,6 @@ class ApiConstants {
   static const String GET_LIST_APPOINTMENTS =
       '/hard-nft-svc/api/appointments';
 
+  static const String GET_LIST_EVALUATORS_CITY =
+      '/hard-nft-svc/public-api/evaluators/find-by-city';
 }

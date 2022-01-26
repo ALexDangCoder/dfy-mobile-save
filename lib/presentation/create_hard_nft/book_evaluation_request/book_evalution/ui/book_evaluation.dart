@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-
 
 class BookEvaluation extends StatefulWidget {
   const BookEvaluation({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class BookEvaluation extends StatefulWidget {
 
 class _BookEvaluationState extends State<BookEvaluation> {
   Completer<GoogleMapController> _controller = Completer();
-
+  late final BlocBookEvaluation _bloc;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(20.547441679107266, 105.90781651516276),
     zoom: 14.4746,
@@ -31,9 +32,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // getLocationUpdates();
+    _bloc = BlocBookEvaluation();
+    _bloc.getListPawnShopStar(cityId: 1);
   }
 
   // void getLocationUpdates() {
@@ -125,43 +126,53 @@ class _BookEvaluationState extends State<BookEvaluation> {
               ),
             ),
             spaceH32,
-            Container(
-              padding: EdgeInsets.all(16.w),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '4 ${S.current.evaluators_near_you}',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().getPurpleColor(),
-                    14,
-                    null,
-                  ),
-                ),
-              ),
-            ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CreateBookEvaluation(),
-                    ),
+            StreamBuilder<List<EvaluatorsCityModel>>(
+                stream: _bloc.list,
+                builder: (context, snapshot) {
+                  final list = snapshot.data ?? [];
+                  return Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${list.length} ${S.current.evaluators_near_you}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().getPurpleColor(),
+                              14,
+                              null,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CreateBookEvaluation(),
+                              ),
+                            );
+                          },
+                          child: ItemPawnShopStar(
+                            starNumber: '${list[index].starCount}',
+                            namePawnShop: list[index].name ?? '',
+                            avatarPawnShopUrl:
+                                '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid}',
+                            function: () {},
+                          ),
+                        ),
+                        itemCount: list.length,
+                        shrinkWrap: true,
+                      ),
+                    ],
                   );
-                },
-                child: ItemPawnShopStar(
-                  starNumber: '5.0',
-                  namePawnShop: 'Tima - Online Pawnshop',
-                  avatarPawnShopUrl:
-                      'https://cdn.tgdd.vn/Files/2021/12/14/1404293/f8822mwg111_1280x720-800-resize.jpg',
-                  function: () {},
-                ),
-              ),
-              itemCount: 4,
-              shrinkWrap: true,
-            )
+                }),
           ],
         ),
       ),

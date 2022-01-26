@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -15,6 +16,12 @@ abstract class CreateHardNFtService {
   @GET(ApiConstants.GET_LIST_APPOINTMENTS)
   Future<ListAppointmentResponse> getListAppointments(
       @Query('asset_id') String assetId,
+      );
+
+
+  @GET(ApiConstants.GET_LIST_EVALUATORS_CITY)
+  Future<ListEvaluatorsCityResponse> getListEvaluatorsCity(
+      @Query('city_id') int cityId,
       );
 
  }

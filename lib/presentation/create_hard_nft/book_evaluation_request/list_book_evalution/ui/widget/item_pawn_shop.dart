@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -50,25 +51,45 @@ class ItemPawnShop extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    height: 46.h,
-                    width: 46.w,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Image.network(
-                      '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
-                      fit: BoxFit.cover,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateBookEvaluation(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 46.h,
+                      width: 46.w,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.network(
+                        '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   spaceW8,
-                  Text(
-                    appointment.evaluator?.name ?? '',
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateBookEvaluation(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      appointment.evaluator?.name ?? '',
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -118,7 +139,7 @@ class ItemPawnShop extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
-                  child: true //todo
+                  child: bloc.isDetail
                       ? InkWell(
                           onTap: () {
                             Navigator.of(context).push(
@@ -153,7 +174,7 @@ class ItemPawnShop extends StatelessWidget {
           Positioned(
             top: -4.h,
             right: -4.w,
-            child: true
+            child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
                       Navigator.of(context).push(
