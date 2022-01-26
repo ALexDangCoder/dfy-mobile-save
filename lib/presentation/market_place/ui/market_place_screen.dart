@@ -29,7 +29,7 @@ class MarketPlaceScreen extends StatefulWidget {
   _MarketPlaceState createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlaceScreen> {
+class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliveClientMixin<MarketPlaceScreen>{
   late MarketplaceCubit cubit;
 
   @override
@@ -47,6 +47,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<MarketplaceCubit, MarketplaceState>(
       bloc: cubit,
       builder: (context, state) {
@@ -421,4 +422,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

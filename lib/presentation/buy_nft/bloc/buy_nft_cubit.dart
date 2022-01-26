@@ -9,7 +9,9 @@ import 'package:rxdart/rxdart.dart';
 part 'buy_nft_state.dart';
 
 class BuyNftCubit extends BaseCubit<BuyNftState> {
-  BuyNftCubit() : super(BuyNftInitial());
+  BuyNftCubit() : super(BuyNftInitial()){
+    showLoading();
+  }
   final _amountSubject = BehaviorSubject<int>();
   final Web3Utils web3Client = Web3Utils();
   double total = 0;
@@ -29,6 +31,32 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
   Stream<bool> get btnStream => _btnSubject.stream;
 
   Sink<bool> get btnSink => _btnSubject.sink;
+  final _balanceSubject = BehaviorSubject<double>.seeded(0);
+
+  Stream<double> get balanceStream => _balanceSubject.stream;
+
+  Sink<double> get balanceSink => _balanceSubject.sink;
+  double get balanceValue => _balanceSubject.valueOrNull ?? 0;
+
+  Future<double> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    showLoading();
+    late final double balance;
+    try {
+      balance = await web3Client.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      balanceSink.add(balance);
+      showContent();
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+    return balance;
+  }
 
   Future<String> getBuyNftData({
     required String contractAddress,

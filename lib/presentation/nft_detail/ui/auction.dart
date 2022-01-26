@@ -6,26 +6,22 @@ Widget _buildButtonPlaceBid(
   bool end,
   NFTDetailBloc bloc,
   NFTOnAuction nftOnAuction,
+  String marketId,
 ) {
   if (!start && end) {
     return ButtonGradient(
-      onPressed: () async {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftOnAuction.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PlaceBid(
-                    nftOnAuction: nftOnAuction,
-                    balance: value,
-                  ),
-                ),
-              ),
-            );
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: PlaceBid(
+              nftOnAuction: nftOnAuction,
+              typeBid: TypeBid.PLACE_BID,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -56,8 +52,25 @@ Widget _buildButtonPlaceBid(
     );
   }
 }
+Widget waitingAcceptAuction() {
+  return Text(
+    S.current.waiting_accept_auction,
+    style: textNormalCustom(
+      Colors.red,
+      14,
+      FontWeight.w400,
+    ),
+    textAlign: TextAlign.start,
+    maxLines: 2,
+  );
+}
 
-Widget _buildButtonBuyOut(BuildContext context) {
+
+Widget _buildButtonBuyOut(
+  BuildContext context,
+  NFTOnAuction nftOnAuction,
+  String marketId,
+) {
   return ButtonTransparent(
     child: Text(
       S.current.buy_out,
@@ -68,10 +81,15 @@ Widget _buildButtonBuyOut(BuildContext context) {
       ),
     ),
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OfferDetailScreen(),
+      showDialog(
+        context: context,
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: PlaceBid(
+            nftOnAuction: nftOnAuction,
+            typeBid: TypeBid.BUY_OUT,
+            marketId: marketId,
+          ),
+          isRequireLoginEmail: false,
         ),
       );
     },
@@ -82,6 +100,7 @@ Widget buttonCancelAuction({
   required bool approveAdmin,
   required NFTDetailBloc bloc,
   required BuildContext context,
+  required NFTOnAuction nftMarket,
 }) {
   if (!approveAdmin) {
     return ButtonGradient(
@@ -112,14 +131,16 @@ Widget buttonCancelAuction({
         radius: 4,
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
-      child: Text(
-        S.current.cancel_aution,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
-        ),
-      ),
+      child: nftMarket.marketStatus == 8
+          ? processing()
+          : Text(
+              S.current.cancel_aution,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
     );
   } else {
     return const SizedBox();
@@ -154,7 +175,7 @@ Container _priceContainerOnAuction({
           children: [
             Row(
               children: [
-                if (nftOnAuction.urlToken?.isNotEmpty ?? true)
+                if (nftOnAuction.urlToken != ApiConstants.BASE_URL_IMAGE)
                   Image(
                     image: NetworkImage(
                       nftOnAuction.urlToken ?? '',
@@ -170,7 +191,8 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
+                  '${!isBidding ? nftOnAuction.reservePrice :
+                  nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

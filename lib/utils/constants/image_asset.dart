@@ -330,6 +330,7 @@ class ImageAssets {
 
   // about us
   static const String ic_flag_vn = '$baseImg/flag_vn.png';
+  static const String ic_telegram_png = '$baseImg/ic_telegram_png.png';
   static const String ic_flag_gb = '$baseImg/flag_gb.png';
   static const String ic_git = '$baseImg/exclude.png';
   static const String icon_send = '$baseImg/icon_send.png';
@@ -369,4 +370,96 @@ class ImageAssets {
     icMenu: [18, 16],
     icBack: [6, 12.25],
   };
+  static String getSymbolAsset(String shortName) {
+    switch (shortName.toUpperCase()) {
+      case 'ADA':
+        return ImageAssets.imgTokenADA;
+      case 'ATOM':
+        return ImageAssets.imgTokenATOM;
+      case 'BAND':
+        return ImageAssets.imgTokenBAND;
+      case 'BAT':
+        return ImageAssets.imgTokenBAT;
+      case 'BCH':
+        return ImageAssets.imgTokenBCH;
+      case 'BEL':
+        return ImageAssets.imgTokenBEL;
+      case 'BNB':
+        return ImageAssets.imgTokenBNB;
+      case 'BTCB':
+        return ImageAssets.imgTokenBTCB;
+      case 'BTC':
+        return ImageAssets.imgTokenBTC;
+      case 'BUSD':
+        return ImageAssets.imgTokenBUSD;
+      case 'BUSD T':
+        return ImageAssets.imgTokenBUSD_T;
+      case 'COMP':
+        return ImageAssets.imgTokenCOMP;
+      case 'DAI':
+        return ImageAssets.imgTokenDAI;
+      case 'DefiIcon':
+        return ImageAssets.imgTokenDefiIcon;
+      case 'DFY':
+        return ImageAssets.imgTokenDFY;
+      case 'DOGE':
+        return ImageAssets.imgTokenDOGE;
+      case 'DOT':
+        return ImageAssets.imgTokenDOT;
+      case 'ELF':
+        return ImageAssets.imgTokenELF;
+      case 'EOS':
+        return ImageAssets.imgTokenEOS;
+      case 'ETC':
+        return ImageAssets.imgTokenETC;
+      case 'ETH':
+        return ImageAssets.imgTokenETH;
+      case 'FIL':
+        return ImageAssets.imgTokenFIL;
+      case 'INJ':
+        return ImageAssets.imgTokenINJ;
+      case 'INTT':
+        return ImageAssets.imgTokenINTT;
+      case 'IOTX':
+        return ImageAssets.imgTokenIOTX;
+      case 'LINK':
+        return ImageAssets.imgTokenLINK;
+      case 'LTC':
+        return ImageAssets.imgTokenLTC;
+      case 'MKR':
+        return ImageAssets.imgTokenMKR;
+      case 'NEAR':
+        return ImageAssets.imgTokenNEAR;
+      case 'ONT':
+        return ImageAssets.imgTokenONT;
+      case 'PAX':
+        return ImageAssets.imgTokenPAX;
+      case 'SNX':
+        return ImageAssets.imgTokenSNX;
+      case 'SXP':
+        return ImageAssets.imgTokenSXP;
+      case 'TCT':
+        return ImageAssets.imgTokenTCT;
+      case 'UNI':
+        return ImageAssets.imgTokenUNI;
+      case 'USDC':
+        return ImageAssets.imgTokenUSDC;
+      case 'WBNB':
+        return ImageAssets.imgTokenWBNB;
+      case 'XRP':
+        return ImageAssets.imgTokenXRP;
+      case 'XTZ':
+        return ImageAssets.imgTokenXTZ;
+      case 'YFI':
+        return ImageAssets.imgTokenYFI;
+      case 'YFII':
+        return ImageAssets.imgTokenYFII;
+      case 'ZEC':
+        return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
+      default:
+        return '';
+    }
+  }
 }

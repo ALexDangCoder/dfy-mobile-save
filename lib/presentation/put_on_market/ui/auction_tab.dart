@@ -247,7 +247,7 @@ class _AuctionTabState extends State<AuctionTab>
                       },
                       onchangeText: (value) {
                         widget.cubit.changeTokenAuction(
-                          value: value != '' ? double.parse(value) : null,
+                          value: value != '' ? double.parse(value) : 0,
                         );
                         _putOnMarketModel.price = value;
                         if (!validateBuyOutPrice()) {
@@ -738,7 +738,7 @@ class _AuctionTabState extends State<AuctionTab>
                                 DetailItemApproveModel(
                                   title: '${S.current.duration} :',
                                   value:
-                                      '${durationTime ?? 0 / 60} ${S.current.hour} '
+                                      '${(durationTime ?? 0) ~/ 60} ${S.current.hour} '
                                           '${(durationTime ?? 0 % 60) > 0 ?
                                       (durationTime ?? 0 % 60).toInt().toString()+' ' + S.current.minute
                                           : ''} \n '

@@ -1,6 +1,7 @@
 part of 'nft_detail.dart';
 
-Container _priceNotOnMarket() => Container(
+Container _priceNotOnMarket() =>
+    Container(
       width: 343.w,
       height: 64.h,
       margin: EdgeInsets.only(top: 12.h),
@@ -68,7 +69,7 @@ Container _priceContainerOnSale({
             children: [
               Row(
                 children: [
-                  if (urlToken.isNotEmpty)
+                  if (urlToken != ApiConstants.BASE_URL_IMAGE)
                     Image(
                       image: NetworkImage(
                         urlToken,
@@ -114,29 +115,28 @@ Widget _buildButtonBuyOutOnSale(
   NFTDetailBloc bloc,
   NftMarket nftMarket,
   bool isBought,
+  String marketId,
 ) {
   return ButtonGradient(
-    onPressed: () async {
+    onPressed: () {
+      /// TODO: Handle if un login => push to login => buy
       if (isBought) {
-        _showDialog(context, nftMarket);
+        _showDialog(
+          context,
+          nftMarket,
+          marketId,
+        );
       } else {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftMarket.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BuyNFT(
-                    nftMarket: nftMarket,
-                    balance: value,
-                    walletAddress: bloc.wallets.first.address ?? '',
-                  ),
-                ),
-              ),
-            );
+        showDialog(
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: BuyNFT(
+              nftMarket: nftMarket,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+          ),
+          context: context,
+        );
       }
     },
     gradient: RadialGradient(
@@ -155,29 +155,28 @@ Widget _buildButtonBuyOutOnSale(
   );
 }
 
-Widget _buildButtonCancelOnSale(
-  BuildContext context,
-  NFTDetailBloc bloc,
-  NftMarket nftMarket,
-) {
+Widget _buildButtonCancelOnSale(BuildContext context,
+    NFTDetailBloc bloc,
+    NftMarket nftMarket,) {
   return ButtonGradient(
     onPressed: () async {
       final nav = Navigator.of(context);
       final String dataString =
-          await bloc.getDataStringForCancel(context: context);
+      await bloc.getDataStringForCancel(context: context);
       unawaited(
         nav.push(
           MaterialPageRoute(
-            builder: (context) => approveWidget(
-              dataString: dataString,
-              dataInfo: bloc.initListApprove(
-                type: TYPE_CONFIRM_BASE.CANCEL_SALE,
-              ),
-              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
-              cancelInfo: S.current.cancel_sale_info,
-              cancelWarning: S.current.customer_cannot,
-              title: S.current.cancel_sale,
-            ),
+            builder: (context) =>
+                approveWidget(
+                  dataString: dataString,
+                  dataInfo: bloc.initListApprove(
+                    type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  ),
+                  type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  cancelInfo: S.current.cancel_sale_info,
+                  cancelWarning: S.current.customer_cannot,
+                  title: S.current.cancel_sale,
+                ),
           ),
         ),
       );
@@ -190,13 +189,13 @@ Widget _buildButtonCancelOnSale(
     child: nftMarket.marketStatus == 7
         ? processing()
         : Text(
-            S.current.cancel_sale,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
+      S.current.cancel_sale,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        16,
+        FontWeight.w700,
+      ),
+    ),
   );
 }
 
@@ -225,7 +224,7 @@ Widget processing() {
   );
 }
 
-void _showDialog(BuildContext context, NftMarket nftMarket) {
+void _showDialog(BuildContext context, NftMarket nftMarket, String marketId) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -322,24 +321,17 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
                       ),
                     ),
                   ),
-                  onTap: () async {
-                    await bloc
-                        .getBalanceToken(
-                          ofAddress: bloc.wallets.first.address ?? '',
-                          tokenAddress: bloc.nftMarket.token ?? '',
-                        )
-                        .then(
-                          (value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BuyNFT(
-                                nftMarket: nftMarket,
-                                balance: value,
-                                walletAddress: bloc.wallets.first.address ?? '',
-                              ),
-                            ),
-                          ),
-                        );
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ConnectWalletDialog(
+                        navigationTo: BuyNFT(
+                          nftMarket: nftMarket,
+                          marketId: marketId,
+                        ),
+                        isRequireLoginEmail: false,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -351,26 +343,39 @@ void _showDialog(BuildContext context, NftMarket nftMarket) {
   );
 }
 
-Widget _buildButtonPutOnMarket(
-  BuildContext context,
-  NFTDetailBloc bloc,
-  NftMarket nftMarket,
-  String? nftId,
-  Function reload,
-) {
+Widget _buildButtonPutOnMarket(BuildContext context,
+    NFTDetailBloc bloc,
+    NftMarket nftMarket,
+    String? nftId,
+    Function reload,) {
   return ButtonGradient(
     onPressed: () async {
       final navigator = Navigator.of(context);
+      List<dynamic>? splitImageLink =  nftMarket.image?.split('/');
+      String imageId = '';
+      if ((splitImageLink ?? []).isNotEmpty){
+        imageId = (splitImageLink?? []).last.toString();
+      }
       await navigator.push(
         MaterialPageRoute(
-          builder: (context) => PutOnMarketScreen(
-            putOnMarketModel: PutOnMarketModel.putOnSale(
-              nftTokenId: int.parse(bloc.nftMarket.nftTokenId ?? '0'),
-              nftId: nftId ?? '',
-              nftType: bloc.nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
-              collectionAddress: bloc.nftMarket.collectionAddress ?? '',
-            ),
-          ),
+          builder: (context) =>
+              PutOnMarketScreen(
+                putOnMarketModel: PutOnMarketModel.putOnSale(
+                  nftTokenId: int.parse(nftMarket.nftTokenId ?? '0'),
+                  nftId: nftId ?? '',
+                  nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
+                  collectionAddress: nftMarket.collectionAddress ?? '',
+                  nftMediaType: nftMarket.typeImage == TypeImage.IMAGE
+                      ? 'image'
+                      : 'video',
+                  totalOfCopies: nftMarket.totalCopies ?? 1,
+                  nftName: nftMarket.name ?? '',
+                  nftMediaCid: imageId , // lấy id
+                  collectionName: nftMarket.collectionName ?? '',
+                  collectionIsWhitelist: nftMarket.isWhitelist ?? false,
+                  nftStandard:int.parse( nftMarket.nftStandard ?? '0'),
+                ),
+              ),
           settings: const RouteSettings(
             name: AppRouter.putOnSale,
           ),
@@ -383,16 +388,18 @@ Widget _buildButtonPutOnMarket(
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
-    child: nftMarket.processStatus == 5
+    child: (nftMarket.processStatus == 5 ||
+            nftMarket.processStatus == 6 ||
+            nftMarket.processStatus == 3)
         ? processing()
         : Text(
-            S.current.put_on_market,
-            style: textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w700,
-            ),
-          ),
+      S.current.put_on_market,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        16,
+        FontWeight.w700,
+      ),
+    ),
   );
 }
 

@@ -30,7 +30,7 @@ class HistoryResponse extends Equatable {
 class DetailHistoryResponse {
   @JsonKey(name: 'collectionAddress')
   String? collectionAddress;
-  @JsonKey(name: 'eventDateTime')
+  @JsonKey(name: 'createTime')
   int? eventDateTime;
   @JsonKey(name: 'eventName')
   String? eventName;

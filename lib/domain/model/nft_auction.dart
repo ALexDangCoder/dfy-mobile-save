@@ -20,7 +20,8 @@ class NFTOnAuction {
   bool? isBidProcessing;
   bool? isBoughtByOther;
   bool? isOwner;
-  MarketType? marketStatus;
+  MarketType? marketType;
+  int? marketStatus;
   String? mediaCid;
   String? name;
   String? nftCid;
@@ -52,7 +53,6 @@ class NFTOnAuction {
   String? evaluationId;
   bool? isWhitelist;
   String? marketId;
-  MarketType? marketType;
 
   NFTOnAuction.init();
 
@@ -63,6 +63,7 @@ class NFTOnAuction {
     this.buyOutPrice,
     this.collectionAddress,
     this.marketType,
+    this.marketStatus,
     this.collectionId,
     this.collectionName,
     this.coverCid,
@@ -83,7 +84,6 @@ class NFTOnAuction {
     this.isBidProcessing,
     this.isBoughtByOther,
     this.isOwner,
-    this.marketStatus,
     this.mediaCid,
     this.name,
     this.nftCid,
