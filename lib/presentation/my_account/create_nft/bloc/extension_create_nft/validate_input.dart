@@ -8,6 +8,7 @@ extension ValidateInput on CreateNftCubit {
     } else if (vl.length > 255) {
       return S.current.maximum_len;
     } else {
+      nftName = vl;
       return null;
     }
   }
@@ -37,13 +38,19 @@ extension ValidateInput on CreateNftCubit {
     }
   }
 
-  void validateInput({required bool value}){
+  void validateInput({required bool value}) {
     createNftMapCheck['input_text'] = value;
     validateCreate();
   }
 
   void voidCheckCollectionId(String value) {
     collectionAddress = value;
+    collectionId = softCollectionList
+            .where((element) => element.addressCollection == collectionAddress)
+            .toList()
+            .first
+            .collectionId ??
+        '';
     if (collectionAddress.isNotEmpty) {
       createNftMapCheck['collection'] = true;
     } else {

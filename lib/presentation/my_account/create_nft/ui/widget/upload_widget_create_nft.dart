@@ -114,6 +114,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                             ),
                               StreamBuilder<bool>(
                                 stream: cubit.playButtonSubject,
+                                initialData: true,
                                 builder: (context, snapshot) {
                                   final showPlayBtn = snapshot.data ?? false;
                                   if(showPlayBtn){
