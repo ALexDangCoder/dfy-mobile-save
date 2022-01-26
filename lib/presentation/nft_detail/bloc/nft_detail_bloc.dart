@@ -536,4 +536,20 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       throw AppException(S.current.error, e.toString());
     }
   }
+
+  Future<String> getDataStringForCancelPawn({
+    required String pawnId,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getWithdrawCollateralData(
+        nftCollateralId: pawnId,
+      );
+      showContent();
+      return hexString;
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 }

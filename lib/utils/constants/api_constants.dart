@@ -21,10 +21,6 @@ class ApiConstants {
       '/nft-market-svc/public-api/search';
   static const String BASE_URL_IMAGE =
       'https://defiforyou.mypinata.cloud/ipfs/';
-  static const String GET_NONCE =
-      '/defi-user-service/public-api/v1.0.0/users/nonce?';
-  static const String LOGIN_MARKET =
-      '/defi-user-service/public-api/v1.0.0/users/mobile/login';
   static const String URL_BASE = 'https://defiforyou.mypinata.cloud/ipfs/';
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
@@ -63,7 +59,7 @@ class ApiConstants {
   static const String BUY_NFT = '/nft-market-svc/api/market/buy';
   static const String OFFER_DETAIL = '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
 
-  static const String GET_CRYPTO_ASSET  ='/nft-market-svc/public-api/crypto-asset';
+  static const String GET_CRYPTO_ASSET = '/nft-market-svc/public-api/crypto-asset';
 
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
@@ -82,13 +78,22 @@ class ApiConstants {
 
   ///MyAcc
   static const String GET_LIST_NFT_MY_ACC = '/inventory-svc/api/v1.0.0/nfts';
+
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
   static const String PUT_ON_SALE = '/nft-market-svc/api/market/put-on-sale';
   static const String PUT_ON_PAWN = '/defi-pawn-crypto-service/api/v1.0.0/collaterals/nfts';
   static const String PUT_ON_AUCTION = '/nft-market-svc/api/auction/put-on-auction';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
+
   //Get Nonce để ký login
+  static const String GET_NONCE =
+      '/defi-user-service/public-api/v1.0.0/users/nonce?';
+
+  //login
+  static const String LOGIN_MARKET =
+      '/defi-user-service/public-api/v1.0.0/users/mobile/login';
+
   //GET PROFILE WHEN LOGIN:
   static const String GET_USER_PROFILE = '/defi-user-service/api/v1.0.0/users/profile';
 
@@ -97,14 +102,11 @@ class ApiConstants {
 
   //GET LIST WALLET
   static const String GET_LIST_WALLET = '/defi-user-service/api/v1.0.0/users/wallet-address';
-  //cancel auction
-  static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
+
   //send offer
   static const String ACCEPT_OFFER = 'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/acceptOffer/{idOffer}';
   static const String REJECT_OFFER   = 'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/rejectOffer/{idOffer}';
   static const String SEND_OFFER   = 'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
-
-
 
   //IPFS
   static const String PINATA_API_KEY = 'ac8828bff3bcd1c1b828';
@@ -118,5 +120,17 @@ class ApiConstants {
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
 
+  //Liên kết email:
+  static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';
+  static const String VERIFY_OTP = '/defi-user-service/api/v1.0.0/users/otp';
+
+  //cancel auction
+  static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
+
+  //cancel pawn
+  static const String CANCEL_PAWN = '/defi-pawn-crypto-service/api/v1.0.0/collaterals/nfts/withdraw?id=';
+
+  //logout:
+  static const String LOG_OUT = '/defi-user-service/api/v1.0.0/users/logout';
 
 }

@@ -24,8 +24,8 @@ class ConnectWallet extends StatelessWidget {
         title: S.current.connect_wallet,
         isEnable: true,
         onTap: () {
-          final profileJson = PrefsService.getUserProfile();
           final walletAddress = PrefsService.getCurrentBEWallet().handleString();
+          final profileJson = PrefsService.getUserProfile();
           final UserProfileModel profile = userProfileFromJson(
             profileJson,
           );

@@ -851,26 +851,29 @@ class _ApproveState extends State<Approve> {
 
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        cubit.confirmCancelSaleWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        unawaited(
+          cubit.confirmCancelSaleWithBE(
+            txnHash: data,
+            marketId: nftDetailBloc.nftMarket.marketId ?? '',
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -908,26 +911,57 @@ class _ApproveState extends State<Approve> {
             );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        cubit.confirmCancelAuctionWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftOnAuction.id ?? '',
+        unawaited(
+          cubit.confirmCancelAuctionWithBE(
+            txnHash: data,
+            marketId: nftDetailBloc.nftOnAuction.id ?? '',
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        unawaited(
+          cubit.confirmCancelAuctionWithBE(
+            txnHash: data,
+            marketId: nftDetailBloc.nftOnAuction.id ?? '',
+          ),
+        );
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -1028,26 +1062,31 @@ class _ApproveState extends State<Approve> {
             );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        cubit.confirmCancelSaleWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_aution,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
-              },
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_pawn,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         );
@@ -1059,26 +1098,16 @@ class _ApproveState extends State<Approve> {
         navigator.popUntil((route) => route.isFirst);
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        cubit.confirmCancelAuctionWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
-              },
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_sale,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         );

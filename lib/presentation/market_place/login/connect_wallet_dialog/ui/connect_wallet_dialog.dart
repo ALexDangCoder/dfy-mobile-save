@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/conn
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
 import 'package:Dfy/presentation/market_place/login/ui/wallet_has_email.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -86,12 +87,30 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                   );
                 } else {
                   //yêu cầu login email:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ConnectWallet(),
-                    ),
+                  final walletAddress =
+                      PrefsService.getCurrentBEWallet().handleString();
+                  final profileJson = PrefsService.getUserProfile();
+                  final UserProfileModel profile = userProfileFromJson(
+                    profileJson,
                   );
+                  final String email = profile.email ?? '';
+                  if (email.isEmpty) {
+                    //tài khoản chưa liên kết email => Chuyển màn nhập email
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EnterEmail(),
+                      ),
+                    );
+                  } else {
+                    //ví đã liên kết email: => di chuyển đến màn tiếp theo
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => widget.navigationTo
+                      ),
+                    );
+                  }
                 }
               });
               return Container(

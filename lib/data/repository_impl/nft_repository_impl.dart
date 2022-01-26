@@ -184,7 +184,8 @@ class NFTRepositoryImpl implements NFTRepository {
   }
 
   @override
-  Future<Result<String>> acceptOffer(int idCollateral, int idOffer, String addressWallet) {
+  Future<Result<String>> acceptOffer(
+      int idCollateral, int idOffer, String addressWallet) {
     return runCatchingAsync<String, String>(
       () => _nftClient.acceptOffer(idCollateral, idOffer, addressWallet),
       (response) => response.toString(),
@@ -205,6 +206,14 @@ class NFTRepositoryImpl implements NFTRepository {
     return runCatchingAsync<String, String>(
       () => _nftClient.sendOffer(request),
       (response) => response.toString(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> cancelPawn(int id) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+      () => _nftClient.cancelPawn(id),
+      (response) => response.toDomain(),
     );
   }
 }
