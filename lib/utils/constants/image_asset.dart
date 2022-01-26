@@ -323,6 +323,7 @@ class ImageAssets {
 
   // about us
   static const String ic_flag_vn = '$baseImg/flag_vn.png';
+  static const String ic_telegram_png = '$baseImg/ic_telegram_png.png';
   static const String ic_flag_gb = '$baseImg/flag_gb.png';
   static const String ic_git = '$baseImg/exclude.png';
   static const String icon_send = '$baseImg/icon_send.png';
