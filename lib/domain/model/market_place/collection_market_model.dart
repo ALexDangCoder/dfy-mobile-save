@@ -14,6 +14,7 @@ class CollectionMarketModel {
   int? totalNft;
   int? nftOwnerCount;
   String? addressCollection;
+  String? collectionId;
 
   CollectionMarketModel({
     this.id,
@@ -25,6 +26,7 @@ class CollectionMarketModel {
     this.totalNft,
     this.nftOwnerCount,
     this.addressCollection,
+    this.collectionId,
   });
 
   Map<String, dynamic> toDropDownMap(){

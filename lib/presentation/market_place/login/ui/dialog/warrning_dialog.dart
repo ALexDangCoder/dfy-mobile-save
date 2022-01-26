@@ -11,9 +11,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WarningDialog extends StatelessWidget {
-  final String walletAdress;
+  final String walletAddress;
 
-  const WarningDialog({Key? key, required this.walletAdress}) : super(key: key);
+  const WarningDialog({Key? key, required this.walletAddress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class WarningDialog extends StatelessWidget {
                     ),
                     child: Text(
                       S.current.no_permission +
-                          walletAdress +
+                          walletAddress +
                           S.current.no_permission2,
                       style: textNormal(
                         AppTheme.getInstance().whiteColor(),

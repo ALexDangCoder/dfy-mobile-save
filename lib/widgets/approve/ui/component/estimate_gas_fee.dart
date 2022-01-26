@@ -93,7 +93,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                           gasFee >=
                               ((widget.cubit.gasLimitFirst ?? 0) *
                                   (widget.cubit.gasPriceFirst ?? 0) /
-                                  1e18)) {
+                                  1e18) && gasFee > 0) {
                         widget.cubit.canActionSubject.sink.add(true);
                       } else {
                         widget.cubit.canActionSubject.sink.add(false);

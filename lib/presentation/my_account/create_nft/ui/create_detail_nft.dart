@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/categories_dropdown_widget.dart';
@@ -47,7 +48,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
     return KeyboardDismisser(
       child: BaseBottomSheet(
         resizeBottomInset: true,
-        title: S.current.create_collection,
+        title: S.current.create_nft,
         child: FormGroup(
           key: _key,
           child: SingleChildScrollView(
@@ -118,6 +119,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                       fontSize: 20,
                       onTap: () {
                         if (statusButton) {
+                          widget.cubit.uploadFileToIFPS();
                           showDialog(
                             context: context,
                             builder: (context) => CreateNftUploadProgress(

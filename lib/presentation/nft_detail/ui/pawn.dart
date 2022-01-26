@@ -140,8 +140,26 @@ Widget _buildButtonCancelOnPawn(
     ) {
   return ButtonGradient(
     onPressed: () async {
-      /// TODO: handle cancel sale buy nftMarket.isOwner == true
-    },
+      final nav = Navigator.of(context);
+      final String dataString = await bloc.getDataStringForCancelPawn(
+        pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
+      );
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              dataString: dataString,
+              dataInfo: bloc.initListApprove(
+                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              ),
+              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              cancelInfo: S.current.pawn_cancel_info,
+              cancelWarning: S.current.pawn_cancel_warning,
+              title: S.current.cancel_pawn,
+            ),
+          ),
+        ),
+      );    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
@@ -159,3 +177,4 @@ Widget _buildButtonCancelOnPawn(
     ),
   );
 }
+
