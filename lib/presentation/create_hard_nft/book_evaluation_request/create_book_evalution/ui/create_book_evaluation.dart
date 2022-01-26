@@ -15,19 +15,22 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
+enum TypeEvaluation { NEW_CREATE, CREATE }
+
 class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
+  final TypeEvaluation type;
 
   const CreateBookEvaluation({
     Key? key,
     required this.idEvaluation,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -55,35 +58,41 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       backgroundColor: Colors.transparent,
       bottomNavigationBar: Container(
         color: AppTheme.getInstance().bgBtsColor(),
-        child: GestureDetector(
-          onTap: () {
-            //todo event
+        child: StreamBuilder<bool>(
+          stream: _bloc.isCheckBtn,
+          builder:(context, snapshot) {
+            return  GestureDetector(
+              onTap: () {
+                //todo event
+                if (widget.type == TypeEvaluation.NEW_CREATE) {}
+              },
+              child: Container(
+                color: AppTheme.getInstance().bgBtsColor(),
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: 20.h,
+                    top: 20.h,
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppTheme.getInstance().selectDialogColor(),
+                      width: 1.w,
+                    ),
+                    color: AppTheme.getInstance().borderItemColor(),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.r),
+                      topRight: Radius.circular(20.r),
+                    ),
+                  ),
+                  child: ButtonGold(
+                    isEnable: snapshot.data ?? false,
+                    title: S.current.book_appointment,
+                  ),
+                ),
+              ),
+            );
           },
-          child: Container(
-            color: AppTheme.getInstance().bgBtsColor(),
-            child: Container(
-              padding: EdgeInsets.only(
-                bottom: 20.h,
-                top: 20.h,
-              ),
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppTheme.getInstance().selectDialogColor(),
-                  width: 1.w,
-                ),
-                color: AppTheme.getInstance().borderItemColor(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.r),
-                  topRight: Radius.circular(20.r),
-                ),
-              ),
-              child: ButtonGold(
-                isEnable: true,
-                title: S.current.book_appointment,
-              ),
-            ),
-          ),
         ),
       ),
       body: MediaQuery.removePadding(
@@ -287,20 +296,23 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   spaceH16,
                                   GestureDetector(
                                     onTap: () async {
-                                      final result = await Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration.zero,
-                                          opaque: false,
-                                          pageBuilder: (_, __, ___) {
-                                            return const CustomCalendar();
-                                          },
-                                        ),
-                                      );
-                                      if (result != null) {
-                                        final date = DateFormat('dd/MM/yyyy')
-                                            .format(result);
-                                        _bloc.dateStream.add(date);
+                                      if (widget.type ==
+                                          TypeEvaluation.NEW_CREATE) {
+                                        final result = await Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration.zero,
+                                            opaque: false,
+                                            pageBuilder: (_, __, ___) {
+                                              return const CustomCalendar();
+                                            },
+                                          ),
+                                        );
+                                        if (result != null) {
+                                          final date = DateFormat('dd/MM/yyyy')
+                                              .format(result);
+                                          _bloc.dateStream.add(date);
+                                        }
                                       }
                                     },
                                     child: StreamBuilder<String>(
@@ -364,26 +376,30 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   spaceH16,
                                   GestureDetector(
                                     onTap: () async {
-                                      final Map<String, String>? result =
-                                          await showDialog(
-                                        barrierDismissible: true,
-                                        context: context,
-                                        builder: (_) => BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 4, sigmaY: 4),
-                                          child: const AlertDialog(
-                                            elevation: 0,
-                                            backgroundColor: Colors.transparent,
-                                            content: PickTime(),
+                                      if (widget.type ==
+                                          TypeEvaluation.NEW_CREATE) {
+                                        final Map<String, String>? result =
+                                            await showDialog(
+                                          barrierDismissible: true,
+                                          context: context,
+                                          builder: (_) => BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 4, sigmaY: 4),
+                                            child: const AlertDialog(
+                                              elevation: 0,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              content: PickTime(),
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                      if (result != null) {
-                                        final String hour =
-                                            result.stringValueOrEmpty('hour');
-                                        final String minute =
-                                            result.stringValueOrEmpty('minute');
-                                        _bloc.timeStream.add('$hour:$minute');
+                                        );
+                                        if (result != null) {
+                                          final String hour =
+                                              result.stringValueOrEmpty('hour');
+                                          final String minute = result
+                                              .stringValueOrEmpty('minute');
+                                          _bloc.timeStream.add('$hour:$minute');
+                                        }
                                       }
                                     },
                                     child: StreamBuilder<String>(
@@ -591,7 +607,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeFrom ?? 0).substring(0,5)} ',
+                                              ' ${0.formatDateTimeMy(pawn.workingTimeFrom ?? 0).substring(0, 5)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,
@@ -603,7 +619,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeTo ?? 0).substring(0,5)} ',
+                                              ' ${0.formatDateTimeMy(pawn.workingTimeTo ?? 0).substring(0, 5)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,

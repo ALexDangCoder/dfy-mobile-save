@@ -6,6 +6,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -33,6 +34,7 @@ class BlocListBookEvaluation {
   bool isDetail = false;
   bool isLoadingText = false;
   String assetID = '';
+  TypeEvaluation type = TypeEvaluation.CREATE;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
@@ -66,45 +68,45 @@ class BlocListBookEvaluation {
         isCancel = true;
         isDetail = false;
         isLoadingText = false;
+        type = TypeEvaluation.CREATE;
         return S.current.your_appointment_request;
       case REJECTED:
         isDetail = true;
         isCancel = false;
         isLoadingText = false;
+        type = TypeEvaluation.NEW_CREATE;
         return S.current.the_evaluator_has_rejected;
       case ACCEPTED:
+        type = TypeEvaluation.CREATE;
+        isDetail = false;
+        isCancel = true;
+        isLoadingText = false;
         if (time != 0) {
-          isDetail = false;
-          isCancel = true;
-          isLoadingText = false;
           return S.current.evaluator_has_suggested;
         } else {
-          isDetail = false;
-          isCancel = true;
-          isLoadingText = false;
           return S.current.the_evaluator_has_accepted;
         }
       case SUCCESS:
+        type = TypeEvaluation.CREATE;
+        isDetail = false;
+        isCancel = true;
+        isLoadingText = false;
         if (time != 0) {
-          isDetail = false;
-          isCancel = true;
-          isLoadingText = false;
           return S.current.evaluator_has_suggested;
         } else {
-          isDetail = false;
-          isCancel = true;
-          isLoadingText = false;
           return S.current.the_evaluator_has_accepted;
         }
       case CANCELLED:
         isDetail = false;
         isCancel = false;
         isLoadingText = false;
+        type = TypeEvaluation.CREATE;
         return S.current.you_have_rejected;
       default:
         isDetail = false;
         isCancel = true;
         isLoadingText = true;
+        type = TypeEvaluation.CREATE;
         return S.current.processing_transaction;
     }
   }

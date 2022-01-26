@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 class BlocCreateBookEvaluation {
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
   BehaviorSubject<EvaluatorsDetailModel> objDetail = BehaviorSubject();
+  BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
   static const MONDAY = 1;
   static const TUESDAY = 2;
   static const WEDNESDAY = 3;

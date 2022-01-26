@@ -15,6 +15,7 @@ import 'item_icon_text.dart';
 class DialogCancel extends StatelessWidget {
   final String urlAvatar;
   final String numPhone;
+  final String numPhoneCode;
   final String mail;
   final String location;
   final String date;
@@ -32,6 +33,7 @@ class DialogCancel extends StatelessWidget {
     required this.status,
     required this.title,
     required this.bloc,
+    required this.numPhoneCode,
   }) : super(key: key);
 
   @override
@@ -104,7 +106,7 @@ class DialogCancel extends StatelessWidget {
                             ),
                             spaceH16,
                             ItemIconText(
-                              text: numPhone,
+                              text: '($numPhoneCode)$numPhone',
                               icon: ImageAssets.ic_phone,
                             ),
                             spaceH16,

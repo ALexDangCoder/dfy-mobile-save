@@ -156,6 +156,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                               MaterialPageRoute(
                                 builder: (context) => CreateBookEvaluation(
                                   idEvaluation: list[index].id ?? '',
+                                  type: TypeEvaluation.NEW_CREATE,
                                 ),
                               ),
                             );

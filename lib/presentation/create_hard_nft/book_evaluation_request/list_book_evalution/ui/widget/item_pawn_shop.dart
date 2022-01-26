@@ -58,6 +58,7 @@ class ItemPawnShop extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
                             idEvaluation: appointment.evaluator?.id ?? '',
+                            type: bloc.type,
                           ),
                         ),
                       );
@@ -83,6 +84,7 @@ class ItemPawnShop extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
                             idEvaluation: appointment.evaluator?.id ?? '',
+                            type: bloc.type,
                           ),
                         ),
                       );
@@ -202,6 +204,8 @@ class ItemPawnShop extends StatelessWidget {
                         HeroDialogRoute(
                           builder: (context) {
                             return DialogCancel(
+                              numPhoneCode:
+                                  appointment.evaluator?.phoneCode?.code ?? '',
                               title: appointment.evaluator?.name ?? '',
                               urlAvatar:
                                   '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
