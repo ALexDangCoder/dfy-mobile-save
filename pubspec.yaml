@@ -74,7 +74,9 @@ dependencies:
   carousel_slider: ^4.0.0-nullsafety.0
   dots_indicator: ^2.0.0
   scrollable_positioned_list: ^0.2.3
+  #mediaPlayer
   video_player: ^2.2.10
+  audioplayers: ^0.20.1
   flutter_countdown_timer: ^4.1.0
   #svg
   flutter_svg: ^0.22.0
@@ -100,7 +102,7 @@ dependencies:
   #  get_storage: ^2.0.2
   # Loading style
   tuple: ^2.0.0
-  image_res: ^0.3.0
+  image_res: ^0.3.0  #flutter packages pub run image_res:main watch
   auto_size_text_field: ^1.0.1
   get_it: ^7.2.0
   qr_flutter: ^4.0.0

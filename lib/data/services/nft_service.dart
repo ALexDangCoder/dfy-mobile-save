@@ -1,8 +1,10 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
+import 'package:Dfy/data/response/nft/data_detail_offer_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
@@ -44,9 +46,9 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET}{nftId}')
   Future<NftMyAccResponse> getDetailNftNotOnMarket(
-      @Path('nftId') String nftId,
-      @Query('type') String type,
-      );
+    @Path('nftId') String nftId,
+    @Query('type') String type,
+  );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(
@@ -90,16 +92,38 @@ abstract class NFTClient {
     @Body() BidNftRequest bidNftRequest,
   );
 
+  @GET('${ApiConstants.OFFER_DETAIL}{id}')
+  Future<DataOfferDetailResponse> getOfferDetail(
+    @Path('id') int id,
+  );
+
   @POST(ApiConstants.CANCEL_SALE)
   Future<ConfirmResponse> cancelSale(
-      @Field('market_id') String marketId,
-      @Field('txn_hash') String txnHash,
-      );
+    @Field('market_id') String marketId,
+    @Field('txn_hash') String txnHash,
+  );
 
   //Confirm cancel  auction:
   @POST(ApiConstants.CANCEL_AUCTION)
   Future<ConfirmResponse> cancelAuction(
-      @Field('auction_id') String marketId,
-      @Field('txn_hash') String txnHash,
+    @Field('auction_id') String marketId,
+    @Field('txn_hash') String txnHash,
+  ); //Confirm cancel  auction:¬
+  @PUT(ApiConstants.ACCEPT_OFFER)
+  Future<String> acceptOffer(
+    @Path('idCollateral') int idCollateral,
+    @Path('idOfer') int idOffer,
+    @Query('wallet-address') String addressWallet,
+  ); //Confirm cancel  auction:
+  @PUT(ApiConstants.REJECT_OFFER)
+  Future<String> rejectOffer(
+    @Path('idCollateral') int idCollateral,
+    @Path('idOfer') int idOffer,
+    @Query('wallet-address') String addressWallet,
+  );
+
+  @POST(ApiConstants.SEND_OFFER)
+  Future<String> sendOffer(
+    @Body() SendOfferRequest request,
   );
 }

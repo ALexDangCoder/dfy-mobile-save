@@ -24,17 +24,16 @@ import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_put_on_market.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/place_bid/ui/place_bid.dart';
-import 'package:Dfy/presentation/market_place/send_offer/send_offer.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/bid_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
-import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
+import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -54,7 +53,6 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -94,13 +92,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final String walletAddress;
   final PageController pageController = PageController();
   final NFTDetailBloc bloc = NFTDetailBloc();
+  late String owner;
 
   @override
   void initState() {
     super.initState();
     trustWalletChannel
         .setMethodCallHandler(bloc.nativeMethodCallBackTrustWallet);
-    bloc.nftMarketId = widget.marketId ?? '';
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);
@@ -493,13 +491,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonPutOnMarket(
+            bottomBar: objSale.isOwner == true ? _buildButtonPutOnMarket(
               context,
               bloc,
               objSale,
               widget.nftId,
               onRefresh,
-            ),
+            ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,
@@ -656,12 +654,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: objSale.isOwner == false
-                ? _buildButtonBuyOutOnSale(
-                    context,
-                    bloc,
-                    objSale,
-                    objSale.isBoughtByOther ?? false,
-                  )
+                ? _buildButtonBuyOutOnSale(context, bloc, objSale,
+                    objSale.isBoughtByOther ?? false, widget.marketId ?? '')
                 : _buildButtonCancelOnSale(context, bloc, objSale),
             content: [
               _nameNFT(
@@ -792,6 +786,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.PAWN:
         if (state is NftOnPawnSuccess) {
           final nftOnPawn = state.nftOnPawn;
+          owner = nftOnPawn.walletAddress ?? '';
           return BaseCustomScrollView(
             typeImage:
                 nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
@@ -822,11 +817,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buttonAction(
-              context: context,
-              bloc: bloc,
-              nftOnPawn: nftOnPawn,
-            ),
+            bottomBar: nftOnPawn.isYou ?? false
+                ? _buildButtonCancelOnPawn(context, bloc, nftOnPawn)
+                : _buildButtonSendOffer(context,nftOnPawn),
             content: [
               _nameNFT(
                 url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
@@ -993,11 +986,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     approveAdmin: nftOnAuction.show ?? true,
                     context: context,
                     bloc: bloc,
+                    nftMarket: nftOnAuction,
                   )
-                : Row(
+                : bloc.isStartAuction(nftOnAuction.endTime ?? 0) ? Row(
                     children: [
                       Expanded(
-                        child: _buildButtonBuyOut(context),
+                        child: _buildButtonBuyOut(
+                          context,
+                          nftOnAuction,
+                          widget.marketId ?? '',
+                        ),
                       ),
                       SizedBox(
                         width: 23.w,
@@ -1013,10 +1011,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           ),
                           bloc,
                           nftOnAuction,
+                          widget.marketId ?? '',
                         ),
                       ),
                     ],
-                  ),
+                  ) : const SizedBox(),
             content: [
               _nameNFT(
                 context: context,
@@ -1036,6 +1035,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 bloc.isStartAuction(nftOnAuction.endTime ?? 0),
                 bloc.getTimeCountDown(nftOnAuction.endTime ?? 0),
               ),
+              if(nftOnAuction.marketStatus == 9)
+                waitingAcceptAuction(),
               divide,
               spaceH12,
               _description(

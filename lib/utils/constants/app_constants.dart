@@ -36,6 +36,8 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
+const int ID_MONTH = 0;
+const int ID_WEEK = 1;
 
 const int secondShowPopUp = 2;
 
@@ -68,11 +70,13 @@ const nft_auction_dev2 =
 const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
 const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
+const contract_defy =
+    '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
 
 //Media file type
-const String MEDIA_VIDEO_FILE = 'VIDEO';
-const String MEDIA_IMAGE_FILE = 'IMAGE';
-const String MEDIA_AUDIO_FILE = 'AUDIO';
+const String MEDIA_VIDEO_FILE = 'video';
+const String MEDIA_IMAGE_FILE = 'image';
+const String MEDIA_AUDIO_FILE = 'audio';
 const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';
@@ -85,11 +89,27 @@ const int ERC1155 = 1;
 
 
 
-// App name
+// defi infomation
 
-const String appName = "DeFi For You";
-const String appURL = "defiforyou.uk";
-
+const String appName = 'DeFi For You';
+const String appURL = 'defiforyou.uk';
+const String defiLink = 'https://defiforyou.uk/';
+const String mailAsk = 'ask@defiforyou.uk';
+const String mailSupport = 'support@defiforyou.uk';
+const String mailAskHanoi = 'ask@defiforyou.uk';
+const String mailMarketingHanoi = 'marketing@defiforyou.uk';
+const String locationHanoi = 'BT NQ 25-15 Vinhomes Riverside, Long Bien, Hanoi, Vietnam';
+const String mailOfficeLondon = 'sean@defiforyou.uk';
+const String seanMason = 'Sean Mason ';
+const String cfo = '- CFO';
+const String locationLondon = 'Office 32 19-21 Crawford Street, London, United Kingdom, W1H 1PJ';
+const String registrationNumber =  '13126050';
+const String gitLink = 'https://github.com/defi-vn/';
+const String telegramLink = 'https://t.me/DeFiForYou_English';
+const String facebookLink = 'https://www.facebook.com/DeFiForYouDFY';
+const String youtubeLink = 'https://www.youtube.com/channel/UCGaSCU17Zo_2CzJNaBeUHaA/featured';
+const String linkedinLink = 'https://www.linkedin.com/company/defiforyou';
+const String twitterLink = 'https://twitter.com/Defiforyou';
 
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
@@ -98,4 +118,27 @@ class DateTimeFormat {
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
   static const DATE_TIME_AUCTION_FORMAT = _dtFormat6;
+}
+
+const PERCENT = '%';
+const DFY = 'DFY';
+const PROCESSING_CREATE = 1;
+const FAILED_CREATE = 2;
+const OPEN = 3;
+const PROCESSING_ACCEPT = 4;
+const PROCESSING_REJECT = 5;
+const PROCESSING_CANCEL = 6;
+const ACCEPTED = 7;
+const REJECTED = 8;
+const CANCELED = 9;
+enum StatusOffer {
+  PROCESSING_CREATE,
+  FAILED_CREATE,
+  OPEN,
+  PROCESSING_ACCEPT,
+  PROCESSING_REJECT,
+  PROCESSING_CANCEL,
+  ACCEPTED,
+  REJECTED,
+  CANCELED,
 }

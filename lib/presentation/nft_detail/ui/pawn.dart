@@ -103,34 +103,18 @@ Widget _durationRowOnPawn({
   );
 }
 
-Widget _buttonAction(
-    {required BuildContext context,
-    required NFTDetailBloc bloc,
-    required NftOnPawn nftOnPawn}) {
-  final profileJson = PrefsService.getUserProfile();
-  final UserProfileModel userProfile = userProfileFromJson(profileJson);
-  final userId = userProfile.id ?? -1;
-  if (userId == nftOnPawn.userId) {
-    return _buildButtonCancelOnPawn(
-      context,
-      bloc,
-      nftOnPawn,
-    );
-  } else {
-    return _buildButtonSendOffer(context);
-  }
-}
-
-Widget _buildButtonSendOffer(BuildContext context) {
+Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
+  /// TODO: if un login => login => send offer
   return ButtonGradient(
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return const SendOffer();
-          },
+      showDialog(
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: SendOffer(
+            nftOnPawn: nftOnPawn,
+          ),
+          isRequireLoginEmail: false,
         ),
+        context: context,
       );
     },
     gradient: RadialGradient(
@@ -140,6 +124,33 @@ Widget _buildButtonSendOffer(BuildContext context) {
     ),
     child: Text(
       S.current.send_offer,
+      style: textNormalCustom(
+        AppTheme.getInstance().textThemeColor(),
+        16,
+        FontWeight.w700,
+      ),
+    ),
+  );
+}
+
+Widget _buildButtonCancelOnPawn(
+    BuildContext context,
+    NFTDetailBloc bloc,
+    NftOnPawn nftMarket,
+    ) {
+  return ButtonGradient(
+    onPressed: () async {
+      /// TODO: handle cancel sale buy nftMarket.isOwner == true
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftMarket.status == 7
+        ? processing()
+        : Text(
+      S.current.withdraw_nft,
       style: textNormalCustom(
         AppTheme.getInstance().textThemeColor(),
         16,

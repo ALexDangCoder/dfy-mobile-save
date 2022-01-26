@@ -42,6 +42,7 @@ final spaceH56 = SizedBox(height: 56.h);
 final spaceH60 = SizedBox(height: 60.h);
 final spaceH70 = SizedBox(height: 70.h);
 final spaceH344 = SizedBox(height: 344.h);
+final spaceH152 = SizedBox(height: 152.h);
 
 ///W
 final spaceW2 = SizedBox(width: 2.w);
@@ -61,6 +62,7 @@ final spaceW28 = SizedBox(width: 28.w);
 final spaceW30 = SizedBox(width: 30.w);
 final spaceW60 = SizedBox(width: 60.w);
 final spaceW100 = SizedBox(width: 100.w);
+
 final divide = Divider(
   color: AppTheme.getInstance().divideColor(),
   thickness: 1,
