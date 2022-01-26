@@ -4,7 +4,6 @@ part 'put_on_pawn_request.g.dart';
 
 @JsonSerializable()
 class PutOnPawnRequest {
-
   final int durationType;
   final int nftStandard;
   final int numberOfCopies;
