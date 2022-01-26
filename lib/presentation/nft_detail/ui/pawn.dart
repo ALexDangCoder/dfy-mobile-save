@@ -111,7 +111,7 @@ Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
           navigationTo: SendOffer(
             nftOnPawn: nftOnPawn,
           ),
-          isRequireLoginEmail: false,
+          isRequireLoginEmail: true,
         ),
         context: context,
       );

@@ -37,7 +37,6 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
   void initState() {
     _cubit = OfferDetailCubit();
     onRefresh();
-    owner = nftKey.currentState?.owner ?? '';
     super.initState();
   }
 
@@ -149,7 +148,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                   width: 20.w,
                   child: Image.asset(
                     ImageAssets.getSymbolAsset(
-                      data?.supplyCurrencySymbol ?? 'DFY',
+                      data?.supplyCurrencySymbol ?? DFY,
                     ),
                   ),
                 )
@@ -302,7 +301,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         ),
       ),
       onPressed: () {
-        if (owner != PrefsService.getCurrentBEWallet()) {
+        if (PrefsService.getOwnerPawn() != PrefsService.getCurrentWalletCore()) {
+          owner = PrefsService.getOwnerPawn();
           showDialog(
             context: context,
             builder: (context) => WarningDialog(walletAdress: owner),
@@ -321,7 +321,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
   Widget _buildButtonAccept(BuildContext context, OfferDetailModel data) {
     return ButtonGradient(
       onPressed: () {
-        if (owner != PrefsService.getCurrentBEWallet()) {
+        if (PrefsService.getOwnerPawn() != PrefsService.getCurrentWalletCore()) {
+          owner = PrefsService.getOwnerPawn();
           showDialog(
             context: context,
             builder: (context) => WarningDialog(walletAdress: owner),

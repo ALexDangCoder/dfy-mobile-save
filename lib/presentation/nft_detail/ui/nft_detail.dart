@@ -7,6 +7,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
@@ -61,7 +62,7 @@ part 'pawn.dart';
 
 part 'sale.dart';
 
-final nftKey = GlobalKey<NFTDetailScreenState>();
+final nftKey = GlobalKey<_NFTDetailScreenState>();
 
 class NFTDetailScreen extends StatefulWidget {
   const NFTDetailScreen({
@@ -79,10 +80,10 @@ class NFTDetailScreen extends StatefulWidget {
   final int? pawnId;
 
   @override
-  NFTDetailScreenState createState() => NFTDetailScreenState();
+  _NFTDetailScreenState createState() => _NFTDetailScreenState();
 }
 
-class NFTDetailScreenState extends State<NFTDetailScreen>
+class _NFTDetailScreenState extends State<NFTDetailScreen>
     with SingleTickerProviderStateMixin {
   late final List<Widget> _tabPage;
   late final List<Widget> _tabTit;
@@ -90,7 +91,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final String walletAddress;
   final PageController pageController = PageController();
   final NFTDetailBloc bloc = NFTDetailBloc();
-  late String owner;
 
   @override
   void initState() {
@@ -784,7 +784,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.PAWN:
         if (state is NftOnPawnSuccess) {
           final nftOnPawn = state.nftOnPawn;
-          owner = nftOnPawn.walletAddress ?? '';
+          PrefsService.saveOwnerPawn(nftOnPawn.walletAddress ?? '');
           return BaseCustomScrollView(
             typeImage:
                 nftOnPawn.nftCollateralDetailDTO?.typeImage ?? TypeImage.IMAGE,
