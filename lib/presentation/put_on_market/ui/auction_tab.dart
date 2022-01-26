@@ -247,7 +247,7 @@ class _AuctionTabState extends State<AuctionTab>
                       },
                       onchangeText: (value) {
                         widget.cubit.changeTokenAuction(
-                          value: value != '' ? double.parse(value) : null,
+                          value: value != '' ? double.parse(value) : 0,
                         );
                         _putOnMarketModel.price = value;
                         if (!validateBuyOutPrice()) {
