@@ -453,7 +453,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }) {
     final List<DetailItemApproveModel> listApprove = [];
     if (type == TYPE_CONFIRM_BASE.CANCEL_SALE) {
-      if (nftMarket.nftStandard == 'ERC-721') {
+      if (nftMarket.nftStandard == ERC_721) {
         listApprove.add(
           DetailItemApproveModel(
             title: 'NTF',
@@ -475,7 +475,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         );
       }
     } else if (type == TYPE_CONFIRM_BASE.CANCEL_AUCTION) {
-      if (nftOnAuction.nftStandard == 'ERC-721') {
+      if (nftOnAuction.nftStandard == ERC_721) {
         listApprove.add(
           DetailItemApproveModel(
             title: 'NTF',

@@ -628,7 +628,9 @@ class _ApproveState extends State<Approve> {
                                                     width: 2,
                                                   )
                                                 : null,
-                                            title: S.current.approve,
+                                            title: isApproved
+                                                ? S.current.approved
+                                                : S.current.approve,
                                             isEnable: true,
                                             fixSize: false,
                                             haveMargin: false,
@@ -757,6 +759,13 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
+        cubit.bidNftRequest(
+          BidNftRequest(
+            widget.marketId ?? '',
+            widget.quantity?.toDouble() ?? 0,
+            data,
+          ),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -776,13 +785,7 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
-        cubit.bidNftRequest(
-          BidNftRequest(
-            widget.marketId ?? '',
-            widget.quantity?.toDouble() ?? 0,
-            data,
-          ),
-        );
+
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
         // TODO: Handle this case.
@@ -1022,7 +1025,6 @@ class _ApproveState extends State<Approve> {
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.buy_nft,
-                    content: S.current.buy_fail,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -1039,7 +1041,6 @@ class _ApproveState extends State<Approve> {
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.place_a_bid,
-                    content: S.current.failed,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -1061,7 +1062,6 @@ class _ApproveState extends State<Approve> {
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.send_offer,
-                    content: S.current.failed,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },

@@ -29,29 +29,32 @@ abstract class ConfirmClient {
     @Body() CreateHardCollectionRequest data,
   );
 
-
   //PUT ON SALE
   @POST(ApiConstants.PUT_ON_SALE)
   Future<ConfirmResponse> putOnSale(
-      @Body() PutOnSaleRequest data,
-      );
-
+    @Body() PutOnSaleRequest data,
+  );
 
   //PUT ON AUCTION
   @POST(ApiConstants.PUT_ON_AUCTION)
   Future<ConfirmResponse> punOnAuction(
-      @Body() PutOnAuctionRequest data,
-      );
+    @Body() PutOnAuctionRequest data,
+  );
 
   //PUT_ON_PAWN
   @POST(ApiConstants.PUT_ON_PAWN)
   Future<ConfirmResponse> punOnAuPawn(
-      @Body() PutOnPawnRequest data,
-      );
+    @Body() PutOnPawnRequest data,
+  );
+
   //createSoftNft
   @POST(ApiConstants.CREATE_SOFT_NFT)
   Future<ConfirmResponse> createSoftNft(
-      @Body() CreateSoftNftRequest data,
-      );
+    @Body() CreateSoftNftRequest data,
+  );
 
+  @POST(ApiConstants.PUT_ON_AUCTION)
+  Future<ConfirmResponse> putOnAuction(
+    @Body() PutOnAuctionRequest data,
+  );
 }
