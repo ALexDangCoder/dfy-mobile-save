@@ -69,6 +69,8 @@ const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
 const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
 
+const networkName = 'BSC';
+
 //Media file type
 const String MEDIA_VIDEO_FILE = 'video';
 const String MEDIA_IMAGE_FILE = 'image';

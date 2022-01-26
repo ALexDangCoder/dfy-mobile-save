@@ -346,6 +346,7 @@
   "no_permission2": " để thưc hiện hành động này",
   "confirm_account": "Xác nhận tài khoản",
   "enter_email": "Nhập email",
+  "put_on_pawn" : "Đưa ra thế chấp",
   "verify_account": "Chúng tôi vừa gửi thư xác nhận đến địa chỉ email bạn vừa đăng ký. Vui lòng kiểm tra email và nhập Mã để kích hoạt tài khoản của bạn.",
   "connect_wallet": "Kết nối ví",
   "connect_to_continue": "Bạn cần kết nối ví để tiếp tục",

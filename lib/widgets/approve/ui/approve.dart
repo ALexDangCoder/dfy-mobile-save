@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
@@ -765,7 +766,20 @@ class _ApproveState extends State<Approve> {
         if (result) {
           await showLoadSuccess();
           navigator.popUntil((route) {
-            return route.settings.name == 'put_on_market';
+            return route.settings.name == AppRouter.putOnSale;
+          });
+          navigator.pop();
+        } else {
+          await showLoadFail();
+        }
+        break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        final result = await cubit.putOnPawn(txHash: data);
+        navigator.pop();
+        if (result) {
+          await showLoadSuccess();
+          navigator.popUntil((route) {
+            return route.settings.name == AppRouter.putOnSale;
           });
           navigator.pop();
         } else {
@@ -778,20 +792,9 @@ class _ApproveState extends State<Approve> {
         if (result) {
           await showLoadSuccess();
           navigator.popUntil((route) {
-            return route.settings.name == 'put_on_market';
+            return route.settings.name == AppRouter.putOnSale;
           });
           navigator.pop();
-          // unawaited(
-          //   navigator.pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (context) => NFTDetailScreen(
-          //         typeMarket: MarketType.SALE,
-          //         nftId: widget.putOnMarketModel?.nftId ?? '',
-          //         typeNft: TypeNFT.SOFT_NFT,
-          //       ),
-          //     ),
-          //   ),
-          // );
         } else {
           await showLoadFail();
         }

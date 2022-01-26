@@ -109,6 +109,8 @@ class _PawnTabState extends State<PawnTab>
                     );
                     _putOnMarketModel.tokenAddress =
                         widget.cubit.listToken[0].address ?? '';
+                    _putOnMarketModel.loanSymbol =
+                        widget.cubit.listToken[0].symbol ?? '';
                   }
                   return InputWithSelectType(
                     inputFormatters: [
@@ -153,6 +155,8 @@ class _PawnTabState extends State<PawnTab>
                       );
                       _putOnMarketModel.tokenAddress =
                           widget.cubit.listToken[index].address ?? '';
+                      _putOnMarketModel.loanSymbol =
+                          widget.cubit.listToken[index].symbol ?? '';
                     },
                     onchangeText: (value) {
                       widget.cubit.changeTokenPawn(
@@ -325,8 +329,8 @@ class _PawnTabState extends State<PawnTab>
                                       '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
                                 )
                               ],
-                              textActiveButton: S.current.put_on_sale,
-                              typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                              textActiveButton: S.current.put_on_pawn,
+                              typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
                             ),
                           ),
                         ),
