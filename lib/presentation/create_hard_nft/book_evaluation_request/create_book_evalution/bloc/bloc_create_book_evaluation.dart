@@ -1,8 +1,35 @@
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_detail_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BlocCreateBookEvaluation {
+  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+
+  Future<void> getDetailEvaluation({
+    required String evaluationID,
+  }) async {
+    final Result<EvaluatorsDetailModel> result =
+    await _createHardNFTRepository.getEvaluatorsDetail(
+      evaluationID,
+    );
+
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        //   list.sink.add(res);
+        } else {
+         // list.sink.add([]);
+        }
+      },
+      error: (error) {
+       // list.sink.add([]);
+      },
+    );
+  }
   List<TypeNFTModel> listTypeNft = [
     TypeNFTModel(
       image:

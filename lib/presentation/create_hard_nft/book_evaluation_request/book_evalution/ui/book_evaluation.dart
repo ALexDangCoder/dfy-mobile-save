@@ -154,8 +154,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const CreateBookEvaluation(),
+                                builder: (context) => CreateBookEvaluation(
+                                  idEvaluation: list[index].id ?? '',
+                                ),
                               ),
                             );
                           },

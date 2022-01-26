@@ -56,7 +56,9 @@ class ItemPawnShop extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CreateBookEvaluation(),
+                          builder: (context) => CreateBookEvaluation(
+                            idEvaluation: appointment.evaluator?.id ?? '',
+                          ),
                         ),
                       );
                     },
@@ -79,7 +81,9 @@ class ItemPawnShop extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CreateBookEvaluation(),
+                          builder: (context) => CreateBookEvaluation(
+                            idEvaluation: appointment.evaluator?.id ?? '',
+                          ),
                         ),
                       );
                     },

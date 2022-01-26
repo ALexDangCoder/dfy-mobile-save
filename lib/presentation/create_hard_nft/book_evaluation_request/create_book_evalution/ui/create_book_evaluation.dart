@@ -20,7 +20,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 class CreateBookEvaluation extends StatefulWidget {
-  const CreateBookEvaluation({Key? key}) : super(key: key);
+  final String idEvaluation;
+
+  const CreateBookEvaluation({
+    Key? key,
+    required this.idEvaluation,
+  }) : super(key: key);
 
   @override
   _CreateBookEvaluationState createState() => _CreateBookEvaluationState();
@@ -29,16 +34,18 @@ class CreateBookEvaluation extends StatefulWidget {
 class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   late final BlocCreateBookEvaluation _bloc;
   Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(20.547441679107266, 105.90781651516276),
-    zoom: 14.4746,
-  );
-
+  late final CameraPosition _kGooglePlex;
   @override
   void initState() {
     super.initState();
     _bloc = BlocCreateBookEvaluation();
+    _bloc.getDetailEvaluation(
+      evaluationID: widget.idEvaluation,
+    );
+    _kGooglePlex = CameraPosition(
+      target: LatLng(20.547441679107266, 105.90781651516276),
+      zoom: 14.4746,
+    );
   }
 
   @override

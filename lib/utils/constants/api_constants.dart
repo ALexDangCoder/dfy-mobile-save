@@ -138,4 +138,11 @@ class ApiConstants {
 
   static const String GET_LIST_EVALUATORS_CITY =
       '/hard-nft-svc/public-api/evaluators/find-by-city';
+
+  static const String GET_EVALUATORS_DETAIL =
+      '/hard-nft-svc/public-api/evaluators/';
+
+
+  static const String GET_EVALUATORS_DETAIL_END =
+      '/customer-view-profile';
 }
