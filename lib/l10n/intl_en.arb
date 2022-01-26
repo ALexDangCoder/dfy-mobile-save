@@ -615,5 +615,12 @@
   "date_is_required": "Date is required",
   "chosen_time": "Chosen time is not in evaluator's business's hour",
   "time_is_required": "Time is required",
-  "processing_transaction": "Processing transaction"
+  "processing_transaction": "Processing transaction",
+  "monday":"MON",
+  "tuesday":"TUE",
+  "wednesday":"WED",
+  "thursday": "THU",
+  "friday":"FRI",
+  "saturday":"SAT",
+  "sunday":"SUN"
 }

@@ -52,7 +52,7 @@ class EvaluatorResponse extends Equatable {
   String? description;
   @JsonKey(name: 'location_lat')
   double? locationLat;
-  @JsonKey(name: 'locationLong')
+  @JsonKey(name: 'location_long')
   double? locationLong;
   @JsonKey(name: 'accepted_asset_type_list')
   List<AcceptedAssetTypeDetail>? acceptedAssetTypeList;

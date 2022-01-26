@@ -33,7 +33,7 @@ class TypeNFTBox extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
+          Image.asset(
             image,
             width: 24.w,
             height: 24.h,

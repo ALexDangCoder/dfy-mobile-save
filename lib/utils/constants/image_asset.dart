@@ -266,8 +266,15 @@ class ImageAssets {
   static const String img_filter = '$baseImg/img_filter.png';
   static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
-
   static const String img_float_btn = '$baseImg/float_btn.png';
+
+
+  static const String img_diamond = '$baseImg/jewelry.png';
+  static const String img_artwork = '$baseImg/artwork.png';
+  static const String img_car = '$baseImg/car.png';
+  static const String img_watch = '$baseImg/watch.png';
+  static const String img_house = '$baseImg/house.png';
+  static const String img_other = '$baseImg/other.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =
