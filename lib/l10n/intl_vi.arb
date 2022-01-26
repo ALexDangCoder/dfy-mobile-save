@@ -10,7 +10,6 @@
   "price_step_error": "Bước nhảy không được bỏ ",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   "buy_out_price_error" : "Giá mua phải lớn hơn giá khởi điểm",
-  "put_on_pawn" : "Đưa lên đấu giá",
   "set_the_fixed_price_and_sell_your_nft": "Thiết lập giá và bán NFT của bạn",
   "Set_a_duration_for_the_desired_loan_term": "Đặt thời hạn cho thời hạn vay mong muốn",
   "duration_content" : "Đặt thời lượng cho phiên đấu giá và ngày bắt đầu",
@@ -350,6 +349,7 @@
   "no_permission2": " để thưc hiện hành động này",
   "confirm_account": "Xác nhận tài khoản",
   "enter_email": "Nhập email",
+  "put_on_pawn" : "Đưa ra thế chấp",
   "verify_account": "Chúng tôi vừa gửi thư xác nhận đến địa chỉ email bạn vừa đăng ký. Vui lòng kiểm tra email và nhập Mã để kích hoạt tài khoản của bạn.",
   "connect_wallet": "Kết nối ví",
   "connect_to_continue": "Bạn cần kết nối ví để tiếp tục",
@@ -520,7 +520,7 @@
   "login_to_your_email" : "Bạn có muốn đăng nhập vào email ",
   "associate_email": "Bạn có muốn liên kết một email để nhận thông báo/email không?",
   "yes": "Đồng ý",
-  "upload_file": "Tải file l",
+  "upload_file": "Tải file lên",
   "format_media_file": "Định dạng: MP4, WEBM, MP3, WAV,\n OGG, PNG, JPG, JPEG, GIF",
   "add_more_trait_to_properties": "Thuộc tính (thêm thuộc tính cho NFT)",
   "properties": "Thuộc tính",
@@ -565,5 +565,8 @@
   "no_continue": "Không, tiếp tục",
   "number_of_copies" : "Số lượng bản sao",
   "minting_fee": "Phí khởi tạo",
-  "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155"
+  "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155",
+  "create_collection_successfully": "Tạo bộ sưu tập thành công!",
+  "create_nft_successfully": "Tạo NFT thành công!",
+  "processing" : "Yêu cầu của bạn đang được xử lý!"
 }

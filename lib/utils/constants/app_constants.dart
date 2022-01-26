@@ -73,10 +73,13 @@ const hard_nft_factory_address_dev2 =
 const contract_defy =
     '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
 
+const networkName = 'BSC';
+
 //Media file type
 const String MEDIA_VIDEO_FILE = 'video';
 const String MEDIA_IMAGE_FILE = 'image';
 const String MEDIA_AUDIO_FILE = 'audio';
+const String DOCUMENT_FILE = 'document';
 const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';

@@ -85,6 +85,7 @@ class ApiConstants {
   //CREATE COLLECTION
   static const String CREATE_SOFT_COLLECTION = '/nft-market-svc/api/collection/create';
   static const String PUT_ON_SALE = '/nft-market-svc/api/market/put-on-sale';
+  static const String PUT_ON_PAWN = '/defi-pawn-crypto-service/api/v1.0.0/collaterals/nfts';
   static const String PUT_ON_AUCTION = '/nft-market-svc/api/auction/put-on-auction';
   static const String CREATE_HARD_COLLECTION = '/hard-nft-svc/api/collections/create-hard-collection';
   //Get Nonce để ký login
@@ -113,6 +114,9 @@ class ApiConstants {
 
   //Custom URL
   static const String PREFIX_CUSTOM_URL = 'https://marketplace.defiforyou.uk/';
+
+  //CreateNFT
+  static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
 
 
 }

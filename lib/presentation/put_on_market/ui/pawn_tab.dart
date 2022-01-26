@@ -109,6 +109,8 @@ class _PawnTabState extends State<PawnTab>
                     );
                     _putOnMarketModel.tokenAddress =
                         widget.cubit.listToken[0].address ?? '';
+                    _putOnMarketModel.loanSymbol =
+                        widget.cubit.listToken[0].symbol ?? '';
                   }
                   return InputWithSelectType(
                     inputFormatters: [
@@ -153,10 +155,12 @@ class _PawnTabState extends State<PawnTab>
                       );
                       _putOnMarketModel.tokenAddress =
                           widget.cubit.listToken[index].address ?? '';
+                      _putOnMarketModel.loanSymbol =
+                          widget.cubit.listToken[index].symbol ?? '';
                     },
                     onchangeText: (value) {
                       widget.cubit.changeTokenPawn(
-                        value: value != '' ? int.parse(value) : null,
+                        value: value != '' ? int.parse(value) : 0,
                       );
                       _putOnMarketModel.price = value;
                     },

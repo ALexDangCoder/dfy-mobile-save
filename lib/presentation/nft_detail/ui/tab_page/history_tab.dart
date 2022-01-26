@@ -120,113 +120,127 @@ Widget getHistory(int historyType) {
     case 0:
       return Text(
         'Create',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 1:
       return Text(
         'Transfer',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 2:
       return Text(
         'Burn',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 3:
       return Text(
         'Put on sale',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 4:
       return Text(
-        'pawnPut on pawn',
-        style: textNormal(
+        'Put on pawn',
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 5:
       return Text(
         'Cancel sale',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 6:
       return Text(
         'Cancel pawn',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 7:
       return Text(
         'Cancel auction',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 8:
       return Text(
         'Buy NFT',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 9:
       return Text(
         'Sign contract',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 10:
       return Text(
         'End contract',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 11:
       return Text(
         'Auction win',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 12:
       return Text(
         'With draw',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     case 13:
       return Text(
         'Put on auction',
-        style: textNormal(
+        style: textNormalCustom(
           Colors.white,
           14,
+          FontWeight.w700,
         ),
       );
     default:
@@ -238,8 +252,6 @@ Widget status(HistoryNFT historyNFT) {
   final String walletAddress = historyNFT.walletAddress ?? '';
   final String price = '${historyNFT.price?.stringNumFormat ?? ''} '
       '${historyNFT.priceSymbol ?? ''}';
-  final String expectedLoan = (historyNFT.exceptedLoan?.stringNumFormat ?? '') +
-      (historyNFT.priceSymbol ?? '');
   switch (historyNFT.historyType) {
     case 0:
       return RichText(

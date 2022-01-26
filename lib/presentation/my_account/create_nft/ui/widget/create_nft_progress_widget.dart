@@ -6,7 +6,6 @@ import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
@@ -35,8 +34,6 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     if (widget.cubit.coverFileSize != 0) {
       final int coverFileUploadTime =
           PinToIPFS().uploadTimeCalculate(widget.cubit.coverFileSize) + 3;
@@ -61,9 +58,9 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
       vsync: this,
       duration: Duration(seconds: widget.cubit.mediaFileUploadTime),
     );
-    widget.cubit.uploadFileToIFPS();
     widget.cubit.upLoadStatusSubject.listen((value) {
       if (value == 1) {
+        widget.cubit.getTransactionData();
         if (_mediaFileAnimationController.isAnimating) {
           _mediaFileAnimationController.stop();
         }
@@ -77,6 +74,14 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
           MaterialPageRoute(
             builder: (_) => Approve(
               hexString: widget.cubit.transactionData,
+              title: S.current.create_collection,
+              textActiveButton: S.current.create,
+              typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+              payValue: 10.toString(),
+              tokenAddress: widget.cubit.tokenAddress,
+              spender: widget.cubit.collectionAddress,
+              needApprove: true,
+              createNftMap: widget.cubit.getMapCreateSoftNft(),
               listDetail: [
                 DetailItemApproveModel(
                   title: '${S.current.name}:',
@@ -96,17 +101,12 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                       '${widget.cubit.mintingFeeNumber.toString()} ${widget.cubit.mintingFeeToken}',
                 ),
               ],
-              title: S.current.create_collection,
-              textActiveButton: S.current.create,
-              typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
-              payValue: 10.toString(),
-              tokenAddress: widget.cubit.tokenAddress,
-              spender: widget.cubit.tokenAddress,
             ),
           ),
         );
       }
     });
+    super.initState();
   }
 
   @override
@@ -181,7 +181,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                                   if (status == -1) {
                                     _coverAnimationController.forward();
                                     return progressBar(
-                                        _coverAnimationController);
+                                        _coverAnimationController,);
                                   } else if (status == 0) {
                                     return uploadFailWidget();
                                   } else {

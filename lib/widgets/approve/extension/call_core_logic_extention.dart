@@ -69,8 +69,12 @@ extension CallCoreExtension on ApproveCubit {
               break;
             case TYPE_CONFIRM_BASE.SEND_OFFER:
               if (result['isSuccess']) {
-                emit(SignSuccess(
-                    result['txHash'], TYPE_CONFIRM_BASE.SEND_OFFER));
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.SEND_OFFER,
+                  ),
+                );
               } else {
                 emit(
                   SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
@@ -162,6 +166,36 @@ extension CallCoreExtension on ApproveCubit {
                     TYPE_CONFIRM_BASE.PUT_ON_PAWN,
                   ),
                 );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.put_on_auction,
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+                  ),
+                );
+                showContent();
+              } else {
+                showError();
               }
               break;
             default:

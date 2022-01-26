@@ -303,7 +303,7 @@
   "fake": "Fake",
   "nft_success": "NFT successfully transferred to your wallet",
   "nft_fail": "An error occurred while transferring NFT to your wallet",
-  "not_on_market": "not_on_market",
+  "not_on_market": "Not on market",
   "waiting_for_cf": "Waiting for confirmation",
   "buy_nft": "Buy NFT",
   "oopps_omething_went_wrong": "Oopps! \nSomething went wrong",
@@ -572,5 +572,8 @@
   "no_continue": "No, continue",
   "number_of_copies": "Number of copies",
   "minting_fee": "Minting fee",
-  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard"
+  "not_supported_standard" : "Defi For You system has not supported NFT transactions on the ERC-1155 standard",
+  "create_collection_successfully": "Create collection successfully!",
+  "create_nft_successfully": "Create NFT successfully!",
+  "processing" : "Your request is being processed!"
 }
