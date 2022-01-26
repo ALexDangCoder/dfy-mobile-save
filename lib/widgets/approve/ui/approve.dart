@@ -788,6 +788,19 @@ class _ApproveState extends State<Approve> {
           await showLoadFail();
         }
         break;
+      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+        final result = await cubit.putOnPawn(txHash: data);
+        navigator.pop();
+        if (result) {
+          await showLoadSuccess();
+          navigator.popUntil((route) {
+            return route.settings.name == AppRouter.putOnSale;
+          });
+          navigator.pop();
+        } else {
+          await showLoadFail();
+        }
+        break;
       case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
         final result = await cubit.putOnAuction(txHash: data);
         navigator.pop();
@@ -938,26 +951,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
         final result = await cubit.putOnSale(txHash: data);
         navigator.pop();
-        if (result) {
-          await showLoadSuccess();
-          navigator.popUntil((route) {
-            return route.settings.name == 'put_on_market';
-          });
-          navigator.pop();
-          // unawaited(
-          //   navigator.pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (context) => NFTDetailScreen(
-          //         typeMarket: MarketType.SALE,
-          //         nftId: widget.putOnMarketModel?.nftId ?? '',
-          //         typeNft: TypeNFT.SOFT_NFT,
-          //       ),
-          //     ),
-          //   ),
-          // );
-        } else {
-          await showLoadFail();
-        }
+        await showLoadFail();
         break;
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         Navigator.pop(context);
