@@ -562,7 +562,7 @@
   "cancel_success": "Hủy bán thành công",
   "max_duration_auction" : "Thời lượng tối đa là 7 ngày (168 giờ)",
   "min_duration_auction" : "Thời lượng tối thiểu là 12 giờ",
-  "cancel_pawn" : "Hủy thế chấp",
+  "cancel_pawn" : "Rút NFT",
   "pawn_cancel_info": "Thông tin thế chấp sẽ bị hủy",
   "pawn_cancel_warning": "Khách hàng sẽ không thể tìn thấy NFT của bạn nữa",
   "no_continue": "Không, tiếp tục",
@@ -571,5 +571,8 @@
   "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155",
   "create_collection_successfully": "Tạo bộ sưu tập thành công!",
   "create_nft_successfully": "Tạo NFT thành công!",
-  "processing" : "Yêu cầu của bạn đang được xử lý!"
+  "processing" : "Yêu cầu của bạn đang được xử lý!",
+  "otp_invalid": "Mã không hợp lệ",
+  "expired_code": "Mã không hợp lệ hoặc đã hết hạn",
+  "notify": "Thông báo"
 }

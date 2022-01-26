@@ -26,7 +26,7 @@ class _StakingState extends State<StakingScreen> {
       onTap: () => showDialog(
         context: context,
         builder: (context) => ConnectWalletDialog(
-          navigationTo: Container(color: Colors.red,),
+          navigationTo: Container(color: Colors.green,),
           isRequireLoginEmail: false,
         ),
       ),

@@ -449,6 +449,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   List<DetailItemApproveModel> initListApprove({
     required TYPE_CONFIRM_BASE type,
+
   }) {
     final List<DetailItemApproveModel> listApprove = [];
     if (type == TYPE_CONFIRM_BASE.CANCEL_SALE) {
@@ -503,12 +504,13 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   //get dataString
   Future<String> getDataStringForCancel({
     required BuildContext context,
+    required String orderId,
   }) async {
     try {
       showLoading();
       hexString = await web3Client.getCancelListingData(
         contractAddress: nft_sales_address_dev2,
-        orderId: nftMarket.orderId.toString(),
+        orderId: orderId,
         context: context,
       );
       showContent();
@@ -521,13 +523,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Future<String> getDataStringForCancelAuction({
     required BuildContext context,
+    required String auctionId,
   }) async {
     try {
       showLoading();
       hexString = await web3Client.getCancelAuctionData(
         contractAddress: nft_auction_dev2,
         context: context,
-        auctionId: nftOnAuction.auctionId.toString(),
+        auctionId: auctionId,
       );
       showContent();
       return hexString;

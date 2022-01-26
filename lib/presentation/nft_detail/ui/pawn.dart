@@ -134,24 +134,46 @@ Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
 }
 
 Widget _buildButtonCancelOnPawn(
-    BuildContext context,
-    NFTDetailBloc bloc,
-    NftOnPawn nftMarket,
-    ) {
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NftOnPawn nftMarket,
+) {
   return ButtonGradient(
     onPressed: () async {
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancelPawn(
         pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
       );
+      final List<DetailItemApproveModel> listApprove = [];
+      //TODO: HỎI A HƯNG MÃ STANDART => STRING
+      if (nftMarket.nftCollateralDetailDTO?.nftStandard == 1) {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftMarket.nftCollateralDetailDTO?.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: 'NTF',
+            value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
+          ),
+        );
+      }
       unawaited(
         nav.push(
           MaterialPageRoute(
             builder: (context) => approveWidget(
+              nftOnPawn: nftMarket,
               dataString: dataString,
-              dataInfo: bloc.initListApprove(
-                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-              ),
+              dataInfo: listApprove,
               type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
               cancelInfo: S.current.pawn_cancel_info,
               cancelWarning: S.current.pawn_cancel_warning,
@@ -159,7 +181,8 @@ Widget _buildButtonCancelOnPawn(
             ),
           ),
         ),
-      );    },
+      );
+    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,
@@ -168,13 +191,12 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7
         ? processing()
         : Text(
-      S.current.withdraw_nft,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
-      ),
-    ),
+            S.current.withdraw_nft,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
   );
 }
-

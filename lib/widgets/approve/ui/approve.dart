@@ -12,6 +12,7 @@ import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -66,6 +67,7 @@ class Approve extends StatefulWidget {
   final PutOnMarketModel? putOnMarketModel;
   final NftMarket? nftMarket;
   final NftOnPawn? nftOnPawn;
+  final NFTOnAuction? nftOnAuction;
   final bool? needApprove;
   final int? flexTitle;
   final int? flexContent;
@@ -109,6 +111,7 @@ class Approve extends StatefulWidget {
     this.nftOnPawn,
     this.request,
     this.createNftMap,
+    this.nftOnAuction,
   }) : super(key: key);
 
   @override
@@ -145,6 +148,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftMarket ?? NftMarket.init();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
@@ -166,6 +170,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftOnAuction ?? NFTOnAuction.init();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
@@ -178,7 +183,9 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftOnPawn ?? NftOnPawn();
+        getNonce();
         break;
     }
   }
@@ -189,6 +196,7 @@ class _ApproveState extends State<Approve> {
     cubit = ApproveCubit();
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
+    initData(widget.typeApprove);
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
       heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
@@ -200,7 +208,6 @@ class _ApproveState extends State<Approve> {
 
     /// get wallet information
     cubit.getListWallets();
-    initData(widget.typeApprove);
   }
 
   Future<void> getNonce() async {
@@ -853,7 +860,7 @@ class _ApproveState extends State<Approve> {
         unawaited(
           cubit.confirmCancelSaleWithBE(
             txnHash: data,
-            marketId: nftDetailBloc.nftMarket.marketId ?? '',
+            marketId: widget.nftMarket?.marketId ?? '',
           ),
         );
         unawaited(
@@ -913,14 +920,14 @@ class _ApproveState extends State<Approve> {
         unawaited(
           cubit.confirmCancelAuctionWithBE(
             txnHash: data,
-            marketId: nftDetailBloc.nftOnAuction.id ?? '',
+            marketId: widget.nftOnAuction?.id ?? '',
           ),
         );
         unawaited(
           navigator.push(
             MaterialPageRoute(
               builder: (context) => BaseSuccess(
-                title: S.current.cancel_sale,
+                title: S.current.cancel_aution,
                 content: S.current.congratulation,
                 callback: () {
                   Navigator.push(
@@ -941,14 +948,14 @@ class _ApproveState extends State<Approve> {
         unawaited(
           cubit.confirmCancelAuctionWithBE(
             txnHash: data,
-            marketId: nftDetailBloc.nftOnAuction.id ?? '',
+            marketId: (widget.nftOnPawn?.id ?? 0).toString(),
           ),
         );
         unawaited(
           navigator.push(
             MaterialPageRoute(
               builder: (context) => BaseSuccess(
-                title: S.current.cancel_sale,
+                title: S.current.cancel_pawn,
                 content: S.current.congratulation,
                 callback: () {
                   Navigator.push(
@@ -978,25 +985,25 @@ class _ApproveState extends State<Approve> {
             .then((value) => navigator.popUntil((route) => route.isFirst))
             .then(
               (value) => navigator.push(
-            MaterialPageRoute(
-              builder: (_) => BaseSuccess(
-                title: S.current.create_nft,
-                content: S.current.create_nft_successfully,
-                callback: () {
-                  navigator.pop();
-                  navigator.push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => CollectionList(
-                        typeScreen: PageRouter.MY_ACC,
-                        addressWallet: cubit.addressWallet,
-                      ),
-                    ),
-                  );
-                },
+                MaterialPageRoute(
+                  builder: (_) => BaseSuccess(
+                    title: S.current.create_nft,
+                    content: S.current.create_nft_successfully,
+                    callback: () {
+                      navigator.pop();
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CollectionList(
+                            typeScreen: PageRouter.MY_ACC,
+                            addressWallet: cubit.addressWallet,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
         // TODO: Handle this case.
@@ -1104,7 +1111,7 @@ class _ApproveState extends State<Approve> {
           navigator.push(
             MaterialPageRoute(
               builder: (context) => BaseFail(
-                title: S.current.cancel_sale,
+                title: S.current.cancel_aution,
                 content: S.current.failed,
                 onTapBtn: () {
                   Navigator.pop(context);

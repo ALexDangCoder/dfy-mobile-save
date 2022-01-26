@@ -6,6 +6,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_email.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -54,10 +55,13 @@ class _EnterEmailState extends State<EnterEmail> {
             final bool checkValidate =
                 cubit.checkValidate(emailEditingController.value.text);
             if (checkValidate) {
+              showLoading(context);
               final String transactionId = await cubit.sendOTP(
                 email: emailEditingController.value.text,
                 type: 1,
               );
+              hideLoading(context);
+
               if (transactionId.isNotEmpty) {
                 unawaited(
                   nav.push(

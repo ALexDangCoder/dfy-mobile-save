@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/connect_email_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
@@ -43,6 +45,17 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
         );
         hideLoading(context);
         if (checkSuccess) {
+          final data = PrefsService.getUserProfile();
+          final userProfile = userProfileFromJson(data);
+          final String email = userProfile.email ?? '';
+          if (email.isNotEmpty) {
+            unawaited(
+              nav.pushReplacement(
+                MaterialPageRoute(builder: (context) => navigationTo),
+              ),
+            );
+            return;
+          }
           if (!isRequireLoginEmail) {
             //không yêu cầu login email:
             nav.pop(context);
