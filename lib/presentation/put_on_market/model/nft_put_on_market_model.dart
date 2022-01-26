@@ -14,6 +14,10 @@ class PutOnMarketModel {
   String? startTime;
   String? endTime;
 
+  //pawn
+  int? durationType;
+  String? duration;
+
   PutOnMarketModel({
     this.tokenAddress,
     this.collectionAddress,

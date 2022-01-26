@@ -43,6 +43,7 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
+const grayColor = Color(0xff9FA6B2);
 const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
@@ -176,6 +177,8 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+
+  Color getGrayColor();
 
   Color whiteOpacityDot5();
 
@@ -585,6 +588,11 @@ class LightApp extends AppColor {
   Color getAmountColor() {
     return amountColor;
   }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -963,6 +971,11 @@ class DarkApp extends AppColor {
   @override
   Color getAmountColor() {
     return amountColor;
+  }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
   }
 }
 

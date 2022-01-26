@@ -1,5 +1,7 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
+import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -36,12 +38,12 @@ extension CallApiBE on ApproveCubit {
 
   Future<bool> putOnSale({required String txHash}) async {
     final Map<String, dynamic> mapRawData = {
-      "nft_id": putOnMarketModel?.nftId ?? '',
-      "token": putOnMarketModel?.tokenAddress ?? '',
-      "txn_hash": txHash,
-      "nft_type": putOnMarketModel?.nftType ?? 0,
-      "number_of_copies": putOnMarketModel?.numberOfCopies ?? 1,
-      "price": int.parse(putOnMarketModel?.price ?? ''),
+      'nft_id': putOnMarketModel?.nftId ?? '',
+      'token': putOnMarketModel?.tokenAddress ?? '',
+      'txn_hash': txHash,
+      'nft_type': putOnMarketModel?.nftType ?? 0,
+      'number_of_copies': putOnMarketModel?.numberOfCopies ?? 1,
+      'price': int.parse(putOnMarketModel?.price ?? ''),
     };
     final PutOnSaleRequest data = PutOnSaleRequest.fromJson(mapRawData);
     final result = await confirmRepository.putOnSale(data: data);
@@ -57,8 +59,38 @@ extension CallApiBE on ApproveCubit {
     return res;
   }
 
-  Future<bool> putOnAuction ({ required String txHash})async {
-    return true;
+  Future<bool> putOnAuction({required String txHash}) async {
+    final Map<String, dynamic> mapRawData = {
+      'buy_out_price': putOnMarketModel?.buyOutPrice == null
+          ? 0
+          : int.parse(putOnMarketModel?.buyOutPrice ?? '0'),
+      'enable_buy_out_price':
+          putOnMarketModel?.buyOutPrice == null ? false : true,
+      'enable_price_step': putOnMarketModel?.priceStep == null ? false : true,
+      'end_time': int.parse(putOnMarketModel?.endTime ?? '0'),
+      'get_email': true,
+      'nft_id': putOnMarketModel?.nftId ?? '',
+      'nft_type': putOnMarketModel?.nftType ?? 0,
+      'price_step': putOnMarketModel?.priceStep == null
+          ? 0
+          : int.parse(putOnMarketModel?.priceStep ?? '0'),
+      'reserve_price': int.parse(putOnMarketModel?.price ?? '0'),
+      'start_time': int.parse(putOnMarketModel?.startTime ?? '0'),
+      'token': putOnMarketModel?.tokenAddress,
+      'txn_hash': txHash,
+    };
+    final PutOnAuctionRequest data = PutOnAuctionRequest.fromJson(mapRawData);
+    final result = await confirmRepository.putOnAuction(data: data);
+    bool res = false;
+    result.when(
+      success: (suc) {
+        res = true;
+      },
+      error: (err) {
+        res = false;
+      },
+    );
+    return res;
   }
 
   Future<void> confirmCancelSaleWithBE({

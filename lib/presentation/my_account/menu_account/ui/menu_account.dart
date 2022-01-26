@@ -10,10 +10,8 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
-import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -126,7 +124,7 @@ class _MenuAccountState extends State<MenuAccount> {
             MaterialPageRoute(
               builder: (context) => CollectionList(
                 typeScreen: PageRouter.MY_ACC,
-                addressWallet: cubit.addressWalletSubject.valueOrNull ?? '',
+                addressWallet: walletAddress,
               ),
             ),
           );
@@ -566,7 +564,12 @@ class _MenuAccountState extends State<MenuAccount> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Image.asset(ImageAssets.ic_back),
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(ImageAssets.ic_back),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerRight,

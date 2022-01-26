@@ -118,6 +118,7 @@ Widget _buildButtonBuyOutOnSale(
 ) {
   return ButtonGradient(
     onPressed: () {
+      /// TODO: Handle if un login => push to login => buy
       if (isBought) {
         _showDialog(
           context,
@@ -374,7 +375,9 @@ Widget _buildButtonPutOnMarket(
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
-    child: nftMarket.processStatus == 5
+    child: (nftMarket.processStatus == 5 ||
+            nftMarket.processStatus == 6 ||
+            nftMarket.processStatus == 3)
         ? processing()
         : Text(
             S.current.put_on_market,

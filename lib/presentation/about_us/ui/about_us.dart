@@ -6,7 +6,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:Dfy/generated/l10n.dart';
-
+import 'package:flutter/rendering.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -57,7 +57,12 @@ class AboutUs extends StatelessWidget {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Image.asset(ImageAssets.ic_back),
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 30,
+                            width: 30,
+                            child: Image.asset(ImageAssets.ic_back),
+                          ),
                         ),
                       ],
                     ),
@@ -143,18 +148,22 @@ class AboutUs extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20,),
-                        Row (
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_global),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 launchURL(defiLink);
                               },
                               child: SizedBox(
                                 child: Text(
-                                    appURL,
+                                  appURL,
                                   style: textNormalCustom(
                                     AppTheme.getInstance().textThemeColor(),
                                     16,
@@ -165,13 +174,17 @@ class AboutUs extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox (height: 16,),
-                        Row (
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 launchMail(email: mailAsk);
                               },
                               child: SizedBox(
@@ -187,13 +200,17 @@ class AboutUs extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox (height: 16,),
-                        Row (
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 launchMail(email: mailSupport);
                               },
                               child: SizedBox(
@@ -209,8 +226,10 @@ class AboutUs extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox (height: 24,),
-                        SizedBox (
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        SizedBox(
                           child: Text(
                             '$appName - ${S.current.hanoi_office}',
                             style: textNormalCustom(
@@ -220,13 +239,17 @@ class AboutUs extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox (height: 16,),
-                        Row (
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 launchMail(email: mailAskHanoi);
                               },
                               child: SizedBox(
@@ -240,17 +263,23 @@ class AboutUs extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             Image.asset(ImageAssets.ic_flag_vn),
                           ],
                         ),
-                        const SizedBox (height: 16,),
-                        Row (
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 launchMail(email: mailMarketingHanoi);
                               },
                               child: SizedBox(
@@ -264,15 +293,21 @@ class AboutUs extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             Image.asset(ImageAssets.ic_flag_gb),
                           ],
                         ),
-                        const SizedBox (height: 16,),
-                        Row (
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
                           children: [
                             Image.asset(ImageAssets.ic_address),
-                            const SizedBox (width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             Expanded(
                               child: SizedBox(
                                 child: Text(
@@ -287,8 +322,10 @@ class AboutUs extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox (height: 24,),
-                        SizedBox (
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        SizedBox(
                           child: Text(
                             '$appName - ${S.current.london_office}',
                             style: textNormalCustom(
@@ -298,6 +335,163 @@ class AboutUs extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Wrap(
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(ImageAssets.ic_email),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    launchMail(email: mailOfficeLondon);
+                                  },
+                                  child: SizedBox(
+                                    child: Text(
+                                      mailOfficeLondon,
+                                      style: textNormalCustom(
+                                        AppTheme.getInstance().getAmountColor(),
+                                        16,
+                                        FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Image.asset(ImageAssets.ic_flag_gb),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  height: 5,
+                                  width: 5,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:
+                                        AppTheme.getInstance().getAmountColor(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              child: Text(
+                                seanMason,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().getAmountColor(),
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              child: Text(
+                                cfo,
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().getAmountColor(),
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(ImageAssets.ic_address),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                child: Text(
+                                  locationLondon,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          child: Text(
+                            '${S.current.registration_number}: $registrationNumber',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().getGrayColor(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          child: Text(
+                            S.current.find_us_on,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Wrap(
+                          spacing: 18,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                launchURL(gitLink);
+                              },
+                              icon: Image.asset(ImageAssets.ic_git),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                launchURL(telegramLink);
+                              },
+                              icon: Image.asset(ImageAssets.ic_telegram_png),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                launchURL(facebookLink);
+                              },
+                              icon: Image.asset(ImageAssets.icon_fb),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                launchURL(youtubeLink);
+                              },
+                              icon: Image.asset(ImageAssets.icon_youtube),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                launchURL(linkedinLink);
+                              },
+                              icon: Image.asset(ImageAssets.icon_linkedin),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                launchURL(twitterLink);
+                              },
+                              icon: Image.asset(ImageAssets.icon_twitter),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
