@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
+import 'package:Dfy/data/request/nft/create_soft_nft_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -22,5 +23,9 @@ mixin ConfirmRepository {
 
   Future<Result<ConfirmModel>> putOnAuction({
     required PutOnAuctionRequest data,
+  });
+
+  Future<Result<ConfirmModel>> createSoftNft({
+    required CreateSoftNftRequest data,
   });
 }

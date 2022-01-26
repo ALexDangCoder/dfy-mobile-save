@@ -31,10 +31,8 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   NFTRepository get nftRepo => Get.find();
 
-  List<TypeNFTModel> listNft = [];
   List<TypeNFTModel> listSoftNft = [];
-  List<TypeNFTModel> listHardNft = [];
-  List<CollectionMarketModel> listCollectionModel = [];
+  List<CollectionMarketModel> softCollectionList = [];
 
   String selectedId = '';
   int selectedNftType = 0;
@@ -48,6 +46,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   String mediaType = '';
   String nftName = '';
   String collectionAddress = '';
+  String collectionId = '';
   String description = '';
   int royalty = 0;
   String mediaFileCid = '';
@@ -130,6 +129,22 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
         createNftButtonSubject.sink.add(true);
       }
     }
+  }
+
+  Map<String,dynamic> getMapCreateSoftNft(){
+    return {
+      'collection_id': collectionId,
+      'cover_cid': coverCid,
+      'description': description,
+      'file_cid': mediaFileCid,
+      'file_type': fileType,
+      'minting_fee_number': mintingFeeNumber,
+      'minting_fee_token': mintingFeeToken,
+      'name': nftName,
+      'properties': listProperty,
+      'royalties': royalty.toString(),
+      'txn_hash': ''
+    };
   }
 
   void dispose() {

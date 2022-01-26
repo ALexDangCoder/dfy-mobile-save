@@ -19,6 +19,19 @@ extension UploadIPFS on CreateNftCubit {
           mediaFileUploadStatusSubject.value == 0) {
         upLoadStatusSubject.sink.add(0);
       } else {
+        final Map<String, dynamic> jsonMap = {
+          'collection_id': collectionAddress,
+          'cover_cid': coverCid,
+          'description': description,
+          'file_cid': mediaFileCid,
+          'file_type': fileType,
+          'minting_fee_number': mintingFeeNumber.toString(),
+          'minting_fee_token': mintingFeeToken,
+          'name': nftName,
+          'properties': listProperty.toString(),
+          'royalties': royalty.toString(),
+        };
+        nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
         upLoadStatusSubject.sink.add(1);
       }
     } else {
@@ -28,22 +41,24 @@ extension UploadIPFS on CreateNftCubit {
       mediaFileCid.isNotEmpty
           ? mediaFileUploadStatusSubject.sink.add(1)
           : mediaFileUploadStatusSubject.sink.add(0);
-      mediaFileUploadStatusSubject.value == 1
-          ? upLoadStatusSubject.sink.add(1)
-          : upLoadStatusSubject.sink.add(0);
+      if(mediaFileUploadStatusSubject.value != 1){
+        upLoadStatusSubject.sink.add(0);
+      } else{
+        final Map<String, dynamic> jsonMap = {
+          'collection_id': collectionAddress,
+          'cover_cid': coverCid,
+          'description': description,
+          'file_cid': mediaFileCid,
+          'file_type': fileType,
+          'minting_fee_number': mintingFeeNumber.toString(),
+          'minting_fee_token': mintingFeeToken,
+          'name': nftName,
+          'properties': listProperty.toString(),
+          'royalties': royalty.toString(),
+        };
+        nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
+        upLoadStatusSubject.sink.add(1);
+      }
     }
-    final Map<String, dynamic> jsonMap = {
-      'collection_id': collectionAddress,
-      'cover_cid': coverCid,
-      'description': description,
-      'file_cid': mediaFileCid,
-      'file_type': fileType,
-      'minting_fee_number': mintingFeeNumber.toString(),
-      'minting_fee_token': mintingFeeToken,
-      'name': nftName,
-      'properties': listProperty.toString(),
-      'royalties': royalty.toString(),
-    };
-    nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
   }
 }

@@ -48,7 +48,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
     return KeyboardDismisser(
       child: BaseBottomSheet(
         resizeBottomInset: true,
-        title: S.current.create_collection,
+        title: S.current.create_nft,
         child: FormGroup(
           key: _key,
           child: SingleChildScrollView(

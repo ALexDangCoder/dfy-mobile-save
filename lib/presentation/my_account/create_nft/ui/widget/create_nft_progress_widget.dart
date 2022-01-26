@@ -74,6 +74,14 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
           MaterialPageRoute(
             builder: (_) => Approve(
               hexString: widget.cubit.transactionData,
+              title: S.current.create_collection,
+              textActiveButton: S.current.create,
+              typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+              payValue: 10.toString(),
+              tokenAddress: widget.cubit.tokenAddress,
+              spender: widget.cubit.collectionAddress,
+              needApprove: true,
+              createNftMap: widget.cubit.getMapCreateSoftNft(),
               listDetail: [
                 DetailItemApproveModel(
                   title: '${S.current.name}:',
@@ -93,12 +101,6 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                       '${widget.cubit.mintingFeeNumber.toString()} ${widget.cubit.mintingFeeToken}',
                 ),
               ],
-              title: S.current.create_collection,
-              textActiveButton: S.current.create,
-              typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
-              payValue: 10.toString(),
-              tokenAddress: widget.cubit.tokenAddress,
-              spender: widget.cubit.collectionAddress,
             ),
           ),
         );
@@ -179,7 +181,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                                   if (status == -1) {
                                     _coverAnimationController.forward();
                                     return progressBar(
-                                        _coverAnimationController);
+                                        _coverAnimationController,);
                                   } else if (status == 0) {
                                     return uploadFailWidget();
                                   } else {

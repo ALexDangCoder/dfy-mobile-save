@@ -8,13 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
-  final List<String> allowedExtensions = isCoverPhoto
-      ? ['JPG', 'PNG', 'GIF', 'JPEG']
-      : ['mp4', 'WEBM', 'mp3', 'WAV', 'OGG', 'png', 'jpg', 'jpeg', 'GIF'];
+Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
+  final List<String> allowedExtensions = type.fileType;
 
   String filePath = '';
-  String mediaType = '';
+  String _fileType = '';
   String fileExtension = '';
   int fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -23,22 +21,27 @@ Future<Map<String, dynamic>> pickMediaFile({bool isCoverPhoto = false}) async {
   );
   if (result != null) {
     fileExtension = result.files.single.extension ?? '';
-    if (fileExtension == 'mp4' || fileExtension == 'webm') {
-      mediaType = MEDIA_VIDEO_FILE;
-    } else if (fileExtension == 'mp3' ||
-        fileExtension == 'wav' ||
-        fileExtension == 'OOG') {
-      mediaType = MEDIA_AUDIO_FILE;
+    if(PickerType.DOCUMENT.fileType.contains(fileExtension)){
+      _fileType = DOCUMENT_FILE;
     } else {
-      mediaType = MEDIA_IMAGE_FILE;
+      if (fileExtension == 'mp4' || fileExtension == 'webm') {
+        _fileType = MEDIA_VIDEO_FILE;
+      } else if (fileExtension == 'mp3' ||
+          fileExtension == 'wav' ||
+          fileExtension == 'OOG') {
+        _fileType = MEDIA_AUDIO_FILE;
+      } else {
+        _fileType = MEDIA_IMAGE_FILE;
+      }
     }
+
     filePath = result.files.single.path ?? '';
     fileSize = result.files.single.size;
   } else {
     // User canceled the picker
   }
   return {
-    'type': mediaType,
+    'type': _fileType,
     'path': filePath,
     'size': fileSize,
     'extension': fileExtension,
@@ -107,5 +110,24 @@ Future<String> pickImageFunc({
     return filePath;
   } on PlatformException catch (e) {
     throw 'Cant upload image $e';
+  }
+}
+
+enum PickerType {
+  MEDIA_FILE,
+  IMAGE_FILE,
+  DOCUMENT,
+}
+
+extension GetTypeByName on PickerType {
+  List<String> get fileType {
+    switch (this) {
+      case PickerType.MEDIA_FILE:
+        return ['mp4', 'WEBM', 'mp3', 'WAV', 'OGG', 'png', 'jpg', 'jpeg', 'GIF'];
+      case PickerType.IMAGE_FILE:
+        return ['JPG', 'PNG', 'GIF', 'JPEG'];
+      case PickerType.DOCUMENT:
+        return ['DOC','DOCX','PDF','XLS','XLSX'];
+    }
   }
 }

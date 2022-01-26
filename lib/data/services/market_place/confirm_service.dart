@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
+import 'package:Dfy/data/request/nft/create_soft_nft_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_auction_resquest.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
@@ -39,6 +40,12 @@ abstract class ConfirmClient {
   @POST(ApiConstants.PUT_ON_AUCTION)
   Future<ConfirmResponse> putOnAuction(
       @Body() PutOnAuctionRequest data,
+      );
+
+  //createSoftNft
+  @POST(ApiConstants.CREATE_SOFT_NFT)
+  Future<ConfirmResponse> createSoftNft(
+      @Body() CreateSoftNftRequest data,
       );
 
 }

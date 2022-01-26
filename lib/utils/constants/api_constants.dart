@@ -114,5 +114,8 @@ class ApiConstants {
   //Custom URL
   static const String PREFIX_CUSTOM_URL = 'https://marketplace.defiforyou.uk/';
 
+  //CreateNFT
+  static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
+
 
 }
