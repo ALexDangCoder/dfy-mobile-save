@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_request.dart';
+import 'package:Dfy/data/request/nft/create_soft_nft_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_auction_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_pawn_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
@@ -35,24 +36,35 @@ class ConfirmImplement implements ConfirmRepository {
   @override
   Future<Result<ConfirmModel>> putOnSale({required PutOnSaleRequest data}) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _confirmClient.putOnSale(data),
-          (response) => response.toDomain(),
+      () => _confirmClient.putOnSale(data),
+      (response) => response.toDomain(),
     );
   }
 
   @override
-  Future<Result<ConfirmModel>> putOnAuction({required PutOnAuctionRequest data}) {
+  Future<Result<ConfirmModel>> createSoftNft(
+      {required CreateSoftNftRequest data}) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _confirmClient.punOnAuction(data),
-          (response) => response.toDomain(),
+      () => _confirmClient.createSoftNft(data),
+      (response) => response.toDomain(),
     );
   }
 
   @override
   Future<Result<ConfirmModel>> putOnPawn({required PutOnPawnRequest data}) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _confirmClient.punOnAuPawn(data),
-          (response) => response.toDomain(),
+      () => _confirmClient.punOnAuPawn(data),
+      (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> putOnAuction({
+    required PutOnAuctionRequest data,
+  }) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+      () => _confirmClient.punOnAuction(data),
+      (response) => response.toDomain(),
     );
   }
 }

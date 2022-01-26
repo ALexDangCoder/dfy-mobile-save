@@ -9,14 +9,16 @@ import 'package:video_player/video_player.dart';
 extension PickFileExtension on CreateNftCubit {
   Future<void> pickFile() async {
     mediaType = '';
-    final Map<String, dynamic> mediaFile = await pickMediaFile();
+    final Map<String, dynamic> mediaFile =
+        await pickMediaFile(type: PickerType.MEDIA_FILE);
     mediaType = mediaFile.getStringValue('type');
     final extension = mediaFile.getStringValue('extension');
     final path = mediaFile.getStringValue('path');
     fileType = '$mediaType/$extension';
     mediaFileSubject.sink.add(mediaType);
     if (path.isNotEmpty) {
-      mediaFileUploadTime = ipfsService.uploadTimeCalculate(mediaFile.intValue('size'));
+      mediaFileUploadTime =
+          ipfsService.uploadTimeCalculate(mediaFile.intValue('size'));
       mediaFilePath = path;
       createNftMapCheck['media_file'] = true;
       switch (mediaType) {
@@ -30,7 +32,6 @@ extension PickFileExtension on CreateNftCubit {
             if (controller == null) {
               controller = VideoPlayerController.file(File(path));
               await controller?.initialize();
-              await controller?.play();
               videoFileSubject.sink.add(controller!);
             }
             break;
@@ -48,7 +49,7 @@ extension PickFileExtension on CreateNftCubit {
 
   Future<void> pickCoverPhoto() async {
     final Map<String, dynamic> mediaFile = await pickMediaFile(
-      isCoverPhoto: true,
+        type: PickerType.IMAGE_FILE,
     );
     final path = mediaFile.getStringValue('path');
     if (path.isNotEmpty) {
