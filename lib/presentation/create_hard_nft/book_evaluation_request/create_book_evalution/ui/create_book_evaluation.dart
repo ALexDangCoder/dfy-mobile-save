@@ -194,7 +194,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                             spaceH12,

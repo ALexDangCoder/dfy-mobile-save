@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -31,6 +32,7 @@ class BlocListBookEvaluation {
   bool isCancel = true;
   bool isDetail = false;
   bool isLoadingText = false;
+  String assetID = '';
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
@@ -46,6 +48,16 @@ class BlocListBookEvaluation {
     } else {
       return AppTheme.getInstance().redMarketColors();
     }
+  }
+
+  void reloadAPI() {
+    const oneSec = Duration(seconds: 30);
+    Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        getListPawnShop(assetId: assetID);
+      },
+    );
   }
 
   String getTextStatus(int status, int time) {
@@ -104,7 +116,6 @@ class BlocListBookEvaluation {
         await _createHardNFTRepository.getListAppointment(
       assetId,
     );
-
     result.when(
       success: (res) {
         if (res.isNotEmpty) {

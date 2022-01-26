@@ -26,8 +26,11 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   @override
   void initState() {
     super.initState();
+
     _bloc = BlocListBookEvaluation();
-    _bloc.getListPawnShop(assetId: '61e9096a4aec3d3977856bf9');
+    _bloc.assetID = '61e9096a4aec3d3977856bf9';
+    _bloc.getListPawnShop(assetId: _bloc.assetID);
+    _bloc.reloadAPI();
   }
 
   @override
