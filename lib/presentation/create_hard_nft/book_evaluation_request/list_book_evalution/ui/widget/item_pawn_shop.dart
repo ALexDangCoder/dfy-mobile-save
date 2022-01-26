@@ -115,13 +115,9 @@ class ItemPawnShop extends StatelessWidget {
                 ],
               ),
               spaceH4,
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  bloc.getTextStatus(
-                    appointment.status ?? 0,
-                    appointment.acceptedTime ?? 0,
-                  ),
+              RichText(
+                textAlign: TextAlign.end,
+                text: TextSpan(
                   style: textNormalCustom(
                     bloc.checkColor(
                       bloc.getTextStatus(
@@ -132,7 +128,28 @@ class ItemPawnShop extends StatelessWidget {
                     12,
                     null,
                   ),
-                  textAlign: TextAlign.end,
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: bloc.isLoadingText
+                          ? Container(
+                              width: 18.w,
+                              height: 18.h,
+                              margin: EdgeInsets.only(right: 10.w),
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    TextSpan(
+                      text: bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               spaceH8,

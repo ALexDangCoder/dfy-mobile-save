@@ -350,7 +350,6 @@
   "no_permission2": " để thưc hiện hành động này",
   "confirm_account": "Xác nhận tài khoản",
   "enter_email": "Nhập email",
-  "put_on_pawn" : "Đưa ra thế chấp",
   "verify_account": "Chúng tôi vừa gửi thư xác nhận đến địa chỉ email bạn vừa đăng ký. Vui lòng kiểm tra email và nhập Mã để kích hoạt tài khoản của bạn.",
   "connect_wallet": "Kết nối ví",
   "connect_to_continue": "Bạn cần kết nối ví để tiếp tục",
@@ -561,7 +560,6 @@
   "processing_reject": "Đang xử lí từ chối",
   "processing_cancel": "Đang sử lí huỷ",
   "accepted": "Đã chấp thuận",
-  "rejected": "Đã từ chối",
   "canceled": "Đã huỷ",
   "reject": "Reject",
   "accept": "Accept",
@@ -602,5 +600,7 @@
   "chosen_date": "Ngày đã chọn không nằm trong giờ làm việc của người đánh giá",
   "date_is_required": "Ngày tháng là bắt buộc",
   "chosen_time": "Thời gian đã chọn không nằm trong giờ làm việc của người đánh giá",
-  "time_is_required": "Thời gian là bắt buộc"
+  "time_is_required": "Thời gian là bắt buộc",
+  "processing_transaction": "Xử lý giao dịch"
+
 }

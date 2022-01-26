@@ -12,11 +12,25 @@ class BlocListBookEvaluation {
   static const int OPEN = 1;
   static const int REJECTED = 3; // tu choi
   static const int ACCEPTED = 7;
+  static const int PROCESSING_SUCCESS = 8;
+  static const int SUCCESS = 9;
   static const int CANCELLED = 5; //huy
-
+//PROCESSING_CREATE(0),
+//     OPEN(1),
+//     PROCESSING_REJECT(2),
+//     REJECTED(3),
+//     PROCESSING_CANCEL(4),
+//     CANCELLED(5),
+//     PROCESSING_ACCEPT(6),
+//     ACCEPTED(7),
+//     PROCESSING_SUCCESS(8),
+//     SUCCESS(9),
+//     TIMEOUT_ACCEPTED(10),
+//     TIMEOUT_OPEN(11);
   BehaviorSubject<List<AppointmentModel>> listPawnShop = BehaviorSubject();
   bool isCancel = true;
   bool isDetail = false;
+  bool isLoadingText = false;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
@@ -39,29 +53,47 @@ class BlocListBookEvaluation {
       case OPEN:
         isCancel = true;
         isDetail = false;
+        isLoadingText = false;
         return S.current.your_appointment_request;
       case REJECTED:
         isDetail = true;
         isCancel = false;
+        isLoadingText = false;
         return S.current.the_evaluator_has_rejected;
       case ACCEPTED:
         if (time != 0) {
           isDetail = false;
           isCancel = true;
+          isLoadingText = false;
           return S.current.evaluator_has_suggested;
         } else {
           isDetail = false;
           isCancel = true;
+          isLoadingText = false;
+          return S.current.the_evaluator_has_accepted;
+        }
+      case SUCCESS:
+        if (time != 0) {
+          isDetail = false;
+          isCancel = true;
+          isLoadingText = false;
+          return S.current.evaluator_has_suggested;
+        } else {
+          isDetail = false;
+          isCancel = true;
+          isLoadingText = false;
           return S.current.the_evaluator_has_accepted;
         }
       case CANCELLED:
         isDetail = false;
         isCancel = false;
+        isLoadingText = false;
         return S.current.you_have_rejected;
       default:
         isDetail = false;
         isCancel = true;
-        return '';
+        isLoadingText = true;
+        return S.current.processing_transaction;
     }
   }
 
