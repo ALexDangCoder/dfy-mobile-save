@@ -305,7 +305,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         if (owner != PrefsService.getCurrentBEWallet()) {
           showDialog(
             context: context,
-            builder: (context) => WarningDialog(walletAdress: owner),
+            builder: (context) => WarningDialog(walletAddress: owner),
           );
         } else {
           _cubit.rejectOffer(
@@ -324,7 +324,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         if (owner != PrefsService.getCurrentBEWallet()) {
           showDialog(
             context: context,
-            builder: (context) => WarningDialog(walletAdress: owner),
+            builder: (context) => WarningDialog(walletAddress: owner),
           );
         } else {
           _cubit.acceptOffer(

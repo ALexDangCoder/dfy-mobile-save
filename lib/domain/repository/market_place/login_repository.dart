@@ -1,6 +1,7 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/nonce_model.dart';
+import 'package:Dfy/domain/model/market_place/otp_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 
 mixin LoginRepository {
@@ -11,5 +12,11 @@ mixin LoginRepository {
   Future<Result<ProfileModel>> getUserProfile();
 
   Future<Result<LoginModel>> refreshToken(String refreshToken);
+
+  Future<Result<OTPModel>> sendOTP(String email, int type);
+
+  Future<Result<LoginModel>> verifyOTP(String otp, String transactionId);
+
+  Future<void> logout();
 
 }
