@@ -82,7 +82,7 @@ class _AuctionTabState extends State<AuctionTab>
           (endTime.millisecondsSinceEpoch / 1000).toInt().toString();
       final difference = endTime.difference(startTime).inHours;
       durationTime = endTime.difference(startTime).inMinutes;
-      if ((durationTime ?? 0) < 10 && (durationTime ?? 0) >0) {
+      if ((durationTime ?? 0) < 10 && (durationTime ?? 0) > 0) {
         return null;
       } else {
         return S.current.min_duration_auction;
@@ -113,10 +113,10 @@ class _AuctionTabState extends State<AuctionTab>
 
   bool validateBuyOutPrice() {
     if (outPrice &&
-            (_putOnMarketModel.buyOutPrice == null ||
-                _putOnMarketModel.buyOutPrice == '' ||
-        (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
-            double.parse(_putOnMarketModel.price ?? '0')))) {
+        (_putOnMarketModel.buyOutPrice == null ||
+            _putOnMarketModel.buyOutPrice == '' ||
+            (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
+                double.parse(_putOnMarketModel.price ?? '0')))) {
       widget.cubit.buyOutPriceValidate = false;
       widget.cubit.updateStreamContinueAuction();
       return false;
@@ -363,7 +363,7 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         outPrice = value;
                       });
-                      if (!value){
+                      if (!value) {
                         _putOnMarketModel.buyOutPrice = null;
                       }
                       if (!validateBuyOutPrice()) {
@@ -530,7 +530,7 @@ class _AuctionTabState extends State<AuctionTab>
                       setState(() {
                         priceStep = value;
                       });
-                      if (!value){
+                      if (!value) {
                         _putOnMarketModel.priceStep = null;
                       }
                       if (!validatePriceStep()) {
@@ -739,11 +739,9 @@ class _AuctionTabState extends State<AuctionTab>
                                   title: '${S.current.duration} :',
                                   value:
                                       '${(durationTime ?? 0) ~/ 60} ${S.current.hour} '
-                                          '${(durationTime ?? 0 % 60) > 0 ?
-                                      (durationTime ?? 0 % 60).toInt().toString()+' ' + S.current.minute
-                                          : ''} \n '
-                                          '${S.current.from} ${timeStartController.text} '
-                                          '${dateStartController.text} ',
+                                      '${(durationTime ?? 0 % 60) > 0 ? (durationTime ?? 0 % 60).toInt().toString() + ' ' + S.current.minute : ''} \n '
+                                      '${S.current.from} ${timeStartController.text} '
+                                      '${dateStartController.text} ',
                                 ),
                               ],
                               textActiveButton: S.current.put_on_auction,
@@ -902,7 +900,10 @@ class _AuctionTabState extends State<AuctionTab>
                             transitionDuration: Duration.zero,
                             opaque: false,
                             pageBuilder: (_, __, ___) {
-                              return const CustomCalendar();
+                              return CustomCalendar(
+                                selectDate:
+                                    DateTime.tryParse(dateController.text),
+                              );
                             },
                           ),
                         );
