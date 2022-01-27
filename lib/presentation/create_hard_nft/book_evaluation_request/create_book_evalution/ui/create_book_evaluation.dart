@@ -44,6 +44,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   late final BlocCreateBookEvaluation _bloc;
   final Completer<GoogleMapController> _controller = Completer();
   late final CameraPosition _kGooglePlex;
+  bool isCreateGoogle = false;
 
   @override
   void initState() {
@@ -53,67 +54,74 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
     _bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
+    isCreateGoogle = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      bottomNavigationBar: Container(
-        color: AppTheme.getInstance().bgBtsColor(),
-        child: StreamBuilder<bool>(
-          stream: _bloc.isCheckBtn,
-          builder: (context, snapshot) {
-            return GestureDetector(
-              onTap: () {
-                //todo event
-                if (widget.type == TypeEvaluation.NEW_CREATE) {}
-              },
-              child: Container(
-                color: AppTheme.getInstance().bgBtsColor(),
-                child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: 20.h,
-                    top: 20.h,
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      width: 1.w,
-                    ),
-                    color: AppTheme.getInstance().borderItemColor(),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.r),
-                      topRight: Radius.circular(20.r),
-                    ),
-                  ),
-                  child: ButtonGold(
-                    isEnable: snapshot.data ?? false,
-                    title: S.current.book_appointment,
-                  ),
-                ),
+    return StreamBuilder<EvaluatorsDetailModel>(
+      stream: _bloc.objDetail,
+      builder: (context, snapshot) {
+        final pawn = snapshot.data ?? EvaluatorsDetailModel();
+        if (snapshot.hasData) {
+          if (isCreateGoogle) {
+            _kGooglePlex = CameraPosition(
+              target: LatLng(
+                _bloc.locationLat,
+                _bloc.locationLong,
               ),
+              zoom: 14.4746,
             );
-          },
-        ),
-      ),
-      body: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: StreamBuilder<EvaluatorsDetailModel>(
-            stream: _bloc.objDetail,
-            builder: (context, snapshot) {
-              final pawn = snapshot.data ?? EvaluatorsDetailModel();
-              if (snapshot.hasData) {
-                _kGooglePlex = CameraPosition(
-                  target: LatLng(pawn.locationLat ?? 0, pawn.locationLong ?? 0),
-                  zoom: 14.4746,
-                );
-                return Container(
+            isCreateGoogle = false;
+          }
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.transparent,
+            bottomNavigationBar: Container(
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: StreamBuilder<bool>(
+                stream: _bloc.isCheckBtn,
+                builder: (context, snapshot) {
+                  return GestureDetector(
+                    onTap: () {
+                      //todo event
+                      if (widget.type == TypeEvaluation.NEW_CREATE) {}
+                    },
+                    child: Container(
+                      color: AppTheme.getInstance().bgBtsColor(),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: 20.h,
+                          top: 20.h,
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppTheme.getInstance().selectDialogColor(),
+                            width: 1.w,
+                          ),
+                          color: AppTheme.getInstance().borderItemColor(),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            topRight: Radius.circular(20.r),
+                          ),
+                        ),
+                        child: ButtonGold(
+                          isEnable: snapshot.data ?? false,
+                          title: S.current.book_appointment,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            body: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
                   height: 660.h,
                   width: 375.w,
                   clipBehavior: Clip.hardEdge,
@@ -463,6 +471,23 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       },
                                     ),
                                   ),
+                                  spaceH4,
+                                  StreamBuilder<bool>(
+                                    stream: _bloc.isCheckTextValidateTime,
+                                    builder: (context, snapshot) {
+                                      return snapshot.data ?? false
+                                          ? Text(
+                                              _bloc.textValidateTime,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .redColor(),
+                                                14,
+                                                null,
+                                              ),
+                                            )
+                                          : const SizedBox.shrink();
+                                    },
+                                  ),
                                   spaceH32,
                                   Text(
                                     S.current.asset_accepted.toUpperCase(),
@@ -718,19 +743,19 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                       ),
                     ],
                   ),
-                );
-              } else {
-                return WillPopScope(
-                  child: const Center(
-                    child: CupertinoLoading(),
-                  ),
-                  onWillPop: () async => false,
-                );
-              }
-            },
-          ),
-        ),
-      ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return WillPopScope(
+            child: const Center(
+              child: CupertinoLoading(),
+            ),
+            onWillPop: () async => false,
+          );
+        }
+      },
     );
   }
 }

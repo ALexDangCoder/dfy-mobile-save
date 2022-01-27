@@ -42,6 +42,60 @@ class BlocCreateBookEvaluation {
 
   BehaviorSubject<String> dateStream = BehaviorSubject.seeded('');
   BehaviorSubject<String> timeStream = BehaviorSubject.seeded('');
+  String textValidateDate = '';
+  String textValidateTime = '';
+  BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckTextValidateTime = BehaviorSubject.seeded(false);
+  late double locationLong;
+  late double locationLat;
+
+  void getValidate(String hour, String minute) {
+    final int hourInt = int.parse(hour);
+    final int minuteInt = int.parse(minute);
+    if (hourInt == 0) {
+      isCheckTextValidateTime.add(true);
+      textValidateTime = S.current.time_is_required;
+    } else if (checkHourWorking(hourInt, minuteInt)) {
+      isCheckTextValidateTime.add(true);
+      textValidateTime = S.current.chosen_time;
+    } else {
+      isCheckTextValidateTime.add(false);
+      textValidateTime = '';
+    }
+  }
+
+  bool checkHourWorking(int hour, int minute) {
+    final dtHour = DateTime.fromMillisecondsSinceEpoch(
+      objDetail.value.workingTimeFrom ?? 0,
+    );
+    final String hourWorking = DateFormat('HH').format(dtHour);
+    final int hourWorkingInt = int.parse(hourWorking);
+    final dtMiu = DateTime.fromMillisecondsSinceEpoch(
+      objDetail.value.workingTimeFrom ?? 0,
+    );
+    final String miuWorking = DateFormat('mm').format(dtMiu);
+    final int miuWorkingInt = int.parse(miuWorking);
+
+    final dtHourTo = DateTime.fromMillisecondsSinceEpoch(
+      objDetail.value.workingTimeTo ?? 0,
+    );
+    final String hourWorkingTo = DateFormat('HH').format(dtHourTo);
+    final int hourWorkingIntTo = int.parse(hourWorkingTo);
+    final dtMiuTo = DateTime.fromMillisecondsSinceEpoch(
+      objDetail.value.workingTimeTo ?? 0,
+    );
+    final String miuWorkingTo = DateFormat('mm').format(dtMiuTo);
+    final int miuWorkingIntTo = int.parse(miuWorkingTo);
+
+    if ((hourWorkingInt <= hour) &&
+        (hourWorkingIntTo >= hour) &&
+        ((hourWorkingIntTo == hour) &&
+            ((miuWorkingInt <= minute) && (minute <= miuWorkingIntTo)))) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   String getTextCreateAt(int dateCreateAt) {
     String textDate = '';
@@ -54,8 +108,7 @@ class BlocCreateBookEvaluation {
   }
 
   void getDataInput(int dateCreate) {
-    if (
-    dateCreate != 0) {
+    if (dateCreate != 0) {
       final dt = DateTime.fromMillisecondsSinceEpoch(dateCreate);
       final String time = DateFormat('HH:mm').format(dt);
       final String day = DateFormat('dd/MM/yyyy').format(dt);
@@ -107,6 +160,8 @@ class BlocCreateBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
+          locationLat = res.locationLat ?? 0;
+          locationLong = res.locationLong ?? 0;
           objDetail.add(res);
         }
       },

@@ -294,7 +294,8 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                               bloc.listAcc[index] == S.current.all
                                   ? S.current.all
                                   : bloc.checkNullAddressWallet(
-                                      bloc.listAcc[index]),
+                                      bloc.listAcc[index],
+                                    ),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),
