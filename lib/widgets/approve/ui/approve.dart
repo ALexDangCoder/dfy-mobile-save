@@ -740,21 +740,14 @@ class _ApproveState extends State<Approve> {
           ),
         );
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseSuccess(
                     title: S.current.buy_nft,
                     content: S.current.congratulation,
                     callback: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(
-                            index: 1,
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -778,14 +771,7 @@ class _ApproveState extends State<Approve> {
               title: S.current.bidding,
               content: S.current.congratulation,
               callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
+                Navigator.pop(context);
               },
             ),
           ),
@@ -842,21 +828,14 @@ class _ApproveState extends State<Approve> {
         widget.request?.latestBlockchainTxn = data;
         cubit.sendOffer(offerRequest: widget.request!);
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseSuccess(
                     title: S.current.send_offer,
                     content: S.current.congratulation,
                     callback: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(
-                            index: 1,
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -988,7 +967,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
@@ -1004,7 +983,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
@@ -1025,7 +1004,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(

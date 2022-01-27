@@ -7,6 +7,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
@@ -56,11 +58,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
-
 part 'component.dart';
-
 part 'pawn.dart';
-
 part 'sale.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
@@ -549,8 +548,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           spaceH12,
                           buildRow(
                             title: S.current.nft_standard,
-                            detail:
-                                objSale.nftStandard == '0' ? ERC_721 : ERC_1155,
+                            detail: objSale.nftStandard == '0'
+                                ? ERC_721
+                                : ERC_1155,
                             type: TextType.NORMAL,
                           ),
                           spaceH12,
@@ -654,16 +654,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: objSale.isOwner == false
-                ? _buildButtonBuyOutOnSale(context, bloc, objSale,
-                    objSale.isBoughtByOther ?? false, widget.marketId ?? '')
-                : _buildButtonCancelOnSale(
+                ? _buildButtonBuyOutOnSale(
                     context,
                     bloc,
                     objSale,
-                    (){
-                      onRefresh();
-                    },
-                  ),
+                    objSale.isBoughtByOther ?? false,
+                    widget.marketId ?? '',
+                  )
+                : _buildButtonCancelOnSale(context, bloc, objSale, onRefresh),
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
@@ -977,6 +975,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              isScrollable:  true,
               onTap: (value) {
                 pageController.animateToPage(
                   value,

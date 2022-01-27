@@ -134,6 +134,7 @@ class _BaseSpaceState extends State<BaseSpace> {
             child: (widget.typeImage == TypeImage.IMAGE)
                 ? CustomImageNetwork(
                     image: widget.image,
+                    fit: BoxFit.cover,
                   )
                 : VideoPlayer(_controller!),
           ),
