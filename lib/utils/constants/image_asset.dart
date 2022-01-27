@@ -347,6 +347,9 @@ class ImageAssets {
   static const String icon_twitter = '$baseImg/icon_twitter.png';
 
 
+  static const String more_circle_white = '$baseImg/more_circle_white.png';
+
+
 
   static SvgPicture svgAssets(
     String name, {

@@ -20,10 +20,11 @@ class CustomCalendar extends StatefulWidget {
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime _selectedDay = DateTime.now();
+  late DateTime _selectedDay;
 
   @override
   void initState() {
+    _selectedDay = widget.selectDate ?? DateTime.now();
     // TODO: implement initState
     super.initState();
   }
@@ -57,135 +58,133 @@ class _CustomCalendarState extends State<CustomCalendar> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: MediaQuery.removePadding(
-                        context: context,
-                        child: TableCalendar(
-                          daysOfWeekStyle:  DaysOfWeekStyle(
-                            weekdayStyle: textNormalCustom(
-                              AppTheme.getInstance().getPurpleColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                            weekendStyle: textNormalCustom(
-                              AppTheme.getInstance().getPurpleColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
+                      child: TableCalendar(
+                        daysOfWeekHeight: 32,
+                        daysOfWeekStyle:  DaysOfWeekStyle(
+                          weekdayStyle: textNormalCustom(
+                            AppTheme.getInstance().getPurpleColor(),
+                            16,
+                            FontWeight.w400,
                           ),
-                          startingDayOfWeek: StartingDayOfWeek.monday,
-                          //style
-                          headerStyle: HeaderStyle(
-                            titleTextStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              24,
-                              FontWeight.w700,
-                            ),
-                            titleCentered: true,
-                            formatButtonVisible: false,
-                            leftChevronIcon: SvgPicture.asset(
-                              ImageAssets.ic_btn_back_svg,
-                              color: AppTheme.getInstance().whiteColor(),
-                              height: 12,
-                            ),
-                            rightChevronIcon: SvgPicture.asset(
-                              ImageAssets.ic_btn_next_svg,
-                              height: 12,
-                              color: AppTheme.getInstance().whiteColor(),
-                            ),
+                          weekendStyle: textNormalCustom(
+                            AppTheme.getInstance().getPurpleColor(),
+                            16,
+                            FontWeight.w400,
                           ),
-                          calendarBuilders: CalendarBuilders(
-                            todayBuilder: (context, date, __) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    color: Colors.transparent,
-                                    height: 17,
-                                    child: Center(
-                                      child: Text(
-                                        'today',
-                                        textAlign: TextAlign.center,
-                                        style: textNormalCustom(
-                                          AppTheme.getInstance().yellowColor(),
-                                          10,
-                                          FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Center(
+                        ),
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        //style
+                        headerStyle: HeaderStyle(
+                          titleTextStyle: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            24,
+                            FontWeight.w700,
+                          ),
+                          titleCentered: true,
+                          formatButtonVisible: false,
+                          leftChevronIcon: SvgPicture.asset(
+                            ImageAssets.ic_btn_back_svg,
+                            color: AppTheme.getInstance().whiteColor(),
+                            height: 12,
+                          ),
+                          rightChevronIcon: SvgPicture.asset(
+                            ImageAssets.ic_btn_next_svg,
+                            height: 12,
+                            color: AppTheme.getInstance().whiteColor(),
+                          ),
+                        ),
+                        calendarBuilders: CalendarBuilders(
+                          todayBuilder: (context, date, __) {
+                            return Stack(
+                              children: [
+                                Container(
+                                  color: Colors.transparent,
+                                  height: 17,
+                                  child: Center(
                                     child: Text(
-                                      date.day.toString(),
+                                      'today',
+                                      textAlign: TextAlign.center,
                                       style: textNormalCustom(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16,
+                                        AppTheme.getInstance().yellowColor(),
+                                        10,
                                         FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                ],
-                              );
-                            },
-                          ),
-                          calendarStyle: CalendarStyle(
-                            selectedDecoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.getInstance().yellowColor(),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.getInstance()
-                                      .yellowColor()
-                                      .withOpacity(0.5),
-                                  offset: const Offset(0, 5),
-                                  blurRadius: 5,
-                                  //spreadRadius: _spreadRadius,
-                                )
+                                ),
+                                Center(
+                                  child: Text(
+                                    date.day.toString(),
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().whiteColor(),
+                                      16,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
                               ],
-                            ),
-
-                            cellMargin:
-                            const EdgeInsets.symmetric(horizontal: 2),
-                            weekendTextStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w500,
-                            ),
-                            defaultTextStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w500,
-                            ),
-                            todayTextStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w500,
-                            ),
-                            selectedTextStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w700,
-                            ),
-
-                          ),
-
-                          //attribute
-                          locale: Localizations.localeOf(context).languageCode,
-                          focusedDay: _selectedDay,
-                          firstDay: DateTime(DateTime.now().year - 10),
-                          lastDay: DateTime(
-                            DateTime.now().year + 10,
-                          ),
-
-                          //action
-
-                          selectedDayPredicate: (day) {
-                            return isSameDay(_selectedDay, day);
-                          },
-                          onDaySelected: (selectedDay, focusedDay) {
-                            setState(() {
-                              _selectedDay = selectedDay;
-                            });
+                            );
                           },
                         ),
+                        calendarStyle: CalendarStyle(
+                          selectedDecoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.getInstance().yellowColor(),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppTheme.getInstance()
+                                    .yellowColor()
+                                    .withOpacity(0.5),
+                                offset: const Offset(0, 5),
+                                blurRadius: 5,
+                                //spreadRadius: _spreadRadius,
+                              )
+                            ],
+                          ),
+
+                          cellMargin:
+                          const EdgeInsets.symmetric(horizontal: 2),
+                          weekendTextStyle: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w500,
+                          ),
+                          defaultTextStyle: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w500,
+                          ),
+                          todayTextStyle: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w500,
+                          ),
+                          selectedTextStyle: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w700,
+                          ),
+
+                        ),
+
+                        //attribute
+                        locale: Localizations.localeOf(context).languageCode,
+                        focusedDay: _selectedDay,
+                        firstDay: DateTime(DateTime.now().year - 10),
+                        lastDay: DateTime(
+                          DateTime.now().year + 10,
+                        ),
+
+                        //action
+
+                        selectedDayPredicate: (day) {
+                          return isSameDay(_selectedDay, day);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) {
+                          setState(() {
+                            _selectedDay = selectedDay;
+                          });
+                        },
                       ),
                     ),
                     const SizedBox(

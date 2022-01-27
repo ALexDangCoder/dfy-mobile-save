@@ -30,9 +30,11 @@
   "private_key": "Private key",
   "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
+  "duration_more_content": "Thời gian bắt đầu đấu giá phải cách thời gian hiện t ít nhất 48 giờ \n\n Thời lượng tối thiểu là 12 giờ và tối đa là 168 giờ (7 ngày)",
   "tab_pawn": "Pawn",
-  "waiting_accept_auction": "Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
-  "withdraw_nft": "Rút NFT",
+  "start_time_auction" : "Thời gian bắt đầu cách hiện tại tối thiểu 48 giờ",
+  "waiting_accept_auction":"Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
+  "withdraw_nft":"Rút NFT",
   "tab_home": "Home",
   "tab_market_place": "Marketplace",
   "confirm": "Xác Nhận",
@@ -603,7 +605,6 @@
   "create_nft_successfully": "Tạo NFT thành công!",
   "otp_invalid": "Mã không hợp lệ",
   "expired_code": "Mã không hợp lệ hoặc đã hết hạn",
-  "notify": "Thông báo",
   "processing": "Yêu cầu của bạn đang được xử lý!",
   "not_supported_standard": "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155",
   "chosen_date": "Ngày đã chọn không nằm trong giờ làm việc của người đánh giá",
@@ -630,5 +631,7 @@
   "september": "tháng 9,",
   "october": "tháng 10,",
   "november": "tháng 11,",
-  "december": "tháng 12,"
+  "december": "tháng 12,",
+  "notify": "Thông báo",
+  "dont_ask_again": "Không hỏi lại"
 }

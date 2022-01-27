@@ -18,6 +18,8 @@ class LoginWithEmailCubit extends BaseCubit<LoginWithEmailState> {
 
   BehaviorSubject<String> validateTextSubject = BehaviorSubject.seeded('');
 
+  BehaviorSubject<bool> isCheckedCheckboxSubject = BehaviorSubject.seeded(false);
+
   BehaviorSubject<int> timeCountDownSubject = BehaviorSubject();
 
   BehaviorSubject<bool> isEnableResendSubject = BehaviorSubject.seeded(false);
@@ -27,6 +29,19 @@ class LoginWithEmailCubit extends BaseCubit<LoginWithEmailState> {
   Stream<int> get timeCountDownStream => timeCountDownSubject.stream;
 
   Stream<bool> get isEnableResendStream => isEnableResendSubject.stream;
+
+  Stream<bool> get isCheckedCheckBoxStream => isCheckedCheckboxSubject.stream;
+
+  void setCheckboxValue(){
+    isCheckedCheckboxSubject.sink.add(!isCheckedCheckboxSubject.value);
+  }
+
+  void dispose(){
+    validateTextSubject.close();
+    isCheckedCheckboxSubject.close();
+    timeCountDownSubject.close();
+    isEnableResendSubject.close();
+  }
 
   bool checkValidate(String email) {
     final bool emailValid = RegExp(

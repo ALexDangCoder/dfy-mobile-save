@@ -78,21 +78,32 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                   final data = PrefsService.getUserProfile();
                   final userProfile = userProfileFromJson(data);
                   final String email = userProfile.email ?? '';
-                  if (email.isEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ConnectEmailDialog(
-                        navigationTo: widget.navigationTo,
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => widget.navigationTo,
-                      ),
-                    );
-                  }
+                  final bool isNeedShowDialog =
+                      PrefsService.getOptionShowDialogConnectEmail();
+                    if (email.isEmpty) {
+                      if(isNeedShowDialog){
+                        showDialog(
+                          context: context,
+                          builder: (context) => ConnectEmailDialog(
+                            navigationTo: widget.navigationTo,
+                          ),
+                        );
+                      }else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => widget.navigationTo,
+                          ),
+                        );
+                      }
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.navigationTo,
+                        ),
+                      );
+                    }
                 } else {
                   //yêu cầu login email:
                   final profileJson = PrefsService.getUserProfile();
