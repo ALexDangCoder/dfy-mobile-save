@@ -167,21 +167,24 @@ Widget _buildButtonCancelOnPawn(
           ),
         );
       }
-      await nav
-          .push(
-            MaterialPageRoute(
-              builder: (context) => approveWidget(
-                nftOnPawn: nftMarket,
-                dataString: dataString,
-                dataInfo: listApprove,
-                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-                cancelInfo: S.current.pawn_cancel_info,
-                cancelWarning: S.current.pawn_cancel_warning,
-                title: S.current.cancel_pawn,
-              ),
-            ),
-          )
-          .then((value) => refresh());
+      final bool isSuccess = await nav.push(
+        MaterialPageRoute(
+          builder: (context) => approveWidget(
+            nftOnPawn: nftMarket,
+            dataString: dataString,
+            dataInfo: listApprove,
+            type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+            cancelInfo: S.current.pawn_cancel_info,
+            cancelWarning: S.current.pawn_cancel_warning,
+            title: S.current.cancel_pawn,
+          ),
+        ),
+      );
+      if (isSuccess) {
+        showLoading(context);
+        await refresh();
+        hideLoading(context);
+      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),

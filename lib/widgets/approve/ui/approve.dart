@@ -869,7 +869,6 @@ class _ApproveState extends State<Approve> {
           txnHash: data,
           marketId: widget.nftMarket?.marketId ?? '',
         );
-        navigator.pop();
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(
@@ -881,6 +880,7 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        navigator.pop(true);
         break;
       case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
         unawaited(showLoading());
@@ -919,7 +919,6 @@ class _ApproveState extends State<Approve> {
           txnHash: data,
           marketId: widget.nftOnAuction?.id ?? '',
         );
-        navigator.pop();
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(
@@ -931,12 +930,12 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        navigator.pop(true);
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
         await cubit.confirmCancelPawnWithBE(
           id: widget.nftOnPawn?.id ?? 0,
         );
-        navigator.pop();
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(
@@ -948,6 +947,7 @@ class _ApproveState extends State<Approve> {
             ),
           ),
         );
+        navigator.pop(true);
         break;
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         unawaited(showLoading());
@@ -1040,7 +1040,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         unawaited(
-          navigator.push(
+          navigator.pushReplacement(
             MaterialPageRoute(
               builder: (context) => BaseFail(
                 title: S.current.cancel_aution,
@@ -1055,7 +1055,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
         unawaited(
-          navigator.push(
+          navigator.pushReplacement(
             MaterialPageRoute(
               builder: (context) => BaseFail(
                 title: S.current.cancel_pawn,
@@ -1076,7 +1076,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         unawaited(
-          navigator.push(
+          navigator.pushReplacement(
             MaterialPageRoute(
               builder: (context) => BaseFail(
                 title: S.current.cancel_aution,

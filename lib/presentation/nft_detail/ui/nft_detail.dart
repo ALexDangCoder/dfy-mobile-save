@@ -32,6 +32,7 @@ import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -659,7 +660,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     context,
                     bloc,
                     objSale,
-                    onRefresh,
+                    (){
+                      onRefresh();
+                    },
                   ),
             content: [
               _nameNFT(

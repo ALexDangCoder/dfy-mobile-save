@@ -133,23 +133,24 @@ Widget buttonCancelAuction({
             ),
           );
         }
-        await nav
-            .push(
-              MaterialPageRoute(
-                builder: (context) => approveWidget(
-                  nftOnAuction: nftMarket,
-                  dataString: dataString,
-                  dataInfo: listApprove,
-                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                  cancelInfo: S.current.auction_cancel_info,
-                  cancelWarning: S.current.cancel_auction_warning,
-                  title: S.current.cancel_aution,
-                ),
-              ),
-            )
-            .then(
-              (value) => refresh(),
-            );
+        final bool isSuccess = await nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftOnAuction: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+              cancelInfo: S.current.auction_cancel_info,
+              cancelWarning: S.current.cancel_auction_warning,
+              title: S.current.cancel_aution,
+            ),
+          ),
+        );
+        if (isSuccess) {
+          showLoading(context);
+          await refresh();
+          hideLoading(context);
+        }
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
