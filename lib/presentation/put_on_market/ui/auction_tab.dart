@@ -411,7 +411,11 @@ class _AuctionTabState extends State<AuctionTab>
                         setState(() {
                           buyOutPriceErrorText = null;
                         });
+                        widget.cubit.buyOutPriceValidate = true;
+                      }else {
+                        widget.cubit.buyOutPriceValidate = false;
                       }
+                      widget.cubit.updateStreamContinueAuction();
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: outPrice,
@@ -572,8 +576,13 @@ class _AuctionTabState extends State<AuctionTab>
                         setState(() {
                           priceStepErrorText = null;
                         });
+                        widget.cubit.priceStepValidate = true;
+                      }else {
+                        widget.cubit.priceStepValidate = false;
                       }
+                      widget.cubit.updateStreamContinueAuction();
                     },
+
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: priceStep,
                   )
