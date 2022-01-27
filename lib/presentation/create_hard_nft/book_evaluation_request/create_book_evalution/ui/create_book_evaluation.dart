@@ -670,7 +670,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeFrom ?? 0).substring(0, 5)} ',
+                                              ' ${0.formatHourMy(pawn.workingTimeFrom ?? 0)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,
@@ -682,7 +682,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeTo ?? 0).substring(0, 5)} ',
+                                              ' ${0.formatHourMy(pawn.workingTimeTo ?? 0)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,
