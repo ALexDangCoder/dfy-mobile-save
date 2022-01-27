@@ -191,7 +191,7 @@ class PrefsService {
   }
 
   static bool getOptionShowDialogConnectEmail() {
-    return _prefsInstance?.getBool(_PREF_IS_SHOW_CONNECT_MAIL_DIALOG) ?? false;
+    return _prefsInstance?.getBool(_PREF_IS_SHOW_CONNECT_MAIL_DIALOG) ?? true;
   }
 
 }
