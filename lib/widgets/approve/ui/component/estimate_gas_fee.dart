@@ -43,9 +43,7 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
         setState(() {
           gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
           _editGasPriceController.text =
-              ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) /
-                      1000000000)
-                  .toInt()
+              ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) ~/ 1e9)
                   .toString();
         });
       });
@@ -336,12 +334,13 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                                     }
                                   });
                                   if ((gasPrice ?? 0) <
-                                      (widget.cubit.gasPriceFirst ?? 0)) {
+                                      (widget.cubit.gasPriceFirst ?? 0) ~/
+                                          1e9) {
                                     setState(() {
                                       widget.cubit.canActionSubject.sink
                                           .add(false);
                                       errorTextGasPrice =
-                                          '${S.current.min_value_is}${((widget.cubit.gasPriceFirst ?? 0) / 1e9).toInt()}';
+                                          '${S.current.min_value_is}${(widget.cubit.gasPriceFirst ?? 0) ~/ 1e9}';
                                     });
                                   } else {
                                     widget.cubit.canActionSubject.sink
