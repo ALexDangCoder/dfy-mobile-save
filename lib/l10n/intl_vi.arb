@@ -30,7 +30,9 @@
   "private_key": "Private key",
   "wallet_secret": "Seed phrase",
   "tab_wallet": "Wallet",
+  "duration_more_content": "Thời gian bắt đầu đấu giá phải cách thời gian hiện t ít nhất 48 giờ \n\n Thời lượng tối thiểu là 12 giờ và tối đa là 168 giờ (7 ngày)",
   "tab_pawn": "Pawn",
+  "start_time_auction" : "Thời gian bắt đầu cách hiện tại tối thiểu 48 giờ",
   "waiting_accept_auction":"Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
   "withdraw_nft":"Rút NFT",
   "tab_home": "Home",
@@ -575,5 +577,6 @@
   "processing" : "Yêu cầu của bạn đang được xử lý!",
   "otp_invalid": "Mã không hợp lệ",
   "expired_code": "Mã không hợp lệ hoặc đã hết hạn",
-  "notify": "Thông báo"
+  "notify": "Thông báo",
+  "dont_ask_again": "Không hỏi lại"
 }

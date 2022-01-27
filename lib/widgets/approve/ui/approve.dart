@@ -419,6 +419,8 @@ class _ApproveState extends State<Approve> {
     }
     await showLoadFail();
     navigator.pop();
+    cubit.checkingApprove = null;
+    cubit.emit(ApproveInitState());
   }
 
   Future<void> approveSuccess () async{
@@ -429,6 +431,7 @@ class _ApproveState extends State<Approve> {
     unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
     await showLoadSuccess();
     navigator.pop();
+    cubit.checkingApprove = null;
   }
 
   @override

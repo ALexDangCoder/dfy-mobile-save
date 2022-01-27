@@ -32,6 +32,11 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
     super.initState();
     cubit.startTimer();
   }
+  @override
+  void dispose() {
+    super.dispose();
+    cubit.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

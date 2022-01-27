@@ -16,16 +16,25 @@ extension CommonExtension on ApproveCubit {
   }
 
   Future<void > loopCheckApprove() async {
-    await checkApprove(
-        payValue: payValue ?? '',
-        tokenAddress: tokenAddress ?? '',
-      ).then(
-            (value) async => {
-          if (!value){
-            await loopCheckApprove()
-          }
-        },
-      );
+    DateTime? _lastQuitTime;
+    bool approved  = false;
+    while (!approved){
+      if (_lastQuitTime == null ) {
+        _lastQuitTime = DateTime.now();
+        approved = await checkApprove(
+          payValue: payValue ?? '',
+          tokenAddress: tokenAddress ?? '',
+        );
+      } else {
+        approved= await checkApprove(
+          payValue: payValue ?? '',
+          tokenAddress: tokenAddress ?? '',
+        );
+        if (DateTime.now().difference(_lastQuitTime).inSeconds > 30){
+          break;
+        }
+      }
+    }
   }
 
   String getSpender() {
