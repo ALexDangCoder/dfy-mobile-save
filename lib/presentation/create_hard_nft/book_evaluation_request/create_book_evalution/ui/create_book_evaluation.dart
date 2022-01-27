@@ -439,22 +439,24 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                           ),
                                         );
-                                        bloc.getValidate(
-                                          result?.stringValueOrEmpty('hour') ??
-                                              '0',
-                                          result?.stringValueOrEmpty(
-                                                'minute',
-                                              ) ??
-                                              '0',
-                                        );
+
                                         if (result != null) {
                                           final String hour =
                                               result.stringValueOrEmpty('hour');
                                           final String minute = result
                                               .stringValueOrEmpty('minute');
+                                          bloc.timeStream.add('$hour:$minute');
                                           bloc.hourMy = hour;
                                           bloc.miuMy = minute;
-                                          bloc.timeStream.add('$hour:$minute');
+                                          bloc.getValidate(
+                                            hour,
+                                            minute,
+                                          );
+                                        } else {
+                                          bloc.getValidate(
+                                            bloc.hourMy ?? '0',
+                                            bloc.miuMy ?? '0',
+                                          );
                                         }
                                       }
                                     },

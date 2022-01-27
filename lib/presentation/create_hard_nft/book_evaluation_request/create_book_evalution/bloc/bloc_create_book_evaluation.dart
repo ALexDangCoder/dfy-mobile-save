@@ -78,7 +78,7 @@ class BlocCreateBookEvaluation {
   }
 
   void getValidateDay(String day) {
-    if (dateStream.value=='') {
+    if (dateStream.value == '') {
       isCheckTextValidateDate.add(false);
       textValidateDate = S.current.date_is_required;
     } else if (!checkValidateDay(day)) {
@@ -93,7 +93,7 @@ class BlocCreateBookEvaluation {
   void getValidate(String hour, String minute) {
     final int hourInt = int.parse(hour);
     final int minuteInt = int.parse(minute);
-    if (hour.isEmpty) {
+    if (timeStream.value == '') {
       isCheckTextValidateTime.add(true);
       textValidateTime = S.current.time_is_required;
     } else if (checkHourWorking(hourInt, minuteInt)) {
