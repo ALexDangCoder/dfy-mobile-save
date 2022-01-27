@@ -137,12 +137,13 @@ Widget _buildButtonCancelOnPawn(
   BuildContext context,
   NFTDetailBloc bloc,
   NftOnPawn nftMarket,
+  Function refresh,
 ) {
   return ButtonGradient(
     onPressed: () async {
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancelPawn(
-        pawnId: (nftMarket.nftCollateralDetailDTO?.nftTokenId ?? 0).toString(),
+        pawnId: (nftMarket.bcCollateralId ?? 0).toString(),
       );
       final List<DetailItemApproveModel> listApprove = [];
       if (nftMarket.nftCollateralDetailDTO?.nftStandard == 0) {
@@ -166,21 +167,21 @@ Widget _buildButtonCancelOnPawn(
           ),
         );
       }
-      unawaited(
-        nav.push(
-          MaterialPageRoute(
-            builder: (context) => approveWidget(
-              nftOnPawn: nftMarket,
-              dataString: dataString,
-              dataInfo: listApprove,
-              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-              cancelInfo: S.current.pawn_cancel_info,
-              cancelWarning: S.current.pawn_cancel_warning,
-              title: S.current.cancel_pawn,
+      await nav
+          .push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(
+                nftOnPawn: nftMarket,
+                dataString: dataString,
+                dataInfo: listApprove,
+                type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+                cancelInfo: S.current.pawn_cancel_info,
+                cancelWarning: S.current.pawn_cancel_warning,
+                title: S.current.cancel_pawn,
+              ),
             ),
-          ),
-        ),
-      );
+          )
+          .then((value) => refresh());
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),

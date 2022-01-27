@@ -101,6 +101,7 @@ Widget buttonCancelAuction({
   required NFTDetailBloc bloc,
   required BuildContext context,
   required NFTOnAuction nftMarket,
+  required Function refresh,
 }) {
   if (!approveAdmin) {
     return ButtonGradient(
@@ -132,21 +133,23 @@ Widget buttonCancelAuction({
             ),
           );
         }
-        unawaited(
-          nav.push(
-            MaterialPageRoute(
-              builder: (context) => approveWidget(
-                nftOnAuction: nftMarket,
-                dataString: dataString,
-                dataInfo: listApprove,
-                type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                cancelInfo: S.current.auction_cancel_info,
-                cancelWarning: S.current.cancel_auction_warning,
-                title: S.current.cancel_aution,
+        await nav
+            .push(
+              MaterialPageRoute(
+                builder: (context) => approveWidget(
+                  nftOnAuction: nftMarket,
+                  dataString: dataString,
+                  dataInfo: listApprove,
+                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  cancelInfo: S.current.auction_cancel_info,
+                  cancelWarning: S.current.cancel_auction_warning,
+                  title: S.current.cancel_aution,
+                ),
               ),
-            ),
-          ),
-        );
+            )
+            .then(
+              (value) => refresh(),
+            );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),

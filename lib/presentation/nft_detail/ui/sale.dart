@@ -158,6 +158,7 @@ Widget _buildButtonCancelOnSale(
   BuildContext context,
   NFTDetailBloc bloc,
   NftMarket nftMarket,
+  Function reload,
 ) {
   return ButtonGradient(
     onPressed: () async {
@@ -188,21 +189,23 @@ Widget _buildButtonCancelOnSale(
           ),
         );
       }
-      unawaited(
-        nav.push(
-          MaterialPageRoute(
-            builder: (context) => approveWidget(
-              nftMarket: nftMarket,
-              dataString: dataString,
-              dataInfo: listApprove,
-              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
-              cancelInfo: S.current.cancel_sale_info,
-              cancelWarning: S.current.customer_cannot,
-              title: S.current.cancel_sale,
+      await nav
+          .push(
+            MaterialPageRoute(
+              builder: (context) => approveWidget(
+                nftMarket: nftMarket,
+                dataString: dataString,
+                dataInfo: listApprove,
+                type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+                cancelInfo: S.current.cancel_sale_info,
+                cancelWarning: S.current.customer_cannot,
+                title: S.current.cancel_sale,
+              ),
             ),
-          ),
-        ),
-      );
+          )
+          .then(
+            (value) => reload(),
+          );
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
