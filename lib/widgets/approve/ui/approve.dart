@@ -125,6 +125,7 @@ class _ApproveState extends State<Approve> {
   late final NFTDetailBloc nftDetailBloc;
   GlobalKey bottomKey = GlobalKey();
   double heightOfBottom = 0;
+  bool isShowLoading = false;
 
   void initData(TYPE_CONFIRM_BASE typeBase) {
     cubit.context = context;
@@ -210,34 +211,10 @@ class _ApproveState extends State<Approve> {
   /// Function approve
 
   Future<void> approve() async {
-    bool isShowLoading = false;
     cubit.checkingApprove = true;
-
-    /// function approve
     unawaited(
       cubit.approve(),
     );
-    cubit.isApprovedSubject.listen((value) async {
-      final navigator = Navigator.of(context);
-      if (cubit.checkingApprove != null) {
-        if (value && !(cubit.checkingApprove ?? true)) {
-          if (isShowLoading) {
-            Navigator.pop(context);
-          }
-          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
-          await showLoadSuccess();
-          navigator.pop();
-        }
-        if (!value && !(cubit.checkingApprove ?? true)) {
-          if (isShowLoading) {
-            navigator.pop();
-          }
-          await showLoadFail();
-          navigator.pop();
-        }
-        cubit.checkingApprove = null;
-      }
-    });
     isShowLoading = true;
     await showLoading();
     isShowLoading = false;
@@ -427,6 +404,26 @@ class _ApproveState extends State<Approve> {
     }
   }
 
+
+  Future<void> approveFail () async{
+    final navigator =  Navigator.of(context);
+    if (isShowLoading) {
+      navigator.pop();
+    }
+    await showLoadFail();
+    navigator.pop();
+  }
+
+  Future<void> approveSuccess () async{
+    if (isShowLoading) {
+      Navigator.pop(context);
+    }
+    final navigator =  Navigator.of(context);
+    unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
+    await showLoadSuccess();
+    navigator.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener(
@@ -437,6 +434,12 @@ class _ApproveState extends State<Approve> {
         }
         if (state is SignFail) {
           caseNavigatorFail(state.type, state.message);
+        }
+        if (state is ApproveSuccess){
+          approveSuccess();
+        }
+        if (state is ApproveFail){
+          approveFail();
         }
       },
       child: Scaffold(
