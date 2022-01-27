@@ -110,7 +110,7 @@ class _SelectAccState extends State<SelectAcc> {
                                 walletAddress:
                                     snapshot.data?[index].addressWallet ?? '',
                               );
-                              PrefsService.clearWalletLogin();
+                              PrefsService.clearWalletBE();
                               PrefsService.saveCurrentWalletCore(
                                 snapshot.data?[index].addressWallet ?? '',
                               );

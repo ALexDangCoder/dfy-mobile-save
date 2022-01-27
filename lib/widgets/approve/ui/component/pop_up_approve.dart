@@ -101,12 +101,24 @@ class _PopUpApproveState extends State<PopUpApprove> {
                           child: Image.asset(ImageAssets.imgTokenDFY),
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          '• testnet',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            14,
-                            FontWeight.w400,
+                        RichText(
+                          text: TextSpan(
+                            text: '• ',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().blueText(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Testnet',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().textThemeColor(),
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 30),

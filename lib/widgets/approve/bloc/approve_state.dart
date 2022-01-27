@@ -23,6 +23,23 @@ class SignSuccess extends ApproveState {
   List<Object?> get props => [txh, type];
 }
 
+
+class ApproveFail extends ApproveState {
+
+  ApproveFail();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ApproveSuccess extends ApproveState {
+
+  ApproveSuccess();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SignFail extends ApproveState {
   final String message;
   final TYPE_CONFIRM_BASE type;
