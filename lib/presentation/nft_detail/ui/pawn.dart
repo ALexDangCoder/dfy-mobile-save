@@ -145,11 +145,10 @@ Widget _buildButtonCancelOnPawn(
         pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
       );
       final List<DetailItemApproveModel> listApprove = [];
-      //TODO: HỎI A HƯNG MÃ STANDART => STRING
-      if (nftMarket.nftCollateralDetailDTO?.nftStandard == 1) {
+      if (nftMarket.nftCollateralDetailDTO?.nftStandard == 0) {
         listApprove.add(
           DetailItemApproveModel(
-            title: 'NTF',
+            title: NFT,
             value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
           ),
         );
@@ -162,7 +161,7 @@ Widget _buildButtonCancelOnPawn(
       } else {
         listApprove.add(
           DetailItemApproveModel(
-            title: 'NTF',
+            title: NFT,
             value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
           ),
         );

@@ -447,60 +447,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  List<DetailItemApproveModel> initListApprove({
-    required TYPE_CONFIRM_BASE type,
-
-  }) {
-    final List<DetailItemApproveModel> listApprove = [];
-    if (type == TYPE_CONFIRM_BASE.CANCEL_SALE) {
-      if (nftMarket.nftStandard == ERC_721) {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftMarket.name ?? '',
-          ),
-        );
-        listApprove.add(
-          DetailItemApproveModel(
-            title: S.current.quantity,
-            value: '${nftMarket.numberOfCopies}',
-          ),
-        );
-      } else {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftMarket.name ?? '',
-          ),
-        );
-      }
-    } else if (type == TYPE_CONFIRM_BASE.CANCEL_AUCTION) {
-      if (nftOnAuction.nftStandard == ERC_721) {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftOnAuction.name ?? '',
-          ),
-        );
-        listApprove.add(
-          DetailItemApproveModel(
-            title: S.current.quantity,
-            value: '${nftOnAuction.numberOfCopies}',
-          ),
-        );
-      } else {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftOnAuction.name ?? '',
-          ),
-        );
-      }
-    }
-
-    return listApprove;
-  }
-
   //get dataString
   Future<String> getDataStringForCancel({
     required BuildContext context,

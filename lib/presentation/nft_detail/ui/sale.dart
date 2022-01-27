@@ -167,10 +167,10 @@ Widget _buildButtonCancelOnSale(
         orderId: nftMarket.orderId.toString(),
       );
       final List<DetailItemApproveModel> listApprove = [];
-      if (nftMarket.nftStandard == 'ERC-721') {
+      if (nftMarket.nftStandard == ERC_721) {
         listApprove.add(
           DetailItemApproveModel(
-            title: 'NTF',
+            title: NFT,
             value: nftMarket.name ?? '',
           ),
         );
@@ -183,7 +183,7 @@ Widget _buildButtonCancelOnSale(
       } else {
         listApprove.add(
           DetailItemApproveModel(
-            title: 'NTF',
+            title: NFT,
             value: nftMarket.name ?? '',
           ),
         );
