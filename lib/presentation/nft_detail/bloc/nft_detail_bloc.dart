@@ -26,7 +26,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../main.dart';
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTDetailBloc() : super(NFTDetailInitial());
@@ -68,8 +67,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get pairSink => _pairSubject.sink;
 
-  Future<void> getHistory(
-      {required String collectionAddress, required String nftTokenId}) async {
+  Future<void> getHistory({
+    required String collectionAddress,
+    required String nftTokenId,
+  }) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
@@ -343,10 +344,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   Future<void> getListWallets() async {
     try {
       await trustWalletChannel.invokeMethod('getListWallets', {});
-    } on PlatformException {}
+    } on PlatformException {
+      showError();
+    }
   }
 
-  ///GetOwner
   ///getListTokenSupport
 
   List<TokenInf> listTokenSupport = [];
@@ -356,6 +358,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  /// handle Countdown Time
+  ///
   int dayOfMonth(int month, int year) {
     switch (month) {
       case 2:

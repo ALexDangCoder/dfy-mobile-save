@@ -9,11 +9,14 @@ class BigDropDown extends StatelessWidget {
   const BigDropDown({
     Key? key,
     required this.listValue,
-    required this.textValue, required this.index,
+    required this.textValue,
+    required this.index,
+    this.dropDownHeight,
   }) : super(key: key);
   final List<Map<String, dynamic>> listValue;
-  final Function(Map<String,dynamic> value) textValue;
+  final Function(Map<String, dynamic> value) textValue;
   final int index;
+  final double? dropDownHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class BigDropDown extends StatelessWidget {
           gap: 10.h,
           resultIcon: Image.asset(ImageAssets.ic_expanded),
           isTriangle: false,
-          dropdownHeight: 113.h,
+          dropdownHeight: dropDownHeight ?? 113.h,
           dropdownItemHeight: 54.h,
           dropdownItemAlign: Alignment.center,
           resultWidth: 340.w,
