@@ -405,6 +405,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                           ),
                                         );
+                                        _bloc.getValidate(
+                                          result?.stringValueOrEmpty('hour') ??
+                                              '0',
+                                          result?.stringValueOrEmpty(
+                                                'minute',
+                                              ) ??
+                                              '0',
+                                        );
                                         if (result != null) {
                                           final String hour =
                                               result.stringValueOrEmpty('hour');
