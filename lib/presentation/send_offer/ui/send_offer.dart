@@ -11,7 +11,6 @@ import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -65,30 +64,34 @@ class _SendOfferState extends State<SendOffer> {
         'label': S.current.weekly,
       }
     ];
-    final List<Map<String, dynamic>> listValueToken = [
-      {
-        'value': ID_MONTH.toString(),
-        'label': DFY,
-        'icon': SizedBox(
-          height: 20.h,
-          child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
-        ),
-        'contract': contract_defy
-      },
-      {
-        'value': ID_WEEK.toString(),
-        'label': widget.nftOnPawn.expectedCollateralSymbol ?? '',
-        'icon': SizedBox(
-          height: 20.h,
-          child: Image.asset(
-            ImageAssets.getSymbolAsset(
-              widget.nftOnPawn.expectedCollateralSymbol ?? '',
-            ),
-          ),
-        ),
-        'contract': widget.nftOnPawn.repaymentAsset
-      }
-    ];
+    final List<Map<String, dynamic>> listValueToken =
+        widget.nftOnPawn.expectedCollateralSymbol == DFY
+            ? [
+                {
+                  'value': ID_MONTH.toString(),
+                  'label': DFY,
+                  'icon': SizedBox(
+                    height: 20.h,
+                    child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
+                  ),
+                  'contract': contract_defy
+                },
+              ]
+            : [
+                {
+                  'value': ID_WEEK.toString(),
+                  'label': widget.nftOnPawn.expectedCollateralSymbol ?? '',
+                  'icon': SizedBox(
+                    height: 20.h,
+                    child: Image.asset(
+                      ImageAssets.getSymbolAsset(
+                        widget.nftOnPawn.expectedCollateralSymbol ?? '',
+                      ),
+                    ),
+                  ),
+                  'contract': widget.nftOnPawn.repaymentAsset
+                }
+              ];
 
     return BaseBottomSheet(
       title: S.current.send_offer,
@@ -131,13 +134,13 @@ class _SendOfferState extends State<SendOffer> {
                               context: context,
                             )
                             .then(
-                              (value) => Navigator.push(
+                              (value) => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Approve(
                                     request: sendOfferRequest,
                                     nftOnPawn: widget.nftOnPawn,
-                                    title: S.current.place_a_bid,
+                                    title: S.current.send_offer,
                                     needApprove: true,
                                     payValue: loanAmount,
                                     header: Column(
@@ -357,7 +360,8 @@ class _SendOfferState extends State<SendOffer> {
                     CustomFormValidate(
                       validator: validator,
                       formatter: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,2}')),
                       ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
@@ -371,7 +375,8 @@ class _SendOfferState extends State<SendOffer> {
                         return null;
                       },
                       hintText: S.current.enter_interest_rate,
-                      inputType: const TextInputType.numberWithOptions(decimal: true),
+                      inputType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       suffix: SizedBox(
                         width: 20.w,
                         child: Center(
@@ -422,22 +427,22 @@ class _SendOfferState extends State<SendOffer> {
                       suffix: SizedBox(
                         width: 100.w,
                         child: StreamBuilder<int>(
-                            stream: _cubit.streamIndex,
-                            initialData: 0,
-                            builder: (context, snapshot) {
-                              return Center(
-                                child: CustomDropDown(
-                                  index: snapshot.data!,
-                                  listValue: listValueDuration,
-                                  onChange: (value) {
-                                    loanDurationType =
-                                        int.parse(value['value']!);
-                                    _cubit.sinkIndex
-                                        .add(int.parse(value['value']!));
-                                  },
-                                ),
-                              );
-                            }),
+                          stream: _cubit.streamIndex,
+                          initialData: 0,
+                          builder: (context, snapshot) {
+                            return Center(
+                              child: CustomDropDown(
+                                index: snapshot.data!,
+                                listValue: listValueDuration,
+                                onChange: (value) {
+                                  loanDurationType = int.parse(value['value']!);
+                                  _cubit.sinkIndex
+                                      .add(int.parse(value['value']!));
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -453,6 +458,10 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     BigDropDown(
+                      dropDownHeight:
+                          widget.nftOnPawn.expectedCollateralSymbol == DFY
+                              ? 56.h
+                              : null,
                       listValue: listValueToken,
                       textValue: (value) {
                         shortName = value['label'];
