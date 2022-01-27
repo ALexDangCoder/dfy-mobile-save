@@ -42,6 +42,11 @@ class _EnterEmailState extends State<EnterEmail> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    cubit.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

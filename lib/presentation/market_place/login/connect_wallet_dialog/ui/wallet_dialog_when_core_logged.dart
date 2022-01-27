@@ -58,14 +58,26 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
           if (!isRequireLoginEmail) {
             //không yêu cầu login email:
             nav.pop(context);
-            unawaited(
-              showDialog(
-                context: context,
-                builder: (context) => ConnectEmailDialog(
-                  navigationTo: navigationTo,
+            final bool isNeedShowDialog =
+                PrefsService.getOptionShowDialogConnectEmail();
+            if (isNeedShowDialog) {
+              unawaited(
+                showDialog(
+                  context: context,
+                  builder: (context) => ConnectEmailDialog(
+                    navigationTo: navigationTo,
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              unawaited(
+                nav.pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => navigationTo,
+                  ),
+                ),
+              );
+            }
           } else {
             await nav.pushReplacement(
               MaterialPageRoute(

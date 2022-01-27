@@ -29,6 +29,12 @@ class _OtpTextFieldState extends State<OtpTextField> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    cubit.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final int startTime = widget.countDown;
     return Column(
