@@ -142,7 +142,7 @@ Widget _buildButtonCancelOnPawn(
     onPressed: () async {
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancelPawn(
-        pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
+        pawnId: (nftMarket.nftCollateralDetailDTO?.nftTokenId ?? 0).toString(),
       );
       final List<DetailItemApproveModel> listApprove = [];
       if (nftMarket.nftCollateralDetailDTO?.nftStandard == 0) {
@@ -190,7 +190,7 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7
         ? processing()
         : Text(
-            S.current.withdraw_nft,
+            S.current.cancel_pawn,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,

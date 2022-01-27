@@ -148,7 +148,6 @@ class _ApproveState extends State<Approve> {
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         widget.nftMarket ?? NftMarket.init();
         getNonce();
         break;
@@ -170,7 +169,6 @@ class _ApproveState extends State<Approve> {
             (widget.createCollectionCubit?.collectionType ?? 0) == 0;
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
         widget.nftOnAuction ?? NFTOnAuction.init();
         getNonce();
         break;
@@ -955,9 +953,8 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
         unawaited(
-          cubit.confirmCancelAuctionWithBE(
-            txnHash: data,
-            marketId: (widget.nftOnPawn?.id ?? 0).toString(),
+          cubit.confirmCancelPawnWithBE(
+            id: widget.nftOnPawn?.id ?? 0,
           ),
         );
         unawaited(
