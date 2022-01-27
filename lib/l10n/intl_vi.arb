@@ -24,12 +24,12 @@
   "end_time": "Thời gian kết thúc",
   "put_on_sell": "Đưa ra bán",
   "sell": "Bán",
-  "pawn": "Thế ch",
+  "pawn": "Thế chấp",
   "auction": "Đấu giá",
   "seed_phrase": "Seed phrase",
   "private_key": "Private key",
   "wallet_secret": "Seed phrase",
-  "tab_wallet": "Wallet",ấp
+  "tab_wallet": "Wallet",
   "tab_pawn": "Pawn",
   "waiting_accept_auction":"Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
   "withdraw_nft":"Rút NFT",
@@ -572,5 +572,8 @@
   "not_supported_standard" : "Hệ thống Defi For You chưa hỗ trợ NFT chuẩn ERC-1155",
   "create_collection_successfully": "Tạo bộ sưu tập thành công!",
   "create_nft_successfully": "Tạo NFT thành công!",
-  "processing" : "Yêu cầu của bạn đang được xử lý!"
+  "processing" : "Yêu cầu của bạn đang được xử lý!",
+  "otp_invalid": "Mã không hợp lệ",
+  "expired_code": "Mã không hợp lệ hoặc đã hết hạn",
+  "notify": "Thông báo"
 }
