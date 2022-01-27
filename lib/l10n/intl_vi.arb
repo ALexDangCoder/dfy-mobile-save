@@ -32,6 +32,7 @@
   "tab_wallet": "Wallet",
   "duration_more_content": "Thời gian bắt đầu đấu giá phải cách thời gian hiện t ít nhất 48 giờ \n\n Thời lượng tối thiểu là 12 giờ và tối đa là 168 giờ (7 ngày)",
   "tab_pawn": "Pawn",
+  "reserve_price_mean" : "Giá khởi điểm cho phiên đấu giá NFT của bạn. Người đặt giá  không thể đặt giá dưới mức giá này",
   "start_time_auction" : "Thời gian bắt đầu cách hiện tại tối thiểu 48 giờ",
   "waiting_accept_auction":"Đấu giá đang được đánh giá lại. Việc đánh giá có thể lên tới 2 ngày làm việc.",
   "withdraw_nft":"Rút NFT",

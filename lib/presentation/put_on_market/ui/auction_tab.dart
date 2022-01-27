@@ -138,7 +138,7 @@ class _AuctionTabState extends State<AuctionTab>
     if (outPrice &&
         (_putOnMarketModel.buyOutPrice == null ||
             _putOnMarketModel.buyOutPrice == '' ||
-            (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
+            (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <=
                 double.parse(_putOnMarketModel.price ?? '0')))) {
       widget.cubit.buyOutPriceValidate = false;
       widget.cubit.updateStreamContinueAuction();
@@ -178,7 +178,7 @@ class _AuctionTabState extends State<AuctionTab>
                 height: 23,
               ),
               Text(
-                S.current.expected_loan,
+                S.current.reserve_price,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
                   16,
@@ -191,7 +191,7 @@ class _AuctionTabState extends State<AuctionTab>
               SizedBox(
                 child: Text(
                   S.current
-                      .set_the_loan_amount_you_expected_to_have_for_the_nft,
+                      .reserve_price_mean,
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                     14,
@@ -408,12 +408,6 @@ class _AuctionTabState extends State<AuctionTab>
                       });
                       if (!value) {
                         _putOnMarketModel.buyOutPrice = null;
-                      }
-                      if (!validateBuyOutPrice()) {
-                        setState(() {
-                          buyOutPriceErrorText = S.current.buy_out_price_error;
-                        });
-                      } else {
                         setState(() {
                           buyOutPriceErrorText = null;
                         });
@@ -575,12 +569,6 @@ class _AuctionTabState extends State<AuctionTab>
                       });
                       if (!value) {
                         _putOnMarketModel.priceStep = null;
-                      }
-                      if (!validatePriceStep()) {
-                        setState(() {
-                          priceStepErrorText = S.current.price_step_error;
-                        });
-                      } else {
                         setState(() {
                           priceStepErrorText = null;
                         });

@@ -252,6 +252,7 @@
   "set_the_nft_quantity_you_want_to_sell": "Set the NFT quantity you want to sell",
   "auction": "Auction",
   "reserve_price": "Reserve price",
+  "reserve_price_mean" : "Starting price for your NFT auction. Bidder can not bid below this price",
   "price_step": "Price step",
   "price_step_error": "Price step is not null",
   "buy_out_price_error": "Buyout price must greater than Reserve price",
