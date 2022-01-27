@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +23,18 @@ class ConnectEmailDialog extends StatefulWidget {
 }
 
 class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
+  late final LoginWithEmailCubit cubit;
 
   @override
   void initState() {
     super.initState();
+    cubit = LoginWithEmailCubit();
   }
 
   @override
   void dispose() {
     super.dispose();
+    cubit.dispose();
   }
 
   @override
@@ -69,6 +74,44 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                     ),
                   ),
                   Row(
+                    children: [
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                      StreamBuilder<bool>(
+                          stream: cubit.isCheckedCheckBoxStream,
+                          builder: (context, snapshot) {
+                            return Transform.scale(
+                              scale: 1.3,
+                              child: Checkbox(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                ),
+                                fillColor: MaterialStateProperty.all(
+                                    const Color(0xffE4AC1A)),
+                                activeColor:
+                                    const Color.fromRGBO(228, 172, 26, 1),
+                                // checkColor: const Colors,
+                                onChanged: (value) {
+                                  cubit.setCheckboxValue();
+                                },
+                                value: cubit.isCheckedCheckboxSubject.value,
+                              ),
+                            );
+                          }),
+                      Text(
+                        S.current.dont_ask_again,
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
@@ -83,12 +126,17 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                             ),
                           ),
                           child: GestureDetector(
-                            onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => widget.navigationTo,
-                              ),
-                            ),
+                            onTap: () {
+                              PrefsService.saveOptionShowDialogConnectEmail(
+                                !cubit.isCheckedCheckboxSubject.value,
+                              );
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => widget.navigationTo,
+                                ),
+                              );
+                            },
                             behavior: HitTestBehavior.opaque,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -125,6 +173,9 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                           ),
                           child: GestureDetector(
                             onTap: () {
+                              PrefsService.saveOptionShowDialogConnectEmail(
+                                !cubit.isCheckedCheckboxSubject.value,
+                              );
                               //ví chưa liên kết email
                               Navigator.pushReplacement(
                                 context,

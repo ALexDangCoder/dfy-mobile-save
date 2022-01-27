@@ -582,6 +582,6 @@
   "pawn_cancel_warning": "Customer can not find your NFT anymore",
   "otp_invalid": "Invalid code",
   "expired_code": "Code invalid or expired",
-  "notify": "Notification"
-
+  "notify": "Notification",
+  "dont_ask_again": "Don’t ask again"
 }
