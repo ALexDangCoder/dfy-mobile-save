@@ -6,14 +6,10 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
-import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
-import 'package:Dfy/presentation/market_place/login/ui/wallet_has_email.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +89,8 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => widget.navigationTo,),
+                        builder: (context) => widget.navigationTo,
+                      ),
                     );
                   }
                 } else {
@@ -116,7 +113,8 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => widget.navigationTo),
+                        builder: (context) => widget.navigationTo,
+                      ),
                     );
                   }
                 }

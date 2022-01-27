@@ -698,7 +698,7 @@ class _ApproveState extends State<Approve> {
                                           }
                                         },
                                       );
-                                    });
+                                    },);
                               },
                             ),
                           ),
@@ -975,9 +975,6 @@ class _ApproveState extends State<Approve> {
           ),
         );
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
-        // TODO: Handle this case.
-        break;
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         unawaited(showLoading());
         await cubit.createSoftNft(
@@ -1008,9 +1005,7 @@ class _ApproveState extends State<Approve> {
               ),
             );
         break;
-      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
-        break;
+
     }
   }
 
@@ -1136,9 +1131,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
-        break;
+
     }
   }
 

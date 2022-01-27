@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
-import 'package:Dfy/domain/model/market_place/nonce_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
-import 'package:Dfy/domain/repository/market_place/nonce_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -50,7 +46,7 @@ class LoginWithEmailCubit extends BaseCubit<LoginWithEmailState> {
 
   void startTimer({int timeStart = 60}) {
     const oneSec = Duration(milliseconds: 1000);
-    timeCountDownSubject.sink.add(60);
+    timeCountDownSubject.sink.add(timeStart);
 
     Timer.periodic(
       oneSec,
