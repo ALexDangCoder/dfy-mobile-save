@@ -575,5 +575,6 @@
   "processing" : "Yêu cầu của bạn đang được xử lý!",
   "otp_invalid": "Mã không hợp lệ",
   "expired_code": "Mã không hợp lệ hoặc đã hết hạn",
-  "notify": "Thông báo"
+  "notify": "Thông báo",
+  "dont_ask_again": "Không hỏi lại"
 }
