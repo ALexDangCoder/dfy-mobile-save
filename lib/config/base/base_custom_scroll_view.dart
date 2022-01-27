@@ -187,16 +187,11 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.only(left: 16.w,right: 16.w),
           color: AppTheme.getInstance().bgBtsColor(),
           height: 58.h,
           child: Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: 305.w,
-                minWidth: 100.w,
-              ),
-              child: _tabBar,
-            ),
+            child: _tabBar,
           ),
         ),
       ],

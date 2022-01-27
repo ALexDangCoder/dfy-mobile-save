@@ -77,21 +77,11 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
     updateStreamContinueSale();
   }
 
-  Future<void> getListToken() async {
-    showLoading();
-    final Result<List<TokenInf>> result = await tokenRepository.getListToken();
-    result.when(
-      success: (res) {
-        listToken = res;
-        _listTokenSubject.sink.add(res);
-        showContent();
-      },
-      error: (error) {
-        listToken = [];
-        _listTokenSubject.sink.add([]);
-        showError();
-      },
-    );
+  void getListToken()  {
+    final String listTokenString = PrefsService.getListTokenSupport();
+    listToken = TokenInf.decode(listTokenString);
+    _listTokenSubject.sink.add(listToken);
+
   }
 
   Future<String> getHexStringPutOnSale(

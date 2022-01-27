@@ -17,7 +17,6 @@ class PutOnAuctionRequest {
   final int price_step;
   final int reserve_price;
 
-
   PutOnAuctionRequest({
     required this.nft_id,
     required this.token,

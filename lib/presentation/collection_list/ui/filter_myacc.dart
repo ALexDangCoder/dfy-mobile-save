@@ -293,8 +293,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             child: Text(
                               bloc.listAcc[index] == S.current.all
                                   ? S.current.all
-                                  : bloc.listAcc[index]
-                                      .formatAddressWalletConfirm(),
+                                  : bloc.checkNullAddressWallet(
+                                      bloc.listAcc[index],
+                                    ),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),

@@ -17,9 +17,10 @@ class InformationWidget extends StatelessWidget {
       children: [
         Text(
           S.current.information,
-          style: tokenDetailAmount(
-            color: AppTheme.getInstance().whiteColor(),
-            fontSize: 14,
+          style: textNormalCustom(
+            AppTheme.getInstance().whiteColor(),
+            14,
+            FontWeight.w600,
           ),
         ),
         spaceH5,

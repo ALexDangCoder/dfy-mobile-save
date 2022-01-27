@@ -171,7 +171,7 @@ class Web3Utils {
           'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
       id: '124124',
       // link: 'https://goole.com',
-      standard: 'ERC-721',
+      standard: ERC_721,
     );
   }
 
@@ -490,6 +490,42 @@ class Web3Utils {
     } catch (error) {
       return false;
     }
+  }
+
+  Future<bool> isApprovedForAll({
+    required String walletAddres,
+    required String collectionAddress,
+    required String operatorAddress,
+  }) async {
+    final nft = Nft(
+        address: EthereumAddress.fromHex(collectionAddress), client: client);
+    try {
+      final isApproved = await nft.isApprovedForAll(
+        EthereumAddress.fromHex(walletAddres),
+        EthereumAddress.fromHex(operatorAddress),
+      );
+      return isApproved;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<String> getNftApproveForAllData({
+    required String collectionAddress,
+    required String operatorAddress,
+    required bool approved,
+  }) async {
+    final deployedContract = await deployedErc721Contract(collectionAddress);
+    final buyFunction = deployedContract.function('setApprovalForAll');
+    final setApprovalForAll = Transaction.callContract(
+      contract: deployedContract,
+      function: buyFunction,
+      parameters: [
+        EthereumAddress.fromHex(operatorAddress),
+        approved,
+      ],
+    );
+    return hex.encode(setApprovalForAll.data ?? []);
   }
 
   Future<String> getGasLimitByData({

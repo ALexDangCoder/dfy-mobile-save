@@ -71,6 +71,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   double? gasLimit;
 
+  bool isApprove = false;
+
   double? gasLimitFirst;
 
   double? gasPrice;
@@ -96,7 +98,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   PutOnMarketModel? putOnMarketModel;
 
   bool isSoftCollection = false;
-
 
   final Web3Utils web3Client = Web3Utils();
   final BehaviorSubject<String> addressWalletCoreSubject =
@@ -139,26 +140,36 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String payValue,
     required String tokenAddress,
   }) async {
-    bool response = false;
     try {
       if (payValue != '' && tokenAddress != '' && addressWallet != '') {
-        final result = await web3Client.isApproved(
-          payValue: payValue,
-          tokenAddress: tokenAddress,
-          walletAddres: addressWallet ?? '',
-          spenderAddress: getSpender(),
-        );
+        bool result = false;
+        if (type == TYPE_CONFIRM_BASE.PUT_ON_AUCTION ||
+            type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
+            type == TYPE_CONFIRM_BASE.PUT_ON_SALE) {
+          result = await web3Client.isApprovedForAll(
+            collectionAddress: putOnMarketModel?.collectionAddress ?? '',
+            operatorAddress: getSpender(),
+            walletAddres: addressWallet ?? '',
+          );
+        } else {
+          result = await web3Client.isApproved(
+            payValue: payValue,
+            tokenAddress: tokenAddress,
+            walletAddres: addressWallet ?? '',
+            spenderAddress: getSpender(),
+          );
+        }
         isApprovedSubject.sink.add(result);
-        response = result;
+        isApprove = result;
       } else {
         AppException('title', S.current.error);
       }
     } on PlatformException {
+      isApprove = false;
       isApprovedSubject.sink.add(false);
       showError();
-      response = false;
     }
-    return response;
+    return isApprove;
   }
 
   NFTRepository get nftRepo => Get.find();
@@ -170,9 +181,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       success: (res) {
         showContent();
       },
-      error: (error) {
-        showError();
-      },
+      error: (error) {},
     );
   }
 
@@ -183,9 +192,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
       success: (res) {
         showContent();
       },
-      error: (error) {
-        showError();
-      },
+      error: (error) {},
     );
   }
 
@@ -202,11 +209,11 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     );
   }
 
-  Future<void> gesGasLimitFirst(String hexString,{BuildContext? buildContext}) async {
+  Future<void> gesGasLimitFirst(String hexString,
+      {BuildContext? buildContext}) async {
     showLoading();
     try {
-      final gasLimitFirstResult =
-          await getGasLimitByType( hexString: hexString);
+      final gasLimitFirstResult = await getGasLimitByType(hexString: hexString);
       gasLimitFirst = gasLimitFirstResult;
       gasLimit = gasLimitFirstResult;
       gasLimitFirstSubject.sink.add(gasLimitFirstResult);
@@ -218,13 +225,18 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   }
 
   Future<void> approve() async {
+    final String fromAddress = type == TYPE_CONFIRM_BASE.PUT_ON_AUCTION ||
+        type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
+        type == TYPE_CONFIRM_BASE.PUT_ON_SALE
+        ? putOnMarketModel?.collectionAddress ?? ''
+        : tokenAddress ?? '';
     final nonce =
         await web3Client.getTransactionCount(address: addressWallet ?? '');
     await signTransactionWithData(
       gasLimit: (gasLimit ?? 0).toInt().toString(),
       gasPrice: ((gasPrice ?? 0) / 1e9).toInt().toString(),
       chainId: Get.find<AppConstants>().chaninId,
-      contractAddress: tokenAddress ?? '',
+      contractAddress: fromAddress,
       walletAddress: addressWallet ?? '',
       nonce: nonce.count.toString(),
       hexString: tokenApproveData ?? '',

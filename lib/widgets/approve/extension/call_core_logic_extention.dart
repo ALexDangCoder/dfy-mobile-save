@@ -1,9 +1,9 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -52,11 +52,16 @@ extension CallCoreExtension on ApproveCubit {
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
         if (checkingApprove ?? false) {
-          final resultApprove = await web3Client.sendRawTransaction(
+          await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );
-          checkingApprove = false;
-          isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
+          await loopCheckApprove();
+          // isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
+          if (isApprove){
+            emit(ApproveSuccess());
+          }else {
+            emit(ApproveFail());
+          }
         } else {
           final result = await sendRawData(rawData ?? '');
           switch (type) {
@@ -88,7 +93,7 @@ extension CallCoreExtension on ApproveCubit {
                 );
               } else {
                 emit(
-                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
+                  SignFail(S.current.place_a_bid, TYPE_CONFIRM_BASE.PLACE_BID),
                 );
               }
               break;

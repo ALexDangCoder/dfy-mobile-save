@@ -13,6 +13,7 @@ import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -178,7 +179,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   ),
                                 ),
                                 Text(
-                                  nft.standard == 'ERC-721'
+                                  nft.standard == ERC_721
                                       ? '1 ${S.current.of_all} 1'
                                       : '1 of 10',
                                   style: textNormal(
@@ -237,31 +238,31 @@ class _NFTDetailState extends State<NFTDetail> {
                           final int len = snapshot.data ?? initLen;
                           return len == 0
                               ? Column(
-                            children: [
-                              sizedPngImage(
-                                w: 94,
-                                h: 94,
-                                image: ImageAssets.icNoTransaction,
-                              ),
-                              Text(
-                                S.current.no_transaction,
-                                style: tokenDetailAmount(
-                                  color: AppTheme.getInstance()
-                                      .currencyDetailTokenColor(),
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          )
+                                  children: [
+                                    sizedPngImage(
+                                      w: 94,
+                                      h: 94,
+                                      image: ImageAssets.icNoTransaction,
+                                    ),
+                                    Text(
+                                      S.current.no_transaction,
+                                      style: tokenDetailAmount(
+                                        color: AppTheme.getInstance()
+                                            .currencyDetailTokenColor(),
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                )
                               : ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: len,
-                            itemBuilder: (ctx, index) {
-                              return itemTransition(index);
-                            },
-                          );
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: len,
+                                  itemBuilder: (ctx, index) {
+                                    return itemTransition(index);
+                                  },
+                                );
                         },
                       ),
                       StreamBuilder<bool>(
@@ -294,11 +295,11 @@ class _NFTDetailState extends State<NFTDetail> {
                                   border: Border(
                                     top: BorderSide(
                                       color:
-                                      AppTheme.getInstance().divideColor(),
+                                          AppTheme.getInstance().divideColor(),
                                     ),
                                     bottom: BorderSide(
                                       color:
-                                      AppTheme.getInstance().divideColor(),
+                                          AppTheme.getInstance().divideColor(),
                                     ),
                                   ),
                                 ),
@@ -337,10 +338,15 @@ class _NFTDetailState extends State<NFTDetail> {
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
                             colors:
-                            AppTheme.getInstance().gradientButtonColor(),
+                                AppTheme.getInstance().gradientButtonColor(),
                           ),
                           onPressed: () {
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ComingSoon(),
+                              ),
+                            );
                           },
                           child: Text(
                             S.current.put_on_market,
@@ -374,10 +380,9 @@ class _NFTDetailState extends State<NFTDetail> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                TransactionDetail(
-                  obj: objHistory,
-                ),
+            builder: (context) => TransactionDetail(
+              obj: objHistory,
+            ),
           ),
         );
       },
@@ -424,9 +429,7 @@ class _NFTDetailState extends State<NFTDetail> {
                 ],
               ),
               Text(
-                DateTime
-                    .parse(objHistory.dateTime ?? '')
-                    .stringFromDateTime,
+                DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
                 style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
               )
             ],
@@ -446,11 +449,10 @@ class _NFTDetailState extends State<NFTDetail> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    Receive(
-                      walletAddress: widget.walletAddress,
-                      type: TokenType.NFT,
-                    ),
+                builder: (context) => Receive(
+                  walletAddress: widget.walletAddress,
+                  type: TokenType.NFT,
+                ),
               ),
             );
           },
@@ -464,13 +466,12 @@ class _NFTDetailState extends State<NFTDetail> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    SendNft(
-                      nftInfo: widget.nftInfo,
-                      addressFrom: widget.walletAddress,
-                      imageWallet: '',
-                      nameWallet: widget.nameWallet,
-                    ),
+                builder: (context) => SendNft(
+                  nftInfo: widget.nftInfo,
+                  addressFrom: widget.walletAddress,
+                  imageWallet: '',
+                  nameWallet: widget.nameWallet,
+                ),
               ),
             ).whenComplete(() {
               widget.walletCubit.getNFT(
@@ -527,9 +528,7 @@ class _NFTDetailState extends State<NFTDetail> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             launch(
-                              Get
-                                  .find<AppConstants>()
-                                  .bscScan +
+                              Get.find<AppConstants>().bscScan +
                                   ApiConstants.BSC_SCAN_ADDRESS +
                                   detail,
                             );

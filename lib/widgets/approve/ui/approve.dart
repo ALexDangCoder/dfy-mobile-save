@@ -12,6 +12,7 @@ import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -66,6 +67,7 @@ class Approve extends StatefulWidget {
   final PutOnMarketModel? putOnMarketModel;
   final NftMarket? nftMarket;
   final NftOnPawn? nftOnPawn;
+  final NFTOnAuction? nftOnAuction;
   final bool? needApprove;
   final int? flexTitle;
   final int? flexContent;
@@ -109,6 +111,7 @@ class Approve extends StatefulWidget {
     this.nftOnPawn,
     this.request,
     this.createNftMap,
+    this.nftOnAuction,
   }) : super(key: key);
 
   @override
@@ -125,6 +128,7 @@ class _ApproveState extends State<Approve> {
   late final NFTDetailBloc nftDetailBloc;
   GlobalKey bottomKey = GlobalKey();
   double heightOfBottom = 0;
+  bool isShowLoading = false;
 
   void initData(TYPE_CONFIRM_BASE typeBase) {
     cubit.context = context;
@@ -145,6 +149,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftMarket ?? NftMarket.init();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
@@ -166,6 +171,7 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
         nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftOnAuction ?? NFTOnAuction.init();
         getNonce();
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
@@ -178,7 +184,9 @@ class _ApproveState extends State<Approve> {
         // TODO: Handle this case.
         break;
       case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
+        nftDetailBloc = nftKey.currentState?.bloc ?? NFTDetailBloc();
+        widget.nftOnPawn ?? NftOnPawn();
+        getNonce();
         break;
     }
   }
@@ -189,6 +197,7 @@ class _ApproveState extends State<Approve> {
     cubit = ApproveCubit();
     cubit.type = widget.typeApprove;
     accountImage = cubit.randomAvatar();
+    initData(widget.typeApprove);
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
       heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
@@ -200,7 +209,6 @@ class _ApproveState extends State<Approve> {
 
     /// get wallet information
     cubit.getListWallets();
-    initData(widget.typeApprove);
   }
 
   Future<void> getNonce() async {
@@ -210,34 +218,10 @@ class _ApproveState extends State<Approve> {
   /// Function approve
 
   Future<void> approve() async {
-    bool isShowLoading = false;
     cubit.checkingApprove = true;
-
-    /// function approve
     unawaited(
       cubit.approve(),
     );
-    cubit.isApprovedSubject.listen((value) async {
-      final navigator = Navigator.of(context);
-      if (cubit.checkingApprove != null) {
-        if (value && !(cubit.checkingApprove ?? true)) {
-          if (isShowLoading) {
-            Navigator.pop(context);
-          }
-          unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
-          await showLoadSuccess();
-          navigator.pop();
-        }
-        if (!value && !(cubit.checkingApprove ?? true)) {
-          if (isShowLoading) {
-            navigator.pop();
-          }
-          await showLoadFail();
-          navigator.pop();
-        }
-        cubit.checkingApprove = null;
-      }
-    });
     isShowLoading = true;
     await showLoading();
     isShowLoading = false;
@@ -427,6 +411,29 @@ class _ApproveState extends State<Approve> {
     }
   }
 
+
+  Future<void> approveFail () async{
+    final navigator =  Navigator.of(context);
+    if (isShowLoading) {
+      navigator.pop();
+    }
+    await showLoadFail();
+    navigator.pop();
+    cubit.checkingApprove = null;
+    cubit.emit(ApproveInitState());
+  }
+
+  Future<void> approveSuccess () async{
+    if (isShowLoading) {
+      Navigator.pop(context);
+    }
+    final navigator =  Navigator.of(context);
+    unawaited(cubit.gesGasLimitFirst(widget.hexString ?? ''));
+    await showLoadSuccess();
+    navigator.pop();
+    cubit.checkingApprove = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener(
@@ -437,6 +444,12 @@ class _ApproveState extends State<Approve> {
         }
         if (state is SignFail) {
           caseNavigatorFail(state.type, state.message);
+        }
+        if (state is ApproveSuccess){
+          approveSuccess();
+        }
+        if (state is ApproveFail){
+          approveFail();
         }
       },
       child: Scaffold(
@@ -621,7 +634,9 @@ class _ApproveState extends State<Approve> {
                                                     width: 2,
                                                   )
                                                 : null,
-                                            title: S.current.approve,
+                                            title: isApproved
+                                                ? S.current.approved
+                                                : S.current.approve,
                                             isEnable: true,
                                             fixSize: false,
                                             haveMargin: false,
@@ -689,7 +704,7 @@ class _ApproveState extends State<Approve> {
                                           }
                                         },
                                       );
-                                    });
+                                    },);
                               },
                             ),
                           ),
@@ -726,21 +741,14 @@ class _ApproveState extends State<Approve> {
           ),
         );
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseSuccess(
                     title: S.current.buy_nft,
                     content: S.current.congratulation,
                     callback: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(
-                            index: 1,
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -750,25 +758,6 @@ class _ApproveState extends State<Approve> {
         break;
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.bidding,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
         cubit.bidNftRequest(
           BidNftRequest(
             widget.marketId ?? '',
@@ -776,6 +765,19 @@ class _ApproveState extends State<Approve> {
             data,
           ),
         );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BaseSuccess(
+              title: S.current.bidding,
+              content: S.current.congratulation,
+              callback: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+
         break;
       case TYPE_CONFIRM_BASE.SEND_NFT:
         // TODO: Handle this case.
@@ -827,21 +829,14 @@ class _ApproveState extends State<Approve> {
         widget.request?.latestBlockchainTxn = data;
         cubit.sendOffer(offerRequest: widget.request!);
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseSuccess(
                     title: S.current.send_offer,
                     content: S.current.congratulation,
                     callback: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(
-                            index: 1,
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -850,26 +845,29 @@ class _ApproveState extends State<Approve> {
 
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        cubit.confirmCancelSaleWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        unawaited(
+          cubit.confirmCancelSaleWithBE(
+            txnHash: data,
+            marketId: widget.nftMarket?.marketId ?? '',
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_sale,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -907,32 +905,60 @@ class _ApproveState extends State<Approve> {
             );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        cubit.confirmCancelAuctionWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftOnAuction.id ?? '',
+        unawaited(
+          cubit.confirmCancelAuctionWithBE(
+            txnHash: data,
+            marketId: widget.nftOnAuction?.id ?? '',
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_aution,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );
         break;
-      case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
-        // TODO: Handle this case.
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        unawaited(
+          cubit.confirmCancelAuctionWithBE(
+            txnHash: data,
+            marketId: (widget.nftOnPawn?.id ?? 0).toString(),
+          ),
+        );
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseSuccess(
+                title: S.current.cancel_pawn,
+                content: S.current.congratulation,
+                callback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(
+                        index: 1,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
         break;
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         unawaited(showLoading());
@@ -944,29 +970,27 @@ class _ApproveState extends State<Approve> {
             .then((value) => navigator.popUntil((route) => route.isFirst))
             .then(
               (value) => navigator.push(
-            MaterialPageRoute(
-              builder: (_) => BaseSuccess(
-                title: S.current.create_nft,
-                content: S.current.create_nft_successfully,
-                callback: () {
-                  navigator.pop();
-                  navigator.push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => CollectionList(
-                        typeScreen: PageRouter.MY_ACC,
-                        addressWallet: cubit.addressWallet,
-                      ),
-                    ),
-                  );
-                },
+                MaterialPageRoute(
+                  builder: (_) => BaseSuccess(
+                    title: S.current.create_nft,
+                    content: S.current.create_nft_successfully,
+                    callback: () {
+                      navigator.pop();
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => CollectionList(
+                            typeScreen: PageRouter.MY_ACC,
+                            addressWallet: cubit.addressWallet,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
         break;
-      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
-        break;
+
     }
   }
 
@@ -976,12 +1000,11 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.BUY_NFT:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.buy_nft,
-                    content: S.current.buy_fail,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -993,12 +1016,11 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.PLACE_BID:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.place_a_bid,
-                    content: S.current.failed,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -1015,12 +1037,11 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.SEND_OFFER:
         Navigator.pop(context);
         await showLoadFail().then((_) => Navigator.pop(context)).then(
-              (value) => Navigator.push(
+              (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
                     title: S.current.send_offer,
-                    content: S.current.failed,
                     onTapBtn: () {
                       Navigator.pop(context);
                     },
@@ -1030,26 +1051,31 @@ class _ApproveState extends State<Approve> {
             );
         break;
       case TYPE_CONFIRM_BASE.CANCEL_SALE:
-        cubit.confirmCancelSaleWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_aution,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
-              },
+        break;
+      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_pawn,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         );
@@ -1061,26 +1087,16 @@ class _ApproveState extends State<Approve> {
         navigator.popUntil((route) => route.isFirst);
         break;
       case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-        cubit.confirmCancelAuctionWithBE(
-          txnHash: data,
-          marketId: nftDetailBloc.nftMarket.marketId ?? '',
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseSuccess(
-              title: S.current.cancel_sale,
-              content: S.current.congratulation,
-              callback: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: 1,
-                    ),
-                  ),
-                );
-              },
+        unawaited(
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => BaseFail(
+                title: S.current.cancel_aution,
+                content: S.current.failed,
+                onTapBtn: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         );
@@ -1100,9 +1116,7 @@ class _ApproveState extends State<Approve> {
       case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
         // TODO: Handle this case.
         break;
-      case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-        // TODO: Handle this case.
-        break;
+
     }
   }
 

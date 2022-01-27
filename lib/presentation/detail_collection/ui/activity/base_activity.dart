@@ -36,61 +36,32 @@ class BaseActivity extends StatelessWidget {
         GestureDetector(
           onTap: () {
             final list = bloc.listActivity.value;
+            late final MarketType type;
             if (list[index].marketStatus ==
                 DetailCollectionBloc.NOT_ON_MARKET) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return NFTDetailScreen(
-                      key: nftKey,
-                      typeMarket: MarketType.NOT_ON_MARKET,
-                      marketId: list[index].marketId ?? '',
-                    );
-                  },
-                ),
-              );
+              type = MarketType.NOT_ON_MARKET;
             } else if (list[index].marketStatus == DetailCollectionBloc.SALE) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return NFTDetailScreen(
-                      key: nftKey,
-                      typeMarket: MarketType.SALE,
-                      marketId: list[index].marketId ?? '',
-                    );
-                  },
-                ),
-              );
+              type = MarketType.SALE;
             } else if (list[index].marketStatus ==
                 DetailCollectionBloc.AUCTION) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return NFTDetailScreen(
-                      key: nftKey,
-                      typeMarket: MarketType.AUCTION,
-                      marketId: list[index].marketId ?? '',
-                    );
-                  },
-                ),
-              );
+              type = MarketType.AUCTION;
             } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return NFTDetailScreen(
-                      key: nftKey,
-                      typeMarket: MarketType.PAWN,
-                      marketId: list[index].marketId ?? '',
-                    );
-                  },
-                ),
-              );
+              type = MarketType.PAWN;
             }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return NFTDetailScreen(
+                    nftId: list[index].nftId ?? '',
+                    pawnId: list[index].pawnId,
+                    key: nftKey,
+                    typeMarket: type,
+                    marketId: list[index].marketId ?? '',
+                  );
+                },
+              ),
+            );
           },
           child: Stack(
             clipBehavior: Clip.none,
@@ -111,7 +82,7 @@ class BaseActivity extends StatelessWidget {
                   errorBuilder: (context, url, error) => Container(
                     color: Colors.yellow,
                     child: Text(
-                      title.isEmpty ? title  :title.substring(0, 1),
+                      title.isEmpty ? title : title.substring(0, 1),
                       style: textNormalCustom(
                         Colors.black,
                         60,
@@ -156,62 +127,33 @@ class BaseActivity extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   final list = bloc.listActivity.value;
+                  late final MarketType type;
                   if (list[index].marketStatus ==
                       DetailCollectionBloc.NOT_ON_MARKET) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return NFTDetailScreen(
-                            key: nftKey,
-                            typeMarket: MarketType.NOT_ON_MARKET,
-                            marketId: list[index].marketId ?? '',
-                          );
-                        },
-                      ),
-                    );
+                    type = MarketType.NOT_ON_MARKET;
                   } else if (list[index].marketStatus ==
                       DetailCollectionBloc.SALE) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return NFTDetailScreen(
-                            key: nftKey,
-                            typeMarket: MarketType.SALE,
-                            marketId: list[index].marketId ?? '',
-                          );
-                        },
-                      ),
-                    );
+                    type = MarketType.SALE;
                   } else if (list[index].marketStatus ==
                       DetailCollectionBloc.AUCTION) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return NFTDetailScreen(
-                            key: nftKey,
-                            typeMarket: MarketType.AUCTION,
-                            marketId: list[index].marketId ?? '',
-                          );
-                        },
-                      ),
-                    );
+                    type = MarketType.AUCTION;
                   } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return NFTDetailScreen(
-                            key: nftKey,
-                            typeMarket: MarketType.PAWN,
-                            marketId: list[index].marketId ?? '',
-                          );
-                        },
-                      ),
-                    );
+                    type = MarketType.PAWN;
                   }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NFTDetailScreen(
+                          nftId: list[index].nftId ?? '',
+                          pawnId: list[index].pawnId,
+                          key: nftKey,
+                          typeMarket: type,
+                          marketId: list[index].marketId ?? '',
+                        );
+                      },
+                    ),
+                  );
                 },
                 child: Text(
                   title,

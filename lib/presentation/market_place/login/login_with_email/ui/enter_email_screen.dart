@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_email.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -14,7 +17,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class EnterEmail extends StatefulWidget {
-  const EnterEmail({Key? key,}) : super(key: key);
+  const EnterEmail({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<EnterEmail> createState() => _EnterEmailState();
@@ -24,17 +29,23 @@ class _EnterEmailState extends State<EnterEmail> {
   late final LoginWithEmailCubit cubit;
   final TextEditingController emailEditingController = TextEditingController();
   bool isValidateSuccess = false;
+
   @override
   void initState() {
     super.initState();
     cubit = LoginWithEmailCubit();
     cubit.validateStream.listen((event) {
-      if(event == ''){
+      if (event == '') {
         isValidateSuccess = true;
       }
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    cubit.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +53,36 @@ class _EnterEmailState extends State<EnterEmail> {
       floatingActionButton: ButtonLuxuryBigSize(
         title: S.current.continue_s,
         isEnable: true,
-        onTap: () {
+        onTap: () async {
           //todo:
-          if(isValidateSuccess){
-            final bool checkValidate = cubit.checkValidate(emailEditingController.value.text);
-            if(checkValidate){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ConfirmEmail(),
-                ),
-              ).then((value) => {
-                if(value){
-                  Navigator.pop(context,true)
-                }
-              });
+          final nav = Navigator.of(context);
+          if (isValidateSuccess) {
+            final bool checkValidate =
+                cubit.checkValidate(emailEditingController.value.text);
+            if (checkValidate) {
+              showLoading(context);
+              final String transactionId = await cubit.sendOTP(
+                email: emailEditingController.value.text,
+                type: 1,
+              );
+              hideLoading(context);
+
+              if (transactionId.isNotEmpty) {
+                unawaited(
+                  nav.push(
+                    MaterialPageRoute(
+                      builder: (context) => ConfirmEmail(
+                        transactionId: transactionId,
+                        email: emailEditingController.value.text,
+                      ),
+                    ),
+                  ).then(
+                    (value) => {
+                      if (value) {Navigator.pop(context, true)}
+                    },
+                  ),
+                );
+              }
             }
           }
         },
@@ -124,25 +150,24 @@ class _EnterEmailState extends State<EnterEmail> {
                     ),
                   ),
                   StreamBuilder<String>(
-                    stream: cubit.validateStream,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 4,
-                        ),
-                        child: Text(
-                          //todo
-                          snapshot.data ?? '',
-                          // state.errText,
-                          style: textNormal(
-                            AppTheme.getInstance().wrongColor(),
-                            12,
-                          ).copyWith(fontWeight: FontWeight.w400),
-                        ),
-                      );
-                    }
-                  ),
+                      stream: cubit.validateStream,
+                      builder: (context, snapshot) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 4,
+                          ),
+                          child: Text(
+                            //todo
+                            snapshot.data ?? '',
+                            // state.errText,
+                            style: textNormal(
+                              AppTheme.getInstance().wrongColor(),
+                              12,
+                            ).copyWith(fontWeight: FontWeight.w400),
+                          ),
+                        );
+                      }),
                 ],
               )
             ],

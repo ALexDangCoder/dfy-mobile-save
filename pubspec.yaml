@@ -133,6 +133,9 @@ dependencies:
   progress_indicators: ^1.0.0
   loading_gifs: ^0.3.0
   expandable_page_view: ^1.0.10
+  google_maps_flutter: ^2.1.1
+  geolocator: ^8.0.3
+  location: ^4.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

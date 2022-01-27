@@ -7,7 +7,6 @@ class PropertiesMapRequest {
   final String key;
   final String value;
 
-
   PropertiesMapRequest(this.key, this.value);
 
   factory PropertiesMapRequest.fromJson(Map<String, dynamic> json) =>

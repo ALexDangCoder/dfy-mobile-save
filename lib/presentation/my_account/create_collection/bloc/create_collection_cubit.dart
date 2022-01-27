@@ -280,7 +280,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   ///Create parameter Map
   Map<String, dynamic> getMapCreateCollection() {
     final String standard =
-        collectionStandard == ERC721 ? 'ERC-721' : 'ERC-1155';
+        collectionStandard == ERC721 ? ERC_721 : ERC_1155;
     if (collectionType == SOFT_COLLECTION) {
       return {
         'avatar_cid': cidMap['avatar_cid'],

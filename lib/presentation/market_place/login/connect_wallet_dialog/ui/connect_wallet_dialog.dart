@@ -6,13 +6,10 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/market_place/login/connect_email_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/connect_wallet_dialog_cubit.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_wallet_logged.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
-import 'package:Dfy/presentation/market_place/login/ui/connect_wallet.dart';
-import 'package:Dfy/presentation/market_place/login/ui/wallet_has_email.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,20 +75,59 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                 Navigator.pop(context);
                 if (!widget.isRequireLoginEmail) {
                   //không yêu cầu login email
-                  showDialog(
-                    context: context,
-                    builder: (context) => ConnectEmailDialog(
-                      navigationTo: widget.navigationTo,
-                    ),
-                  );
+                  final data = PrefsService.getUserProfile();
+                  final userProfile = userProfileFromJson(data);
+                  final String email = userProfile.email ?? '';
+                  final bool isNeedShowDialog =
+                      PrefsService.getOptionShowDialogConnectEmail();
+                    if (email.isEmpty) {
+                      if(isNeedShowDialog){
+                        showDialog(
+                          context: context,
+                          builder: (context) => ConnectEmailDialog(
+                            navigationTo: widget.navigationTo,
+                          ),
+                        );
+                      }else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => widget.navigationTo,
+                          ),
+                        );
+                      }
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.navigationTo,
+                        ),
+                      );
+                    }
                 } else {
                   //yêu cầu login email:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ConnectWallet(),
-                    ),
+                  final profileJson = PrefsService.getUserProfile();
+                  final UserProfileModel profile = userProfileFromJson(
+                    profileJson,
                   );
+                  final String email = profile.email ?? '';
+                  if (email.isEmpty) {
+                    //tài khoản chưa liên kết email => Chuyển màn nhập email
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EnterEmail(),
+                      ),
+                    );
+                  } else {
+                    //ví đã liên kết email: => di chuyển đến màn tiếp theo
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => widget.navigationTo,
+                      ),
+                    );
+                  }
                 }
               });
               return Container(

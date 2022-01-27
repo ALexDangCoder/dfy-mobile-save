@@ -668,6 +668,7 @@ class _MenuAccountState extends State<MenuAccount> {
                         return InkWell(
                           onTap: () {
                             cubit.logout();
+
                           },
                           child: Image.asset(ImageAssets.ic_logout),
                         );

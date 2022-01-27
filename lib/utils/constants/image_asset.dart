@@ -30,12 +30,11 @@ class ImageAssets {
   static const String addFAB = '$baseImg/plus.png';
 
   static const String iconCheck = '$baseImg/check.png';
+
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
-
   // menu icon
-
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
   static const String ic_profile_circle = '$baseImg/ic_profile_circle.png';
@@ -48,7 +47,6 @@ class ImageAssets {
   static const String ic_graph = '$baseImg/ic_graph.png';
   static const String ic_nft = '$baseImg/ic_nft.png';
   static const String ic_setting = '$baseImg/ic_setting.png';
-
 
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';
@@ -93,6 +91,16 @@ class ImageAssets {
   static const String imgTokenYFII = '$baseImg/YFII.png';
   static const String imgTokenZEC = '$baseImg/ZEC.png';
   static const String imgTokenUSDT = '$baseImg/USDT.png';
+  static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
+  static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
+  static const String img_star = '$baseImg/star.png';
+  static const String ic_calendar_create_book = '$baseImg/calendar_create_book.png';
+  static const String ic_edit_square = '$baseImg/edit_square.png';
+  static const String ic_location = '$baseImg/Location.png';
+  static const String ic_mail = '$baseImg/mail.png';
+  static const String ic_time = '$baseImg/time.png';
+  static const String ic_global_market = '$baseImg/ic_global_market.png';
+  static const String ic_phone = '$baseImg/phone.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -258,8 +266,15 @@ class ImageAssets {
   static const String img_filter = '$baseImg/img_filter.png';
   static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
-
   static const String img_float_btn = '$baseImg/float_btn.png';
+
+
+  static const String img_diamond = '$baseImg/jewelry.png';
+  static const String img_artwork = '$baseImg/artwork.png';
+  static const String img_car = '$baseImg/car.png';
+  static const String img_watch = '$baseImg/watch.png';
+  static const String img_house = '$baseImg/house.png';
+  static const String img_other = '$baseImg/other.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =
@@ -311,7 +326,6 @@ class ImageAssets {
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
   static const String ic_star = '$baseImg/ic_star.png';
 
-
   //MyAccount
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
   static const String x_svg = '$baseImg/x_svg.svg';
@@ -333,6 +347,7 @@ class ImageAssets {
   static const String icon_twitter = '$baseImg/icon_twitter.png';
 
 
+  static const String more_circle_white = '$baseImg/more_circle_white.png';
 
 
 

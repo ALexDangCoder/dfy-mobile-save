@@ -97,6 +97,7 @@ abstract class NFTClient {
     @Path('id') int id,
   );
 
+  //cancel sale
   @POST(ApiConstants.CANCEL_SALE)
   Future<ConfirmResponse> cancelSale(
     @Field('market_id') String marketId,
@@ -108,13 +109,17 @@ abstract class NFTClient {
   Future<ConfirmResponse> cancelAuction(
     @Field('auction_id') String marketId,
     @Field('txn_hash') String txnHash,
-  ); //Confirm cancel  auction:¬
+  );
+
+  //Accept offer
   @PUT(ApiConstants.ACCEPT_OFFER)
   Future<String> acceptOffer(
     @Path('idCollateral') int idCollateral,
     @Path('idOfer') int idOffer,
     @Query('wallet-address') String addressWallet,
-  ); //Confirm cancel  auction:
+  );
+
+  //reject offer:
   @PUT(ApiConstants.REJECT_OFFER)
   Future<String> rejectOffer(
     @Path('idCollateral') int idCollateral,
@@ -122,8 +127,15 @@ abstract class NFTClient {
     @Query('wallet-address') String addressWallet,
   );
 
+  //send offer
   @POST(ApiConstants.SEND_OFFER)
   Future<String> sendOffer(
     @Body() SendOfferRequest request,
+  );
+
+  //Confirm cancel  pawn:
+  @POST('${ApiConstants.CANCEL_PAWN}{id}')
+  Future<ConfirmResponse> cancelPawn(
+    @Path('id') int pawnId,
   );
 }
