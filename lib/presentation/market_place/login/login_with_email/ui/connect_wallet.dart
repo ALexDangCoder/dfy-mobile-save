@@ -4,7 +4,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
-import 'package:Dfy/presentation/market_place/login/ui/wallet_has_email.dart';
+import 'package:Dfy/presentation/market_place/login/login_with_email/ui/wallet_has_email.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
