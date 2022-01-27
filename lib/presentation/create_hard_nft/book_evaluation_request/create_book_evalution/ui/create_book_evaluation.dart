@@ -41,7 +41,7 @@ class CreateBookEvaluation extends StatefulWidget {
 }
 
 class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
-  late final BlocCreateBookEvaluation _bloc;
+  late final BlocCreateBookEvaluation bloc;
   final Completer<GoogleMapController> _controller = Completer();
   late final CameraPosition _kGooglePlex;
   bool isCreateGoogle = false;
@@ -49,9 +49,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   @override
   void initState() {
     super.initState();
-    _bloc = BlocCreateBookEvaluation();
-    _bloc.getDataInput(widget.date ?? 0);
-    _bloc.getDetailEvaluation(
+    bloc = BlocCreateBookEvaluation();
+    bloc.getDataInput(widget.date ?? 0);
+    bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
     isCreateGoogle = true;
@@ -60,15 +60,15 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EvaluatorsDetailModel>(
-      stream: _bloc.objDetail,
+      stream: bloc.objDetail,
       builder: (context, snapshot) {
         final pawn = snapshot.data ?? EvaluatorsDetailModel();
         if (snapshot.hasData) {
           if (isCreateGoogle) {
             _kGooglePlex = CameraPosition(
               target: LatLng(
-                _bloc.locationLat,
-                _bloc.locationLong,
+                bloc.locationLat,
+                bloc.locationLong,
               ),
               zoom: 14.4746,
             );
@@ -80,7 +80,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
             bottomNavigationBar: Container(
               color: AppTheme.getInstance().bgBtsColor(),
               child: StreamBuilder<bool>(
-                stream: _bloc.isCheckBtn,
+                stream: bloc.isCheckBtn,
                 builder: (context, snapshot) {
                   return GestureDetector(
                     onTap: () {
@@ -214,14 +214,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                 ),
                                                 TextSpan(
                                                   text: ' ${pawn.starCount} |'
-                                                      ' ${_bloc.getTextCreateAt(pawn.createdAt ?? 0)}',
+                                                      ' ${bloc.getTextCreateAt(pawn.createdAt ?? 0)}',
                                                 ),
                                               ],
                                             ),
                                           ),
                                           spaceH5,
                                           Text(
-                                            _bloc.addressCheckNull(
+                                            bloc.addressCheckNull(
                                               pawn.walletAddress ?? '',
                                             ),
                                             style: textNormalCustom(
@@ -323,12 +323,12 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         if (result != null) {
                                           final date = DateFormat('dd/MM/yyyy')
                                               .format(result);
-                                          _bloc.dateStream.add(date);
+                                          bloc.dateStream.add(date);
                                         }
                                       }
                                     },
                                     child: StreamBuilder<String>(
-                                        stream: _bloc.dateStream,
+                                        stream: bloc.dateStream,
                                         builder: (context, snapshot) {
                                           final dateInput = snapshot.data ?? '';
                                           return Container(
@@ -397,15 +397,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           builder: (_) => BackdropFilter(
                                             filter: ImageFilter.blur(
                                                 sigmaX: 4, sigmaY: 4),
-                                            child: const AlertDialog(
+                                            child: AlertDialog(
                                               elevation: 0,
                                               backgroundColor:
                                                   Colors.transparent,
-                                              content: PickTime(),
+                                              content: PickTime(
+                                                hour: bloc.hourMy,
+                                                miu: bloc.miuMy,
+                                              ),
                                             ),
                                           ),
                                         );
-                                        _bloc.getValidate(
+                                        bloc.getValidate(
                                           result?.stringValueOrEmpty('hour') ??
                                               '0',
                                           result?.stringValueOrEmpty(
@@ -418,12 +421,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                               result.stringValueOrEmpty('hour');
                                           final String minute = result
                                               .stringValueOrEmpty('minute');
-                                          _bloc.timeStream.add('$hour:$minute');
+                                          bloc.hourMy = hour;
+                                          bloc.miuMy = minute;
+                                          bloc.timeStream.add('$hour:$minute');
                                         }
                                       }
                                     },
                                     child: StreamBuilder<String>(
-                                      stream: _bloc.timeStream,
+                                      stream: bloc.timeStream,
                                       builder: (context, snapshot) {
                                         final timeInput = snapshot.data ?? '';
                                         return Container(
@@ -481,11 +486,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   ),
                                   spaceH4,
                                   StreamBuilder<bool>(
-                                    stream: _bloc.isCheckTextValidateTime,
+                                    stream: bloc.isCheckTextValidateTime,
                                     builder: (context, snapshot) {
                                       return snapshot.data ?? false
                                           ? Text(
-                                              _bloc.textValidateTime,
+                                              bloc.textValidateTime,
                                               style: textNormalCustom(
                                                 AppTheme.getInstance()
                                                     .redColor(),
@@ -513,7 +518,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         pawn.acceptedAssetTypeList?.length ?? 0,
                                         (int index) {
                                       return TypeNFTBox(
-                                        image: _bloc.linkImage(
+                                        image: bloc.linkImage(
                                           pawn.acceptedAssetTypeList?[index]
                                                   .id ??
                                               0,
@@ -674,7 +679,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         pawn.workingDays?.length ?? 0,
                                         (int index) {
                                       return ItemWorkingTime(
-                                        text: _bloc.textWorkingDay(
+                                        text: bloc.textWorkingDay(
                                             pawn.workingDays?[index] ?? 0),
                                       );
                                     }).toList(),

@@ -49,6 +49,9 @@ class BlocCreateBookEvaluation {
   late double locationLong;
   late double locationLat;
 
+  String? hourMy;
+  String? miuMy;
+
   void getValidate(String hour, String minute) {
     final int hourInt = int.parse(hour);
     final int minuteInt = int.parse(minute);
