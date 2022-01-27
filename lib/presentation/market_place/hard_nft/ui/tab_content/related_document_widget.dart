@@ -62,7 +62,6 @@ class RelatedDocument extends StatelessWidget {
           top: 12.h,
           bottom: 12.h,
         ),
-        height: 61.h,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,10 +82,9 @@ class RelatedDocument extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Created on ' +
-                      formatDateTime.format(
+                  'Created on ${formatDateTime.format(
                         DateTime.fromMillisecondsSinceEpoch(createDate),
-                      ),
+                      )}',
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     fontSize: 12,
