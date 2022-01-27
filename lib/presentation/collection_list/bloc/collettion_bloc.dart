@@ -103,6 +103,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     result.when(
       success: (res) {
         if (res.isEmpty) {
+          checkWalletAddress = false;
         } else {
           if (res.length < 2) {
             for (final element in res) {
@@ -131,6 +132,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       }
     }
     return data;
+  }
+
+  String checkNullAddressWallet(String address) {
+    String addressWallet = '';
+    if (address.length < 20) {
+      addressWallet = address;
+    } else {
+      addressWallet = address.formatAddressWalletConfirm();
+    }
+    return addressWallet;
   }
 
   void chooseAddressFilter(String address) {
@@ -206,7 +217,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   void resetFilterMyAcc() {
     isHardCollection.add(false);
     isSoftCollection.add(false);
-    textAddressFilter.add(S.current.all);
+    if (checkWalletAddress) {
+      textAddressFilter.add(S.current.all);
+    }
   }
 
   void funOnSearch(String value) {

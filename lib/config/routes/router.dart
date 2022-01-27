@@ -1,4 +1,3 @@
-
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -26,6 +25,7 @@ class AppRouter {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
+
       case main:
         return MaterialPageRoute(
           builder: (ctx) {

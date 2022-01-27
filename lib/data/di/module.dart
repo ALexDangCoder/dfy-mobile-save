@@ -3,6 +3,7 @@ import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/confirm_impl.dart';
+import 'package:Dfy/data/repository_impl/market_place/create_hard_nft_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/detail_category_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/login_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
@@ -16,6 +17,7 @@ import 'package:Dfy/data/services/market_place/category_service.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
 import 'package:Dfy/data/services/market_place/confirm_service.dart';
+import 'package:Dfy/data/services/market_place/create_hard_nft_service.dart';
 import 'package:Dfy/data/services/market_place/detail_category_service.dart';
 import 'package:Dfy/data/services/market_place/login_service.dart';
 import 'package:Dfy/data/services/market_place/marketplace_client.dart';
@@ -32,6 +34,7 @@ import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/domain/repository/market_place/detail_category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
@@ -89,6 +92,10 @@ void configureDependencies() {
 
   Get.put(WalletAddressClient(provideDio()));
   Get.put<WalletAddressRepository>(WalletAddressImpl(Get.find()));
+  //create hard nft
+
+  Get.put(CreateHardNFtService(provideDio()));
+  Get.put<CreateHardNFTRepository>(CreateHardNFTImpl(Get.find()));
 }
 
 Dio provideDio({int connectionTimeOut = 60000}) {

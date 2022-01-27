@@ -70,7 +70,6 @@ class _CollectionListState extends State<CollectionList> {
 
   @override
   void initState() {
-    print (widget.addressWallet);
     super.initState();
     if (widget.title?.isNotEmpty ?? false) {
       tittleScreen = widget.title ?? '';
@@ -192,7 +191,6 @@ class _CollectionListState extends State<CollectionList> {
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) => FilterMyAcc(
-
                               collectionBloc: collectionBloc,
                             ),
                           );

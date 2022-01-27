@@ -64,7 +64,7 @@ class CollectionDetailImpl implements CollectionDetailRepository {
     int? size,
     String? nameNft,
     List<int>? listMarketType,
-     bool? owner,
+    bool? owner,
   }) {
     return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
       () => _client.getListNftCollection(
