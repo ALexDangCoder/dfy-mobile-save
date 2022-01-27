@@ -77,6 +77,14 @@ class BlocCreateBookEvaluation {
     return isDay;
   }
 
+  void checkButton() {
+    if (isCheckTextValidateDate.value && !isCheckTextValidateTime.value) {
+      isCheckBtn.add(true);
+    } else {
+      isCheckBtn.add(false);
+    }
+  }
+
   void getValidateDay(String day) {
     if (dateStream.value == '') {
       isCheckTextValidateDate.add(false);
@@ -88,6 +96,7 @@ class BlocCreateBookEvaluation {
       isCheckTextValidateDate.add(true);
       textValidateDate = '';
     }
+    checkButton();
   }
 
   void getValidate(String hour, String minute) {
@@ -103,6 +112,7 @@ class BlocCreateBookEvaluation {
       isCheckTextValidateTime.add(false);
       textValidateTime = '';
     }
+    checkButton();
   }
 
   bool checkHourWorking(int hour, int minute) {

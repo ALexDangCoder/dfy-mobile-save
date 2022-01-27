@@ -84,8 +84,10 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                 builder: (context, snapshot) {
                   return GestureDetector(
                     onTap: () {
+                      if (snapshot.data ?? false) {
+                        if (widget.type == TypeEvaluation.NEW_CREATE) {}
+                      }
                       //todo event
-                      if (widget.type == TypeEvaluation.NEW_CREATE) {}
                     },
                     child: Container(
                       color: AppTheme.getInstance().bgBtsColor(),
