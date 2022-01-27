@@ -12,12 +12,12 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PutOnMarket extends StatefulWidget {
+class PutOnMarketScreen extends StatefulWidget {
   final bool? canSetQuantity;
   final int? quantity;
   final PutOnMarketModel putOnMarketModel;
 
-  const PutOnMarket({
+  const PutOnMarketScreen({
     Key? key,
     this.canSetQuantity = false,
     this.quantity = 1,
@@ -25,10 +25,10 @@ class PutOnMarket extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PutOnMarketState createState() => _PutOnMarketState();
+  _PutOnMarketScreenState createState() => _PutOnMarketScreenState();
 }
 
-class _PutOnMarketState extends State<PutOnMarket>
+class _PutOnMarketScreenState extends State<PutOnMarketScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
@@ -133,9 +133,13 @@ class _PutOnMarketState extends State<PutOnMarket>
                                 putOnMarketModel: widget.putOnMarketModel,
                               ),
                               PawnTab(
+                                putOnMarketModel: widget.putOnMarketModel,
                                 cubit: cubit,
                               ),
-                              AuctionTab(cubit: cubit),
+                              AuctionTab(
+                                cubit: cubit,
+                                putOnMarketModel: widget.putOnMarketModel,
+                              ),
                             ],
                           ),
                         )

@@ -151,13 +151,16 @@ class _PickTimeState extends State<PickTime> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Center(
-                      child: Text(
-                        S.current.cancel,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          20,
-                          FontWeight.w700,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Center(
+                        child: Text(
+                          S.current.cancel,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            20,
+                            FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -175,13 +178,16 @@ class _PickTimeState extends State<PickTime> {
                         'minute': editMinuteController.text
                       });
                     },
-                    child: Center(
-                      child: Text(
-                        S.current.ok,
-                        style: textNormalCustom(
-                          fillYellowColor,
-                          20,
-                          FontWeight.w700,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Center(
+                        child: Text(
+                          S.current.ok,
+                          style: textNormalCustom(
+                            fillYellowColor,
+                            20,
+                            FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),

@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
@@ -25,9 +26,12 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
 
   Stream<String> get emailStream => _emailSubject.stream;
 
+  LoginRepository get _loginRepository => Get.find();
+
   Future<void> logout() async {
     showLoading();
-    await PrefsService.clearWalletLogin();
+    await _loginRepository.logout();
+    await PrefsService.clearWalletBE();
     showContent();
     emit(NoLoginState());
   }
@@ -58,12 +62,9 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
     if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
       final userInfo = PrefsService.getUserProfile();
+      final String wallet = PrefsService.getCurrentBEWallet();
       final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
-      if (mapProfileUser.stringValueOrEmpty('address') != '') {
-        addressWalletSubject.sink.add(
-          mapProfileUser.stringValueOrEmpty('address').handleString(),
-        );
-      }
+      addressWalletSubject.sink.add(wallet);
       if (mapProfileUser.stringValueOrEmpty('email') != '') {
         _emailSubject.sink.add(mapProfileUser.stringValueOrEmpty('email'));
       }

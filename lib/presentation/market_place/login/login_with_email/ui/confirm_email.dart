@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,13 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConfirmEmail extends StatefulWidget {
-  const ConfirmEmail({Key? key}) : super(key: key);
+  const ConfirmEmail({
+    Key? key,
+    required this.transactionId,
+    required this.email,
+  }) : super(key: key);
+  final String transactionId;
+  final String email;
 
   @override
   State<ConfirmEmail> createState() => _ConfirmEmailState();
@@ -35,12 +41,25 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
         floatingActionButton: ButtonLuxuryBigSize(
           title: S.current.confirm_account,
           isEnable: true,
-          onTap: () {
-            if(otpController.text.length != 6){
-              //todo: Handler
-            }else{
-              //TODO: CALL API VERIFY OTP
-              Navigator.pop(context,true);
+          onTap: () async {
+            if (otpController.value.text.length != 6) {
+              showErrorDialog(
+                context: context,
+                title: S.current.warning,
+                content: S.current.otp_invalid,
+              );
+            } else {
+              showLoading(context);
+              final bool isSuccess = await cubit.verifyOTP(
+                otp: otpController.value.text,
+                transactionID: widget.transactionId,
+              );
+              hideLoading(context);
+              if (isSuccess) {
+                Navigator.pop(context, true);
+              } else {
+                showErrorDialog(context: context, title: S.current.warning, content: S.current.expired_code,);
+              }
             }
           },
         ),
@@ -86,14 +105,18 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                     fieldHeight: 60,
                     borderWidth: 1,
                     fieldWidth: 50,
-                    inactiveFillColor: const Color(0xFF33324C),
-                    inactiveColor: const Color(0xFF585782),
-                    activeFillColor: const Color(0x1AE4AC1A),
-                    activeColor: const Color(0XFFE4AC1A),
-                    selectedColor: const Color(0x1AE4AC1A),
-                    selectedFillColor: const Color(0x1AE4AC1A),
-                    errorBorderColor: const Color(0xFF585782),
-                    disabledColor: const Color(0XFF33324C),
+                    //backgound khi đã truyền param
+                    activeFillColor: AppTheme.getInstance().yellowOpacity10(),
+                    //border khi đã truyền param
+                    activeColor: AppTheme.getInstance().fillColor(),
+                    //màu border khi click vào
+                    selectedColor: AppTheme.getInstance().colorTextReset(),
+                    //bg color của input đang focus
+                    selectedFillColor: AppTheme.getInstance().darkBgColor(),
+                    //bg color của input chưa có giá trị
+                    inactiveFillColor: AppTheme.getInstance().darkBgColor(),
+                    //border  color của input chưa có giá trị
+                    inactiveColor: AppTheme.getInstance().bgTranSubmit(),
                   ),
                   animationDuration: const Duration(milliseconds: 300),
                   enableActiveFill: true,
@@ -132,7 +155,11 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                   builder: (context, snapshot) {
                     return GestureDetector(
                       onTap: () {
-                        if(snapshot.data ?? false){
+                        if (snapshot.data ?? false) {
+                          cubit.sendOTP(
+                            email: widget.email,
+                            type: 1,
+                          );
                           cubit.startTimer();
                         }
                       },

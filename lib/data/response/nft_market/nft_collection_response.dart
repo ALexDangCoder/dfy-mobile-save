@@ -46,6 +46,8 @@ class NftCollectionResponse extends Equatable {
   double? expectedLoanAmount;
   @JsonKey(name: 'expected_loan_symbol')
   String? expectedLoanSymbol;
+  @JsonKey(name: 'pawn_id')
+  String? pawnId;
 
   NftCollectionResponse(
     this.type,
@@ -66,6 +68,7 @@ class NftCollectionResponse extends Equatable {
     this.endTime,
     this.expectedLoanAmount,
     this.expectedLoanSymbol,
+    this.pawnId,
   );
 
   factory NftCollectionResponse.fromJson(Map<String, dynamic> json) =>
@@ -110,7 +113,8 @@ class NftCollectionResponse extends Equatable {
 
   NftMarket toDomain() => NftMarket(
         id: id ?? '',
-        marketId: marketId ?? '',
+        marketId: marketId,
+        nftId: idRef,
         marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? ''),
         price: expectedLoanAmount ?? 0,
@@ -122,5 +126,11 @@ class NftCollectionResponse extends Equatable {
         endTime: endTime ?? 0,
         startTime: startTime ?? 0,
         numberOfCopies: numberOfCopies ?? 0,
+        pawnId: checkNullParseInt(pawnId ?? ''),
       );
+
+  int checkNullParseInt(String id) {
+    final int idPawn = int.parse(id.isEmpty ? '0' : pawnId ?? '0');
+    return idPawn;
+  }
 }

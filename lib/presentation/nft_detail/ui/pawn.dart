@@ -22,7 +22,7 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
           children: [
             Row(
               children: [
-                if (nftOnPawn.urlToken?.isNotEmpty ?? false)
+                if (nftOnPawn.urlToken != null)
                   ClipRRect(
                     child: Image(
                       image: NetworkImage(
@@ -81,7 +81,7 @@ Widget _durationRowOnPawn({
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${S.current.duration}:',
+            S.current.duration,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor().withOpacity(0.7),
               14,
@@ -103,16 +103,18 @@ Widget _durationRowOnPawn({
   );
 }
 
-Widget _buildButtonSendOffer(BuildContext context) {
+Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
+  /// TODO: if un login => login => send offer
   return ButtonGradient(
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return const SendOffer();
-          },
+      showDialog(
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: SendOffer(
+            nftOnPawn: nftOnPawn,
+          ),
+          isRequireLoginEmail: true,
         ),
+        context: context,
       );
     },
     gradient: RadialGradient(
@@ -128,5 +130,72 @@ Widget _buildButtonSendOffer(BuildContext context) {
         FontWeight.w700,
       ),
     ),
+  );
+}
+
+Widget _buildButtonCancelOnPawn(
+  BuildContext context,
+  NFTDetailBloc bloc,
+  NftOnPawn nftMarket,
+) {
+  return ButtonGradient(
+    onPressed: () async {
+      final nav = Navigator.of(context);
+      final String dataString = await bloc.getDataStringForCancelPawn(
+        pawnId: nftMarket.nftCollateralDetailDTO?.nftId ?? '',
+      );
+      final List<DetailItemApproveModel> listApprove = [];
+      if (nftMarket.nftCollateralDetailDTO?.nftStandard == 0) {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: NFT,
+            value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
+          ),
+        );
+        listApprove.add(
+          DetailItemApproveModel(
+            title: S.current.quantity,
+            value: '${nftMarket.nftCollateralDetailDTO?.numberOfCopies}',
+          ),
+        );
+      } else {
+        listApprove.add(
+          DetailItemApproveModel(
+            title: NFT,
+            value: nftMarket.nftCollateralDetailDTO?.nftName ?? '',
+          ),
+        );
+      }
+      unawaited(
+        nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftOnPawn: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              cancelInfo: S.current.pawn_cancel_info,
+              cancelWarning: S.current.pawn_cancel_warning,
+              title: S.current.cancel_pawn,
+            ),
+          ),
+        ),
+      );
+    },
+    gradient: RadialGradient(
+      center: const Alignment(0.5, -0.5),
+      radius: 4,
+      colors: AppTheme.getInstance().gradientButtonColor(),
+    ),
+    child: nftMarket.status == 7
+        ? processing()
+        : Text(
+            S.current.withdraw_nft,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
   );
 }

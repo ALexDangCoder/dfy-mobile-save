@@ -43,6 +43,7 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
+const grayColor = Color(0xff9FA6B2);
 const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
@@ -143,6 +144,8 @@ abstract class AppColor {
 
   Color secondTxtColor();
 
+  Color getAmountColor();
+
   Color dfBtnColor();
 
   Color dfBtnTxtColor();
@@ -174,6 +177,8 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+
+  Color getGrayColor();
 
   Color whiteOpacityDot5();
 
@@ -228,6 +233,8 @@ abstract class AppColor {
   Color gray3Color();
 
   Color getPurpleColor();
+
+  Color logoColor();
 }
 
 class LightApp extends AppColor {
@@ -515,7 +522,6 @@ class LightApp extends AppColor {
 
   @override
   Color colorTextReset() {
-    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 
@@ -572,12 +578,32 @@ class LightApp extends AppColor {
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
   }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
+  }
 }
 
 class DarkApp extends AppColor {
   @override
   Color primaryColor() {
     return Colors.black;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
   }
 
   @override
@@ -940,6 +966,16 @@ class DarkApp extends AppColor {
   @override
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
   }
 }
 

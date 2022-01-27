@@ -5,7 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/widget/input_row_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_extension.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/pick_file_extension.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -79,30 +79,63 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                         return Stack(
                           children: [
                             Center(
-                              child: Container(
-                                constraints: BoxConstraints(
-                                  minHeight: 113.h,
-                                ),
-                                clipBehavior: Clip.hardEdge,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: AspectRatio(
-                                  aspectRatio: _controller.value.aspectRatio,
-                                  child: Stack(
-                                    alignment: Alignment.bottomCenter,
-                                    children: <Widget>[
-                                      VideoPlayer(_controller),
-                                      VideoProgressIndicator(
-                                        _controller,
-                                        allowScrubbing: true,
-                                      ),
-                                    ],
+                              child: GestureDetector(
+                                onTap: (){
+                                  if (_controller.value.isPlaying)
+                                    {
+                                      _controller.pause();
+                                      cubit.playButtonSubject.sink.add(true);
+                                    }
+                                },
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    minHeight: 113.h,
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: AspectRatio(
+                                    aspectRatio: _controller.value.aspectRatio,
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: <Widget>[
+                                        VideoPlayer(_controller),
+                                        VideoProgressIndicator(
+                                          _controller,
+                                          allowScrubbing: true,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
+                              StreamBuilder<bool>(
+                                stream: cubit.playButtonSubject,
+                                initialData: true,
+                                builder: (context, snapshot) {
+                                  final showPlayBtn = snapshot.data ?? false;
+                                  if(showPlayBtn){
+                                    return Positioned.fill(
+                                      child: InkWell(
+                                        onTap: () {
+                                        cubit.playButtonSubject.sink.add(false);
+                                        _controller.play();
+                                        },
+                                        child: sizedSvgImage(
+                                          w: 34,
+                                          h: 34,
+                                          image: ImageAssets.play_btn_svg,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
+                                },
+                              ),
                             closeWidget(
                               onTap: () {
                                 cubit.clearMainData();

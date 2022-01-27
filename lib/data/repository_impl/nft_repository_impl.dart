@@ -1,8 +1,10 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
 import 'package:Dfy/data/response/nft/bidding_response.dart';
+import 'package:Dfy/data/response/nft/data_detail_offer_response.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/data/response/nft/hard_nft_respone.dart';
 import 'package:Dfy/data/response/nft/history_response.dart';
@@ -23,6 +25,7 @@ import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
+import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 
@@ -158,16 +161,59 @@ class NFTRepositoryImpl implements NFTRepository {
     required String txnHash,
   }) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _nftClient.cancelSale(id, txnHash),
-          (response) => response.toDomain(),
+      () => _nftClient.cancelSale(id, txnHash),
+      (response) => response.toDomain(),
     );
   }
 
   @override
-  Future<Result<ConfirmModel>> cancelAuction({required String id, required String txnHash}) {
+  Future<Result<ConfirmModel>> cancelAuction(
+      {required String id, required String txnHash}) {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
-          () => _nftClient.cancelAuction(id,txnHash),
-          (response) => response.toDomain(),
+      () => _nftClient.cancelAuction(id, txnHash),
+      (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<OfferDetailModel>> getDetailOffer(int id) {
+    return runCatchingAsync<DataOfferDetailResponse, OfferDetailModel>(
+      () => _nftClient.getOfferDetail(id),
+      (response) => response.data?.toModel() ?? OfferDetailModel(),
+    );
+  }
+
+  @override
+  Future<Result<String>> acceptOffer(
+      int idCollateral, int idOffer, String addressWallet) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.acceptOffer(idCollateral, idOffer, addressWallet),
+      (response) => response.toString(),
+    );
+  }
+
+  @override
+  Future<Result<String>> rejectOffer(
+      int idCollateral, int idOffer, String addressWallet) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.rejectOffer(idCollateral, idOffer, addressWallet),
+      (response) => response.toString(),
+    );
+  }
+
+  @override
+  Future<Result<String>> sendOffer(SendOfferRequest request) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.sendOffer(request),
+      (response) => response.toString(),
+    );
+  }
+
+  @override
+  Future<Result<ConfirmModel>> cancelPawn(int id) {
+    return runCatchingAsync<ConfirmResponse, ConfirmModel>(
+      () => _nftClient.cancelPawn(id),
+      (response) => response.toDomain(),
     );
   }
 }

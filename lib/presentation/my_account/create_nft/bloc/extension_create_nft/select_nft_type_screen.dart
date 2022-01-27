@@ -9,13 +9,11 @@ extension SelectNftCubit on CreateNftCubit{
     result.when(
       success: (res) {
         showContent();
-        listNft = res;
         res.sort((a, b) => (a.standard ?? 0).compareTo(b.standard ?? 0));
         listSoftNft = res.where((element) => element.type == 0).toList();
         emit(
           TypeNFT(listSoftNft: listSoftNft),
         );
-        listHardNft = res.where((element) => element.type == 1).toList();
       },
       error: (error) {
         showError();
@@ -27,6 +25,6 @@ extension SelectNftCubit on CreateNftCubit{
     selectedId = id;
     selectIdSubject.sink.add(selectedId);
     selectedNftType =
-        listNft.where((element) => element.id == id).toList().first.type ?? 1;
+        listSoftNft.where((element) => element.id == id).toList().first.type ?? 1;
   }
 }

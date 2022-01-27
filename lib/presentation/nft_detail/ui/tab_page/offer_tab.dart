@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
+import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
@@ -22,35 +23,37 @@ class OfferTab extends StatefulWidget {
 class _OfferTabState extends State<OfferTab> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.listOffer.isEmpty) {
-      return Center(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Center(
-              child: sizedPngImage(
-                w: 94,
-                h: 94,
-                image: ImageAssets.icNoTransaction,
-              ),
-            ),
-            Center(
-              child: Text(
-                'No offer',
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 20,
+      return SizedBox(
+        height: 150.h,
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Center(
+                child: sizedPngImage(
+                  w: 94,
+                  h: 94,
+                  image: ImageAssets.icNoTransaction,
                 ),
               ),
-            ),
-          ],
+              Center(
+                child: Text(
+                  'No offer',
+                  style: tokenDetailAmount(
+                    color: AppTheme.getInstance().currencyDetailTokenColor(),
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -70,7 +73,14 @@ class _OfferTabState extends State<OfferTab> {
     return BaseItem(
       child: GestureDetector(
         onTap: () {
-          /// push to Offer detail
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OfferDetailScreen(
+                id: objOffer.id ?? -1,
+              ),
+            ),
+          );
         },
         child: Padding(
           padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -94,9 +104,9 @@ class _OfferTabState extends State<OfferTab> {
                           '${objOffer.addressLender}'.handleString(),
                           style: richTextWhite
                               .copyWith(
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              )
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          )
                               .copyWith(fontSize: 14.sp),
                         ),
                       ],
@@ -123,7 +133,7 @@ class _OfferTabState extends State<OfferTab> {
                           ),
                           TextSpan(
                             text:
-                                ' with a ${objOffer.duration ?? ''} $duration',
+                            ' with a ${objOffer.duration ?? ''} $duration',
                             style: textNormalCustom(
                               AppTheme.getInstance().textThemeColor(),
                               14,

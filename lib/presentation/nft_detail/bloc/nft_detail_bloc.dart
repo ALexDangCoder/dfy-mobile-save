@@ -19,10 +19,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
-import 'package:Dfy/widgets/approve/ui/approve.dart';
-import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +38,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   String hexString = '';
   String gasLimit = '';
   String rawData = '';
-  String nftMarketId = '';
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
@@ -72,25 +68,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Sink<bool> get pairSink => _pairSubject.sink;
 
-  Future<double> getBalanceToken({
-    required String ofAddress,
-    required String tokenAddress,
-  }) async {
-    showLoading();
-    try {
-      balance = await web3Client.getBalanceOfToken(
-        ofAddress: ofAddress,
-        tokenAddress: tokenAddress,
-      );
-      showContent();
-    } catch (e) {
-      showError();
-      throw AppException(S.current.error, e.toString());
-    }
-    return balance;
-  }
-
-  Future<void> getHistory(String collectionAddress, String nftTokenId) async {
+  Future<void> getHistory(
+      {required String collectionAddress, required String nftTokenId}) async {
     final Result<List<HistoryNFT>> result =
         await _nftRepo.getHistory(collectionAddress, nftTokenId);
     result.when(
@@ -180,11 +159,18 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
+          final String wallet = PrefsService.getCurrentBEWallet();
+          if (res.owner?.toLowerCase() == wallet.toLowerCase()) {
+            res.isOwner = true;
+          } else {
+            res.isOwner = false;
+          }
           showContent();
-          nftMarket = res;
-          owner = res.owner ?? '';
           emit(NftNotOnMarketSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
@@ -215,10 +201,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           showContent();
-          nftMarket = res;
-          owner = res.owner ?? '';
           emit(NftOnSaleSuccess(res));
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
@@ -254,7 +241,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
           }
-          getHistory(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
           for (final value in listTokenSupport) {
@@ -279,6 +269,12 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           await _nftRepo.getDetailNftOnPawn(pawnId.toString());
       result.when(
         success: (res) {
+          final String wallet = PrefsService.getCurrentBEWallet();
+          if (res.walletAddress?.toLowerCase() == wallet.toLowerCase()) {
+            res.isYou = true;
+          } else {
+            res.isYou = false;
+          }
           getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';
@@ -286,16 +282,20 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               res.urlToken = value.iconUrl;
               res.usdExchange = value.usdExchange;
+              res.repaymentAsset = value.address;
             }
           }
           emit(NftOnPawnSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.nftCollateralDetailDTO?.evaluationId ?? '',
-                res.urlToken ?? '');
+            getEvaluation(
+              res.nftCollateralDetailDTO?.evaluationId ?? '',
+              res.urlToken ?? '',
+            );
           }
           getHistory(
-            res.nftCollateralDetailDTO?.collectionAddress ?? '',
-            res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
+            collectionAddress:
+                res.nftCollateralDetailDTO?.collectionAddress ?? '',
+            nftTokenId: res.nftCollateralDetailDTO?.nftTokenId.toString() ?? '',
           );
           getOwner(
             res.nftCollateralDetailDTO?.collectionAddress ?? '',
@@ -447,68 +447,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     return hexString;
   }
 
-  List<DetailItemApproveModel> initListApprove({
-    required TYPE_CONFIRM_BASE type,
-  }) {
-    final List<DetailItemApproveModel> listApprove = [];
-    if(type == TYPE_CONFIRM_BASE.CANCEL_SALE){
-      if (nftMarket.nftStandard == 'ERC-721') {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftMarket.name ?? '',
-          ),
-        );
-        listApprove.add(
-          DetailItemApproveModel(
-            title: S.current.quantity,
-            value: '${nftMarket.numberOfCopies}',
-          ),
-        );
-      } else {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftMarket.name ?? '',
-          ),
-        );
-      }
-    }else if(type == TYPE_CONFIRM_BASE.CANCEL_AUCTION){
-      if (nftOnAuction.nftStandard == 'ERC-721') {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftOnAuction.name ?? '',
-          ),
-        );
-        listApprove.add(
-          DetailItemApproveModel(
-            title: S.current.quantity,
-            value: '${nftOnAuction.numberOfCopies}',
-          ),
-        );
-      } else {
-        listApprove.add(
-          DetailItemApproveModel(
-            title: 'NTF',
-            value: nftOnAuction.name ?? '',
-          ),
-        );
-      }
-    }
-
-    return listApprove;
-  }
-
   //get dataString
   Future<String> getDataStringForCancel({
     required BuildContext context,
+    required String orderId,
   }) async {
     try {
       showLoading();
       hexString = await web3Client.getCancelListingData(
         contractAddress: nft_sales_address_dev2,
-        orderId: nftMarket.orderId.toString(),
+        orderId: orderId,
         context: context,
       );
       showContent();
@@ -521,13 +469,30 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   Future<String> getDataStringForCancelAuction({
     required BuildContext context,
+    required String auctionId,
   }) async {
     try {
       showLoading();
       hexString = await web3Client.getCancelAuctionData(
         contractAddress: nft_auction_dev2,
         context: context,
-        auctionId: nftOnAuction.auctionId.toString(),
+        auctionId: auctionId,
+      );
+      showContent();
+      return hexString;
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  Future<String> getDataStringForCancelPawn({
+    required String pawnId,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getWithdrawCollateralData(
+        nftCollateralId: pawnId,
       );
       showContent();
       return hexString;

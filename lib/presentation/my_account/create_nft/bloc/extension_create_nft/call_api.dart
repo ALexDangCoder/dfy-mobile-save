@@ -1,4 +1,5 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -6,15 +7,17 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 extension CallApi on CreateNftCubit {
   ///get collection list (my acc)
   Future<void> getListCollection() async {
+    walletAddress = PrefsService.getCurrentBEWallet();
     final Result<List<CollectionMarketModel>> result =
         await collectionDetailRepository.getListCollection(
-      addressWallet: '0x7Cf759534595a8059f25fc319f570A077c41F116',
+      addressWallet: walletAddress,
     );
     result.when(
       success: (res) {
-        final List<CollectionMarketModel> list =
+        softCollectionList =
             res.where((element) => element.type == SOFT_COLLECTION).toList();
-        final listDropDown = list.map((e) => e.toDropDownMap()).toList();
+        final listDropDown =
+            softCollectionList.map((e) => e.toDropDownMap()).toList();
         listCollectionSubject.sink.add(listDropDown);
       },
       error: (_) {},

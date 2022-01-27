@@ -9,10 +9,10 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class ImportNftResponse {
   bool isSuccess;
@@ -171,7 +171,7 @@ class Web3Utils {
           'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
       id: '124124',
       // link: 'https://goole.com',
-      standard: 'ERC-721',
+      standard: ERC_721,
     );
   }
 
@@ -755,7 +755,7 @@ class Web3Utils {
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(nftTokenQuantity)),
         BigInt.from(num.parse(expectedDurationQty)),
-        durationType,
+        BigInt.from(durationType),
         beNFTId,
       ],
     );

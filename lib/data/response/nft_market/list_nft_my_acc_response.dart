@@ -120,11 +120,11 @@ class NftMyAccResponse extends Equatable {
       return MarketType.NOT_ON_MARKET;
     }
   }
-  int returnPawnId(String pawnId){
-    if(pawnId == ''){
+
+  int returnPawnId(String pawnId) {
+    if (pawnId == '') {
       return 0;
-    }
-    else {
+    } else {
       return int.parse(pawnId);
     }
   }
@@ -144,7 +144,7 @@ class NftMyAccResponse extends Equatable {
         numberOfCopies: numberOfCopies,
         walletAddress: walletAddress,
         processStatus: processStatus,
-        nftStandard: (standard == 0) ? 'ERC-721':'ERC-1155',
+        nftStandard: (standard == 0) ? ERC_721 : ERC_1155,
         collectionAddress: collectionAddress,
       );
 }
