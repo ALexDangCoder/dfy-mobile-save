@@ -58,8 +58,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
+
 part 'component.dart';
+
 part 'pawn.dart';
+
 part 'sale.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
@@ -548,9 +551,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           spaceH12,
                           buildRow(
                             title: S.current.nft_standard,
-                            detail: objSale.nftStandard == '0'
-                                ? ERC_721
-                                : ERC_1155,
+                            detail:
+                                objSale.nftStandard == '0' ? ERC_721 : ERC_1155,
                             type: TextType.NORMAL,
                           ),
                           spaceH12,
@@ -661,7 +663,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     objSale.isBoughtByOther ?? false,
                     widget.marketId ?? '',
                   )
-                : _buildButtonCancelOnSale(context, bloc, objSale, onRefresh),
+                : _buildButtonCancelOnSale(
+                    context,
+                    bloc,
+                    objSale,
+                    onRefresh,
+                  ),
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
@@ -975,7 +982,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
-              isScrollable:  true,
+              isScrollable: true,
               onTap: (value) {
                 pageController.animateToPage(
                   value,
