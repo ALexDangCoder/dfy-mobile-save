@@ -295,46 +295,11 @@ class _PawnTabState extends State<PawnTab>
                 return GestureDetector(
                   onTap: () async {
                     if (data) {
-                      final navigator = Navigator.of(context);
                       final hexString =
                           await widget.cubit.getHexStringPutOnPawn(
                         _putOnMarketModel,
                         context,
                       );
-                      // unawaited(
-                      //   navigator.push(
-                      //     MaterialPageRoute(
-                      //       builder: (context) => Approve(
-                      //         needApprove: true,
-                      //         payValue: _putOnMarketModel.price,
-                      //         tokenAddress: _putOnMarketModel.tokenAddress,
-                      //         putOnMarketModel: _putOnMarketModel,
-                      //         hexString: hexString,
-                      //         title: S.current.put_on_sale,
-                      //         listDetail: [
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.expected_loan} :',
-                      //             value:
-                      //                 '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
-                      //             isToken: true,
-                      //           ),
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.duration} :',
-                      //             value:
-                      //                 '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
-                      //           ),
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.price_per_1} :',
-                      //             value:
-                      //                 '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
-                      //           )
-                      //         ],
-                      //         textActiveButton: S.current.put_on_pawn,
-                      //         typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
                       await showDialog(
                         context: context,
                         builder: (context) => ConnectWalletDialog(
@@ -344,7 +309,7 @@ class _PawnTabState extends State<PawnTab>
                             tokenAddress: _putOnMarketModel.tokenAddress,
                             putOnMarketModel: _putOnMarketModel,
                             hexString: hexString,
-                            title: S.current.put_on_sale,
+                            title: S.current.put_on_pawn,
                             listDetail: [
                               DetailItemApproveModel(
                                 title: '${S.current.expected_loan} :',

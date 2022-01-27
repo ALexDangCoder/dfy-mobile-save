@@ -807,7 +807,7 @@ class _ApproveState extends State<Approve> {
           navigator.popUntil((route) {
             return route.settings.name == AppRouter.putOnSale;
           });
-          navigator.pop();
+          navigator.pop(true);
         } else {
           await showLoadFail();
         }
@@ -820,7 +820,7 @@ class _ApproveState extends State<Approve> {
           navigator.popUntil((route) {
             return route.settings.name == AppRouter.putOnSale;
           });
-          navigator.pop();
+          navigator.pop(true);
         } else {
           await showLoadFail();
         }
@@ -833,7 +833,7 @@ class _ApproveState extends State<Approve> {
           navigator.popUntil((route) {
             return route.settings.name == AppRouter.putOnSale;
           });
-          navigator.pop();
+          navigator.pop(true);
         } else {
           await showLoadFail();
         }
@@ -1051,7 +1051,7 @@ class _ApproveState extends State<Approve> {
             );
         break;
       case TYPE_CONFIRM_BASE.PUT_ON_SALE:
-        final result = await cubit.putOnSale(txHash: data);
+        await cubit.putOnSale(txHash: data);
         navigator.pop();
         await showLoadFail();
         break;

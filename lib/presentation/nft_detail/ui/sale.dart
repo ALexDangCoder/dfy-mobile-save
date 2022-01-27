@@ -381,7 +381,7 @@ Widget _buildButtonPutOnMarket(
       if ((splitImageLink ?? []).isNotEmpty) {
         imageId = (splitImageLink ?? []).last.toString();
       }
-      await navigator.push(
+      final result = await navigator.push(
         MaterialPageRoute(
           builder: (context) => PutOnMarketScreen(
             putOnMarketModel: PutOnMarketModel.putOnSale(
@@ -405,7 +405,7 @@ Widget _buildButtonPutOnMarket(
           ),
         ),
       );
-      reload();
+      if (result != null)reload();
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
