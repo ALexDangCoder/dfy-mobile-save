@@ -14,6 +14,7 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,16 +72,27 @@ class _AuctionTabState extends State<AuctionTab>
 
   String? validateDuration() {
     if (timeStartController.text != '' && timeEndController.text != '') {
-      DateTime startTime = DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
-          .parse('${dateStartController.text} ${timeStartController.text}');
+      final DateTime startTime =
+          DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
+              .parse('${dateStartController.text} ${timeStartController.text}');
       _putOnMarketModel.startTime =
-          (startTime.millisecondsSinceEpoch / 1000).toInt().toString();
-      DateTime endTime = DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
-          .parse('${dateEndController.text} ${timeEndController.text}');
+          (startTime.millisecondsSinceEpoch ~/ 1000).toString();
+      final DateTime endTime =
+          DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
+              .parse('${dateEndController.text} ${timeEndController.text}');
 
       _putOnMarketModel.endTime =
-          (endTime.millisecondsSinceEpoch / 1000).toInt().toString();
+          (endTime.millisecondsSinceEpoch ~/ 1000).toString();
       final difference = endTime.difference(startTime).inHours;
+      if (startTime.difference(DateTime.now()).inHours < 48 ) {
+        setState(() {
+          errorTextStartTime = S.current.start_time_auction;
+        });
+        widget.cubit.timeValidate = false;
+        widget.cubit.updateStreamContinueAuction();
+      }else{
+        errorTextStartTime = null;
+      }
       durationTime = endTime.difference(startTime).inMinutes;
       if ((durationTime ?? 0) < 10 && (durationTime ?? 0) > 0) {
         return null;
@@ -180,99 +192,119 @@ class _AuctionTabState extends State<AuctionTab>
                 height: 4,
               ),
               StreamBuilder<List<TokenInf>>(
-                  stream: widget.cubit.listTokenStream,
-                  builder: (context, snapshot) {
-                    final data = snapshot.data ?? [];
-                    if (data.isNotEmpty) {
-                      widget.cubit.changeTokenSale(
-                        indexToken: 0,
-                      );
-                      _putOnMarketModel.tokenAddress =
-                          widget.cubit.listToken[0].address ?? '';
-                      WidgetsBinding.instance
-                          ?.addPostFrameCallback((timeStamp) {
-                        if (_tokenInf == null) {
-                          setState(() {
-                            _tokenInf = widget.cubit.listToken[0];
-                          });
-                        }
-                      });
-                    }
-                    return InputWithSelectType(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,5}'),
-                        ),
-                      ],
-                      maxSize: 100,
-                      keyboardType: TextInputType.number,
-                      typeInput: data
-                          .map(
-                            (e) => SizedBox(
-                              height: 64,
-                              width: 70,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Image.network(
-                                      e.iconUrl ?? '',
-                                      height: 20,
-                                      width: 20,
+                stream: widget.cubit.listTokenStream,
+                builder: (context, snapshot) {
+                  final data = snapshot.data ?? [];
+                  if (data.isNotEmpty) {
+                    widget.cubit.changeTokenSale(
+                      indexToken: 0,
+                    );
+                    _putOnMarketModel.tokenAddress =
+                        widget.cubit.listToken[0].address ?? '';
+                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                      if (_tokenInf == null) {
+                        setState(() {
+                          _tokenInf = widget.cubit.listToken[0];
+                        });
+                      }
+                    });
+                  }
+                  return InputWithSelectType(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,5}'),
+                      ),
+                    ],
+                    maxSize: 100,
+                    keyboardType: TextInputType.number,
+                    typeInput: data
+                        .map(
+                          (e) => SizedBox(
+                            height: 64,
+                            width: 70,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Image.network(
+                                    e.iconUrl ?? '',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Flexible(
+                                  child: Text(
+                                    e.symbol ?? '',
+                                    style: textValueNFT.copyWith(
+                                      decoration: TextDecoration.none,
                                     ),
                                   ),
-                                  const SizedBox(width: 5),
-                                  Flexible(
-                                    child: Text(
-                                      e.symbol ?? '',
-                                      style: textValueNFT.copyWith(
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          )
-                          .toList(),
-                      hintText: S.current.enter_price,
-                      onChangeType: (index) {
-                        widget.cubit.changeTokenAuction(
-                          indexToken: index,
-                        );
-                        _putOnMarketModel.tokenAddress =
-                            widget.cubit.listToken[index].address ?? '';
+                          ),
+                        )
+                        .toList(),
+                    hintText: S.current.enter_price,
+                    onChangeType: (index) {
+                      widget.cubit.changeTokenAuction(
+                        indexToken: index,
+                      );
+                      _putOnMarketModel.tokenAddress =
+                          widget.cubit.listToken[index].address ?? '';
+                      setState(() {
+                        _tokenInf = widget.cubit.listToken[index];
+                      });
+                    },
+                    onchangeText: (value) {
+                      widget.cubit.changeTokenAuction(
+                        value: value != '' ? double.parse(value) : 0,
+                      );
+                      _putOnMarketModel.price = value;
+                      if (!validateBuyOutPrice()) {
                         setState(() {
-                          _tokenInf = widget.cubit.listToken[index];
+                          buyOutPriceErrorText = S.current.buy_out_price_error;
                         });
-                      },
-                      onchangeText: (value) {
-                        widget.cubit.changeTokenAuction(
-                          value: value != '' ? double.parse(value) : 0,
-                        );
-                        _putOnMarketModel.price = value;
-                        if (!validateBuyOutPrice()) {
-                          setState(() {
-                            buyOutPriceErrorText =
-                                S.current.buy_out_price_error;
-                          });
-                        } else {
-                          setState(() {
-                            buyOutPriceErrorText = null;
-                          });
-                        }
-                      },
-                    );
-                  }),
+                      } else {
+                        setState(() {
+                          buyOutPriceErrorText = null;
+                        });
+                      }
+                    },
+                  );
+                },
+              ),
               const SizedBox(
                 height: 16,
               ),
-              Text(
-                S.current.duration,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  16,
-                  FontWeight.w600,
-                ),
+              Row(
+                children: [
+                  Text(
+                    S.current.duration,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      16,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.centerLeft,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => InfoPopup(
+                          name: S.current.duration,
+                          content: S.current.duration_more_content,
+                        ),
+                      );
+                    },
+                    icon: Image.asset(ImageAssets.more_circle_white),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 4,
