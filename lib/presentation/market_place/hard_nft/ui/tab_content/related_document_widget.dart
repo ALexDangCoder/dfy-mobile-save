@@ -20,9 +20,10 @@ class RelatedDocument extends StatelessWidget {
         children: [
           Text(
             'Related documents',
-            style: tokenDetailAmount(
-              color: AppTheme.getInstance().whiteColor(),
-              fontSize: 14,
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              14,
+              FontWeight.w600,
             ),
           ),
           if (evaluation.document?.isNotEmpty ?? false)

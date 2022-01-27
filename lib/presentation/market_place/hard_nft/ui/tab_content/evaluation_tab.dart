@@ -84,9 +84,10 @@ class _EvaluationTabState extends State<EvaluationTab>
                     value: widget.evaluation.additionalInformation ?? ''),
                 Text(
                   S.current.images_videos,
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    fontSize: 14,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().currencyDetailTokenColor(),
+                    14,
+                    FontWeight.w600,
                   ),
                 ),
                 spaceH16,
@@ -224,6 +225,9 @@ class _EvaluationTabState extends State<EvaluationTab>
                               object: widget.evaluation,
                             ),
                           ),
+                          spaceH20,
+                          divide,
+                          spaceH20,
                           Container(
                             padding: EdgeInsets.only(
                               left: 16.w,
