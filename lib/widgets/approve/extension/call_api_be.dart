@@ -51,7 +51,7 @@ extension CallApiBE on ApproveCubit {
       'enable_buy_out_price': haveBuyOutPrice,
       'enable_price_step': havePriceStep,
       'end_time':int.parse( putOnMarketModel?.endTime ?? '0'),
-      'get_email': false,
+      'get_email': true,
       'nft_id': putOnMarketModel?.nftId,
       'nft_type': putOnMarketModel?.nftType ?? 0,
       'price_step': int.parse(putOnMarketModel?.priceStep ?? '0'),
