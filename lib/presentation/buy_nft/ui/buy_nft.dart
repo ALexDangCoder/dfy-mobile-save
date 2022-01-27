@@ -255,7 +255,7 @@ class _BuyNFTState extends State<BuyNFT> {
         contractAddress: nft_sales_address_dev2,
       )
           .then(
-            (hexString) => Navigator.push(
+            (hexString) => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => Approve(
