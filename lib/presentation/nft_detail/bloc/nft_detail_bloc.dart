@@ -456,7 +456,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }) {
     final List<DetailItemApproveModel> listApprove = [];
     if (type == TYPE_CONFIRM_BASE.CANCEL_SALE) {
-      if (nftMarket.nftStandard == 'ERC-721') {
+      if (nftMarket.nftStandard == ERC_721) {
         listApprove.add(
           DetailItemApproveModel(
             title: 'NTF',
@@ -478,7 +478,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         );
       }
     } else if (type == TYPE_CONFIRM_BASE.CANCEL_AUCTION) {
-      if (nftOnAuction.nftStandard == 'ERC-721') {
+      if (nftOnAuction.nftStandard == ERC_721) {
         listApprove.add(
           DetailItemApproveModel(
             title: 'NTF',
@@ -532,6 +532,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         contractAddress: nft_auction_dev2,
         context: context,
         auctionId: nftOnAuction.auctionId.toString(),
+      );
+      showContent();
+      return hexString;
+    } catch (e) {
+      showError();
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  Future<String> getDataStringForCancelPawn({
+    required String pawnId,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getWithdrawCollateralData(
+        nftCollateralId: pawnId,
       );
       showContent();
       return hexString;

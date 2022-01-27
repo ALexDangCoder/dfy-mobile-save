@@ -15,7 +15,7 @@ class PrefsService {
   static const _PREF_USER_PROFILE = 'pref_user_info';
   static const _PREF_CURRENT_WALLET_CORE = 'pref_is_wallet_core_logged';
   static const _PREF_IS_WALLET_BE_LOGGED = 'pref_is_wallet_be_logged';
-
+  static const _PREF_OWNER_PAWN = 'pref_owner_pawn';
 
   static SharedPreferences? _prefsInstance;
 
@@ -92,6 +92,15 @@ class PrefsService {
         jsonLoginModelEmpty();
   }
 
+  static Future<bool> saveOwnerPawn(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_OWNER_PAWN, data);
+  }
+
+  static String getOwnerPawn() {
+    return _prefsInstance?.getString(_PREF_OWNER_PAWN) ?? '';
+  }
+
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
     await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
@@ -166,5 +175,4 @@ class PrefsService {
   static String getCurrentWalletCore() {
     return _prefsInstance?.getString(_PREF_CURRENT_WALLET_CORE) ?? '';
   }
-
 }

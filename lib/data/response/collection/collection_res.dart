@@ -108,6 +108,7 @@ class CollectionResponse extends Equatable {
         coverCid: coverCid,
         nftOwnerCount: numberOfOwner,
         addressCollection: collectionAddress,
+        collectionId: collectionId,
       );
 
   @override

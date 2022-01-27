@@ -109,6 +109,8 @@ class _PawnTabState extends State<PawnTab>
                     );
                     _putOnMarketModel.tokenAddress =
                         widget.cubit.listToken[0].address ?? '';
+                    _putOnMarketModel.loanSymbol =
+                        widget.cubit.listToken[0].symbol ?? '';
                   }
                   return InputWithSelectType(
                     inputFormatters: [
@@ -153,10 +155,12 @@ class _PawnTabState extends State<PawnTab>
                       );
                       _putOnMarketModel.tokenAddress =
                           widget.cubit.listToken[index].address ?? '';
+                      _putOnMarketModel.loanSymbol =
+                          widget.cubit.listToken[index].symbol ?? '';
                     },
                     onchangeText: (value) {
                       widget.cubit.changeTokenPawn(
-                        value: value != '' ? int.parse(value) : null,
+                        value: value != '' ? int.parse(value) : 0,
                       );
                       _putOnMarketModel.price = value;
                     },
@@ -297,74 +301,74 @@ class _PawnTabState extends State<PawnTab>
                         _putOnMarketModel,
                         context,
                       );
-                      unawaited(
-                        navigator.push(
-                          MaterialPageRoute(
-                            builder: (context) => Approve(
-                              needApprove: true,
-                              payValue: _putOnMarketModel.price,
-                              tokenAddress: _putOnMarketModel.tokenAddress,
-                              putOnMarketModel: _putOnMarketModel,
-                              hexString: hexString,
-                              title: S.current.put_on_sale,
-                              listDetail: [
-                                DetailItemApproveModel(
-                                  title: '${S.current.expected_loan} :',
-                                  value:
-                                      '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
-                                  isToken: true,
-                                ),
-                                DetailItemApproveModel(
-                                  title: '${S.current.duration} :',
-                                  value:
-                                      '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
-                                ),
-                                DetailItemApproveModel(
-                                  title: '${S.current.price_per_1} :',
-                                  value:
-                                      '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
-                                )
-                              ],
-                              textActiveButton: S.current.put_on_pawn,
-                              typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
-                            ),
-                          ),
-                        ),
-                      );
-                      // await showDialog(
-                      //   context: context,
-                      //   builder: (context) => ConnectWalletDialog(
-                      //     navigationTo: Approve(
-                      //       needApprove: true,
-                      //       payValue: _putOnMarketModel.price,
-                      //       tokenAddress: _putOnMarketModel.tokenAddress,
-                      //       putOnMarketModel: _putOnMarketModel,
-                      //       // hexString: hexString,
-                      //       title: S.current.put_on_sale,
-                      //       listDetail: [
-                      //         DetailItemApproveModel(
-                      //           title: '${S.current.expected_loan} :',
-                      //           value:
-                      //           '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
-                      //           isToken: true,
-                      //         ),
-                      //         DetailItemApproveModel(
-                      //           title: '${S.current.duration} :',
-                      //           value:
-                      //           '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
-                      //         ),
-                      //         DetailItemApproveModel(
-                      //           title: '${S.current.price_per_1} :',
-                      //           value:
-                      //           '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
-                      //         )
-                      //       ],
-                      //       textActiveButton: S.current.put_on_sale,
-                      //       typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                      // unawaited(
+                      //   navigator.push(
+                      //     MaterialPageRoute(
+                      //       builder: (context) => Approve(
+                      //         needApprove: true,
+                      //         payValue: _putOnMarketModel.price,
+                      //         tokenAddress: _putOnMarketModel.tokenAddress,
+                      //         putOnMarketModel: _putOnMarketModel,
+                      //         hexString: hexString,
+                      //         title: S.current.put_on_sale,
+                      //         listDetail: [
+                      //           DetailItemApproveModel(
+                      //             title: '${S.current.expected_loan} :',
+                      //             value:
+                      //                 '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
+                      //             isToken: true,
+                      //           ),
+                      //           DetailItemApproveModel(
+                      //             title: '${S.current.duration} :',
+                      //             value:
+                      //                 '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
+                      //           ),
+                      //           DetailItemApproveModel(
+                      //             title: '${S.current.price_per_1} :',
+                      //             value:
+                      //                 '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
+                      //           )
+                      //         ],
+                      //         textActiveButton: S.current.put_on_pawn,
+                      //         typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                      //       ),
                       //     ),
-                      //     isRequireLoginEmail: true,
                       //   ),
                       // );
+                      await showDialog(
+                        context: context,
+                        builder: (context) => ConnectWalletDialog(
+                          navigationTo: Approve(
+                            needApprove: true,
+                            payValue: _putOnMarketModel.price,
+                            tokenAddress: _putOnMarketModel.tokenAddress,
+                            putOnMarketModel: _putOnMarketModel,
+                            hexString: hexString,
+                            title: S.current.put_on_sale,
+                            listDetail: [
+                              DetailItemApproveModel(
+                                title: '${S.current.expected_loan} :',
+                                value:
+                                '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
+                                isToken: true,
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.duration} :',
+                                value:
+                                '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
+                              ),
+                              DetailItemApproveModel(
+                                title: '${S.current.price_per_1} :',
+                                value:
+                                '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
+                              )
+                            ],
+                            textActiveButton: S.current.put_on_pawn,
+                            typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                          ),
+                          isRequireLoginEmail: true,
+                        ),
+                      );
                     }
                   },
                   child: ButtonGold(

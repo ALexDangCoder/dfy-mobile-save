@@ -91,4 +91,8 @@ mixin NFTRepository {
   Future<Result<String>> sendOffer(
     SendOfferRequest request,
   );
+
+  Future<Result<ConfirmModel>> cancelPawn(
+    int id,
+  );
 }

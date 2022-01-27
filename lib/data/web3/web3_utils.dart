@@ -171,7 +171,7 @@ class Web3Utils {
           'In fringilla orci facilisis in sed eget nec sollicitudin nullam',
       id: '124124',
       // link: 'https://goole.com',
-      standard: 'ERC-721',
+      standard: ERC_721,
     );
   }
 

@@ -71,6 +71,9 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   double? gasLimit;
 
+
+  bool isApprove = false;
+
   double? gasLimitFirst;
 
   double? gasPrice;
@@ -139,7 +142,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     required String payValue,
     required String tokenAddress,
   }) async {
-    bool response = false;
     try {
       if (payValue != '' && tokenAddress != '' && addressWallet != '') {
         final result = await web3Client.isApproved(
@@ -149,16 +151,16 @@ class ApproveCubit extends BaseCubit<ApproveState> {
           spenderAddress: getSpender(),
         );
         isApprovedSubject.sink.add(result);
-        response = result;
+        isApprove = result;
       } else {
         AppException('title', S.current.error);
       }
     } on PlatformException {
+      isApprove = false;
       isApprovedSubject.sink.add(false);
       showError();
-      response = false;
     }
-    return response;
+    return isApprove;
   }
 
   NFTRepository get nftRepo => Get.find();
@@ -171,7 +173,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         showContent();
       },
       error: (error) {
-        showError();
       },
     );
   }
@@ -184,7 +185,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
         showContent();
       },
       error: (error) {
-        showError();
+
       },
     );
   }

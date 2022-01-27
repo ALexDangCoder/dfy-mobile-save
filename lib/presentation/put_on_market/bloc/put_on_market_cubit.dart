@@ -122,7 +122,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   }
 
   void updateStreamContinueSale() {
-    if (valueTokenInputSale != null && quantitySale > 0) {
+    if (valueTokenInputSale != null  && valueTokenInputSale != 0 && quantitySale > 0) {
       _canContinueSale.sink.add(true);
     } else {
       _canContinueSale.sink.add(false);
@@ -187,8 +187,9 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   }
 
   void updateStreamContinuePawn() {
-    if (valueTokenInputPawn != null &&
-        valueDuration != null &&
+    if (valueTokenInputPawn != null
+        && valueTokenInputPawn != 0
+        && valueDuration != null &&
         quantityPawn > 0) {
       _canContinuePawn.sink.add(true);
     } else {
@@ -240,8 +241,9 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   }
 
   void updateStreamContinueAuction() {
-    if (valueTokenInputAuction != null &&
-        timeValidate &&
+    if (valueTokenInputAuction != null
+        && valueTokenInputAuction != 0
+        && timeValidate &&
         priceStepValidate &&
         buyOutPriceValidate) {
       _canContinueAuction.sink.add(true);
