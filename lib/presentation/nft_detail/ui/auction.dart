@@ -52,6 +52,7 @@ Widget _buildButtonPlaceBid(
     );
   }
 }
+
 Widget waitingAcceptAuction() {
   return Text(
     S.current.waiting_accept_auction,
@@ -64,7 +65,6 @@ Widget waitingAcceptAuction() {
     maxLines: 2,
   );
 }
-
 
 Widget _buildButtonBuyOut(
   BuildContext context,
@@ -108,15 +108,37 @@ Widget buttonCancelAuction({
         final nav = Navigator.of(context);
         final String dataString = await bloc.getDataStringForCancelAuction(
           context: context,
+          auctionId: nftMarket.auctionId.toString(),
         );
+        final List<DetailItemApproveModel> listApprove = [];
+        if (nftMarket.nftStandard == ERC_721) {
+          listApprove.add(
+            DetailItemApproveModel(
+              title: NFT,
+              value: nftMarket.name ?? '',
+            ),
+          );
+          listApprove.add(
+            DetailItemApproveModel(
+              title: S.current.quantity,
+              value: '${nftMarket.numberOfCopies}',
+            ),
+          );
+        } else {
+          listApprove.add(
+            DetailItemApproveModel(
+              title: NFT,
+              value: nftMarket.name ?? '',
+            ),
+          );
+        }
         unawaited(
           nav.push(
             MaterialPageRoute(
               builder: (context) => approveWidget(
+                nftOnAuction: nftMarket,
                 dataString: dataString,
-                dataInfo: bloc.initListApprove(
-                  type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                ),
+                dataInfo: listApprove,
                 type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
                 cancelInfo: S.current.auction_cancel_info,
                 cancelWarning: S.current.cancel_auction_warning,
@@ -191,8 +213,7 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? nftOnAuction.reservePrice :
-                  nftOnAuction.currentPrice} '
+                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

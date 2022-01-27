@@ -10,6 +10,7 @@ import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +58,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
   BehaviorSubject<bool> isHaveWalletSubject = BehaviorSubject();
 
   BehaviorSubject<String> signatureSubject = BehaviorSubject();
-  
+
   BehaviorSubject<double> balanceSubject = BehaviorSubject.seeded(0);
 
   BehaviorSubject<LoginStatus> loginStatusSubject = BehaviorSubject();
@@ -81,15 +82,18 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
   Web3Utils client = Web3Utils();
 
-  Future<void> getBalance({required String walletAddress, required BuildContext context}) async {
-   showLoading();
-    if(loginStatusSubject.hasValue){
-      if(loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG){
-        double balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
+  Future<void> getBalance({
+    required String walletAddress,
+    required BuildContext context,
+  }) async {
+    showLoading(context);
+    if (loginStatusSubject.hasValue) {
+      if (loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG) {
+        final double balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
         balanceSubject.sink.add(balance);
       }
     }
-   showContent();
+    hideLoading(context);
   }
 
   int randomAvatar() {
@@ -162,7 +166,6 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
   }) async {
     bool isSuccess = false;
     final result = await _loginRepo.login(signature, walletAddress);
-
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
@@ -171,8 +174,8 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
         await PrefsService.saveCurrentBEWallet(
           walletAddress,
         );
-        await getUserProfile();
         isSuccess = true;
+        await getUserProfile();
       },
       error: (err) {
         isSuccess = false;
@@ -196,10 +199,11 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     required BuildContext context,
   }) async {
     try {
-      showLoading();
+      showLoading(context);
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
+      hideLoading(context);
       result.when(
         success: (res) {
           final String nonce = res.data ?? '';
@@ -213,10 +217,13 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
             'bytesSha3': bytesSha3,
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
-          showContent();
         },
         error: (error) {
-          showError();
+          showErrorDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
         },
       );
     } on PlatformException {

@@ -20,14 +20,12 @@ import 'login_cubit.dart';
 extension LoginForMarketPlace on LoginCubit {
   LoginRepository get _loginRepo => Get.find();
 
-  Future<void> loginAndSaveInfo({
+  Future<bool> loginAndSaveInfo({
     required String walletAddress,
     required String signature,
-    required BuildContext context,
   }) async {
-    showLoading(context);
+    bool isSuccess = false;
     final result = await _loginRepo.login(signature, walletAddress);
-
     await result.when(
       success: (res) async {
         await PrefsService.saveWalletLogin(
@@ -37,13 +35,13 @@ extension LoginForMarketPlace on LoginCubit {
           walletAddress,
         );
         await getUserProfile();
-        isSaveInfoSuccessSubject.sink.add(true);
+        isSuccess = true;
       },
       error: (err) {
-        isSaveInfoSuccessSubject.sink.add(false);
+        isSuccess = false;
       },
     );
-    hideLoading(context);
+    return isSuccess;
   }
 
   //getListWallets
@@ -56,11 +54,16 @@ extension LoginForMarketPlace on LoginCubit {
     }
   }
 
-  Future<void> getSignature({required String walletAddress}) async {
+  Future<void> getSignature({
+    required String walletAddress,
+    required BuildContext context,
+  }) async {
     try {
+      showLoading(context);
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
+      hideLoading(context);
       result.when(
         success: (res) {
           final String nonce = res.data ?? '';
@@ -76,7 +79,11 @@ extension LoginForMarketPlace on LoginCubit {
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
         error: (error) {
-          showError();
+          showErrorDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
         },
       );
     } on PlatformException catch (e) {

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -71,21 +70,40 @@ class _LoginScreenState extends State<LoginScreen> {
     if (widget.isFromConnectDialog) {
       _cubit.isLoginSuccessStream.listen((event) {
         if (event) {
-          showLoading(context);
           _cubit.getSignature(
             walletAddress: _cubit.walletAddress,
+            context: context,
           );
-          hideLoading(context);
         }
       });
       _cubit.signatureStream.listen(
-        (event) {
+        (event) async {
           if (event.isNotEmpty) {
-            _cubit.loginAndSaveInfo(
+            final nav = Navigator.of(context);
+            showLoading(context);
+            final bool checkLogin = await _cubit.loginAndSaveInfo(
               walletAddress: _cubit.walletAddress,
               signature: event,
-              context: context,
             );
+            hideLoading(context);
+            if (checkLogin) {
+              unawaited(
+                nav.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                ),
+              );
+            } else {
+              showErrorDialog(
+                context: context,
+                title: S.current.notify,
+                content: S.current.something_went_wrong,
+              );
+            }
           }
         },
       );
@@ -102,7 +120,11 @@ class _LoginScreenState extends State<LoginScreen> {
               (route) => route.isFirst,
             );
           } else {
-            //TODO: hander err
+            showErrorDialog(
+              context: context,
+              title: S.current.notify,
+              content: S.current.something_went_wrong,
+            );
           }
         },
       );

@@ -6,6 +6,7 @@ import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,8 +19,10 @@ import 'bloc_creare_seedphrase.dart';
 extension LoginForMarketPlace on BLocCreateSeedPhrase {
   LoginRepository get _loginRepo => Get.find();
 
-  Future<bool> loginAndSaveInfo(
-      {required String walletAddress, required String signature}) async {
+  Future<bool> loginAndSaveInfo({
+    required String walletAddress,
+    required String signature,
+  }) async {
     final result = await _loginRepo.login(signature, walletAddress);
     bool isSuccess = false;
     await result.when(
@@ -40,11 +43,16 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
     return isSuccess;
   }
 
-  Future<void> getSignature({required String walletAddress}) async {
+  Future<void> getSignature({
+    required String walletAddress,
+    required BuildContext context,
+  }) async {
     try {
+      showLoading(context);
       final result = await _loginRepo.getNonce(
         walletAddress,
       );
+      hideLoading(context);
       result.when(
         success: (res) {
           final String nonce = res.data ?? '';
@@ -59,7 +67,13 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
-        error: (error) {},
+        error: (error) {
+          showErrorDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
+        },
       );
     } on PlatformException {
       //

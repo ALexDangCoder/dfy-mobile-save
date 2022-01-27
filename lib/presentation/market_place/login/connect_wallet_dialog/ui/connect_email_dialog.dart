@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/market_place/login/connect_email_dialog/bloc/connect_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +21,10 @@ class ConnectEmailDialog extends StatefulWidget {
 }
 
 class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
-  late final ConnectEmailCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    cubit = ConnectEmailCubit();
-    cubit.checkLoginStatus();
   }
 
   @override
@@ -63,23 +59,14 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                       bottom: 24,
                       left: 41.5,
                     ),
-                    child: StreamBuilder<ConnectEmailStatus>(
-                        stream: cubit.connectEmailStatusStream,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<ConnectEmailStatus> snapshot) {
-                          if (snapshot.hasData) {
-                            final ConnectEmailStatus data = snapshot.data!;
-                            return Text(
-                              data.toContent(),
-                              textAlign: TextAlign.center,
-                              style: textNormal(
-                                AppTheme.getInstance().whiteColor(),
-                                20.sp,
-                              ).copyWith(fontWeight: FontWeight.w600),
-                            );
-                          }
-                          return Container();
-                        }),
+                    child: Text(
+                      S.current.associate_email,
+                      textAlign: TextAlign.center,
+                      style: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        20.sp,
+                      ).copyWith(fontWeight: FontWeight.w600),
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -136,52 +123,34 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                               ),
                             ),
                           ),
-                          child: StreamBuilder<ConnectEmailStatus>(
-                              stream: cubit.connectEmailStatusStream,
-                              builder: (context, snapshot) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data! ==
-                                          ConnectEmailStatus.CONNECTED) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                widget.navigationTo,
-                                          ),
-                                        );
-                                      } else {
-                                        //ví chưa liên kết email
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EnterEmail(),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                  behavior: HitTestBehavior.opaque,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: 19,
-                                      top: 17,
-                                    ),
-                                    child: Text(
-                                      S.current.yes,
-                                      style: textNormal(
-                                        AppTheme.getInstance().fillColor(),
-                                        20.sp,
-                                      ).copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              }),
+                          child: GestureDetector(
+                            onTap: () {
+                              //ví chưa liên kết email
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const EnterEmail(),
+                                ),
+                              );
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 19,
+                                top: 17,
+                              ),
+                              child: Text(
+                                S.current.yes,
+                                style: textNormal(
+                                  AppTheme.getInstance().fillColor(),
+                                  20.sp,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],

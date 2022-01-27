@@ -579,5 +579,9 @@
   "processing" : "Your request is being processed!",
   "cancel_pawn" : "Cancel pawn",
   "pawn_cancel_info": "Pawn information will be cancelled",
-  "pawn_cancel_warning": "Customer can not find your NFT anymore"
+  "pawn_cancel_warning": "Customer can not find your NFT anymore",
+  "otp_invalid": "Invalid code",
+  "expired_code": "Code invalid or expired",
+  "notify": "Notification"
+
 }

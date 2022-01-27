@@ -2,7 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
-import 'package:Dfy/presentation/market_place/login/login_with_email/ui/email_exsited.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -43,16 +43,22 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
           isEnable: true,
           onTap: () async {
             if (otpController.value.text.length != 6) {
-              //todo: Handler
+              showErrorDialog(
+                context: context,
+                title: S.current.warning,
+                content: S.current.otp_invalid,
+              );
             } else {
+              showLoading(context);
               final bool isSuccess = await cubit.verifyOTP(
                 otp: otpController.value.text,
                 transactionID: widget.transactionId,
               );
-              if(isSuccess){
+              hideLoading(context);
+              if (isSuccess) {
                 Navigator.pop(context, true);
-              }else{
-
+              } else {
+                showErrorDialog(context: context, title: S.current.warning, content: S.current.expired_code,);
               }
             }
           },
@@ -111,7 +117,6 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
                     inactiveFillColor: AppTheme.getInstance().darkBgColor(),
                     //border  color của input chưa có giá trị
                     inactiveColor: AppTheme.getInstance().bgTranSubmit(),
-
                   ),
                   animationDuration: const Duration(milliseconds: 300),
                   enableActiveFill: true,

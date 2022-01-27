@@ -103,8 +103,17 @@ class PrefsService {
 
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
-    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
     await prefs.setString(_PREF_CURRENT_WALLET_CORE, '');
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
+    await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
+    return prefs.setString(
+      _PREF_WALLET_LOGIN,
+      jsonLoginModelEmpty(),
+    );
+  }
+
+  static Future<bool> clearWalletBE() async {
+    final prefs = await _instance;
     await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
     await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
     return prefs.setString(

@@ -92,6 +92,7 @@ const int ERC1155 = 1;
 const String BINANCE_SMART_CHAIN = 'Binance smart chain';
 const String ERC_721 = 'ERC_721';
 const String ERC_1155 = 'ERC_1155';
+const String NFT = 'NFT';
 
 
 
