@@ -16,8 +16,6 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +29,7 @@ class MarketPlaceScreen extends StatefulWidget {
   _MarketPlaceState createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlaceScreen>
-    with AutomaticKeepAliveClientMixin<MarketPlaceScreen> {
+class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliveClientMixin<MarketPlaceScreen>{
   late MarketplaceCubit cubit;
 
   @override
@@ -186,13 +183,10 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       );
                     },
                     nftCallBack: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => ConnectWalletDialog(
-                          navigationTo: CreateNFTScreen(
-                            cubit: CreateNftCubit(),
-                          ),
-                          isRequireLoginEmail: false,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListBookEvaluation(assetID: '61e9096a4aec3d3977856bf9', cityId: 1,),
                         ),
                       );
                     },
