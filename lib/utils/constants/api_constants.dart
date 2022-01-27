@@ -116,6 +116,7 @@ class ApiConstants {
 
   //Custom URL
   static const String PREFIX_CUSTOM_URL = 'https://marketplace.defiforyou.uk/';
+//createHard NFT
 
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
@@ -132,5 +133,16 @@ class ApiConstants {
 
   //logout:
   static const String LOG_OUT = '/defi-user-service/api/v1.0.0/users/logout';
+  static const String GET_LIST_APPOINTMENTS =
+      '/hard-nft-svc/api/appointments';
 
+  static const String GET_LIST_EVALUATORS_CITY =
+      '/hard-nft-svc/public-api/evaluators/find-by-city';
+
+  static const String GET_EVALUATORS_DETAIL =
+      '/hard-nft-svc/public-api/evaluators/';
+
+
+  static const String GET_EVALUATORS_DETAIL_END =
+      '/customer-view-profile';
 }
