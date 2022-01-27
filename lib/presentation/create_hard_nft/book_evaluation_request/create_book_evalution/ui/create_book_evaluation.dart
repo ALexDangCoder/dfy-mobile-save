@@ -304,7 +304,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             transitionDuration: Duration.zero,
                                             opaque: false,
                                             pageBuilder: (_, __, ___) {
-                                              return const CustomCalendar();
+                                              return CustomCalendar(
+                                                selectDate: bloc.dateTimeDay,
+                                              );
                                             },
                                           ),
                                         );
@@ -312,11 +314,16 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         if (result != null) {
                                           final date = DateFormat('dd/MM/yyyy')
                                               .format(result);
+                                          final dateChoose =
+                                              DateFormat('yyyy-MM-dd')
+                                                  .format(result);
                                           bloc.dateStream.add(date);
-
+                                          bloc.dateTimeDay =
+                                              DateTime.tryParse(dateChoose);
                                           final dateFormat =
                                               DateFormat('EEEE').format(result);
                                           bloc.dateMy = dateFormat;
+
                                           bloc.getValidateDay(
                                             dateFormat,
                                           );
