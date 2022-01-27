@@ -40,22 +40,60 @@ class BlocCreateBookEvaluation {
   static const NOVEMBER = 11;
   static const DECEMBER = 12;
 
+  static const String MON = 'THỨ HAI';
+  static const String TUE = 'THỨ BA';
+  static const String WED = 'THỨ TƯ';
+  static const String THU = 'THỨ NĂM';
+  static const String FRI = 'THỨ SÁU';
+  static const String SAT = 'THỨ BẢY';
+  static const String SUN = 'CHỦ NHẬT';
+
   BehaviorSubject<String> dateStream = BehaviorSubject.seeded('');
   BehaviorSubject<String> timeStream = BehaviorSubject.seeded('');
   String textValidateDate = '';
   String textValidateTime = '';
-  BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckTextValidateTime = BehaviorSubject.seeded(false);
   late double locationLong;
   late double locationLat;
-
   String? hourMy;
   String? miuMy;
+  String? dateMy;
+  String? minuteMy;
+  List<String> list = [];
+
+  bool checkValidateDay(String day) {
+    bool isDay = false;
+    for (int i = 0; i < (objDetail.value.workingDays?.length ?? 0); i++) {
+      if (day.toUpperCase() ==
+          (checkWorkingDay(objDetail.value.workingDays?[i] ?? 0))
+              .toUpperCase()) {
+        isDay = true;
+        break;
+      } else {
+        isDay = false;
+      }
+    }
+    return isDay;
+  }
+
+  void getValidateDay(String day) {
+    if (dateStream.value=='') {
+      isCheckTextValidateDate.add(false);
+      textValidateDate = S.current.date_is_required;
+    } else if (!checkValidateDay(day)) {
+      isCheckTextValidateDate.add(false);
+      textValidateDate = S.current.chosen_date;
+    } else {
+      isCheckTextValidateDate.add(true);
+      textValidateDate = '';
+    }
+  }
 
   void getValidate(String hour, String minute) {
     final int hourInt = int.parse(hour);
     final int minuteInt = int.parse(minute);
-    if (hourInt == 0) {
+    if (hour.isEmpty) {
       isCheckTextValidateTime.add(true);
       textValidateTime = S.current.time_is_required;
     } else if (checkHourWorking(hourInt, minuteInt)) {
@@ -188,6 +226,27 @@ class BlocCreateBookEvaluation {
         return S.current.tuesday;
       case WEDNESDAY:
         return S.current.wednesday;
+      default:
+        return '';
+    }
+  }
+
+  String checkWorkingDay(int day) {
+    switch (day) {
+      case MONDAY:
+        return MON;
+      case FRIDAY:
+        return FRI;
+      case SATURDAY:
+        return SAT;
+      case SUNDAY:
+        return SUN;
+      case THURSDAY:
+        return THU;
+      case TUESDAY:
+        return TUE;
+      case WEDNESDAY:
+        return WED;
       default:
         return '';
     }

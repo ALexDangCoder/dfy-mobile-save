@@ -320,10 +320,22 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             },
                                           ),
                                         );
+
                                         if (result != null) {
                                           final date = DateFormat('dd/MM/yyyy')
                                               .format(result);
                                           bloc.dateStream.add(date);
+
+                                          final dateFormat =
+                                              DateFormat('EEEE').format(result);
+                                          bloc.dateMy = dateFormat;
+                                          bloc.getValidateDay(
+                                            dateFormat,
+                                          );
+                                        } else {
+                                          bloc.getValidateDay(
+                                            bloc.dateMy ?? '',
+                                          );
                                         }
                                       }
                                     },
@@ -385,6 +397,23 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           );
                                         }),
                                   ),
+                                  spaceH4,
+                                  StreamBuilder<bool>(
+                                    stream: bloc.isCheckTextValidateDate,
+                                    builder: (context, snapshot) {
+                                      return !(snapshot.data ?? true)
+                                          ? Text(
+                                              bloc.textValidateDate,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .redColor(),
+                                                14,
+                                                null,
+                                              ),
+                                            )
+                                          : const SizedBox.shrink();
+                                    },
+                                  ),
                                   spaceH16,
                                   GestureDetector(
                                     onTap: () async {
@@ -396,7 +425,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           context: context,
                                           builder: (_) => BackdropFilter(
                                             filter: ImageFilter.blur(
-                                                sigmaX: 4, sigmaY: 4),
+                                              sigmaX: 4,
+                                              sigmaY: 4,
+                                            ),
                                             child: AlertDialog(
                                               elevation: 0,
                                               backgroundColor:
