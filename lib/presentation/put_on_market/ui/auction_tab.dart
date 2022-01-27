@@ -70,7 +70,7 @@ class _AuctionTabState extends State<AuctionTab>
     super.initState();
   }
 
-  String? validateDuration() {
+  void validateDuration() {
     if (timeStartController.text != '' && timeEndController.text != '') {
       final DateTime startTime =
           DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
@@ -80,33 +80,44 @@ class _AuctionTabState extends State<AuctionTab>
       final DateTime endTime =
           DateFormat(DateTimeFormat.DATE_TIME_AUCTION_FORMAT)
               .parse('${dateEndController.text} ${timeEndController.text}');
-
       _putOnMarketModel.endTime =
           (endTime.millisecondsSinceEpoch ~/ 1000).toString();
       final difference = endTime.difference(startTime).inHours;
-      if (startTime.difference(DateTime.now()).inHours < 48 ) {
+      durationTime = endTime.difference(startTime).inMinutes;
+      if (startTime.difference(DateTime.now()).inHours < 48) {
         setState(() {
           errorTextStartTime = S.current.start_time_auction;
         });
         widget.cubit.timeValidate = false;
-        widget.cubit.updateStreamContinueAuction();
-      }else{
-        errorTextStartTime = null;
       }
-      durationTime = endTime.difference(startTime).inMinutes;
-      if ((durationTime ?? 0) < 10 && (durationTime ?? 0) > 0) {
-        return null;
-      } else {
-        return S.current.min_duration_auction;
+      else if ((durationTime ?? 0) > 10 || (durationTime ?? 0) < 0) {
+        setState(() {
+          errorTextStartTime = null;
+          errorTextEndTime = S.current.min_duration_auction;
+        });
       }
-      if (difference < 12) {
-        return S.current.min_duration_auction;
-      }
-      if (difference > 168) {
-        return S.current.max_duration_auction;
+      // else if (difference < 12) {
+      //   setState(() {
+      //     errorTextStartTime = null;
+      //     errorTextEndTime = S.current.min_duration_auction;
+      //   });
+      //   widget.cubit.timeValidate = false;
+      // } else
+      // if (difference > 168) {
+      //   setState(() {
+      //     errorTextEndTime = S.current.max_duration_auction;
+      //   });
+      //   widget.cubit.timeValidate = false;
+      // }
+      else {
+        setState(() {
+          errorTextStartTime = null;
+          errorTextEndTime = null;
+        });
+        widget.cubit.timeValidate = true;
       }
     }
-    return null;
+    widget.cubit.updateStreamContinueAuction();
   }
 
   bool validatePriceStep() {
@@ -771,7 +782,7 @@ class _AuctionTabState extends State<AuctionTab>
                                   title: '${S.current.duration} :',
                                   value:
                                       '${(durationTime ?? 0) ~/ 60} ${S.current.hour} '
-                                      '${(durationTime ?? 0 % 60) > 0 ? (durationTime ?? 0 % 60).toInt().toString() + ' ' + S.current.minute : ''} \n '
+                                      '${(durationTime ?? 0 % 60) > 0 ? (durationTime ?? 0 % 60).toInt().toString() + ' ' + S.current.minute : ''} \n'
                                       '${S.current.from} ${timeStartController.text} '
                                       '${dateStartController.text} ',
                                 ),
@@ -852,28 +863,7 @@ class _AuctionTabState extends State<AuctionTab>
                           final String minute =
                               result.stringValueOrEmpty('minute');
                           timeController.text = '$hour : $minute';
-                          final String? errorText = validateDuration();
-                          if (errorText == null &&
-                              timeStartController.text != '' &&
-                              timeEndController.text != '') {
-                            widget.cubit.timeValidate = true;
-                            setState(() {
-                              errorTextStartTime = errorText;
-                              errorTextEndTime = errorText;
-                            });
-                          } else {
-                            widget.cubit.timeValidate = false;
-                          }
-                          widget.cubit.updateStreamContinueAuction();
-                          if (type == typeInputDateTime.START) {
-                            setState(() {
-                              errorTextStartTime = errorText;
-                            });
-                          } else {
-                            setState(() {
-                              errorTextEndTime = errorText;
-                            });
-                          }
+                          validateDuration();
                         }
                       },
                       child: TextField(
@@ -942,28 +932,7 @@ class _AuctionTabState extends State<AuctionTab>
                         if (result != null) {
                           final date = DateFormat('yyyy-MM-dd').format(result);
                           dateController.text = date;
-                          final String? errorText = validateDuration();
-                          if (errorText == null &&
-                              timeStartController.text != '' &&
-                              timeEndController.text != '') {
-                            widget.cubit.timeValidate = true;
-                            setState(() {
-                              errorTextStartTime = errorText;
-                              errorTextEndTime = errorText;
-                            });
-                          } else {
-                            widget.cubit.timeValidate = false;
-                          }
-                          widget.cubit.updateStreamContinueAuction();
-                          if (type == typeInputDateTime.START) {
-                            setState(() {
-                              errorTextStartTime = errorText;
-                            });
-                          } else {
-                            setState(() {
-                              errorTextEndTime = errorText;
-                            });
-                          }
+                          validateDuration();
                         }
                       },
                       child: TextField(
