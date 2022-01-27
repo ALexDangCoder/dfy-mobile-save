@@ -59,6 +59,7 @@ class ItemPawnShop extends StatelessWidget {
                           builder: (context) => CreateBookEvaluation(
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
+                            date: appointment.appointmentTime,
                           ),
                         ),
                       );
@@ -85,6 +86,7 @@ class ItemPawnShop extends StatelessWidget {
                           builder: (context) => CreateBookEvaluation(
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
+                            date: appointment.appointmentTime,
                           ),
                         ),
                       );

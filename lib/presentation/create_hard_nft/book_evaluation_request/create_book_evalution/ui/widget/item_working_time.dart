@@ -14,6 +14,8 @@ class ItemWorkingTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 43.w,
+      height: 43.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14.r),
         color: AppTheme.getInstance().itemBtsColors(),
@@ -23,17 +25,19 @@ class ItemWorkingTime extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: 7.w,
-        vertical: 12.h,
+        horizontal: 2.w,
+        vertical: 2.h,
       ),
-      child: Text(
-        text,
-        style: textNormalCustom(
-          null,
-          14,
-          null,
-        ).copyWith(overflow: TextOverflow.ellipsis),
-        maxLines: 1,
+      child: Center(
+        child: Text(
+          text,
+          style: textNormalCustom(
+            null,
+            14,
+            null,
+          ).copyWith(overflow: TextOverflow.ellipsis),
+          maxLines: 1,
+        ),
       ),
     );
   }

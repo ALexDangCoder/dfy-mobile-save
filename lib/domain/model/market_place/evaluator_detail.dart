@@ -21,6 +21,7 @@ class EvaluatorsDetailModel {
   int? reviewsCount;
   int? evaluatedCount;
   int? createdAt;
+  PhoneCodeResponse? phoneCode;
 
   EvaluatorsDetailModel({
     this.id,
@@ -43,6 +44,7 @@ class EvaluatorsDetailModel {
     this.reviewsCount,
     this.evaluatedCount,
     this.createdAt,
+    this.phoneCode,
   });
 }
 
@@ -54,4 +56,16 @@ class AcceptedAssetTypeDetailModel {
     this.name,
     this.id,
   );
+}
+
+class PhoneCode {
+  int? id;
+  String? name;
+  String? code;
+
+  PhoneCode({
+    this.id,
+    this.name,
+    this.code,
+  });
 }

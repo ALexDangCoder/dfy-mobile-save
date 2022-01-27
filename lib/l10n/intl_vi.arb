@@ -614,5 +614,18 @@
   "thursday": "THU",
   "friday": "FRI",
   "saturday": "SAT",
-  "sunday": "SUN"
+  "sunday": "SUN",
+  "joined_in": "Tham gia vào ",
+  "january": "tháng 1,",
+  "february": "tháng 2,",
+  "march": "tháng 3,",
+  "april": "tháng 4,",
+  "may": "tháng 5,",
+  "june": "tháng 6,",
+  "july": "tháng 7,",
+  "august": "tháng 8,",
+  "september": "tháng 9,",
+  "october": "tháng 10,",
+  "november": "tháng 11,",
+  "december": "tháng 12,"
 }

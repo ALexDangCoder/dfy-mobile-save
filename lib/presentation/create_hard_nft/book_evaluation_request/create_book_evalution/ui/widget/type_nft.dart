@@ -18,6 +18,7 @@ class TypeNFTBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 64.w,
+      height: 64.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         color: AppTheme.getInstance().itemBtsColors(),
@@ -27,8 +28,8 @@ class TypeNFTBox extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.symmetric(
-        vertical: 10.h,
-        horizontal: 7.w,
+        vertical: 2.h,
+        horizontal: 2.w,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

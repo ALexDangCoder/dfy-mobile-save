@@ -16,6 +16,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,11 +27,13 @@ enum TypeEvaluation { NEW_CREATE, CREATE }
 class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
   final TypeEvaluation type;
+  final int? date;
 
   const CreateBookEvaluation({
     Key? key,
     required this.idEvaluation,
     required this.type,
+    this.date,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   void initState() {
     super.initState();
     _bloc = BlocCreateBookEvaluation();
+    _bloc.getDataInput(widget.date ?? 0);
     _bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
@@ -60,8 +64,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
         color: AppTheme.getInstance().bgBtsColor(),
         child: StreamBuilder<bool>(
           stream: _bloc.isCheckBtn,
-          builder:(context, snapshot) {
-            return  GestureDetector(
+          builder: (context, snapshot) {
+            return GestureDetector(
               onTap: () {
                 //todo event
                 if (widget.type == TypeEvaluation.NEW_CREATE) {}
@@ -202,7 +206,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                 ),
                                                 TextSpan(
                                                   text: ' ${pawn.starCount} |'
-                                                      ' ${0.formatDateTimeMy(pawn.createdAt ?? 0)}',
+                                                      ' ${_bloc.getTextCreateAt(pawn.createdAt ?? 0)}',
                                                 ),
                                               ],
                                             ),
@@ -550,7 +554,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              '()${pawn.phone ?? ''}', //phone code
+                                              '(${pawn.phoneCode?.code})${pawn.phone ?? ''}', //phone code
                                         ),
                                       ],
                                     ),
@@ -716,7 +720,12 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                   ),
                 );
               } else {
-                return CircularProgressIndicator(); //todo xoay
+                return WillPopScope(
+                  child: const Center(
+                    child: CupertinoLoading(),
+                  ),
+                  onWillPop: () async => false,
+                );
               }
             },
           ),

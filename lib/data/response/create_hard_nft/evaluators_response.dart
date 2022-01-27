@@ -76,6 +76,8 @@ class EvaluatorResponse extends Equatable {
   int? evaluatedCount;
   @JsonKey(name: 'created_at')
   int? createdAt;
+  @JsonKey(name: 'phone_code')
+  PhoneCodeResponse? phoneCode;
 
   EvaluatorResponse(
     this.id,
@@ -98,6 +100,7 @@ class EvaluatorResponse extends Equatable {
     this.reviewsCount,
     this.evaluatedCount,
     this.createdAt,
+    this.phoneCode,
   );
 
   factory EvaluatorResponse.fromJson(Map<String, dynamic> json) =>
@@ -124,6 +127,7 @@ class EvaluatorResponse extends Equatable {
         reviewsCount: reviewsCount,
         evaluatedCount: evaluatedCount,
         createdAt: createdAt,
+    phoneCode: phoneCode,
       );
 
   @override
@@ -149,6 +153,36 @@ class AcceptedAssetTypeDetail extends Equatable {
   AcceptedAssetTypeDetailModel toDomain() => AcceptedAssetTypeDetailModel(
         name,
         id,
+      );
+
+  @override
+  List<Object?> get props => [];
+}
+
+@JsonSerializable()
+class PhoneCodeResponse extends Equatable {
+  @JsonKey(name: 'id')
+  int? id;
+  @JsonKey(name: 'name')
+  String? name;
+
+  @JsonKey(name: 'code')
+  String? code;
+
+  PhoneCodeResponse(
+    this.id,
+    this.name,
+    this.code,
+  );
+
+  factory PhoneCodeResponse.fromJson(Map<String, dynamic> json) =>
+      _$PhoneCodeResponseFromJson(json);
+
+
+  PhoneCode toDomain() => PhoneCode(
+        name: name,
+        id: id,
+        code: code,
       );
 
   @override
