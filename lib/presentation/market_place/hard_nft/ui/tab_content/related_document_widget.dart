@@ -20,9 +20,10 @@ class RelatedDocument extends StatelessWidget {
         children: [
           Text(
             'Related documents',
-            style: tokenDetailAmount(
-              color: AppTheme.getInstance().whiteColor(),
-              fontSize: 14,
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              14,
+              FontWeight.w600,
             ),
           ),
           if (evaluation.document?.isNotEmpty ?? false)
@@ -61,7 +62,6 @@ class RelatedDocument extends StatelessWidget {
           top: 12.h,
           bottom: 12.h,
         ),
-        height: 61.h,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -82,10 +82,9 @@ class RelatedDocument extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Created on ' +
-                      formatDateTime.format(
+                  'Created on ${formatDateTime.format(
                         DateTime.fromMillisecondsSinceEpoch(createDate),
-                      ),
+                      )}',
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     fontSize: 12,

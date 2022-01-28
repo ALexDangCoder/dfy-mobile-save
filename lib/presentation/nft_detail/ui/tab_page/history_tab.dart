@@ -258,7 +258,7 @@ Widget status(HistoryNFT historyNFT) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Create by ',
+              text: 'Created by ',
               style: textNormal(
                 textHistory,
                 14,
@@ -282,7 +282,7 @@ Widget status(HistoryNFT historyNFT) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Transfer from ',
+              text: 'Transferred from ',
               style: textNormal(
                 textHistory,
                 14,
@@ -468,7 +468,7 @@ Widget status(HistoryNFT historyNFT) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Cancel sale by  ',
+              text: 'Cancelled sale by  ',
               style: textNormal(
                 textHistory,
                 14,
@@ -492,7 +492,7 @@ Widget status(HistoryNFT historyNFT) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Cancel pawn by  ',
+              text: 'Cancelled pawn by  ',
               style: textNormal(
                 textHistory,
                 14,
@@ -516,7 +516,7 @@ Widget status(HistoryNFT historyNFT) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Cancel auction review by ',
+              text: 'Cancelled auction review by ',
               style: textNormal(
                 textHistory,
                 14,
