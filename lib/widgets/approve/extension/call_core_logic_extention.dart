@@ -57,9 +57,9 @@ extension CallCoreExtension on ApproveCubit {
           );
           await loopCheckApprove();
           // isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
-          if (isApprove){
+          if (isApprove) {
             emit(ApproveSuccess());
-          }else {
+          } else {
             emit(ApproveFail());
           }
         } else {
@@ -113,12 +113,17 @@ extension CallCoreExtension on ApproveCubit {
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
                 emit(
-                  SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.CANCEL_SALE),
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  ),
                 );
               } else {
                 emit(
                   SignFail(
-                      S.current.cancel_sale, TYPE_CONFIRM_BASE.CANCEL_SALE),
+                    S.current.cancel_sale,
+                    TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  ),
                 );
               }
               break;
@@ -150,7 +155,7 @@ extension CallCoreExtension on ApproveCubit {
               } else {
                 emit(
                   SignFail(
-                    S.current.cancel_sale,
+                    S.current.cancel_aution,
                     TYPE_CONFIRM_BASE.CANCEL_AUCTION,
                   ),
                 );
@@ -196,6 +201,19 @@ extension CallCoreExtension on ApproveCubit {
                   SignSuccess(
                     result['txHash'],
                     TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+                  ),
+                );
+                showContent();
+              } else {
+                showError();
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_PAWN,
                   ),
                 );
                 showContent();

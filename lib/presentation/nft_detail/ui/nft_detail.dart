@@ -9,6 +9,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
@@ -33,6 +34,7 @@ import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -56,8 +58,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
+
 part 'component.dart';
+
 part 'pawn.dart';
+
 part 'sale.dart';
 
 final nftKey = GlobalKey<NFTDetailScreenState>();
@@ -546,9 +551,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           spaceH12,
                           buildRow(
                             title: S.current.nft_standard,
-                            detail: objSale.nftStandard == '0'
-                                ? ERC_721
-                                : ERC_1155,
+                            detail:
+                                objSale.nftStandard == '0' ? ERC_721 : ERC_1155,
                             type: TextType.NORMAL,
                           ),
                           spaceH12,
@@ -659,7 +663,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     objSale.isBoughtByOther ?? false,
                     widget.marketId ?? '',
                   )
-                : _buildButtonCancelOnSale(context, bloc, objSale),
+                : _buildButtonCancelOnSale(
+                    context,
+                    bloc,
+                    objSale,
+                    onRefresh,
+                  ),
             content: [
               _nameNFT(
                 title: objSale.name ?? '',
@@ -821,7 +830,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: nftOnPawn.isYou ?? false
-                ? _buildButtonCancelOnPawn(context, bloc, nftOnPawn)
+                ? _buildButtonCancelOnPawn(
+                    context,
+                    bloc,
+                    nftOnPawn,
+                    onRefresh,
+                  )
                 : _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
@@ -847,7 +861,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     child: Column(
                       children: [
                         _rowCollection(
-                          nftOnPawn.nftCollateralDetailDTO?.nameCollection ?? '',
+                          nftOnPawn.nftCollateralDetailDTO?.nameCollection ??
+                              '',
                           nftOnPawn.nftCollateralDetailDTO?.nameCollection ??
                               '',
                           nftOnPawn.nftCollateralDetailDTO?.isWhitelist ??
@@ -967,7 +982,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
-              isScrollable:  true,
+              isScrollable: true,
               onTap: (value) {
                 pageController.animateToPage(
                   value,
@@ -991,6 +1006,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                     context: context,
                     bloc: bloc,
                     nftMarket: nftOnAuction,
+                    refresh: onRefresh,
                   )
                 : bloc.isStartAuction(nftOnAuction.endTime ?? 0)
                     ? Row(
