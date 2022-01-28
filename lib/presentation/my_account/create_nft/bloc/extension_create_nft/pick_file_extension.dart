@@ -11,44 +11,52 @@ extension PickFileExtension on CreateNftCubit {
   Future<void> pickFile() async {
     collectionMessSubject.sink.add('');
     mediaType = '';
-    final Map<String, dynamic> mediaFile =
+    final Map<String, dynamic> _mediaFile =
         await pickMediaFile(type: PickerType.MEDIA_FILE);
-    mediaType = mediaFile.getStringValue('type');
-    final extension = mediaFile.getStringValue('extension');
-    final path = mediaFile.getStringValue('path');
-    final size = mediaFile.intValue('size');
-    fileType = '$mediaType/$extension';
+    mediaType = _mediaFile.getStringValue('type');
+    final _path = _mediaFile.getStringValue('path');
     mediaFileSubject.sink.add(mediaType);
-    if (path.isNotEmpty) {
-      if(50<size/1000000){
+    if (_path.isNotEmpty) {
+      final _isValidFormat = _mediaFile.getBoolValue('valid_format');
+      final _extension = _mediaFile.getStringValue('extension');
+      final _size = _mediaFile.intValue('size');
+      fileType = '$mediaType/$_extension';
+      if (50 < _size / 1000000) {
         clearMainData();
         collectionMessSubject.sink.add(S.current.maximum_file_size);
         createNftMapCheck['media_file'] = false;
-      } else{
-        mediaFileUploadTime =
-            ipfsService.uploadTimeCalculate(size);
-        mediaFilePath = path;
+      }
+      if (!_isValidFormat) {
+        clearMainData();
+        collectionMessSubject.sink.add(S.current.invalid_file_format);
+        createNftMapCheck['media_file'] = false;
+      } else {
+        mediaFileUploadTime = ipfsService.uploadTimeCalculate(_size);
+        mediaFilePath = _path;
         createNftMapCheck['media_file'] = true;
         switch (mediaType) {
           case MEDIA_IMAGE_FILE:
             {
-              imageFileSubject.sink.add(path);
+              imageFileSubject.sink.add(_path);
               break;
             }
           case MEDIA_VIDEO_FILE:
             {
               if (controller == null) {
-                controller = VideoPlayerController.file(File(path));
+                controller = VideoPlayerController.file(File(_path));
                 await controller?.initialize();
                 await controller?.setLooping(true);
-                playButtonSubject.sink.add(true);
+                playVideoButtonSubject.sink.add(true);
                 videoFileSubject.sink.add(controller!);
               }
               break;
             }
           case MEDIA_AUDIO_FILE:
             {
-              audioFileSubject.sink.add(path);
+              await audioPlayer.play(_path, isLocal: true);
+              await audioPlayer.pause();
+              isPlayingAudioSubject.sink.add(false);
+              audioFileSubject.sink.add(_path);
             }
             break;
           default:
@@ -64,18 +72,23 @@ extension PickFileExtension on CreateNftCubit {
   }
 
   Future<void> pickCoverPhoto() async {
+    coverPhotoMessSubject.sink.add('');
     final Map<String, dynamic> mediaFile = await pickMediaFile(
       type: PickerType.IMAGE_FILE,
     );
-    final path = mediaFile.getStringValue('path');
-    if (path.isNotEmpty) {
+    final _path = mediaFile.getStringValue('path');
+    if (_path.isNotEmpty) {
+      final _isValidFormat = mediaFile.getBoolValue('valid_format');
       coverFileSize = mediaFile.intValue('size');
-      if(coverFileSize/1000000 > 50){
+      if (coverFileSize / 1000000 > 50) {
         createNftMapCheck['cover_photo'] = false;
         coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
+      } else if (!_isValidFormat) {
+        createNftMapCheck['cover_photo'] = false;
+        coverPhotoMessSubject.sink.add(S.current.invalid_file_format);
       } else {
         createNftMapCheck['cover_photo'] = true;
-        coverPhotoPath = path;
+        coverPhotoPath = _path;
         coverPhotoSubject.sink.add(coverPhotoPath);
       }
     } else {
@@ -84,17 +97,33 @@ extension PickFileExtension on CreateNftCubit {
     validateCreate();
   }
 
+  Future<void> controlAudio({bool needStop = false}) async {
+    if (needStop) {
+      await audioPlayer.stop();
+    } else {
+      if (isPlayingAudioSubject.value) {
+        await audioPlayer.pause();
+        isPlayingAudioSubject.sink.add(false);
+      } else {
+        await audioPlayer.resume();
+        isPlayingAudioSubject.sink.add(true);
+      }
+    }
+  }
+
   void clearCoverPhoto() {
     coverPhotoPath = '';
+    coverPhotoMessSubject.sink.add('');
     coverPhotoSubject.sink.add(coverPhotoPath);
     createNftMapCheck['cover_photo'] = false;
     validateCreate();
     coverFileSize = 0;
   }
 
-  void clearMediaFile(){
+  void clearMediaFile() {
     createNftMapCheck['media_file'] = false;
     try {
+      audioPlayer.stop();
       controller?.pause();
       controller = null;
     } catch (_) {}

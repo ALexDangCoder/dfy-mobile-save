@@ -641,5 +641,6 @@
   "october": "October,",
   "november": "November,",
   "december": "December,",
-  "dont_ask_again": "Don’t ask again"
+  "dont_ask_again": "Don’t ask again",
+  "invalid_file_format" : "Invalid file format"
 }

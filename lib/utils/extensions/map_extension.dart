@@ -54,4 +54,14 @@ extension MapParse on Map {
     } catch (_) {}
     return vl;
   }
+
+  bool getBoolValue(String key){
+    bool vl = false;
+    try {
+      vl = this[key];
+    }catch(_){
+
+    }
+    return vl;
+  }
 }
