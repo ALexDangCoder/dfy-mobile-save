@@ -237,7 +237,7 @@ class _PlaceBidState extends State<PlaceBid> {
                     context: context,
                   )
                       .then(
-                        (value) => Navigator.push(
+                        (value) => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
@@ -302,7 +302,7 @@ class _PlaceBidState extends State<PlaceBid> {
                     context: context,
                   )
                       .then(
-                        (value) => Navigator.push(
+                        (value) => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(

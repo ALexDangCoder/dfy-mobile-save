@@ -61,6 +61,7 @@ class BlocCreateBookEvaluation {
   String? dateMy;
   String? minuteMy;
   List<String> list = [];
+  DateTime? dateTimeDay;
 
   bool checkValidateDay(String day) {
     bool isDay = false;

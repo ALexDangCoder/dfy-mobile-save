@@ -20,7 +20,7 @@ class ActivityCollectionModel {
   String? coverCid;
   String? fileType;
   int? auctionType;
-  int? pawnId;
+  String? pawnId;
 
   ActivityCollectionModel(
     this.price,
