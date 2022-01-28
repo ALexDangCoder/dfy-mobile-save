@@ -13,7 +13,13 @@ import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
   final DateTime? selectDate;
-  const CustomCalendar({Key? key, this.selectDate}) : super(key: key);
+  final bool? isCheckDate;
+
+  const CustomCalendar({
+    Key? key,
+    this.selectDate,
+    this.isCheckDate,
+  }) : super(key: key);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
@@ -60,7 +66,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TableCalendar(
                         daysOfWeekHeight: 32,
-                        daysOfWeekStyle:  DaysOfWeekStyle(
+                        daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: textNormalCustom(
                             AppTheme.getInstance().getPurpleColor(),
                             16,
@@ -141,9 +147,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                               )
                             ],
                           ),
-
-                          cellMargin:
-                          const EdgeInsets.symmetric(horizontal: 2),
+                          cellMargin: const EdgeInsets.symmetric(horizontal: 2),
                           weekendTextStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -164,7 +168,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
                             16,
                             FontWeight.w700,
                           ),
-
                         ),
 
                         //attribute
@@ -182,7 +185,23 @@ class _CustomCalendarState extends State<CustomCalendar> {
                         },
                         onDaySelected: (selectedDay, focusedDay) {
                           setState(() {
-                            _selectedDay = selectedDay;
+                            if (widget.isCheckDate ?? false) {
+                              if (selectedDay.year == DateTime.now().year) {
+                                if (selectedDay.month > DateTime.now().month) {
+                                  _selectedDay = selectedDay;
+                                } else if (selectedDay.month ==
+                                    DateTime.now().month) {
+                                  if (selectedDay.day >= DateTime.now().day) {
+                                    _selectedDay = selectedDay;
+                                  }
+                                }
+                              } else if (selectedDay.year >
+                                  DateTime.now().year) {
+                                _selectedDay = selectedDay;
+                              }
+                            } else {
+                              _selectedDay = selectedDay;
+                            }
                           });
                         },
                       ),
@@ -193,7 +212,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                     Container(
                       height: 1,
                       color:
-                      AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                          AppTheme.getInstance().whiteColor().withOpacity(0.1),
                     ),
                     SizedBox(
                       height: 64,

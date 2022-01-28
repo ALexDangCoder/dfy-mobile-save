@@ -305,6 +305,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             opaque: false,
                                             pageBuilder: (_, __, ___) {
                                               return CustomCalendar(
+                                                isCheckDate: true,
                                                 selectDate: bloc.dateTimeDay,
                                               );
                                             },
