@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/base/base_app_bar.dart';
@@ -7,6 +6,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_working_time.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/type_nft.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/custom_calandar.dart';
@@ -42,9 +42,6 @@ class CreateBookEvaluation extends StatefulWidget {
 
 class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   late final BlocCreateBookEvaluation bloc;
-  final Completer<GoogleMapController> _controller = Completer();
-  late final CameraPosition _kGooglePlex;
-  bool isCreateGoogle = false;
 
   @override
   void initState() {
@@ -54,7 +51,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
     bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
-    isCreateGoogle = true;
   }
 
   @override
@@ -64,16 +60,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       builder: (context, snapshot) {
         final pawn = snapshot.data ?? EvaluatorsDetailModel();
         if (snapshot.hasData) {
-          if (isCreateGoogle) {
-            _kGooglePlex = CameraPosition(
-              target: LatLng(
-                bloc.locationLat,
-                bloc.locationLong,
-              ),
-              zoom: 14.4746,
-            );
-            isCreateGoogle = false;
-          }
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
@@ -318,7 +304,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             transitionDuration: Duration.zero,
                                             opaque: false,
                                             pageBuilder: (_, __, ___) {
-                                              return const CustomCalendar();
+                                              return CustomCalendar(
+                                                selectDate: bloc.dateTimeDay,
+                                              );
                                             },
                                           ),
                                         );
@@ -326,11 +314,16 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         if (result != null) {
                                           final date = DateFormat('dd/MM/yyyy')
                                               .format(result);
+                                          final dateChoose =
+                                              DateFormat('yyyy-MM-dd')
+                                                  .format(result);
                                           bloc.dateStream.add(date);
-
+                                          bloc.dateTimeDay =
+                                              DateTime.tryParse(dateChoose);
                                           final dateFormat =
                                               DateFormat('EEEE').format(result);
                                           bloc.dateMy = dateFormat;
+
                                           bloc.getValidateDay(
                                             dateFormat,
                                           );
@@ -684,7 +677,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeFrom ?? 0).substring(0, 5)} ',
+                                              ' ${0.formatHourMy(pawn.workingTimeFrom ?? 0)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,
@@ -696,7 +689,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         ),
                                         TextSpan(
                                           text:
-                                              ' ${0.formatDateTimeMy(pawn.workingTimeTo ?? 0).substring(0, 5)} ',
+                                              ' ${0.formatHourMy(pawn.workingTimeTo ?? 0)} ',
                                           style: textNormalCustom(
                                             null,
                                             20,
@@ -715,7 +708,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         (int index) {
                                       return ItemWorkingTime(
                                         text: bloc.textWorkingDay(
-                                            pawn.workingDays?[index] ?? 0),
+                                          pawn.workingDays?[index] ?? 0,
+                                        ),
                                       );
                                     }).toList(),
                                   ),
@@ -770,15 +764,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       ),
                                       height: 193.h,
                                       width: 343.w,
-                                      child: GoogleMap(
-                                        // zoomGesturesEnabled: false,
-                                        myLocationEnabled: true,
-                                        zoomControlsEnabled: false,
-                                        initialCameraPosition: _kGooglePlex,
-                                        onMapCreated:
-                                            (GoogleMapController controller) {
-                                          _controller.complete(controller);
-                                        },
+                                      child: ItemMap(
+                                        bloc: bloc,
+                                        obj: pawn,
                                       ),
                                     ),
                                   ),
