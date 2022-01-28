@@ -11,40 +11,43 @@ import 'package:image_picker/image_picker.dart';
 Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
   final List<String> allowedExtensions = type.fileType;
 
-  String filePath = '';
+  String _filePath = '';
   String _fileType = '';
-  String fileExtension = '';
+  String _fileExtension = '';
+  bool _validFormat = true;
   int fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: allowedExtensions,
   );
   if (result != null) {
-    fileExtension = result.files.single.extension ?? '';
-    if(PickerType.DOCUMENT.fileType.contains(fileExtension)){
+    _fileExtension = (result.files.single.extension ?? '').toUpperCase();
+    _validFormat = allowedExtensions.contains(_fileExtension);
+    if(PickerType.DOCUMENT.fileType.contains(_fileExtension)){
       _fileType = DOCUMENT_FILE;
     } else {
-      if (fileExtension == 'mp4' || fileExtension == 'webm') {
+      if (_fileExtension == 'MP4' || _fileExtension == 'WEBM') {
         _fileType = MEDIA_VIDEO_FILE;
-      } else if (fileExtension == 'mp3' ||
-          fileExtension == 'wav' ||
-          fileExtension == 'OOG') {
+      } else if (_fileExtension == 'MP3' ||
+          _fileExtension == 'WAV' ||
+          _fileExtension == 'OOG') {
         _fileType = MEDIA_AUDIO_FILE;
       } else {
         _fileType = MEDIA_IMAGE_FILE;
       }
     }
 
-    filePath = result.files.single.path ?? '';
+    _filePath = result.files.single.path ?? '';
     fileSize = result.files.single.size;
   } else {
     // User canceled the picker
   }
   return {
     'type': _fileType,
-    'path': filePath,
+    'path': _filePath,
     'size': fileSize,
-    'extension': fileExtension,
+    'extension': _fileExtension,
+    'valid_format' : _validFormat,
   };
 }
 
@@ -123,9 +126,9 @@ extension GetTypeByName on PickerType {
   List<String> get fileType {
     switch (this) {
       case PickerType.MEDIA_FILE:
-        return ['mp4', 'WEBM', 'mp3', 'WAV', 'OGG', 'png', 'jpg', 'jpeg', 'GIF'];
+        return ['MP4', 'WEBM', 'MP3', 'WAV', 'OGG', 'PNG', 'JPG', 'JP', 'GIF'];
       case PickerType.IMAGE_FILE:
-        return ['JPG', 'PNG', 'GIF', 'JPEG'];
+        return ['JPG', 'PNG', 'GIF',]; //'JPEG'
       case PickerType.DOCUMENT:
         return ['DOC','DOCX','PDF','XLS','XLSX'];
     }
