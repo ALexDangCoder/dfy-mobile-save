@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -15,6 +16,7 @@ import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SaleTab extends StatefulWidget {
   final PutOnMarketCubit cubit;
@@ -234,38 +236,51 @@ class _SaleTabState extends State<SaleTab>
                             payValue: _putOnMarketModel.price,
                             tokenAddress: _putOnMarketModel.tokenAddress,
                             putOnMarketModel: _putOnMarketModel,
-                            warning: RichText(
-                              text: TextSpan(
-                                text:
-                                     '${S.current.listing_is_free} ',
-                                style: textNormal(
-                                  AppTheme.getInstance()
-                                      .whiteColor()
-                                      .withOpacity(0.7),
-                                  14,
+                            warning: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  ImageAssets.ic_warning_canel,
                                 ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '2.5%',
-                                    style: textNormal(
-                                      AppTheme.getInstance()
-                                          .failTransactionColors()
-                                          .withOpacity(0.7),
-                                      14,
+                                const SizedBox (width: 8,),
+                                Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                          '${S.current.listing_is_free} ',
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .whiteColor()
+                                                .withOpacity(0.7),
+                                            14,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '2.5%',
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .failTransactionColors()
+                                                .withOpacity(0.7),
+                                            14,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              S.current.value_of_each_copy,
+                                          style: textNormal(
+                                            AppTheme.getInstance()
+                                                .whiteColor()
+                                                .withOpacity(0.7),
+                                            14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  TextSpan(
-                                    text:
-                                        S.current.value_of_each_copy,
-                                    style: textNormal(
-                                      AppTheme.getInstance()
-                                          .whiteColor()
-                                          .withOpacity(0.7),
-                                      14,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             title: S.current.put_on_sale,
                             listDetail: [

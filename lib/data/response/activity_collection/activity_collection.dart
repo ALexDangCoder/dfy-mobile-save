@@ -83,7 +83,7 @@ class ActivityCollection {
   @JsonKey(name: 'auction_type')
   int? auctionType;
   @JsonKey(name: 'pawn_id')
-  int? pawnId;
+  String? pawnId;
 
   ActivityCollection(
     this.price,

@@ -16,62 +16,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BookEvaluation extends StatefulWidget {
-  const BookEvaluation({Key? key}) : super(key: key);
+  final int cityId;
+
+  const BookEvaluation({
+    Key? key,
+    required this.cityId,
+  }) : super(key: key);
 
   @override
   _BookEvaluationState createState() => _BookEvaluationState();
 }
 
 class _BookEvaluationState extends State<BookEvaluation> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   late final BlocBookEvaluation _bloc;
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(20.547441679107266, 105.90781651516276),
-    zoom: 14.4746,
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    //51.50748834854622, -0.12769100104405115
+    target: LatLng(51.53523402237351, -0.12769100104405115),
+    zoom: 10,
   );
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocBookEvaluation();
-    _bloc.getListPawnShopStar(cityId: 1);
+    _bloc.getListPawnShopStar(cityId: widget.cityId);
   }
-
-  // void getLocationUpdates() {
-  //   final LocationSettings locationSettings = LocationSettings(
-  //     accuracy: LocationAccuracy.high,
-  //     distanceFilter: 100,
-  //   );
-  //   StreamSubscription<Position> homeTabPostionStream;
-  //   homeTabPostionStream =
-  //       Geolocator.getPositionStream(locationSettings: locationSettings)
-  //           .listen((position) {
-  //     print(position == null
-  //         ? 'Unknown'
-  //         : position.latitude.toString() +
-  //             ', ' +
-  //             position.longitude.toString());
-  //     print('-----------------------------------------${position.latitude}');
-  //   });
-  // }
-  // void _currentLocation() async {
-  //   final GoogleMapController controller = await _controller.future;
-  //   LocationData currentLocation;
-  //   var location = Location();
-  //   try {
-  //     currentLocation = await location.getLocation();
-  //   } on Exception {
-  //     currentLocation = null;
-  //   }
-  //
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //     CameraPosition(
-  //       bearing: 0,
-  //       target: LatLng(currentLocation.latitude, currentLocation.longitude),
-  //       zoom: 17.0,
-  //     ),
-  //   ));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +85,6 @@ class _BookEvaluationState extends State<BookEvaluation> {
                 height: 193.h,
                 width: 343.w,
                 child: GoogleMap(
-                  // zoomGesturesEnabled: false,
-                  myLocationEnabled: true,
-                  zoomControlsEnabled: false,
                   initialCameraPosition: _kGooglePlex,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
@@ -127,54 +94,55 @@ class _BookEvaluationState extends State<BookEvaluation> {
             ),
             spaceH32,
             StreamBuilder<List<EvaluatorsCityModel>>(
-                stream: _bloc.list,
-                builder: (context, snapshot) {
-                  final list = snapshot.data ?? [];
-                  return Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(16.w),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${list.length} ${S.current.evaluators_near_you}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().getPurpleColor(),
-                              14,
-                              null,
-                            ),
+              stream: _bloc.list,
+              builder: (context, snapshot) {
+                final list = snapshot.data ?? [];
+                return Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(16.w),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${list.length} ${S.current.evaluators_near_you}',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().getPurpleColor(),
+                            14,
+                            null,
                           ),
                         ),
                       ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CreateBookEvaluation(
-                                  idEvaluation: list[index].id ?? '',
-                                  type: TypeEvaluation.NEW_CREATE,
-                                ),
+                    ),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateBookEvaluation(
+                                idEvaluation: list[index].id ?? '',
+                                type: TypeEvaluation.NEW_CREATE,
                               ),
-                            );
-                          },
-                          child: ItemPawnShopStar(
-                            starNumber: '${list[index].starCount}',
-                            namePawnShop: list[index].name ?? '',
-                            avatarPawnShopUrl:
-                                '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid}',
-                            function: () {},
-                          ),
+                            ),
+                          );
+                        },
+                        child: ItemPawnShopStar(
+                          starNumber: '${list[index].starCount}',
+                          namePawnShop: list[index].name ?? '',
+                          avatarPawnShopUrl:
+                              '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid}',
+                          function: () {},
                         ),
-                        itemCount: list.length,
-                        shrinkWrap: true,
                       ),
-                    ],
-                  );
-                }),
+                      itemCount: list.length,
+                      shrinkWrap: true,
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),

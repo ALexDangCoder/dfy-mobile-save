@@ -26,7 +26,9 @@ class InformationWidget extends StatelessWidget {
         spaceH5,
         spaceH12,
         textRow(
-            name: S.current.asset_type, value: object.assetType?.name ?? ''),
+          name: S.current.asset_type,
+          value: object.assetType?.name ?? '',
+        ),
         textRow(
           name: S.current.authenticity_check,
           value: (object.authenticityType == 1)
