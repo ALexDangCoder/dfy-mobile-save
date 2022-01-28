@@ -10,6 +10,8 @@
   "price_step_error": "Bước nhảy không được bỏ ",
   "unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
   "buy_out_price_error": "Giá mua phải lớn hơn giá khởi điểm",
+  "Duration_by_week_cannot_be_greater_than" : "Thời gian thế chấp không quá 5,200 tuần",
+  "Duration_by_month_cannot_be_greater_than" : "Thời gian thế chấp không quá 1,200 tháng",
   "set_the_fixed_price_and_sell_your_nft": "Thiết lập giá và bán NFT của bạn",
   "Set_a_duration_for_the_desired_loan_term": "Đặt thời hạn cho thời hạn vay mong muốn",
   "duration_content": "Đặt thời lượng cho phiên đấu giá và ngày bắt đầu",

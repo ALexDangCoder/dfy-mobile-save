@@ -43,6 +43,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   int? typeDuration;
   int? valueDuration;
   int quantityPawn = 1;
+  bool validateDuration = false;
 
   TokenRepository get tokenRepository => Get.find();
 
@@ -173,8 +174,8 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   void updateStreamContinuePawn() {
     if (valueTokenInputPawn != null
         && valueTokenInputPawn != 0
-        && valueDuration != null &&
-        quantityPawn > 0) {
+        && valueDuration != 0 &&
+        quantityPawn > 0 && validateDuration) {
       _canContinuePawn.sink.add(true);
     } else {
       _canContinuePawn.sink.add(false);
