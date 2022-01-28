@@ -147,9 +147,7 @@ Widget buttonCancelAuction({
           ),
         );
         if (isSuccess) {
-          showLoading(context);
           await refresh();
-          hideLoading(context);
         }
       },
       gradient: RadialGradient(

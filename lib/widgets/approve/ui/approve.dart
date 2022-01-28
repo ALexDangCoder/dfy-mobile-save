@@ -848,6 +848,7 @@ class _ApproveState extends State<Approve> {
           txnHash: data,
           marketId: widget.nftMarket?.marketId ?? '',
         );
+        await Future.delayed(const Duration(milliseconds: 1000));
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(
@@ -898,6 +899,7 @@ class _ApproveState extends State<Approve> {
           txnHash: data,
           marketId: widget.nftOnAuction?.id ?? '',
         );
+        await Future.delayed(const Duration(milliseconds: 1000));
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(
@@ -915,6 +917,7 @@ class _ApproveState extends State<Approve> {
         await cubit.confirmCancelPawnWithBE(
           id: widget.nftOnPawn?.id ?? 0,
         );
+        await Future.delayed(const Duration(milliseconds: 1000));
         await navigator.pushReplacement(
           MaterialPageRoute(
             builder: (context) => BaseSuccess(

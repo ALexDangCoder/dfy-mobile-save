@@ -181,9 +181,7 @@ Widget _buildButtonCancelOnPawn(
         ),
       );
       if (isSuccess) {
-        showLoading(context);
         await refresh();
-        hideLoading(context);
       }
     },
     gradient: RadialGradient(

@@ -420,6 +420,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   void dispose() {
     bloc.close();
     _tabController.dispose();
+    print('>>>>>>>>>>>>dp');
     super.dispose();
   }
 

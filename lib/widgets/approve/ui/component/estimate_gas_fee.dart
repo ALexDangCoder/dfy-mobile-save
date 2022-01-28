@@ -40,12 +40,16 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
         });
       });
       widget.cubit.gasPriceFirstStream.listen((event) {
-        setState(() {
-          gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
-          _editGasPriceController.text =
-              ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) ~/ 1e9)
-                  .toString();
-        });
+        try {
+          setState(() {
+            gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
+            _editGasPriceController.text =
+                ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) ~/ 1e9)
+                    .toString();
+          });
+        } catch (e) {
+          //
+        }
       });
     });
     // TODO: implement initState
