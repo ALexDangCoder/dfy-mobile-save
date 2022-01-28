@@ -100,7 +100,7 @@ class BlocListBookEvaluation {
         isDetail = false;
         isCancel = false;
         isLoadingText = false;
-        type = TypeEvaluation.CREATE;
+        type = TypeEvaluation.NEW_CREATE;
         return S.current.you_have_rejected;
       default:
         isDetail = false;

@@ -53,6 +53,10 @@ class ItemPawnShop extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
+                      bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -80,6 +84,10 @@ class ItemPawnShop extends StatelessWidget {
                   spaceW8,
                   InkWell(
                     onTap: () {
+                      bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -123,41 +131,43 @@ class ItemPawnShop extends StatelessWidget {
                 ],
               ),
               spaceH4,
-              RichText(
-                textAlign: TextAlign.end,
-                text: TextSpan(
-                  style: textNormalCustom(
-                    bloc.checkColor(
-                      bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
+              Align(
+                alignment: Alignment.centerRight,
+                child: RichText(
+                  text: TextSpan(
+                    style: textNormalCustom(
+                      bloc.checkColor(
+                        bloc.getTextStatus(
+                          appointment.status ?? 0,
+                          appointment.acceptedTime ?? 0,
+                        ),
                       ),
+                      12,
+                      null,
                     ),
-                    12,
-                    null,
+                    children: [
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: bloc.isLoadingText
+                            ? Container(
+                                width: 18.w,
+                                height: 18.h,
+                                margin: EdgeInsets.only(right: 10.w),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                      TextSpan(
+                        text: bloc.getTextStatus(
+                          appointment.status ?? 0,
+                          appointment.acceptedTime ?? 0,
+                        ),
+                      ),
+                    ],
                   ),
-                  children: [
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: bloc.isLoadingText
-                          ? Container(
-                              width: 18.w,
-                              height: 18.h,
-                              margin: EdgeInsets.only(right: 10.w),
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                    TextSpan(
-                      text: bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
-                      ),
-                    ),
-                  ],
                 ),
               ),
               spaceH8,
@@ -171,7 +181,7 @@ class ItemPawnShop extends StatelessWidget {
                               HeroDialogRoute(
                                 builder: (context) {
                                   return DialogReasonDetail(
-                                    contentDetail: 'sdfsadf', //todo content
+                                    contentDetail: 'detail nè', //todo content
                                     dateDetail: 0.formatDateTimeMy(
                                       appointment.appointmentTime ?? 0,
                                     ),
