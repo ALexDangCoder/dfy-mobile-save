@@ -111,7 +111,8 @@ class _OwnerTabState extends State<OwnerTab>
         '${ownerNft.priceSymbol ?? ''}';
     final String time = ownerNft.timeDuration?.toString() ?? '0';
     final int timeType = ownerNft.timeDurationType ?? 0;
-    final String timeDurationType = (timeType == 0) ? 'weeks' : 'month';
+    final String timeDurationType =
+        (timeType == 0) ? S.current.week : S.current.month;
     switch (marketStatus) {
       case 0:
         return RichText(
