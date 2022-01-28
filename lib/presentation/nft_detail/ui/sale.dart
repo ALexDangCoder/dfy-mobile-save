@@ -412,7 +412,10 @@ Widget _buildButtonPutOnMarket(
             ),
           ),
         );
-        if (result != null)reload();
+        if (result != null){
+          nftMarket.processStatus = 3;
+          bloc.emit(NftNotOnMarketSuccess(nftMarket));
+        }
       }
     },
     gradient: RadialGradient(
