@@ -44,6 +44,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   String nftIPFS = '';
   String transactionData = '';
   String tokenAddress = '';
+  String collectionName = '';
 
   ///Detail NFT var
   String mediaType = '';
