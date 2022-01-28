@@ -8,7 +8,6 @@ import 'package:Dfy/presentation/put_on_market/ui/auction_tab.dart';
 import 'package:Dfy/presentation/put_on_market/ui/pawn_tab.dart';
 import 'package:Dfy/presentation/put_on_market/ui/sale_tab.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

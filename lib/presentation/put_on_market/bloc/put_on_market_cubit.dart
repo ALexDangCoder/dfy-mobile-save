@@ -1,17 +1,13 @@
 import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
-import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_state.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -47,6 +43,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   int? typeDuration;
   int? valueDuration;
   int quantityPawn = 1;
+  bool validateDuration = false;
 
   TokenRepository get tokenRepository => Get.find();
 
@@ -164,10 +161,8 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       typeDuration = type;
     }
     if (value != null) {
-      valueTokenInputPawn = value;
+      valueDuration = value;
     }
-    typeDuration = type;
-    valueDuration = value;
     updateStreamContinuePawn();
   }
 
@@ -179,8 +174,8 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   void updateStreamContinuePawn() {
     if (valueTokenInputPawn != null
         && valueTokenInputPawn != 0
-        && valueDuration != null &&
-        quantityPawn > 0) {
+        && valueDuration != 0 &&
+        quantityPawn > 0 && validateDuration) {
       _canContinuePawn.sink.add(true);
     } else {
       _canContinuePawn.sink.add(false);
