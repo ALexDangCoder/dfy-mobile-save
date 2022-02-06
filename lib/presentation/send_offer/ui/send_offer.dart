@@ -316,10 +316,6 @@ class _SendOfferState extends State<SendOffer> {
                         } else {
                           loanAmount = value!;
                         }
-                        final regex = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,5})?$');
-                        if(!regex.hasMatch(value)){
-                          return 'sai r';
-                        }
                         return null;
                       },
                       hintText: S.current.enter_loan_amount,
@@ -371,10 +367,6 @@ class _SendOfferState extends State<SendOffer> {
                           return S.current.invalid_interest_rate;
                         } else {
                           interest = value!;
-                        }
-                        final regex = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,2})?$');
-                        if(!regex.hasMatch(value)){
-                          return 'sai r';
                         }
                         return null;
                       },
