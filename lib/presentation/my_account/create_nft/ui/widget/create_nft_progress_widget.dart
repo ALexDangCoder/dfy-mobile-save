@@ -92,8 +92,8 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                   value: '01',
                 ),
                 DetailItemApproveModel(
-                  title: '${S.current.collection_name}:',
-                  value: widget.cubit.collectionAddress,
+                  title: '${S.current.collection}:',
+                  value: widget.cubit.collectionName,
                 ),
                 DetailItemApproveModel(
                   title: '${S.current.minting_fee}:',

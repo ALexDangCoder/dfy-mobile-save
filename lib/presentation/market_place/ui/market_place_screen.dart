@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
@@ -31,8 +30,7 @@ class MarketPlaceScreen extends StatefulWidget {
   _MarketPlaceState createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlaceScreen>
-    with AutomaticKeepAliveClientMixin<MarketPlaceScreen> {
+class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliveClientMixin<MarketPlaceScreen>{
   late MarketplaceCubit cubit;
 
   @override

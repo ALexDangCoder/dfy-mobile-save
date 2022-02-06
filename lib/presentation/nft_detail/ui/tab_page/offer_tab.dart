@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -69,7 +70,8 @@ class _OfferTabState extends State<OfferTab> {
   }
 
   Widget _buildItemOffer(OfferDetail objOffer) {
-    final String duration = (objOffer.durationType == 0) ? 'week' : 'month';
+    final String duration =
+        (objOffer.durationType == 0) ? S.current.week : S.current.month;
     return BaseItem(
       child: GestureDetector(
         onTap: () {
@@ -94,8 +96,7 @@ class _OfferTabState extends State<OfferTab> {
                     Row(
                       children: [
                         Image.asset(
-                          ImageAssets
-                              .ic_user_verified,
+                          ImageAssets.ic_user_verified,
                           height: 24.h,
                           width: 24.w,
                         ),
@@ -104,9 +105,9 @@ class _OfferTabState extends State<OfferTab> {
                           '${objOffer.addressLender}'.handleString(),
                           style: richTextWhite
                               .copyWith(
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                          )
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              )
                               .copyWith(fontSize: 14.sp),
                         ),
                       ],
@@ -133,7 +134,7 @@ class _OfferTabState extends State<OfferTab> {
                           ),
                           TextSpan(
                             text:
-                            ' with a ${objOffer.duration ?? ''} $duration',
+                                ' with a ${objOffer.duration ?? ''} $duration',
                             style: textNormalCustom(
                               AppTheme.getInstance().textThemeColor(),
                               14,

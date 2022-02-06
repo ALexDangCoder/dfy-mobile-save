@@ -211,7 +211,7 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 520.h),
+                                                EdgeInsets.only(top: 585.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 24.h,
