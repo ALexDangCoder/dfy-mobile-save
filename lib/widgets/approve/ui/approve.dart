@@ -164,7 +164,7 @@ class _ApproveState extends State<Approve> {
   ) async {
     final String gasPriceString =
         (gasPriceFinal / 1e9).toStringAsFixed(0);
-    final String gasLimitString = (gasPriceFinal / 1e9).toStringAsFixed(0);
+    final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
     unawaited(showLoading(context));
     final nonce = await cubit.getNonce();
     await cubit.signTransactionWithData(
