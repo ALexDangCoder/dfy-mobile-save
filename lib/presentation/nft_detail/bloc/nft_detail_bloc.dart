@@ -43,8 +43,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   NFTRepository get _nftRepo => Get.find();
 
-  late final NftMarket nftMarket;
-  late final NFTOnAuction nftOnAuction;
+  late NftMarket nftMarket;
+  late NFTOnAuction nftOnAuction;
   late final String owner;
   List<Wallet> wallets = [];
 
