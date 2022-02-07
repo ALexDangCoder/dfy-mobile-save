@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 nav.pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: 1,
+                      index: tabPawnIndex,
                     ),
                   ),
                   (route) => route.isFirst,
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const MainScreen(
-                  index: 1,
+                  index: tabPawnIndex,
                 ),
               ),
               (route) => route.isFirst,
@@ -288,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           nav.pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const MainScreen(
-                                index: 1,
+                                index: tabPawnIndex,
                               ),
                             ),
                             (route) => route.isFirst,
@@ -351,20 +351,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: BlocListener<LoginCubit, LoginState>(
                           bloc: _cubit,
                           listener: (context, state) {
-                            if (state is LoginSuccess &&
-                                widget.isFromConnectDialog) {
-                              _cubit.isLoginSuccessSubject.sink.add(true);
-                              return;
-                            }
                             if (state is LoginSuccess) {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const MainScreen(
-                                    index: 1,
-                                  ),
-                                ),
-                                (route) => route.isFirst,
+                              PrefsService.saveCurrentWalletCore(
+                                _cubit.walletAddress,
                               );
+                              if (widget.isFromConnectDialog) {
+                                _cubit.isLoginSuccessSubject.sink.add(true);
+                              } else{
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainScreen(
+                                      index: 1,
+                                    ),
+                                  ),
+                                      (route) => route.isFirst,
+                                );
+                              }
                             }
                           },
                           child: GestureDetector(

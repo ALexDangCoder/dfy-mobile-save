@@ -143,13 +143,44 @@ Widget buttonCancelAuction({
               cancelInfo: S.current.auction_cancel_info,
               cancelWarning: S.current.cancel_auction_warning,
               title: S.current.cancel_aution,
+              onFail: (context) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BaseFail(
+                        title: S.current.cancel_aution,
+                        content: S.current.failed,
+                      onTapBtn: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                );
+              },
+              onSuccess: (context, data) async {
+                final navigator = Navigator.of(context);
+                await bloc.confirmCancelAuctionWithBE(
+                  txnHash: data,
+                  marketId: nftMarket.id ?? '',
+                );
+                await navigator.pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => BaseSuccess(
+                      title: S.current.cancel_aution,
+                      content: S.current.congratulation,
+                      callback: () {
+                        navigator.pop();
+                      },
+                    ),
+                  ),
+                );
+                navigator.pop(true);
+              },
             ),
           ),
         );
         if (isSuccess) {
-          showLoading(context);
           await refresh();
-          hideLoading(context);
         }
       },
       gradient: RadialGradient(

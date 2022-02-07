@@ -238,7 +238,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                               builder: (context) =>
                                                   const MainScreen(
                                                 isFormConnectWlDialog: true,
-                                                index: 2,
+                                                index: tabHomeIndex,
                                               ),
                                             ),
                                           );
@@ -249,7 +249,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   const MainScreen(
-                                                index: 3,
+                                                index: tabMarketingPlaceIndex,
                                                 isFormConnectWlDialog: true,
                                               ),
                                             ),
