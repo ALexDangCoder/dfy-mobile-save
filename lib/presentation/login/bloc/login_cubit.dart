@@ -110,7 +110,6 @@ class LoginCubit extends BaseCubit<LoginState> {
     );
     if (authenticated == true) {
       emit(LoginSuccess());
-
     }
   }
 }
