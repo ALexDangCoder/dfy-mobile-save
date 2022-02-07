@@ -133,6 +133,7 @@ dependencies:
   progress_indicators: ^1.0.0
   loading_gifs: ^0.3.0
   expandable_page_view: ^1.0.10
+  dropdown_search: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

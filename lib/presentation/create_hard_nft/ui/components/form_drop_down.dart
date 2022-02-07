@@ -105,11 +105,11 @@ List<Map<String, dynamic>> tokensMap = [
 List<Map<String, String>> phones = [
   {'label': '+84'},
   {'label': '+29'},
-  {'label': '39'},
-  {'label': '65'},
-  {'label': '66'},
-  {'label': '12'},
-  {'label': '32'},
+  {'label': '+39'},
+  {'label': '+65'},
+  {'label': '+66'},
+  {'label': '+12'},
+  {'label': '+32'},
 ];
 
 class FormDropDown extends StatelessWidget {
@@ -140,6 +140,7 @@ class FormDropDown extends StatelessWidget {
             resultAlign: Alignment.centerRight,
             resultWidth: 343.w,
             resultHeight: 64.h,
+            dropdownPadding: EdgeInsets.only(right: 11.w),
             dropdownBD: BoxDecoration(
               color: AppTheme.getInstance().selectDialogColor(),
               borderRadius: BorderRadius.circular(20),
@@ -199,6 +200,7 @@ class FormDropDown extends StatelessWidget {
                   dropdownList: tokensMap,
                   dropdownWidth: 113.w,
                   dropdownHeight: 228.h,
+                  dropdownPadding: EdgeInsets.only(right: 11.w),
                   dropdownItemHeight: 54.h,
                   defaultValue: tokensMap[0],
                   resultIcon: const SizedBox.shrink(),
@@ -247,7 +249,73 @@ class FormDropDown extends StatelessWidget {
         ),
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PHONE) {
-      return Container();
+      return Container(
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().backgroundBTSColor(),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            bottomLeft: Radius.circular(20.r),
+          ),
+        ),
+        width: 93.w,
+        height: 64.h,
+        child: Center(
+          child: Stack(
+            children: [
+              CoolDropdown(
+                dropdownItemGap: 8.h,
+                dropdownItemMainAxis: MainAxisAlignment.start,
+                resultMainAxis: MainAxisAlignment.spaceAround,
+                dropdownHeight: 324.h,
+                dropdownWidth: 109.w,
+                isTriangle: false,
+                dropdownPadding: EdgeInsets.only(right: 11.w),
+                dropdownList: phones,
+                defaultValue: phones[0],
+                resultIcon: const SizedBox.shrink(),
+                dropdownBD: BoxDecoration(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                unselectedItemTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                resultTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                selectedItemBD: BoxDecoration(
+                  color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                ),
+                selectedItemTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                resultBD: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                onChange: (value) {
+                  print(value['label']);
+                },
+              ),
+              Positioned(
+                top: 0.h,
+                left: 60.w,
+                child: SizedBox(
+                  height: 60.h,
+                  child: sizedSvgImage(
+                    w: 13,
+                    h: 13,
+                    image: ImageAssets.ic_expand_white_svg,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
     } else {
       return Container();
     }

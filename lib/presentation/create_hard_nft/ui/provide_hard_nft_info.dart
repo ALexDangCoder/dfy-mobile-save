@@ -4,12 +4,13 @@ import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/prov
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:dropdown_search/dropdown_search.dart';
 import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
 
@@ -93,7 +94,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH20,
-                const ButtonDashedAddImageFtVid(),
+                InkWell(
+                  onTap: () {
+                    pickMediaFile();
+                  },
+                  child: ButtonDashedAddImageFtVid(),
+                ),
                 spaceH32,
                 textShowWithPadding(
                   textShow: 'DOCUMENTS',
@@ -360,74 +366,28 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
 
                 ///FORM NUMBER
-                // Container(
-                //   padding: EdgeInsets.symmetric(
-                //     horizontal: 16.w,
-                //   ),
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         padding: EdgeInsets.only(
-                //           left: 5.w,
-                //         ),
-                //         decoration: BoxDecoration(
-                //           color: AppTheme.getInstance().itemBtsColors(),
-                //           borderRadius: BorderRadius.only(
-                //             topLeft: Radius.circular(20.r),
-                //             bottomLeft: Radius.circular(20.r),
-                //           ),
-                //         ),
-                //         height: 64.h,
-                //         width: 55.w,
-                //         child: Center(
-                //           child: DropdownButton<String>(
-                //             icon: Image.asset(
-                //               ImageAssets.btnDownArrow,
-                //             ),
-                //             dropdownColor:
-                //                 AppTheme.getInstance().itemBtsColors(),
-                //             underline: const SizedBox(),
-                //             value: firstPhoneNumDropdown,
-                //             onChanged: (value) {
-                //               setState(() {
-                //                 FocusScope.of(context)
-                //                     .requestFocus(FocusNode());
-                //                 firstPhoneNumDropdown = value ?? '';
-                //               });
-                //             },
-                //             items: phoneNumber
-                //                 .map(
-                //                   (e) => DropdownMenuItem(
-                //                     value: e,
-                //                     child: Text(
-                //                       e,
-                //                       style: textNormalCustom(
-                //                         AppTheme.getInstance().whiteColor(),
-                //                         16,
-                //                         FontWeight.w400,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 )
-                //                 .toList(),
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //         child: CustomForm(
-                //           isSelectNumPrefix: true,
-                //           textValue: (value) {
-                //             print(value);
-                //           },
-                //           hintText: 'Enter phone number',
-                //           suffix: null,
-                //           prefix: null,
-                //           inputType: null,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: Row(
+                    children: [
+                      FormDropDown(typeDrop: TYPE_FORM_DROPDOWN.PHONE),
+                      Expanded(
+                        child: CustomForm(
+                          isSelectNumPrefix: true,
+                          textValue: (value) {
+                            print(value);
+                          },
+                          hintText: 'Enter phone number',
+                          suffix: null,
+                          prefix: null,
+                          inputType: null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 spaceH16,
                 textShowWithPadding(
                   textShow: 'Country',
