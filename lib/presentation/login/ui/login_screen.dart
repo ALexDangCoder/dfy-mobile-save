@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 nav.pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: 1,
+                      index: tabPawnIndex,
                     ),
                   ),
                   (route) => route.isFirst,
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const MainScreen(
-                  index: 1,
+                  index: tabPawnIndex,
                 ),
               ),
               (route) => route.isFirst,
@@ -288,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           nav.pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const MainScreen(
-                                index: 1,
+                                index: tabPawnIndex,
                               ),
                             ),
                             (route) => route.isFirst,
