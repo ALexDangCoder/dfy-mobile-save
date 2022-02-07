@@ -258,6 +258,8 @@ abstract class AppColor {
   Color getPurpleColor();
 
   Color logoColor();
+
+  Color getAmountColor();
 }
 
 class LightApp extends AppColor {

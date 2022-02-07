@@ -1,22 +1,44 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/form_properties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormAddProperties extends StatefulWidget {
-  const FormAddProperties({Key? key}) : super(key: key);
+  const FormAddProperties({
+    Key? key,
+    required this.cubit,
+  }) : super(key: key);
+  final ProvideHardNftCubit cubit;
 
   @override
   _FormAddPropertiesState createState() => _FormAddPropertiesState();
 }
 
 class _FormAddPropertiesState extends State<FormAddProperties> {
-  List<Widget> _listForm = [];
+  late List<Widget> _listForm;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _listForm = [
+      FormProperties(
+        cubit: widget.cubit,
+      ),
+    ];
+  }
 
   void _addFormWidget() {
     setState(() {
-      _listForm.add(form());
+      _listForm.add(
+        FormProperties(
+          cubit: widget.cubit,
+        ),
+      );
+
     });
   }
 
@@ -52,7 +74,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                   ),
                 ),
               ),
-              spaceH24,
+              spaceH20,
               Container(
                 padding: EdgeInsets.only(left: 26.w),
                 child: Text(
@@ -69,7 +91,12 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                 child: ListView.builder(
                   itemCount: _listForm.length,
                   itemBuilder: (context, index) {
-                    return _listForm[index];
+                    return Column(
+                      children: [
+                        _listForm[index],
+                        spaceH18,
+                      ],
+                    );
                   },
                 ),
               ),
@@ -86,12 +113,15 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                       ),
                     ),
                     spaceW6,
-                    Text(
-                      'Add more',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().fillColor(),
-                        16,
-                        FontWeight.w400,
+                    InkWell(
+                      onTap: _addFormWidget,
+                      child: Text(
+                        'Add more',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().fillColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
                       ),
                     )
                   ],
@@ -138,7 +168,10 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: _addFormWidget,
+                  onTap: () {
+                    // widget.cubit.properties.clear();
+                    print(widget.cubit.properties);
+                  },
                   child: Center(
                     child: Text(
                       'Save',

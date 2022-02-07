@@ -65,9 +65,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (_) => const Dialog(
+                  barrierDismissible: false,
+                  builder: (_) => Dialog(
                     backgroundColor: Colors.transparent,
-                    child: FormAddProperties(),
+                    child: FormAddProperties(
+                      cubit: cubit,
+                    ),
                   ),
                 );
               },
@@ -95,9 +98,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 ),
                 spaceH20,
                 InkWell(
-                  onTap: () {
-                    pickMediaFile();
-                  },
+                  onTap: () async {},
                   child: ButtonDashedAddImageFtVid(),
                 ),
                 spaceH32,
@@ -288,6 +289,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     16,
                     FontWeight.w400,
                   ),
+                ),
+                //todo check
+                itemProperty(
+                  property: 'artist',
+                  value: 'someone',
                 ),
                 spaceH10,
                 divider,
@@ -545,6 +551,60 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
         )
       ],
+    );
+  }
+
+  //todo refactor stl
+  Container itemProperty({
+    required String property,
+    required String value,
+  }) {
+    return Container(
+      height: 44.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.r),
+        ),
+        border: Border.all(
+          color: AppTheme.getInstance().whiteDot2(),
+        ),
+
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 8.w,
+        vertical: 3.h,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                property,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteOpacityDot5(),
+                  12,
+                  FontWeight.w400,
+                ),
+              ),
+              Text(
+                value,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              )
+            ],
+          ),
+          Image.asset(
+            ImageAssets.closeProperties,
+          ),
+        ],
+      ),
     );
   }
 
