@@ -359,10 +359,6 @@ class _SendOfferState extends State<SendOffer> {
                     spaceH4,
                     CustomFormValidate(
                       validator: validator,
-                      formatter: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d+\.?\d{0,2}')),
-                      ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
                       },

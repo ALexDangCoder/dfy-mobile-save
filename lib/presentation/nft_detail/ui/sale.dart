@@ -203,9 +203,7 @@ Widget _buildButtonCancelOnSale(
         ),
       );
       if(isSuccess){
-        showLoading(context);
         await reload();
-        hideLoading(context);
       }
     },
     gradient: RadialGradient(
