@@ -81,6 +81,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   String? spender;
 
+  late String errorTextSign;
+
   String? hexString;
 
   ConfirmRepository get confirmRepository => Get.find();
@@ -174,43 +176,13 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   NFTRepository get nftRepo => Get.find();
 
-  Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
-    showLoading();
-    final result = await nftRepo.buyNftRequest(buyNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
-    );
-  }
 
-  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
-    showLoading();
-    final result = await nftRepo.bidNftRequest(bidNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
-    );
-  }
 
-  Future<void> emitJsonNftToWalletCore({
-    required String contract,
-    required int id,
-    required String address,
+
+  Future<void> gesGasLimitFirst(
+    String hexString, {
+    BuildContext? buildContext,
   }) async {
-    final result = await web3Client.getCollectionInfo(
-        contract: contract, address: address, id: id);
-    await importNftIntoWalletCore(
-      jsonNft: json.encode(result),
-      address: address,
-    );
-  }
-
-  Future<void> gesGasLimitFirst(String hexString,
-      {BuildContext? buildContext}) async {
     showLoading();
     try {
       final gasLimitFirstResult = await getGasLimitByType(hexString: hexString);
@@ -226,8 +198,8 @@ class ApproveCubit extends BaseCubit<ApproveState> {
 
   Future<void> approve() async {
     final String fromAddress = type == TYPE_CONFIRM_BASE.PUT_ON_AUCTION ||
-        type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
-        type == TYPE_CONFIRM_BASE.PUT_ON_SALE
+            type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
+            type == TYPE_CONFIRM_BASE.PUT_ON_SALE
         ? putOnMarketModel?.collectionAddress ?? ''
         : tokenAddress ?? '';
     final nonce =
@@ -257,26 +229,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
     } catch (e) {
       showError();
       AppException('title', e.toString());
-    }
-  }
-
-  Future<void> importNft({
-    required String contract,
-    required String address,
-    required int id,
-  }) async {
-    final res = await web3Client.importNFT(
-      contract: contract,
-      address: address,
-      id: id,
-    );
-    if (!res.isSuccess) {
-    } else {
-      await emitJsonNftToWalletCore(
-        contract: contract,
-        address: address,
-        id: id,
-      );
     }
   }
 

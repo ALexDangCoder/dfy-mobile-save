@@ -199,10 +199,43 @@ Widget _buildButtonCancelOnSale(
             cancelInfo: S.current.cancel_sale_info,
             cancelWarning: S.current.customer_cannot,
             title: S.current.cancel_sale,
+            onFail: (context) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.cancel_aution,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              );
+            },
+            onSuccess: (context, data) async {
+              final navigator = Navigator.of(context);
+              await bloc.confirmCancelSaleWithBE(
+                txnHash: data,
+                marketId: nftMarket.marketId ?? '',
+              );
+              await navigator.pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.cancel_aution,
+                    content: S.current.congratulation,
+                    callback: () {
+                      navigator.pop();
+                    },
+                  ),
+                ),
+              );
+              navigator.pop(true);
+            },
           ),
         ),
       );
-      if(isSuccess){
+      if (isSuccess) {
         await reload();
       }
     },
@@ -379,7 +412,7 @@ Widget _buildButtonPutOnMarket(
     onPressed: () async {
       if (nftMarket.processStatus != 5 &&
           nftMarket.processStatus != 6 &&
-          nftMarket.processStatus != 3){
+          nftMarket.processStatus != 3) {
         final navigator = Navigator.of(context);
         List<dynamic>? splitImageLink = nftMarket.image?.split('/');
         String imageId = '';
@@ -395,7 +428,7 @@ Widget _buildButtonPutOnMarket(
                 nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
                 collectionAddress: nftMarket.collectionAddress ?? '',
                 nftMediaType:
-                nftMarket.typeImage == TypeImage.IMAGE ? 'image' : 'video',
+                    nftMarket.typeImage == TypeImage.IMAGE ? 'image' : 'video',
                 totalOfCopies: nftMarket.totalCopies ?? 1,
                 nftName: nftMarket.name ?? '',
                 nftMediaCid: imageId,
@@ -410,7 +443,7 @@ Widget _buildButtonPutOnMarket(
             ),
           ),
         );
-        if (result != null){
+        if (result != null) {
           nftMarket.processStatus = 3;
           bloc.emit(NftNotOnMarketSuccess(nftMarket));
         }
@@ -446,6 +479,8 @@ Approve approveWidget({
   NFTOnAuction? nftOnAuction,
   NftOnPawn? nftOnPawn,
   NftMarket? nftMarket,
+  required Function(BuildContext) onFail,
+  required Function(BuildContext, String) onSuccess,
 }) {
   return Approve(
     listDetail: dataInfo,
@@ -495,5 +530,7 @@ Approve approveWidget({
     nftMarket: nftMarket,
     nftOnAuction: nftOnAuction,
     nftOnPawn: nftOnPawn,
+    onErrorSign: onFail,
+    onSuccessSign: onSuccess,
   );
 }
