@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -64,165 +66,10 @@ extension CallCoreExtension on ApproveCubit {
           }
         } else {
           final result = await sendRawData(rawData ?? '');
-          switch (type) {
-            case TYPE_CONFIRM_BASE.BUY_NFT:
-              if (result['isSuccess']) {
-                emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
-              } else {
-                emit(SignFail(S.current.buy_nft, TYPE_CONFIRM_BASE.BUY_NFT));
-              }
-              break;
-            case TYPE_CONFIRM_BASE.SEND_OFFER:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.SEND_OFFER,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.PLACE_BID:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.PLACE_BID),
-                );
-              } else {
-                emit(
-                  SignFail(S.current.place_a_bid, TYPE_CONFIRM_BASE.PLACE_BID),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.CREATE_COLLECTION,
-                  ),
-                );
-                showContent();
-              } else {
-                showError();
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CANCEL_SALE:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.CANCEL_SALE,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(
-                    S.current.cancel_sale,
-                    TYPE_CONFIRM_BASE.CANCEL_SALE,
-                  ),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.PUT_ON_SALE:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(
-                    S.current.put_on_sale,
-                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
-                  ),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(
-                    S.current.cancel_aution,
-                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
-                  ),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(
-                    S.current.put_on_pawn,
-                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
-                  ),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
-                  ),
-                );
-              } else {
-                emit(
-                  SignFail(
-                    S.current.put_on_auction,
-                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
-                  ),
-                );
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
-                  ),
-                );
-                showContent();
-              } else {
-                showError();
-              }
-              break;
-            case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-              if (result['isSuccess']) {
-                emit(
-                  SignSuccess(
-                    result['txHash'],
-                    TYPE_CONFIRM_BASE.CANCEL_PAWN,
-                  ),
-                );
-                showContent();
-              } else {
-                showError();
-              }
-              break;
-            default:
-              break;
+          if (result['isSuccess']) {
+            emit(SignSuccess(result['txHash'], type));
+          } else {
+            emit(SignFail(S.current.buy_nft, type));
           }
         }
         break;
@@ -241,6 +88,39 @@ extension CallCoreExtension on ApproveCubit {
             break;
         }
         break;
+    }
+  }
+
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    required int id,
+    required String address,
+  }) async {
+    final result = await web3Client.getCollectionInfo(
+        contract: contract, address: address, id: id);
+    await importNftIntoWalletCore(
+      jsonNft: json.encode(result),
+      address: address,
+    );
+  }
+
+  Future<void> importNft({
+    required String contract,
+    required String address,
+    required int id,
+  }) async {
+    final res = await web3Client.importNFT(
+      contract: contract,
+      address: address,
+      id: id,
+    );
+    if (!res.isSuccess) {
+    } else {
+      await emitJsonNftToWalletCore(
+        contract: contract,
+        address: address,
+        id: id,
+      );
     }
   }
 
