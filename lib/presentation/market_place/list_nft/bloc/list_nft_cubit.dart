@@ -2,10 +2,12 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/collection_filter.dart';
+import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
+import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -24,9 +26,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   final BehaviorSubject<List<CheckBoxFilter>> listCheckBox =
       BehaviorSubject<List<CheckBoxFilter>>();
   final BehaviorSubject<String> addressStream = BehaviorSubject.seeded('');
-  final BehaviorSubject<bool> isShowDropDownStream = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> isShowDropDownStream =
+      BehaviorSubject.seeded(false);
 
   CollectionFilterRepository get _collectionRepo => Get.find();
+  WalletAddressRepository get _walletAddressRepository => Get.find();
 
   NftMarketRepository get _nftRepo => Get.find();
 
@@ -50,14 +54,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       title.add(getTitleStream(selectStatus.first));
     }
   }
-  bool getLogin(){
-    if(walletAddress == ''){
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
 
 
   String getTitleStream(int num) {
@@ -67,11 +63,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else if (num == 3) {
       selectStatus.add(3);
       return S.current.nft_on_pawn;
-    } else if(num == 1){
+    } else if (num == 1) {
       selectStatus.add(1);
       return S.current.nft_on_sell;
-    }
-    else {
+    } else {
       selectStatus.add(0);
       return S.current.not_on_market;
     }
@@ -90,6 +85,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       checkFilterArr.add(S.current.on_sell);
       selectStatus.add(1);
       return '1';
+    } else if (type == MarketType.NOT_ON_MARKET) {
+      checkFilterArr.add(S.current.not_on_market);
+      selectStatus.add(0);
+      return '0';
     } else {
       return '';
     }
@@ -103,23 +102,50 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void searchNft(String? name, String? status,) {
+  void searchNft(
+    String? name,
+    String? status,
+    PageRouter pageRouter,
+  ) {
     page = 1;
-    if (walletAddress == '') {
+    if (pageRouter == PageRouter.MARKET) {
       if (status!.isEmpty) {
-        getListNft(name: name);
+        getListNft(
+          name: name,
+          pageRouter: PageRouter.MARKET,
+        );
       } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
-        getListNft(name: name, status: status);
+        getListNft(
+          name: name,
+          status: status,
+          pageRouter: PageRouter.MARKET,
+        );
       } else {
-        getListNft(status: status);
+        getListNft(
+          status: status,
+          pageRouter: PageRouter.MARKET,
+        );
       }
     } else {
       if (status!.isEmpty) {
-        getListNft(name: name, walletAddress: walletAddress);
+        getListNft(
+          name: name,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       } else if (name?.isNotEmpty ?? true && status.isNotEmpty) {
-        getListNft(name: name, status: status, walletAddress: walletAddress);
+        getListNft(
+          name: name,
+          status: status,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       } else {
-        getListNft(status: status, walletAddress: walletAddress);
+        getListNft(
+          status: status,
+          walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
+        );
       }
     }
   }
@@ -129,8 +155,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   bool canLoadMoreListNft = true;
   bool refresh = false;
 
-  void loadMorePosts() {
-    if (walletAddress == '') {
+  void loadMorePosts(PageRouter pageRouter) {
+    checkStatus();
+    if (pageRouter == PageRouter.MARKET) {
       if (!loadMore) {
         page += 1;
         canLoadMoreListNft = true;
@@ -139,6 +166,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
+          pageRouter: PageRouter.MARKET,
         );
       }
     } else {
@@ -151,21 +179,24 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
           walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
         );
       }
     }
   }
 
-  void refreshPosts() {
+  void refreshPosts(PageRouter pageRouter) {
+    checkStatus();
     canLoadMoreListNft = true;
     page = 1;
-    if (walletAddress == '') {
+    if (pageRouter == PageRouter.MARKET) {
       if (!refresh) {
         refresh = true;
         getListNft(
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
+          pageRouter: PageRouter.MARKET,
         );
       }
     } else {
@@ -176,6 +207,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
           walletAddress: walletAddress,
+          pageRouter: PageRouter.MY_ACC,
         );
       }
     }
@@ -183,10 +215,33 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   ///My account
 
-  List<String> walletAddressFilter = [];
+  List<String> walletAddressFilter = ['All'];
   String walletAddress = '';
-  String email = '';
   bool showDropdownAddress = true;
+
+  Future<void> getListWallet() async {
+    final Result<List<WalletAddressModel>> result =
+    await _walletAddressRepository.getListWalletAddress();
+    result.when(
+      success: (res) {
+        if (res.isEmpty) {
+        } else {
+          if (res.length < 2) {
+            for (final element in res) {
+              walletAddressFilter.add(element.walletAddress ?? '');
+            }
+            showDropdownAddress = false;
+          } else {
+            for (final element in res) {
+              walletAddressFilter.add(element.walletAddress ?? '');
+            }
+            showDropdownAddress = true;
+          }
+        }
+      },
+      error: (error) {},
+    );
+  }
 
   Future<void> getListNft({
     String? status,
@@ -194,6 +249,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     String? name,
     String? collectionId,
     String? walletAddress,
+    required PageRouter pageRouter,
   }) async {
     if (loadMore) {
       emit(ListNftLoadMore());
@@ -203,7 +259,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       emit(ListNftLoading());
     }
     final Result<List<NftMarket>> result;
-    if (walletAddress?.isEmpty ?? true) {
+    if (pageRouter == PageRouter.MARKET) {
       result = await _nftRepo.getListNft(
         status: status,
         name: name,
@@ -213,11 +269,13 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       );
     } else {
       result = await _nftRepo.getListNftMyAcc(
-        status: status,
+        status: status![0],
         name: name,
-        nftType: nftType,
-        walletAddress: walletAddress,
-        collectionId: collectionId,
+        nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
+            ? ''
+            : nftType?[0],
+        walletAddress: walletAddress == 'All' ? '' : walletAddress,
+        collectionId: '',
         page: page.toString(),
       );
     }
@@ -442,6 +500,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       return S.current.nft_on_sell;
     } else if (type == MarketType.AUCTION) {
       return S.current.on_auction;
+    } else if (type == MarketType.NOT_ON_MARKET) {
+      return S.current.not_on_market;
     } else {
       return S.current.on_pawn;
     }

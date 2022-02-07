@@ -6,23 +6,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PickTime extends StatefulWidget {
-  const PickTime({Key? key}) : super(key: key);
+  final String? miu;
+  final String? hour;
+
+  const PickTime({
+    Key? key,
+    this.miu,
+    this.hour,
+  }) : super(key: key);
 
   @override
   _PickTimeState createState() => _PickTimeState();
 }
 
 class _PickTimeState extends State<PickTime> {
+  String checkMiu(String miu) {
+    String myMiu = '';
+    if (miu.isEmpty) {
+      myMiu = DateTime.now().minute.toString();
+    } else {
+      myMiu = miu;
+    }
+    return myMiu;
+  }
+
+  String checkHour(String hour) {
+    String myHour = '';
+    if (hour.isEmpty) {
+      myHour = DateTime.now().hour.toString();
+    } else {
+      myHour = hour;
+    }
+    return myHour;
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController editHourController = TextEditingController();
     final TextEditingController editMinuteController = TextEditingController();
     editMinuteController.text = DateTime.now().minute < 10
         ? '0${DateTime.now().minute}'
-        : DateTime.now().minute.toString();
+        : checkMiu(widget.miu ?? '');
     editHourController.text = DateTime.now().hour < 10
         ? '0${DateTime.now().hour}'
-        : DateTime.now().hour.toString();
+        : checkHour(widget.hour ?? '');
     return Container(
       constraints: const BoxConstraints(maxWidth: 430),
       width: MediaQuery.of(context).size.width - 64,
@@ -151,13 +178,16 @@ class _PickTimeState extends State<PickTime> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Center(
-                      child: Text(
-                        S.current.cancel,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          20,
-                          FontWeight.w700,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Center(
+                        child: Text(
+                          S.current.cancel,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            20,
+                            FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -175,13 +205,16 @@ class _PickTimeState extends State<PickTime> {
                         'minute': editMinuteController.text
                       });
                     },
-                    child: Center(
-                      child: Text(
-                        S.current.ok,
-                        style: textNormalCustom(
-                          fillYellowColor,
-                          20,
-                          FontWeight.w700,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Center(
+                        child: Text(
+                          S.current.ok,
+                          style: textNormalCustom(
+                            fillYellowColor,
+                            20,
+                            FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),

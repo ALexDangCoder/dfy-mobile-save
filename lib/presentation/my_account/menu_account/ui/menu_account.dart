@@ -2,21 +2,25 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/menu_account/cubit/item_menu_model.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
-import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../main.dart';
@@ -40,20 +44,126 @@ class _MenuAccountState extends State<MenuAccount> {
     for (int i = 0; i < listItemMenu.length; i++) {
       openTab.add(false);
     }
+
     cubit.initData();
     super.initState();
   }
 
-  void pushRoute(String routeName, BuildContext context) {
+  void pushRoute(
+      MenuAccountState state, String routeName, BuildContext context) {
+    final String walletAddress = PrefsService.getCurrentBEWallet();
+
     switch (routeName) {
-      case 'put_on_market':
+      case 'nft_not_on_market':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PutOnMarket(),
-            ),
-          );
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.NOT_ON_MARKET,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.NOT_ON_MARKET,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
+        }
+        break;
+      case 'nft_on_sale':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.SALE,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.SALE,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
+        }
+        break;
+      case 'nft_on_auction':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.AUCTION,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.AUCTION,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
+        }
+        break;
+      case 'nft_on_pawn':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => ConnectWalletDialog(
+                navigationTo: ListNft(
+                  marketType: MarketType.PAWN,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListNft(
+                  marketType: MarketType.PAWN,
+                  pageRouter: PageRouter.MY_ACC,
+                  walletAddress: walletAddress,
+                ),
+              ),
+            );
+          }
         }
         break;
       case 'about_us':
@@ -71,8 +181,9 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const CollectionList(
+              builder: (context) => CollectionList(
                 typeScreen: PageRouter.MY_ACC,
+                addressWallet: walletAddress,
               ),
             ),
           );
@@ -83,45 +194,45 @@ class _MenuAccountState extends State<MenuAccount> {
 
   final List<ItemMenuModel> listItemMenu = [
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.profile_setting,
       icon: ImageAssets.ic_profile,
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.my_nft,
       icon: ImageAssets.ic_nft,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'nft_not_on_market',
           title: S.current.not_on_market,
         ),
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'nft_on_sale',
           title: S.current.on_sale,
         ),
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'nft_on_pawn',
           title: S.current.on_pawn,
         ),
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'nft_on_auction',
           title: S.current.on_auction,
         ),
       ],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.hard_nft_management,
       icon: ImageAssets.ic_graph,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'about_us',
           title: S.current.hard_nft_list,
         ),
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'about_us',
           title: S.current.hard_nft_mint_request,
         ),
       ],
@@ -133,40 +244,40 @@ class _MenuAccountState extends State<MenuAccount> {
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.nft_activity,
       icon: ImageAssets.ic_activity,
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.borrower_profile,
       icon: ImageAssets.ic_token_symbol,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'about_us',
           title: S.current.collateral,
         ),
         ItemMenuModel.createChild(
-          routeName: 'put_on_market',
+          routeName: 'about_us',
           title: S.current.contracts,
         ),
       ],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.lender_profile,
       icon: ImageAssets.ic_card,
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: S.current.setting,
       icon: ImageAssets.ic_setting,
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'put_on_market',
+      routeName: 'about_us',
       title: 'FAQ',
       icon: ImageAssets.ic_faq,
       children: [],
@@ -229,77 +340,77 @@ class _MenuAccountState extends State<MenuAccount> {
                       child: Column(
                         children: [
                           BlocBuilder<MenuAccountCubit, MenuAccountState>(
-                              bloc: cubit,
-                              builder: (context, state) {
-                                if (state is LogonState) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      StreamBuilder<String?>(
-                                        stream: cubit.addressWalletStream,
-                                        builder: (context, snapshot) {
-                                          final data = snapshot.data;
-                                          if (data == null) {
-                                            return const SizedBox(
-                                              height: 0,
-                                            );
-                                          } else {
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 6,
-                                                ),
-                                                SizedBox(
-                                                  height: 72,
-                                                  width: 72,
-                                                  child: Image.asset(
-                                                    ImageAssets
-                                                        .ic_profile_circle,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 6),
-                                                Text(
-                                                  data,
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .whiteColor(),
-                                                    16,
-                                                    FontWeight.w400,
-                                                  ),
-                                                )
-                                              ],
-                                            );
-                                          }
-                                        },
-                                      ),
-                                      StreamBuilder<String?>(
-                                        stream: cubit.emailStream,
-                                        builder: (context, snapshot) {
-                                          final data = snapshot.data;
-                                          if (data == null) {
-                                            return const SizedBox(
-                                              height: 0,
-                                            );
-                                          } else {
-                                            return Text(
-                                              data,
-                                              style: textNormalCustom(
-                                                AppTheme.getInstance()
-                                                    .whiteColor(),
-                                                16,
-                                                FontWeight.w400,
+                            bloc: cubit,
+                            builder: (context, state) {
+                              if (state is LogonState) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    StreamBuilder<String?>(
+                                      stream: cubit.addressWalletStream,
+                                      builder: (context, snapshot) {
+                                        final data = snapshot.data;
+                                        if (data == null) {
+                                          return const SizedBox(
+                                            height: 0,
+                                          );
+                                        } else {
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(
+                                                height: 6,
                                               ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return const SizedBox(height: 0);
-                                }
-                              }),
+                                              SizedBox(
+                                                height: 72,
+                                                width: 72,
+                                                child: Image.asset(
+                                                  ImageAssets.ic_profile_circle,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                data.handleString(),
+                                                style: textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                  FontWeight.w400,
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    StreamBuilder<String?>(
+                                      stream: cubit.emailStream,
+                                      builder: (context, snapshot) {
+                                        final data = snapshot.data;
+                                        if (data == null) {
+                                          return const SizedBox(
+                                            height: 0,
+                                          );
+                                        } else {
+                                          return Text(
+                                            data,
+                                            style: textNormalCustom(
+                                              AppTheme.getInstance()
+                                                  .whiteColor(),
+                                              16,
+                                              FontWeight.w400,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return const SizedBox(height: 0);
+                              }
+                            },
+                          ),
                           ...listItemMenu.indexedMap((e, index) {
                             if (e.children.isNotEmpty) {
                               return ExpansionTitleCustom(
@@ -373,6 +484,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                               return GestureDetector(
                                                 onTap: () {
                                                   pushRoute(
+                                                    cubit.state,
                                                     element.routeName,
                                                     context,
                                                   );
@@ -425,6 +537,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                       });
                                     }
                                     pushRoute(
+                                      cubit.state,
                                       e.routeName,
                                       context,
                                     );
@@ -490,58 +603,82 @@ class _MenuAccountState extends State<MenuAccount> {
       // EdgeInsets.only(left: 0),
       child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Image.asset(ImageAssets.ic_back),
+          Positioned(
+            bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Text(
+                S.current.my_account,
+                style: textNormal(AppTheme.getInstance().textThemeColor(), 20)
+                    .copyWith(fontWeight: FontWeight.w700),
               ),
-              BlocBuilder<MenuAccountCubit, MenuAccountState>(
-                bloc: cubit,
-                builder: (BuildContext context, state) {
-                  if (state is NoLoginState) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainScreen(
-                              index: cubit.getIndexLogin(),
+            ),
+          ),
+          Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(ImageAssets.ic_back),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: BlocBuilder<MenuAccountCubit, MenuAccountState>(
+                    bloc: cubit,
+                    builder: (BuildContext context, state) {
+                      if (state is NoLoginState) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MainScreen(
+                                  index: cubit.getIndexLogin(),
+                                  isFormConnectWlDialog: true,
+                                ),
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              S.current.connect_wallet,
+                              maxLines: 2,
+                              textAlign: TextAlign.right,
+                              style: textNormalCustom(
+                                fillYellowColor,
+                                16,
+                                FontWeight.w700,
+                              ),
                             ),
                           ),
                         );
-                      },
-                      child: Text(
-                        S.current.login,
-                        style: textNormalCustom(
-                          fillYellowColor,
-                          16,
-                          FontWeight.w700,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return InkWell(
-                      onTap: () {
-                        cubit.logout();
-                      },
-                      child: Image.asset(ImageAssets.ic_logout),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-          Center(
-            child: Text(
-              S.current.my_account,
-              style: textNormal(AppTheme.getInstance().textThemeColor(), 20)
-                  .copyWith(fontWeight: FontWeight.w700),
+                      } else {
+                        return InkWell(
+                          onTap: () {
+                            cubit.logout();
+
+                          },
+                          child: Image.asset(ImageAssets.ic_logout),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );

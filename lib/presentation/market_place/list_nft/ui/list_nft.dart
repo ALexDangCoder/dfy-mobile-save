@@ -51,32 +51,47 @@ class _ListNftState extends State<ListNft> {
     _cubit = ListNftCubit();
     _cubit.title.add(_cubit.getTitle(widget.marketType));
     _cubit.getTokenInf();
-    _cubit.getCollectionFilter();
     if (widget.pageRouter == PageRouter.MARKET) {
+      _cubit.getCollectionFilter();
       if (widget.marketType != null) {
-        _cubit.getListNft(status: _cubit.status(widget.marketType));
+        _cubit.getListNft(
+          status: _cubit.status(widget.marketType),
+          pageRouter: PageRouter.MARKET,
+        );
       } else {
         if (widget.queryAllResult != null) {
-          _cubit.getListNft(name: widget.queryAllResult);
+          _cubit.getListNft(
+            name: widget.queryAllResult,
+            pageRouter: PageRouter.MARKET,
+          );
         } else {
-          _cubit.getListNft();
+          _cubit.getListNft(
+            pageRouter: PageRouter.MARKET,
+          );
         }
       }
     } else {
-      _cubit.walletAddress = widget.walletAddress!;
+      _cubit.getListWallet();
+      _cubit.walletAddress = widget.walletAddress!.toLowerCase();
+      _cubit.addressStream.add(widget.walletAddress!.toLowerCase());
       if (widget.marketType != null) {
         _cubit.getListNft(
           status: _cubit.status(widget.marketType),
           walletAddress: widget.walletAddress,
+          pageRouter: PageRouter.MY_ACC,
         );
       } else {
         if (widget.queryAllResult != null) {
           _cubit.getListNft(
             name: widget.queryAllResult,
             walletAddress: widget.walletAddress,
+            pageRouter: PageRouter.MY_ACC,
           );
         } else {
-          _cubit.getListNft(walletAddress: widget.walletAddress);
+          _cubit.getListNft(
+            walletAddress: widget.walletAddress,
+            pageRouter: PageRouter.MY_ACC,
+          );
         }
       }
     }
@@ -153,7 +168,7 @@ class _ListNftState extends State<ListNft> {
                           if (_cubit.canLoadMoreListNft &&
                               (scrollInfo.metrics.pixels ==
                                   scrollInfo.metrics.maxScrollExtent)) {
-                            _cubit.loadMorePosts();
+                            _cubit.loadMorePosts(widget.pageRouter);
                           }
                           return true;
                         },
@@ -167,15 +182,13 @@ class _ListNftState extends State<ListNft> {
                                 return Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: () async {
-                                      _cubit.refreshPosts();
+                                      _cubit.refreshPosts(widget.pageRouter);
                                     },
                                     child: Stack(
                                       children: [
-                                        StaggeredGridView.countBuilder(
+                                        GridView.builder(
                                           shrinkWrap: true,
-                                          mainAxisSpacing: 20.h,
                                           itemCount: _cubit.listData.length,
-                                          crossAxisCount: 2,
                                           itemBuilder: (context, index) {
                                             return Padding(
                                               padding:
@@ -189,13 +202,16 @@ class _ListNftState extends State<ListNft> {
                                               ),
                                             );
                                           },
-                                          staggeredTileBuilder: (int index) =>
-                                              const StaggeredTile.fit(1),
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            childAspectRatio: 170.w / 231.h,
+                                          ),
                                         ),
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 520.h),
+                                                EdgeInsets.only(top: 585.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 24.h,
@@ -344,6 +360,7 @@ class _ListNftState extends State<ListNft> {
                           });
                           _cubit.getListNft(
                             status: _cubit.status(widget.marketType),
+                            pageRouter: widget.pageRouter,
                           );
                           FocusScope.of(context).unfocus();
                         },
@@ -377,6 +394,7 @@ class _ListNftState extends State<ListNft> {
       _cubit.searchNft(
         query,
         _cubit.getParam(_cubit.selectStatus),
+        widget.pageRouter,
       );
     });
   }

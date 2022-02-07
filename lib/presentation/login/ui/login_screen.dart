@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/alert_dialog/ui/alert_import_pop_up.dart';
@@ -14,6 +14,7 @@ import 'package:Dfy/presentation/login/bloc/login_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -21,18 +22,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
     Key? key,
     required this.walletCubit,
     this.isFromConnectDialog = false,
-    this.navigationToScreen,
   }) : super(key: key);
 
   final bool isFromConnectDialog;
   final WalletCubit walletCubit;
-  final Widget? navigationToScreen;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -66,32 +66,69 @@ class _LoginScreenState extends State<LoginScreen> {
     _cubit.checkBiometrics();
 
     //login for market place:
+    _cubit.getWallet();
     if (widget.isFromConnectDialog) {
-      _cubit.getWallet();
-    }
-    _cubit.isLoginSuccessStream.listen((event) {
-      if (event) {
-        _cubit.getSignature(
-          walletAddress: _cubit.walletAddress,
-        );
-      }
-    });
-    _cubit.signatureStream.listen(
-      (event) {
-        if (event.isNotEmpty) {
-          _cubit
-              .loginAndSaveInfo(
-                walletAddress: _cubit.walletAddress,
-                signature: event,
-              )
-              .then(
-                (value) => Navigator.pop(
-                  context,
+      _cubit.isLoginSuccessStream.listen((event) {
+        if (event) {
+          _cubit.getSignature(
+            walletAddress: _cubit.walletAddress,
+            context: context,
+          );
+        }
+      });
+      _cubit.signatureStream.listen(
+        (event) async {
+          if (event.isNotEmpty) {
+            final nav = Navigator.of(context);
+            showLoading(context);
+            final bool checkLogin = await _cubit.loginAndSaveInfo(
+              walletAddress: _cubit.walletAddress,
+              signature: event,
+            );
+            hideLoading(context);
+            if (checkLogin) {
+              unawaited(
+                nav.pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: 1,
+                    ),
+                  ),
+                  (route) => route.isFirst,
                 ),
               );
-        }
-      },
-    );
+            } else {
+              showErrorDialog(
+                context: context,
+                title: S.current.notify,
+                content: S.current.something_went_wrong,
+              );
+            }
+          }
+        },
+      );
+      _cubit.isSaveInfoSuccessStream.listen(
+        (event) {
+          if (event) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(
+                  index: 1,
+                ),
+              ),
+              (route) => route.isFirst,
+            );
+          } else {
+            showErrorDialog(
+              context: context,
+              title: S.current.notify,
+              content: S.current.something_went_wrong,
+            );
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -239,16 +276,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
-                    listener: (context, state) async {
+                    listener: (context, state) {
                       final nav = Navigator.of(context);
-                      //todo
-                      if (state is LoginPasswordSuccess &&
-                          widget.isFromConnectDialog) {
-                        _cubit.isLoginSuccessSubject.sink.add(true);
-                        return;
-                      }
                       if (state is LoginPasswordSuccess) {
-                        unawaited(
+                        PrefsService.saveCurrentWalletCore(
+                          _cubit.walletAddress,
+                        );
+                        if (widget.isFromConnectDialog) {
+                          _cubit.isLoginSuccessSubject.sink.add(true);
+                        } else {
                           nav.pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const MainScreen(
@@ -256,8 +292,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             (route) => route.isFirst,
-                          ),
-                        );
+                          );
+                        }
                       }
                       if (state is LoginPasswordError) {
                         _showDialog();
@@ -359,8 +395,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.CREATE,
+                                  isFromConnectWlDialog:
+                                      widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,
@@ -400,8 +438,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               .push(
                             HeroDialogRoute(
                               builder: (context) {
-                                return const AlertPopUp(
+                                return AlertPopUp(
                                   type: KeyType.IMPORT,
+                                  isFromConnectWlDialog:
+                                      widget.isFromConnectDialog,
                                 );
                               },
                               isNonBackground: false,

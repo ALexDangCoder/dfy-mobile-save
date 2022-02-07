@@ -17,15 +17,18 @@ class InformationWidget extends StatelessWidget {
       children: [
         Text(
           S.current.information,
-          style: tokenDetailAmount(
-            color: AppTheme.getInstance().whiteColor(),
-            fontSize: 14,
+          style: textNormalCustom(
+            AppTheme.getInstance().whiteColor(),
+            14,
+            FontWeight.w600,
           ),
         ),
         spaceH5,
         spaceH12,
         textRow(
-            name: S.current.asset_type, value: object.assetType?.name ?? ''),
+          name: S.current.asset_type,
+          value: object.assetType?.name ?? '',
+        ),
         textRow(
           name: S.current.authenticity_check,
           value: (object.authenticityType == 1)

@@ -40,11 +40,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
         children: [
           GestureDetector(
             onTap: () {
-              final FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
+              if (bloc.checkWalletAddress) {
+                bloc.isChooseAcc.sink.add(false);
               }
-              bloc.isChooseAcc.sink.add(false);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -145,7 +143,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                           Center(
                             child: InkWell(
                               onTap: () {
-                                bloc.isChooseAcc.sink.add(true);
+                                if (bloc.checkWalletAddress) {
+                                  bloc.isChooseAcc.sink.add(true);
+                                }
                               },
                               child: StreamBuilder<String>(
                                 stream: bloc.textAddressFilter,
@@ -187,10 +187,17 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                                             ),
                                           ],
                                         ),
-                                        Image.asset(
-                                          ImageAssets.ic_line_down,
-                                          height: 20.67.h,
-                                          width: 20.14.w,
+                                        SizedBox(
+                                          child: bloc.checkWalletAddress
+                                              ? Image.asset(
+                                                  ImageAssets.ic_line_down,
+                                                  height: 20.67.h,
+                                                  width: 20.14.w,
+                                                )
+                                              : SizedBox(
+                                                  height: 20.67.h,
+                                                  width: 20.14.w,
+                                                ),
                                         ),
                                       ],
                                     ),
@@ -286,8 +293,9 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                             child: Text(
                               bloc.listAcc[index] == S.current.all
                                   ? S.current.all
-                                  : bloc.listAcc[index]
-                                      .formatAddressWalletConfirm(),
+                                  : bloc.checkNullAddressWallet(
+                                      bloc.listAcc[index],
+                                    ),
                               style: textNormalCustom(null, 16, null),
                             ),
                           ),

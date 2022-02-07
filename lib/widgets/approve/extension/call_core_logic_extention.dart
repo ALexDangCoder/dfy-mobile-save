@@ -3,13 +3,13 @@ import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
+import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
 
 import '../../../main.dart';
 
-extension CallCoreExtension on ApproveCubit{
+extension CallCoreExtension on ApproveCubit {
   ///
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
@@ -29,53 +29,81 @@ extension CallCoreExtension on ApproveCubit{
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
             );
             balanceWalletSubject.sink.add(balanceWallet ?? 0);
+            await getGasPrice();
+            if (needApprove) {
+              final result = await checkApprove(
+                payValue: payValue ?? '',
+                tokenAddress: tokenAddress ?? ' ',
+              );
+              if (result) {
+                await gesGasLimitFirst(hexString ?? '');
+              } else {
+                showContent();
+              }
+            } else {
+              await gesGasLimitFirst(hexString ?? '');
+            }
           } catch (e) {
             showError();
             AppException('title', e.toString());
-          }
-          await getGasPrice();
-          if (needApprove) {
-            final result = await checkApprove(
-              payValue: payValue ?? '',
-              tokenAddress: tokenAddress ?? ' ',
-            );
-            if (result) {
-              await gesGasLimitFirst(hexString ?? '');
-            }
-            else {
-              showContent();
-            }
-          }
-          else {
-            await gesGasLimitFirst(hexString ?? '');
           }
         }
         break;
       case 'signTransactionWithDataCallback':
         rawData = methodCall.arguments['signedTransaction'];
-        if (checkingApprove) {
-          final resultApprove = await web3Client.sendRawTransaction(
+        if (checkingApprove ?? false) {
+          await web3Client.sendRawTransaction(
             transaction: rawData ?? '',
           );
-          checkingApprove = false;
-          isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
+          await loopCheckApprove();
+          // isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
+          if (isApprove) {
+            emit(ApproveSuccess());
+          } else {
+            emit(ApproveFail());
+          }
         } else {
           final result = await sendRawData(rawData ?? '');
           switch (type) {
             case TYPE_CONFIRM_BASE.BUY_NFT:
               if (result['isSuccess']) {
-                showContent();
                 emit(SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.BUY_NFT));
               } else {
-                showContent();
-                emit(SignFail(S.current.buy_nft));
+                emit(SignFail(S.current.buy_nft, TYPE_CONFIRM_BASE.BUY_NFT));
+              }
+              break;
+            case TYPE_CONFIRM_BASE.SEND_OFFER:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.SEND_OFFER,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(S.current.send_offer, TYPE_CONFIRM_BASE.SEND_OFFER),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PLACE_BID:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(result['txHash'], TYPE_CONFIRM_BASE.PLACE_BID),
+                );
+              } else {
+                emit(
+                  SignFail(S.current.place_a_bid, TYPE_CONFIRM_BASE.PLACE_BID),
+                );
               }
               break;
             case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
               if (result['isSuccess']) {
                 emit(
                   SignSuccess(
-                      result['txHash'], TYPE_CONFIRM_BASE.CREATE_COLLECTION),
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+                  ),
                 );
                 showContent();
               } else {
@@ -84,7 +112,110 @@ extension CallCoreExtension on ApproveCubit{
               break;
             case TYPE_CONFIRM_BASE.CANCEL_SALE:
               if (result['isSuccess']) {
-                emit(SendRawDataSuccess(result['txHash']));
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.cancel_sale,
+                    TYPE_CONFIRM_BASE.CANCEL_SALE,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_SALE:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.put_on_sale,
+                    TYPE_CONFIRM_BASE.PUT_ON_SALE,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.cancel_aution,
+                    TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_PAWN:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.put_on_pawn,
+                    TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.PUT_ON_AUCTION:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              } else {
+                emit(
+                  SignFail(
+                    S.current.put_on_auction,
+                    TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                  ),
+                );
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
+                  ),
+                );
+                showContent();
+              } else {
+                showError();
+              }
+              break;
+            case TYPE_CONFIRM_BASE.CANCEL_PAWN:
+              if (result['isSuccess']) {
+                emit(
+                  SignSuccess(
+                    result['txHash'],
+                    TYPE_CONFIRM_BASE.CANCEL_PAWN,
+                  ),
+                );
                 showContent();
               } else {
                 showError();
@@ -95,7 +226,7 @@ extension CallCoreExtension on ApproveCubit{
           }
         }
         break;
-    //todo
+      //todo
       case 'importNftCallback':
         final int code = await methodCall.arguments['code'];
         switch (code) {
@@ -133,9 +264,7 @@ extension CallCoreExtension on ApproveCubit{
         'withData': hexString,
       };
       await trustWalletChannel.invokeMethod('signTransactionWithData', data);
-    } on PlatformException {
-      //print ('â');
-    }
+    } on PlatformException {}
   }
 
   Future<void> getListWallets() async {
@@ -163,5 +292,4 @@ extension CallCoreExtension on ApproveCubit{
       //todo
     }
   }
-
 }

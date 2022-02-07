@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info/package_info.dart';
 
 void hideKeyboard(BuildContext context) {
@@ -13,7 +17,6 @@ void hideKeyboard(BuildContext context) {
 bool isEmail(String email) {
   return RegExp(EMAIL_REGEX).hasMatch(email);
 }
-
 
 /// validate vietnam phone number
 bool isVNPhone(String phone) {
@@ -89,18 +92,17 @@ Future<String> getDeviceId() async {
 
 void showLoading(BuildContext context, {Function? close}) {
   showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) {
-        return WillPopScope(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: AppTheme.getInstance().primaryColor(),
-            ),
-          ),
-          onWillPop: () async => false,
-        );
-      },).then(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) {
+      return WillPopScope(
+        child: const Center(
+          child: CupertinoLoading(),
+        ),
+        onWillPop: () async => false,
+      );
+    },
+  ).then(
     (value) {
       if (close != null) close(value);
     },
@@ -109,4 +111,100 @@ void showLoading(BuildContext context, {Function? close}) {
 
 void hideLoading(BuildContext context) {
   Navigator.of(context).pop();
+}
+
+void showErrorDialog({
+  required BuildContext context,
+  required String title,
+  required String content,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) {
+      return GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: () {},
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(minHeight: 177.h),
+                width: 312.w,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  borderRadius: const BorderRadius.all(Radius.circular(36)),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 19),
+                      child: Text(
+                        title,
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          20,
+                        ).copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      padding: const EdgeInsets.only(
+                        right: 35,
+                        bottom: 24,
+                        left: 35,
+                      ),
+                      child: Text(
+                        content,
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1.w,
+                            color: AppTheme.getInstance()
+                                .whiteBackgroundButtonColor(),
+                          ),
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        behavior: HitTestBehavior.opaque,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 19,
+                            top: 17,
+                          ),
+                          child: Text(
+                            'OK',
+                            style: textNormal(
+                              AppTheme.getInstance().fillColor(),
+                              20,
+                            ).copyWith(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

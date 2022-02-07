@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +62,18 @@ class CategoriesDropDown extends StatelessWidget {
                 16,
               ),
               onChange: (selected) {
-                log(selected['value']);
+                selected as Map<String, dynamic>;
+                cubit.voidCheckCollectionId(selected.getStringValue('value'));
+                cubit.collectionName = selected.getStringValue('label');
               },
-              resultIcon: const SizedBox.shrink(),
+              resultIcon: Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                child: sizedSvgImage(
+                  w: 13,
+                  h: 13,
+                  image: ImageAssets.ic_expand_white_svg,
+                ),
+              ),
               placeholder: S.current.collection_name,
               placeholderTS: textNormal(
                 Colors.white.withOpacity(0.5),
@@ -75,17 +84,6 @@ class CategoriesDropDown extends StatelessWidget {
               resultPadding: EdgeInsets.only(left: 52.w),
             );
           },
-        ),
-        Positioned(
-          right: 19.w,
-          child: SizedBox(
-            height: 64.h,
-            child: sizedSvgImage(
-              w: 13,
-              h: 13,
-              image: ImageAssets.ic_expand_white_svg,
-            ),
-          ),
         ),
         Positioned(
           left: 14.w,

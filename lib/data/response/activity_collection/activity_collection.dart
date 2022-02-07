@@ -82,6 +82,8 @@ class ActivityCollection {
   String? fileType;
   @JsonKey(name: 'auction_type')
   int? auctionType;
+  @JsonKey(name: 'pawn_id')
+  String? pawnId;
 
   ActivityCollection(
     this.price,
@@ -105,6 +107,7 @@ class ActivityCollection {
     this.coverCid,
     this.fileType,
     this.auctionType,
+    this.pawnId,
   );
 
   factory ActivityCollection.fromJson(Map<String, dynamic> json) =>
@@ -134,6 +137,7 @@ class ActivityCollection {
         coverCid,
         fileType,
         auctionType,
+        pawnId,
       );
 
   @override

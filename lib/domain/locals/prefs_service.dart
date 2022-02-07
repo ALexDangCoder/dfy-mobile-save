@@ -11,8 +11,11 @@ class PrefsService {
   static const _PREF_FACE_ID = 'pref_face_id';
   static const _PREF_FIRST_APP = 'pref_first_app';
   static const _PREF_LIST_TOKEN_SUPPORT = '';
-  static const _PREF_CURRENT_WALLET = 'pref_current_wallet';
+  static const _PREF_CURRENT_BE_WALLET = 'pref_current_wallet';
   static const _PREF_USER_PROFILE = 'pref_user_info';
+  static const _PREF_CURRENT_WALLET_CORE = 'pref_is_wallet_core_logged';
+  static const _PREF_OWNER_PAWN = 'pref_owner_pawn';
+  static const _PREF_IS_SHOW_CONNECT_MAIL_DIALOG = 'pref_is_show_connect_mail';
 
   static SharedPreferences? _prefsInstance;
 
@@ -89,9 +92,29 @@ class PrefsService {
         jsonLoginModelEmpty();
   }
 
+  static Future<bool> saveOwnerPawn(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_OWNER_PAWN, data);
+  }
+
+  static String getOwnerPawn() {
+    return _prefsInstance?.getString(_PREF_OWNER_PAWN) ?? '';
+  }
+
   static Future<bool> clearWalletLogin() async {
     final prefs = await _instance;
-    await prefs.setString(_PREF_CURRENT_WALLET, '');
+    await prefs.setString(_PREF_CURRENT_WALLET_CORE, '');
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
+    await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
+    return prefs.setString(
+      _PREF_WALLET_LOGIN,
+      jsonLoginModelEmpty(),
+    );
+  }
+
+  static Future<bool> clearWalletBE() async {
+    final prefs = await _instance;
+    await prefs.setString(_PREF_CURRENT_BE_WALLET, '');
     await prefs.setString(_PREF_USER_PROFILE, userProfileEmpty());
     return prefs.setString(
       _PREF_WALLET_LOGIN,
@@ -114,15 +137,6 @@ class PrefsService {
   Future<void> clearData() async {
     await _prefsInstance?.clear();
     return;
-  }
-
-  static Future<bool> saveCurrentWallet(String walletAddress) async {
-    final prefs = await _instance;
-    return prefs.setString(_PREF_CURRENT_WALLET, walletAddress);
-  }
-
-  static String getCurrentWallet() {
-    return _prefsInstance?.getString(_PREF_CURRENT_WALLET) ?? '';
   }
 
   static Future<bool> saveUserProfile(String data) async {
@@ -152,4 +166,32 @@ class PrefsService {
       ),
     );
   }
+
+  static Future<bool> saveCurrentBEWallet(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_BE_WALLET, walletAddress);
+  }
+
+  static String getCurrentBEWallet() {
+    return _prefsInstance?.getString(_PREF_CURRENT_BE_WALLET) ?? '';
+  }
+
+  static Future<bool> saveCurrentWalletCore(String walletAddress) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CURRENT_WALLET_CORE, walletAddress);
+  }
+
+  static String getCurrentWalletCore() {
+    return _prefsInstance?.getString(_PREF_CURRENT_WALLET_CORE) ?? '';
+  }
+
+  static Future<bool> saveOptionShowDialogConnectEmail(bool isShow) async {
+    final prefs = await _instance;
+    return prefs.setBool(_PREF_IS_SHOW_CONNECT_MAIL_DIALOG, isShow);
+  }
+
+  static bool getOptionShowDialogConnectEmail() {
+    return _prefsInstance?.getBool(_PREF_IS_SHOW_CONNECT_MAIL_DIALOG) ?? true;
+  }
+
 }

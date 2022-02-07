@@ -9,8 +9,8 @@ class CustomForm extends StatelessWidget {
     required this.textValue,
     required this.hintText,
     this.prefix,
+    this.suffix,
     this.isSelectNumPrefix,
-    required this.suffix,
     required this.inputType,
   }) : super(key: key);
   final Function(String value) textValue;
@@ -22,42 +22,48 @@ class CustomForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64.h,
-      padding: EdgeInsets.only(left: 12.w, right: 12.w),
-      decoration: BoxDecoration(
-        borderRadius: isSelectNumPrefix ?? false
-            ? BorderRadius.only(
-                topRight: Radius.circular(20.r),
-                bottomRight: Radius.circular(20.r),
-              )
-            : BorderRadius.all(
-                Radius.circular(20.r),
-              ),
-        color: AppTheme.getInstance().itemBtsColors(),
-      ),
-      child: Center(
-        child: TextFormField(
-          onChanged: (value) {
-            textValue(value);
-          },
-          keyboardType: inputType,
-          textAlignVertical: TextAlignVertical.center,
-          cursorColor: AppTheme.getInstance().textThemeColor(),
-          style: textNormal(
-            AppTheme.getInstance().textThemeColor(),
+    return Center(
+      child: TextFormField(
+        onChanged: (value) {
+          textValue(value);
+        },
+        keyboardType: inputType,
+        textAlignVertical: TextAlignVertical.center,
+        cursorColor: AppTheme.getInstance().textThemeColor(),
+        style: textNormal(
+          AppTheme.getInstance().textThemeColor(),
+          16.sp,
+        ),
+        decoration: InputDecoration(
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 20.h, horizontal: 12.w),
+          fillColor: AppTheme.getInstance().itemBtsColors(),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.r),
+            borderSide: BorderSide(
+              color: AppTheme.getInstance().itemBtsColors(),
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.r),
+            borderSide: BorderSide(
+              color: AppTheme.getInstance().itemBtsColors(),
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.r),
+            borderSide: BorderSide(
+              color: AppTheme.getInstance().itemBtsColors(),
+            ),
+          ),
+          hintText: hintText,
+          hintStyle: textNormal(
+            AppTheme.getInstance().disableColor(),
             16.sp,
           ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: textNormal(
-              AppTheme.getInstance().disableColor(),
-              16.sp,
-            ),
-            suffixIcon: suffix,
-            prefix: prefix,
-          ),
+          suffixIcon: suffix,
+          prefixIcon: prefix,
         ),
       ),
     );

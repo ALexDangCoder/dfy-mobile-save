@@ -48,81 +48,82 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.black,
-            bottomNavigationBar: Container(
-              color: AppTheme.getInstance().bgBtsColor(),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15.r),
-                    topLeft: Radius.circular(15.r),
-                  ),
-                  border: Border.all(
-                    color: AppTheme.getInstance().divideColor(),
-                  ),
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          bottomNavigationBar: Container(
+            color: AppTheme.getInstance().bgBtsColor(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15.r),
+                  topLeft: Radius.circular(15.r),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: widget.bottomBar,
+                border: Border.all(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
               ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: widget.bottomBar,
             ),
-            body: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.r),
-                    topRight: Radius.circular(30.r),
-                  ),
+          ),
+          body: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().bgBtsColor(),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.r),
+                  topRight: Radius.circular(30.r),
                 ),
-                child: DefaultTabController(
-                  length: 2,
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: CustomScrollView(
-                      slivers: [
-                        BaseAppBar(
-                          image: widget.image,
-                          title: widget.title,
-                          initHeight: widget.initHeight,
-                          leading: widget.leading,
-                          actions: widget.actions,
-                          typeImage: widget.typeImage,
+              ),
+              child: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: CustomScrollView(
+                    slivers: [
+                      BaseAppBar(
+                        image: widget.image,
+                        title: widget.title,
+                        initHeight: widget.initHeight,
+                        leading: widget.leading,
+                        actions: widget.actions,
+                        typeImage: widget.typeImage,
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Column(
+                                children: widget.content,
+                              ),
+                            )
+                          ],
                         ),
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                child: Column(
-                                  children: widget.content,
-                                ),
-                              )
-                            ],
-                          ),
+                      ),
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: BaseSliverHeader(
+                          widget.tabBar ?? const SizedBox(),
                         ),
-                        SliverPersistentHeader(
-                          pinned: true,
-                          delegate: BaseSliverHeader(
-                            widget.tabBar ?? const SizedBox(),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: widget.tabBarView ?? const SizedBox(),
-                        )
-                      ],
-                    ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: widget.tabBarView ?? const SizedBox(),
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -131,12 +132,12 @@ class ExpandedPageViewWidget extends StatefulWidget {
   final TabController controller;
   final PageController pageController;
 
-  const ExpandedPageViewWidget(
-      {Key? key,
-        required this.children,
-        required this.controller,
-        required this.pageController})
-      : super(key: key);
+  const ExpandedPageViewWidget({
+    Key? key,
+    required this.children,
+    required this.controller,
+    required this.pageController,
+  }) : super(key: key);
 
   @override
   _ExpandedPageViewWidgetState createState() => _ExpandedPageViewWidgetState();
@@ -150,8 +151,11 @@ class _ExpandedPageViewWidgetState extends State<ExpandedPageViewWidget>
     return ExpandablePageView(
       allowImplicitScrolling: true,
       onPageChanged: (value) {
-        widget.controller.animateTo(value,
-            duration: const Duration(milliseconds: 0), curve: Curves.ease);
+        widget.controller.animateTo(
+          value,
+          duration: const Duration(milliseconds: 0),
+          curve: Curves.ease,
+        );
       },
       controller: widget.pageController,
       children: widget.children,
@@ -176,23 +180,18 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent,
-      ) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.only(left: 16.w,right: 16.w),
           color: AppTheme.getInstance().bgBtsColor(),
           height: 58.h,
           child: Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: 305.w,
-                minWidth: 100.w,
-              ),
-              child: _tabBar,
-            ),
+            child: _tabBar,
           ),
         ),
       ],
@@ -204,4 +203,3 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
-

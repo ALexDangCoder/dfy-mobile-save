@@ -1,4 +1,4 @@
-import 'package:Dfy/config/resources/styles.dart';
+
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -10,6 +10,7 @@ const colorSelected = Color(0xFFE0F2F1);
 const mainTxtColor = Color(0xFF30536F);
 const dfTxtColor = Color(0xFF303742);
 const secondTxtColor = Color(0xFF808FA8);
+const textGray = Color(0xFFBEC0C3);
 const highlightTxtColor = Color(0xff303742);
 const backgroundBottomSheetColor = Color(0xff32324c);
 const textErrorLoad = Color(0xffE6E6E6);
@@ -43,6 +44,7 @@ Color whiteOpacityZeroFire = Colors.white.withOpacity(0.5);
 const borderItemColors = Color(0xff474666);
 const borderColor = Color(0xff7E7EAA);
 const fillYellowColor = Color(0xffE4AC1A);
+const grayColor = Color(0xff9FA6B2);
 const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
@@ -84,6 +86,10 @@ const yellowOpacity = Color(0x1AE4AC1A);
 const darkColor = Color(0xFF33324C);
 const grayBarColor = Color(0xFF828282);
 const dividerCreateNFT = Color(0xffC4C4C4);
+const orangeMarketColor = Color(0xffFE951A);
+const redMarketColor = Color(0xffFF6C6C);
+const greenMarketColor = Color(0xff61c777);
+const blueMarketColor = Color(0xff46BCFF);
 const bgDropdown = Color(0xff585782);
 final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 
@@ -116,6 +122,14 @@ abstract class AppColor {
   Color lineCreateNFT();
 
   Color yellowColor();
+
+  Color redMarketColors();
+
+  Color blueMarketColors();
+
+  Color greenMarketColors();
+
+  Color orangeMarketColors();
 
   List<Color> colorFab();
 
@@ -165,6 +179,8 @@ abstract class AppColor {
 
   Color bgBtsColor();
 
+  Color grayTextColor();
+
   Color itemBtsColors();
 
   Color divideColor();
@@ -184,6 +200,8 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+
+  Color getGrayColor();
 
   Color whiteOpacityDot5();
 
@@ -238,6 +256,8 @@ abstract class AppColor {
   Color gray3Color();
 
   Color getPurpleColor();
+
+  Color logoColor();
 }
 
 class LightApp extends AppColor {
@@ -413,7 +433,6 @@ class LightApp extends AppColor {
 
   @override
   Color whiteBackgroundButtonColor() {
-    // TODO: implement whiteBackgroundButtonColor
     return Colors.white.withOpacity(0.1);
   }
 
@@ -444,19 +463,16 @@ class LightApp extends AppColor {
 
   @override
   Color whiteWithOpacityFireZero() {
-    // TODO: implement whiteWithOpacityFireZero
     return whiteOpacityZeroFire;
   }
 
   @override
   Color backgroundBTSColor() {
-    // TODO: implement backgroundBTSColor
     return backgroundBottomSheetColor;
   }
 
   @override
   Color colorTextFieldZeroFire() {
-    // TODO: implement colorTextFieldZeroFire
     return colorTextField.withOpacity(0.5);
   }
 
@@ -525,7 +541,6 @@ class LightApp extends AppColor {
 
   @override
   Color colorTextReset() {
-    // TODO: implement colorTextReset
     return const Color(0xff585782);
   }
 
@@ -584,6 +599,46 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color grayTextColor() {
+    return textGray;
+  }
+
+  @override
+  Color blueMarketColors() {
+    return blueMarketColor;
+  }
+
+  @override
+  Color greenMarketColors() {
+    return greenMarketColor;
+  }
+
+  @override
+  Color orangeMarketColors() {
+    return orangeMarketColor;
+  }
+
+  @override
+  Color redMarketColors() {
+   return redMarketColor;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
+  }
+
+  @override
   Color dashedColorContainer() {
     return dashedContainer;
   }
@@ -619,6 +674,11 @@ class DarkApp extends AppColor {
   @override
   Color primaryColor() {
     return Colors.black;
+  }
+
+  @override
+  Color logoColor() {
+    return const Color(0xffFFBF00);
   }
 
   @override
@@ -981,6 +1041,70 @@ class DarkApp extends AppColor {
   @override
   List<Color> colorsCreateNFT() {
     return colorsCreateNft;
+  }
+
+  @override
+  Color grayTextColor() {
+    // TODO: implement grayTextColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueMarketColor() {
+    // TODO: implement blueMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color greenMarketColor() {
+    // TODO: implement greenMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color orangeMarketColor() {
+    // TODO: implement orangeMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redMarketColor() {
+    // TODO: implement redMarketColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color blueMarketColors() {
+    // TODO: implement blueMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color greenMarketColors() {
+    // TODO: implement greenMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color orangeMarketColors() {
+    // TODO: implement orangeMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color redMarketColors() {
+    // TODO: implement redMarketColors
+    throw UnimplementedError();
+  }
+
+  @override
+  Color getAmountColor() {
+    return amountColor;
+  }
+
+  @override
+  Color getGrayColor() {
+    return grayColor;
   }
 }
 

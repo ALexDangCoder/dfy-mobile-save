@@ -6,10 +6,14 @@ import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
@@ -175,7 +179,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   ),
                                 ),
                                 Text(
-                                  nft.standard == 'ERC-721'
+                                  nft.standard == ERC_721
                                       ? '1 ${S.current.of_all} 1'
                                       : '1 of 10',
                                   style: textNormal(

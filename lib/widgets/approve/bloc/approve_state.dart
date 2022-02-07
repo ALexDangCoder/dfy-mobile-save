@@ -23,22 +23,39 @@ class SignSuccess extends ApproveState {
   List<Object?> get props => [txh, type];
 }
 
-class SignFail extends ApproveState {
-  final String message;
 
-  SignFail(this.message);
+class ApproveFail extends ApproveState {
+
+  ApproveFail();
 
   @override
   List<Object?> get props => [];
 }
 
-class SendRawDataSuccess extends ApproveState{
-  String txnHash;
+class ApproveSuccess extends ApproveState {
 
-  SendRawDataSuccess(this.txnHash);
+  ApproveSuccess();
 
   @override
-  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class SignFail extends ApproveState {
+  final String message;
+  final TYPE_CONFIRM_BASE type;
+
+  SignFail(this.message, this.type);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CancelSuccess extends ApproveState{
+  final String txnHash;
+
+  CancelSuccess(this.txnHash);
+
+  @override
   List<Object?> get props => [txnHash];
 
 }

@@ -7,7 +7,7 @@ import 'package:Dfy/presentation/change_password/ui/components/form_setup_passwo
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
-import 'package:Dfy/widgets/dialog/wallet_dialog.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -5,8 +5,10 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
+import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrare_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_switch_applock.dart';
@@ -24,19 +26,42 @@ class CreateSuccessfully extends StatefulWidget {
     required this.wallet,
     required this.type,
     required this.passWord,
+    this.isFromConnectWlDialog = false,
   }) : super(key: key);
   final BLocCreateSeedPhrase bLocCreateSeedPhrase;
   final Wallet wallet;
   final KeyType type;
   final String passWord;
+  final bool isFromConnectWlDialog;
 
   @override
   State<CreateSuccessfully> createState() => _CreateSuccessfullyState();
 }
 
 class _CreateSuccessfullyState extends State<CreateSuccessfully> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isFromConnectWlDialog) {
+      widget.bLocCreateSeedPhrase.getSignature(
+        walletAddress: widget.wallet.address ?? '',
+        context: context,
+      );
+      widget.bLocCreateSeedPhrase.signatureStream.listen(
+        (event) async {
+          if (event.isNotEmpty) {
+            showLoading(context);
+            await widget.bLocCreateSeedPhrase.loginAndSaveInfo(
+              walletAddress: widget.wallet.address ?? '',
+              signature: event,
+            );
+            hideLoading(context);
+          }
+        },
+      );
+    }
+  }
 
-  //TODO: Vũ code login cho market place
   @override
   Widget build(BuildContext context) {
     return Scaffold(

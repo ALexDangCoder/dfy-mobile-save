@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/change_password/ui/change_password.dart';
@@ -248,6 +249,7 @@ class _SettingWalletState extends State<SettingWallet> {
           return Flexible(
             child: InkWell(
               onTap: () {
+                PrefsService.clearWalletLogin();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(

@@ -14,23 +14,21 @@ class BaseFail extends StatelessWidget {
   const BaseFail({
     Key? key,
     required this.title,
-    required this.content,
+    this.content,
     required this.onTapBtn,
   }) : super(key: key);
   final String title;
-  final String content;
+  final String? content;
   final Function() onTapBtn;
 
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
       title: title,
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: 80.h,
-          ),
+          const Spacer(),
           SizedBox(
             height: 228.h,
             width: 305.w,
@@ -41,21 +39,18 @@ class BaseFail extends StatelessWidget {
             margin: EdgeInsets.symmetric(
               horizontal: 16.w,
             ),
-            child: Center(
-              child: Text(
-                content,
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  32,
-                  FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Text(
+              content ?? S.current.oopps_omething_went_wrong,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                32,
+                FontWeight.w700,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(
-            height: 185.h,
-          ),
+          const Spacer(),
           GestureDetector(
             onTap: onTapBtn,
             child: ButtonGold(

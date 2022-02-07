@@ -1,4 +1,3 @@
-
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/splash/splash_screen.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -18,6 +17,7 @@ class AppRouter {
   static const sendToken = '/sendToken';
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
+  static const putOnSale = '/put_on_market';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
@@ -25,6 +25,7 @@ class AppRouter {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(builder: (ctx) => const SplashScreen());
+
       case main:
         return MaterialPageRoute(
           builder: (ctx) {

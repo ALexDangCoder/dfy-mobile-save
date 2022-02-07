@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -15,11 +20,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PawnTab extends StatefulWidget {
   final bool? canEdit;
   final int? quantity;
+  final PutOnMarketModel putOnMarketModel;
 
   final PutOnMarketCubit cubit;
 
   const PawnTab(
-      {Key? key, required this.cubit, this.canEdit = false, this.quantity = 1})
+      {Key? key,
+      required this.cubit,
+      this.canEdit = false,
+      this.quantity = 1,
+      required this.putOnMarketModel})
       : super(key: key);
 
   @override
@@ -30,6 +40,42 @@ class _PawnTabState extends State<PawnTab>
     with AutomaticKeepAliveClientMixin<PawnTab> {
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
+  late PutOnMarketModel _putOnMarketModel;
+  String? errorTextDuration;
+
+  @override
+  void initState() {
+    _putOnMarketModel = widget.putOnMarketModel;
+    _putOnMarketModel.durationType = 0;
+    _putOnMarketModel.numberOfCopies = 1;
+    super.initState();
+  }
+
+  void checkDuration() {
+    final int duration = widget.cubit.valueDuration ?? 0;
+    if (widget.cubit.typeDuration == 0 && duration > 5200) {
+      setState(() {
+        errorTextDuration = S.current.Duration_by_week_cannot_be_greater_than;
+      });
+      widget.cubit.validateDuration = false;
+    } else if (widget.cubit.typeDuration == 1 && duration > 1200) {
+      setState(() {
+        errorTextDuration = S.current.Duration_by_month_cannot_be_greater_than;
+      });
+      widget.cubit.validateDuration = false;
+    } else if (duration <= 0) {
+      setState(() {
+        errorTextDuration = null;
+      });
+      widget.cubit.validateDuration = false;
+    } else {
+      widget.cubit.validateDuration = true;
+      setState(() {
+        errorTextDuration = null;
+      });
+    }
+    widget.cubit.updateStreamContinuePawn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,22 +126,74 @@ class _PawnTabState extends State<PawnTab>
               const SizedBox(
                 height: 4,
               ),
-              InputWithSelectType(
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d+\.?\d{0,5}'),
-                    ),
-                  ],
-                  maxSize: 100,
-                  keyboardType: TextInputType.number,
-                  typeInput: typeInput(),
-                  hintText: S.current.enter_price,
-                  onChangeType: (index) {},
-                  onchangeText: (value) {
+              StreamBuilder<List<TokenInf>>(
+                stream: widget.cubit.listTokenStream,
+                builder: (context, snapshot) {
+                  final data = snapshot.data ?? [];
+                  if (data.isNotEmpty) {
                     widget.cubit.changeTokenPawn(
-                      value: value != '' ? double.parse(value) : null,
+                      indexToken: 0,
                     );
-                  }),
+                    _putOnMarketModel.tokenAddress =
+                        widget.cubit.listToken[0].address ?? '';
+                    _putOnMarketModel.loanSymbol =
+                        widget.cubit.listToken[0].symbol ?? '';
+                  }
+                  return InputWithSelectType(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,5}'),
+                      ),
+                    ],
+                    maxSize: 100,
+                    keyboardType: TextInputType.number,
+                    typeInput: data
+                        .map(
+                          (e) => SizedBox(
+                            height: 64,
+                            width: 70,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Image.network(
+                                    e.iconUrl ?? '',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Flexible(
+                                  child: Text(
+                                    e.symbol ?? '',
+                                    style: textValueNFT.copyWith(
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    hintText: S.current.enter_price,
+                    onChangeType: (index) {
+                      widget.cubit.changeTokenPawn(
+                        indexToken: index,
+                      );
+                      _putOnMarketModel.tokenAddress =
+                          widget.cubit.listToken[index].address ?? '';
+                      _putOnMarketModel.loanSymbol =
+                          widget.cubit.listToken[index].symbol ?? '';
+                    },
+                    onchangeText: (value) {
+                      widget.cubit.changeTokenPawn(
+                        value: value != '' ? int.parse(value) : 0,
+                      );
+                      _putOnMarketModel.price = value;
+                    },
+                  );
+                },
+              ),
               const SizedBox(
                 height: 16,
               ),
@@ -156,12 +254,38 @@ class _PawnTabState extends State<PawnTab>
                   )
                 ],
                 hintText: S.current.enter_duration,
-                onChangeType: (index) {},
+                onChangeType: (index) {
+                  widget.cubit.changeDurationPawn(
+                    type: index,
+                  );
+                  checkDuration();
+                  _putOnMarketModel.durationType = index;
+                },
                 onchangeText: (value) {
                   widget.cubit.changeDurationPawn(
-                    value: value != '' ? int.parse(value) : null,
+                    value: value != '' ? int.parse(value) : 0,
                   );
+                  checkDuration();
+                  _putOnMarketModel.duration = value;
                 },
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  child: SizedBox(
+                    height: errorTextDuration == null ? 0 : 25,
+                    child: Text(
+                      errorTextDuration ?? '',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().redColor(),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 16,
@@ -196,6 +320,8 @@ class _PawnTabState extends State<PawnTab>
                   widget.cubit.changeQuantityPawn(
                     value: value != '' ? int.parse(value) : 0,
                   );
+                  _putOnMarketModel.numberOfCopies =
+                      value != '' ? int.parse(value) : 0;
                 },
               ),
             ],
@@ -214,24 +340,34 @@ class _PawnTabState extends State<PawnTab>
               builder: (context, snapshot) {
                 final data = snapshot.data ?? false;
                 return GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (data) {
-                      Navigator.push(
+                      final hexString =
+                          await widget.cubit.getHexStringPutOnPawn(
+                        _putOnMarketModel,
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => Approve(
-                            title: S.current.put_on_sale,
+                      );
+                      await showDialog(
+                        context: context,
+                        builder: (context) => ConnectWalletDialog(
+                          navigationTo: Approve(
+                            needApprove: true,
+                            payValue: _putOnMarketModel.price,
+                            tokenAddress: _putOnMarketModel.tokenAddress,
+                            putOnMarketModel: _putOnMarketModel,
+                            hexString: hexString,
+                            title: S.current.put_on_pawn,
                             listDetail: [
                               DetailItemApproveModel(
                                 title: '${S.current.expected_loan} :',
                                 value:
-                                    '${widget.cubit.valueTokenInputPawn ?? 0} DFY',
+                                    '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
                                 isToken: true,
                               ),
                               DetailItemApproveModel(
                                 title: '${S.current.duration} :',
                                 value:
-                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == DurationType.WEEK ? S.current.week : S.current.month}',
+                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
                               ),
                               DetailItemApproveModel(
                                 title: '${S.current.price_per_1} :',
@@ -239,9 +375,10 @@ class _PawnTabState extends State<PawnTab>
                                     '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
                               )
                             ],
-                            textActiveButton: S.current.put_on_sale,
-                            typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                            textActiveButton: S.current.put_on_pawn,
+                            typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
                           ),
+                          isRequireLoginEmail: true,
                         ),
                       );
                     }
@@ -260,99 +397,6 @@ class _PawnTabState extends State<PawnTab>
         ),
       ),
     );
-  }
-
-  List<Widget> typeInput() {
-    return [
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/DFY.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'DFY',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BTC.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'BTC',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/BNB.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'BNB',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 64,
-        width: 70,
-        child: Row(
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://s3.ap-southeast-1.amazonaws.com/beta-storage-dfy/upload/ETH.png',
-                height: 20,
-                width: 20,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Flexible(
-              child: Text(
-                'ETH',
-                style: textValueNFT.copyWith(decoration: TextDecoration.none),
-              ),
-            )
-          ],
-        ),
-      ),
-    ];
   }
 
   @override

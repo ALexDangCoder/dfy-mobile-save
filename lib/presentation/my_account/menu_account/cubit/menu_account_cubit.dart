@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/wallet.dart';
+import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
@@ -15,18 +16,22 @@ import 'menu_account_state.dart';
 class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   MenuAccountCubit() : super(NoLoginState());
 
-  final BehaviorSubject<String> _addressWalletSubject =
-      BehaviorSubject();
-  Stream<String> get addressWalletStream => _addressWalletSubject.stream;
+  final BehaviorSubject<String> addressWalletSubject = BehaviorSubject();
 
-  final BehaviorSubject<String> _emailSubject =
-  BehaviorSubject();
+  Stream<String> get addressWalletStream => addressWalletSubject.stream;
+
+  final BehaviorSubject<String> _emailSubject = BehaviorSubject();
+
+  bool haveWalletInCore = false;
 
   Stream<String> get emailStream => _emailSubject.stream;
 
+  LoginRepository get _loginRepository => Get.find();
+
   Future<void> logout() async {
     showLoading();
-    await PrefsService.clearWalletLogin();
+    await _loginRepository.logout();
+    await PrefsService.clearWalletBE();
     showContent();
     emit(NoLoginState());
   }
@@ -36,21 +41,9 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
       case 'getListWalletsCallback':
         final List<dynamic> data = methodCall.arguments;
         if (data.isNotEmpty) {
-          for (final element in data) {
-            final wallet = Wallet.fromJson(element);
-            if ((wallet.address?.length ?? 0) > 18){
-              _addressWalletSubject.sink.add(wallet.address!.handleString());
-            }
-            else {
-              _addressWalletSubject.sink.add(wallet.address ?? '');
-            }
-            if (state is LogonState){
-              await getEmail();
-            }else{
-              showContent();
-            }
-          }
+          haveWalletInCore = true;
         }
+        showContent();
         break;
     }
   }
@@ -68,24 +61,20 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
     final account = PrefsService.getWalletLogin();
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
     if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
+      final userInfo = PrefsService.getUserProfile();
+      final String wallet = PrefsService.getCurrentBEWallet();
+      final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
+      addressWalletSubject.sink.add(wallet);
+      if (mapProfileUser.stringValueOrEmpty('email') != '') {
+        _emailSubject.sink.add(mapProfileUser.stringValueOrEmpty('email'));
+      }
       emit(LogonState());
     }
     getWallets();
   }
 
-  int  getIndexLogin (){
-    if (_addressWalletSubject.valueOrNull  == null) {
-      return 3;
-    }else {
-      return 2;
-    }
-  }
-
-  Future<void> getEmail() async {
-    Future.delayed(Duration(seconds: 2), (){
-      _emailSubject.sink.add('edsolabs@edsolabs.com');
-      showContent();
-    });
+  int getIndexLogin() {
+    return haveWalletInCore ? 2 : 3;
   }
 
   void initData() {
@@ -93,7 +82,7 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   }
 
   void dispose() {
-    _addressWalletSubject.close();
+    addressWalletSubject.close();
     _emailSubject.close();
   }
 }

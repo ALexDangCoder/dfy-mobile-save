@@ -1,26 +1,27 @@
 part of 'nft_detail.dart';
 
-Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
-    NFTDetailBloc bloc, NFTOnAuction nftOnAuction) {
+Widget _buildButtonPlaceBid(
+  BuildContext context,
+  bool start,
+  bool end,
+  NFTDetailBloc bloc,
+  NFTOnAuction nftOnAuction,
+  String marketId,
+) {
   if (!start && end) {
     return ButtonGradient(
-      onPressed: () async {
-        await bloc
-            .getBalanceToken(
-              ofAddress: bloc.wallets.first.address ?? '',
-              tokenAddress: bloc.nftOnAuction.token ?? '',
-            )
-            .then(
-              (value) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PlaceBid(
-                    nftOnAuction: nftOnAuction,
-                    balance: value,
-                  ),
-                ),
-              ),
-            );
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: PlaceBid(
+              nftOnAuction: nftOnAuction,
+              typeBid: TypeBid.PLACE_BID,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+          ),
+        );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
@@ -52,7 +53,24 @@ Widget _buildButtonPlaceBid(BuildContext context, bool start, bool end,
   }
 }
 
-Widget _buildButtonBuyOut(BuildContext context) {
+Widget waitingAcceptAuction() {
+  return Text(
+    S.current.waiting_accept_auction,
+    style: textNormalCustom(
+      Colors.red,
+      14,
+      FontWeight.w400,
+    ),
+    textAlign: TextAlign.start,
+    maxLines: 2,
+  );
+}
+
+Widget _buildButtonBuyOut(
+  BuildContext context,
+  NFTOnAuction nftOnAuction,
+  String marketId,
+) {
   return ButtonTransparent(
     child: Text(
       S.current.buy_out,
@@ -63,21 +81,103 @@ Widget _buildButtonBuyOut(BuildContext context) {
       ),
     ),
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OfferDetailScreen(),
+      showDialog(
+        context: context,
+        builder: (context) => ConnectWalletDialog(
+          navigationTo: PlaceBid(
+            nftOnAuction: nftOnAuction,
+            typeBid: TypeBid.BUY_OUT,
+            marketId: marketId,
+          ),
+          isRequireLoginEmail: false,
         ),
       );
     },
   );
 }
 
+Widget buttonCancelAuction({
+  required bool approveAdmin,
+  required NFTDetailBloc bloc,
+  required BuildContext context,
+  required NFTOnAuction nftMarket,
+  required Function refresh,
+}) {
+  if (!approveAdmin) {
+    return ButtonGradient(
+      onPressed: () async {
+        final nav = Navigator.of(context);
+        final String dataString = await bloc.getDataStringForCancelAuction(
+          context: context,
+          auctionId: nftMarket.auctionId.toString(),
+        );
+        final List<DetailItemApproveModel> listApprove = [];
+        if (nftMarket.nftStandard == ERC_721) {
+          listApprove.add(
+            DetailItemApproveModel(
+              title: NFT,
+              value: nftMarket.name ?? '',
+            ),
+          );
+          listApprove.add(
+            DetailItemApproveModel(
+              title: S.current.quantity,
+              value: '${nftMarket.numberOfCopies}',
+            ),
+          );
+        } else {
+          listApprove.add(
+            DetailItemApproveModel(
+              title: NFT,
+              value: nftMarket.name ?? '',
+            ),
+          );
+        }
+        final bool isSuccess = await nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftOnAuction: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+              cancelInfo: S.current.auction_cancel_info,
+              cancelWarning: S.current.cancel_auction_warning,
+              title: S.current.cancel_aution,
+            ),
+          ),
+        );
+        if (isSuccess) {
+          showLoading(context);
+          await refresh();
+          hideLoading(context);
+        }
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: nftMarket.marketStatus == 8
+          ? processing()
+          : Text(
+              S.current.cancel_aution,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
+    );
+  } else {
+    return const SizedBox();
+  }
+}
+
 Container _priceContainerOnAuction({
   required NFTOnAuction nftOnAuction,
   required bool isEnd,
 }) {
-  final bool isBidding = nftOnAuction.isBidByOther ?? false;
+  final bool isBidding = nftOnAuction.numberBid != 0;
   return Container(
     width: 343.w,
     height: 64.h,
@@ -87,7 +187,7 @@ Container _priceContainerOnAuction({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isBidding
+          !isBidding
               ? S.current.reserve_price
               : (isEnd ? S.current.auction_win : S.current.is_bid),
           style: textNormalCustom(
@@ -101,7 +201,7 @@ Container _priceContainerOnAuction({
           children: [
             Row(
               children: [
-                if (nftOnAuction.urlToken?.isNotEmpty ?? true)
+                if (nftOnAuction.urlToken != ApiConstants.BASE_URL_IMAGE)
                   Image(
                     image: NetworkImage(
                       nftOnAuction.urlToken ?? '',
@@ -117,7 +217,7 @@ Container _priceContainerOnAuction({
                   ),
                 spaceW4,
                 Text(
-                  '${isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
+                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

@@ -44,10 +44,13 @@ class ImageAssets {
   static const String others = '$baseImg/Other.png';
   static const String addFormProperties = '$baseImg/add_form_pro.png';
 
+
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
+
   // menu icon
+
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
   static const String ic_profile_circle = '$baseImg/ic_profile_circle.png';
@@ -60,6 +63,7 @@ class ImageAssets {
   static const String ic_graph = '$baseImg/ic_graph.png';
   static const String ic_nft = '$baseImg/ic_nft.png';
   static const String ic_setting = '$baseImg/ic_setting.png';
+
 
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';
@@ -104,6 +108,16 @@ class ImageAssets {
   static const String imgTokenYFII = '$baseImg/YFII.png';
   static const String imgTokenZEC = '$baseImg/ZEC.png';
   static const String imgTokenUSDT = '$baseImg/USDT.png';
+  static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
+  static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
+  static const String img_star = '$baseImg/star.png';
+  static const String ic_calendar_create_book = '$baseImg/calendar_create_book.png';
+  static const String ic_edit_square = '$baseImg/edit_square.png';
+  static const String ic_location = '$baseImg/Location.png';
+  static const String ic_mail = '$baseImg/mail.png';
+  static const String ic_time = '$baseImg/time.png';
+  static const String ic_global_market = '$baseImg/ic_global_market.png';
+  static const String ic_phone = '$baseImg/phone.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -202,6 +216,7 @@ class ImageAssets {
   static const String face_id = '$baseImg/face_id.png';
   static const String img_cash = '$baseImg/cash.png';
   static const String img_warning = '$baseImg/img_warning.png';
+  static const String ic_user_verified = '$baseImg/ic_user_verified.png';
 
   ///image for on boarding screen
   static const String content1 = '$baseImg/content1.png';
@@ -271,6 +286,14 @@ class ImageAssets {
 
   static const String img_float_btn = '$baseImg/float_btn.png';
 
+
+  static const String img_diamond = '$baseImg/jewelry.png';
+  static const String img_artwork = '$baseImg/artwork.png';
+  static const String img_car = '$baseImg/car.png';
+  static const String img_watch = '$baseImg/watch.png';
+  static const String img_house = '$baseImg/house.png';
+  static const String img_other = '$baseImg/other.png';
+
   ///SvgImage
   static const String ic_btn_send_token_svg =
       '$baseImg/ic_btn_send_token_svg.svg';
@@ -321,9 +344,33 @@ class ImageAssets {
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
   static const String ic_star = '$baseImg/ic_star.png';
 
+
   //MyAccount
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
   static const String x_svg = '$baseImg/x_svg.svg';
+  static const String circle_x_svg = '$baseImg/circle_x_svg.svg';
+  static const String delete_svg = '$baseImg/delete_svg.svg';
+  static const String play_btn_svg = '$baseImg/play_btn_svg.svg';
+  static const String pause_btn_svg = '$baseImg/pause_btn_svg.svg';
+
+
+
+
+  // about us
+  static const String ic_flag_vn = '$baseImg/flag_vn.png';
+  static const String ic_telegram_png = '$baseImg/ic_telegram_png.png';
+  static const String ic_flag_gb = '$baseImg/flag_gb.png';
+  static const String ic_git = '$baseImg/exclude.png';
+  static const String icon_send = '$baseImg/icon_send.png';
+  static const String icon_fb = '$baseImg/icon_fb.png';
+  static const String icon_youtube = '$baseImg/youtube.png';
+  static const String icon_linkedin = '$baseImg/linkedin.png';
+  static const String icon_twitter = '$baseImg/icon_twitter.png';
+
+
+  static const String more_circle_white = '$baseImg/more_circle_white.png';
+
+
 
   static SvgPicture svgAssets(
     String name, {
@@ -354,4 +401,96 @@ class ImageAssets {
     icMenu: [18, 16],
     icBack: [6, 12.25],
   };
+  static String getSymbolAsset(String shortName) {
+    switch (shortName.toUpperCase()) {
+      case 'ADA':
+        return ImageAssets.imgTokenADA;
+      case 'ATOM':
+        return ImageAssets.imgTokenATOM;
+      case 'BAND':
+        return ImageAssets.imgTokenBAND;
+      case 'BAT':
+        return ImageAssets.imgTokenBAT;
+      case 'BCH':
+        return ImageAssets.imgTokenBCH;
+      case 'BEL':
+        return ImageAssets.imgTokenBEL;
+      case 'BNB':
+        return ImageAssets.imgTokenBNB;
+      case 'BTCB':
+        return ImageAssets.imgTokenBTCB;
+      case 'BTC':
+        return ImageAssets.imgTokenBTC;
+      case 'BUSD':
+        return ImageAssets.imgTokenBUSD;
+      case 'BUSD T':
+        return ImageAssets.imgTokenBUSD_T;
+      case 'COMP':
+        return ImageAssets.imgTokenCOMP;
+      case 'DAI':
+        return ImageAssets.imgTokenDAI;
+      case 'DefiIcon':
+        return ImageAssets.imgTokenDefiIcon;
+      case 'DFY':
+        return ImageAssets.imgTokenDFY;
+      case 'DOGE':
+        return ImageAssets.imgTokenDOGE;
+      case 'DOT':
+        return ImageAssets.imgTokenDOT;
+      case 'ELF':
+        return ImageAssets.imgTokenELF;
+      case 'EOS':
+        return ImageAssets.imgTokenEOS;
+      case 'ETC':
+        return ImageAssets.imgTokenETC;
+      case 'ETH':
+        return ImageAssets.imgTokenETH;
+      case 'FIL':
+        return ImageAssets.imgTokenFIL;
+      case 'INJ':
+        return ImageAssets.imgTokenINJ;
+      case 'INTT':
+        return ImageAssets.imgTokenINTT;
+      case 'IOTX':
+        return ImageAssets.imgTokenIOTX;
+      case 'LINK':
+        return ImageAssets.imgTokenLINK;
+      case 'LTC':
+        return ImageAssets.imgTokenLTC;
+      case 'MKR':
+        return ImageAssets.imgTokenMKR;
+      case 'NEAR':
+        return ImageAssets.imgTokenNEAR;
+      case 'ONT':
+        return ImageAssets.imgTokenONT;
+      case 'PAX':
+        return ImageAssets.imgTokenPAX;
+      case 'SNX':
+        return ImageAssets.imgTokenSNX;
+      case 'SXP':
+        return ImageAssets.imgTokenSXP;
+      case 'TCT':
+        return ImageAssets.imgTokenTCT;
+      case 'UNI':
+        return ImageAssets.imgTokenUNI;
+      case 'USDC':
+        return ImageAssets.imgTokenUSDC;
+      case 'WBNB':
+        return ImageAssets.imgTokenWBNB;
+      case 'XRP':
+        return ImageAssets.imgTokenXRP;
+      case 'XTZ':
+        return ImageAssets.imgTokenXTZ;
+      case 'YFI':
+        return ImageAssets.imgTokenYFI;
+      case 'YFII':
+        return ImageAssets.imgTokenYFII;
+      case 'ZEC':
+        return ImageAssets.imgTokenZEC;
+      case 'USDT':
+        return ImageAssets.imgTokenUSDT;
+      default:
+        return '';
+    }
+  }
 }
