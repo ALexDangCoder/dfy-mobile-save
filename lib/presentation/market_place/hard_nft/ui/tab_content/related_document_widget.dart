@@ -18,6 +18,8 @@ class RelatedDocument extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          divide,
+          spaceH20,
           Text(
             'Related documents',
             style: textNormalCustom(

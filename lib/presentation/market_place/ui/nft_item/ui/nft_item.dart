@@ -45,14 +45,13 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   void initState() {
     super.initState();
-    if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
       _controller = VideoPlayerController.network(widget.nftMarket.image ?? '');
       _controller!.addListener(() {
         setState(() {});
       });
       _controller!.setLooping(true);
       _controller!.initialize().then((_) => setState(() {}));
-    }
+
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
@@ -395,7 +394,8 @@ class _NFTItemState extends State<NFTItemWidget> {
     );
   }
 
-  Widget playVideo(TypeImage? type) {
+  Widget
+  playVideo(TypeImage? type) {
     if (type == TypeImage.VIDEO) {
       return Align(
         alignment: Alignment.bottomRight,
