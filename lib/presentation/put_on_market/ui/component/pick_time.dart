@@ -23,9 +23,13 @@ class _PickTimeState extends State<PickTime> {
   String checkMiu(String miu) {
     String myMiu = '';
     if (miu.isEmpty) {
-      myMiu = DateTime.now().minute.toString();
+      myMiu =  DateTime.now().minute < 10
+          ? '0${DateTime.now().minute}'
+          : DateTime.now().minute.toString();
     } else {
-      myMiu = miu;
+      myMiu =  int.parse(miu) < 10
+          ? '0$miu'
+          : miu;
     }
     return myMiu;
   }
@@ -33,9 +37,13 @@ class _PickTimeState extends State<PickTime> {
   String checkHour(String hour) {
     String myHour = '';
     if (hour.isEmpty) {
-      myHour = DateTime.now().hour.toString();
+      myHour =  DateTime.now().hour < 10
+      ? '0${DateTime.now().hour}'
+      : DateTime.now().hour.toString();
     } else {
-      myHour = hour;
+      myHour =  int.parse(hour) < 10
+          ? '0$hour'
+          : hour;
     }
     return myHour;
   }
@@ -44,12 +52,8 @@ class _PickTimeState extends State<PickTime> {
   Widget build(BuildContext context) {
     final TextEditingController editHourController = TextEditingController();
     final TextEditingController editMinuteController = TextEditingController();
-    editMinuteController.text = DateTime.now().minute < 10
-        ? '0${DateTime.now().minute}'
-        : checkMiu(widget.miu ?? '');
-    editHourController.text = DateTime.now().hour < 10
-        ? '0${DateTime.now().hour}'
-        : checkHour(widget.hour ?? '');
+    editMinuteController.text = checkMiu(widget.miu ?? '');
+    editHourController.text =checkHour(widget.hour ?? '');
     return Container(
       constraints: const BoxConstraints(maxWidth: 430),
       width: MediaQuery.of(context).size.width - 64,
