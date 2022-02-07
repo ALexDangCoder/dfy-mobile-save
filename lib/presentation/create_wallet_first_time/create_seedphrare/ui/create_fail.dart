@@ -109,7 +109,7 @@ class CreateFail extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(
-                            index: 3,
+                            index: tabMarketingPlaceIndex,
                           ),
                         ),
                       );
@@ -118,7 +118,7 @@ class CreateFail extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(
-                            index: 1,
+                            index: tabPawnIndex,
                           ),
                         ),
                       );
@@ -127,7 +127,7 @@ class CreateFail extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(
-                            index: 3,
+                            index: tabMarketingPlaceIndex,
                           ),
                         ),
                       );
@@ -136,7 +136,7 @@ class CreateFail extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(
-                            index: 1,
+                            index: tabPawnIndex,
                           ),
                         ),
                       );
