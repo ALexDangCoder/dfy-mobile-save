@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -24,13 +26,13 @@ class PawnTab extends StatefulWidget {
 
   final PutOnMarketCubit cubit;
 
-  const PawnTab(
-      {Key? key,
-      required this.cubit,
-      this.canEdit = false,
-      this.quantity = 1,
-      required this.putOnMarketModel})
-      : super(key: key);
+  const PawnTab({
+    Key? key,
+    required this.cubit,
+    this.canEdit = false,
+    this.quantity = 1,
+    required this.putOnMarketModel,
+  }) : super(key: key);
 
   @override
   _PawnTabState createState() => _PawnTabState();
@@ -357,6 +359,29 @@ class _PawnTabState extends State<PawnTab>
                             putOnMarketModel: _putOnMarketModel,
                             hexString: hexString,
                             title: S.current.put_on_pawn,
+                            onSuccessSign: (context, data) async {
+                              final nav = Navigator.of(context);
+                              final result = await widget.cubit.putOnPawn(
+                                txHash: data,
+                                putOnMarketModel: _putOnMarketModel,
+                              );
+                              nav.pop();
+                              if (result) {
+                                await showLoadSuccess(context);
+                                nav.popUntil((route) {
+                                  return route.settings.name ==
+                                      AppRouter.putOnSale;
+                                });
+                                nav.pop(true);
+                              } else {
+                                await showLoadFail(context);
+                              }
+                            },
+                            onErrorSign: (context) async {
+                              final nav = Navigator.of(context);
+                              nav.pop();
+                              await showLoadFail(context);
+                            },
                             listDetail: [
                               DetailItemApproveModel(
                                 title: '${S.current.expected_loan} :',

@@ -43,8 +43,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
 
   NFTRepository get _nftRepo => Get.find();
 
-  late final NftMarket nftMarket;
-  late final NFTOnAuction nftOnAuction;
+  late NftMarket nftMarket;
+  late NFTOnAuction nftOnAuction;
   late final String owner;
   List<Wallet> wallets = [];
 
@@ -504,5 +504,41 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       showError();
       throw AppException(S.current.error, e.toString());
     }
+  }
+  Future<void> confirmCancelSaleWithBE({
+    required String txnHash,
+    required String marketId,
+  }) async {
+    final result = await _nftRepo.cancelSale(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
+  }
+
+  Future<void> confirmCancelAuctionWithBE({
+    required String txnHash,
+    required String marketId,
+  }) async {
+    final result = await _nftRepo.cancelAuction(
+      id: marketId,
+      txnHash: txnHash,
+    );
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
+  }
+  Future<void> confirmCancelPawnWithBE({
+    required int id,
+  }) async {
+    final result = await _nftRepo.cancelPawn(id);
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
   }
 }
