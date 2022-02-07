@@ -166,7 +166,7 @@ Widget buttonCancelAuction({
                 await navigator.pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => BaseSuccess(
-                      title: S.current.cancel_sale,
+                      title: S.current.cancel_aution,
                       content: S.current.congratulation,
                       callback: () {
                         navigator.pop();
