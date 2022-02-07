@@ -14,8 +14,13 @@ extension CallApi on CreateNftCubit {
     );
     result.when(
       success: (res) {
-        softCollectionList =
-            res.where((element) => element.type == SOFT_COLLECTION).toList();
+        softCollectionList = res
+            .where(
+              (element) =>
+                  (element.type == SOFT_COLLECTION) &&
+                  ((element.addressCollection ?? '').isNotEmpty),
+            )
+            .toList();
         final listDropDown =
             softCollectionList.map((e) => e.toDropDownMap()).toList();
         listCollectionSubject.sink.add(listDropDown);

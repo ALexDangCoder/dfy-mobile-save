@@ -14,7 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListBookEvaluation extends StatefulWidget {
-  const ListBookEvaluation({Key? key}) : super(key: key);
+  final String assetID;
+  final int cityId;
+
+  const ListBookEvaluation({
+    Key? key,
+    required this.assetID,
+    required this.cityId,
+  }) : super(key: key);
 
   @override
   _ListBookEvaluationState createState() => _ListBookEvaluationState();
@@ -28,7 +35,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
     super.initState();
 
     _bloc = BlocListBookEvaluation();
-    _bloc.assetID = '61e9096a4aec3d3977856bf9';
+    _bloc.assetID = widget.assetID;
     _bloc.getListPawnShop(assetId: _bloc.assetID);
     _bloc.reloadAPI();
   }
@@ -37,8 +44,8 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +61,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const BookEvaluation(),
+                builder: (context) => BookEvaluation(
+                  cityId: widget.cityId,
+                ),
               ),
             );
           },

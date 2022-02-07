@@ -81,6 +81,7 @@ class BaseSuccess extends StatelessWidget {
                             32,
                             FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         SizedBox(
                           height: 213.h,

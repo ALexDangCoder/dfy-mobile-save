@@ -636,5 +636,6 @@
   "november": "tháng 11,",
   "december": "tháng 12,",
   "notify": "Thông báo",
-  "dont_ask_again": "Không hỏi lại"
+  "dont_ask_again": "Không hỏi lại",
+  "invalid_file_format" : "Định dạng tệp tin không hợp lệ"
 }
