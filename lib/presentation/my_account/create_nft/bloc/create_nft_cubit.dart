@@ -99,6 +99,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   ///List Map value - properties
   final BehaviorSubject<List<Map<String, String>>> listPropertySubject =
       BehaviorSubject();
+  final BehaviorSubject<bool> showAddPropertySubject = BehaviorSubject();
 
   List<Map<String, String>> listProperty = [];
 

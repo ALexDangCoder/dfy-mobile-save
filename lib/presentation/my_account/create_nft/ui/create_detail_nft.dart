@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/pick_file_extension.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/properties_control.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
@@ -95,6 +98,9 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                                 property: list[index],
                                 cubit: widget.cubit,
                                 index: index,
+                                onTap: (){
+                                  widget.cubit.removeProperty(index);
+                                },
                               );
                             },
                           );
@@ -103,7 +109,15 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                     ],
                   ),
                 ),
-                addPropertyButton(widget.cubit),
+                StreamBuilder<bool>(
+                  stream: widget.cubit.showAddPropertySubject,
+                  initialData: true,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: snapshot.data ?? true,
+                      child: addPropertyButton(widget.cubit),);
+                  },
+                ),
                 SizedBox(
                   height: 28.h,
                 ),
