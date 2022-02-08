@@ -52,100 +52,107 @@ class _BookEvaluationState extends State<BookEvaluation> {
         //todo add event
       },
       title: S.current.book_evaluation_request,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            spaceH24,
-            const StepAppBar(),
-            spaceH32,
-            SizedBox(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Text(
-                  S.current.to_mint_hard_nft_you,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().grayTextColor(),
-                    14,
-                    null,
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      20.r,
+      child: Column(
+        children: [
+          spaceH24,
+          const StepAppBar(),
+          spaceH16,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  spaceH16,
+                  SizedBox(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: Text(
+                        S.current.to_mint_hard_nft_you,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().grayTextColor(),
+                          14,
+                          null,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                height: 193.h,
-                width: 343.w,
-                child: GoogleMap(
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                ),
-              ),
-            ),
-            spaceH32,
-            StreamBuilder<List<EvaluatorsCityModel>>(
-              stream: _bloc.list,
-              builder: (context, snapshot) {
-                final list = snapshot.data ?? [];
-                return Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(16.w),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${list.length} ${S.current.evaluators_near_you}',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().getPurpleColor(),
-                            14,
-                            null,
+                  Center(
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            20.r,
                           ),
                         ),
                       ),
+                      height: 193.h,
+                      width: 343.w,
+                      child: GoogleMap(
+                        initialCameraPosition: _kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                      ),
                     ),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateBookEvaluation(
-                                idEvaluation: list[index].id ?? '',
-                                type: TypeEvaluation.NEW_CREATE,
-                                typeNFT: 'diamond',//todo type
+                  ),
+                  spaceH32,
+                  StreamBuilder<List<EvaluatorsCityModel>>(
+                    stream: _bloc.list,
+                    builder: (context, snapshot) {
+                      final list = snapshot.data ?? [];
+                      return Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(16.w),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${list.length} ${S.current.evaluators_near_you}',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().getPurpleColor(),
+                                  14,
+                                  null,
+                                ),
                               ),
                             ),
-                          );
-                        },
-                        child: ItemPawnShopStar(
-                          starNumber: '${list[index].starCount}',
-                          namePawnShop: list[index].name ?? '',
-                          avatarPawnShopUrl:
-                              '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid}',
-                          function: () {},
-                        ),
-                      ),
-                      itemCount: list.length,
-                      shrinkWrap: true,
-                    ),
-                  ],
-                );
-              },
+                          ),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CreateBookEvaluation(
+                                      idEvaluation: list[index].id ?? '',
+                                      type: TypeEvaluation.NEW_CREATE,
+                                      typeNFT: 'diamond', //todo type
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ItemPawnShopStar(
+                                starNumber: '${list[index].starCount}',
+                                namePawnShop: list[index].name ?? '',
+                                avatarPawnShopUrl:
+                                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid}',
+                                function: () {},
+                              ),
+                            ),
+                            itemCount: list.length,
+                            shrinkWrap: true,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
