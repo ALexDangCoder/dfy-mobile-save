@@ -19,14 +19,15 @@ class FormAddProperties extends StatefulWidget {
 
 class _FormAddPropertiesState extends State<FormAddProperties> {
   late List<Widget> _listForm;
+  late int currentIndex;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _listForm = [
       FormProperties(
         cubit: widget.cubit,
+        index: 0,
       ),
     ];
   }
@@ -36,9 +37,9 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
       _listForm.add(
         FormProperties(
           cubit: widget.cubit,
+          index: _listForm.length + 1,
         ),
       );
-
     });
   }
 
@@ -91,12 +92,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                 child: ListView.builder(
                   itemCount: _listForm.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        _listForm[index],
-                        spaceH18,
-                      ],
-                    );
+                    return _listForm[index];
                   },
                 ),
               ),

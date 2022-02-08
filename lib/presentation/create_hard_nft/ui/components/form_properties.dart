@@ -10,11 +10,15 @@ class FormProperties extends StatelessWidget {
   const FormProperties({
     Key? key,
     required this.cubit,
+    required this.index,
   }) : super(key: key);
   final ProvideHardNftCubit cubit;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    final txtProperties = TextEditingController();
+    final txtValue = TextEditingController();
     String propertyForm = '';
     String valueForm = '';
     return Container(
@@ -41,6 +45,7 @@ class FormProperties extends StatelessWidget {
               }
               return null;
             },
+            controller: txtProperties,
             onChanged: (value) {
               propertyForm = value;
               valueForm = value;
@@ -96,6 +101,7 @@ class FormProperties extends StatelessWidget {
               AppTheme.getInstance().textThemeColor(),
               16.sp,
             ),
+            controller: txtValue,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Value',
@@ -105,7 +111,8 @@ class FormProperties extends StatelessWidget {
                 FontWeight.w400,
               ),
             ),
-          )
+          ),
+          spaceH18,
         ],
       ),
     );

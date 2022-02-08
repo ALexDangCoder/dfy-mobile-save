@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -291,10 +292,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 //todo check
-                itemProperty(
-                  property: 'artist',
-                  value: 'someone',
-                ),
+                item_properties(),
                 spaceH10,
                 divider,
                 spaceH20,
@@ -453,14 +451,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH14,
-                textShowWithPadding(
-                  textShow: 'Connect wallet',
-                  txtStyle: textNormalCustom(
-                    AppTheme.getInstance().fillColor(),
-                    16,
-                    FontWeight.w600,
-                  ),
-                ),
+                btnConnectWallet(),
                 spaceH16,
                 textShowWithPadding(
                   textShow: 'Collection',
@@ -491,6 +482,57 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  InkWell btnConnectWallet() {
+    return InkWell(
+      onTap: () {
+        // showDialog(
+        //   context: context,
+        //   builder: (ctx) => ConnectWalletDialog(
+        //     isRequireLoginEmail: false,
+        //   ),
+        // );
+      },
+      child: textShowWithPadding(
+        textShow: 'Connect wallet',
+        txtStyle: textNormalCustom(
+          AppTheme.getInstance().fillColor(),
+          16,
+          FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Container item_properties() {
+    return Container(
+      padding: EdgeInsets.only(left: 16.w),
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        runSpacing: 10.h,
+        children: [
+          itemProperty(
+            property: 'artist',
+            value: 'someone',
+          ),
+          spaceW20,
+          itemProperty(
+            property: 'lorem ipsum',
+            value: 'lorem ipsum',
+          ),
+          spaceW20,
+          itemProperty(
+            property: 'artist',
+            value: 'someone',
+          ),
+          itemProperty(
+            property: 'lorem ipsum',
+            value: 'lorem ipsum',
+          ),
+        ],
       ),
     );
   }
@@ -568,7 +610,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         border: Border.all(
           color: AppTheme.getInstance().whiteDot2(),
         ),
-
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 8.w,
