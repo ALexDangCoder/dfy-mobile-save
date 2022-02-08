@@ -1,18 +1,15 @@
-import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ItemMap extends StatefulWidget {
-  final BlocCreateBookEvaluation bloc;
-  final EvaluatorsDetailModel obj;
+  final BlocBookEvaluation bloc;
 
   const ItemMap({
     Key? key,
     required this.bloc,
-    required this.obj,
   }) : super(key: key);
 
   @override
@@ -27,14 +24,13 @@ class _ItemMapState extends State<ItemMap> {
     setState(() {
       _markers.add(
         Marker(
-          markerId: const MarkerId('id'),
+          markerId: MarkerId(widget.bloc.id),
           position: LatLng(
             widget.bloc.locationLat,
             widget.bloc.locationLong,
           ),
           infoWindow: InfoWindow(
-            title: widget.obj.name,
-            snippet: widget.obj.address,
+            title: widget.bloc.nameCity,
           ),
         ),
       );
@@ -50,7 +46,7 @@ class _ItemMapState extends State<ItemMap> {
           widget.bloc.locationLat,
           widget.bloc.locationLong,
         ),
-        zoom: 14,
+        zoom: 11,
       ),
       markers: _markers,
       zoomControlsEnabled: false,

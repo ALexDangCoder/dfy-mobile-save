@@ -208,8 +208,8 @@ class ItemPawnShop extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: -4.h,
-            right: -4.w,
+            top: -10.h,
+            right: -10.w,
             child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
@@ -223,7 +223,8 @@ class ItemPawnShop extends StatelessWidget {
                               urlAvatar:
                                   '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                               date: 0.formatDateTimeMy(
-                                  appointment.appointmentTime ?? 0),
+                                appointment.appointmentTime ?? 0,
+                              ),
                               location: appointment.evaluator?.address ?? '',
                               mail: appointment.evaluator?.email ?? '',
                               numPhone: appointment.evaluator?.phone ?? '',
@@ -238,10 +239,16 @@ class ItemPawnShop extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Image.asset(
-                      ImageAssets.imgCancelMarket,
-                      width: 20.w,
-                      height: 20.h,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 6.h,
+                      ),
+                      child: Image.asset(
+                        ImageAssets.imgCancelMarket,
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     ),
                   )
                 : const SizedBox.shrink(),
