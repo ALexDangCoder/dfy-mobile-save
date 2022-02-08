@@ -177,13 +177,43 @@ Widget _buildButtonCancelOnPawn(
             cancelInfo: S.current.pawn_cancel_info,
             cancelWarning: S.current.pawn_cancel_warning,
             title: S.current.cancel_pawn,
+            onFail: (context) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BaseFail(
+                      title: S.current.cancel_pawn,
+                      content: S.current.failed,
+                      onTapBtn: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+              );
+            },
+            onSuccess: (context, data) async {
+              final navigator = Navigator.of(context);
+              await bloc.confirmCancelPawnWithBE(
+                id: nftMarket.id ?? 0,
+              );
+              await navigator.pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.cancel_pawn,
+                    content: S.current.congratulation,
+                    callback: () {
+                      navigator.pop();
+                    },
+                  ),
+                ),
+              );
+              navigator.pop(true);
+            },
           ),
         ),
       );
       if (isSuccess) {
-        showLoading(context);
         await refresh();
-        hideLoading(context);
       }
     },
     gradient: RadialGradient(

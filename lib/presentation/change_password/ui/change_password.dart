@@ -60,7 +60,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: 2,
+                      index: tabHomeIndex,
                     ),
                   ),
                   (route) => route.isFirst,
