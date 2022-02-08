@@ -51,17 +51,6 @@ extension CallApiBE on ApproveCubit {
 
 
 
-  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
-    showLoading();
-    final result = await nftRepo.bidNftRequest(bidNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
-    );
-  }
-
 
 
   Future<void> sendOffer({

@@ -23,13 +23,13 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
     required this.cubit,
     required this.wallet,
     required this.balance,
-    required this.navigationTo,
     required this.isRequireLoginEmail,
+    this.navigationTo,
   }) : super(key: key);
   final ConnectWalletDialogCubit cubit;
   final Wallet wallet;
   final double balance;
-  final Widget navigationTo;
+  final Widget? navigationTo;
   final bool isRequireLoginEmail;
 
   @override
@@ -48,35 +48,46 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
           final userProfile = userProfileFromJson(data);
           final String email = userProfile.email ?? '';
           if (email.isNotEmpty) {
-            unawaited(
-              nav.pushReplacement(
-                MaterialPageRoute(builder: (context) => navigationTo),
-              ),
-            );
-            return;
+            if(navigationTo != null){
+              unawaited(
+                nav.pushReplacement(
+                  MaterialPageRoute(builder: (context) => navigationTo!),
+                ),
+              );
+              return;
+            }else{
+              nav.pop();
+              return;
+            }
           }
           if (!isRequireLoginEmail) {
             //không yêu cầu login email:
-            nav.pop(context);
+            nav.pop();
             final bool isNeedShowDialog =
                 PrefsService.getOptionShowDialogConnectEmail();
             if (isNeedShowDialog) {
-              unawaited(
-                showDialog(
-                  context: context,
-                  builder: (context) => ConnectEmailDialog(
-                    navigationTo: navigationTo,
+              if(email.isEmpty){
+                unawaited(
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConnectEmailDialog(
+                      navigationTo: navigationTo,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             } else {
-              unawaited(
-                nav.pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => navigationTo,
+              if(navigationTo != null){
+                unawaited(
+                  nav.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => navigationTo!,
+                    ),
                   ),
-                ),
-              );
+                );
+              }else{
+                nav.pop();
+              }
             }
           } else {
             await nav.pushReplacement(

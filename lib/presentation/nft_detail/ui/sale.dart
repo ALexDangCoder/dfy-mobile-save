@@ -162,6 +162,9 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
+      if(nftMarket.marketStatus == 7){
+        return;
+      }
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancel(
         context: context,
@@ -527,9 +530,6 @@ Approve approveWidget({
     textActiveButton: title,
     typeApprove: type,
     hexString: dataString,
-    nftMarket: nftMarket,
-    nftOnAuction: nftOnAuction,
-    nftOnPawn: nftOnPawn,
     onErrorSign: onFail,
     onSuccessSign: onSuccess,
   );
