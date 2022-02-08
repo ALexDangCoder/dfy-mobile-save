@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -43,18 +44,22 @@ class _SendOfferState extends State<SendOffer> {
   String message = '';
 
   Future<void> getHexStringThenNav() async {
-    final sendOfferRequest = SendOfferRequest(
-      collateralId: widget.nftOnPawn.id ?? 0,
-      message: message,
-      duration: int.parse(duration),
-      durationType: loanDurationType,
-      interestRate: num.parse(interest),
-      loanAmount: num.parse(loanAmount),
-      repaymentCycleType: repaymentCycleType,
-      walletAddress: PrefsService.getCurrentBEWallet(),
-      repaymentToken: shortName,
-      supplyCurrency: widget.nftOnPawn.expectedCollateralSymbol ?? '',
-    );
+    final Map<String, dynamic> sendOfferRequest = {
+      'bcOfferId': 0,
+      'collateralId': widget.nftOnPawn.id ?? 0,
+      'message': message,
+      'duration': int.parse(duration),
+      'durationType': loanDurationType,
+      'interestRate': num.parse(interest),
+      'loanAmount': num.parse(loanAmount),
+      'repaymentCycleType': repaymentCycleType,
+      'walletAddress': PrefsService.getCurrentBEWallet(),
+      'repaymentToken': shortName,
+      'supplyCurrency': widget.nftOnPawn.expectedCollateralSymbol ?? '',
+      'liquidationThreshold': 0,
+      'loanToValue': 0,
+      'pawnShopPackageId': 0
+    };
     await _cubit
         .getPawnHexString(
           nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
@@ -272,6 +277,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 100,
                       hintText: S.current.enter_msg,
                       validator: validator,
                       onChange: (value) {
@@ -300,20 +306,30 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 20,
                       validator: validator,
+                      formatter: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,5}'),
+                        ),
+                      ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
+                        log(value);
                       },
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_amount;
+                        } else if (num.parse(value ?? '0') is! num) {
+                          return S.current.invalid_interest_rate;
                         } else {
                           loanAmount = value!;
                         }
                         return null;
                       },
                       hintText: S.current.enter_loan_amount,
-                      inputType: TextInputType.number,
+                      inputType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       suffix: SizedBox(
                         width: 70.w,
                         child: Center(
@@ -352,26 +368,27 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 10,
                       validator: validator,
                       formatter: [
                         FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,2}'),
+                          RegExp(r'^\d+\.?\d{0,5}'),
                         ),
                       ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
+                        log(twoDecimal.hasMatch(value).toString());
                       },
                       validatorValue: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return S.current.invalid_interest_rate;
-                        } else {
-                          interest = value!;
-                        }
-                        return null;
+                        // if (value?.isEmpty ?? true) {
+                        //   return S.current.invalid_interest_rate;
+                        // } else {
+                        //   interest = value!;
+                        // }
+                        // return null;
                       },
                       hintText: S.current.enter_interest_rate,
-                      inputType:
-                          TextInputType.number,
+                      inputType: TextInputType.number,
                       suffix: SizedBox(
                         width: 20.w,
                         child: Center(
@@ -399,6 +416,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 4,
                       validator: validator,
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {

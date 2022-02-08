@@ -59,7 +59,8 @@ const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat6 = 'yyyy-MM-dd hh : mm';
 const _dtFormat5 = 'MMM dd, yyyy';
-
+//Regex
+final twoDecimal = RegExp(r'^\d+\.?\d{0,5}');
 //contract
 const nft_sales_address_dev2 =
     '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7'; // buy

@@ -85,7 +85,7 @@ class Approve extends StatefulWidget {
   final CreateCollectionCubit? createCollectionCubit;
   final String? payValue;
   final String? tokenAddress;
-  final SendOfferRequest? request;
+  final Map<String, dynamic>? request;
 
   const Approve({
     Key? key,
@@ -825,8 +825,9 @@ class _ApproveState extends State<Approve> {
         break;
       // TODO: Handle this case.
       case TYPE_CONFIRM_BASE.SEND_OFFER:
-        widget.request?.latestBlockchainTxn = data;
-        cubit.sendOffer(offerRequest: widget.request!);
+        widget.request?.addAll({'latestBlockchainTxn': data});
+        final offerRequest = SendOfferRequest.fromJson(widget.request ?? {});
+        cubit.sendOffer(offerRequest: offerRequest);
         await showLoadSuccess().then((value) => Navigator.pop(context)).then(
               (value) => Navigator.pushReplacement(
                 context,
