@@ -11,8 +11,11 @@ import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form_validate.dart';
@@ -41,6 +44,174 @@ class _SendOfferState extends State<SendOffer> {
   String repaymentAsset = contract_defy;
 
   String message = '';
+
+  Future<void> getHexStringThenNav() async {
+    await _cubit
+        .getPawnHexString(
+          nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
+          repaymentAsset: repaymentAsset,
+          loanAmount: loanAmount,
+          interest: interest,
+          duration: duration,
+          loanDurationType: loanDurationType,
+          repaymentCycleType: repaymentCycleType,
+          context: context,
+        )
+        .then(
+          (value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Approve(
+                title: S.current.send_offer,
+                needApprove: true,
+                payValue: loanAmount,
+                header: Column(
+                  children: [
+                    buildRowCustom(
+                      title: S.current.from,
+                      child: Text(
+                        PrefsService.getCurrentBEWallet(),
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      title: S.current.to,
+                      child: Text(
+                        (widget.nftOnPawn.walletAddress ?? '')
+                            .formatAddressWalletConfirm(),
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    spaceH20,
+                    line,
+                    spaceH20,
+                    buildRowCustom(
+                      title: S.current.loan_amount,
+                      child: Text(
+                        loanAmount + shortName,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      title: S.current.interest_rate,
+                      child: Text(
+                        '$interest%',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      title: S.current.duration,
+                      child: Text(
+                        '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      title: S.current.repayment_curr,
+                      child: Text(
+                        shortName,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      title: S.current.recurring_interest,
+                      child: Text(
+                        repaymentCycleType == 0
+                            ? S.current.month
+                            : S.current.week,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                onSuccessSign: (context, data) async {
+                  final Map<String, dynamic> sendOfferRequest = {
+                    'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
+                    'description': message,
+                    'durationQty': int.parse(duration),
+                    'durationType': loanDurationType,
+                    'interestRate': num.parse(interest),
+                    'liquidationThreshold': 0,
+                    'loanAmount': num.parse(loanAmount),
+                    'loanToValue': 0,
+                    'repaymentCycleType': repaymentCycleType,
+                    'repaymentTokenSymbol': shortName,
+                    'txid': data,
+                    'walletAddress': PrefsService.getCurrentBEWallet(),
+                  };
+                  _cubit.sendOffer(
+                      offerRequest:
+                          SendOfferRequest.fromJson(sendOfferRequest));
+                  await showLoadSuccess(context)
+                      .then((value) => Navigator.pop(context))
+                      .then(
+                        (value) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BaseSuccess(
+                              title: S.current.send_offer,
+                              content: S.current.congratulation,
+                              callback: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                },
+                onErrorSign: (context) async {
+                  Navigator.pop(context);
+                  await showLoadFail(context).then((_) => Navigator.pop(context)).then(
+                        (value) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BaseFail(
+                          title: S.current.send_offer,
+                          onTapBtn: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                textActiveButton: S.current.approve,
+                tokenAddress: repaymentAsset,
+                hexString: value,
+                typeApprove: TYPE_CONFIRM_BASE.SEND_OFFER,
+              ),
+            ),
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,145 +278,8 @@ class _SendOfferState extends State<SendOffer> {
               final isEnable = snapshot.data ?? false;
               return GestureDetector(
                 onTap: isEnable
-                    ? () async {
-                        final sendOfferRequest = SendOfferRequest(
-                          collateralId: widget.nftOnPawn.id ?? 0,
-                          message: message,
-                          duration: int.parse(duration),
-                          durationType: loanDurationType,
-                          interestRate: num.parse(interest),
-                          loanAmount: num.parse(loanAmount),
-                          repaymentCycleType: repaymentCycleType,
-                          walletAddress: PrefsService.getCurrentBEWallet(),
-                          repaymentToken: shortName,
-                          supplyCurrency:
-                              widget.nftOnPawn.expectedCollateralSymbol ?? '',
-                        );
-                        await _cubit
-                            .getPawnHexString(
-                              nftCollateralId:
-                                  widget.nftOnPawn.bcCollateralId.toString(),
-                              repaymentAsset: repaymentAsset,
-                              loanAmount: loanAmount,
-                              interest: interest,
-                              duration: duration,
-                              loanDurationType: loanDurationType,
-                              repaymentCycleType: repaymentCycleType,
-                              context: context,
-                            )
-                            .then(
-                              (value) => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Approve(
-                                    request: sendOfferRequest,
-                                    nftOnPawn: widget.nftOnPawn,
-                                    title: S.current.send_offer,
-                                    needApprove: true,
-                                    payValue: loanAmount,
-                                    header: Column(
-                                      children: [
-                                        buildRowCustom(
-                                          title: S.current.from,
-                                          child: Text(
-                                            PrefsService.getCurrentBEWallet(),
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        buildRowCustom(
-                                          title: S.current.to,
-                                          child: Text(
-                                            (widget.nftOnPawn.walletAddress ??
-                                                    '')
-                                                .formatAddressWalletConfirm(),
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        spaceH20,
-                                        line,
-                                        spaceH20,
-                                        buildRowCustom(
-                                          title: S.current.loan_amount,
-                                          child: Text(
-                                            loanAmount + shortName,
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        buildRowCustom(
-                                          title: S.current.interest_rate,
-                                          child: Text(
-                                            '$interest%',
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        buildRowCustom(
-                                          title: S.current.duration,
-                                          child: Text(
-                                            '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        buildRowCustom(
-                                          title: S.current.repayment_curr,
-                                          child: Text(
-                                            shortName,
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                        buildRowCustom(
-                                          title: S.current.recurring_interest,
-                                          child: Text(
-                                            repaymentCycleType == 0
-                                                ? S.current.month
-                                                : S.current.week,
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .textThemeColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    textActiveButton: S.current.approve,
-                                    tokenAddress: repaymentAsset,
-                                    hexString: value,
-                                    typeApprove: TYPE_CONFIRM_BASE.SEND_OFFER,
-                                  ),
-                                ),
-                              ),
-                            );
+                    ? () {
+                        getHexStringThenNav();
                       }
                     : () {},
                 child: ButtonGold(
@@ -278,6 +312,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 100,
                       hintText: S.current.enter_msg,
                       validator: validator,
                       onChange: (value) {
@@ -306,6 +341,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 20,
                       validator: validator,
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
@@ -313,13 +349,16 @@ class _SendOfferState extends State<SendOffer> {
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_amount;
+                        } else if (!fiveDecimal.hasMatch(value!)) {
+                          return S.current.invalid_amount;
                         } else {
-                          loanAmount = value!;
+                          loanAmount = value;
                         }
                         return null;
                       },
                       hintText: S.current.enter_loan_amount,
-                      inputType: TextInputType.number,
+                      inputType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       suffix: SizedBox(
                         width: 70.w,
                         child: Center(
@@ -358,6 +397,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 10,
                       validator: validator,
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
@@ -365,14 +405,15 @@ class _SendOfferState extends State<SendOffer> {
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_interest_rate;
+                        } else if (!twoDecimal.hasMatch(value!)) {
+                          return S.current.invalid_interest_rate;
                         } else {
-                          interest = value!;
+                          interest = value;
                         }
                         return null;
                       },
                       hintText: S.current.enter_interest_rate,
-                      inputType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      inputType: TextInputType.number,
                       suffix: SizedBox(
                         width: 20.w,
                         child: Center(
@@ -400,6 +441,7 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      maxLength: 4,
                       validator: validator,
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {

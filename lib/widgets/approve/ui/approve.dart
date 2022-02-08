@@ -5,15 +5,8 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/request/bid_nft_request.dart';
-import 'package:Dfy/data/request/buy_nft_request.dart';
-import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
-import 'package:Dfy/domain/model/nft_auction.dart';
-import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
@@ -46,9 +39,6 @@ class Approve extends StatefulWidget {
   final Widget? warning;
   final Widget? header;
   final PutOnMarketModel? putOnMarketModel;
-  final NftMarket? nftMarket;
-  final NftOnPawn? nftOnPawn;
-  final NFTOnAuction? nftOnAuction;
   final bool? needApprove;
   final int? flexTitle;
   final String? errorTextSign;
@@ -57,8 +47,6 @@ class Approve extends StatefulWidget {
   final Function(BuildContext, String)? onSuccessSign;
   final String? purposeText;
   final String textActiveButton;
-  final num? quantity;
-  final String? marketId;
   final String? spender;
   final Map<String, dynamic>? createNftMap;
   final int? collectionType;
@@ -69,7 +57,7 @@ class Approve extends StatefulWidget {
   final TYPE_CONFIRM_BASE typeApprove;
   final String? payValue;
   final String? tokenAddress;
-  final SendOfferRequest? request;
+  final Map<String, dynamic>? request;
 
   const Approve({
     Key? key,
@@ -88,13 +76,8 @@ class Approve extends StatefulWidget {
     this.tokenAddress,
     this.hexString,
     this.putOnMarketModel,
-    this.quantity,
-    this.nftMarket,
-    this.marketId,
-    this.nftOnPawn,
     this.request,
     this.createNftMap,
-    this.nftOnAuction,
     this.collectionType,
     this.errorTextSign,
     this.onErrorSign,
@@ -493,59 +476,8 @@ class _ApproveState extends State<Approve> {
     } else {
       switch (type) {
         case TYPE_CONFIRM_BASE.BUY_NFT:
-          Navigator.pop(context);
-          cubit.importNft(
-            contract: widget.nftMarket?.collectionAddress ?? '',
-            id: int.parse(widget.nftMarket?.nftTokenId ?? ''),
-            address: PrefsService.getCurrentBEWallet(),
-          );
-          cubit.buyNftRequest(
-            BuyNftRequest(
-              widget.marketId ?? '',
-              widget.quantity?.toInt() ?? 0,
-              data,
-            ),
-          );
-          await showLoadSuccess(context)
-              .then((value) => Navigator.pop(context))
-              .then(
-                (value) => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseSuccess(
-                      title: S.current.buy_nft,
-                      content: S.current.congratulation,
-                      callback: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
-
           break;
         case TYPE_CONFIRM_BASE.PLACE_BID:
-          Navigator.pop(context);
-          cubit.bidNftRequest(
-            BidNftRequest(
-              widget.marketId ?? '',
-              widget.quantity?.toDouble() ?? 0,
-              data,
-            ),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseSuccess(
-                title: S.current.bidding,
-                content: S.current.congratulation,
-                callback: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-
           break;
         case TYPE_CONFIRM_BASE.SEND_NFT:
           // TODO: Handle this case.
@@ -556,25 +488,6 @@ class _ApproveState extends State<Approve> {
 
         // TODO: Handle this case.
         case TYPE_CONFIRM_BASE.SEND_OFFER:
-          widget.request?.latestBlockchainTxn = data;
-          cubit.sendOffer(offerRequest: widget.request!);
-          await showLoadSuccess(context)
-              .then((value) => Navigator.pop(context))
-              .then(
-                (value) => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseSuccess(
-                      title: S.current.send_offer,
-                      content: S.current.congratulation,
-                      callback: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
-
           break;
         case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
           unawaited(showLoading(context));
@@ -648,52 +561,10 @@ class _ApproveState extends State<Approve> {
     } else {
       switch (type) {
         case TYPE_CONFIRM_BASE.BUY_NFT:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseFail(
-                      title: S.current.buy_nft,
-                      onTapBtn: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
           break;
         case TYPE_CONFIRM_BASE.PLACE_BID:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseFail(
-                      title: S.current.place_a_bid,
-                      onTapBtn: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
           break;
         case TYPE_CONFIRM_BASE.SEND_OFFER:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseFail(
-                      title: S.current.send_offer,
-                      onTapBtn: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
           break;
         case TYPE_CONFIRM_BASE.CANCEL_PAWN:
           break;
