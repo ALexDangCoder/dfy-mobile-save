@@ -199,13 +199,44 @@ Widget _buildButtonCancelOnSale(
             cancelInfo: S.current.cancel_sale_info,
             cancelWarning: S.current.customer_cannot,
             title: S.current.cancel_sale,
+            onFail: (context) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseFail(
+                    title: S.current.cancel_aution,
+                    content: S.current.failed,
+                    onTapBtn: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              );
+            },
+            onSuccess: (context, data) async {
+              final navigator = Navigator.of(context);
+              await bloc.confirmCancelSaleWithBE(
+                txnHash: data,
+                marketId: nftMarket.marketId ?? '',
+              );
+              await navigator.pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.cancel_aution,
+                    content: S.current.congratulation,
+                    callback: () {
+                      navigator.pop();
+                    },
+                  ),
+                ),
+              );
+              navigator.pop(true);
+            },
           ),
         ),
       );
-      if(isSuccess){
-        showLoading(context);
+      if (isSuccess) {
         await reload();
-        hideLoading(context);
       }
     },
     gradient: RadialGradient(
@@ -379,37 +410,44 @@ Widget _buildButtonPutOnMarket(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      final navigator = Navigator.of(context);
-      List<dynamic>? splitImageLink = nftMarket.image?.split('/');
-      String imageId = '';
-      if ((splitImageLink ?? []).isNotEmpty) {
-        imageId = (splitImageLink ?? []).last.toString();
-      }
-      await navigator.push(
-        MaterialPageRoute(
-          builder: (context) => PutOnMarketScreen(
-            putOnMarketModel: PutOnMarketModel.putOnSale(
-              nftTokenId: int.parse(nftMarket.nftTokenId ?? '0'),
-              nftId: nftId ?? '',
-              nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
-              collectionAddress: nftMarket.collectionAddress ?? '',
-              nftMediaType:
-                  nftMarket.typeImage == TypeImage.IMAGE ? 'image' : 'video',
-              totalOfCopies: nftMarket.totalCopies ?? 1,
-              nftName: nftMarket.name ?? '',
-              nftMediaCid: imageId,
-              // lấy id
-              collectionName: nftMarket.collectionName ?? '',
-              collectionIsWhitelist: nftMarket.isWhitelist ?? false,
-              nftStandard: int.parse(nftMarket.nftStandard ?? '0'),
+      if (nftMarket.processStatus != 5 &&
+          nftMarket.processStatus != 6 &&
+          nftMarket.processStatus != 3) {
+        final navigator = Navigator.of(context);
+        List<dynamic>? splitImageLink = nftMarket.image?.split('/');
+        String imageId = '';
+        if ((splitImageLink ?? []).isNotEmpty) {
+          imageId = (splitImageLink ?? []).last.toString();
+        }
+        final result = await navigator.push(
+          MaterialPageRoute(
+            builder: (context) => PutOnMarketScreen(
+              putOnMarketModel: PutOnMarketModel.putOnSale(
+                nftTokenId: int.parse(nftMarket.nftTokenId ?? '0'),
+                nftId: nftId ?? '',
+                nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
+                collectionAddress: nftMarket.collectionAddress ?? '',
+                nftMediaType:
+                    nftMarket.typeImage == TypeImage.IMAGE ? 'image' : 'video',
+                totalOfCopies: nftMarket.totalCopies ?? 1,
+                nftName: nftMarket.name ?? '',
+                nftMediaCid: imageId,
+                // lấy id
+                collectionName: nftMarket.collectionName ?? '',
+                collectionIsWhitelist: nftMarket.isWhitelist ?? false,
+                nftStandard: int.parse(nftMarket.nftStandard ?? '0'),
+              ),
+            ),
+            settings: const RouteSettings(
+              name: AppRouter.putOnSale,
             ),
           ),
-          settings: const RouteSettings(
-            name: AppRouter.putOnSale,
-          ),
-        ),
-      );
-      reload();
+        );
+        if (result != null) {
+          nftMarket.processStatus = 3;
+          bloc.emit(NftNotOnMarketSuccess(nftMarket));
+        }
+      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
@@ -441,6 +479,8 @@ Approve approveWidget({
   NFTOnAuction? nftOnAuction,
   NftOnPawn? nftOnPawn,
   NftMarket? nftMarket,
+  required Function(BuildContext) onFail,
+  required Function(BuildContext, String) onSuccess,
 }) {
   return Approve(
     listDetail: dataInfo,
@@ -490,5 +530,7 @@ Approve approveWidget({
     nftMarket: nftMarket,
     nftOnAuction: nftOnAuction,
     nftOnPawn: nftOnPawn,
+    onErrorSign: onFail,
+    onSuccessSign: onSuccess,
   );
 }

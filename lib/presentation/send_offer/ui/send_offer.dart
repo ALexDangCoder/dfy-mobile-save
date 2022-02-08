@@ -377,15 +377,14 @@ class _SendOfferState extends State<SendOffer> {
                       ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
-                        log(twoDecimal.hasMatch(value).toString());
                       },
                       validatorValue: (value) {
-                        // if (value?.isEmpty ?? true) {
-                        //   return S.current.invalid_interest_rate;
-                        // } else {
-                        //   interest = value!;
-                        // }
-                        // return null;
+                        if (value?.isEmpty ?? true) {
+                          return S.current.invalid_interest_rate;
+                        } else {
+                          interest = value!;
+                        }
+                        return null;
                       },
                       hintText: S.current.enter_interest_rate,
                       inputType: TextInputType.number,

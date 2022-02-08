@@ -54,7 +54,7 @@ class BaseActivity extends StatelessWidget {
                 builder: (context) {
                   return NFTDetailScreen(
                     nftId: list[index].nftId ?? '',
-                    pawnId: list[index].pawnId,
+                    pawnId: int.parse(list[index].pawnId ?? '0'),
                     key: nftKey,
                     typeMarket: type,
                     marketId: list[index].marketId ?? '',
@@ -146,7 +146,7 @@ class BaseActivity extends StatelessWidget {
                       builder: (context) {
                         return NFTDetailScreen(
                           nftId: list[index].nftId ?? '',
-                          pawnId: list[index].pawnId,
+                          pawnId: int.parse(list[index].pawnId ?? '0'),
                           key: nftKey,
                           typeMarket: type,
                           marketId: list[index].marketId ?? '',

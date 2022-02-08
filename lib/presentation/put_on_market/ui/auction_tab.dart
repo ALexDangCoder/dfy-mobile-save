@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -89,8 +91,7 @@ class _AuctionTabState extends State<AuctionTab>
           errorTextStartTime = S.current.start_time_auction;
         });
         widget.cubit.timeValidate = false;
-      }
-      else if ((durationTime ?? 0) > 10 || (durationTime ?? 0) < 0) {
+      } else if ((durationTime ?? 0) > 10 || (durationTime ?? 0) < 0) {
         setState(() {
           errorTextStartTime = null;
           errorTextEndTime = S.current.min_duration_auction;
@@ -138,7 +139,7 @@ class _AuctionTabState extends State<AuctionTab>
     if (outPrice &&
         (_putOnMarketModel.buyOutPrice == null ||
             _putOnMarketModel.buyOutPrice == '' ||
-            (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <
+            (double.parse(_putOnMarketModel.buyOutPrice ?? '0') <=
                 double.parse(_putOnMarketModel.price ?? '0')))) {
       widget.cubit.buyOutPriceValidate = false;
       widget.cubit.updateStreamContinueAuction();
@@ -178,7 +179,7 @@ class _AuctionTabState extends State<AuctionTab>
                 height: 23,
               ),
               Text(
-                S.current.expected_loan,
+                S.current.reserve_price,
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
                   16,
@@ -190,8 +191,7 @@ class _AuctionTabState extends State<AuctionTab>
               ),
               SizedBox(
                 child: Text(
-                  S.current
-                      .set_the_loan_amount_you_expected_to_have_for_the_nft,
+                  S.current.reserve_price_mean,
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                     14,
@@ -408,16 +408,14 @@ class _AuctionTabState extends State<AuctionTab>
                       });
                       if (!value) {
                         _putOnMarketModel.buyOutPrice = null;
-                      }
-                      if (!validateBuyOutPrice()) {
-                        setState(() {
-                          buyOutPriceErrorText = S.current.buy_out_price_error;
-                        });
-                      } else {
                         setState(() {
                           buyOutPriceErrorText = null;
                         });
+                        widget.cubit.buyOutPriceValidate = true;
+                      } else {
+                        widget.cubit.buyOutPriceValidate = false;
                       }
+                      widget.cubit.updateStreamContinueAuction();
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: outPrice,
@@ -575,16 +573,14 @@ class _AuctionTabState extends State<AuctionTab>
                       });
                       if (!value) {
                         _putOnMarketModel.priceStep = null;
-                      }
-                      if (!validatePriceStep()) {
-                        setState(() {
-                          priceStepErrorText = S.current.price_step_error;
-                        });
-                      } else {
                         setState(() {
                           priceStepErrorText = null;
                         });
+                        widget.cubit.priceStepValidate = true;
+                      } else {
+                        widget.cubit.priceStepValidate = false;
                       }
+                      widget.cubit.updateStreamContinueAuction();
                     },
                     activeColor: AppTheme.getInstance().fillColor(),
                     value: priceStep,
@@ -757,6 +753,28 @@ class _AuctionTabState extends State<AuctionTab>
                               putOnMarketModel: _putOnMarketModel,
                               hexString: hexString,
                               title: S.current.put_on_auction,
+                              onSuccessSign: (context, data) async {
+                                final nav = Navigator.of(context);
+                                final result = await widget.cubit.putOnAuction(
+                                    txHash: data,
+                                    putOnMarketModel: _putOnMarketModel);
+                                nav.pop();
+                                if (result) {
+                                  await showLoadSuccess(context);
+                                  nav.popUntil((route) {
+                                    return route.settings.name ==
+                                        AppRouter.putOnSale;
+                                  });
+                                  nav.pop(true);
+                                } else {
+                                  await showLoadFail(context);
+                                }
+                              },
+                              onErrorSign: (context) async {
+                                final nav = Navigator.of(context);
+                                nav.pop();
+                                await showLoadFail(context);
+                              },
                               listDetail: [
                                 DetailItemApproveModel(
                                   title: '${S.current.reserve_price} :',

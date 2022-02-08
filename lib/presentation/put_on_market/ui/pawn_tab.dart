@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -24,13 +26,13 @@ class PawnTab extends StatefulWidget {
 
   final PutOnMarketCubit cubit;
 
-  const PawnTab(
-      {Key? key,
-      required this.cubit,
-      this.canEdit = false,
-      this.quantity = 1,
-      required this.putOnMarketModel})
-      : super(key: key);
+  const PawnTab({
+    Key? key,
+    required this.cubit,
+    this.canEdit = false,
+    this.quantity = 1,
+    required this.putOnMarketModel,
+  }) : super(key: key);
 
   @override
   _PawnTabState createState() => _PawnTabState();
@@ -41,6 +43,7 @@ class _PawnTabState extends State<PawnTab>
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
   late PutOnMarketModel _putOnMarketModel;
+  String? errorTextDuration;
 
   @override
   void initState() {
@@ -48,6 +51,32 @@ class _PawnTabState extends State<PawnTab>
     _putOnMarketModel.durationType = 0;
     _putOnMarketModel.numberOfCopies = 1;
     super.initState();
+  }
+
+  void checkDuration() {
+    final int duration = widget.cubit.valueDuration ?? 0;
+    if (widget.cubit.typeDuration == 0 && duration > 5200) {
+      setState(() {
+        errorTextDuration = S.current.Duration_by_week_cannot_be_greater_than;
+      });
+      widget.cubit.validateDuration = false;
+    } else if (widget.cubit.typeDuration == 1 && duration > 1200) {
+      setState(() {
+        errorTextDuration = S.current.Duration_by_month_cannot_be_greater_than;
+      });
+      widget.cubit.validateDuration = false;
+    } else if (duration <= 0) {
+      setState(() {
+        errorTextDuration = null;
+      });
+      widget.cubit.validateDuration = false;
+    } else {
+      widget.cubit.validateDuration = true;
+      setState(() {
+        errorTextDuration = null;
+      });
+    }
+    widget.cubit.updateStreamContinuePawn();
   }
 
   @override
@@ -231,14 +260,34 @@ class _PawnTabState extends State<PawnTab>
                   widget.cubit.changeDurationPawn(
                     type: index,
                   );
+                  checkDuration();
                   _putOnMarketModel.durationType = index;
                 },
                 onchangeText: (value) {
                   widget.cubit.changeDurationPawn(
-                    value: value != '' ? int.parse(value) : null,
+                    value: value != '' ? int.parse(value) : 0,
                   );
+                  checkDuration();
                   _putOnMarketModel.duration = value;
                 },
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  child: SizedBox(
+                    height: errorTextDuration == null ? 0 : 25,
+                    child: Text(
+                      errorTextDuration ?? '',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().redColor(),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 16,
@@ -295,46 +344,11 @@ class _PawnTabState extends State<PawnTab>
                 return GestureDetector(
                   onTap: () async {
                     if (data) {
-                      final navigator = Navigator.of(context);
                       final hexString =
                           await widget.cubit.getHexStringPutOnPawn(
                         _putOnMarketModel,
                         context,
                       );
-                      // unawaited(
-                      //   navigator.push(
-                      //     MaterialPageRoute(
-                      //       builder: (context) => Approve(
-                      //         needApprove: true,
-                      //         payValue: _putOnMarketModel.price,
-                      //         tokenAddress: _putOnMarketModel.tokenAddress,
-                      //         putOnMarketModel: _putOnMarketModel,
-                      //         hexString: hexString,
-                      //         title: S.current.put_on_sale,
-                      //         listDetail: [
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.expected_loan} :',
-                      //             value:
-                      //                 '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
-                      //             isToken: true,
-                      //           ),
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.duration} :',
-                      //             value:
-                      //                 '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
-                      //           ),
-                      //           DetailItemApproveModel(
-                      //             title: '${S.current.price_per_1} :',
-                      //             value:
-                      //                 '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
-                      //           )
-                      //         ],
-                      //         textActiveButton: S.current.put_on_pawn,
-                      //         typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
                       await showDialog(
                         context: context,
                         builder: (context) => ConnectWalletDialog(
@@ -344,23 +358,46 @@ class _PawnTabState extends State<PawnTab>
                             tokenAddress: _putOnMarketModel.tokenAddress,
                             putOnMarketModel: _putOnMarketModel,
                             hexString: hexString,
-                            title: S.current.put_on_sale,
+                            title: S.current.put_on_pawn,
+                            onSuccessSign: (context, data) async {
+                              final nav = Navigator.of(context);
+                              final result = await widget.cubit.putOnPawn(
+                                txHash: data,
+                                putOnMarketModel: _putOnMarketModel,
+                              );
+                              nav.pop();
+                              if (result) {
+                                await showLoadSuccess(context);
+                                nav.popUntil((route) {
+                                  return route.settings.name ==
+                                      AppRouter.putOnSale;
+                                });
+                                nav.pop(true);
+                              } else {
+                                await showLoadFail(context);
+                              }
+                            },
+                            onErrorSign: (context) async {
+                              final nav = Navigator.of(context);
+                              nav.pop();
+                              await showLoadFail(context);
+                            },
                             listDetail: [
                               DetailItemApproveModel(
                                 title: '${S.current.expected_loan} :',
                                 value:
-                                '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
+                                    '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
                                 isToken: true,
                               ),
                               DetailItemApproveModel(
                                 title: '${S.current.duration} :',
                                 value:
-                                '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
+                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
                               ),
                               DetailItemApproveModel(
                                 title: '${S.current.price_per_1} :',
                                 value:
-                                '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
+                                    '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
                               )
                             ],
                             textActiveButton: S.current.put_on_pawn,
