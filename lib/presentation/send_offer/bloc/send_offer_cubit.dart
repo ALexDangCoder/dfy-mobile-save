@@ -56,10 +56,6 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
   Future<void> sendOffer({
     required SendOfferRequest offerRequest,
   }) async {
-    final result = await nftRepo.sendOffer(offerRequest);
-    result.when(
-      success: (res) {},
-      error: (err) {},
-    );
+   await nftRepo.sendOffer(offerRequest);
   }
 }
