@@ -58,6 +58,8 @@ class _AuctionTabState extends State<AuctionTab>
   String? buyOutPriceErrorText;
   String? priceStepErrorText;
   String? errorTextEndTime;
+  String? hour;
+  String? minute;
 
   int? durationTime;
 
@@ -869,16 +871,16 @@ class _AuctionTabState extends State<AuctionTab>
                           context: context,
                           builder: (_) => BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child: const AlertDialog(
+                            child: AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
-                              content: PickTime(),
+                              content: PickTime(miu : minute, hour : hour),
                             ),
                           ),
                         );
                         if (result != null) {
-                          final String hour = result.stringValueOrEmpty('hour');
-                          final String minute =
+                          hour = result.stringValueOrEmpty('hour');
+                          minute =
                               result.stringValueOrEmpty('minute');
                           timeController.text = '$hour : $minute';
                           validateDuration();
