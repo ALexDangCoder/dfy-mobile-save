@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
@@ -15,6 +16,9 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +75,41 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                   return GestureDetector(
                     onTap: () {
                       if (snapshot.data ?? false) {
-                        if (widget.type == TypeEvaluation.NEW_CREATE) {}
+                        if (widget.type == TypeEvaluation.NEW_CREATE) {
+                          goTo(
+                            context,
+                            Approve(
+                              needApprove: true,
+                              hexString: 'hexString',
+                              payValue: '1',
+                              tokenAddress: '',
+                              title: S.current.book_appointment,
+                              listDetail: [
+                                DetailItemApproveModel(
+                                  title: '${S.current.evaluator} :',
+                                  value: '10',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.date_time} :',
+                                  value: '50 DFY',
+                                  isToken: true,
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.nft} :',
+                                  value: '10',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.evaluation_fee} :',
+                                  value: '50 DFY',
+                                  isToken: true,
+                                )
+                              ],
+                              textActiveButton: S.current.evaluation,
+                              spender: '',
+                              typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
+                            ),
+                          );
+                        }
                       }
                       //todo event
                     },

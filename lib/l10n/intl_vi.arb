@@ -636,5 +636,8 @@
   "november": "tháng 11,",
   "december": "tháng 12,",
   "notify": "Thông báo",
-  "dont_ask_again": "Không hỏi lại"
+  "dont_ask_again": "Không hỏi lại",
+  "evaluator": "Người đánh giá:",
+  "date_time": "Ngày giờ:",
+  "evaluation_fee": "Phí đánh giá:"
 }

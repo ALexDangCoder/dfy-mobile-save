@@ -644,5 +644,8 @@
   "october": "October,",
   "november": "November,",
   "december": "December,",
-  "dont_ask_again": "Don’t ask again"
+  "dont_ask_again": "Don’t ask again",
+  "evaluator": "Evaluator:",
+  "date_time": "Date time:",
+  "evaluation_fee": "Evaluation fee:"
 }
