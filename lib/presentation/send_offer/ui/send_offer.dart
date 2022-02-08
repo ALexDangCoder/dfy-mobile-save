@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -308,22 +306,16 @@ class _SendOfferState extends State<SendOffer> {
                     CustomFormValidate(
                       maxLength: 20,
                       validator: validator,
-                      formatter: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,5}'),
-                        ),
-                      ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
-                        log(value);
                       },
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_amount;
-                        } else if (num.parse(value ?? '0') is! num) {
-                          return S.current.invalid_interest_rate;
+                        } else if (!fiveDecimal.hasMatch(value!)) {
+                          return S.current.invalid_amount;
                         } else {
-                          loanAmount = value!;
+                          loanAmount = value;
                         }
                         return null;
                       },
@@ -370,19 +362,16 @@ class _SendOfferState extends State<SendOffer> {
                     CustomFormValidate(
                       maxLength: 10,
                       validator: validator,
-                      formatter: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,5}'),
-                        ),
-                      ],
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
                       },
                       validatorValue: (value) {
                         if (value?.isEmpty ?? true) {
                           return S.current.invalid_interest_rate;
+                        } else if (!twoDecimal.hasMatch(value!)) {
+                          return S.current.invalid_interest_rate;
                         } else {
-                          interest = value!;
+                          interest = value;
                         }
                         return null;
                       },

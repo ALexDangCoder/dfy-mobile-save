@@ -563,7 +563,7 @@ class _ApproveState extends State<Approve> {
         widget.request?.addAll({'latestBlockchainTxn': data});
         final offerRequest = SendOfferRequest.fromJson(widget.request ?? {});
         cubit.sendOffer(offerRequest: offerRequest);
-        await showLoadSuccess().then((value) => Navigator.pop(context)).then(
+        await showLoadSuccess(context).then((value) => Navigator.pop(context)).then(
               (value) => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
