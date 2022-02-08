@@ -58,27 +58,28 @@ class EvaluatorsResponse extends Equatable {
   String? description;
 
   EvaluatorsResponse(
-      this.id,
-      this.name,
-      this.avatarCid,
-      this.starCount,
-      this.reviewsCount,
-      this.evaluatedCount,
-      this.acceptedAssetTypeList,
-      this.description,);
+    this.id,
+    this.name,
+    this.avatarCid,
+    this.starCount,
+    this.reviewsCount,
+    this.evaluatedCount,
+    this.acceptedAssetTypeList,
+    this.description,
+  );
 
   factory EvaluatorsResponse.fromJson(Map<String, dynamic> json) =>
       _$EvaluatorsResponseFromJson(json);
 
   EvaluatorsCityModel toDomain() => EvaluatorsCityModel(
         id: id,
-    avatarCid: avatarCid,
-    name: name,
-    description:description,
-    evaluatedCount: evaluatedCount,
-    listAcceptedAssetType: acceptedAssetTypeList,
-    reviewsCount: reviewsCount,
-    starCount: starCount,
+        avatarCid: avatarCid,
+        name: name,
+        description: description,
+        evaluatedCount: evaluatedCount,
+        listAcceptedAssetType: acceptedAssetTypeList,
+        reviewsCount: reviewsCount,
+        starCount: starCount,
       );
 
   @override
