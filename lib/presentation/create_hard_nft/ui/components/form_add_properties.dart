@@ -18,27 +18,20 @@ class FormAddProperties extends StatefulWidget {
 }
 
 class _FormAddPropertiesState extends State<FormAddProperties> {
-  late List<Widget> _listForm;
-  late int currentIndex;
-
   @override
   void initState() {
     super.initState();
-    _listForm = [
-      FormProperties(
-        cubit: widget.cubit,
-        index: 0,
-      ),
-    ];
+    if (widget.cubit.properties.isEmpty) {
+      widget.cubit.properties.add(
+        PropertyModel(value: '', property: ''),
+      );
+    } else {}
   }
 
   void _addFormWidget() {
     setState(() {
-      _listForm.add(
-        FormProperties(
-          cubit: widget.cubit,
-          index: _listForm.length + 1,
-        ),
+      widget.cubit.properties.add(
+        PropertyModel(value: '', property: ''),
       );
     });
   }
@@ -90,9 +83,12 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               spaceH20,
               Expanded(
                 child: ListView.builder(
-                  itemCount: _listForm.length,
+                  itemCount: widget.cubit.properties.length,
                   itemBuilder: (context, index) {
-                    return _listForm[index];
+                    return FormProperties(
+                      data: widget.cubit.properties[index],
+                      cubit: widget.cubit,
+                    );
                   },
                 ),
               ),
@@ -147,12 +143,17 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
             children: [
               Expanded(
                 child: Center(
-                  child: Text(
-                    'Cancel',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      20,
-                      FontWeight.w700,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        20,
+                        FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -165,8 +166,8 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    // widget.cubit.properties.clear();
-                    print(widget.cubit.properties);
+                    widget.cubit.checkPropertiesWhenSave();
+                    Navigator.pop(context);
                   },
                   child: Center(
                     child: Text(
@@ -184,17 +185,6 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
           ),
         )
       ],
-    );
-  }
-
-  Container form() {
-    return Container(
-      width: 272.w,
-      height: 116.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Center(child: Text('huy')),
     );
   }
 }

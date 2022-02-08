@@ -5,13 +5,11 @@ import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_pro
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
 
@@ -36,6 +34,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   late String firstPhoneNumDropdown;
   late String cityFirstValue;
   late ProvideHardNftCubit cubit;
+  late bool isShowOrHideItemProperties;
   String hardNftName = '';
   String additionalInfo = '';
 
@@ -43,6 +42,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   void initState() {
     super.initState();
     cubit = ProvideHardNftCubit();
+    if (cubit.properties.isEmpty) {
+      isShowOrHideItemProperties = false;
+    } else {
+      isShowOrHideItemProperties = true;
+    }
     firstValueDropdown = tokens[0];
   }
 
@@ -63,18 +67,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: FormAddProperties(
-                      cubit: cubit,
-                    ),
-                  ),
-                );
-              },
+              onTap: () {},
               child: const ButtonGold(
                 title: 'NEXT',
                 isEnable: true,
@@ -291,14 +284,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     FontWeight.w400,
                   ),
                 ),
-                //todo check
-                item_properties(),
-                spaceH10,
-                divider,
-                spaceH20,
-                btnAddFtAddMoreProperties(),
-                spaceH20,
-                divider,
+                itemPropertiesFtBtnAdd(),
                 spaceH32,
                 textShowWithPadding(
                   textShow: 'Contact information',
@@ -507,33 +493,76 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     );
   }
 
-  Container item_properties() {
-    return Container(
-      padding: EdgeInsets.only(left: 16.w),
-      child: Wrap(
-        alignment: WrapAlignment.start,
-        runSpacing: 10.h,
-        children: [
-          itemProperty(
-            property: 'artist',
-            value: 'someone',
-          ),
-          spaceW20,
-          itemProperty(
-            property: 'lorem ipsum',
-            value: 'lorem ipsum',
-          ),
-          spaceW20,
-          itemProperty(
-            property: 'artist',
-            value: 'someone',
-          ),
-          itemProperty(
-            property: 'lorem ipsum',
-            value: 'lorem ipsum',
-          ),
-        ],
-      ),
+  Widget itemPropertiesFtBtnAdd() {
+    return StreamBuilder<List<PropertyModel>>(
+      initialData: cubit.properties,
+      stream: cubit.showItemProperties,
+      builder: (context, snapshot) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (snapshot.data!.isEmpty) Container() else Container(
+              margin: EdgeInsets.only(
+                top: 16.h,
+              ),
+              padding: EdgeInsets.only(left: 16.w),
+              child: Wrap(
+                runSpacing: 10.h,
+                children: cubit.properties.map(
+                      (e) {
+                    final int index = cubit.properties.indexOf(e);
+                    return itemProperty(
+                      property: e.property,
+                      value: e.value,
+                      index: index,
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
+             spaceH10,
+            divider,
+            spaceH20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 20.w,
+                  height: 20.h,
+                  child: Image.asset(
+                    ImageAssets.addPropertiesNft,
+                  ),
+                ),
+                spaceW8,
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: FormAddProperties(
+                          cubit: cubit,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    snapshot.data!.isEmpty ? 'Add' : 'Add more properties',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().fillColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            spaceH20,
+            divider,
+          ],
+        );
+      },
     );
   }
 
@@ -600,6 +629,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   Container itemProperty({
     required String property,
     required String value,
+    required int index,
   }) {
     return Container(
       height: 44.h,
@@ -611,6 +641,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           color: AppTheme.getInstance().whiteDot2(),
         ),
       ),
+      margin: EdgeInsets.only(right: 20.w),
       padding: EdgeInsets.symmetric(
         horizontal: 8.w,
         vertical: 3.h,
@@ -641,8 +672,14 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               )
             ],
           ),
-          Image.asset(
-            ImageAssets.closeProperties,
+          InkWell(
+            onTap: () {
+              cubit.properties.removeAt(index);
+              cubit.checkPropertiesWhenSave();
+            },
+            child: Image.asset(
+              ImageAssets.closeProperties,
+            ),
           ),
         ],
       ),

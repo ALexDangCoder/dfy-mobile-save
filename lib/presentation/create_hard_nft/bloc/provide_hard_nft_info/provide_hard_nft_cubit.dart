@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,11 +12,19 @@ enum DropDownBtnType {
   CITY,
 }
 
+class PropertyModel {
+  String value;
+  String property;
+
+  PropertyModel({required this.value, required this.property});
+}
+
 class ProvideHardNftCubit extends Cubit<ProvideHardNftState> {
   ProvideHardNftCubit() : super(ProvideHardNftInitial());
 
   BehaviorSubject<bool> visibleDropDownCountry = BehaviorSubject();
-
+  // BehaviorSubject<bool> showItemProperties = BehaviorSubject();
+  BehaviorSubject<List<PropertyModel>> showItemProperties = BehaviorSubject();
   //todo
   // Future<void> pickFile() async {
   //   collectionMessSubject.sink.add('');
@@ -79,28 +89,22 @@ class ProvideHardNftCubit extends Cubit<ProvideHardNftState> {
   //   validateCreate();
   // }
 
-  List<Map<String, String>> properties = [];
 
-  //isValue ? value : property
-  void saveProperties({
-    required bool isValue,
-    String? propertyForm,
-    String? valueForm,
-  }) {
-    final Map<String, String> propertyMap = {};
-    propertyMap.update(
-      'value',
-      (existingValue) => valueForm ?? '',
-      ifAbsent: () => valueForm ?? '',
+  List<PropertyModel> properties = [];
+
+  void checkPropertiesWhenSave() {
+    properties.forEach(
+      (element) {
+        properties.removeWhere(
+          (element) => element.property.isEmpty || element.value.isEmpty,
+        );
+      },
     );
-    propertyMap.update(
-      'property',
-      (existingValue) => propertyForm ?? '',
-      ifAbsent: () => propertyForm ?? '',
-    );
-    if (propertyForm != null && valueForm != null) {
-      properties.add(propertyMap);
-    } else {}
+    if(properties.isEmpty) {
+      showItemProperties.sink.add([]);
+    } else {
+      showItemProperties.sink.add(properties);
+    }
   }
 
   void showHideDropDownBtn({

@@ -9,18 +9,17 @@ enum IS_HAVE_DATA { YES, NO }
 class FormProperties extends StatelessWidget {
   const FormProperties({
     Key? key,
+    required this.data,
     required this.cubit,
-    required this.index,
   }) : super(key: key);
+
+  final PropertyModel data;
   final ProvideHardNftCubit cubit;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
-    final txtProperties = TextEditingController();
-    final txtValue = TextEditingController();
-    String propertyForm = '';
-    String valueForm = '';
+    String propertyForm = data.property;
+    String valueForm = data.value;
     return Container(
       width: 272.w,
       // height: 116.h,
@@ -30,6 +29,7 @@ class FormProperties extends StatelessWidget {
           Radius.circular(20.r),
         ),
       ),
+      margin: EdgeInsets.only(bottom: 18.h, left: 20.w, right: 20.w),
       padding: EdgeInsets.only(
         top: 6.h,
         bottom: 6.h,
@@ -38,22 +38,19 @@ class FormProperties extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            initialValue: propertyForm,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
               if (value!.length > 30) {
+                data.property = '';
+                cubit.checkPropertiesWhenSave();
                 return 'Maximum character is 30 characters';
               }
               return null;
             },
-            controller: txtProperties,
             onChanged: (value) {
               propertyForm = value;
-              valueForm = value;
-              cubit.saveProperties(
-                isValue: true,
-                propertyForm: propertyForm,
-                valueForm: valueForm,
-              );
+              data.property = propertyForm;
             },
             cursorColor: AppTheme.getInstance().textThemeColor(),
             style: textNormal(
@@ -81,27 +78,25 @@ class FormProperties extends StatelessWidget {
             color: AppTheme.getInstance().divideColor(),
           ),
           TextFormField(
+            initialValue: valueForm,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
               if (value!.length > 30) {
+                data.value = '';
+                cubit.checkPropertiesWhenSave();
                 return 'Maximum character is 30 characters';
               }
               return null;
             },
             onChanged: (value) {
               valueForm = value;
-              cubit.saveProperties(
-                isValue: true,
-                propertyForm: propertyForm,
-                valueForm: valueForm,
-              );
+              data.value = valueForm;
             },
             cursorColor: AppTheme.getInstance().textThemeColor(),
             style: textNormal(
               AppTheme.getInstance().textThemeColor(),
               16.sp,
             ),
-            controller: txtValue,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Value',
@@ -112,7 +107,6 @@ class FormProperties extends StatelessWidget {
               ),
             ),
           ),
-          spaceH18,
         ],
       ),
     );
