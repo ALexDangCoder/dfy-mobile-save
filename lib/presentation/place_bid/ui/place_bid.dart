@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -8,8 +9,11 @@ import 'package:Dfy/presentation/place_bid/bloc/place_bid_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -241,9 +245,7 @@ class _PlaceBidState extends State<PlaceBid> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          quantity: num.parse(bidValue),
                           title: S.current.place_a_bid,
-                          marketId: marketId,
                           needApprove: true,
                           payValue: bidValue,
                           header: Column(
@@ -287,6 +289,44 @@ class _PlaceBidState extends State<PlaceBid> {
                               ),
                             ],
                           ),
+                          onSuccessSign: (context, data){
+                            Navigator.pop(context);
+                            cubit.bidNftRequest(
+                              BidNftRequest(
+                                widget.marketId,
+                                double.parse(bidValue),
+                                data,
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BaseSuccess(
+                                  title: S.current.bidding,
+                                  content: S.current.congratulation,
+                                  callback: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          onErrorSign: (context) async {
+                            Navigator.pop(context);
+                            await showLoadFail(context).then((_) => Navigator.pop(context)).then(
+                                  (value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BaseFail(
+                                    title: S.current.place_a_bid,
+                                    onTapBtn: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                           textActiveButton: S.current.approve,
                           hexString: value,
                           typeApprove: TYPE_CONFIRM_BASE.PLACE_BID,
@@ -306,7 +346,6 @@ class _PlaceBidState extends State<PlaceBid> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          quantity: num.parse(bidValue),
                           title: S.current.place_a_bid,
                           needApprove: true,
                           payValue: bidValue,
@@ -351,6 +390,44 @@ class _PlaceBidState extends State<PlaceBid> {
                               ),
                             ],
                           ),
+                          onSuccessSign: (context, data){
+                            Navigator.pop(context);
+                            cubit.bidNftRequest(
+                              BidNftRequest(
+                                widget.marketId,
+                                double.parse(bidValue),
+                                data,
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BaseSuccess(
+                                  title: S.current.bidding,
+                                  content: S.current.congratulation,
+                                  callback: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          onErrorSign: (context) async {
+                            Navigator.pop(context);
+                            await showLoadFail(context).then((_) => Navigator.pop(context)).then(
+                                  (value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BaseFail(
+                                    title: S.current.place_a_bid,
+                                    onTapBtn: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                           textActiveButton: S.current.approve,
                           hexString: value,
                           typeApprove: TYPE_CONFIRM_BASE.PLACE_BID,

@@ -17,7 +17,6 @@ class SendOfferRequest {
   final String txid;
   final String walletAddress;
 
-
   SendOfferRequest(
       this.cryptoCollateralId,
       this.description,

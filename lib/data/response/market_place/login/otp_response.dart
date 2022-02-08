@@ -1,6 +1,4 @@
-import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/otp_model.dart';
-import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 

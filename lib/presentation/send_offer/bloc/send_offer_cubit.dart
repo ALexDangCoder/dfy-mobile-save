@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_state.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SendOfferCubit extends BaseCubit<SendOfferState> {
@@ -22,6 +25,8 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
   Sink<int> get sinkIndex => _streamController.sink;
 
   final _web3utils = Web3Utils();
+
+  NFTRepository get nftRepo => Get.find();
 
   Future<String> getPawnHexString({
     required String nftCollateralId,
@@ -47,5 +52,14 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
     showContent();
 
     return hexString;
+  }
+  Future<void> sendOffer({
+    required SendOfferRequest offerRequest,
+  }) async {
+    final result = await nftRepo.sendOffer(offerRequest);
+    result.when(
+      success: (res) {},
+      error: (err) {},
+    );
   }
 }

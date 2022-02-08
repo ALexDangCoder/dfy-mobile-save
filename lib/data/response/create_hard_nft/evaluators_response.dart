@@ -127,7 +127,7 @@ class EvaluatorResponse extends Equatable {
         reviewsCount: reviewsCount,
         evaluatedCount: evaluatedCount,
         createdAt: createdAt,
-    phoneCode: phoneCode,
+        phoneCode: phoneCode,
       );
 
   @override
@@ -177,7 +177,6 @@ class PhoneCodeResponse extends Equatable {
 
   factory PhoneCodeResponse.fromJson(Map<String, dynamic> json) =>
       _$PhoneCodeResponseFromJson(json);
-
 
   PhoneCode toDomain() => PhoneCode(
         name: name,
