@@ -44,7 +44,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   late final NftMarket nftMarket;
   TYPE_CONFIRM_BASE type = TYPE_CONFIRM_BASE.BUY_NFT;
 
-  List<Wallet> listWallet = [];
 
   /// Name current wallet , after load screen success [nameWallet] have data
   /// when fail [nameWallet] is null

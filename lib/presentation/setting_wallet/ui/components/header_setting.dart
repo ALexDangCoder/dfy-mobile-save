@@ -44,7 +44,7 @@ Container headerSetting({
               MaterialPageRoute(
                 builder: (context) =>
                 const MainScreen(
-                  index: 2,
+                  index: tabHomeIndex,
                 ),
               ),
                   (route) => route.isFirst,
