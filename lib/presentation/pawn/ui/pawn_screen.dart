@@ -1,4 +1,5 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,6 @@ class _PawnState extends State<PawnScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const ComingScreen();
+    return const EvaluationResult();
   }
 }

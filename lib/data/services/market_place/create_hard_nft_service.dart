@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
@@ -30,4 +31,10 @@ abstract class CreateHardNFtService {
       @Path('evaluator_id') String evaluatorId,
       );
 
+  @GET(ApiConstants.GET_LIST_EVALUATION_RESULT)
+  Future<EvaluationResultResponse> getListEvaluationResult(
+      @Query('asset_id') String assetId,
+      @Query('page') String? page,
+      @Query('size') String? size,
+      );
  }

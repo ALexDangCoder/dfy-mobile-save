@@ -645,5 +645,12 @@
   "november": "November,",
   "december": "December,",
   "dont_ask_again": "Don’t ask again",
-  "invalid_file_format" : "Invalid file format"
+  "invalid_file_format" : "Invalid file format",
+  "evaluation_results": "Evaluation results",
+  "no_evaluation":"No evaluation received",
+  "you_have":"You have ",
+  "accepted":"ACCEPTED ",
+  "rejected":"REJECTED",
+  "a_hard_nft_evaluation":"a Hard NFT evaluation",
+  "your_hard_NFT_has_been":"Your hard NFT has been EVALUATED for",
 }
