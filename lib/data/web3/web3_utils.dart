@@ -904,7 +904,7 @@ class Web3Utils {
     required int collectionStandard,
     required String beAssetId,
   }) async {
-    final deployContract = await deployedErc721Contract(eva_dev2);
+    final deployContract = await deployedEvaluationContract(eva_dev2);
     final function = deployContract.function('createAssetRequest');
     final createAssetRequest = Transaction.callContract(
       contract: deployContract,
