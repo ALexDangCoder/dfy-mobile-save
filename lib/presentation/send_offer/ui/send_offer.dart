@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -10,8 +11,11 @@ import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form_validate.dart';
@@ -42,22 +46,6 @@ class _SendOfferState extends State<SendOffer> {
   String message = '';
 
   Future<void> getHexStringThenNav() async {
-    final Map<String, dynamic> sendOfferRequest = {
-      'bcOfferId': 0,
-      'collateralId': widget.nftOnPawn.id ?? 0,
-      'message': message,
-      'duration': int.parse(duration),
-      'durationType': loanDurationType,
-      'interestRate': num.parse(interest),
-      'loanAmount': num.parse(loanAmount),
-      'repaymentCycleType': repaymentCycleType,
-      'walletAddress': PrefsService.getCurrentBEWallet(),
-      'repaymentToken': shortName,
-      'supplyCurrency': widget.nftOnPawn.expectedCollateralSymbol ?? '',
-      'liquidationThreshold': 0,
-      'loanToValue': 0,
-      'pawnShopPackageId': 0
-    };
     await _cubit
         .getPawnHexString(
           nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
@@ -74,8 +62,6 @@ class _SendOfferState extends State<SendOffer> {
             context,
             MaterialPageRoute(
               builder: (context) => Approve(
-                request: sendOfferRequest,
-                nftOnPawn: widget.nftOnPawn,
                 title: S.current.send_offer,
                 needApprove: true,
                 payValue: loanAmount,
@@ -166,6 +152,57 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                   ],
                 ),
+                onSuccessSign: (context, data) async {
+                  final Map<String, dynamic> sendOfferRequest = {
+                    'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
+                    'description': message,
+                    'durationQty': int.parse(duration),
+                    'durationType': loanDurationType,
+                    'interestRate': num.parse(interest),
+                    'liquidationThreshold': 0,
+                    'loanAmount': num.parse(loanAmount),
+                    'loanToValue': 0,
+                    'repaymentCycleType': repaymentCycleType,
+                    'repaymentTokenSymbol': shortName,
+                    'txid': data,
+                    'walletAddress': PrefsService.getCurrentBEWallet(),
+                  };
+                  _cubit.sendOffer(
+                      offerRequest:
+                          SendOfferRequest.fromJson(sendOfferRequest));
+                  await showLoadSuccess(context)
+                      .then((value) => Navigator.pop(context))
+                      .then(
+                        (value) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BaseSuccess(
+                              title: S.current.send_offer,
+                              content: S.current.congratulation,
+                              callback: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                },
+                onErrorSign: (context) async {
+                  Navigator.pop(context);
+                  await showLoadFail(context).then((_) => Navigator.pop(context)).then(
+                        (value) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BaseFail(
+                          title: S.current.send_offer,
+                          onTapBtn: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
                 textActiveButton: S.current.approve,
                 tokenAddress: repaymentAsset,
                 hexString: value,
