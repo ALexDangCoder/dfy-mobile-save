@@ -25,9 +25,11 @@ class _StakingState extends State<StakingScreen> {
     return GestureDetector(
       onTap: () => showDialog(
         context: context,
-        builder: (context) => ConnectWalletDialog(
-          navigationTo: Container(color: Colors.green,),
-          isRequireLoginEmail: false,
+        builder: (context) =>  ConnectWalletDialog(
+          isRequireLoginEmail: true,
+          navigationTo: Container(
+            color: Colors.green,
+          ),
         ),
       ),
       child: const ComingScreen(),
