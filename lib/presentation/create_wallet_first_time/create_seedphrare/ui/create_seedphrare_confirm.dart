@@ -203,7 +203,7 @@ class _BodyState extends State<_Body> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const MainScreen(
-                                index: 3,
+                                index: tabMarketingPlaceIndex,
                               ),
                             ),
                           );

@@ -647,5 +647,6 @@
   "dont_ask_again": "Don’t ask again",
   "evaluator": "Evaluator:",
   "date_time": "Date time:",
-  "evaluation_fee": "Evaluation fee:"
+  "evaluation_fee": "Evaluation fee:",
+  "invalid_file_format" : "Invalid file format"
 }

@@ -64,7 +64,7 @@ class _UploadProgressState extends State<UploadProgress>
           MaterialPageRoute(
             builder: (_) => Approve(
               hexString: widget.bloc.transactionData,
-              createCollectionCubit: widget.bloc,
+              createNftMap: widget.bloc.getMapCreateCollection(),
               listDetail: [
                 DetailItemApproveModel(
                   title: '${S.current.name}:',
@@ -87,6 +87,7 @@ class _UploadProgressState extends State<UploadProgress>
               title: S.current.create_collection,
               textActiveButton: S.current.create,
               typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+              collectionType: widget.bloc.collectionType,
             ),
           ),
         );

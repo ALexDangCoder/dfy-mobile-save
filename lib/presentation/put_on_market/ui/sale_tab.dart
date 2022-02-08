@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -236,20 +238,44 @@ class _SaleTabState extends State<SaleTab>
                             payValue: _putOnMarketModel.price,
                             tokenAddress: _putOnMarketModel.tokenAddress,
                             putOnMarketModel: _putOnMarketModel,
+                            onSuccessSign: (context, data) async {
+                              final nav = Navigator.of(context);
+                              final result = await widget.cubit.putOnSale(
+                                txHash: data,
+                                putOnMarketModel: _putOnMarketModel,
+                              );
+                              nav.pop();
+                              if (result) {
+                                await showLoadSuccess(context);
+                                nav.popUntil((route) {
+                                  return route.settings.name ==
+                                      AppRouter.putOnSale;
+                                });
+                                nav.pop(true);
+                              } else {
+                                await showLoadFail(context);
+                              }
+                            },
+                            onErrorSign: (context) async {
+                              final nav = Navigator.of(context);
+                              nav.pop();
+                              await showLoadFail(context);
+                            },
                             warning: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SvgPicture.asset(
                                   ImageAssets.ic_warning_canel,
                                 ),
-                                const SizedBox (width: 8,),
+                                const SizedBox(
+                                  width: 8,
+                                ),
                                 Flexible(
                                   child: RichText(
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text:
-                                          '${S.current.listing_is_free} ',
+                                          text: '${S.current.listing_is_free} ',
                                           style: textNormal(
                                             AppTheme.getInstance()
                                                 .whiteColor()
@@ -267,8 +293,7 @@ class _SaleTabState extends State<SaleTab>
                                           ),
                                         ),
                                         TextSpan(
-                                          text:
-                                              S.current.value_of_each_copy,
+                                          text: S.current.value_of_each_copy,
                                           style: textNormal(
                                             AppTheme.getInstance()
                                                 .whiteColor()
