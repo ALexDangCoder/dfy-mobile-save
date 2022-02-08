@@ -43,20 +43,17 @@ class _SendOfferState extends State<SendOffer> {
 
   Future<void> getHexStringThenNav() async {
     final Map<String, dynamic> sendOfferRequest = {
-      'bcOfferId': 0,
-      'collateralId': widget.nftOnPawn.id ?? 0,
-      'message': message,
-      'duration': int.parse(duration),
+      'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
+      'description': message,
+      'durationQty': int.parse(duration),
       'durationType': loanDurationType,
       'interestRate': num.parse(interest),
-      'loanAmount': num.parse(loanAmount),
-      'repaymentCycleType': repaymentCycleType,
-      'walletAddress': PrefsService.getCurrentBEWallet(),
-      'repaymentToken': shortName,
-      'supplyCurrency': widget.nftOnPawn.expectedCollateralSymbol ?? '',
       'liquidationThreshold': 0,
+      'loanAmount': num.parse(loanAmount),
       'loanToValue': 0,
-      'pawnShopPackageId': 0
+      'repaymentCycleType': repaymentCycleType,
+      'repaymentTokenSymbol': shortName,
+      'walletAddress': PrefsService.getCurrentBEWallet(),
     };
     await _cubit
         .getPawnHexString(
