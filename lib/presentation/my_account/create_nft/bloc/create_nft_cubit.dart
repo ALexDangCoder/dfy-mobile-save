@@ -19,6 +19,9 @@ import 'package:video_player/video_player.dart';
 
 part 'create_nft_state.dart';
 
+const String KEY_PROPERTY = 'key';
+const String VALUE_PROPERTY = 'value';
+
 class CreateNftCubit extends BaseCubit<CreateNftState> {
   CreateNftCubit() : super(CreateNftInitial());
 

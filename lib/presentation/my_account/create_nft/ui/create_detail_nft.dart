@@ -14,6 +14,7 @@ import 'package:Dfy/presentation/my_account/create_nft/ui/widget/create_nft_prog
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/input_information_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget_create_nft.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/widget/validator_property_row.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -94,7 +95,15 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                             shrinkWrap: true,
                             itemCount: list.length,
                             itemBuilder: (context, index) {
-                              return propertyRow(
+                              // return propertyRow(
+                              //   property: list[index],
+                              //   cubit: widget.cubit,
+                              //   index: index,
+                              //   onTap: (){
+                              //     widget.cubit.removeProperty(index);
+                              //   },
+                              // );
+                              return propertyRowValidator(
                                 property: list[index],
                                 cubit: widget.cubit,
                                 index: index,
