@@ -560,7 +560,7 @@ class _ApproveState extends State<Approve> {
 
       // TODO: Handle this case.
       case TYPE_CONFIRM_BASE.SEND_OFFER:
-        widget.request?.addAll({'latestBlockchainTxn': data});
+        widget.request?.addAll({'txid': data});
         final offerRequest = SendOfferRequest.fromJson(widget.request ?? {});
         cubit.sendOffer(offerRequest: offerRequest);
         await showLoadSuccess(context).then((value) => Navigator.pop(context)).then(
