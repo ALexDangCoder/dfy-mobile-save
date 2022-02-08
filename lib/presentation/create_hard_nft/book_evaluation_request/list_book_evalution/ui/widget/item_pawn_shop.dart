@@ -64,7 +64,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',//todo type
+                            typeNFT: 'diamond', //todo type
                           ),
                         ),
                       );
@@ -96,7 +96,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',//todo type
+                            typeNFT: 'diamond', //todo type
                           ),
                         ),
                       );
@@ -183,7 +183,6 @@ class ItemPawnShop extends StatelessWidget {
                               HeroDialogRoute(
                                 builder: (context) {
                                   return DialogReasonDetail(
-                                    contentDetail: 'detail nè', //todo content
                                     dateDetail: 0.formatDateTimeMy(
                                       appointment.appointmentTime ?? 0,
                                     ),

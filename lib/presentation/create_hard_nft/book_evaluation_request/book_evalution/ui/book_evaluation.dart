@@ -11,6 +11,8 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_bo
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -89,6 +91,23 @@ class _BookEvaluationState extends State<BookEvaluation> {
                       height: 193.h,
                       width: 343.w,
                       child: GoogleMap(
+                        gestureRecognizers: Set()
+                          ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                          ..add(
+                            Factory<VerticalDragGestureRecognizer>(
+                                  () => VerticalDragGestureRecognizer(),
+                            ),
+                          )
+                          ..add(
+                            Factory<HorizontalDragGestureRecognizer>(
+                                  () => HorizontalDragGestureRecognizer(),
+                            ),
+                          )
+                          ..add(
+                            Factory<ScaleGestureRecognizer>(
+                                  () => ScaleGestureRecognizer(),
+                            ),
+                          ),
                         initialCameraPosition: _kGooglePlex,
                         onMapCreated: (GoogleMapController controller) {
                           _controller.complete(controller);
