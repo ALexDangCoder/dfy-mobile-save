@@ -106,6 +106,9 @@ Widget buttonCancelAuction({
   if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
+        if(nftMarket.marketStatus == 8){
+          return;
+        }
         final nav = Navigator.of(context);
         final String dataString = await bloc.getDataStringForCancelAuction(
           context: context,

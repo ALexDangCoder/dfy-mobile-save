@@ -162,6 +162,9 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
+      if(nftMarket.marketStatus == 7){
+        return;
+      }
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancel(
         context: context,
