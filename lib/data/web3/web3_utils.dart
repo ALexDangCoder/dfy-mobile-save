@@ -895,6 +895,32 @@ class Web3Utils {
     return hex.encode(safeMint.data ?? []);
   }
 
+  //eva
+  Future<String> getCreateAssetRequestData({
+    required String assetCID,
+    required String collectionAsset,
+    required String expectingPrice,
+    required String expectingPriceAddress,
+    required int collectionStandard,
+    required String beAssetId,
+  }) async {
+    final deployContract = await deployedErc721Contract(eva_dev2);
+    final function = deployContract.function('createAssetRequest');
+    final createAssetRequest = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        assetCID,
+        EthereumAddress.fromHex(collectionAsset),
+        BigInt.from(num.parse(_handleAmount(18, expectingPrice))),
+        EthereumAddress.fromHex(expectingPriceAddress),
+        BigInt.from(collectionStandard),
+        beAssetId,
+      ],
+    );
+    return hex.encode(createAssetRequest.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -965,6 +991,18 @@ class Web3Utils {
     final abiCode = await rootBundle.loadString('assets/abi/erc721_abi.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'erc721'),
+      EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedEvaluationContract(
+    String contract,
+  ) async {
+    final abiCode =
+        await rootBundle.loadString('assets/abi/Eva_abi_v2_dev2.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'eva'),
       EthereumAddress.fromHex(contract),
     );
     return deployContract;
