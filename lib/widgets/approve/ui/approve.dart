@@ -69,7 +69,7 @@ class Approve extends StatefulWidget {
   final TYPE_CONFIRM_BASE typeApprove;
   final String? payValue;
   final String? tokenAddress;
-  final SendOfferRequest? request;
+  final Map<String, dynamic>? request;
 
   const Approve({
     Key? key,
@@ -559,25 +559,24 @@ class _ApproveState extends State<Approve> {
 
 
       // TODO: Handle this case.
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          widget.request?.latestBlockchainTxn = data;
-          cubit.sendOffer(offerRequest: widget.request!);
-          await showLoadSuccess(context)
-              .then((value) => Navigator.pop(context))
-              .then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseSuccess(
-                  title: S.current.send_offer,
-                  content: S.current.congratulation,
-                  callback: () {
-                    Navigator.pop(context);
-                  },
+      case TYPE_CONFIRM_BASE.SEND_OFFER:
+        widget.request?.addAll({'latestBlockchainTxn': data});
+        final offerRequest = SendOfferRequest.fromJson(widget.request ?? {});
+        cubit.sendOffer(offerRequest: offerRequest);
+        await showLoadSuccess(context).then((value) => Navigator.pop(context)).then(
+              (value) => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BaseSuccess(
+                    title: S.current.send_offer,
+                    content: S.current.congratulation,
+                    callback: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
               ),
-            ),
-          );
+            );
 
           break;
         case TYPE_CONFIRM_BASE.CREATE_COLLECTION:

@@ -13,12 +13,15 @@ class CustomFormValidate extends StatefulWidget {
     this.suffix,
     required this.inputType,
     required this.validator,
-    this.onChange, this.formatter = const [],
+    this.onChange,
+    this.formatter = const [],
+    required this.maxLength,
   }) : super(key: key);
   final String? Function(String? value) validatorValue;
   final String hintText;
   final Widget? prefix;
   final Widget? suffix;
+  final int maxLength;
   final List<TextInputFormatter>? formatter;
   final TextInputType inputType;
   final Function(String)? onChange;
@@ -43,6 +46,7 @@ class _CustomFormValidateState extends State<CustomFormValidate> {
       child: Form(
         key: _key,
         child: TextFormField(
+          maxLength: widget.maxLength,
           validator: (value) {
             return widget.validatorValue(value);
           },
@@ -64,6 +68,7 @@ class _CustomFormValidateState extends State<CustomFormValidate> {
             16.sp,
           ),
           decoration: InputDecoration(
+            counterText: '',
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.r),
               borderSide: BorderSide(
