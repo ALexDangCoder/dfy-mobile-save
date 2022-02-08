@@ -9,6 +9,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
@@ -42,6 +43,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   void initState() {
     super.initState();
     cubit = ProvideHardNftCubit();
+    cubit.getCountriesApi();
+    cubit.getPhonesApi();
     if (cubit.properties.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
@@ -212,6 +215,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 ///form select condition
                 FormDropDown(
                   typeDrop: TYPE_FORM_DROPDOWN.CONDITION,
+                  cubit: cubit,
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -243,7 +247,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           height: 32.h,
                           color: AppTheme.getInstance().whiteDot2(),
                         ),
-                        FormDropDown(typeDrop: TYPE_FORM_DROPDOWN.PRICE),
+                        FormDropDown(
+                          typeDrop: TYPE_FORM_DROPDOWN.PRICE,
+                          cubit: cubit,
+                        ),
                       ],
                     ),
                     inputType: null,
@@ -356,27 +363,43 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
 
                 ///FORM NUMBER
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Row(
-                    children: [
-                      FormDropDown(typeDrop: TYPE_FORM_DROPDOWN.PHONE),
-                      Expanded(
-                        child: CustomForm(
-                          isSelectNumPrefix: true,
-                          textValue: (value) {
-                            print(value);
-                          },
-                          hintText: 'Enter phone number',
-                          suffix: null,
-                          prefix: null,
-                          inputType: null,
+                BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
+                  bloc: cubit,
+                  builder: (context, state) {
+                    if (state is Step1LoadingPhoneSuccess) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
                         ),
-                      ),
-                    ],
-                  ),
+                        child: Row(
+                          children: [
+                            FormDropDown(
+                              typeDrop: TYPE_FORM_DROPDOWN.PHONE,
+                              cubit: cubit,
+                            ),
+                            Expanded(
+                              child: CustomForm(
+                                isSelectNumPrefix: true,
+                                textValue: (value) {
+                                  print(value);
+                                },
+                                hintText: 'Enter phone number',
+                                suffix: null,
+                                prefix: null,
+                                inputType: null,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if(state is Step1LoadingPhoneFail) {
+                      return Container(
+                        child: Text('Loi'),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -388,8 +411,22 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH4,
-                FormDropDown(
-                  typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
+                BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
+                  bloc: cubit,
+                  builder: (context, state) {
+                   if(state is Step1LoadingCountrySuccess) {
+                      return FormDropDown(
+                        typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
+                        cubit: cubit,
+                      );
+                    } else if (state is Step1LoadingCountryFail){
+                      return Container(
+                        child: Text('Loi'),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -403,6 +440,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
                 FormDropDown(
                   typeDrop: TYPE_FORM_DROPDOWN.CITY,
+                  cubit: cubit,
                 ),
                 spaceH16,
                 textShowWithPadding(
@@ -501,26 +539,29 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (snapshot.data!.isEmpty) Container() else Container(
-              margin: EdgeInsets.only(
-                top: 16.h,
+            if (snapshot.data!.isEmpty)
+              Container()
+            else
+              Container(
+                margin: EdgeInsets.only(
+                  top: 16.h,
+                ),
+                padding: EdgeInsets.only(left: 16.w),
+                child: Wrap(
+                  runSpacing: 10.h,
+                  children: cubit.properties.map(
+                        (e) {
+                      final int index = cubit.properties.indexOf(e);
+                      return itemProperty(
+                        property: e.property,
+                        value: e.value,
+                        index: index,
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
-              padding: EdgeInsets.only(left: 16.w),
-              child: Wrap(
-                runSpacing: 10.h,
-                children: cubit.properties.map(
-                      (e) {
-                    final int index = cubit.properties.indexOf(e);
-                    return itemProperty(
-                      property: e.property,
-                      value: e.value,
-                      index: index,
-                    );
-                  },
-                ).toList(),
-              ),
-            ),
-             spaceH10,
+            spaceH10,
             divider,
             spaceH20,
             Row(
@@ -539,12 +580,13 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (_) => Dialog(
-                        backgroundColor: Colors.transparent,
-                        child: FormAddProperties(
-                          cubit: cubit,
-                        ),
-                      ),
+                      builder: (_) =>
+                          Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: FormAddProperties(
+                              cubit: cubit,
+                            ),
+                          ),
                     );
                   },
                   child: Text(

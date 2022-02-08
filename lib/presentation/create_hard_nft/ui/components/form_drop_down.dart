@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
@@ -116,11 +117,14 @@ class FormDropDown extends StatelessWidget {
   const FormDropDown({
     Key? key,
     required this.typeDrop,
+    required this.cubit,
   }) : super(key: key);
   final TYPE_FORM_DROPDOWN typeDrop;
+  final ProvideHardNftCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    print(cubit.phonesCode.length);
     if (typeDrop == TYPE_FORM_DROPDOWN.CITY ||
         typeDrop == TYPE_FORM_DROPDOWN.CONDITION ||
         typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
@@ -130,7 +134,9 @@ class FormDropDown extends StatelessWidget {
             // gap: 8.h,
             dropdownItemMainAxis: MainAxisAlignment.start,
             resultMainAxis: MainAxisAlignment.start,
-            dropdownList: cities,
+            dropdownList: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
+                ? cubit.countries
+                : (typeDrop == TYPE_FORM_DROPDOWN.CITY ? [] : []),
             onChange: (value) {
               print(value['label']);
             },
@@ -270,8 +276,8 @@ class FormDropDown extends StatelessWidget {
                 dropdownWidth: 109.w,
                 isTriangle: false,
                 dropdownPadding: EdgeInsets.only(right: 11.w),
-                dropdownList: phones,
-                defaultValue: phones[0],
+                dropdownList: cubit.phonesCode,
+                defaultValue: cubit.phonesCode[229],
                 resultIcon: const SizedBox.shrink(),
                 dropdownBD: BoxDecoration(
                   color: AppTheme.getInstance().selectDialogColor(),
