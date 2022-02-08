@@ -640,5 +640,7 @@
   "evaluator": "Người đánh giá:",
   "date_time": "Ngày giờ:",
   "evaluation_fee": "Phí đánh giá:",
-  "invalid_file_format" : "Định dạng tệp tin không hợp lệ"
+  "invalid_file_format" : "Định dạng tệp tin không hợp lệ",
+  "request_evaluation": "Yêu cầu đánh giá"
+
 }

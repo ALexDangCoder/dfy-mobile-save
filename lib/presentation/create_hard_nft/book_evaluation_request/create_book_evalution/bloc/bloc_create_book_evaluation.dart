@@ -1,4 +1,5 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -48,6 +49,9 @@ class BlocCreateBookEvaluation {
   static const String SAT = 'THỨ BẢY';
   static const String SUN = 'CHỦ NHẬT';
 
+  static const String MINTING_FEE = '1';
+  static const String EVALUATION_FEE = '2';
+
   BehaviorSubject<String> dateStream = BehaviorSubject.seeded('');
   BehaviorSubject<String> timeStream = BehaviorSubject.seeded('');
   String textValidateDate = '';
@@ -62,6 +66,7 @@ class BlocCreateBookEvaluation {
   String? minuteMy;
   List<String> list = [];
   DateTime? dateTimeDay;
+  EvaluationFee? evaluationFee;
 
   bool checkValidateDay(String day) {
     bool isDay = false;
@@ -215,6 +220,24 @@ class BlocCreateBookEvaluation {
           locationLat = res.locationLat ?? 0;
           locationLong = res.locationLong ?? 0;
           objDetail.add(res);
+        }
+      },
+      error: (error) {},
+    );
+  }
+
+  Future<void> getEvaluationFee() async {
+    final Result<List<EvaluationFee>> result =
+        await _createHardNFTRepository.getEvaluationFee();
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        } else {
+          for (final value in res) {
+             if (value.id == EVALUATION_FEE) {
+              evaluationFee = value;
+            }
+          }
         }
       },
       error: (error) {},

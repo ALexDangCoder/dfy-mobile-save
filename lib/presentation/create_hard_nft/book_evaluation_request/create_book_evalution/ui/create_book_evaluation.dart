@@ -23,7 +23,6 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 enum TypeEvaluation { NEW_CREATE, CREATE }
@@ -32,12 +31,14 @@ class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
   final TypeEvaluation type;
   final int? date;
+  final String? typeNFT;
 
   const CreateBookEvaluation({
     Key? key,
     required this.idEvaluation,
     required this.type,
     this.date,
+    this.typeNFT,
   }) : super(key: key);
 
   @override
@@ -55,6 +56,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
     bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
+    bloc.getEvaluationFee();
   }
 
   @override
@@ -87,24 +89,25 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                               listDetail: [
                                 DetailItemApproveModel(
                                   title: '${S.current.evaluator} :',
-                                  value: '10',
+                                  value: pawn.name ?? '',
                                 ),
                                 DetailItemApproveModel(
                                   title: '${S.current.date_time} :',
-                                  value: '50 DFY',
-                                  isToken: true,
+                                  value:
+                                      '${bloc.timeStream.value} - ${bloc.dateMy}'
+                                      ', ${bloc.dateStream.value}',
                                 ),
                                 DetailItemApproveModel(
                                   title: '${S.current.nft} :',
-                                  value: '10',
+                                  value: widget.typeNFT ?? '',
                                 ),
                                 DetailItemApproveModel(
                                   title: '${S.current.evaluation_fee} :',
-                                  value: '50 DFY',
-                                  isToken: true,
+                                  value: '${bloc.evaluationFee?.amount ?? 0} '
+                                      '${bloc.evaluationFee?.symbol ?? ''}',
                                 )
                               ],
-                              textActiveButton: S.current.evaluation,
+                              textActiveButton: S.current.request_evaluation,
                               spender: '',
                               typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
                             ),
@@ -349,7 +352,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             },
                                           ),
                                         );
-
                                         if (result != null) {
                                           final date = DateFormat('dd/MM/yyyy')
                                               .format(result);

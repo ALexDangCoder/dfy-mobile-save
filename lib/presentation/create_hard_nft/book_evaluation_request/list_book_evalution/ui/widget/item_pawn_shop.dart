@@ -64,6 +64,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
+                            typeNFT: 'diamond',//todo type
                           ),
                         ),
                       );
@@ -95,6 +96,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
+                            typeNFT: 'diamond',//todo type
                           ),
                         ),
                       );

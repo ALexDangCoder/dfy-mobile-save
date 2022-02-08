@@ -124,6 +124,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                               builder: (context) => CreateBookEvaluation(
                                 idEvaluation: list[index].id ?? '',
                                 type: TypeEvaluation.NEW_CREATE,
+                                typeNFT: 'diamond',//todo type
                               ),
                             ),
                           );
