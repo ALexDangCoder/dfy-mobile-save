@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/request/bid_nft_request.dart';
-import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -44,7 +41,6 @@ class ApproveCubit extends BaseCubit<ApproveState> {
   late final NftMarket nftMarket;
   TYPE_CONFIRM_BASE type = TYPE_CONFIRM_BASE.BUY_NFT;
 
-  List<Wallet> listWallet = [];
 
   /// Name current wallet , after load screen success [nameWallet] have data
   /// when fail [nameWallet] is null
@@ -150,7 +146,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             type == TYPE_CONFIRM_BASE.PUT_ON_SALE) {
           result = await web3Client.isApprovedForAll(
             collectionAddress: putOnMarketModel?.collectionAddress ?? '',
-            operatorAddress: getSpender(),
+            operatorAddress: spender ?? getSpender(),
             walletAddres: addressWallet ?? '',
           );
         } else {
@@ -158,7 +154,7 @@ class ApproveCubit extends BaseCubit<ApproveState> {
             payValue: payValue,
             tokenAddress: tokenAddress,
             walletAddres: addressWallet ?? '',
-            spenderAddress: getSpender(),
+            spenderAddress: spender ?? getSpender(),
           );
         }
         isApprovedSubject.sink.add(result);

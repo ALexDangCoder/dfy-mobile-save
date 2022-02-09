@@ -90,13 +90,15 @@ dependencies:
   #  vibration: ^1.7.3
   #  flutter_slidable: ^0.6.0
 
+
   shimmer: ^2.0.0
   local_auth:
 
   # GETX
   get: ^4.1.4
   pretty_dio_logger: ^1.1.1
-
+  # Slidable flutter
+  flutter_slidable: ^1.2.0
   injectable: ^1.4.1
   freezed: ^0.14.2
   #  get_storage: ^2.0.2
@@ -136,6 +138,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   geolocator: ^8.0.3
   location: ^4.3.0
+  dropdown_search: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

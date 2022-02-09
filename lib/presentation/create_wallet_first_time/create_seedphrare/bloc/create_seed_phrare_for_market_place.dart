@@ -9,7 +9,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:r_crypto/r_crypto.dart';
@@ -68,7 +67,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
         error: (error) {
-          showErrorDialog(
+          showErrDialog(
             context: context,
             title: S.current.notify,
             content: S.current.something_went_wrong,

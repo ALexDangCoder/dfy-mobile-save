@@ -10,13 +10,15 @@ class CustomForm extends StatelessWidget {
     required this.hintText,
     this.prefix,
     this.suffix,
+    this.isSelectNumPrefix,
     required this.inputType,
   }) : super(key: key);
   final Function(String value) textValue;
   final String hintText;
   final Widget? prefix;
   final Widget? suffix;
-  final TextInputType inputType;
+  final TextInputType? inputType;
+  final bool? isSelectNumPrefix;
 
   @override
   Widget build(BuildContext context) {

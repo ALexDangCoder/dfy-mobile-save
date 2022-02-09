@@ -22,7 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
             } else {
-              showErrorDialog(
+              showErrDialog(
                 context: context,
                 title: S.current.notify,
                 content: S.current.something_went_wrong,
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
               (route) => route.isFirst,
             );
           } else {
-            showErrorDialog(
+            showErrDialog(
               context: context,
               title: S.current.notify,
               content: S.current.something_went_wrong,

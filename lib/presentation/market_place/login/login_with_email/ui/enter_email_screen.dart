@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/bloc/login_with_email_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/confirm_email.dart';
@@ -12,7 +11,6 @@ import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
@@ -46,6 +44,7 @@ class _EnterEmailState extends State<EnterEmail> {
     super.dispose();
     cubit.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +53,6 @@ class _EnterEmailState extends State<EnterEmail> {
         title: S.current.continue_s,
         isEnable: true,
         onTap: () async {
-          //todo:
           final nav = Navigator.of(context);
           if (isValidateSuccess) {
             final bool checkValidate =
@@ -66,21 +64,28 @@ class _EnterEmailState extends State<EnterEmail> {
                 type: 1,
               );
               hideLoading(context);
-
               if (transactionId.isNotEmpty) {
                 unawaited(
-                  nav.push(
-                    MaterialPageRoute(
-                      builder: (context) => ConfirmEmail(
-                        transactionId: transactionId,
-                        email: emailEditingController.value.text,
+                  nav
+                      .push(
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmEmail(
+                            transactionId: transactionId,
+                            email: emailEditingController.value.text,
+                          ),
+                        ),
+                      )
+                      .then(
+                        (value) => {
+                          if (value) {Navigator.pop(context, true)}
+                        },
                       ),
-                    ),
-                  ).then(
-                    (value) => {
-                      if (value) {Navigator.pop(context, true)}
-                    },
-                  ),
+                );
+              } else {
+                showErrDialog(
+                  context: context,
+                  title: S.current.notify,
+                  content: S.current.something_went_wrong,
                 );
               }
             }
@@ -158,16 +163,14 @@ class _EnterEmailState extends State<EnterEmail> {
                             vertical: 4,
                           ),
                           child: Text(
-                            //todo
                             snapshot.data ?? '',
-                            // state.errText,
                             style: textNormal(
                               AppTheme.getInstance().wrongColor(),
                               12,
                             ).copyWith(fontWeight: FontWeight.w400),
                           ),
                         );
-                      }),
+                      },),
                 ],
               )
             ],

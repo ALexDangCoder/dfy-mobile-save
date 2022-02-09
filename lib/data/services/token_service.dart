@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/token/list_price_token_response.dart';
 import 'package:Dfy/data/response/token/list_token_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -13,4 +14,9 @@ abstract class TokenClient {
 
   @GET(ApiConstants.GET_LIST_TOKEN)
   Future<ListTokenResponse> getListToken();
+
+  @GET(ApiConstants.GET_PRICE_TOKEN_BY_SYMBOL)
+  Future<ListPriceTokenResponse> getListPriceToken(
+    @Query('symbols') String symbols,
+  );
 }

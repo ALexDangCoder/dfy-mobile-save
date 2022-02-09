@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:device_info/device_info.dart';
@@ -113,10 +112,11 @@ void hideLoading(BuildContext context) {
   Navigator.of(context).pop();
 }
 
-void showErrorDialog({
+void showErrDialog({
   required BuildContext context,
   required String title,
   required String content,
+  Function()? onCloseDialog,
 }) {
   showDialog(
     context: context,
@@ -180,7 +180,12 @@ void showErrorDialog({
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          if (onCloseDialog != null) {
+                            onCloseDialog();
+                          }
+                          Navigator.pop(context);
+                        },
                         behavior: HitTestBehavior.opaque,
                         child: Padding(
                           padding: const EdgeInsets.only(

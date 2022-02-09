@@ -63,7 +63,9 @@ const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat6 = 'yyyy-MM-dd hh : mm';
 const _dtFormat5 = 'MMM dd, yyyy';
-
+//Regex
+final twoDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,2})?$');
+final fiveDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,5})?$');
 //contract
 const nft_sales_address_dev2 =
     '0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7'; // buy
@@ -74,8 +76,8 @@ const nft_auction_dev2 =
 const nft_pawn_dev2 = '0x687011EBE0493191485805BfE04505D8Ca48Ec92'; // pawn
 const hard_nft_factory_address_dev2 =
     '0x51Ed2FDb40bD921F48708F58b4B0c7D669B6481C';
-const contract_defy =
-    '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+const contract_defy = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+const eva_dev2 = '0xE3059b5143bfB2dd9C12581c841419863b868681';
 
 const networkName = 'BSC';
 
@@ -98,8 +100,6 @@ const String ERC_721 = 'ERC_721';
 const String ERC_1155 = 'ERC_1155';
 const String NFT = 'NFT';
 
-
-
 // defi infomation
 
 const String appName = 'DeFi For You';
@@ -109,16 +109,19 @@ const String mailAsk = 'ask@defiforyou.uk';
 const String mailSupport = 'support@defiforyou.uk';
 const String mailAskHanoi = 'ask@defiforyou.uk';
 const String mailMarketingHanoi = 'marketing@defiforyou.uk';
-const String locationHanoi = 'BT NQ 25-15 Vinhomes Riverside, Long Bien, Hanoi, Vietnam';
+const String locationHanoi =
+    'BT NQ 25-15 Vinhomes Riverside, Long Bien, Hanoi, Vietnam';
 const String mailOfficeLondon = 'sean@defiforyou.uk';
 const String seanMason = 'Sean Mason ';
 const String cfo = '- CFO';
-const String locationLondon = 'Office 32 19-21 Crawford Street, London, United Kingdom, W1H 1PJ';
-const String registrationNumber =  '13126050';
+const String locationLondon =
+    'Office 32 19-21 Crawford Street, London, United Kingdom, W1H 1PJ';
+const String registrationNumber = '13126050';
 const String gitLink = 'https://github.com/defi-vn/';
 const String telegramLink = 'https://t.me/DeFiForYou_English';
 const String facebookLink = 'https://www.facebook.com/DeFiForYouDFY';
-const String youtubeLink = 'https://www.youtube.com/channel/UCGaSCU17Zo_2CzJNaBeUHaA/featured';
+const String youtubeLink =
+    'https://www.youtube.com/channel/UCGaSCU17Zo_2CzJNaBeUHaA/featured';
 const String linkedinLink = 'https://www.linkedin.com/company/defiforyou';
 const String twitterLink = 'https://twitter.com/Defiforyou';
 

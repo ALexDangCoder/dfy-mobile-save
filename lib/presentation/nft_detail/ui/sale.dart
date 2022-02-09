@@ -43,7 +43,7 @@ Container _priceNotOnMarket() => Container(
 
 Container _priceContainerOnSale({
   required double price,
-  String shortName = 'DFY',
+  String shortName = DFY,
   String urlToken = '',
   double usdExchange = 0,
 }) =>
@@ -109,7 +109,7 @@ Container _priceContainerOnSale({
       ),
     );
 
-Widget _buildButtonBuyOutOnSale(
+Widget _buildButtonBuy(
   BuildContext context,
   NFTDetailBloc bloc,
   NftMarket nftMarket,
@@ -135,7 +135,7 @@ Widget _buildButtonBuyOutOnSale(
             isRequireLoginEmail: false,
           ),
           context: context,
-        );
+        ).then((value) => null);
       }
     },
     gradient: RadialGradient(
@@ -162,6 +162,9 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
+      if (nftMarket.marketStatus == 7) {
+        return;
+      }
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancel(
         context: context,
@@ -189,54 +192,64 @@ Widget _buildButtonCancelOnSale(
           ),
         );
       }
-      final bool isSuccess = await nav.push(
-        MaterialPageRoute(
-          builder: (context) => approveWidget(
-            nftMarket: nftMarket,
-            dataString: dataString,
-            dataInfo: listApprove,
-            type: TYPE_CONFIRM_BASE.CANCEL_SALE,
-            cancelInfo: S.current.cancel_sale_info,
-            cancelWarning: S.current.customer_cannot,
-            title: S.current.cancel_sale,
-            onFail: (context) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BaseFail(
-                    title: S.current.cancel_aution,
-                    content: S.current.failed,
-                    onTapBtn: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              );
-            },
-            onSuccess: (context, data) async {
-              final navigator = Navigator.of(context);
-              await bloc.confirmCancelSaleWithBE(
-                txnHash: data,
-                marketId: nftMarket.marketId ?? '',
-              );
-              await navigator.pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => BaseSuccess(
-                    title: S.current.cancel_aution,
-                    content: S.current.congratulation,
-                    callback: () {
-                      navigator.pop();
-                    },
-                  ),
-                ),
-              );
-              navigator.pop(true);
-            },
-          ),
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => const ConnectWalletDialog(
+          isRequireLoginEmail: false,
         ),
       );
-      if (isSuccess) {
-        await reload();
+      final walletCore = PrefsService.getCurrentWalletCore();
+      final walletBE = PrefsService.getCurrentBEWallet();
+      if (walletBE == walletCore) {
+        final bool isSuccess = await nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftMarket: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              cancelInfo: S.current.cancel_sale_info,
+              cancelWarning: S.current.customer_cannot,
+              title: S.current.cancel_sale,
+              onFail: (context) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BaseFail(
+                      title: S.current.cancel_sale,
+                      content: S.current.failed,
+                      onTapBtn: () {
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                  ),
+                );
+              },
+              onSuccess: (context, data) async {
+                final navigator = Navigator.of(context);
+                await bloc.confirmCancelSaleWithBE(
+                  txnHash: data,
+                  marketId: nftMarket.marketId ?? '',
+                );
+                await navigator.pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => BaseSuccess(
+                      title: S.current.cancel_sale,
+                      content: S.current.congratulation,
+                      callback: () {
+                        navigator.pop(true);
+                      },
+                    ),
+                  ),
+                );
+                navigator.pop(true);
+              },
+            ),
+          ),
+        );
+        if (isSuccess) {
+          reload();
+        }
       }
     },
     gradient: RadialGradient(
@@ -527,9 +540,6 @@ Approve approveWidget({
     textActiveButton: title,
     typeApprove: type,
     hexString: dataString,
-    nftMarket: nftMarket,
-    nftOnAuction: nftOnAuction,
-    nftOnPawn: nftOnPawn,
     onErrorSign: onFail,
     onSuccessSign: onSuccess,
   );

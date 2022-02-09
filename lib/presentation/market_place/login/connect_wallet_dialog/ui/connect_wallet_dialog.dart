@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/c
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConnectWalletDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
-  final Widget navigationTo;
+  final Widget? navigationTo;
   final bool isRequireLoginEmail;
 
   const ConnectWalletDialog({
     Key? key,
-    required this.navigationTo,
+    this.navigationTo,
     required this.isRequireLoginEmail,
   }) : super(key: key);
 
@@ -89,20 +90,24 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           ),
                         );
                       }else{
+                        if(widget.navigationTo != null){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => widget.navigationTo!,
+                            ),
+                          );
+                        }
+                      }
+                    } else {
+                      if(widget.navigationTo != null){
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => widget.navigationTo,
+                            builder: (context) => widget.navigationTo!,
                           ),
                         );
                       }
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => widget.navigationTo,
-                        ),
-                      );
                     }
                 } else {
                   //yêu cầu login email:
@@ -121,21 +126,21 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     );
                   } else {
                     //ví đã liên kết email: => di chuyển đến màn tiếp theo
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => widget.navigationTo,
-                      ),
-                    );
+                    if(widget.navigationTo != null){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.navigationTo!,
+                        ),
+                      );
+                    }
                   }
                 }
               });
               return Container(
                 color: Colors.transparent,
                 child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.grey,
-                  ),
+                  child: CupertinoLoading(),
                 ),
               );
             } else if (loginStatus == LoginStatus.NEED_REGISTER ||

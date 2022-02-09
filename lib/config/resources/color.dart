@@ -49,6 +49,7 @@ const borderApprovedButton = Color(0xff39984E);
 const disableText = Color(0xff979797);
 const fillApprovedButton = Color(0xffd4ecd9);
 const buttonGrey = Color.fromRGBO(255, 255, 255, 0.2);
+const dashedContainer = Color.fromRGBO(255, 255, 255, 0.5);
 const errorColor = Color(0xFFCDCDCD);
 const dialogColor = Color(0xff585782);
 const suffixFieldColor = Colors.white30;
@@ -89,6 +90,8 @@ const orangeMarketColor = Color(0xffFE951A);
 const redMarketColor = Color(0xffFF6C6C);
 const greenMarketColor = Color(0xff61c777);
 const blueMarketColor = Color(0xff46BCFF);
+const bgDropdown = Color(0xff585782);
+final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 
 const List<Color> colorsFab = [
   Color.fromRGBO(255, 219, 101, 1),
@@ -105,6 +108,13 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
+
+  Color bgDropdownBtn();
+
+  Color whiteDot2();
+
+  Color dashedColorContainer();
+
   List<Color> colorsCreateNFT();
 
   Color bgTranSubmit();
@@ -156,8 +166,6 @@ abstract class AppColor {
   Color dfTxtColor();
 
   Color secondTxtColor();
-
-  Color getAmountColor();
 
   Color dfBtnColor();
 
@@ -250,6 +258,8 @@ abstract class AppColor {
   Color getPurpleColor();
 
   Color logoColor();
+
+  Color getAmountColor();
 }
 
 class LightApp extends AppColor {
@@ -508,6 +518,7 @@ class LightApp extends AppColor {
     return bgTextField;
   }
 
+  @override
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -629,9 +640,40 @@ class LightApp extends AppColor {
   Color getGrayColor() {
     return grayColor;
   }
+
+  @override
+  Color dashedColorContainer() {
+    return dashedContainer;
+  }
+
+  @override
+  Color whiteDot2() {
+    return colorWhiteDot2;
+  }
+
+  @override
+  Color bgDropdownBtn() {
+    return bgDropdown;
+  }
 }
 
 class DarkApp extends AppColor {
+
+  @override
+  Color bgDropdownBtn() {
+    return bgDropdown;
+  }
+
+  @override
+  Color whiteDot2() {
+    return colorWhiteDot2;
+  }
+
+  @override
+  Color dashedColorContainer() {
+    return dashedContainer;
+  }
+
   @override
   Color primaryColor() {
     return Colors.black;
@@ -920,6 +962,7 @@ class DarkApp extends AppColor {
     return bgTextField;
   }
 
+  @override
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();

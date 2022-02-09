@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import WalletCore
 import BigInt
+import GoogleMaps
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -36,6 +37,9 @@ import BigInt
       })
       
       self.chatChanel = chatChanel
+      
+      GMSServices.provideAPIKey("AIzaSyB0wre3T3qXDikdk7oGm8WN1pS60ucGl_E")
+      GeneratedPluginRegistrant.register(with: self)
       
       
     GeneratedPluginRegistrant.register(with: self)

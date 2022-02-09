@@ -1,9 +1,12 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/place_bid/bloc/place_bid_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlaceBidCubit extends BaseCubit<PlaceBidState> {
@@ -25,6 +28,8 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
   Sink<double> get balanceSink => _balanceSubject.sink;
 
   double get balanceValue => _balanceSubject.valueOrNull ?? 0;
+
+  NFTRepository get nftRepo => Get.find();
 
   Future<double> getBalanceToken({
     required String ofAddress,
@@ -69,6 +74,7 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
     }
     return hexString;
   }
+
   Future<String> getBuyOutData({
     required String contractAddress,
     required String auctionId,
@@ -87,5 +93,16 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
       throw AppException(S.current.error, e.toString());
     }
     return hexString;
+  }
+
+  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
+    showLoading();
+    final result = await nftRepo.bidNftRequest(bidNftRequest);
+    result.when(
+      success: (res) {
+        showContent();
+      },
+      error: (error) {},
+    );
   }
 }

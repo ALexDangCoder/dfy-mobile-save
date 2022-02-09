@@ -4,14 +4,14 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TokenDetailBloc {
   final String walletAddress;
   final Web3Utils _web3client = Web3Utils();
-  final PriceRepository _priceRepository = Get.find();
+  final TokenRepository _tokenRepository = Get.find();
 
   TokenDetailBloc({
     required this.walletAddress,
@@ -106,7 +106,7 @@ class TokenDetailBloc {
       );
     }
     final Result<List<TokenPrice>> result =
-        await _priceRepository.getListPriceToken(token.nameShortToken);
+        await _tokenRepository.getListPriceToken(token.nameShortToken);
     result.when(
       success: (res) {
         token.exchangeRate = res.first.price ?? 0;

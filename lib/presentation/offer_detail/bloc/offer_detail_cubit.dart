@@ -36,21 +36,11 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
 
   Future<void> acceptOffer(
       int idCollateral, int idOffer, String addressWallet) async {
-    final result =
-        await _nftRepo.acceptOffer(idCollateral, idOffer, addressWallet);
-    result.when(
-      success: (res) {},
-      error: (error) {},
-    );
+    await _nftRepo.acceptOffer(idCollateral, idOffer, addressWallet);
   }
 
   Future<void> rejectOffer(
       int idCollateral, int idOffer, String addressWallet) async {
-    final result =
-        await _nftRepo.rejectOffer(idCollateral, idOffer, addressWallet);
-    result.when(
-      success: (res) {},
-      error: (error) {},
-    );
+    await _nftRepo.rejectOffer(idCollateral, idOffer, addressWallet);
   }
 }

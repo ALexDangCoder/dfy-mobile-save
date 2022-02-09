@@ -56,22 +56,18 @@ class _BaseSpaceState extends State<BaseSpace> {
   @override
   void initState() {
     super.initState();
-    if (widget.typeImage == TypeImage.VIDEO) {
-      _controller = VideoPlayerController.network(widget.image);
-      _controller!.addListener(() {
-        setState(() {});
-      });
-      _controller!.setLooping(true);
-      _controller!.initialize().then((_) => setState(() {}));
-      _controller!.play();
-    }
+    _controller = VideoPlayerController.network(widget.image);
+    _controller!.addListener(() {
+      setState(() {});
+    });
+    _controller!.setLooping(true);
+    _controller!.initialize().then((_) => setState(() {}));
+    _controller!.play();
   }
 
   @override
   void dispose() {
-    if (widget.typeImage == TypeImage.VIDEO) {
-      _controller!.dispose();
-    }
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -134,7 +130,6 @@ class _BaseSpaceState extends State<BaseSpace> {
             child: (widget.typeImage == TypeImage.IMAGE)
                 ? CustomImageNetwork(
                     image: widget.image,
-                    fit: BoxFit.cover,
                   )
                 : VideoPlayer(_controller!),
           ),

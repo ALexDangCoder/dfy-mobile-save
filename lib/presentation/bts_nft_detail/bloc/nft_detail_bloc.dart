@@ -1,13 +1,14 @@
-import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NFTBloc {
+class NFTBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<int> _lengthSubject = BehaviorSubject<int>();
   final BehaviorSubject<bool> _showSubject = BehaviorSubject<bool>();
+
+  NFTBloc() : super(NFTDetailInitial());
 
   Stream<int> get lenStream => _lengthSubject.stream;
 
@@ -29,8 +30,6 @@ class NFTBloc {
         return ImageAssets.ic_pending;
     }
   }
-
-
 
   void dispose() {
     _showSubject.close();

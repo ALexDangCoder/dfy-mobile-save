@@ -219,7 +219,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },
         error: (error) {
-          showErrorDialog(
+          showErrDialog(
             context: context,
             title: S.current.notify,
             content: S.current.something_went_wrong,

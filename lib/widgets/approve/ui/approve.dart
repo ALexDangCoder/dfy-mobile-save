@@ -5,39 +5,26 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/request/bid_nft_request.dart';
-import 'package:Dfy/data/request/buy_nft_request.dart';
-import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
-import 'package:Dfy/domain/model/nft_auction.dart';
-import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
-import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
-import 'package:Dfy/widgets/base_items/base_fail.dart';
-import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'component/pop_up_approve.dart';
 
 class Approve extends StatefulWidget {
@@ -46,9 +33,6 @@ class Approve extends StatefulWidget {
   final Widget? warning;
   final Widget? header;
   final PutOnMarketModel? putOnMarketModel;
-  final NftMarket? nftMarket;
-  final NftOnPawn? nftOnPawn;
-  final NFTOnAuction? nftOnAuction;
   final bool? needApprove;
   final int? flexTitle;
   final String? errorTextSign;
@@ -57,11 +41,7 @@ class Approve extends StatefulWidget {
   final Function(BuildContext, String)? onSuccessSign;
   final String? purposeText;
   final String textActiveButton;
-  final num? quantity;
-  final String? marketId;
   final String? spender;
-  final Map<String, dynamic>? createNftMap;
-  final int? collectionType;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
@@ -69,7 +49,7 @@ class Approve extends StatefulWidget {
   final TYPE_CONFIRM_BASE typeApprove;
   final String? payValue;
   final String? tokenAddress;
-  final SendOfferRequest? request;
+  final Map<String, dynamic>? request;
 
   const Approve({
     Key? key,
@@ -88,14 +68,7 @@ class Approve extends StatefulWidget {
     this.tokenAddress,
     this.hexString,
     this.putOnMarketModel,
-    this.quantity,
-    this.nftMarket,
-    this.marketId,
-    this.nftOnPawn,
     this.request,
-    this.createNftMap,
-    this.nftOnAuction,
-    this.collectionType,
     this.errorTextSign,
     this.onErrorSign,
     this.onSuccessSign,
@@ -155,17 +128,17 @@ class _ApproveState extends State<Approve> {
       cubit.approve(),
     );
     isShowLoading = true;
-    await showLoading(context);
+    await showLoadingDialog(context);
     isShowLoading = false;
   }
+
   Future<void> signTransaction(
     double gasLimitFinal,
     double gasPriceFinal,
   ) async {
-    final String gasPriceString =
-        (gasPriceFinal / 1e9).toStringAsFixed(0);
+    final String gasPriceString = (gasPriceFinal / 1e9).toStringAsFixed(0);
     final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
-    unawaited(showLoading(context));
+    unawaited(showLoadingDialog(context));
     final nonce = await cubit.getNonce();
     await cubit.signTransactionWithData(
       walletAddress: cubit.addressWallet ?? '',
@@ -206,10 +179,14 @@ class _ApproveState extends State<Approve> {
       bloc: cubit,
       listener: (context, state) {
         if (state is SignSuccess) {
-          caseNavigatorSuccess(state.type, state.txh);
+          if (widget.onSuccessSign != null) {
+            widget.onSuccessSign!(context, state.txh);
+          }
         }
         if (state is SignFail) {
-          caseNavigatorFail(state.type, state.message);
+          if (widget.onErrorSign != null) {
+            widget.onErrorSign!(context);
+          }
         }
         if (state is ApproveSuccess) {
           approveSuccess();
@@ -225,7 +202,16 @@ class _ApproveState extends State<Approve> {
           stream: cubit.stateStream,
           error: AppException('', S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListWallets();
+            if (cubit.state is SignFail) {
+              await signTransaction(
+                cubit.gasLimit ??
+                    cubit.gasLimitFirst ??
+                    0,
+                cubit.gasPrice ?? 1e9,
+              );
+            } else {
+              await cubit.getListWallets();
+            }
           },
           textEmpty: '',
           child: Stack(
@@ -369,116 +355,104 @@ class _ApproveState extends State<Approve> {
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 16.w),
-                          if (widget.needApprove ?? false)
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: StreamBuilder<bool>(
-                                      stream: cubit.isApprovedStream,
-                                      builder: (context, snapshot) {
-                                        final isApproved =
-                                            snapshot.data ?? false;
-                                        return GestureDetector(
-                                          child: ButtonGold(
-                                            haveGradient: !isApproved,
-                                            background: isApproved
-                                                ? fillApprovedButton
-                                                : null,
-                                            textColor: isApproved
-                                                ? borderApprovedButton
-                                                : null,
-                                            border: isApproved
-                                                ? Border.all(
-                                                    color: borderApprovedButton,
-                                                    width: 2,
-                                                  )
-                                                : null,
-                                            title: isApproved
-                                                ? S.current.approved
-                                                : S.current.approve,
-                                            isEnable: true,
-                                            fixSize: false,
-                                            haveMargin: false,
-                                          ),
-                                          onTap: () {
-                                            if (!isApproved) {
-                                              cubit.getGasLimitApprove(
-                                                context: context,
-                                                contractAddress:
-                                                    widget.tokenAddress ?? '',
-                                              );
-                                              showPopupApprove();
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 25),
-                                ],
-                              ),
-                            )
-                          else
-                            const SizedBox(
-                              height: 0,
-                              width: 0,
-                            ),
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 38),
+                    child: Row(
+                      children: [
+                        if (widget.needApprove ?? false)
                           Expanded(
                             child: StreamBuilder<bool>(
                               stream: cubit.isApprovedStream,
                               builder: (context, snapshot) {
-                                final isApproved = snapshot.data ?? false;
-                                return StreamBuilder<bool>(
-                                  stream: cubit.canActionStream,
-                                  builder: (context, snapshot) {
-                                    final isCanAction = snapshot.data ?? false;
-                                    return GestureDetector(
-                                      child: ButtonGold(
-                                        textColor: (isApproved ||
-                                                    !(widget.needApprove ??
-                                                        false)) &&
-                                                isCanAction
-                                            ? null
-                                            : disableText,
-                                        fixSize: false,
-                                        haveMargin: false,
-                                        title: widget.textActiveButton,
-                                        isEnable: (isApproved ||
-                                                !(widget.needApprove ??
-                                                    false)) &&
-                                            isCanAction,
-                                      ),
-                                      onTap: () {
-                                        if ((isApproved ||
-                                                !(widget.needApprove ??
-                                                    false)) &&
-                                            isCanAction) {
-                                          signTransaction(
-                                            cubit.gasLimit ??
-                                                cubit.gasLimitFirst ??
-                                                0,
-                                            cubit.gasPrice ?? 1e9,
-                                          );
-                                        }
-                                      },
-                                    );
+                                final isApproved =
+                                    snapshot.data ?? false;
+                                return GestureDetector(
+                                  child: ButtonGold(
+                                    haveGradient: !isApproved,
+                                    background: isApproved
+                                        ? fillApprovedButton
+                                        : null,
+                                    textColor: isApproved
+                                        ? borderApprovedButton
+                                        : null,
+                                    border: isApproved
+                                        ? Border.all(
+                                            color: borderApprovedButton,
+                                            width: 2,
+                                          )
+                                        : null,
+                                    title: isApproved
+                                        ? S.current.approved
+                                        : S.current.approve,
+                                    isEnable: true,
+                                    fixSize: false,
+                                    haveMargin: false,
+                                  ),
+                                  onTap: () {
+                                    if (!isApproved) {
+                                      cubit.getGasLimitApprove(
+                                        context: context,
+                                        contractAddress:
+                                            widget.tokenAddress ?? '',
+                                      );
+                                      showPopupApprove();
+                                    }
                                   },
                                 );
                               },
                             ),
+                          )
+                        else
+                          const SizedBox.shrink(),
+                        if (widget.needApprove ?? false)
+                        const SizedBox(width: 25)
+                        else const SizedBox.shrink(),
+                        Expanded(
+                          child: StreamBuilder<bool>(
+                            stream: cubit.isApprovedStream,
+                            builder: (context, snapshot) {
+                              final isApproved = snapshot.data ?? false;
+                              return StreamBuilder<bool>(
+                                stream: cubit.canActionStream,
+                                builder: (context, snapshot) {
+                                  final isCanAction = snapshot.data ?? false;
+                                  return GestureDetector(
+                                    child: ButtonGold(
+                                      textColor: (isApproved ||
+                                                  !(widget.needApprove ??
+                                                      false)) &&
+                                              isCanAction
+                                          ? null
+                                          : disableText,
+                                      fixSize: false,
+                                      haveMargin: false,
+                                      title: widget.textActiveButton,
+                                      isEnable: (isApproved ||
+                                              !(widget.needApprove ??
+                                                  false)) &&
+                                          isCanAction,
+                                    ),
+                                    onTap: () {
+                                      if ((isApproved ||
+                                              !(widget.needApprove ??
+                                                  false)) &&
+                                          isCanAction) {
+                                        signTransaction(
+                                          cubit.gasLimit ??
+                                              cubit.gasLimitFirst ??
+                                              0,
+                                          cubit.gasPrice ?? 1e9,
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          SizedBox(width: 16.w),
-                        ],
-                      ),
-                      const SizedBox(height: 38)
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -487,245 +461,6 @@ class _ApproveState extends State<Approve> {
         ),
       ),
     );
-  }
-
-  Future<void> caseNavigatorSuccess(TYPE_CONFIRM_BASE type, String data) async {
-    final navigator = Navigator.of(context);
-    if (widget.onSuccessSign != null ){
-      widget.onSuccessSign!(context, data);
-    }else {
-      switch (type) {
-        case TYPE_CONFIRM_BASE.BUY_NFT:
-          Navigator.pop(context);
-          cubit.importNft(
-            contract: widget.nftMarket?.collectionAddress ?? '',
-            id: int.parse(widget.nftMarket?.nftTokenId ?? ''),
-            address: PrefsService.getCurrentBEWallet(),
-          );
-          cubit.buyNftRequest(
-            BuyNftRequest(
-              widget.marketId ?? '',
-              widget.quantity?.toInt() ?? 0,
-              data,
-            ),
-          );
-          await showLoadSuccess(context)
-              .then((value) => Navigator.pop(context))
-              .then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseSuccess(
-                  title: S.current.buy_nft,
-                  content: S.current.congratulation,
-                  callback: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-
-          break;
-        case TYPE_CONFIRM_BASE.PLACE_BID:
-          Navigator.pop(context);
-          cubit.bidNftRequest(
-            BidNftRequest(
-              widget.marketId ?? '',
-              widget.quantity?.toDouble() ?? 0,
-              data,
-            ),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BaseSuccess(
-                title: S.current.bidding,
-                content: S.current.congratulation,
-                callback: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-
-          break;
-        case TYPE_CONFIRM_BASE.SEND_NFT:
-        // TODO: Handle this case.
-          break;
-        case TYPE_CONFIRM_BASE.SEND_TOKEN:
-        // TODO: Handle this case.
-          break;
-
-
-      // TODO: Handle this case.
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          widget.request?.latestBlockchainTxn = data;
-          cubit.sendOffer(offerRequest: widget.request!);
-          await showLoadSuccess(context)
-              .then((value) => Navigator.pop(context))
-              .then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseSuccess(
-                  title: S.current.send_offer,
-                  content: S.current.congratulation,
-                  callback: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-
-          break;
-        case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-          unawaited(showLoading(context));
-          await cubit.createCollection(
-            type: widget.collectionType ?? 0,
-            mapRawData: widget.createNftMap ?? {},
-            txhHash: data,
-          );
-          await showLoadSuccess(context)
-              .then((value) => navigator.popUntil((route) => route.isFirst))
-              .then(
-                (value) => navigator.push(
-              MaterialPageRoute(
-                builder: (_) => BaseSuccess(
-                  title: S.current.create_collection,
-                  content: S.current.create_collection_successfully,
-                  callback: () {
-                    navigator.pop();
-                    navigator.push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => CollectionList(
-                          typeScreen: PageRouter.MY_ACC,
-                          addressWallet: cubit.addressWallet,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-        case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
-          unawaited(showLoading(context));
-          await cubit.createSoftNft(
-            txhHash: data,
-            mapRawData: widget.createNftMap ?? {},
-          );
-          await showLoadSuccess(context)
-              .then((value) => navigator.popUntil((route) => route.isFirst))
-              .then(
-                (value) => navigator.push(
-              MaterialPageRoute(
-                builder: (_) => BaseSuccess(
-                  title: S.current.create_nft,
-                  content: S.current.create_nft_successfully,
-                  callback: () {
-                    navigator.pop();
-                    navigator.push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => CollectionList(
-                          typeScreen: PageRouter.MY_ACC,
-                          addressWallet: cubit.addressWallet,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-      }
-    }
-
-  }
-
-  Future<void> caseNavigatorFail(TYPE_CONFIRM_BASE type, String data) async {
-    final navigator = Navigator.of(context);
-    if (widget.onErrorSign != null){
-      widget.onErrorSign!(context);
-    }else {
-      switch (type) {
-        case TYPE_CONFIRM_BASE.BUY_NFT:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseFail(
-                  title: S.current.buy_nft,
-                  onTapBtn: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-        case TYPE_CONFIRM_BASE.PLACE_BID:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseFail(
-                  title: S.current.place_a_bid,
-                  onTapBtn: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          Navigator.pop(context);
-          await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BaseFail(
-                  title: S.current.send_offer,
-                  onTapBtn: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-        case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-
-          break;
-
-      ///handle when get create collection txhHash in BC failed
-        case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-          unawaited(showLoadFail(context));
-          navigator.popUntil((route) => route.isFirst);
-          break;
-        case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-          unawaited(
-            navigator.pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => BaseFail(
-                  title: S.current.cancel_aution,
-                  content: S.current.failed,
-                  onTapBtn: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-      }
-    }
   }
 
   Container containerWithBorder({required Widget child}) {
