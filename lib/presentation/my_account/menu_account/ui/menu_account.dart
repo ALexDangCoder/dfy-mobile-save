@@ -44,8 +44,8 @@ class _MenuAccountState extends State<MenuAccount> {
     for (int i = 0; i < listItemMenu.length; i++) {
       openTab.add(false);
     }
-
-    cubit.initData();
+    cubit.getLoginState();
+    cubit.getWallets();
     super.initState();
   }
 
@@ -67,7 +67,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 ),
                 isRequireLoginEmail: false,
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           } else {
             Navigator.push(
               context,
@@ -78,7 +78,7 @@ class _MenuAccountState extends State<MenuAccount> {
                   walletAddress: walletAddress,
                 ),
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           }
         }
         break;
@@ -95,7 +95,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 ),
                 isRequireLoginEmail: false,
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           } else {
             Navigator.push(
               context,
@@ -106,7 +106,7 @@ class _MenuAccountState extends State<MenuAccount> {
                   walletAddress: walletAddress,
                 ),
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           }
         }
         break;
@@ -123,7 +123,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 ),
                 isRequireLoginEmail: false,
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           } else {
             Navigator.push(
               context,
@@ -134,7 +134,7 @@ class _MenuAccountState extends State<MenuAccount> {
                   walletAddress: walletAddress,
                 ),
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           }
         }
         break;
@@ -151,7 +151,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 ),
                 isRequireLoginEmail: false,
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           } else {
             Navigator.push(
               context,
@@ -162,18 +162,18 @@ class _MenuAccountState extends State<MenuAccount> {
                   walletAddress: walletAddress,
                 ),
               ),
-            );
+            ).then((_) => cubit.getLoginState());
           }
         }
         break;
       case 'about_us':
         {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const AboutUs(),
             ),
-          );
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'collection_list':
@@ -186,7 +186,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 addressWallet: walletAddress,
               ),
             ),
-          );
+          ).then((_) => cubit.getLoginState());
         }
         break;
     }

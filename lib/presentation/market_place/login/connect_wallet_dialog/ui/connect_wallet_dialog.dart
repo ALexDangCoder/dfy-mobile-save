@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/c
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -139,9 +140,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
               return Container(
                 color: Colors.transparent,
                 child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.grey,
-                  ),
+                  child: CupertinoLoading(),
                 ),
               );
             } else if (loginStatus == LoginStatus.NEED_REGISTER ||

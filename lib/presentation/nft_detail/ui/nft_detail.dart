@@ -7,16 +7,11 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/response/nft/evaluation_response.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
-import 'package:Dfy/presentation/place_bid/ui/place_bid.dart';
-import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
-import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -33,8 +28,10 @@ import 'package:Dfy/presentation/nft_detail/ui/tab_page/bid_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
+import 'package:Dfy/presentation/place_bid/ui/place_bid.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
-import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -57,7 +54,6 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -658,8 +654,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: objSale.isOwner == false
-                ? _buildButtonBuyOutOnSale(
+            bottomBar: objSale.owner?.toLowerCase() !=
+                    PrefsService.getCurrentWalletCore().toLowerCase()
+                ? _buildButtonBuy(
                     context,
                     bloc,
                     objSale,
@@ -832,7 +829,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: nftOnPawn.isYou ?? false
+            bottomBar: nftOnPawn.walletAddress?.toLowerCase() ==
+                        PrefsService.getCurrentWalletCore().toLowerCase()
                 ? _buildButtonCancelOnPawn(
                     context,
                     bloc,
