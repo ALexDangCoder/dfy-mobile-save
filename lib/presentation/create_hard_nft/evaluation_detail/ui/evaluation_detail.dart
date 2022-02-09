@@ -7,9 +7,11 @@ import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
+import 'package:Dfy/widgets/common/hero_photo.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -114,9 +116,21 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                           borderRadius: BorderRadius.all(
                             Radius.circular(30.r),
                           ),
-                          child: Image.network(
-                            img,
-                            fit: BoxFit.cover,
+                          child: PhotoHero(
+                            photo: img,
+                            width: double.infinity,
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                      builder: (BuildContext context) {
+                                return Scaffold(
+                                  body: SizedBox(
+                                      child: PhotoView(
+                                    imageProvider: NetworkImage(img),
+                                  )),
+                                );
+                              }));
+                            },
                           ),
                         ),
                       ),
