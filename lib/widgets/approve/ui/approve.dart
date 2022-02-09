@@ -475,20 +475,6 @@ class _ApproveState extends State<Approve> {
       widget.onSuccessSign!(context, data);
     } else {
       switch (type) {
-        case TYPE_CONFIRM_BASE.BUY_NFT:
-          break;
-        case TYPE_CONFIRM_BASE.PLACE_BID:
-          break;
-        case TYPE_CONFIRM_BASE.SEND_NFT:
-          // TODO: Handle this case.
-          break;
-        case TYPE_CONFIRM_BASE.SEND_TOKEN:
-          // TODO: Handle this case.
-          break;
-
-        // TODO: Handle this case.
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          break;
         case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
           unawaited(showLoading(context));
           await cubit.createCollection(
