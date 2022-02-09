@@ -135,7 +135,7 @@ Widget _buildButtonBuy(
             isRequireLoginEmail: false,
           ),
           context: context,
-        );
+        ).then((value) => null);
       }
     },
     gradient: RadialGradient(
@@ -162,7 +162,7 @@ Widget _buildButtonCancelOnSale(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      if(nftMarket.marketStatus == 7){
+      if (nftMarket.marketStatus == 7) {
         return;
       }
       final nav = Navigator.of(context);
@@ -192,9 +192,17 @@ Widget _buildButtonCancelOnSale(
           ),
         );
       }
-      final bool isSuccess = await nav.push(
-        MaterialPageRoute(
-          builder: (context) => approveWidget(
+      // final bool isSuccess = await nav.push(
+      //   MaterialPageRoute(
+      //     builder: (context) => ,
+      //   ),
+      // );
+      //
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => ConnectWalletDialog(
+          isRequireLoginEmail: false,
+          navigationTo: approveWidget(
             nftMarket: nftMarket,
             dataString: dataString,
             dataInfo: listApprove,
@@ -207,10 +215,10 @@ Widget _buildButtonCancelOnSale(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BaseFail(
-                    title: S.current.cancel_aution,
+                    title: S.current.cancel_sale,
                     content: S.current.failed,
                     onTapBtn: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                   ),
                 ),
@@ -225,10 +233,10 @@ Widget _buildButtonCancelOnSale(
               await navigator.pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => BaseSuccess(
-                    title: S.current.cancel_aution,
+                    title: S.current.cancel_sale,
                     content: S.current.congratulation,
                     callback: () {
-                      navigator.pop();
+                      navigator.pop(true);
                     },
                   ),
                 ),
@@ -237,10 +245,12 @@ Widget _buildButtonCancelOnSale(
             },
           ),
         ),
+      ).then(
+        (value) => {
+          print('okok')
+          // if (value) {reload()}
+        },
       );
-      if (isSuccess) {
-        await reload();
-      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
