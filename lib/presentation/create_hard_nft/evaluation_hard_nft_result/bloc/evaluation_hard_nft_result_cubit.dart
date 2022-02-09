@@ -23,10 +23,17 @@ class EvaluationHardNftResultCubit
       '1',
     );
     result.when(
-      success: (res) {},
+      success: (res) {
+        for(int i = 0;i<res.length;i++) {
+          if(res[i].status !=2 || res[i].status !=4 || res[i].status !=6) {
+            res.removeAt(i);
+          }
+        }
+        emit(EvaluationResultSuccess(res));
+      },
 
       error: (error) {
-
+        showError();
       },
     );
   }

@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEvaluation extends StatelessWidget {
   const ListEvaluation(
@@ -26,7 +27,9 @@ class ListEvaluation extends StatelessWidget {
           ),
         ),
         SizedBox(
+          height: 646.h,
           child: ListView.builder(
+            shrinkWrap: true,
             itemCount: listEvaluation.length,
             itemBuilder: (BuildContext context, int index) {
               return Column(

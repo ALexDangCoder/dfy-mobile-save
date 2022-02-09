@@ -6,6 +6,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
@@ -189,6 +190,16 @@ class _MenuAccountState extends State<MenuAccount> {
           );
         }
         break;
+      case 'hard_nft_mint':
+        {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EvaluationResult()
+            ),
+          );
+        }
+        break;
     }
   }
 
@@ -223,7 +234,7 @@ class _MenuAccountState extends State<MenuAccount> {
       ],
     ),
     ItemMenuModel.createParent(
-      routeName: 'about_us',
+      routeName: '',
       title: S.current.hard_nft_management,
       icon: ImageAssets.ic_graph,
       children: [
@@ -232,7 +243,7 @@ class _MenuAccountState extends State<MenuAccount> {
           title: S.current.hard_nft_list,
         ),
         ItemMenuModel.createChild(
-          routeName: 'about_us',
+          routeName: 'hard_nft_mint',
           title: S.current.hard_nft_mint_request,
         ),
       ],
