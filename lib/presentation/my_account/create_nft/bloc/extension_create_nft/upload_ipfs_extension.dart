@@ -1,8 +1,10 @@
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:flutter/cupertino.dart';
 
 extension UploadIPFS on CreateNftCubit {
-  Future<void> uploadFileToIFPS() async {
+  Future<void> uploadFileToIFPS(BuildContext context) async {
     if (mediaType != MEDIA_IMAGE_FILE) {
       upLoadStatusSubject.sink.add(-1);
       mediaFileUploadStatusSubject.sink.add(-1);
@@ -31,8 +33,15 @@ extension UploadIPFS on CreateNftCubit {
           'properties': listProperty.toString(),
           'royalties': royalty.toString(),
         };
+        showLoading(context);
         nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
-        upLoadStatusSubject.sink.add(1);
+        hideLoading(context);
+        if (nftIPFS.isEmpty){
+          upLoadStatusSubject.sink.add(0);
+        }
+        else{
+          upLoadStatusSubject.sink.add(1);
+        }
       }
     } else {
       upLoadStatusSubject.sink.add(-1);
@@ -56,8 +65,15 @@ extension UploadIPFS on CreateNftCubit {
           'properties': listProperty.toString(),
           'royalties': royalty.toString(),
         };
+        showLoading(context);
         nftIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonMap);
-        upLoadStatusSubject.sink.add(1);
+        hideLoading(context);
+        if (nftIPFS.isEmpty){
+          upLoadStatusSubject.sink.add(0);
+        }
+        else{
+          upLoadStatusSubject.sink.add(1);
+        }
       }
     }
   }
