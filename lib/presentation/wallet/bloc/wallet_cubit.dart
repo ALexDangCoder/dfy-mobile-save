@@ -17,7 +17,6 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -402,12 +401,11 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   TokenRepository get _tokenRepository => Get.find();
 
-  PriceRepository get _priceRepository => Get.find();
   List<TokenPrice> listTokenExchange = [];
 
   Future<void> getListPrice(String symbols) async {
     final Result<List<TokenPrice>> result =
-        await _priceRepository.getListPriceToken(symbols);
+        await _tokenRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
         if (res.isEmpty) {
