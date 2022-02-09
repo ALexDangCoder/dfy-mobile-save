@@ -190,12 +190,13 @@ class DialogCancel extends StatelessWidget {
                             ),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  await bloc.getHexString();
                                   //todo event
                                   goTo(
                                     context,
                                     Approve(
-                                      hexString: "bloc.hexString",
+                                      hexString: bloc.hexString,
                                       //todo hexstring
                                       title: S.current.book_appointment,
                                       listDetail: [
@@ -217,9 +218,9 @@ class DialogCancel extends StatelessWidget {
                                       },
                                       onSuccessSign: (context, data) {
                                         //todo confirm BE
-                                        showLoadSuccess(context);
+                                        showLoadSuccess(context).whenComplete(
+                                            () => closeScreen(context));
                                         //todo chuyển màn hinh
-                                        closeScreen(context);
                                       },
                                       textActiveButton:
                                           S.current.request_evaluation,
@@ -227,7 +228,6 @@ class DialogCancel extends StatelessWidget {
                                       typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
                                     ),
                                   );
-                                  Navigator.pop(context);
                                 },
                                 child: Container(
                                   color: Colors.transparent,

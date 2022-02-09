@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -29,11 +30,21 @@ class BlocListBookEvaluation {
 //     SUCCESS(9),
 //     TIMEOUT_ACCEPTED(10),
 //     TIMEOUT_OPEN(11);
+  final Web3Utils web3utils = Web3Utils();
+
+  Future<void> getHexString() async {
+    hexString = await web3utils.getCancelAppointmentData(
+      appointmentId: '104',
+      reason: '',
+    ); //todo
+  }
+
   BehaviorSubject<List<AppointmentModel>> listPawnShop = BehaviorSubject();
   bool isCancel = true;
   bool isDetail = false;
   bool isLoadingText = false;
   String assetID = '';
+  String? hexString;
   TypeEvaluation type = TypeEvaluation.CREATE;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
