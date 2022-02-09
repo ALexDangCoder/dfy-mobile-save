@@ -52,24 +52,24 @@ class _ItemListMap extends State<ItemListMap> {
           !(value.locationLat?.isNaN ?? false)) {
         markers.add(
           Marker(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CreateBookEvaluation(
-                    idEvaluation: value.id ?? '',
-                    type: TypeEvaluation.NEW_CREATE,
-                    typeNFT: widget.bloc.evaluatorId,
-                  ),
-                ),
-              );
-            },
             markerId: MarkerId(value.id ?? ''),
             position: LatLng(
               value.locationLat ?? 0,
               value.locationLong ?? 0,
             ), //position of marker
             infoWindow: InfoWindow(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateBookEvaluation(
+                      idEvaluation: value.id ?? '',
+                      type: TypeEvaluation.NEW_CREATE,
+                      typeNFT: widget.bloc.evaluatorId,
+                    ),
+                  ),
+                );
+              },
               //popup info
               title: value.name,
               snippet: value.description,
