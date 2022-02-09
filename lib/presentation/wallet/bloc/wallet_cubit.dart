@@ -11,11 +11,12 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/account_model.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/model/wallet.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
@@ -400,12 +401,11 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   TokenRepository get _tokenRepository => Get.find();
 
-  PriceRepository get _priceRepository => Get.find();
   List<TokenPrice> listTokenExchange = [];
 
   Future<void> getListPrice(String symbols) async {
     final Result<List<TokenPrice>> result =
-        await _priceRepository.getListPriceToken(symbols);
+        await _tokenRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
         if (res.isEmpty) {
@@ -984,5 +984,28 @@ class WalletCubit extends BaseCubit<WalletState> {
         }
       });
     }
+  }
+
+  ///
+  NFTRepository get _nftRepo => Get.find();
+  final BehaviorSubject<List<HistoryNFT>> listHistoryStream = BehaviorSubject();
+
+  Future<List<HistoryNFT>> getHistory({
+    required String collectionAddress,
+    required String nftTokenId,
+  }) async {
+    showLoading();
+    final Result<List<HistoryNFT>> result =
+        await _nftRepo.getHistory(collectionAddress, nftTokenId);
+    List<HistoryNFT> list = [];
+    result.when(
+      success: (res) {
+        list = res;
+      },
+      error: (error) {
+        list = [];
+      },
+    );
+    return list;
   }
 }

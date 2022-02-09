@@ -1,14 +1,11 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/bts_nft_detail/bloc/nft_detail_bloc.dart';
-import 'package:Dfy/presentation/bts_nft_detail/ui/detail_transition.dart';
-import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
-import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
-import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
@@ -17,6 +14,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/text_helper.dart';
+import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/column_button/buil_column.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -39,7 +37,7 @@ class NFTDetail extends StatefulWidget {
     required this.walletCubit,
   }) : super(key: key);
   final NftInfo nftInfo;
-  final List<DetailHistoryTransaction> listHistory;
+  final List<HistoryNFT> listHistory;
   final String walletAddress;
   final String nameWallet;
   final WalletCubit walletCubit;
@@ -57,12 +55,12 @@ class _NFTDetailState extends State<NFTDetail> {
   void initState() {
     super.initState();
     bloc = NFTBloc();
-    if (widget.listHistory.length >= 3) {
+    if (widget.listHistory.length > 3) {
       bloc.lenSink.add(3);
       initLen = 3;
       initShow = true;
       bloc.showSink.add(true);
-    } else if (widget.listHistory.length < 3 && widget.listHistory.isNotEmpty) {
+    } else if (widget.listHistory.length <= 3 && widget.listHistory.isNotEmpty) {
       initLen = widget.listHistory.length;
       bloc.lenSink.add(widget.listHistory.length);
       initShow = false;
@@ -260,7 +258,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: len,
                                   itemBuilder: (ctx, index) {
-                                    return itemTransition(index);
+                                    return _buildItemHistory(index);
                                   },
                                 );
                         },
@@ -293,10 +291,6 @@ class _NFTDetailState extends State<NFTDetail> {
                                 decoration: BoxDecoration(
                                   color: AppTheme.getInstance().bgBtsColor(),
                                   border: Border(
-                                    top: BorderSide(
-                                      color:
-                                          AppTheme.getInstance().divideColor(),
-                                    ),
                                     bottom: BorderSide(
                                       color:
                                           AppTheme.getInstance().divideColor(),
@@ -373,71 +367,730 @@ class _NFTDetailState extends State<NFTDetail> {
     );
   }
 
-  Widget itemTransition(int index) {
-    final objHistory = widget.listHistory[index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TransactionDetail(
-              obj: objHistory,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().bgBtsColor(),
-          border: Border(
-            top: BorderSide(
-              color: AppTheme.getInstance().divideColor(),
-            ),
-          ),
-        ),
-        child: Container(
-          margin: EdgeInsets.only(
-            top: 12.h,
-            bottom: 12.h,
-            right: 16.w,
-            left: 16.w,
-          ),
+  Widget _buildItemHistory(int index) {
+    final historyNFT = widget.listHistory[index];
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: BaseItem(
+        child: InkWell(
+          onTap: () {
+            launch(
+              Get.find<AppConstants>().bscScan +
+                  ApiConstants.BSC_SCAN_TX +
+                  (historyNFT.txnHash ?? ''),
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        objHistory.name ?? '',
-                        style: textValueNFT,
-                      ),
-                      SizedBox(
-                        width: 6.w,
-                      ),
-                      Image.asset(
-                        bloc.getImgStatus(objHistory.status ?? ''),
-                      ),
-                    ],
-                  ),
+                  getHistory(historyNFT.historyType ?? 20),
                   Text(
-                    '1 of ${objHistory.quantity}',
-                    style: textValueNFT,
+                    formatDateTime.format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                        historyNFT.eventDateTime ?? 0,
+                      ),
+                    ),
+                    style: textNormalCustom(
+                      Colors.white.withOpacity(0.5),
+                      14,
+                      FontWeight.w400,
+                    ),
                   ),
                 ],
               ),
-              Text(
-                DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
-                style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
-              )
+              spaceH7,
+              status(
+                historyNFT,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget getHistory(int historyType) {
+    switch (historyType) {
+      case 0:
+        return Text(
+          'Create',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 1:
+        return Text(
+          'Transfer',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 2:
+        return Text(
+          'Burn',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 3:
+        return Text(
+          'Put on sale',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 4:
+        return Text(
+          'Put on pawn',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 5:
+        return Text(
+          'Cancel sale',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 6:
+        return Text(
+          'Cancel pawn',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 7:
+        return Text(
+          'Cancel auction',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 8:
+        return Text(
+          'Buy NFT',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 9:
+        return Text(
+          'Sign contract',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 10:
+        return Text(
+          'End contract',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 11:
+        return Text(
+          'Auction win',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 12:
+        return Text(
+          'With draw',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      case 13:
+        return Text(
+          'Put on auction',
+          style: textNormalCustom(
+            Colors.white,
+            14,
+            FontWeight.w700,
+          ),
+        );
+      default:
+        return const SizedBox();
+    }
+  }
+
+  Widget status(HistoryNFT historyNFT) {
+    final String walletAddress = historyNFT.walletAddress ?? '';
+    final String price = '${historyNFT.price?.stringNumFormat ?? ''} '
+        '${historyNFT.priceSymbol ?? ''}';
+    switch (historyNFT.historyType) {
+      case 0:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Created by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              )
+            ],
+          ),
+        );
+      case 1:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Transferred from ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.fromAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' to',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.toAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 2:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Burn by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 3:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Put on sale by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+            ],
+          ),
+        );
+      case 4:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Put on pawn by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: ' expected loan',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+            ],
+          ),
+        );
+      case 13:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Put on auction by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+            ],
+          ),
+        );
+      case 5:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Cancelled sale by  ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 6:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Cancelled pawn by  ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 7:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Cancelled auction review by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 8:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Bought NFT for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: ' by ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.toAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 9:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Signed between ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.fromAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' and ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.toAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: ' contract value',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+            ],
+          ),
+        );
+      case 10:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Contract between ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.fromAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' and ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.toAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' has end. Collateral transferred to ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: historyNFT.fromAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+            ],
+          ),
+        );
+      case 11:
+        return RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: historyNFT.walletAddress!.formatAddress(index: 4),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        Get.find<AppConstants>().bscScan +
+                            ApiConstants.BSC_SCAN_ADDRESS +
+                            walletAddress,
+                      ),
+                style: richTextBlue,
+              ),
+              TextSpan(
+                text: ' has won NFT auction for ',
+                style: textNormal(
+                  textHistory,
+                  14,
+                ),
+              ),
+              TextSpan(
+                text: price,
+                style: textNormal(
+                  amountColor,
+                  14,
+                ),
+              ),
+            ],
+          ),
+        );
+      default:
+        return const SizedBox();
+    }
+  }
+
+  // Widget itemTransition(int index) {
+  //   final objHistory = widget.listHistory[index];
+  //   return GestureDetector(
+  //     onTap: () {
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => TransactionDetail(
+  //       //       obj: objHistory,
+  //       //     ),
+  //       //   ),
+  //       // );
+  //     },
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         color: AppTheme.getInstance().bgBtsColor(),
+  //         border: Border(
+  //           top: BorderSide(
+  //             color: AppTheme.getInstance().divideColor(),
+  //           ),
+  //         ),
+  //       ),
+  //       child: Container(
+  //         margin: EdgeInsets.only(
+  //           top: 12.h,
+  //           bottom: 12.h,
+  //           right: 16.w,
+  //           left: 16.w,
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Row(
+  //                   children: [
+  //                     Text(
+  //                       objHistory.name ?? '',
+  //                       style: textValueNFT,
+  //                     ),
+  //                     SizedBox(
+  //                       width: 6.w,
+  //                     ),
+  //                     Image.asset(
+  //                       bloc.getImgStatus(objHistory.status ?? ''),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 Text(
+  //                   '1 of ${objHistory.quantity}',
+  //                   style: textValueNFT,
+  //                 ),
+  //               ],
+  //             ),
+  //             Text(
+  //               DateTime.parse(objHistory.dateTime ?? '').stringFromDateTime,
+  //               style: textValueNFT.copyWith(fontSize: 14, color: Colors.grey),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildRowButton(String first, String second) {
     return Row(

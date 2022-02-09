@@ -160,5 +160,17 @@ class ApiConstants {
 
   static const String GET_EVALUATORS_DETAIL_END = '/customer-view-profile';
 
+  ///HARD NFT MY ACCOUNT
+  static const String GET_PHONE_CODE = 'hard-nft-svc/public-api/phone-codes';
+
+  static const String GET_COUNTRIES = 'hard-nft-svc/public-api/countries';
+
+  ///HARD NFT MY ACCOUNT
+  static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
+
   static const String GET_EVALUATION_FEE = '/hard-nft-svc/public-api/system-fee';
+  static const String PATH_GET_CITIES = '/cities';
+
+  static const String GET_CONDITION =
+      'hard-nft-svc/public-api/assets/conditions';
 }

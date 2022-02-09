@@ -48,7 +48,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
           isEnable: true,
           onTap: () async {
             if (otpController.value.text.length != 6) {
-              showErrorDialog(
+              showErrDialog(
                 context: context,
                 title: S.current.warning,
                 content: S.current.otp_invalid,
@@ -63,7 +63,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
               if (isSuccess) {
                 Navigator.pop(context, true);
               } else {
-                showErrorDialog(context: context, title: S.current.warning, content: S.current.expired_code,);
+                showErrDialog(context: context, title: S.current.warning, content: S.current.expired_code,);
               }
             }
           },

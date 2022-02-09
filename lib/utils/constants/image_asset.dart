@@ -30,6 +30,21 @@ class ImageAssets {
   static const String addFAB = '$baseImg/plus.png';
 
   static const String iconCheck = '$baseImg/check.png';
+  static const String createNft = '$baseImg/create_nft.png';
+  static const String addPropertiesNft = '$baseImg/add_pro_nft.png';
+
+  static const String btnDownArrow = '$baseImg/line_arrow_down.png';
+
+  ///create HARD NFT
+  static const String diamond = '$baseImg/diamond.png';
+  static const String artWork = '$baseImg/art.png';
+  static const String car = '$baseImg/Car.png';
+  static const String watch = '$baseImg/Watch.png';
+  static const String house = '$baseImg/House.png';
+  static const String others = '$baseImg/Other.png';
+  static const String addFormProperties = '$baseImg/add_form_pro.png';
+
+  static const String closeProperties = '$baseImg/close_pro.png';
 
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
@@ -94,7 +109,8 @@ class ImageAssets {
   static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
   static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
   static const String img_star = '$baseImg/star.png';
-  static const String ic_calendar_create_book = '$baseImg/calendar_create_book.png';
+  static const String ic_calendar_create_book =
+      '$baseImg/calendar_create_book.png';
   static const String ic_edit_square = '$baseImg/edit_square.png';
   static const String ic_location = '$baseImg/Location.png';
   static const String ic_mail = '$baseImg/mail.png';
@@ -266,8 +282,8 @@ class ImageAssets {
   static const String img_filter = '$baseImg/img_filter.png';
   static const String ic_filter = '$baseImg/ic_filter.png';
   static const String imgRectangle = '$baseImg/rectangle.png';
-  static const String img_float_btn = '$baseImg/float_btn.png';
 
+  static const String img_float_btn = '$baseImg/float_btn.png';
 
   static const String img_diamond = '$baseImg/jewelry.png';
   static const String img_artwork = '$baseImg/artwork.png';
@@ -326,16 +342,13 @@ class ImageAssets {
   static const String ic_camera_svg = '$baseImg/ic_camera_svg.svg';
   static const String ic_star = '$baseImg/ic_star.png';
 
-  //CreateNFT
+  //MyAccount
   static const String rec_plus_svg = '$baseImg/rec_plus_svg.svg';
   static const String x_svg = '$baseImg/x_svg.svg';
   static const String circle_x_svg = '$baseImg/circle_x_svg.svg';
   static const String delete_svg = '$baseImg/delete_svg.svg';
   static const String play_btn_svg = '$baseImg/play_btn_svg.svg';
   static const String pause_btn_svg = '$baseImg/pause_btn_svg.svg';
-
-
-
 
   // about us
   static const String ic_flag_vn = '$baseImg/flag_vn.png';
@@ -348,10 +361,7 @@ class ImageAssets {
   static const String icon_linkedin = '$baseImg/linkedin.png';
   static const String icon_twitter = '$baseImg/icon_twitter.png';
 
-
   static const String more_circle_white = '$baseImg/more_circle_white.png';
-
-
 
   static SvgPicture svgAssets(
     String name, {
@@ -382,6 +392,7 @@ class ImageAssets {
     icMenu: [18, 16],
     icBack: [6, 12.25],
   };
+
   static String getSymbolAsset(String shortName) {
     switch (shortName.toUpperCase()) {
       case 'ADA':

@@ -18,9 +18,10 @@ import '../../../main.dart';
 part 'buy_nft_state.dart';
 
 class BuyNftCubit extends BaseCubit<BuyNftState> {
-  BuyNftCubit() : super(BuyNftInitial()){
+  BuyNftCubit() : super(BuyNftInitial()) {
     showLoading();
   }
+
   final _amountSubject = BehaviorSubject<int>();
   final Web3Utils web3Client = Web3Utils();
   double total = 0;
@@ -45,6 +46,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
   Stream<double> get balanceStream => _balanceSubject.stream;
 
   Sink<double> get balanceSink => _balanceSubject.sink;
+
   double get balanceValue => _balanceSubject.valueOrNull ?? 0;
 
   NFTRepository get nftRepo => Get.find();
@@ -91,6 +93,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
     }
     return hexString;
   }
+
   Future<void> importNft({
     required String contract,
     required String address,
@@ -101,8 +104,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
       address: address,
       id: id,
     );
-    if (!res.isSuccess) {
-    } else {
+    if (res.isSuccess) {
       await emitJsonNftToWalletCore(
         contract: contract,
         address: address,
@@ -110,6 +112,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
       );
     }
   }
+
   Future<void> emitJsonNftToWalletCore({
     required String contract,
     required int id,
@@ -122,6 +125,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
       address: address,
     );
   }
+
   Future<void> importNftIntoWalletCore({
     required String jsonNft,
     required String address,
@@ -136,6 +140,7 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
       //todo
     }
   }
+
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'importNftCallback':
@@ -154,14 +159,9 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
         break;
     }
   }
+
   Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
     showLoading();
-    final result = await nftRepo.buyNftRequest(buyNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
-    );
+    await nftRepo.buyNftRequest(buyNftRequest);
   }
 }

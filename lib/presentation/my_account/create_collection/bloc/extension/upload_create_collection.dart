@@ -14,11 +14,11 @@ extension UploadCreateCollection on CreateCollectionCubit{
     final filePath = await pickImageFunc(imageType: imageType, tittle: tittle);
     if (filePath.isNotEmpty) {
       final imageTemp = File(filePath);
-      final imageSizeInMB =
+      final imageSize =
           imageTemp.readAsBytesSync().lengthInBytes / 1048576;
       loadImage(
         type: imageType,
-        imageSizeInMB: imageSizeInMB,
+        imageSizeInMB: imageSize,
         imagePath: imageTemp.path,
         image: imageTemp,
       );
@@ -31,10 +31,11 @@ extension UploadCreateCollection on CreateCollectionCubit{
     required String imagePath,
     required File image,
   }) {
+    const maximumFileSize = 15728640;
     switch (type) {
       case AVATAR_PHOTO:
         {
-          if (imageSizeInMB > 15) {
+          if (imageSizeInMB > maximumFileSize) {
             mapCheck['avatar'] = false;
             avatarMessSubject.sink.add(S.current.maximum_size);
             break;
@@ -49,7 +50,7 @@ extension UploadCreateCollection on CreateCollectionCubit{
         }
       case COVER_PHOTO:
         {
-          if (imageSizeInMB > 15) {
+          if (imageSizeInMB > maximumFileSize) {
             mapCheck['cover_photo'] = false;
             coverPhotoMessSubject.sink.add(S.current.maximum_size);
             break;
@@ -64,7 +65,7 @@ extension UploadCreateCollection on CreateCollectionCubit{
         }
       case FEATURE_PHOTO:
         {
-          if (imageSizeInMB > 15) {
+          if (imageSizeInMB > maximumFileSize) {
             mapCheck['feature_photo'] = false;
             featurePhotoMessSubject.sink.add(S.current.maximum_size);
             break;

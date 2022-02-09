@@ -28,8 +28,8 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_AUCTION}{marketId}')
   Future<AuctionResponse> getDetailNFTAuction(
-    @Path('marketId') String marketID,
-  );
+      @Path('marketId') String marketID,
+      );
 
   @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
   Future<EvaluationResponse> getEvaluation(

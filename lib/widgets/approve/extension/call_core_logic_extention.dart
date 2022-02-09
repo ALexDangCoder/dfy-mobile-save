@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -19,13 +20,16 @@ extension CallCoreExtension on ApproveCubit {
         final List<dynamic> data = methodCall.arguments;
         if (data.isEmpty) {
         } else {
+          final String wallet = PrefsService.getCurrentBEWallet();
           for (final element in data) {
-            listWallet.add(Wallet.fromJson(element));
+            final data = Wallet.fromJson(element);
+            if (data.address == wallet){
+              addressWalletCoreSubject.sink.add(data.address ?? '');
+              addressWallet = data.address;
+              nameWalletSubject.sink.add(data.name ?? '');
+              nameWallet = data.name;
+            }
           }
-          addressWalletCoreSubject.sink.add(listWallet.first.address!);
-          addressWallet = listWallet.first.address;
-          nameWalletSubject.sink.add(listWallet.first.name!);
-          nameWallet = listWallet.first.name;
           try {
             balanceWallet = await web3Client.getBalanceOfBnb(
               ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
