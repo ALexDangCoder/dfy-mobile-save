@@ -280,7 +280,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(
-                36.0.r,
+                36.r,
               ),
             ),
           ),

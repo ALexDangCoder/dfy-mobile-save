@@ -1,6 +1,5 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
@@ -16,7 +15,7 @@ extension GetGasLimit on ApproveCubit {
       gasLimit = await web3Client.
       getGasLimitByData(
         from: addressWallet ?? '',
-        toContractAddress: getSpender(),
+        toContractAddress: spender ?? getSpender(),
         dataString: hexString,
       );
     } catch (e) {
@@ -33,13 +32,13 @@ extension GetGasLimit on ApproveCubit {
       final data = await web3Client.getNftApproveForAllData(
         approved: true,
         collectionAddress: putOnMarketModel?.collectionAddress ?? '',
-        operatorAddress: getSpender(),
+        operatorAddress: spender ?? getSpender(),
       );
       return data;
     } else {
       final data = await web3Client.getTokenApproveData(
         context: context,
-        spender: getSpender(),
+        spender: spender ?? getSpender(),
         contractAddress: contractAddress,
       );
       return data;

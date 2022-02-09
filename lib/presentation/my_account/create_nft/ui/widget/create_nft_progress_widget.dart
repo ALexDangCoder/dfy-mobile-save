@@ -1,18 +1,23 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
-import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -81,7 +86,44 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
               tokenAddress: widget.cubit.tokenAddress,
               spender: widget.cubit.collectionAddress,
               needApprove: true,
-              createNftMap: widget.cubit.getMapCreateSoftNft(),
+              onErrorSign: (context) async {
+                final navigator = Navigator.of(context);
+                unawaited(showLoadFail(context));
+                navigator.popUntil((route) => route.isFirst);
+              },
+              onSuccessSign: (context, data) async {
+                final navigator = Navigator.of(context);
+                unawaited(showLoadingDialog(context));
+                await widget.cubit.createSoftNft(
+                  txhHash: data,
+                );
+                await showLoadSuccess(context)
+                    .then(
+                      (value) => navigator.popUntil((route) => route.isFirst),
+                    )
+                    .then(
+                      (value) => navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => BaseSuccess(
+                            title: S.current.create_nft,
+                            content: S.current.create_nft_successfully,
+                            callback: () {
+                              navigator.pop();
+                              navigator.push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      CollectionList(
+                                    typeScreen: PageRouter.MY_ACC,
+                                    addressWallet: widget.cubit.walletAddress,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+              },
               listDetail: [
                 DetailItemApproveModel(
                   title: '${S.current.name}:',
@@ -105,132 +147,137 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
           ),
         );
       }
+      if (value == 0){
+        showErrDialog(
+          onCloseDialog: (){
+            Navigator.pop(context);
+          },
+          context: context,
+          title: S.current.create_nft,
+          content: S.current.something_went_wrong,
+        );
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StateStreamLayout(
-      stream: widget.cubit.stateStream,
-      textEmpty: '',
-      retry: () {},
-      error: AppException('', S.current.something_went_wrong),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              // height: 244.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().selectDialogColor(),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            // height: 244.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().selectDialogColor(),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 20.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          S.current.upload_file,
-                          style: textCustom(
-                            fontSize: 12,
-                          ),
-                        ),
-                        StreamBuilder<int>(
-                          stream: widget.cubit.mediaFileUploadStatusSubject,
-                          initialData: -1,
-                          builder: (context, snapshot) {
-                            final status = snapshot.data ?? -1;
-                            if (status == -1) {
-                              _mediaFileAnimationController.forward();
-                              return progressBar(_mediaFileAnimationController);
-                            } else if (status == 0) {
-                              return uploadFailWidget();
-                            } else {
-                              return uploadSuccessWidget();
-                            }
-                          },
-                        ),
-                        if (widget.cubit.mediaType != MEDIA_IMAGE_FILE)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              spaceH20,
-                              Text(
-                                S.current.cover_photo,
-                                style: textCustom(
-                                  fontSize: 12,
-                                ),
-                              ),
-                              StreamBuilder<int>(
-                                stream:
-                                    widget.cubit.coverPhotoUploadStatusSubject,
-                                initialData: -1,
-                                builder: (context, snapshot) {
-                                  final status = snapshot.data ?? -1;
-                                  if (status == -1) {
-                                    _coverAnimationController.forward();
-                                    return progressBar(
-                                        _coverAnimationController,);
-                                  } else if (status == 0) {
-                                    return uploadFailWidget();
-                                  } else {
-                                    return uploadSuccessWidget();
-                                  }
-                                },
-                              ),
-                            ],
-                          )
-                        else
-                          const SizedBox.shrink(),
-                      ],
-                    ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
                   ),
-                  line,
-                  StreamBuilder<int>(
-                    stream: widget.cubit.upLoadStatusSubject,
-                    initialData: -1,
-                    builder: (context, snapshot) {
-                      final isComplete = snapshot.data ?? -1;
-                      return InkWell(
-                        onTap: () {
-                          if (isComplete == 0) {
-                            Navigator.pop(context);
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.current.upload_file,
+                        style: textCustom(
+                          fontSize: 12,
+                        ),
+                      ),
+                      StreamBuilder<int>(
+                        stream: widget.cubit.mediaFileUploadStatusSubject,
+                        initialData: -1,
+                        builder: (context, snapshot) {
+                          final status = snapshot.data ?? -1;
+                          if (status == -1) {
+                            _mediaFileAnimationController.forward();
+                            return progressBar(_mediaFileAnimationController);
+                          } else if (status == 0) {
+                            return uploadFailWidget();
+                          } else {
+                            return uploadSuccessWidget();
                           }
                         },
-                        child: SizedBox(
-                          height: 64.h,
-                          child: Center(
-                            child: Text(
-                              'OK',
+                      ),
+                      if (widget.cubit.mediaType != MEDIA_IMAGE_FILE)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            spaceH20,
+                            Text(
+                              S.current.cover_photo,
                               style: textCustom(
-                                color: isComplete == -1
-                                    ? AppTheme.getInstance().disableColor()
-                                    : AppTheme.getInstance().fillColor(),
-                                weight: FontWeight.w700,
-                                fontSize: 20,
+                                fontSize: 12,
                               ),
+                            ),
+                            StreamBuilder<int>(
+                              stream:
+                                  widget.cubit.coverPhotoUploadStatusSubject,
+                              initialData: -1,
+                              builder: (context, snapshot) {
+                                final status = snapshot.data ?? -1;
+                                if (status == -1) {
+                                  _coverAnimationController.forward();
+                                  return progressBar(
+                                    _coverAnimationController,
+                                  );
+                                } else if (status == 0) {
+                                  return uploadFailWidget();
+                                } else {
+                                  return uploadSuccessWidget();
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      else
+                        const SizedBox.shrink(),
+                    ],
+                  ),
+                ),
+                line,
+                StreamBuilder<int>(
+                  stream: widget.cubit.upLoadStatusSubject,
+                  initialData: -1,
+                  builder: (context, snapshot) {
+                    final isComplete = snapshot.data ?? -1;
+                    return InkWell(
+                      onTap: () {
+                        if (isComplete == 0) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: SizedBox(
+                        height: 64.h,
+                        child: Center(
+                          child: Text(
+                            'OK',
+                            style: textCustom(
+                              color: isComplete == -1
+                                  ? AppTheme.getInstance().disableColor()
+                                  : AppTheme.getInstance().fillColor(),
+                              weight: FontWeight.w700,
+                              fontSize: 20,
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

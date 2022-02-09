@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'constants/app_constants.dart';
 
 /// show dialog loading
-Future<void> showLoading(BuildContext context) async {
+Future<void> showLoadingDialog(BuildContext context) async {
   final navigator = Navigator.of(context);
   await navigator.push(
     PageRouteBuilder(

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/category_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/web3_create_collection.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +33,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   String createId = '';
   int collectionStandard = ERC721;
   int collectionType = 0;
+  final walletAddress = PrefsService.getCurrentBEWallet();
+
 
   String collectionName = '';
   String customUrl = '';
@@ -272,8 +276,8 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         featurePhotoUploadStatusSubject.value == 0) {
       upLoadStatusSubject.sink.add(0);
     } else {
+      showLoadingDialog(context);
       await sendDataWeb3(context);
-      upLoadStatusSubject.sink.add(1);
     }
   }
 
