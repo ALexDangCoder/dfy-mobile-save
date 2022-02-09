@@ -57,7 +57,7 @@ class _BuyNFTState extends State<BuyNFT> {
       tokenAddress: widget.nftMarket.token ?? '',
     )
         .then((value) {
-      if (widget.nftMarket.nftStandard == 'ERC-721') {
+      if (widget.nftMarket.nftStandard == ERC_721) {
         if (value > (widget.nftMarket.price ?? 0)) {
           cubit.warnSink.add('');
           cubit.btnSink.add(true);
@@ -69,27 +69,27 @@ class _BuyNFTState extends State<BuyNFT> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    void emitValue(String value) {
-      if (value.isNotEmpty) {
-        if (int.parse(value) <= (widget.nftMarket.totalCopies ?? 1)) {
-          cubit.amountSink.add(int.parse(value));
-          cubit.warnSink.add('');
-          cubit.btnSink.add(true);
-        } else {
-          cubit.warnSink.add(
-            S.current.you_enter_greater,
-          );
-          cubit.btnSink.add(false);
-        }
+  void emitValue(String value) {
+    if (value.isNotEmpty) {
+      if (int.parse(value) <= (widget.nftMarket.totalCopies ?? 1)) {
+        cubit.amountSink.add(int.parse(value));
+        cubit.warnSink.add('');
+        cubit.btnSink.add(true);
       } else {
-        cubit.amountSink.add(0);
-        cubit.warnSink.add(S.current.you_must);
+        cubit.warnSink.add(
+          S.current.you_enter_greater,
+        );
         cubit.btnSink.add(false);
       }
+    } else {
+      cubit.amountSink.add(0);
+      cubit.warnSink.add(S.current.you_must);
+      cubit.btnSink.add(false);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Widget warningAmount() {
       return StreamBuilder<String>(
         initialData: '',
@@ -119,7 +119,7 @@ class _BuyNFTState extends State<BuyNFT> {
     }
 
     Widget showTotalPayment() {
-      return widget.nftMarket.nftStandard == 'ERC-721'
+      return widget.nftMarket.nftStandard == ERC_721
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -187,7 +187,8 @@ class _BuyNFTState extends State<BuyNFT> {
                               height: 20.h,
                               width: 20.w,
                               child: Image.network(
-                                  widget.nftMarket.urlToken ?? ''),
+                                widget.nftMarket.urlToken ?? '',
+                              ),
                             ),
                             spaceW4,
                             Text(
@@ -330,11 +331,6 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.importNft(
-                      contract: widget.nftMarket.collectionAddress ?? '',
-                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
-                      address: PrefsService.getCurrentBEWallet(),
-                    );
                     cubit.buyNftRequest(
                       BuyNftRequest(
                         widget.marketId,
@@ -343,6 +339,11 @@ class _BuyNFTState extends State<BuyNFT> {
                             : cubit.amountValue,
                         data,
                       ),
+                    );
+                    await cubit.importNft(
+                      contract: widget.nftMarket.collectionAddress ?? '',
+                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
+                      address: PrefsService.getCurrentBEWallet(),
                     );
                     await showLoadSuccess(context)
                         .then((value) => Navigator.pop(context))
@@ -389,7 +390,7 @@ class _BuyNFTState extends State<BuyNFT> {
     }
 
     Widget form() {
-      return widget.nftMarket.nftStandard == 'ERC-721'
+      return widget.nftMarket.nftStandard == ERC_721
           ? Container(
               height: 64.h,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
