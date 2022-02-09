@@ -1,4 +1,5 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
@@ -69,7 +70,16 @@ class BlocCreateBookEvaluation {
   List<String> list = [];
   DateTime? dateTimeDay;
   EvaluationFee? evaluationFee;
-  bool? isDate = false;
+  bool isDate = false;
+  String? hexString;
+
+  final Web3Utils web3utils = Web3Utils();
+
+  Future<void> getHexString() async {
+    // hexString = await web3utils.getCreateAssetRequestData(
+    //   collectionStandard: 0, assetCID:, beAssetId:, collectionAsset:,
+    //   expectingPrice:, expectingPriceAddress:,);//todo
+  }
 
   bool checkValidateDay(String day) {
     bool isDay = false;
@@ -159,7 +169,7 @@ class BlocCreateBookEvaluation {
     final String minWorkingTo = DateFormat('mm').format(workingMinClose);
     final int minWorkingIntTo = int.parse(minWorkingTo);
 
-    if (isDate ?? false) {
+    if (isDate) {
       if (hourNowInt == hour && minNowInt <= minute) {
         return checkDateTime(
           hour: hour,
@@ -266,13 +276,12 @@ class BlocCreateBookEvaluation {
     required String evaluationID,
   }) async {
     final Result<EvaluatorsDetailModel> result =
-        await _createHardNFTRepository.getEvaluatorsDetail(
+    await _createHardNFTRepository.getEvaluatorsDetail(
       evaluationID,
     );
     result.when(
       success: (res) {
-        if (res.isBlank ?? false) {
-        } else {
+        if (res.isBlank ?? false) {} else {
           locationLat = res.locationLat ?? 0;
           locationLong = res.locationLong ?? 0;
           objDetail.add(res);
@@ -284,11 +293,10 @@ class BlocCreateBookEvaluation {
 
   Future<void> getEvaluationFee() async {
     final Result<List<EvaluationFee>> result =
-        await _createHardNFTRepository.getEvaluationFee();
+    await _createHardNFTRepository.getEvaluationFee();
     result.when(
       success: (res) {
-        if (res.isBlank ?? false) {
-        } else {
+        if (res.isBlank ?? false) {} else {
           for (final value in res) {
             if (value.id == EVALUATION_FEE) {
               evaluationFee = value;

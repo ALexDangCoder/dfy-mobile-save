@@ -798,13 +798,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                           onTap: () {
                             if (snapshot.data ?? false) {
                               if (widget.type == TypeEvaluation.NEW_CREATE) {
+                                //get hex string
+                                bloc.getHexString();
+
                                 goTo(
                                   context,
                                   Approve(
                                     needApprove: true,
-                                    hexString: 'hexString',
-                                    payValue: '1',
-                                    tokenAddress: '',
+                                    hexString: bloc.hexString,
+                                    payValue:
+                                        '${bloc.evaluationFee?.amount ?? 0}',
+                                    tokenAddress:
+                                        BlocCreateBookEvaluation.DFY_ADDRESS,
                                     title: S.current.book_appointment,
                                     listDetail: [
                                       DetailItemApproveModel(

@@ -4,7 +4,6 @@ import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
@@ -88,12 +87,10 @@ class _BookEvaluationState extends State<BookEvaluation> {
                               ),
                               height: 193.h,
                               width: 343.w,
-                              child: list.isEmpty
-                                  ? ItemMap(bloc: bloc)
-                                  : ItemListMap(
-                                      bloc: bloc,
-                                      list: list,
-                                    ),
+                              child: ItemListMap(
+                                bloc: bloc,
+                                list: list,
+                              ),
                             ),
                           ),
                           spaceH32,

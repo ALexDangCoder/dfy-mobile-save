@@ -35,7 +35,6 @@ class _ItemListMap extends State<ItemListMap> {
       widget.bloc.locationLong,
     );
     markers = Set();
-    getMarkers();
   }
 
   void getMarkers() {
@@ -83,6 +82,7 @@ class _ItemListMap extends State<ItemListMap> {
 
   @override
   Widget build(BuildContext context) {
+    getMarkers();
     return GoogleMap(
       gestureRecognizers: Set()
         ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
