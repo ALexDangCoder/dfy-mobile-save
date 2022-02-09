@@ -3,11 +3,11 @@ import 'dart:core';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -33,18 +33,27 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   // BehaviorSubject<bool> showItemProperties = BehaviorSubject();
   BehaviorSubject<List<PropertyModel>> showItemProperties = BehaviorSubject();
-  bool _flagGetPhoneApi = false;
-  bool _flagGetCountries = false;
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
 
   ///api
+  ///convert to map to use in cool dropdown
   List<Map<String, dynamic>> phonesCode = [];
   List<Map<String, dynamic>> countries = [];
+  List<Map<String, dynamic>> cities = [];
+  List<Map<String, dynamic>> conditions = [];
+  List<PropertyModel> properties = [];
+
+  BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
+      BehaviorSubject();
+  BehaviorSubject<List<Map<String, dynamic>>> phonesCodeBHVSJ =
+      BehaviorSubject();
+  BehaviorSubject<List<Map<String, dynamic>>> citiesBHVSJ = BehaviorSubject();
+  BehaviorSubject<List<Map<String, dynamic>>> conditionBHVSJ =
+      BehaviorSubject();
 
   Future<void> getPhonesApi() async {
-    //emit(Step1LoadingPhone());
     final Result<List<PhoneCodeModel>> resultPhone =
         await _step1Repository.getPhoneCode();
     resultPhone.when(
@@ -52,13 +61,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         res.forEach(
           (e) => phonesCode.add({
             'value': e.code ?? '',
-            'label': e.id.toString(),
+            'label': e.id.toString() ?? '',
           }),
         );
-        emit(Step1LoadingPhoneSuccess());
+        phonesCodeBHVSJ.sink.add(phonesCode);
+        // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
-        emit(Step1LoadingPhoneFail());
+        //todo
       },
     );
   }
@@ -73,79 +83,54 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           (e) => countries
               .add({'value': e.id.toString() ?? '', 'label': e.name ?? ''}),
         );
-        emit(Step1LoadingCountrySuccess());
+        countriesBHVSJ.sink.add(countries);
       },
       error: (error) {
-        emit(Step1LoadingCountryFail());
+        //todo
       },
     );
   }
 
-  //todo
-  // Future<void> pickFile() async {
-  //   collectionMessSubject.sink.add('');
-  //   mediaType = '';
-  //   final Map<String, dynamic> _mediaFile =
-  //   await pickMediaFile(type: PickerType.MEDIA_FILE);
-  //   mediaType = _mediaFile.getStringValue('type');
-  //   final _path = _mediaFile.getStringValue('path');
-  //   mediaFileSubject.sink.add(mediaType);
-  //   if (_path.isNotEmpty) {
-  //     final _isValidFormat = _mediaFile.getBoolValue('valid_format');
-  //     final _extension = _mediaFile.getStringValue('extension');
-  //     final _size = _mediaFile.intValue('size');
-  //     fileType = '$mediaType/$_extension';
-  //     if (50 < _size / 1000000) {
-  //       clearMainData();
-  //       collectionMessSubject.sink.add(S.current.maximum_file_size);
-  //       createNftMapCheck['media_file'] = false;
-  //     }
-  //     if (!_isValidFormat) {
-  //       clearMainData();
-  //       collectionMessSubject.sink.add(S.current.invalid_file_format);
-  //       createNftMapCheck['media_file'] = false;
-  //     } else {
-  //       mediaFileUploadTime = ipfsService.uploadTimeCalculate(_size);
-  //       mediaFilePath = _path;
-  //       createNftMapCheck['media_file'] = true;
-  //       switch (mediaType) {
-  //         case MEDIA_IMAGE_FILE:
-  //           {
-  //             imageFileSubject.sink.add(_path);
-  //             break;
-  //           }
-  //         case MEDIA_VIDEO_FILE:
-  //           {
-  //             if (controller == null) {
-  //               controller = VideoPlayerController.file(File(_path));
-  //               await controller?.initialize();
-  //               await controller?.setLooping(true);
-  //               playVideoButtonSubject.sink.add(true);
-  //               videoFileSubject.sink.add(controller!);
-  //             }
-  //             break;
-  //           }
-  //         case MEDIA_AUDIO_FILE:
-  //           {
-  //             await audioPlayer.play(_path, isLocal: true);
-  //             await audioPlayer.pause();
-  //             isPlayingAudioSubject.sink.add(false);
-  //             audioFileSubject.sink.add(_path);
-  //           }
-  //           break;
-  //         default:
-  //           {
-  //             break;
-  //           }
-  //       }
-  //     }
-  //   } else {
-  //     createNftMapCheck['media_file'] = false;
-  //   }
-  //   validateCreate();
-  // }
+  Future<void> getConditionsApi() async {
+    final Result<List<ConditionModel>> resultConditions =
+        await _step1Repository.getConditions();
 
-  List<PropertyModel> properties = [];
+    resultConditions.when(
+      success: (res) {
+        res.forEach((element) {
+          conditions.add({
+            'value': element.id.toString() ?? '',
+            'label': element.name ?? '',
+          });
+        });
+        conditionBHVSJ.sink.add(conditions);
+      },
+      error: (error) {
+        conditionBHVSJ.sink.add([]);
+      },
+    );
+  }
+
+  Future<void> getCitiesApi(dynamic id) async {
+    cities.clear();
+    final Result<List<CityModel>> resultCities =
+        await _step1Repository.getCities(id.toString());
+    resultCities.when(
+      success: (response) {
+        response.forEach((element) {
+          cities.add({
+            'value': element.id,
+            'label': element.name,
+          });
+        });
+        citiesBHVSJ.sink.add(cities);
+      },
+      error: (error) {
+        //todo handle error
+        citiesBHVSJ.sink.add([]);
+      },
+    );
+  }
 
   void checkPropertiesWhenSave() {
     properties.forEach(

@@ -13,18 +13,8 @@ enum TYPE_FORM_DROPDOWN {
   CITY,
   PHONE,
   PRICE,
+  NONE_DATA,
 }
-
-List<Map<String, String>> cities = [
-  {'label': 'Vinh'},
-  {'label': 'Hanoi'},
-  {'label': 'Nam Dinh'},
-  {'label': 'asd'},
-  {'label': 'Vinh1'},
-  {'label': 'Hanoi2'},
-  {'label': 'asd7'},
-  {'label': 'sd8'},
-];
 
 class Token {
   final String shortName;
@@ -76,6 +66,14 @@ List<Token> tokens = [
   )
 ];
 
+List<Map<String, dynamic>> error = [
+  {'label': 'Không có dữ liệu'},
+];
+
+List<Map<String, dynamic>> firstPhone = [
+  {'label': '+84'},
+];
+
 List<Map<String, dynamic>> tokensMap = [
   {
     'label': '${tokens[0].shortName}',
@@ -103,16 +101,6 @@ List<Map<String, dynamic>> tokensMap = [
   }
 ];
 
-List<Map<String, String>> phones = [
-  {'label': '+84'},
-  {'label': '+29'},
-  {'label': '+39'},
-  {'label': '+65'},
-  {'label': '+66'},
-  {'label': '+12'},
-  {'label': '+32'},
-];
-
 class FormDropDown extends StatelessWidget {
   const FormDropDown({
     Key? key,
@@ -124,9 +112,7 @@ class FormDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(cubit.phonesCode.length);
-    if (typeDrop == TYPE_FORM_DROPDOWN.CITY ||
-        typeDrop == TYPE_FORM_DROPDOWN.CONDITION ||
+    if (typeDrop == TYPE_FORM_DROPDOWN.CONDITION ||
         typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
       return Stack(
         children: [
@@ -136,12 +122,16 @@ class FormDropDown extends StatelessWidget {
             resultMainAxis: MainAxisAlignment.start,
             dropdownList: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
                 ? cubit.countries
-                : (typeDrop == TYPE_FORM_DROPDOWN.CITY ? [] : []),
+                : cubit.conditions,
             onChange: (value) {
-              print(value['label']);
+              if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
+                cubit.getCitiesApi(value['value']);
+              } else {}
             },
             dropdownItemHeight: 54.h,
-            dropdownHeight: cities.length < 4 ? (54 * cities.length).h : 232.h,
+            dropdownHeight: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
+                ? (cubit.countries.isEmpty ? 54.h : 232.h)
+                : 232.h,
             dropdownWidth: 343.w,
             resultAlign: Alignment.centerRight,
             resultWidth: 343.w,
@@ -159,7 +149,9 @@ class FormDropDown extends StatelessWidget {
               AppTheme.getInstance().whiteColor(),
               16,
             ),
-            placeholder: 'Select country',
+            placeholder: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
+                ? 'Select Country'
+                : 'Select Condition',
             resultIcon: const SizedBox.shrink(),
             selectedItemTS: textNormal(
               AppTheme.getInstance().whiteColor(),
@@ -190,6 +182,87 @@ class FormDropDown extends StatelessWidget {
             ),
           )
         ],
+      );
+    } else if (typeDrop == TYPE_FORM_DROPDOWN.CITY) {
+      return StreamBuilder<List<Map<String, dynamic>>>(
+        stream: cubit.citiesBHVSJ,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return form_none_data();
+          } else {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return form_none_data();
+              case ConnectionState.waiting:
+                return form_none_data();
+              case ConnectionState.active:
+                return Stack(
+                  children: [
+                    CoolDropdown(
+                      // gap: 8.h,
+                      dropdownItemMainAxis: MainAxisAlignment.start,
+                      resultMainAxis: MainAxisAlignment.start,
+                      dropdownList: cubit.cities.isEmpty ? error : cubit.cities,
+                      onChange: (value) {},
+                      dropdownItemHeight: 54.h,
+                      dropdownHeight: cubit.cities.isEmpty ? 45.h : 232.h,
+                      dropdownWidth: 343.w,
+                      resultAlign: Alignment.centerRight,
+                      resultWidth: 343.w,
+                      resultHeight: 64.h,
+                      dropdownPadding: EdgeInsets.only(right: 11.w),
+                      dropdownBD: BoxDecoration(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      resultBD: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      resultTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      placeholder: 'Select city',
+                      resultIcon: const SizedBox.shrink(),
+                      selectedItemTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      unselectedItemTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      placeholderTS: textNormal(
+                        Colors.white.withOpacity(0.5),
+                        16,
+                      ),
+                      isTriangle: false,
+                      selectedItemBD: BoxDecoration(
+                        color: AppTheme.getInstance()
+                            .whiteColor()
+                            .withOpacity(0.1),
+                      ),
+                    ),
+                    Positioned(
+                      right: 19.w,
+                      child: SizedBox(
+                        height: 64.h,
+                        child: sizedSvgImage(
+                          w: 13,
+                          h: 13,
+                          image: ImageAssets.ic_expand_white_svg,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              default:
+                break;
+            }
+          }
+          return Container();
+        },
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PRICE) {
       return SizedBox(
@@ -276,8 +349,11 @@ class FormDropDown extends StatelessWidget {
                 dropdownWidth: 109.w,
                 isTriangle: false,
                 dropdownPadding: EdgeInsets.only(right: 11.w),
-                dropdownList: cubit.phonesCode,
-                defaultValue: cubit.phonesCode[229],
+                dropdownList:
+                    cubit.phonesCode.isEmpty ? error : cubit.phonesCode,
+                defaultValue: cubit.phonesCode.isNotEmpty
+                    ? cubit.phonesCode[229]
+                    : firstPhone[0],
                 resultIcon: const SizedBox.shrink(),
                 dropdownBD: BoxDecoration(
                   color: AppTheme.getInstance().selectDialogColor(),
@@ -323,7 +399,69 @@ class FormDropDown extends StatelessWidget {
         ),
       );
     } else {
-      return Container();
+      return form_none_data();
     }
+  }
+
+  Stack form_none_data() {
+    return Stack(
+      children: [
+        CoolDropdown(
+          // gap: 8.h,
+          dropdownItemMainAxis: MainAxisAlignment.start,
+          resultMainAxis: MainAxisAlignment.start,
+          dropdownList: error,
+          onChange: (value) {},
+          dropdownItemHeight: 54.h,
+          dropdownHeight: 54.h,
+          dropdownWidth: 343.w,
+          resultAlign: Alignment.centerRight,
+          resultWidth: 343.w,
+          resultHeight: 64.h,
+          dropdownPadding: EdgeInsets.only(right: 11.w),
+          dropdownBD: BoxDecoration(
+            color: AppTheme.getInstance().selectDialogColor(),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          resultBD: BoxDecoration(
+            color: AppTheme.getInstance().backgroundBTSColor(),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          resultTS: textNormal(
+            AppTheme.getInstance().whiteColor(),
+            16,
+          ),
+          placeholder: 'Select City',
+          resultIcon: const SizedBox.shrink(),
+          selectedItemTS: textNormal(
+            AppTheme.getInstance().whiteColor(),
+            16,
+          ),
+          unselectedItemTS: textNormal(
+            AppTheme.getInstance().whiteColor(),
+            16,
+          ),
+          placeholderTS: textNormal(
+            Colors.white.withOpacity(0.5),
+            16,
+          ),
+          isTriangle: false,
+          selectedItemBD: BoxDecoration(
+            color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+          ),
+        ),
+        Positioned(
+          right: 19.w,
+          child: SizedBox(
+            height: 64.h,
+            child: sizedSvgImage(
+              w: 13,
+              h: 13,
+              image: ImageAssets.ic_expand_white_svg,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

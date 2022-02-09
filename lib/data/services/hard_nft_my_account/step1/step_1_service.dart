@@ -1,4 +1,6 @@
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
 
@@ -19,4 +21,10 @@ abstract class Step1Client {
 
   @GET(ApiConstants.GET_COUNTRIES)
   Future<ListCountryResponse> getCountries();
+
+  @GET('${ApiConstants.GET_CITIES}{id}${ApiConstants.PATH_GET_CITIES}')
+  Future<CitiesResponse> getCities(@Path('id') String id);
+
+  @GET(ApiConstants.GET_CONDITION)
+  Future<ListConditionResponse> getConditions();
 }

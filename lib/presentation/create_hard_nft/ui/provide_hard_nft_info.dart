@@ -9,7 +9,6 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
@@ -20,8 +19,6 @@ enum CircleStatus {
 }
 
 List<String> brands = ['gucci, luis vuituoi, prada, zara,'];
-
-List<String> countries = ['Viet nam', 'UK', 'England'];
 
 class ProvideHardNftInfo extends StatefulWidget {
   const ProvideHardNftInfo({Key? key}) : super(key: key);
@@ -45,6 +42,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit = ProvideHardNftCubit();
     cubit.getCountriesApi();
     cubit.getPhonesApi();
+    cubit.getConditionsApi();
     if (cubit.properties.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
@@ -363,44 +361,44 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 spaceH4,
 
                 ///FORM NUMBER
-                BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
-                  bloc: cubit,
-                  builder: (context, state) {
-                    if (state is Step1LoadingPhoneSuccess) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: Row(
-                          children: [
+
+                StreamBuilder<List<Map<String, dynamic>>>(
+                  initialData: [],
+                  stream: cubit.phonesCodeBHVSJ,
+                  builder: (context, snapshot) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ),
+                      child: Row(
+                        children: [
+                          if (snapshot.hasData)
                             FormDropDown(
                               typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                               cubit: cubit,
+                            )
+                          else
+                            FormDropDown(
+                                typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
+                                cubit: cubit),
+                          Expanded(
+                            child: CustomForm(
+                              isSelectNumPrefix: true,
+                              textValue: (value) {
+                                print(value);
+                              },
+                              hintText: 'Enter phone number',
+                              suffix: null,
+                              prefix: null,
+                              inputType: null,
                             ),
-                            Expanded(
-                              child: CustomForm(
-                                isSelectNumPrefix: true,
-                                textValue: (value) {
-                                  print(value);
-                                },
-                                hintText: 'Enter phone number',
-                                suffix: null,
-                                prefix: null,
-                                inputType: null,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if(state is Step1LoadingPhoneFail) {
-                      return Container(
-                        child: Text('Loi'),
-                      );
-                    } else {
-                      return Container();
-                    }
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
+
                 spaceH16,
                 textShowWithPadding(
                   textShow: 'Country',
@@ -411,20 +409,22 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH4,
-                BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
-                  bloc: cubit,
-                  builder: (context, state) {
-                   if(state is Step1LoadingCountrySuccess) {
+
+
+                StreamBuilder<List<Map<String, dynamic>>>(
+                  initialData: [],
+                  stream: cubit.countriesBHVSJ,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
                       return FormDropDown(
                         typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                         cubit: cubit,
                       );
-                    } else if (state is Step1LoadingCountryFail){
-                      return Container(
-                        child: Text('Loi'),
-                      );
                     } else {
-                      return Container();
+                      return FormDropDown(
+                        typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
+                        cubit: cubit,
+                      );
                     }
                   },
                 ),
@@ -550,7 +550,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 child: Wrap(
                   runSpacing: 10.h,
                   children: cubit.properties.map(
-                        (e) {
+                    (e) {
                       final int index = cubit.properties.indexOf(e);
                       return itemProperty(
                         property: e.property,
@@ -580,13 +580,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (_) =>
-                          Dialog(
-                            backgroundColor: Colors.transparent,
-                            child: FormAddProperties(
-                              cubit: cubit,
-                            ),
-                          ),
+                      builder: (_) => Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: FormAddProperties(
+                          cubit: cubit,
+                        ),
+                      ),
                     );
                   },
                   child: Text(
