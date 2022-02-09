@@ -245,11 +245,6 @@ Widget _buildButtonCancelOnSale(
             },
           ),
         ),
-      ).then(
-        (value) => {
-          print('okok')
-          // if (value) {reload()}
-        },
       );
     },
     gradient: RadialGradient(
