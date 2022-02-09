@@ -133,7 +133,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                       fontSize: 20,
                       onTap: () {
                         if (statusButton) {
-                          widget.cubit.uploadFileToIFPS();
+                          widget.cubit.uploadFileToIFPS(context);
                           widget.cubit.controlAudio(needStop: true);
                           showDialog(
                             context: context,

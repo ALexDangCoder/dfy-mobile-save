@@ -9,28 +9,22 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_state.dart';
-import 'package:Dfy/widgets/approve/extension/call_api_be.dart';
 import 'package:Dfy/widgets/approve/extension/call_core_logic_extention.dart';
 import 'package:Dfy/widgets/approve/extension/common_extension.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/approve/ui/component/estimate_gas_fee.dart';
-import 'package:Dfy/widgets/base_items/base_fail.dart';
-import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'component/pop_up_approve.dart';
 
 class Approve extends StatefulWidget {
@@ -48,8 +42,6 @@ class Approve extends StatefulWidget {
   final String? purposeText;
   final String textActiveButton;
   final String? spender;
-  final Map<String, dynamic>? createNftMap;
-  final int? collectionType;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
@@ -77,8 +69,6 @@ class Approve extends StatefulWidget {
     this.hexString,
     this.putOnMarketModel,
     this.request,
-    this.createNftMap,
-    this.collectionType,
     this.errorTextSign,
     this.onErrorSign,
     this.onSuccessSign,
@@ -138,7 +128,7 @@ class _ApproveState extends State<Approve> {
       cubit.approve(),
     );
     isShowLoading = true;
-    await showLoading(context);
+    await showLoadingDialog(context);
     isShowLoading = false;
   }
 
@@ -148,7 +138,7 @@ class _ApproveState extends State<Approve> {
   ) async {
     final String gasPriceString = (gasPriceFinal / 1e9).toStringAsFixed(0);
     final String gasLimitString = gasLimitFinal.toStringAsFixed(0);
-    unawaited(showLoading(context));
+    unawaited(showLoadingDialog(context));
     final nonce = await cubit.getNonce();
     await cubit.signTransactionWithData(
       walletAddress: cubit.addressWallet ?? '',
@@ -189,10 +179,14 @@ class _ApproveState extends State<Approve> {
       bloc: cubit,
       listener: (context, state) {
         if (state is SignSuccess) {
-          caseNavigatorSuccess(state.type, state.txh);
+          if (widget.onSuccessSign != null) {
+            widget.onSuccessSign!(context, state.txh);
+          }
         }
         if (state is SignFail) {
-          caseNavigatorFail(state.type, state.message);
+          if (widget.onErrorSign != null) {
+            widget.onErrorSign!(context);
+          }
         }
         if (state is ApproveSuccess) {
           approveSuccess();
@@ -470,130 +464,6 @@ class _ApproveState extends State<Approve> {
         ),
       ),
     );
-  }
-
-  Future<void> caseNavigatorSuccess(TYPE_CONFIRM_BASE type, String data) async {
-    final navigator = Navigator.of(context);
-    if (widget.onSuccessSign != null) {
-      widget.onSuccessSign!(context, data);
-    } else {
-      switch (type) {
-        case TYPE_CONFIRM_BASE.BUY_NFT:
-          break;
-        case TYPE_CONFIRM_BASE.PLACE_BID:
-          break;
-        case TYPE_CONFIRM_BASE.SEND_NFT:
-          // TODO: Handle this case.
-          break;
-        case TYPE_CONFIRM_BASE.SEND_TOKEN:
-          // TODO: Handle this case.
-          break;
-
-        // TODO: Handle this case.
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          break;
-        case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-          unawaited(showLoading(context));
-          await cubit.createCollection(
-            type: widget.collectionType ?? 0,
-            mapRawData: widget.createNftMap ?? {},
-            txhHash: data,
-          );
-          await showLoadSuccess(context)
-              .then((value) => navigator.popUntil((route) => route.isFirst))
-              .then(
-                (value) => navigator.push(
-                  MaterialPageRoute(
-                    builder: (_) => BaseSuccess(
-                      title: S.current.create_collection,
-                      content: S.current.create_collection_successfully,
-                      callback: () {
-                        navigator.pop();
-                        navigator.push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => CollectionList(
-                              typeScreen: PageRouter.MY_ACC,
-                              addressWallet: cubit.addressWallet,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              );
-          break;
-        case TYPE_CONFIRM_BASE.CREATE_SOFT_NFT:
-          unawaited(showLoading(context));
-          await cubit.createSoftNft(
-            txhHash: data,
-            mapRawData: widget.createNftMap ?? {},
-          );
-          await showLoadSuccess(context)
-              .then((value) => navigator.popUntil((route) => route.isFirst))
-              .then(
-                (value) => navigator.push(
-                  MaterialPageRoute(
-                    builder: (_) => BaseSuccess(
-                      title: S.current.create_nft,
-                      content: S.current.create_nft_successfully,
-                      callback: () {
-                        navigator.pop();
-                        navigator.push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => CollectionList(
-                              typeScreen: PageRouter.MY_ACC,
-                              addressWallet: cubit.addressWallet,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              );
-          break;
-      }
-    }
-  }
-
-  Future<void> caseNavigatorFail(TYPE_CONFIRM_BASE type, String data) async {
-    final navigator = Navigator.of(context);
-    if (widget.onErrorSign != null) {
-      widget.onErrorSign!(context);
-    } else {
-      switch (type) {
-        case TYPE_CONFIRM_BASE.BUY_NFT:
-          break;
-        case TYPE_CONFIRM_BASE.PLACE_BID:
-          break;
-        case TYPE_CONFIRM_BASE.SEND_OFFER:
-          break;
-        case TYPE_CONFIRM_BASE.CANCEL_PAWN:
-          break;
-
-        ///handle when get create collection txhHash in BC failed
-        case TYPE_CONFIRM_BASE.CREATE_COLLECTION:
-          unawaited(showLoadFail(context));
-          navigator.popUntil((route) => route.isFirst);
-          break;
-        case TYPE_CONFIRM_BASE.CANCEL_AUCTION:
-          unawaited(
-            navigator.pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => BaseFail(
-                  title: S.current.cancel_aution,
-                  content: S.current.failed,
-                  onTapBtn: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          );
-          break;
-      }
-    }
   }
 
   Container containerWithBorder({required Widget child}) {

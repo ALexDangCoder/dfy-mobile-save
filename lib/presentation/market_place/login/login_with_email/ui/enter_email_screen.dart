@@ -82,7 +82,7 @@ class _EnterEmailState extends State<EnterEmail> {
                       ),
                 );
               } else {
-                showErrorDialog(
+                showErrDialog(
                   context: context,
                   title: S.current.notify,
                   content: S.current.something_went_wrong,

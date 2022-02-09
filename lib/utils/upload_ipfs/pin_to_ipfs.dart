@@ -30,7 +30,7 @@ class PinToIPFS {
         ipfsHash = map['IpfsHash'];
       }
     } catch (e) {
-      rethrow;
+      return ipfsHash;
     }
     return ipfsHash;
   }
@@ -53,7 +53,7 @@ class PinToIPFS {
         ipfsHash = map['IpfsHash'];
       }
     } catch (e) {
-      rethrow;
+      return ipfsHash;
     }
     return ipfsHash;
   }

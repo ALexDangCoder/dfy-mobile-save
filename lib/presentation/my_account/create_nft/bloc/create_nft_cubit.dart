@@ -37,6 +37,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
 
+
   final PinToIPFS ipfsService = PinToIPFS();
 
   Web3Utils web3utils = Web3Utils();
