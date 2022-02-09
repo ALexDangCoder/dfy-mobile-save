@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
@@ -13,6 +14,11 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -52,6 +58,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<Map<String, dynamic>> conditions = [];
   List<PropertyModel> properties = [];
 
+  ///List path image
+  List<String> listPathImage = [];
+  String currentImagePath = '';
+  int currentIndexImage = 0;
+
   BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> phonesCodeBHVSJ =
@@ -62,17 +73,20 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
       BehaviorSubject();
 
+  BehaviorSubject<List<String>> imagePathSubject = BehaviorSubject();
+  BehaviorSubject<String> currentImagePathSubject = BehaviorSubject();
+
   Future<void> getPhonesApi() async {
     final Result<List<PhoneCodeModel>> resultPhone =
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        res.forEach(
-          (e) => phonesCode.add({
+        for (final e in res) {
+          phonesCode.add({
             'value': e.code ?? '',
-            'label': e.id.toString() ?? '',
-          }),
-        );
+            'label': e.id.toString(),
+          });
+        }
         phonesCodeBHVSJ.sink.add(phonesCode);
         // phonesCodeBHVSJ.sink.add([]);
       },
@@ -81,13 +95,47 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       },
     );
   }
+
   List<TokenInf> listTokenSupport = [];
+
+  List<Map<String, dynamic>> tokensMap = [];
 
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
+    for (final element in listTokenSupport) {
+      tokensMap.add(
+        {
+          'label': element.symbol,
+          'icon': SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Image.asset(
+              ImageAssets.getSymbolAsset(
+                element.symbol ?? DFY,
+              ),
+            ),
+          ),
+        },
+      );
+      if (tokensMap.isEmpty) {
+        tokensMap.add(
+          {
+            'label': DFY,
+            'icon': SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: Image.asset(
+                ImageAssets.getSymbolAsset(
+                  element.symbol ?? DFY,
+                ),
+              ),
+            ),
+          },
+        );
+      }
+    }
   }
-
 
   Future<void> getCountriesApi() async {
     //emit(Step1LoadingCountry());
@@ -96,8 +144,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     resultCountries.when(
       success: (res) {
         res.forEach(
-          (e) => countries
-              .add({'value': e.id.toString() ?? '', 'label': e.name ?? ''}),
+          (e) =>
+              countries.add({'value': e.id.toString(), 'label': e.name ?? ''}),
         );
         countriesBHVSJ.sink.add(countries);
       },
@@ -113,12 +161,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
     resultConditions.when(
       success: (res) {
-        res.forEach((element) {
+        for (final element in res) {
           conditions.add({
-            'value': element.id.toString() ?? '',
+            'value': element.id.toString(),
             'label': element.name ?? '',
           });
-        });
+        }
         conditionBHVSJ.sink.add(conditions);
       },
       error: (error) {
@@ -237,5 +285,45 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else {
       visibleDropDownCountry.sink.add(false);
     }
+  }
+
+  Future<void> pickFile() async {
+    final Map<String, dynamic> mediaMap =
+        await pickMediaFile(type: PickerType.MEDIA_FILE);
+    final _path = mediaMap.getStringValue('path');
+    if (mediaMap.getBoolValue('valid_format') && _path.isNotEmpty) {
+      listPathImage.add(_path);
+      imagePathSubject.sink.add(listPathImage);
+      if (currentImagePath.isEmpty) {
+        currentImagePath = listPathImage.first;
+        currentImagePathSubject.sink.add(currentImagePath);
+      }
+    }
+  }
+
+  void controlMainImage({required bool isNext}) {
+    if (currentImagePath.isEmpty) {
+      currentIndexImage = 0;
+      currentImagePath = listPathImage.first;
+    }
+    if (isNext) {
+      if (currentIndexImage == (listPathImage.length-1)) {
+        currentIndexImage = 0;
+        currentImagePath = listPathImage.first;
+      } else {
+        currentIndexImage++;
+        currentImagePath = listPathImage[currentIndexImage];
+      }
+    } else {
+      if (currentIndexImage == 0) {
+        currentIndexImage = listPathImage.length-1;
+        currentImagePath = listPathImage.last;
+      } else {
+        currentIndexImage--;
+        currentImagePath = listPathImage[currentIndexImage];
+      }
+    }
+    log('List len: ${listPathImage.length} ---- Current Index = $currentIndexImage ---- Current path: $currentImagePath');
+    currentImagePathSubject.sink.add(currentImagePath);
   }
 }

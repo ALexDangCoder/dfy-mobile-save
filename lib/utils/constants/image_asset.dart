@@ -45,6 +45,9 @@ class ImageAssets {
   static const String addFormProperties = '$baseImg/add_form_pro.png';
 
   static const String closeProperties = '$baseImg/close_pro.png';
+  static const String deleteMediaFile = '$baseImg/delete_media.png';
+  static const String leftArrowMediaFile = '$baseImg/left_arrow.png';
+  static const String rightArrowMediaFile = '$baseImg/right_arrow.png';
 
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
