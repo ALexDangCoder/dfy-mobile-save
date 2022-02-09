@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/presentation/bts_nft_detail/ui/draggable_nft_detail.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -36,15 +37,13 @@ class _CardNFTState extends State<CardNFT> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        //todo ERC-1155
-        // cubit
-        //     .getTransactionHistory(
-        //       widget.walletAddress,
-        //       widget.objNFT.contract ?? '',
-        //     )
-        //     .then((_) => showBoth(context, widget.objNFT.img ?? ''));
-        showBoth(context, widget.objNFT.img ?? '');
+      onTap: () async {
+        await cubit
+            .getHistory(
+              collectionAddress: widget.objNFT.contract ?? '',
+              nftTokenId: widget.objNFT.id ?? '',
+            )
+            .then((value) => showBoth(context, widget.objNFT.img ?? '', value));
       },
       child: Row(
         children: [
@@ -82,13 +81,13 @@ class _CardNFTState extends State<CardNFT> {
     );
   }
 
-  void showBoth(BuildContext context, String url) {
+  void showBoth(BuildContext context, String url, List<HistoryNFT> list) {
     showDialog(
       context: context,
       builder: (context) {
         return Align(
           alignment: Alignment.topCenter,
-          child: Container(
+          child: SizedBox(
             height: 346.h,
             width: 300.w,
             child: ClipRRect(
@@ -129,7 +128,7 @@ class _CardNFTState extends State<CardNFT> {
         },
         child: NFTDetail(
           nftInfo: widget.objNFT,
-          listHistory: cubit.listDetailTransaction,
+          listHistory: list,
           walletAddress: widget.walletAddress,
           nameWallet: widget.walletName,
           walletCubit: widget.walletCubit,

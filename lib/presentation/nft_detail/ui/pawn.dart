@@ -141,6 +141,9 @@ Widget _buildButtonCancelOnPawn(
 ) {
   return ButtonGradient(
     onPressed: () async {
+      if (nftMarket.status == 7) {
+        return;
+      }
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancelPawn(
         pawnId: (nftMarket.bcCollateralId ?? 0).toString(),
@@ -167,17 +170,26 @@ Widget _buildButtonCancelOnPawn(
           ),
         );
       }
-      final bool isSuccess = await nav.push(
-        MaterialPageRoute(
-          builder: (context) => approveWidget(
-            nftOnPawn: nftMarket,
-            dataString: dataString,
-            dataInfo: listApprove,
-            type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
-            cancelInfo: S.current.pawn_cancel_info,
-            cancelWarning: S.current.pawn_cancel_warning,
-            title: S.current.cancel_pawn,
-            onFail: (context) {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => const ConnectWalletDialog(
+          isRequireLoginEmail: false,
+        ),
+      );
+      final walletCore = PrefsService.getCurrentWalletCore();
+      final walletBE = PrefsService.getCurrentBEWallet();
+      if (walletBE == walletCore) {
+        final bool isSuccess = await nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftOnPawn: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_PAWN,
+              cancelInfo: S.current.pawn_cancel_info,
+              cancelWarning: S.current.pawn_cancel_warning,
+              title: S.current.cancel_pawn,
+              onFail: (context) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -189,31 +201,32 @@ Widget _buildButtonCancelOnPawn(
                       },
                     ),
                   ),
-              );
-            },
-            onSuccess: (context, data) async {
-              final navigator = Navigator.of(context);
-              await bloc.confirmCancelPawnWithBE(
-                id: nftMarket.id ?? 0,
-              );
-              await navigator.pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => BaseSuccess(
-                    title: S.current.cancel_pawn,
-                    content: S.current.congratulation,
-                    callback: () {
-                      navigator.pop();
-                    },
+                );
+              },
+              onSuccess: (context, data) async {
+                final navigator = Navigator.of(context);
+                await bloc.confirmCancelPawnWithBE(
+                  id: nftMarket.id ?? 0,
+                );
+                await navigator.pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => BaseSuccess(
+                      title: S.current.cancel_pawn,
+                      content: S.current.congratulation,
+                      callback: () {
+                        navigator.pop(true);
+                      },
+                    ),
                   ),
-                ),
-              );
-              navigator.pop(true);
-            },
+                );
+                navigator.pop(true);
+              },
+            ),
           ),
-        ),
-      );
-      if (isSuccess) {
-        await refresh();
+        );
+        if (isSuccess) {
+          await refresh();
+        }
       }
     },
     gradient: RadialGradient(

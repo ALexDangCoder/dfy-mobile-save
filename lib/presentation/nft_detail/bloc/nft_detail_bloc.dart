@@ -4,7 +4,6 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
-import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
@@ -19,13 +18,11 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-
 
 class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   NFTDetailBloc() : super(NFTDetailInitial());
@@ -505,6 +502,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       throw AppException(S.current.error, e.toString());
     }
   }
+
   Future<void> confirmCancelSaleWithBE({
     required String txnHash,
     required String marketId,
@@ -532,13 +530,10 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       error: (err) {},
     );
   }
+
   Future<void> confirmCancelPawnWithBE({
     required int id,
   }) async {
-    final result = await _nftRepo.cancelPawn(id);
-    result.when(
-      success: (res) {},
-      error: (err) {},
-    );
+    await _nftRepo.cancelPawn(id);
   }
 }
