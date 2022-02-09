@@ -14,13 +14,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListBookEvaluation extends StatefulWidget {
-  final String assetID;
-  final int cityId;
+  final String? assetID;
+  final int? cityId;
 
   const ListBookEvaluation({
     Key? key,
-    required this.assetID,
-    required this.cityId,
+    this.assetID,
+    this.cityId,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
     super.initState();
 
     _bloc = BlocListBookEvaluation();
-    _bloc.assetID = widget.assetID;
+    _bloc.assetID = widget.assetID ?? '';
     _bloc.getListPawnShop(assetId: _bloc.assetID);
     _bloc.reloadAPI();
   }
@@ -164,7 +164,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
-                      cityId: widget.cityId,
+                      cityId: widget.cityId ?? 0,
                     ),
                   ),
                 );

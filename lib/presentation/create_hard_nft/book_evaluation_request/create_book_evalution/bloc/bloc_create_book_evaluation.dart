@@ -76,14 +76,14 @@ class BlocCreateBookEvaluation {
   final Web3Utils web3utils = Web3Utils();
 
   Future<void> getHexString() async {
-    // hexString = await web3utils.getCreateAssetRequestData(
-    //   collectionStandard: 0,
-    //   assetCID:,
-    //   beAssetId:,
-    //   collectionAsset:,
-    //   expectingPrice:,
-    //   expectingPriceAddress:,
-    // );//todo
+    hexString = await web3utils.getCreateAssetRequestData(
+      collectionStandard: 0,
+      assetCID:'QmWEXMYLQEWmTK9Z8jkABKsmTY3HLrcR3xCwm3zSRt2x18',
+      beAssetId:'6203742c4aec3de4976bbbad',
+      collectionAsset:'0xa2E3Db206948b93201a8c732bdA8385B77D48002',
+      expectingPrice:'50',
+      expectingPriceAddress:DFY_ADDRESS,
+    );//todo
   }
 
   bool checkValidateDay(String day) {

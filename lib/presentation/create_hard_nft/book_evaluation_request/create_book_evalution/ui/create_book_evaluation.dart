@@ -10,12 +10,15 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_working_time.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/type_nft.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/custom_calandar.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -833,10 +836,23 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             '${bloc.evaluationFee?.symbol ?? ''}',
                                       )
                                     ],
+                                    onErrorSign: (context) {
+                                      showLoadFail(context);
+                                    },
+                                    onSuccessSign: (context, data) {
+                                      //todo confirm BE
+                                      showLoadSuccess(context);
+                                      //todo chuyển màn hinh
+                                      goTo(
+                                        context,
+                                        const ListBookEvaluation(),
+                                      );
+                                    },
                                     textActiveButton:
                                         S.current.request_evaluation,
-                                    spender: '',
+                                    spender: eva_dev2,
                                     typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
+
                                   ),
                                 );
                               }
