@@ -798,11 +798,12 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                       stream: bloc.isCheckBtn,
                       builder: (context, snapshot) {
                         return GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             if (snapshot.data ?? false) {
                               if (widget.type == TypeEvaluation.NEW_CREATE) {
                                 //get hex string
-                                bloc.getHexString();
+                                await bloc.getHexString();
+
 
                                 goTo(
                                   context,
@@ -840,19 +841,19 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       showLoadFail(context);
                                     },
                                     onSuccessSign: (context, data) {
+                                      //scan
+                                      print('------------------$data');
                                       //todo confirm BE
-                                      showLoadSuccess(context);
-                                      //todo chuyển màn hinh
-                                      goTo(
+                                      showLoadSuccess(context).then((value) => goTo(
                                         context,
                                         const ListBookEvaluation(),
-                                      );
+                                      ));
+                                      //todo chuyển màn hinh
                                     },
                                     textActiveButton:
                                         S.current.request_evaluation,
                                     spender: eva_dev2,
                                     typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
-
                                   ),
                                 );
                               }

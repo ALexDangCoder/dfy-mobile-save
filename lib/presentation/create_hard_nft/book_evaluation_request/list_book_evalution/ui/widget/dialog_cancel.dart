@@ -2,10 +2,16 @@ import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -186,6 +192,41 @@ class DialogCancel extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   //todo event
+                                  goTo(
+                                    context,
+                                    Approve(
+                                      hexString: "bloc.hexString",
+                                      //todo hexstring
+                                      title: S.current.book_appointment,
+                                      listDetail: [
+                                        DetailItemApproveModel(
+                                          title: '${S.current.evaluator} :',
+                                          value: title,
+                                        ),
+                                        DetailItemApproveModel(
+                                          title: '${S.current.date_time} :',
+                                          value: date,
+                                        ),
+                                        DetailItemApproveModel(
+                                          title: '${S.current.location} :',
+                                          value: location,
+                                        ),
+                                      ],
+                                      onErrorSign: (context) {
+                                        showLoadFail(context);
+                                      },
+                                      onSuccessSign: (context, data) {
+                                        //todo confirm BE
+                                        showLoadSuccess(context);
+                                        //todo chuyển màn hinh
+                                        closeScreen(context);
+                                      },
+                                      textActiveButton:
+                                          S.current.request_evaluation,
+                                      spender: eva_dev2,
+                                      typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
+                                    ),
+                                  );
                                   Navigator.pop(context);
                                 },
                                 child: Container(

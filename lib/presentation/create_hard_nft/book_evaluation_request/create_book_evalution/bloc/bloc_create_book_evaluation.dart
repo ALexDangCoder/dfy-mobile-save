@@ -78,9 +78,9 @@ class BlocCreateBookEvaluation {
   Future<void> getHexString() async {
     hexString = await web3utils.getCreateAssetRequestData(
       collectionStandard: 0,
-      assetCID:'QmWEXMYLQEWmTK9Z8jkABKsmTY3HLrcR3xCwm3zSRt2x18',
-      beAssetId:'6203742c4aec3de4976bbbad',
-      collectionAsset:'0xa2E3Db206948b93201a8c732bdA8385B77D48002',
+      assetCID:'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
+      beAssetId:'0',
+      collectionAsset:'0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',//todo data
       expectingPrice:'50',
       expectingPriceAddress:DFY_ADDRESS,
     );//todo
