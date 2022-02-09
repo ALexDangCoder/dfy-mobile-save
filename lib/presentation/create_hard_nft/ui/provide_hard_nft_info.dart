@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/select_collection_dropdown.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -410,7 +411,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 ),
                 spaceH4,
 
-
                 StreamBuilder<List<Map<String, dynamic>>>(
                   initialData: [],
                   stream: cubit.countriesBHVSJ,
@@ -486,18 +486,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH4,
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: CustomForm(
-                    textValue: (value) {
-                      print(value);
-                    },
-                    hintText: 'Connect wallet to get collection list',
-                    suffix: null,
-                    inputType: null,
-                  ),
+                CategoriesDropDown(
+                  cubit: cubit,
                 ),
                 SizedBox(
                   height: 48.h,
@@ -513,12 +503,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   InkWell btnConnectWallet() {
     return InkWell(
       onTap: () {
-        // showDialog(
-        //   context: context,
-        //   builder: (ctx) => ConnectWalletDialog(
-        //     isRequireLoginEmail: false,
-        //   ),
-        // );
+        showDialog(
+          context: context,
+          builder: (ctx) => const ConnectWalletDialog(
+            isRequireLoginEmail: false,
+          ),
+        ).then((value) => cubit.getListCollection());
       },
       child: textShowWithPadding(
         textShow: 'Connect wallet',

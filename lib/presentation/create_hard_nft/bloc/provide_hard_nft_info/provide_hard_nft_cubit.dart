@@ -3,11 +3,16 @@ import 'dart:core';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
+import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,6 +42,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ///Di
   Step1Repository get _step1Repository => Get.find();
 
+  CollectionDetailRepository get _collectionDetailRepository => Get.find();
+
   ///api
   ///convert to map to use in cool dropdown
   List<Map<String, dynamic>> phonesCode = [];
@@ -51,6 +58,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> citiesBHVSJ = BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> conditionBHVSJ =
+      BehaviorSubject();
+  BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
       BehaviorSubject();
 
   Future<void> getPhonesApi() async {
@@ -72,6 +81,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       },
     );
   }
+  List<TokenInf> listTokenSupport = [];
+
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+  }
+
 
   Future<void> getCountriesApi() async {
     //emit(Step1LoadingCountry());
@@ -111,10 +127,63 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  List<Map<String, dynamic>> loadingDropDown = [
+    {'label': 'Đang Tải'},
+  ];
+
+  List<Map<String, dynamic>> error = [
+    {'label': 'Không có dữ liệu'},
+  ];
+
+  String getAddressWallet() {
+    return PrefsService.getCurrentBEWallet();
+  }
+
+  Future<void> getCollectionAfterConnectWallet() async {
+    print(getAddressWallet);
+    final resultCollection =
+        await _collectionDetailRepository.getListCollection(
+      addressWallet: getAddressWallet(),
+    );
+    resultCollection.when(
+      success: (res) {
+        print(res);
+      },
+      error: (error) {
+        print(error);
+      },
+    );
+  }
+
+  Future<void> getListCollection() async {
+    List<CollectionMarketModel> listHardCl = [];
+
+    final Result<List<CollectionMarketModel>> result =
+        await _collectionDetailRepository.getListCollection(
+      addressWallet: getAddressWallet(),
+    );
+    result.when(
+      success: (res) {
+        listHardCl = res
+            .where(
+              (element) =>
+                  (element.type == HARD_COLLECTION) &&
+                  ((element.addressCollection ?? '').isNotEmpty),
+            )
+            .toList();
+        final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
+        collectionsBHVSJ.sink.add(listDropDown);
+      },
+      error: (_) {},
+    );
+  }
+
   Future<void> getCitiesApi(dynamic id) async {
     cities.clear();
+    citiesBHVSJ.sink.add(loadingDropDown);
     final Result<List<CityModel>> resultCities =
         await _step1Repository.getCities(id.toString());
+    cities.clear();
     resultCities.when(
       success: (response) {
         response.forEach((element) {
@@ -123,7 +192,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'label': element.name,
           });
         });
-        citiesBHVSJ.sink.add(cities);
+        if (cities.isEmpty) {
+          citiesBHVSJ.sink.add(error);
+        } else {
+          citiesBHVSJ.sink.add(cities);
+        }
       },
       error: (error) {
         //todo handle error

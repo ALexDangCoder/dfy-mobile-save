@@ -66,9 +66,6 @@ List<Token> tokens = [
   )
 ];
 
-List<Map<String, dynamic>> error = [
-  {'label': 'Không có dữ liệu'},
-];
 
 List<Map<String, dynamic>> firstPhone = [
   {'label': '+84'},
@@ -202,10 +199,10 @@ class FormDropDown extends StatelessWidget {
                       // gap: 8.h,
                       dropdownItemMainAxis: MainAxisAlignment.start,
                       resultMainAxis: MainAxisAlignment.start,
-                      dropdownList: cubit.cities.isEmpty ? error : cubit.cities,
+                      dropdownList: snapshot.data ?? [],
                       onChange: (value) {},
                       dropdownItemHeight: 54.h,
-                      dropdownHeight: cubit.cities.isEmpty ? 45.h : 232.h,
+                      dropdownHeight: cubit.cities.isEmpty ? 60.h : 232.h,
                       dropdownWidth: 343.w,
                       resultAlign: Alignment.centerRight,
                       resultWidth: 343.w,
@@ -350,7 +347,7 @@ class FormDropDown extends StatelessWidget {
                 isTriangle: false,
                 dropdownPadding: EdgeInsets.only(right: 11.w),
                 dropdownList:
-                    cubit.phonesCode.isEmpty ? error : cubit.phonesCode,
+                    cubit.phonesCode,
                 defaultValue: cubit.phonesCode.isNotEmpty
                     ? cubit.phonesCode[229]
                     : firstPhone[0],
@@ -399,7 +396,7 @@ class FormDropDown extends StatelessWidget {
         ),
       );
     } else {
-      return form_none_data();
+      return Container();
     }
   }
 
@@ -410,7 +407,7 @@ class FormDropDown extends StatelessWidget {
           // gap: 8.h,
           dropdownItemMainAxis: MainAxisAlignment.start,
           resultMainAxis: MainAxisAlignment.start,
-          dropdownList: error,
+          dropdownList: [],
           onChange: (value) {},
           dropdownItemHeight: 54.h,
           dropdownHeight: 54.h,
