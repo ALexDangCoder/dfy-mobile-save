@@ -38,15 +38,16 @@ class _ItemListMap extends State<ItemListMap> {
   }
 
   void getMarkers() {
-    markers.add(
-      Marker(
-        markerId: MarkerId(showLocation.toString()),
-        position: showLocation,
-        infoWindow: InfoWindow(
-          title: widget.bloc.nameCity,
-        ),
-      ),
-    );
+    // markers.add(
+    //   Marker(
+    //     markerId: MarkerId(showLocation.toString()),
+    //     position: showLocation,
+    //     infoWindow: InfoWindow(
+    //       title: widget.bloc.nameCity,
+    //       snippet: widget.bloc.nameCity,
+    //     ),
+    //   ),
+    // );
     for (final EvaluatorsCityModel value in widget.list) {
       if (!(value.locationLong?.isNaN ?? false) &&
           !(value.locationLat?.isNaN ?? false)) {
