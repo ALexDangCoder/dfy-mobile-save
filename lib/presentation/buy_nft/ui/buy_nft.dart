@@ -330,11 +330,6 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.importNft(
-                      contract: widget.nftMarket.collectionAddress ?? '',
-                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
-                      address: PrefsService.getCurrentBEWallet(),
-                    );
                     cubit.buyNftRequest(
                       BuyNftRequest(
                         widget.marketId,
@@ -343,6 +338,11 @@ class _BuyNFTState extends State<BuyNFT> {
                             : cubit.amountValue,
                         data,
                       ),
+                    );
+                    await cubit.importNft(
+                      contract: widget.nftMarket.collectionAddress ?? '',
+                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
+                      address: PrefsService.getCurrentBEWallet(),
                     );
                     await showLoadSuccess(context)
                         .then((value) => Navigator.pop(context))
