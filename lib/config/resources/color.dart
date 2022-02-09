@@ -508,6 +508,7 @@ class LightApp extends AppColor {
     return bgTextField;
   }
 
+  @override
   Color activityDateColor() {
     // TODO: implement activityDateColor
     return dateColor;
@@ -920,6 +921,7 @@ class DarkApp extends AppColor {
     return bgTextField;
   }
 
+  @override
   Color activityDateColor() {
     // TODO: implement activityDateColor
     throw UnimplementedError();

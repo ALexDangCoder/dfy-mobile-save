@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/model/collection_nft_info.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/wallet.dart';
@@ -24,6 +25,7 @@ import 'package:Dfy/presentation/wallet/ui/token_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog_remove/change_wallet_name.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -268,8 +270,8 @@ class _WalletState extends State<WalletScreen>
                                     child: Center(
                                       child: CircularProgressIndicator(
                                         strokeWidth: 3.r,
-                                        color:
-                                            AppTheme.getInstance().whiteColor(),
+                                        color: AppTheme.getInstance()
+                                            .whiteColor(),
                                       ),
                                     ),
                                   );
@@ -311,7 +313,8 @@ class _WalletState extends State<WalletScreen>
                                     itemCount: snapshot.data?.length ?? 0,
                                     itemBuilder: (context, index) {
                                       return NFTItem(
-                                        walletAddress: cubit.addressWalletCore,
+                                        walletAddress:
+                                            cubit.addressWalletCore,
                                         index: index,
                                         bloc: cubit,
                                         collectionShow: snapshot.data![index],

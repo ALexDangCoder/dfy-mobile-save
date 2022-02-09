@@ -10,18 +10,21 @@ class TimeState extends Equatable {
 }
 
 class InitialState extends TimeState {
+  @override
   final int timeDuration;
 
   const InitialState(this.timeDuration) : super(timeDuration);
 }
 
 class RunningState extends TimeState {
+  @override
   final int timeDuration;
 
   const RunningState(this.timeDuration) : super(timeDuration);
 }
 
 class PauseState extends TimeState {
+  @override
   final int timeDuration;
 
   const PauseState(this.timeDuration) : super(timeDuration);
