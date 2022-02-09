@@ -127,40 +127,41 @@ class _NFTItemState extends State<NFTItem> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.collectionShow.listNft?.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        GestureDetector(
-                      onLongPress: () {
-                        Navigator.of(context).push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return RemoveNft(
-                                walletAddress: widget.walletAddress,
-                                index: index,
-                                cubit: widget.bloc,
-                                collectionAddress:
-                                    widget.collectionShow.contract ?? '',
-                                nftId:
-                                    widget.collectionShow.listNft?[index].id ??
-                                        '',
-                                indexCollection: widget.index,
-                              );
-                            },
-                            isNonBackground: false,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return RemoveNft(
+                                  walletAddress: widget.walletAddress,
+                                  index: index,
+                                  cubit: widget.bloc,
+                                  collectionAddress:
+                                      widget.collectionShow.contract ?? '',
+                                  nftId: widget
+                                          .collectionShow.listNft?[index].id ??
+                                      '',
+                                  indexCollection: widget.index,
+                                );
+                              },
+                              isNonBackground: false,
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
                           ),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
+                          child: CardNFT(
+                            objNFT: widget.collectionShow.listNft![index],
+                            walletAddress: widget.walletAddress,
+                            walletCubit: widget.bloc,
+                            walletName: widget.walletName,
+                          ),
                         ),
-                        child: CardNFT(
-                          objNFT: widget.collectionShow.listNft![index],
-                          walletAddress: widget.walletAddress,
-                          walletCubit: widget.bloc,
-                          walletName: widget.walletName,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
               ],

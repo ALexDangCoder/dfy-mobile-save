@@ -35,6 +35,7 @@ class ButtonGold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding:const EdgeInsets.symmetric(horizontal: 10),
       margin: haveMargin ?? true
           ? EdgeInsets.only(
               right: 16.w,
@@ -42,7 +43,7 @@ class ButtonGold extends StatelessWidget {
             )
           : null,
       decoration: BoxDecoration(
-        gradient: haveGradient  ?? true
+        gradient: haveGradient ?? true
             ? RadialGradient(
                 radius: 4.r,
                 center: const Alignment(0.5, -0.5),
@@ -62,13 +63,18 @@ class ButtonGold extends StatelessWidget {
       ),
       height: height ?? 64.h,
       width: fixSize == true ? 343.w : null,
-      child: Center(
-        child: Text(
-          title,
-          style: textNormal(
-            textColor ?? AppTheme.getInstance().textThemeColor(),
-            textSize ?? 20,
-          ).copyWith(fontWeight: FontWeight.bold),
+      child: SizedBox(
+        child: Align(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: textNormal(
+              textColor ?? AppTheme.getInstance().textThemeColor(),
+              textSize ?? 20,
+            ).copyWith(fontWeight: FontWeight.bold),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );

@@ -43,7 +43,7 @@ Container _priceNotOnMarket() => Container(
 
 Container _priceContainerOnSale({
   required double price,
-  String shortName = 'DFY',
+  String shortName = DFY,
   String urlToken = '',
   double usdExchange = 0,
 }) =>
@@ -109,7 +109,7 @@ Container _priceContainerOnSale({
       ),
     );
 
-Widget _buildButtonBuyOutOnSale(
+Widget _buildButtonBuy(
   BuildContext context,
   NFTDetailBloc bloc,
   NftMarket nftMarket,

@@ -656,7 +656,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             ),
             bottomBar: objSale.owner?.toLowerCase() !=
                     PrefsService.getCurrentWalletCore().toLowerCase()
-                ? _buildButtonBuyOutOnSale(
+                ? _buildButtonBuy(
                     context,
                     bloc,
                     objSale,
