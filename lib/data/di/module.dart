@@ -11,7 +11,6 @@ import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/wallet_address_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
-import 'package:Dfy/data/repository_impl/price_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/hard_nft_my_account/step1/step_1_service.dart';
@@ -26,7 +25,6 @@ import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
 import 'package:Dfy/data/services/market_place/wallet_address_client.dart';
 import 'package:Dfy/data/services/nft_service.dart';
-import 'package:Dfy/data/services/price_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
 import 'package:Dfy/data/services/token_service.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
@@ -44,7 +42,6 @@ import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:dio/dio.dart';
@@ -55,8 +52,6 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 void configureDependencies() {
   Get.put(TokenClient(provideDio()));
   Get.put<TokenRepository>(TokenRepositoryImpl(Get.find()));
-  Get.put(PriceClient(provideDio()));
-  Get.put<PriceRepository>(PriceRepositoryImpl(Get.find()));
   Get.put(MarketPlaceHomeClient(provideDio()));
   Get.put<MarketPlaceRepository>(
     MarketPlaceImpl(Get.find()),

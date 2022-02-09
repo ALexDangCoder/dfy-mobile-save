@@ -1,7 +1,9 @@
+import 'package:Dfy/data/response/token/list_price_token_response.dart';
 import 'package:Dfy/data/response/token/list_token_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/token_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/model/token_price_model.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
 
 class TokenRepositoryImpl implements TokenRepository {
@@ -16,6 +18,14 @@ class TokenRepositoryImpl implements TokenRepository {
     return runCatchingAsync<ListTokenResponse, List<TokenInf>>(
       () => _tokenClient.getListToken(),
       (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<TokenPrice>>> getListPriceToken(String symbols) {
+    return runCatchingAsync<ListPriceTokenResponse, List<TokenPrice>>(
+          () => _tokenClient.getListPriceToken(symbols),
+          (response) => response.toDomain() ?? [],
     );
   }
 }
