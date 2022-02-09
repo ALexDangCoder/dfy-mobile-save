@@ -70,16 +70,12 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
       }
       emit(LogonState());
     }
-    getWallets();
   }
 
   int getIndexLogin() {
     return haveWalletInCore ? 2 : 3;
   }
 
-  void initData() {
-    getLoginState();
-  }
 
   void dispose() {
     addressWalletSubject.close();
