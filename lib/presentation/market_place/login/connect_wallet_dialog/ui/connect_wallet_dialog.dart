@@ -18,12 +18,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConnectWalletDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
-  final Widget navigationTo;
+  final Widget? navigationTo;
   final bool isRequireLoginEmail;
 
   const ConnectWalletDialog({
     Key? key,
-    required this.navigationTo,
+    this.navigationTo,
     required this.isRequireLoginEmail,
   }) : super(key: key);
 
@@ -89,20 +89,24 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           ),
                         );
                       }else{
+                        if(widget.navigationTo != null){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => widget.navigationTo!,
+                            ),
+                          );
+                        }
+                      }
+                    } else {
+                      if(widget.navigationTo != null){
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => widget.navigationTo,
+                            builder: (context) => widget.navigationTo!,
                           ),
                         );
                       }
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => widget.navigationTo,
-                        ),
-                      );
                     }
                 } else {
                   //yêu cầu login email:
@@ -121,12 +125,14 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     );
                   } else {
                     //ví đã liên kết email: => di chuyển đến màn tiếp theo
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => widget.navigationTo,
-                      ),
-                    );
+                    if(widget.navigationTo != null){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.navigationTo!,
+                        ),
+                      );
+                    }
                   }
                 }
               });

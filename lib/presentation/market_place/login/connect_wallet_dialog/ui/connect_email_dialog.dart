@@ -11,11 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConnectEmailDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
-  final Widget navigationTo;
+  final Widget? navigationTo;
 
   const ConnectEmailDialog({
     Key? key,
-    required this.navigationTo,
+    this.navigationTo,
   }) : super(key: key);
 
   @override
@@ -79,26 +79,28 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                         width: 16.w,
                       ),
                       StreamBuilder<bool>(
-                          stream: cubit.isCheckedCheckBoxStream,
-                          builder: (context, snapshot) {
-                            return Transform.scale(
-                              scale: 1.3,
-                              child: Checkbox(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                fillColor: MaterialStateProperty.all(
-                                    const Color(0xffE4AC1A)),
-                                activeColor:
-                                    const Color.fromRGBO(228, 172, 26, 1),
-                                // checkColor: const Colors,
-                                onChanged: (value) {
-                                  cubit.setCheckboxValue();
-                                },
-                                value: cubit.isCheckedCheckboxSubject.value,
+                        stream: cubit.isCheckedCheckBoxStream,
+                        builder: (context, snapshot) {
+                          return Transform.scale(
+                            scale: 1.3,
+                            child: Checkbox(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.r),
                               ),
-                            );
-                          }),
+                              fillColor: MaterialStateProperty.all(
+                                const Color(0xffE4AC1A),
+                              ),
+                              activeColor:
+                                  const Color.fromRGBO(228, 172, 26, 1),
+                              // checkColor: const Colors,
+                              onChanged: (value) {
+                                cubit.setCheckboxValue();
+                              },
+                              value: cubit.isCheckedCheckboxSubject.value,
+                            ),
+                          );
+                        },
+                      ),
                       Text(
                         S.current.dont_ask_again,
                         style: textNormal(
@@ -130,12 +132,16 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                               PrefsService.saveOptionShowDialogConnectEmail(
                                 !cubit.isCheckedCheckboxSubject.value,
                               );
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => widget.navigationTo,
-                                ),
-                              );
+                              if (widget.navigationTo != null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => widget.navigationTo!,
+                                  ),
+                                );
+                              } else {
+                                Navigator.pop(context);
+                              }
                             },
                             behavior: HitTestBehavior.opaque,
                             child: Padding(

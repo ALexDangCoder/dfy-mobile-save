@@ -141,6 +141,9 @@ Widget _buildButtonCancelOnPawn(
 ) {
   return ButtonGradient(
     onPressed: () async {
+      if(nftMarket.status == 7){
+        return;
+      }
       final nav = Navigator.of(context);
       final String dataString = await bloc.getDataStringForCancelPawn(
         pawnId: (nftMarket.bcCollateralId ?? 0).toString(),
