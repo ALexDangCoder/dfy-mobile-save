@@ -653,4 +653,15 @@
   "rejected":"REJECTED",
   "a_hard_nft_evaluation":"a Hard NFT evaluation",
   "your_hard_NFT_has_been":"Your hard NFT has been EVALUATED for",
+  "hard_nft_evaluation_from":"Hard NFT evaluation from ",
+  "authentic_product":"Authentic product",
+  "fake_product":"Fake product",
+  "depreciation":"Depreciation",
+  "hard_nft_evaluation_information":"HARD NFT EVALUATION INFORMATION",
+  "additional_information":"ADDITIONAL INFORMATION",
+  "hard_nft_properties":"HARD NFT PROPERTIES",
+  "hard_nft_picture_video":"HARD NFT PICTURE/VIDEO",
+  "documentE":"DOCUMENTS",
+  "evaluated_price":"Evaluated price"
+
 }

@@ -22,9 +22,5 @@ class EvaluationResultSuccess extends EvaluationHardNftResultState {
   // TODO: implement props
   List<Object?> get props => [list];
 }
-class DetailEvaluationResult extends EvaluationHardNftResultState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
+
 

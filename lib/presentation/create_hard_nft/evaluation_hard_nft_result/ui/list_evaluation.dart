@@ -18,18 +18,21 @@ class ListEvaluation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          S.current.to_mint_hard_nft_you,
-          style: textNormalCustom(
-            AppTheme.getInstance().grayTextColor(),
-            14,
-            null,
+        Padding(
+          padding: EdgeInsets.only(left: 16.w,right: 16.w),
+          child: Text(
+            S.current.to_mint_hard_nft_you,
+            style: textNormalCustom(
+              AppTheme.getInstance().grayTextColor(),
+              14,
+              null,
+            ),
           ),
         ),
         SizedBox(
-          height: 646.h,
           child: ListView.builder(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: listEvaluation.length,
             itemBuilder: (BuildContext context, int index) {
               return Column(

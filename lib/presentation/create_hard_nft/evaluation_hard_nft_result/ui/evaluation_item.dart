@@ -3,7 +3,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +20,15 @@ class EvaluationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EvaluationScreen(
+                      urlIcon: evaluationResult.urlToken ?? '',
+                      evaluationId: evaluationResult.evaluationId ?? '',
+                    )));
+      },
       child: Container(
         width: 343.w,
         height: 125.h,
@@ -64,10 +74,18 @@ class EvaluationItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ClipRRect(
-                    child: Image(
-                      image: AssetImage(ImageAssets.symbol),
-                      width: 24.w,
+                    clipBehavior: Clip.hardEdge,
+                    child: Container(
                       height: 24.h,
+                      width: 24.h,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(evaluationResult.urlToken ?? ''),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                   spaceW8,

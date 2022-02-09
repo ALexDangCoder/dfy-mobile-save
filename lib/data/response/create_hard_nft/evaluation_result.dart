@@ -36,13 +36,13 @@ class EvaluationResultResponse extends Equatable {
 class EvaluationResponse extends Equatable {
   @JsonKey(name: 'id')
   String? evaluationId;
-  @JsonKey(name: 'evaluator_avatar_cid')
-  String? avatarEvaluator;
+  @JsonKey(name: 'evaluator')
+  EvaluatorResponse? avatarEvaluator;
   @JsonKey(name: 'status')
   int? status;
   @JsonKey(name: 'evaluated_price')
   num? evaluatedPrice;
-  @JsonKey(name: 'evaluated_symbol')
+  @JsonKey(name: 'evaluated_price_symbol')
   String? evaluatedSymbol;
 
   EvaluationResponse(
@@ -60,7 +60,7 @@ class EvaluationResponse extends Equatable {
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
   String getPath(String avatarCid) {
     return ApiConstants.BASE_URL_IMAGE + avatarCid;
@@ -68,9 +68,27 @@ class EvaluationResponse extends Equatable {
 
   EvaluationResult toDomain() => EvaluationResult(
         evaluationId: evaluationId,
-        avatarEvaluator: getPath(avatarEvaluator ?? ''),
+        avatarEvaluator: getPath(avatarEvaluator?.avatarCid ?? ''),
         status: status,
         evaluatedSymbol: evaluatedSymbol,
         evaluatedPrice: evaluatedPrice,
       );
+}
+
+@JsonSerializable()
+class EvaluatorResponse extends Equatable {
+
+  @JsonKey(name: 'avatar_cid')
+  String? avatarCid;
+
+  EvaluatorResponse(this.avatarCid);
+
+  factory EvaluatorResponse.fromJson(Map<String, dynamic> json) =>
+      _$EvaluatorResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EvaluatorResponseToJson(this);
+
+  @override
+  List<Object?> get props => [];
+
 }
