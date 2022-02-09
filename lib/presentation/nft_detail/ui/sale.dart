@@ -192,60 +192,65 @@ Widget _buildButtonCancelOnSale(
           ),
         );
       }
-      // final bool isSuccess = await nav.push(
-      //   MaterialPageRoute(
-      //     builder: (context) => ,
-      //   ),
-      // );
-      //
       await showDialog(
         context: context,
-        builder: (BuildContext context) => ConnectWalletDialog(
+        builder: (BuildContext context) => const ConnectWalletDialog(
           isRequireLoginEmail: false,
-          navigationTo: approveWidget(
-            nftMarket: nftMarket,
-            dataString: dataString,
-            dataInfo: listApprove,
-            type: TYPE_CONFIRM_BASE.CANCEL_SALE,
-            cancelInfo: S.current.cancel_sale_info,
-            cancelWarning: S.current.customer_cannot,
-            title: S.current.cancel_sale,
-            onFail: (context) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BaseFail(
-                    title: S.current.cancel_sale,
-                    content: S.current.failed,
-                    onTapBtn: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                ),
-              );
-            },
-            onSuccess: (context, data) async {
-              final navigator = Navigator.of(context);
-              await bloc.confirmCancelSaleWithBE(
-                txnHash: data,
-                marketId: nftMarket.marketId ?? '',
-              );
-              await navigator.pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => BaseSuccess(
-                    title: S.current.cancel_sale,
-                    content: S.current.congratulation,
-                    callback: () {
-                      navigator.pop(true);
-                    },
-                  ),
-                ),
-              );
-              navigator.pop(true);
-            },
-          ),
         ),
       );
+      final walletCore = PrefsService.getCurrentWalletCore();
+      final walletBE = PrefsService.getCurrentBEWallet();
+      if (walletBE == walletCore) {
+        final bool isSuccess = await nav.push(
+          MaterialPageRoute(
+            builder: (context) => approveWidget(
+              nftMarket: nftMarket,
+              dataString: dataString,
+              dataInfo: listApprove,
+              type: TYPE_CONFIRM_BASE.CANCEL_SALE,
+              cancelInfo: S.current.cancel_sale_info,
+              cancelWarning: S.current.customer_cannot,
+              title: S.current.cancel_sale,
+              onFail: (context) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BaseFail(
+                      title: S.current.cancel_sale,
+                      content: S.current.failed,
+                      onTapBtn: () {
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                  ),
+                );
+              },
+              onSuccess: (context, data) async {
+                final navigator = Navigator.of(context);
+                await bloc.confirmCancelSaleWithBE(
+                  txnHash: data,
+                  marketId: nftMarket.marketId ?? '',
+                );
+                await navigator.pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => BaseSuccess(
+                      title: S.current.cancel_sale,
+                      content: S.current.congratulation,
+                      callback: () {
+                        navigator.pop(true);
+                      },
+                    ),
+                  ),
+                );
+                navigator.pop(true);
+              },
+            ),
+          ),
+        );
+        if (isSuccess) {
+          reload();
+        }
+      }
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),

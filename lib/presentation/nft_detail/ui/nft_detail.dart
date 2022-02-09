@@ -829,7 +829,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: nftOnPawn.isYou ?? false
+            bottomBar: nftOnPawn.walletAddress?.toLowerCase() ==
+                        PrefsService.getCurrentWalletCore().toLowerCase()
                 ? _buildButtonCancelOnPawn(
                     context,
                     bloc,

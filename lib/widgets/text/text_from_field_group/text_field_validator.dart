@@ -20,6 +20,7 @@ class TextFieldValidator extends StatefulWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final int maxInputChar;
+  final double? errorTextHeight;
 
   const TextFieldValidator({
     Key? key,
@@ -36,6 +37,7 @@ class TextFieldValidator extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.maxInputChar = 256,
+    this.errorTextHeight,
   }) : super(key: key);
 
   @override
@@ -133,9 +135,11 @@ class _TextFormFieldWidgetState extends State<TextFieldValidator> {
             Colors.white.withOpacity(0.5),
             16,
           ),
-          errorStyle: textNormal(
-            Colors.red,
-            14,
+          errorStyle: errorText(
+            h: widget.errorTextHeight,
+            color: widget.errorTextHeight != null
+                ? Colors.transparent
+                : Colors.red,
           ),
           suffixStyle: textCustom(),
           suffixText: widget.suffixText,

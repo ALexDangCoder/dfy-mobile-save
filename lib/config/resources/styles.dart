@@ -150,10 +150,10 @@ TextStyle textNormalCustom(
 }
 
 TextStyle textNormalOswaldCustom(
-    Color? color,
-    double? fontSize,
-    FontWeight? fontWeight,
-    ) {
+  Color? color,
+  double? fontSize,
+  FontWeight? fontWeight,
+) {
   return GoogleFonts.oswald(
     color: color ?? Colors.white,
     fontWeight: fontWeight ?? FontWeight.w500,
@@ -226,3 +226,16 @@ TextStyle normalText = GoogleFonts.sourceSansPro(
   fontStyle: FontStyle.normal,
   fontSize: 14.sp,
 );
+
+TextStyle errorText({
+  Color color = Colors.red,
+  FontWeight fontWeight = FontWeight.w400,
+  double? h,
+}) {
+  return GoogleFonts.sourceSansPro(
+    color: color,
+    fontWeight: fontWeight,
+    fontSize: 14,
+    height: h,
+  );
+}
