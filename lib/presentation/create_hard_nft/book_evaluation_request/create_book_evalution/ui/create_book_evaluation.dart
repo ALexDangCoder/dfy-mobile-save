@@ -288,6 +288,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                               final date =
                                                   DateFormat('dd/MM/yyyy')
                                                       .format(result);
+                                              final dateNow =
+                                                  DateFormat('dd/MM/yyyy')
+                                                      .format(DateTime.now());
+                                              if (date == dateNow) {
+                                                bloc.isDate = true;
+                                              } else {
+                                                bloc.isDate = false;
+                                              }
+                                              bloc.getValidate(
+                                                bloc.hourMy ?? '0',
+                                                bloc.minMy ?? '0',
+                                              );
                                               final dateChoose =
                                                   DateFormat('yyyy-MM-dd')
                                                       .format(result);
@@ -298,7 +310,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                   DateFormat('EEEE')
                                                       .format(result);
                                               bloc.dateMy = dateFormat;
-
                                               bloc.getValidateDay(
                                                 dateFormat,
                                               );
@@ -409,7 +420,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                       Colors.transparent,
                                                   content: PickTime(
                                                     hour: bloc.hourMy,
-                                                    miu: bloc.miuMy,
+                                                    miu: bloc.minMy,
                                                   ),
                                                 ),
                                               ),
@@ -423,7 +434,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                               bloc.timeStream
                                                   .add('$hour:$minute');
                                               bloc.hourMy = hour;
-                                              bloc.miuMy = minute;
+                                              bloc.minMy = minute;
                                               bloc.getValidate(
                                                 hour,
                                                 minute,
@@ -431,7 +442,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             } else {
                                               bloc.getValidate(
                                                 bloc.hourMy ?? '0',
-                                                bloc.miuMy ?? '0',
+                                                bloc.minMy ?? '0',
                                               );
                                             }
                                           }

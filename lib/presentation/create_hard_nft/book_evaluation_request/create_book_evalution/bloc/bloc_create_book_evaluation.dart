@@ -51,6 +51,8 @@ class BlocCreateBookEvaluation {
 
   static const String MINTING_FEE = '1';
   static const String EVALUATION_FEE = '2';
+  static const String DFY_ADDRESS =
+      '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
 
   BehaviorSubject<String> dateStream = BehaviorSubject.seeded('');
   BehaviorSubject<String> timeStream = BehaviorSubject.seeded('');
@@ -61,12 +63,13 @@ class BlocCreateBookEvaluation {
   late double locationLong;
   late double locationLat;
   String? hourMy;
-  String? miuMy;
+  String? minMy;
   String? dateMy;
   String? minuteMy;
   List<String> list = [];
   DateTime? dateTimeDay;
   EvaluationFee? evaluationFee;
+  bool? isDate = false;
 
   bool checkValidateDay(String day) {
     bool isDay = false;
@@ -122,32 +125,86 @@ class BlocCreateBookEvaluation {
   }
 
   bool checkHourWorking(int hour, int minute) {
-    final dtHour = DateTime.fromMillisecondsSinceEpoch(
-      objDetail.value.workingTimeFrom ?? 0,
+    //working hour
+    final workingHour = DateTime.fromMillisecondsSinceEpoch(
+      (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String hourWorking = DateFormat('HH').format(dtHour);
+    final String hourWorking = DateFormat('HH').format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
-    final dtMiu = DateTime.fromMillisecondsSinceEpoch(
-      objDetail.value.workingTimeFrom ?? 0,
+    //working Min
+    final workingMin = DateTime.fromMillisecondsSinceEpoch(
+      (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String miuWorking = DateFormat('mm').format(dtMiu);
-    final int miuWorkingInt = int.parse(miuWorking);
+    final String minWorking = DateFormat('mm').format(workingMin);
+    final int minWorkingInt = int.parse(minWorking);
 
-    final dtHourTo = DateTime.fromMillisecondsSinceEpoch(
-      objDetail.value.workingTimeTo ?? 0,
+    //time now
+    final String minNow = DateFormat('mm').format(DateTime.now());
+    final int minNowInt = int.parse(minNow);
+
+    final String hourNow = DateFormat('HH').format(DateTime.now());
+    final int hourNowInt = int.parse(hourNow);
+
+    // working hour close
+    final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
+      (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
-    final String hourWorkingTo = DateFormat('HH').format(dtHourTo);
+    final String hourWorkingTo = DateFormat('HH').format(workingHourClose);
     final int hourWorkingIntTo = int.parse(hourWorkingTo);
-    final dtMiuTo = DateTime.fromMillisecondsSinceEpoch(
-      objDetail.value.workingTimeTo ?? 0,
-    );
-    final String miuWorkingTo = DateFormat('mm').format(dtMiuTo);
-    final int miuWorkingIntTo = int.parse(miuWorkingTo);
 
-    if ((hourWorkingInt <= hour) &&
-        (hourWorkingIntTo >= hour) &&
-        ((hourWorkingIntTo == hour) &&
-            ((miuWorkingInt <= minute) && (minute <= miuWorkingIntTo)))) {
+    //working miu close
+    final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
+      (objDetail.value.workingTimeTo ?? 0) * 1000,
+    );
+    final String minWorkingTo = DateFormat('mm').format(workingMinClose);
+    final int minWorkingIntTo = int.parse(minWorkingTo);
+
+    if (isDate ?? false) {
+      if (hourNowInt == hour && minNowInt <= minute) {
+        return checkDateTime(
+          hour: hour,
+          hourWorkingInt: hourWorkingInt,
+          hourWorkingIntTo: hourWorkingIntTo,
+          minute: minute,
+          minWorkingInt: minWorkingInt,
+          minWorkingIntTo: minWorkingIntTo,
+        );
+      } else if (hourNowInt < hour) {
+        return checkDateTime(
+          hour: hour,
+          hourWorkingInt: hourWorkingInt,
+          hourWorkingIntTo: hourWorkingIntTo,
+          minute: minute,
+          minWorkingInt: minWorkingInt,
+          minWorkingIntTo: minWorkingIntTo,
+        );
+      } else {
+        return true;
+      }
+    } else {
+      return checkDateTime(
+        hour: hour,
+        hourWorkingInt: hourWorkingInt,
+        hourWorkingIntTo: hourWorkingIntTo,
+        minute: minute,
+        minWorkingInt: minWorkingInt,
+        minWorkingIntTo: minWorkingIntTo,
+      );
+    }
+  }
+
+  bool checkDateTime({
+    required int hourWorkingIntTo,
+    required int hour,
+    required int minute,
+    required int minWorkingIntTo,
+    required int minWorkingInt,
+    required int hourWorkingInt,
+  }) {
+    if ((hourWorkingIntTo == hour && minute <= minWorkingIntTo) ||
+        (hourWorkingInt == hour && minWorkingInt <= minute)) {
+      return false;
+    } else if (hourWorkingInt < hour && hourWorkingIntTo > hour) {
       return false;
     } else {
       return true;
@@ -156,7 +213,6 @@ class BlocCreateBookEvaluation {
 
   String getTextCreateAt(int dateCreateAt) {
     String textDate = '';
-
     final dt = DateTime.fromMillisecondsSinceEpoch(dateCreateAt);
     final String mm = DateFormat('MM').format(dt);
     final String yyyy = DateFormat('yyyy').format(dt);
@@ -234,7 +290,7 @@ class BlocCreateBookEvaluation {
         if (res.isBlank ?? false) {
         } else {
           for (final value in res) {
-             if (value.id == EVALUATION_FEE) {
+            if (value.id == EVALUATION_FEE) {
               evaluationFee = value;
             }
           }
