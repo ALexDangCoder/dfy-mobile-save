@@ -65,353 +65,356 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await cubit.getData(widget.exploreCategory.id ?? '');
-          },
-          child: BlocBuilder<CategoryDetailCubit, CategoryState>(
-            bloc: cubit,
-            builder: (BuildContext context, state) {
-              if (state is LoadingCategoryState) {
-                return Container(
-                  color: backgroundBottomSheetColor,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 145.h,
-                        color: AppTheme.getInstance().skeletonLight(),
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        width: 200.w,
-                        height: 25,
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppTheme.getInstance().skeletonLight(),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Container(
-                        height: 18,
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppTheme.getInstance().skeletonLight(),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          padding: const EdgeInsets.only(
-                            left: 21,
-                            right: 21,
-                            top: 10,
-                            bottom: 20,
-                          ),
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 15,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return const ItemCollectionLoad();
-                          },
-                          crossAxisCount: 2,
-                          staggeredTileBuilder: (int index) =>
-                              const StaggeredTile.fit(1),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
-              if (state is ErrorCategoryState) {
-                return Container(
-                  color: backgroundBottomSheetColor,
-                  child: Center(
+      body: Padding(
+        padding: const EdgeInsets.only(top:48),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await cubit.getData(widget.exploreCategory.id ?? '');
+            },
+            child: BlocBuilder<CategoryDetailCubit, CategoryState>(
+              bloc: cubit,
+              builder: (BuildContext context, state) {
+                if (state is LoadingCategoryState) {
+                  return Container(
+                    color: backgroundBottomSheetColor,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 54,
-                          width: 54,
-                          child: Image.asset(ImageAssets.err_load_category),
+                        Container(
+                          height: 145.h,
+                          color: AppTheme.getInstance().skeletonLight(),
                         ),
-                        const SizedBox(height: 24),
-                        Flexible(
-                          child: Text(
-                            S.current.could_not_load_data,
-                            style: textNormalCustom(
-                              textErrorLoad,
-                              13.sp,
-                              FontWeight.w400,
+                        const SizedBox(height: 12),
+                        Container(
+                          width: 200.w,
+                          height: 25,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: AppTheme.getInstance().skeletonLight(),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          height: 18,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: AppTheme.getInstance().skeletonLight(),
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        Expanded(
+                          child: StaggeredGridView.countBuilder(
+                            padding: const EdgeInsets.only(
+                              left: 21,
+                              right: 21,
+                              top: 10,
+                              bottom: 20,
                             ),
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 15,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return const ItemCollectionLoad();
+                            },
+                            crossAxisCount: 2,
+                            staggeredTileBuilder: (int index) =>
+                                const StaggeredTile.fit(1),
                           ),
-                        ),
-                        const SizedBox(height: 24),
-                        InkWell(
-                          onTap: () {
-                            cubit.getData(widget.exploreCategory.id ?? '');
-                          },
-                          child: SizedBox(
-                            height: 36,
-                            width: 36,
-                            child: Image.asset(ImageAssets.reload_category),
-                          ),
-                        ),
+                        )
                       ],
                     ),
-                  ),
-                );
-              } else {
-                return CustomScrollView(
-                  physics: const ClampingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
-                  controller: _listCollectionController,
-                  slivers: [
-                    StreamBuilder<Category>(
-                      stream: cubit.categoryStream,
-                      builder: (context, snapshot) {
-                        final data = snapshot.data;
-                        return BaseAppBar(
-                          image: ApiConstants.BASE_URL_IMAGE +
-                              (data?.bannerCid ?? ''),
-                          title:
-                              '${widget.exploreCategory.name} ${S.current.categories}',
-                          initHeight: 145.h,
-                          leading: SizedBox(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: SizedBox(
-                                height: 32,
-                                width: 32,
-                                child: Image.asset(ImageAssets.img_back),
+                  );
+                }
+                if (state is ErrorCategoryState) {
+                  return Container(
+                    color: backgroundBottomSheetColor,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 54,
+                            width: 54,
+                            child: Image.asset(ImageAssets.err_load_category),
+                          ),
+                          const SizedBox(height: 24),
+                          Flexible(
+                            child: Text(
+                              S.current.could_not_load_data,
+                              style: textNormalCustom(
+                                textErrorLoad,
+                                13.sp,
+                                FontWeight.w400,
                               ),
                             ),
                           ),
-                          actions: const [],
-                        );
-                      },
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          Container(
-                            color: backgroundBottomSheetColor,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 12),
-                                Text(
-                                  '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    20,
-                                    FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                StreamBuilder<Category>(
-                                  stream: cubit.categoryStream,
-                                  builder: (context, snapshot) {
-                                    final data = snapshot.data;
-                                    return Text(
-                                      data?.description ?? '',
-                                      style: textNormalCustom(
-                                        AppTheme.getInstance()
-                                            .textThemeColor()
-                                            .withOpacity(0.7),
-                                        14,
-                                        FontWeight.w400,
-                                      ),
-                                    );
-                                  },
-                                )
-                              ],
+                          const SizedBox(height: 24),
+                          InkWell(
+                            onTap: () {
+                              cubit.getData(widget.exploreCategory.id ?? '');
+                            },
+                            child: SizedBox(
+                              height: 36,
+                              width: 36,
+                              child: Image.asset(ImageAssets.reload_category),
                             ),
                           ),
-                          if (state is LoadListCollectionSuccessState)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 32,
-                              ),
-                              constraints: BoxConstraints(
-                                minHeight:
-                                    MediaQuery.of(context).size.height - 145,
-                              ),
-                              color: backgroundBottomSheetColor,
-                              child: StreamBuilder<
-                                  List<CollectionCategoryModel>>(
-                                stream: cubit.listCollectionStream,
-                                builder: (context, snapshot) {
-                                  final data = snapshot.data ?? [];
-                                  return Column(
-                                    children: [
-                                      StaggeredGridView.countBuilder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        mainAxisSpacing: 20,
-                                        crossAxisSpacing: 15,
-                                        itemCount: data.length,
-                                        itemBuilder: (context, index) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailCollection(
-                                                    //todo address wallet
-                                                    collectionAddress: data[
-                                                                index]
-                                                            .collectionAddress ??
-                                                        '', typeScreen: PageRouter.MARKET,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: ItemCollection(
-                                              fixWidth: false,
-                                              urlBackGround: ApiConstants
-                                                      .BASE_URL_IMAGE +
-                                                  (data[index].coverId ?? ''),
-                                              backgroundFit: BoxFit.cover,
-                                              urlIcon: ApiConstants
-                                                      .BASE_URL_IMAGE +
-                                                  (data[index].avatarId ??
-                                                      ''),
-                                              title: data[index]
-                                                      .collectionName ??
-                                                  '',
-                                              items:
-                                                  (data[index].totalNft ?? 0)
-                                                      .toString(),
-                                              owners: (data[index]
-                                                          .nftOwnerCount ??
-                                                      0)
-                                                  .toString(),
-                                              text:
-                                                  (data[index].description ??
-                                                          '')
-                                                      .stripHtmlIfNeeded(),
-                                            ),
-                                          );
-                                        },
-                                        crossAxisCount: 2,
-                                        staggeredTileBuilder: (int index) =>
-                                            const StaggeredTile.fit(1),
-                                      ),
-                                      StreamBuilder<LoadMoreType>(
-                                        stream: cubit.canLoadMoreStream,
-                                        builder: (context, snapshot) {
-                                          final data = snapshot.data ??
-                                              LoadMoreType.CAN_LOAD_MORE;
-                                          if (data ==
-                                              LoadMoreType.CAN_LOAD_MORE) {
-                                            return SizedBox(
-                                              height: 40,
-                                              child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth: 3,
-                                                  color:
-                                                      AppTheme.getInstance()
-                                                          .whiteColor(),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          if (data ==
-                                              LoadMoreType.LOAD_MORE_FAIL) {
-                                            return InkWell(
-                                              onTap: () {
-                                                cubit.getListCollection(widget
-                                                        .exploreCategory.id ??
-                                                    '');
-                                              },
-                                              child: SizedBox(
-                                                height: 40,
-                                                width: 40,
-                                                child: Image.asset(
-                                                  ImageAssets.reload_category,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return const SizedBox(
-                                              height: 0,
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            )
-                          else
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 32,
-                              ),
-                              constraints: BoxConstraints(
-                                minHeight:
-                                    MediaQuery.of(context).size.height - 145,
-                              ),
-                              color: backgroundBottomSheetColor,
-                              child: Column(
-                                children: [
-                                  StaggeredGridView.countBuilder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    mainAxisSpacing: 20,
-                                    crossAxisSpacing: 15,
-                                    itemCount: 10,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () async {
-                                          cubit.nextPage = 1;
-                                          await cubit.getListCollection(
-                                              widget.exploreCategory.id ??
-                                                  '');
-                                        },
-                                        child: state
-                                                is LoadListCollectionFailState
-                                            ? loadCollectionFail()
-                                            : const ItemCollectionLoad(),
-                                      );
-                                    },
-                                    crossAxisCount: 2,
-                                    staggeredTileBuilder: (int index) =>
-                                        const StaggeredTile.fit(1),
-                                  ),
-                                ],
-                              ),
-                            )
                         ],
                       ),
                     ),
-                  ],
-                );
-              }
-            },
+                  );
+                } else {
+                  return CustomScrollView(
+                    physics: const ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    controller: _listCollectionController,
+                    slivers: [
+                      StreamBuilder<Category>(
+                        stream: cubit.categoryStream,
+                        builder: (context, snapshot) {
+                          final data = snapshot.data;
+                          return BaseAppBar(
+                            image: ApiConstants.BASE_URL_IMAGE +
+                                (data?.bannerCid ?? ''),
+                            title:
+                                '${widget.exploreCategory.name} ${S.current.categories}',
+                            initHeight: 145.h,
+                            leading: SizedBox(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: SizedBox(
+                                  height: 32,
+                                  width: 32,
+                                  child: Image.asset(ImageAssets.img_back),
+                                ),
+                              ),
+                            ),
+                            actions: const [],
+                          );
+                        },
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            Container(
+                              color: backgroundBottomSheetColor,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    '${S.current.explore} ${widget.exploreCategory.name} ${S.current.categories}',
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().textThemeColor(),
+                                      20,
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  StreamBuilder<Category>(
+                                    stream: cubit.categoryStream,
+                                    builder: (context, snapshot) {
+                                      final data = snapshot.data;
+                                      return Text(
+                                        data?.description ?? '',
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance()
+                                              .textThemeColor()
+                                              .withOpacity(0.7),
+                                          14,
+                                          FontWeight.w400,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                            if (state is LoadListCollectionSuccessState)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 32,
+                                ),
+                                constraints: BoxConstraints(
+                                  minHeight:
+                                      MediaQuery.of(context).size.height - 145,
+                                ),
+                                color: backgroundBottomSheetColor,
+                                child: StreamBuilder<
+                                    List<CollectionCategoryModel>>(
+                                  stream: cubit.listCollectionStream,
+                                  builder: (context, snapshot) {
+                                    final data = snapshot.data ?? [];
+                                    return Column(
+                                      children: [
+                                        StaggeredGridView.countBuilder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          mainAxisSpacing: 20,
+                                          crossAxisSpacing: 15,
+                                          itemCount: data.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailCollection(
+                                                      //todo address wallet
+                                                      collectionAddress: data[
+                                                                  index]
+                                                              .collectionAddress ??
+                                                          '', typeScreen: PageRouter.MARKET,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: ItemCollection(
+                                                fixWidth: false,
+                                                urlBackGround: ApiConstants
+                                                        .BASE_URL_IMAGE +
+                                                    (data[index].coverId ?? ''),
+                                                backgroundFit: BoxFit.cover,
+                                                urlIcon: ApiConstants
+                                                        .BASE_URL_IMAGE +
+                                                    (data[index].avatarId ??
+                                                        ''),
+                                                title: data[index]
+                                                        .collectionName ??
+                                                    '',
+                                                items:
+                                                    (data[index].totalNft ?? 0)
+                                                        .toString(),
+                                                owners: (data[index]
+                                                            .nftOwnerCount ??
+                                                        0)
+                                                    .toString(),
+                                                text:
+                                                    (data[index].description ??
+                                                            '')
+                                                        .stripHtmlIfNeeded(),
+                                              ),
+                                            );
+                                          },
+                                          crossAxisCount: 2,
+                                          staggeredTileBuilder: (int index) =>
+                                              const StaggeredTile.fit(1),
+                                        ),
+                                        StreamBuilder<LoadMoreType>(
+                                          stream: cubit.canLoadMoreStream,
+                                          builder: (context, snapshot) {
+                                            final data = snapshot.data ??
+                                                LoadMoreType.CAN_LOAD_MORE;
+                                            if (data ==
+                                                LoadMoreType.CAN_LOAD_MORE) {
+                                              return SizedBox(
+                                                height: 40,
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 3,
+                                                    color:
+                                                        AppTheme.getInstance()
+                                                            .whiteColor(),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            if (data ==
+                                                LoadMoreType.LOAD_MORE_FAIL) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  cubit.getListCollection(widget
+                                                          .exploreCategory.id ??
+                                                      '');
+                                                },
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  width: 40,
+                                                  child: Image.asset(
+                                                    ImageAssets.reload_category,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return const SizedBox(
+                                                height: 0,
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              )
+                            else
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 32,
+                                ),
+                                constraints: BoxConstraints(
+                                  minHeight:
+                                      MediaQuery.of(context).size.height - 145,
+                                ),
+                                color: backgroundBottomSheetColor,
+                                child: Column(
+                                  children: [
+                                    StaggeredGridView.countBuilder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      mainAxisSpacing: 20,
+                                      crossAxisSpacing: 15,
+                                      itemCount: 10,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () async {
+                                            cubit.nextPage = 1;
+                                            await cubit.getListCollection(
+                                                widget.exploreCategory.id ??
+                                                    '');
+                                          },
+                                          child: state
+                                                  is LoadListCollectionFailState
+                                              ? loadCollectionFail()
+                                              : const ItemCollectionLoad(),
+                                        );
+                                      },
+                                      crossAxisCount: 2,
+                                      staggeredTileBuilder: (int index) =>
+                                          const StaggeredTile.fit(1),
+                                    ),
+                                  ],
+                                ),
+                              )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),
