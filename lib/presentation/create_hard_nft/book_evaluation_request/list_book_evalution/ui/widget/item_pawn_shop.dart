@@ -213,31 +213,25 @@ class ItemPawnShop extends StatelessWidget {
             child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        HeroDialogRoute(
-                          builder: (context) {
-                            return DialogCancel(
-                              numPhoneCode:
-                                  appointment.evaluator?.phoneCode?.code ?? '',
-                              title: appointment.evaluator?.name ?? '',
-                              urlAvatar:
-                                  '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
-                              date: 0.formatDateTimeMy(
-                                appointment.appointmentTime ?? 0,
+                      if (!bloc.isLoadingText) {
+                        Navigator.of(context)
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return DialogCancel(
+                                    appointment: appointment,
+                                    bloc: bloc,
+                                  );
+                                },
+                                isNonBackground: false,
                               ),
-                              location: appointment.evaluator?.address ?? '',
-                              mail: appointment.evaluator?.email ?? '',
-                              numPhone: appointment.evaluator?.phone ?? '',
-                              status: bloc.getTextStatus(
-                                appointment.status ?? 0,
-                                appointment.acceptedTime ?? 0,
+                            )
+                            .then(
+                              (value) => bloc.getListPawnShop(
+                                assetId: bloc.assetID,
                               ),
-                              bloc: bloc,
                             );
-                          },
-                          isNonBackground: false,
-                        ),
-                      );
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(

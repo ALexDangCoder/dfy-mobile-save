@@ -61,7 +61,8 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await _bloc.getListPawnShop(
-                    assetId: '61e9096a4aec3d3977856bf9');
+                  assetId: _bloc.assetID,
+                );
               },
               child: Column(
                 children: [

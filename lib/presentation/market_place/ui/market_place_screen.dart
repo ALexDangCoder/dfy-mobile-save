@@ -188,7 +188,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ListBookEvaluation(
-                            assetID: '61e9096a4aec3d3977856bf9',
+                            assetID: '620490544aec3d812452a20c',
                             cityId: 1,
                           ),
                         ),
