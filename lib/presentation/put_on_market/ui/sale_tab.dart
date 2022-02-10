@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
@@ -160,6 +161,8 @@ class _SaleTabState extends State<SaleTab>
                             );
                             _putOnMarketModel.tokenAddress =
                                 widget.cubit.listToken[index].address ?? '';
+                            _putOnMarketModel.loanSymbol =
+                                widget.cubit.listToken[index].symbol ?? '';
                           },
                           onchangeText: (value) {
                             widget.cubit.changeTokenSale(
@@ -317,12 +320,13 @@ class _SaleTabState extends State<SaleTab>
                               DetailItemApproveModel(
                                 title: '${S.current.price_per_1} :',
                                 value:
-                                    '${widget.cubit.valueTokenInputSale ?? 0} ${widget.cubit.tokenSale?.symbol ?? 'DFY'}',
+                                    '${widget.cubit.valueTokenInputSale ?? 0} ${_putOnMarketModel.loanSymbol ?? 'DFY'}',
                                 isToken: true,
                               )
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            typeApprove: TYPE_CONFIRM_BASE.PUT_ON_SALE,
+                            spender: nft_sales_address_dev2,
+                            isPutOnMarket: true,
                           ),
                         ),
                       ),

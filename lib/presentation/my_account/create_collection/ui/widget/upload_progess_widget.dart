@@ -124,7 +124,6 @@ class _UploadProgressState extends State<UploadProgress>
               ],
               title: S.current.create_collection,
               textActiveButton: S.current.create,
-              typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
               spender: widget.bloc.collectionType == HARD_COLLECTION
                   ? hard_nft_factory_address_dev2
                   : nft_factory_dev2,

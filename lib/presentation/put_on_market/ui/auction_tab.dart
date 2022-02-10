@@ -58,8 +58,6 @@ class _AuctionTabState extends State<AuctionTab>
   String? buyOutPriceErrorText;
   String? priceStepErrorText;
   String? errorTextEndTime;
-  String? hour;
-  String? minute;
 
   int? durationTime;
 
@@ -808,7 +806,8 @@ class _AuctionTabState extends State<AuctionTab>
                                 ),
                               ],
                               textActiveButton: S.current.put_on_auction,
-                              typeApprove: TYPE_CONFIRM_BASE.PUT_ON_AUCTION,
+                              spender: nft_auction_dev2,
+                              isPutOnMarket: true,
                             ),
                           ),
                         ),
@@ -874,13 +873,20 @@ class _AuctionTabState extends State<AuctionTab>
                             child: AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
-                              content: PickTime(miu : minute, hour : hour),
+                              content: PickTime(
+                                miu: timeController.text.isNotEmpty
+                                    ? timeController.text.split(':')[1]
+                                    : null,
+                                hour: timeController.text.isNotEmpty
+                                    ? timeController.text.split(':')[0]
+                                    : null,
+                              ),
                             ),
                           ),
                         );
                         if (result != null) {
-                          hour = result.stringValueOrEmpty('hour');
-                          minute =
+                          final String hour = result.stringValueOrEmpty('hour');
+                          final String minute =
                               result.stringValueOrEmpty('minute');
                           timeController.text = '$hour : $minute';
                           validateDuration();
