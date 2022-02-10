@@ -4,11 +4,12 @@ class ItemMenuModel {
   String title;
   List<ItemMenuModel> children;
 
-  ItemMenuModel(
-      {required this.icon,
-      required this.routeName,
-      required this.title,
-      required this.children});
+  ItemMenuModel({
+    required this.icon,
+    required this.routeName,
+    required this.title,
+    required this.children,
+  });
 
   factory ItemMenuModel.createChild({
     required String routeName,
@@ -23,13 +24,13 @@ class ItemMenuModel {
   }
 
   factory ItemMenuModel.createParent({
-    required String routeName,
+    String? routeName,
     required String title,
     required String icon,
     required List<ItemMenuModel> children,
   }) {
     return ItemMenuModel(
-      routeName: routeName,
+      routeName: routeName ?? '',
       title: title,
       icon: icon,
       children: children,

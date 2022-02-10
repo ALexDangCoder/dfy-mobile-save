@@ -1,5 +1,7 @@
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -51,6 +53,24 @@ class _ItemMapState extends State<ItemMap> {
         zoom: 14,
       ),
       markers: _markers,
+      zoomControlsEnabled: false,
+      gestureRecognizers: Set()
+        ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+        ..add(
+          Factory<VerticalDragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer(),
+          ),
+        )
+        ..add(
+          Factory<HorizontalDragGestureRecognizer>(
+            () => HorizontalDragGestureRecognizer(),
+          ),
+        )
+        ..add(
+          Factory<ScaleGestureRecognizer>(
+            () => ScaleGestureRecognizer(),
+          ),
+        ),
     );
   }
 }

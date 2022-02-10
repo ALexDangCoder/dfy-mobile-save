@@ -65,7 +65,8 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.only(top:48),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(30),
@@ -171,7 +172,9 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                   );
                 } else {
                   return CustomScrollView(
-                    physics: const ScrollPhysics(),
+                    physics: const ClampingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     controller: _listCollectionController,
                     slivers: [
                       StreamBuilder<Category>(

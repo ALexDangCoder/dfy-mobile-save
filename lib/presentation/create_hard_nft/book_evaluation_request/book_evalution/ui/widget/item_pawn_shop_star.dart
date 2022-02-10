@@ -52,6 +52,9 @@ class ItemPawnShopStar extends StatelessWidget {
                 child: Image.network(
                   avatarPawnShopUrl,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                  ),
                 ),
               ),
               spaceW8,

@@ -28,8 +28,8 @@ class _PickTimeState extends State<PickTime> {
           : DateTime.now().minute.toString();
     } else {
       myMiu =  int.parse(miu) < 10
-          ? '0$miu'
-          : miu;
+          ? '0${int.parse(miu)}'
+          : miu.replaceAll(' ', '');
     }
     return myMiu;
   }
@@ -42,8 +42,8 @@ class _PickTimeState extends State<PickTime> {
       : DateTime.now().hour.toString();
     } else {
       myHour =  int.parse(hour) < 10
-          ? '0$hour'
-          : hour;
+          ? '0${int.parse(hour)}'
+          : hour.replaceAll(' ', '');
     }
     return myHour;
   }

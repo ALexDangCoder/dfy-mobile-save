@@ -6,6 +6,13 @@ import 'package:rxdart/rxdart.dart';
 
 class BlocBookEvaluation {
   BehaviorSubject<List<EvaluatorsCityModel>> list = BehaviorSubject.seeded([]);
+  List<EvaluatorsCityModel>? listMap;
+  double locationLat = 51.53523402237351;
+  String nameCity = '';
+  double locationLong = -0.12769100104405115;
+  String id = '';
+  String evaluatorId = '';
+  String? assetId;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
@@ -16,10 +23,10 @@ class BlocBookEvaluation {
         await _createHardNFTRepository.getListAppointmentWithCity(
       cityId,
     );
-
     result.when(
       success: (res) {
         if (res.isNotEmpty) {
+          listMap = res;
           list.sink.add(res);
         } else {
           list.sink.add([]);
