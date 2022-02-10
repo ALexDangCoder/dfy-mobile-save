@@ -38,6 +38,11 @@ class TypeNFTBox extends StatelessWidget {
             image,
             width: 24.w,
             height: 24.h,
+            errorBuilder: (context, error, stackTrace) => Container(
+              width: 24.w,
+              height: 24.h,
+              color: AppTheme.getInstance().backgroundBTSColor(),
+            ),
           ),
           Text(
             text,
