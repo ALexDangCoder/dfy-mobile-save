@@ -697,6 +697,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
 
   //todo refactor stl
   Container itemProperty({
+    bool isHaveClose = false,
     required String property,
     required String value,
     required int index,
@@ -742,13 +743,16 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               )
             ],
           ),
-          InkWell(
-            onTap: () {
-              cubit.properties.removeAt(index);
-              cubit.checkPropertiesWhenSave();
-            },
-            child: Image.asset(
-              ImageAssets.closeProperties,
+          Visibility(
+            visible: isHaveClose ? true : false,
+            child: InkWell(
+              onTap: () {
+                cubit.properties.removeAt(index);
+                cubit.checkPropertiesWhenSave();
+              },
+              child: Image.asset(
+                ImageAssets.closeProperties,
+              ),
             ),
           ),
         ],
