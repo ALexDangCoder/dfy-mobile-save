@@ -8,6 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+const String TYPE_OF_FILE = 'type';
+const String PATH_OF_FILE = 'path';
+const String SIZE_OF_FILE = 'size';
+const String EXTENSION_OF_FILE = 'extension';
+const String VALID_FORMAT_OF_FILE = 'valid_format';
+
 Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
   final List<String> allowedExtensions = type.fileType;
 
@@ -15,7 +21,7 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
   String _fileType = '';
   String _fileExtension = '';
   bool _validFormat = true;
-  int fileSize = 0;
+  int _fileSize = 0;
   final FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: allowedExtensions,
@@ -36,18 +42,17 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
         _fileType = MEDIA_IMAGE_FILE;
       }
     }
-
     _filePath = result.files.single.path ?? '';
-    fileSize = result.files.single.size;
+    _fileSize = result.files.single.size;
   } else {
     // User canceled the picker
   }
   return {
-    'type': _fileType,
-    'path': _filePath,
-    'size': fileSize,
-    'extension': _fileExtension,
-    'valid_format' : _validFormat,
+    TYPE_OF_FILE: _fileType,
+    PATH_OF_FILE: _filePath,
+    SIZE_OF_FILE: _fileSize,
+    EXTENSION_OF_FILE: _fileExtension,
+    VALID_FORMAT_OF_FILE : _validFormat,
   };
 }
 

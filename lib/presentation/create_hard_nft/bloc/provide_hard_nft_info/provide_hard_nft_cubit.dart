@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
@@ -15,8 +14,6 @@ import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -60,6 +57,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///List path image
   List<String> listPathImage = [];
+  List<String> listPathDocument = [];
   String currentImagePath = '';
   int currentIndexImage = 0;
 
@@ -73,8 +71,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
       BehaviorSubject();
 
-  BehaviorSubject<List<String>> imagePathSubject = BehaviorSubject();
+  ///Control upload Image, Document
+  BehaviorSubject<List<String>> listImagePathSubject = BehaviorSubject();
   BehaviorSubject<String> currentImagePathSubject = BehaviorSubject();
+  BehaviorSubject<List<String>> listDocumentPathSubject = BehaviorSubject();
+
+  ///add Button subject
+  BehaviorSubject<bool> enableButtonUploadImageSubject = BehaviorSubject();
+  BehaviorSubject<bool> enableButtonUploadDocumentSubject = BehaviorSubject();
+
+
 
   Future<void> getPhonesApi() async {
     final Result<List<PhoneCodeModel>> resultPhone =
@@ -285,45 +291,5 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else {
       visibleDropDownCountry.sink.add(false);
     }
-  }
-
-  Future<void> pickFile() async {
-    final Map<String, dynamic> mediaMap =
-        await pickMediaFile(type: PickerType.MEDIA_FILE);
-    final _path = mediaMap.getStringValue('path');
-    if (mediaMap.getBoolValue('valid_format') && _path.isNotEmpty) {
-      listPathImage.add(_path);
-      imagePathSubject.sink.add(listPathImage);
-      if (currentImagePath.isEmpty) {
-        currentImagePath = listPathImage.first;
-        currentImagePathSubject.sink.add(currentImagePath);
-      }
-    }
-  }
-
-  void controlMainImage({required bool isNext}) {
-    if (currentImagePath.isEmpty) {
-      currentIndexImage = 0;
-      currentImagePath = listPathImage.first;
-    }
-    if (isNext) {
-      if (currentIndexImage == (listPathImage.length-1)) {
-        currentIndexImage = 0;
-        currentImagePath = listPathImage.first;
-      } else {
-        currentIndexImage++;
-        currentImagePath = listPathImage[currentIndexImage];
-      }
-    } else {
-      if (currentIndexImage == 0) {
-        currentIndexImage = listPathImage.length-1;
-        currentImagePath = listPathImage.last;
-      } else {
-        currentIndexImage--;
-        currentImagePath = listPathImage[currentIndexImage];
-      }
-    }
-    log('List len: ${listPathImage.length} ---- Current Index = $currentIndexImage ---- Current path: $currentImagePath');
-    currentImagePathSubject.sink.add(currentImagePath);
   }
 }

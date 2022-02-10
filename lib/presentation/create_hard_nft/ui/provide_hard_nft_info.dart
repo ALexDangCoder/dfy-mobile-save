@@ -1,20 +1,20 @@
-import 'dart:io';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/common_widget.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/select_collection_dropdown.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_image_widget.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/widget/main_media_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
 
 enum CircleStatus {
@@ -95,7 +95,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH20,
-                addMediaFile(),
+                // addMediaFile(),
+                UploadWidget(
+                  cubit: cubit,
+                ),
                 spaceH32,
                 textShowWithPadding(
                   textShow: 'DOCUMENTS',
@@ -105,11 +108,26 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     FontWeight.w400,
                   ),
                 ),
-                divider,
                 spaceH20,
-                btnAddFtAddMoreProperties(),
+                UploadDocumentWidget(
+                  cubit: cubit,
+                ),
+                StreamBuilder<bool>(
+                    stream: cubit.enableButtonUploadDocumentSubject,
+                    builder: (context, snapshot) {
+                      final _isEnable = snapshot.data ?? true;
+                      return Visibility(
+                        visible: _isEnable,
+                        child: btnAdd(
+                          isEnable: _isEnable,
+                          content: 'Add',
+                          onTap: () {
+                            cubit.pickDocument();
+                          },
+                        ),
+                      );
+                    }),
                 spaceH20,
-                divider,
                 spaceH32,
                 textShowWithPadding(
                   textShow: 'HARD NFT INFORMATION',
@@ -496,46 +514,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
         ),
       ),
-    );
-  }
-
-  StreamBuilder<String> addMediaFile() {
-    return StreamBuilder<String>(
-      stream: cubit.currentImagePathSubject,
-      builder: (context, snapshot) {
-        final _path = snapshot.data ?? '';
-        if (_path.isEmpty) {
-          return InkWell(
-            onTap: () {
-              cubit.pickFile();
-            },
-            child: ButtonDashedAddImageFtVid(),
-          );
-        } else {
-          return Container(
-            height: 500.h,
-            child: Column(
-              children: [
-                Expanded(
-                  child: MediaFileWidget(
-                    cubit: cubit,
-                    mediaWidget: Image.file(
-                      File(_path),
-                    ),
-                    typeMedia: TYPE_MEDIA_WIDGET.MAIN,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    cubit.pickFile();
-                  },
-                  child: ButtonDashedAddImageFtVid(),
-                )
-              ],
-            ),
-          );
-        }
-      },
     );
   }
 
