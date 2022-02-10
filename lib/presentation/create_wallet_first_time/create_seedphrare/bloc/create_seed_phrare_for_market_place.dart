@@ -62,7 +62,7 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
           final data = {
             'walletAddress': walletAddress,
-            'bytesSha3': bytesSha3,
+            'bytesSha3': listSha3,
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },

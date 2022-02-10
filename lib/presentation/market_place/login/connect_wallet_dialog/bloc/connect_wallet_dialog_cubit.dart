@@ -89,7 +89,8 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     showLoading(context);
     if (loginStatusSubject.hasValue) {
       if (loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG) {
-        final double balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
+        final double balance =
+            await client.getBalanceOfBnb(ofAddress: walletAddress);
         balanceSubject.sink.add(balance);
       }
     }
@@ -214,7 +215,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
           final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
           final data = {
             'walletAddress': walletAddress,
-            'bytesSha3': bytesSha3,
+            'bytesSha3': listSha3,
           };
           unawaited(trustWalletChannel.invokeMethod('signWallet', data));
         },

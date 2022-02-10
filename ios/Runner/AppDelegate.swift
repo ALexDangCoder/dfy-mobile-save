@@ -181,7 +181,7 @@ extension AppDelegate {
         }
         
         if call.method == "signWallet" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? FlutterStandardTypedData {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? [Int] {
                 result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
             }
         }
@@ -836,14 +836,15 @@ extension AppDelegate {
         return param
     }
     
-    private func signWallet(walletAddress: String, bytesSha3: FlutterStandardTypedData) -> [String: Any] {
+    private func signWallet(walletAddress: String, bytesSha3: [Int]) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: { $0.walletAddress == walletAddress })
         if walletModel != nil && !walletModel!.privateKey.isEmpty {
             if let privateKeyData = walletModel?.privateKey.hexadecimal {
                 let privateKey = PrivateKey(data: privateKeyData)
                 if let privKey = privateKey {
-                    let originalMessageHashInHexCore = privKey.sign(digest: Data(bytesSha3.data), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
+                    let listUint8: [UInt8] = bytesSha3.map({UInt8($0)})
+                    let originalMessageHashInHexCore = privKey.sign(digest: Data(listUint8), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
                     if originalMessageHashInHexCore != "" {
                         let firstKey = Int( originalMessageHashInHexCore.substring(with: (originalMessageHashInHexCore.count-2)..<originalMessageHashInHexCore.count)) ?? 0
                         var signature = originalMessageHashInHexCore.substring(with: 0..<originalMessageHashInHexCore.count-2)
