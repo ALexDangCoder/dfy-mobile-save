@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
@@ -16,6 +15,8 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,7 @@ class MarketPlaceScreen extends StatefulWidget {
   _MarketPlaceState createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlaceScreen>
-    with AutomaticKeepAliveClientMixin<MarketPlaceScreen> {
+class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliveClientMixin<MarketPlaceScreen>{
   late MarketplaceCubit cubit;
 
   @override
@@ -184,13 +184,13 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       );
                     },
                     nftCallBack: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ListBookEvaluation(
-                            assetID: '620490544aec3d812452a20c',
-                            cityId: 1,
+                      showDialog(
+                        context: context,
+                        builder: (_) => ConnectWalletDialog(
+                          navigationTo: CreateNFTScreen(
+                            cubit: CreateNftCubit(),
                           ),
+                          isRequireLoginEmail: false,
                         ),
                       );
                     },
@@ -204,7 +204,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors:
-                          AppTheme.getInstance().listBackgroundMarketColor(),
+                      AppTheme.getInstance().listBackgroundMarketColor(),
                     ),
                   ),
                   child: Column(
@@ -234,7 +234,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 //priority by position in
                                 // listCollectionFtExploreFtNft
                                 for (Map<String, dynamic> e
-                                    in cubit.listCollectionFtExploreFtNft)
+                                in cubit.listCollectionFtExploreFtNft)
                                   if (e['name'] ==
                                       'Buy, sell, and create collectible NFTs') ...[
                                     ListNftBuySellCollectible(
@@ -298,15 +298,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                   ]
                                   //this else handle explore categories
                                   else ...[
-                                    ListExploreCategory(
-                                      cubit: cubit,
-                                      isLoading: false,
-                                      isLoadFail: false,
-                                    ),
-                                    SizedBox(
-                                      height: 32.h,
-                                    ),
-                                  ],
+                                      ListExploreCategory(
+                                        cubit: cubit,
+                                        isLoading: false,
+                                        isLoadFail: false,
+                                      ),
+                                      SizedBox(
+                                        height: 32.h,
+                                      ),
+                                    ],
                                 SizedBox(
                                   height: 164.h,
                                 ),
