@@ -1,11 +1,19 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/wallet/ui/custom_tween.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,27 +21,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'item_icon_text.dart';
 
 class DialogCancel extends StatelessWidget {
-  final String urlAvatar;
-  final String numPhone;
-  final String numPhoneCode;
-  final String mail;
-  final String location;
-  final String date;
-  final String status;
-  final String title;
+  final AppointmentModel appointment;
   final BlocListBookEvaluation bloc;
 
   const DialogCancel({
     Key? key,
-    required this.urlAvatar,
-    required this.numPhone,
-    required this.mail,
-    required this.location,
-    required this.date,
-    required this.status,
-    required this.title,
     required this.bloc,
-    required this.numPhoneCode,
+    required this.appointment,
   }) : super(key: key);
 
   @override
@@ -82,7 +76,7 @@ class DialogCancel extends StatelessWidget {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.network(
-                                    urlAvatar,
+                                    '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                                     width: 46.w,
                                     height: 46.h,
                                     fit: BoxFit.cover,
@@ -91,7 +85,7 @@ class DialogCancel extends StatelessWidget {
                                 SizedBox(
                                   width: 206.w,
                                   child: Text(
-                                    title,
+                                    appointment.evaluator?.name ?? '',
                                     style: textNormalCustom(
                                       null,
                                       20,
@@ -106,32 +100,41 @@ class DialogCancel extends StatelessWidget {
                             ),
                             spaceH16,
                             ItemIconText(
-                              text: '($numPhoneCode)$numPhone',
+                              text:
+                                  '(${appointment.evaluator?.phoneCode?.code ?? ''})${appointment.evaluator?.phone ?? ''}',
                               icon: ImageAssets.ic_phone,
                             ),
                             spaceH16,
                             ItemIconText(
-                              text: mail,
+                              text: appointment.evaluator?.email ?? '',
                               icon: ImageAssets.ic_mail,
                             ),
                             spaceH16,
                             ItemIconText(
-                              text: location,
+                              text: appointment.evaluator?.address ?? '',
                               icon: ImageAssets.ic_location,
                             ),
                             spaceH16,
                             ItemIconText(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
-                              text: date,
+                              text: 0.formatDateTimeMy(
+                                appointment.appointmentTime ?? 0,
+                              ),
                               icon: ImageAssets.ic_calendar_market,
                             ),
                             spaceH16,
                             Text(
-                              status,
+                              bloc.getTextStatus(
+                                appointment.status ?? 0,
+                                appointment.acceptedTime ?? 0,
+                              ),
                               style: textNormalCustom(
                                 bloc.checkColor(
-                                  status,
+                                  bloc.getTextStatus(
+                                    appointment.status ?? 0,
+                                    appointment.acceptedTime ?? 0,
+                                  ),
                                 ),
                                 12,
                                 FontWeight.w400,
@@ -155,7 +158,6 @@ class DialogCancel extends StatelessWidget {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  //todo event
                                   Navigator.pop(context);
                                 },
                                 child: Container(
@@ -184,9 +186,66 @@ class DialogCancel extends StatelessWidget {
                             ),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
-                                  //todo event
-                                  Navigator.pop(context);
+                                onTap: () async {
+                                  final navigator = Navigator.of(context);
+                                  await bloc.getHexString(
+                                    appointmentId:
+                                        appointment.bcAppointmentId.toString(),
+                                    reason: appointment.rejectedReason ?? '',
+                                  );
+                                  unawaited(
+                                    navigator.push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Approve(
+                                          hexString: bloc.hexString,
+                                          title: S.current.cancel_appointment,
+                                          listDetail: [
+                                            DetailItemApproveModel(
+                                              title: '${S.current.evaluator} :',
+                                              value:
+                                                  appointment.evaluator?.name ??
+                                                      '',
+                                            ),
+                                            DetailItemApproveModel(
+                                              title: '${S.current.date_time} :',
+                                              value: 0.formatDateTimeMy(
+                                                appointment.appointmentTime ??
+                                                    0,
+                                              ),
+                                            ),
+                                            DetailItemApproveModel(
+                                              title: '${S.current.location} :',
+                                              value: appointment
+                                                      .evaluator?.address ??
+                                                  '',
+                                            ),
+                                          ],
+                                          onErrorSign: (context) {
+                                            showLoadFail(context);
+                                          },
+                                          onSuccessSign: (context, data) async {
+                                            await bloc.cancelEvaluation(
+                                              bcTxnHashCancel: data,
+                                              evaluatorId: appointment.id ?? '',
+                                            );
+                                            unawaited(
+                                              showLoadSuccess(context)
+                                                  .whenComplete(
+                                                () {
+                                                  navigator.pop();
+                                                  navigator.pop();
+                                                  navigator.pop();
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          textActiveButton:
+                                              S.current.cancel_appointment,
+                                          spender: eva_dev2,
+                                        ),
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   color: Colors.transparent,

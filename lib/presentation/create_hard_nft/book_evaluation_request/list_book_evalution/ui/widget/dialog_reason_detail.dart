@@ -9,12 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DialogReasonDetail extends StatelessWidget {
   final String dateDetail;
-  final String contentDetail;
 
   const DialogReasonDetail({
     Key? key,
     required this.dateDetail,
-    required this.contentDetail,
   }) : super(key: key);
 
   @override
@@ -91,24 +89,6 @@ class DialogReasonDetail extends StatelessWidget {
                                       '${S.current.by_evaluator_at} $dateDetail',
                                 ),
                               ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      spaceH12,
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 26.w,
-                          right: 26.w,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${S.current.detail} $contentDetail',
-                            style: textNormalCustom(
-                              null,
-                              14,
-                              null,
                             ),
                           ),
                         ),
