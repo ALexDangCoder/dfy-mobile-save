@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/base/base_app_bar.dart';
@@ -32,6 +33,7 @@ enum TypeEvaluation { NEW_CREATE, CREATE }
 
 class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
+  final String assetId;
   final TypeEvaluation type;
   final int? date;
   final String? typeNFT;
@@ -41,7 +43,7 @@ class CreateBookEvaluation extends StatefulWidget {
     required this.idEvaluation,
     required this.type,
     this.date,
-    this.typeNFT,
+    this.typeNFT, required this.assetId,
   }) : super(key: key);
 
   @override
@@ -60,6 +62,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       evaluationID: widget.idEvaluation,
     );
     bloc.getEvaluationFee();
+    bloc.assetId=widget.assetId;
   }
 
   @override
@@ -95,7 +98,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                         slivers: [
                           BaseAppBar(
                             image:
-                                '${ApiConstants.BASE_URL_IMAGE}${pawn.coverCid}',
+                            '${ApiConstants.BASE_URL_IMAGE}${pawn.coverCid}',
                             title: pawn.name ?? '',
                             initHeight: 145.h,
                             leading: SizedBox(
@@ -123,7 +126,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -134,24 +137,25 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                             child: Image.network(
                                               '${ApiConstants.BASE_URL_IMAGE}'
-                                              '${pawn.avatarCid}',
+                                                  '${pawn.avatarCid}',
                                               height: 68.h,
                                               width: 68.w,
                                               errorBuilder: (context, error,
-                                                      stackTrace) =>
+                                                  stackTrace) =>
                                                   Container(
-                                                height: 68.h,
-                                                width: 68.w,
-                                                color: AppTheme.getInstance()
-                                                    .backgroundBTSColor(),
-                                              ),
+                                                    height: 68.h,
+                                                    width: 68.w,
+                                                    color: AppTheme
+                                                        .getInstance()
+                                                        .backgroundBTSColor(),
+                                                  ),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           spaceW16,
                                           Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 pawn.name ?? '',
@@ -172,8 +176,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                   children: [
                                                     WidgetSpan(
                                                       alignment:
-                                                          PlaceholderAlignment
-                                                              .middle,
+                                                      PlaceholderAlignment
+                                                          .middle,
                                                       child: Image.asset(
                                                         ImageAssets.img_star,
                                                         width: 14.w,
@@ -182,8 +186,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                     ),
                                                     TextSpan(
                                                       text:
-                                                          ' ${pawn.starCount} |'
-                                                          ' ${bloc.getTextCreateAt(pawn.createdAt ?? 0)}',
+                                                      ' ${pawn.starCount} |'
+                                                          ' ${bloc
+                                                          .getTextCreateAt(
+                                                          pawn.createdAt ??
+                                                              0)}',
                                                     ),
                                                   ],
                                                 ),
@@ -199,7 +206,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                   FontWeight.w600,
                                                 ).copyWith(
                                                   decoration:
-                                                      TextDecoration.underline,
+                                                  TextDecoration.underline,
                                                 ),
                                               ),
                                             ],
@@ -217,7 +224,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -246,7 +253,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -284,24 +291,24 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                               context,
                                               PageRouteBuilder(
                                                 transitionDuration:
-                                                    Duration.zero,
+                                                Duration.zero,
                                                 opaque: false,
                                                 pageBuilder: (_, __, ___) {
                                                   return CustomCalendar(
                                                     isCheckDate: true,
                                                     selectDate:
-                                                        bloc.dateTimeDay,
+                                                    bloc.dateTimeDay,
                                                   );
                                                 },
                                               ),
                                             );
                                             if (result != null) {
                                               final date =
-                                                  DateFormat('dd/MM/yyyy')
-                                                      .format(result);
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(result);
                                               final dateNow =
-                                                  DateFormat('dd/MM/yyyy')
-                                                      .format(DateTime.now());
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(DateTime.now());
                                               if (date == dateNow) {
                                                 bloc.isDate = true;
                                               } else {
@@ -312,14 +319,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                 bloc.minMy ?? '0',
                                               );
                                               final dateChoose =
-                                                  DateFormat('yyyy-MM-dd')
-                                                      .format(result);
+                                              DateFormat('yyyy-MM-dd')
+                                                  .format(result);
                                               bloc.dateStream.add(date);
                                               bloc.dateTimeDay =
                                                   DateTime.tryParse(dateChoose);
                                               final dateFormat =
-                                                  DateFormat('EEEE')
-                                                      .format(result);
+                                              DateFormat('EEEE')
+                                                  .format(result);
                                               bloc.dateMy = dateFormat;
                                               bloc.getValidateDay(
                                                 dateFormat,
@@ -345,20 +352,20 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                   color: AppTheme.getInstance()
                                                       .itemBtsColors(),
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                  BorderRadius.all(
                                                     Radius.circular(20.r),
                                                   ),
                                                 ),
                                                 child: Align(
                                                   alignment:
-                                                      Alignment.centerLeft,
+                                                  Alignment.centerLeft,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       style: textNormalCustom(
                                                         dateInput == ''
                                                             ? AppTheme
-                                                                    .getInstance()
-                                                                .whiteWithOpacityFireZero()
+                                                            .getInstance()
+                                                            .whiteWithOpacityFireZero()
                                                             : null,
                                                         16,
                                                         FontWeight.w400,
@@ -366,11 +373,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                       children: [
                                                         WidgetSpan(
                                                           alignment:
-                                                              PlaceholderAlignment
-                                                                  .middle,
+                                                          PlaceholderAlignment
+                                                              .middle,
                                                           child: Container(
                                                             margin:
-                                                                EdgeInsets.only(
+                                                            EdgeInsets.only(
                                                               right: 10.w,
                                                             ),
                                                             child: Image.asset(
@@ -384,7 +391,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                         TextSpan(
                                                           text: dateInput == ''
                                                               ? S.current
-                                                                  .select_date
+                                                              .select_date
                                                               : dateInput,
                                                         ),
                                                       ],
@@ -400,14 +407,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         builder: (context, snapshot) {
                                           return !(snapshot.data ?? true)
                                               ? Text(
-                                                  bloc.textValidateDate,
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .redColor(),
-                                                    14,
-                                                    null,
-                                                  ),
-                                                )
+                                            bloc.textValidateDate,
+                                            style: textNormalCustom(
+                                              AppTheme.getInstance()
+                                                  .redColor(),
+                                              14,
+                                              null,
+                                            ),
+                                          )
                                               : const SizedBox.shrink();
                                         },
                                       ),
@@ -417,24 +424,25 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           if (widget.type ==
                                               TypeEvaluation.NEW_CREATE) {
                                             final Map<String, String>? result =
-                                                await showDialog(
+                                            await showDialog(
                                               barrierDismissible: true,
                                               context: context,
-                                              builder: (_) => BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                  sigmaX: 4,
-                                                  sigmaY: 4,
-                                                ),
-                                                child: AlertDialog(
-                                                  elevation: 0,
-                                                  backgroundColor:
+                                              builder: (_) =>
+                                                  BackdropFilter(
+                                                    filter: ImageFilter.blur(
+                                                      sigmaX: 4,
+                                                      sigmaY: 4,
+                                                    ),
+                                                    child: AlertDialog(
+                                                      elevation: 0,
+                                                      backgroundColor:
                                                       Colors.transparent,
-                                                  content: PickTime(
-                                                    hour: bloc.hourMy,
-                                                    miu: bloc.minMy,
+                                                      content: PickTime(
+                                                        hour: bloc.hourMy,
+                                                        miu: bloc.minMy,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
                                             );
 
                                             if (result != null) {
@@ -482,8 +490,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                     style: textNormalCustom(
                                                       timeInput == ''
                                                           ? AppTheme
-                                                                  .getInstance()
-                                                              .whiteWithOpacityFireZero()
+                                                          .getInstance()
+                                                          .whiteWithOpacityFireZero()
                                                           : null,
                                                       16,
                                                       FontWeight.w400,
@@ -491,11 +499,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                     children: [
                                                       WidgetSpan(
                                                         alignment:
-                                                            PlaceholderAlignment
-                                                                .middle,
+                                                        PlaceholderAlignment
+                                                            .middle,
                                                         child: Container(
                                                           margin:
-                                                              EdgeInsets.only(
+                                                          EdgeInsets.only(
                                                             right: 10.w,
                                                           ),
                                                           child: Image.asset(
@@ -508,7 +516,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                       TextSpan(
                                                         text: timeInput == ''
                                                             ? S.current
-                                                                .select_time
+                                                            .select_time
                                                             : timeInput,
                                                       ),
                                                     ],
@@ -525,14 +533,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         builder: (context, snapshot) {
                                           return snapshot.data ?? false
                                               ? Text(
-                                                  bloc.textValidateTime,
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .redColor(),
-                                                    14,
-                                                    null,
-                                                  ),
-                                                )
+                                            bloc.textValidateTime,
+                                            style: textNormalCustom(
+                                              AppTheme.getInstance()
+                                                  .redColor(),
+                                              14,
+                                              null,
+                                            ),
+                                          )
                                               : const SizedBox.shrink();
                                         },
                                       ),
@@ -552,18 +560,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         spacing: 28.w,
                                         children: List<Widget>.generate(
                                             pawn.acceptedAssetTypeList
-                                                    ?.length ??
+                                                ?.length ??
                                                 0, (int index) {
                                           return TypeNFTBox(
                                             image: bloc.linkImage(
                                               pawn.acceptedAssetTypeList?[index]
-                                                      .id ??
+                                                  .id ??
                                                   0,
                                             ),
                                             text: pawn
-                                                    .acceptedAssetTypeList?[
-                                                        index]
-                                                    .name ??
+                                                .acceptedAssetTypeList?[
+                                            index]
+                                                .name ??
                                                 '',
                                           );
                                         }).toList(),
@@ -589,7 +597,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -618,7 +626,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -632,7 +640,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  '(${pawn.phoneCode?.code})${pawn.phone ?? ''}', //phone code
+                                              '(${pawn.phoneCode?.code})${pawn
+                                                  .phone ?? ''}', //phone code
                                             ),
                                           ],
                                         ),
@@ -648,7 +657,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -690,7 +699,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  ' ${0.formatHourMy(pawn.workingTimeFrom ?? 0)} ',
+                                              ' ${0.formatHourMy(
+                                                  pawn.workingTimeFrom ?? 0)} ',
                                               style: textNormalCustom(
                                                 null,
                                                 20,
@@ -702,7 +712,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  ' ${0.formatHourMy(pawn.workingTimeTo ?? 0)} ',
+                                              ' ${0.formatHourMy(
+                                                  pawn.workingTimeTo ?? 0)} ',
                                               style: textNormalCustom(
                                                 null,
                                                 20,
@@ -718,13 +729,13 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         spacing: 16.w,
                                         children: List<Widget>.generate(
                                             pawn.workingDays?.length ?? 0,
-                                            (int index) {
-                                          return ItemWorkingTime(
-                                            text: bloc.textWorkingDay(
-                                              pawn.workingDays?[index] ?? 0,
-                                            ),
-                                          );
-                                        }).toList(),
+                                                (int index) {
+                                              return ItemWorkingTime(
+                                                text: bloc.textWorkingDay(
+                                                  pawn.workingDays?[index] ?? 0,
+                                                ),
+                                              );
+                                            }).toList(),
                                       ),
                                       spaceH32,
                                       Text(
@@ -747,7 +758,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           children: [
                                             WidgetSpan(
                                               alignment:
-                                                  PlaceholderAlignment.middle,
+                                              PlaceholderAlignment.middle,
                                               child: Container(
                                                 margin: EdgeInsets.only(
                                                   right: 10.w,
@@ -809,59 +820,99 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                           onTap: () async {
                             if (snapshot.data ?? false) {
                               if (widget.type == TypeEvaluation.NEW_CREATE) {
-                                //get hex string
-                                await bloc.getHexString();
-
-                                goTo(
-                                  context,
-                                  Approve(
-                                    needApprove: true,
-                                    hexString: bloc.hexString,
-                                    payValue:
-                                        '${bloc.evaluationFee?.amount ?? 0}',
-                                    tokenAddress:
-                                        BlocCreateBookEvaluation.DFY_ADDRESS,
-                                    title: S.current.book_appointment,
-                                    listDetail: [
-                                      DetailItemApproveModel(
-                                        title: '${S.current.evaluator} :',
-                                        value: pawn.name ?? '',
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.date_time} :',
-                                        value:
-                                            '${bloc.timeStream.value} - ${bloc.dateMy}'
-                                            ', ${bloc.dateStream.value}',
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.nft} :',
-                                        value: widget.typeNFT ?? '',
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.evaluation_fee} :',
-                                        value:
-                                            '${bloc.evaluationFee?.amount ?? 0} '
-                                            '${bloc.evaluationFee?.symbol ?? ''}',
-                                      )
-                                    ],
-                                    onErrorSign: (context) {
-                                      showLoadFail(context);
-                                    },
-                                    onSuccessSign: (context, data) {
-                                      //scan
-                                      print('------------------$data');
-                                      //todo confirm BE
-                                      showLoadSuccess(context)
-                                          .then((value) => goTo(
-                                                context,
-                                                const ListBookEvaluation(),
-                                              ));
-                                      //todo chuyển màn hinh
-                                    },
-                                    textActiveButton:
-                                        S.current.request_evaluation,
-                                    spender: eva_dev2,
-                                    typeApprove: TYPE_CONFIRM_BASE.SEND_TOKEN,
+                                // get hex string
+                                // collectionStandard: 0,
+                                // assetCID:'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
+                                // beAssetId:'0',
+                                // collectionAsset:'0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',//todo data
+                                // expectingPrice:'50',
+                                // expectingPriceAddress:DFY_ADDRESS,
+                                await bloc.getHexString(
+                                  expectingPrice:
+                                  bloc.evaluationFee?.amount.toString() ??
+                                      '',
+                                  collectionAsset:
+                                  '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',
+                                  beAssetId: '0',
+                                  assetCID:
+                                  'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
+                                  collectionStandard: 0,
+                                );
+                                final NavigatorState navigator =
+                                Navigator.of(context);
+                                unawaited(
+                                  navigator.push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          Approve(
+                                            needApprove: true,
+                                            hexString: bloc.hexString,
+                                            payValue:
+                                            '${bloc.evaluationFee?.amount ??
+                                                0}',
+                                            tokenAddress: BlocCreateBookEvaluation
+                                                .DFY_ADDRESS,
+                                            title: S.current.book_appointment,
+                                            listDetail: [
+                                              DetailItemApproveModel(
+                                                title: '${S.current
+                                                    .evaluator} :',
+                                                value: pawn.name ?? '',
+                                              ),
+                                              DetailItemApproveModel(
+                                                title: '${S.current
+                                                    .date_time} :',
+                                                value: '${bloc.timeStream
+                                                    .value} '
+                                                    '- ${bloc.dateMy}'
+                                                    ', ${bloc.dateStream
+                                                    .value}',
+                                              ),
+                                              DetailItemApproveModel(
+                                                title: '${S.current.nft} :',
+                                                value: widget.typeNFT ?? '',
+                                              ),
+                                              DetailItemApproveModel(
+                                                title:
+                                                '${S.current.evaluation_fee} :',
+                                                value:
+                                                '${bloc.evaluationFee?.amount ??
+                                                    0} '
+                                                    '${bloc.evaluationFee
+                                                    ?.symbol ?? ''}',
+                                              )
+                                            ],
+                                            onErrorSign: (context) {
+                                              showLoadFail(context);
+                                            },
+                                            onSuccessSign: (context, data) {
+                                              //todo confirm BE
+                                              // bloc.createEvaluation(
+                                              //   evaluatorAddress:,
+                                              //   bcTxnHash: data,
+                                              //   appointmentTime:,
+                                              //   evaluatorId:,
+                                              //   assetId:widget.assetId,
+                                              // );
+                                              showLoadSuccess(context).then(
+                                                    (value) =>
+                                                    goTo(
+                                                      context,
+                                                       ListBookEvaluation(
+                                                         assetID: bloc.assetId,
+                                                         cityId: 12,//todo data fake
+                                                       ),
+                                                    ),
+                                              );
+                                              //todo chuyển màn hinh
+                                            },
+                                            textActiveButton:
+                                            S.current.request_evaluation,
+                                            spender: eva_dev2,
+                                            typeApprove:
+                                            TYPE_CONFIRM_BASE.SEND_TOKEN,
+                                          ),
+                                    ),
                                   ),
                                 );
                               }

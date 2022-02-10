@@ -16,10 +16,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookEvaluation extends StatefulWidget {
   final int cityId;
+  final String assetId;
 
   const BookEvaluation({
     Key? key,
     required this.cityId,
+    required this.assetId,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
     super.initState();
     bloc = BlocBookEvaluation();
     bloc.getListPawnShopStar(cityId: widget.cityId);
+    bloc.assetId=widget.assetId;
   }
 
   @override
@@ -120,7 +123,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     builder: (context) => CreateBookEvaluation(
                                       idEvaluation: list[index].id ?? '',
                                       type: TypeEvaluation.NEW_CREATE,
-                                      typeNFT: 'diamond', //todo type
+                                      typeNFT: 'diamond',
+                                      assetId: widget.assetId, //todo type
                                     ),
                                   ),
                                 );

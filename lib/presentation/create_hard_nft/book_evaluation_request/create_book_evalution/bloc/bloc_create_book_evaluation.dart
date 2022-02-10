@@ -1,5 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
@@ -72,18 +73,25 @@ class BlocCreateBookEvaluation {
   EvaluationFee? evaluationFee;
   bool isDate = false;
   String? hexString;
+  String? assetId;
 
   final Web3Utils web3utils = Web3Utils();
 
-  Future<void> getHexString() async {
+  Future<void> getHexString({
+    required int collectionStandard,
+    required String assetCID,
+    required String beAssetId,
+    required String collectionAsset,
+    required String expectingPrice,
+  }) async {
     hexString = await web3utils.getCreateAssetRequestData(
-      collectionStandard: 0,
-      assetCID:'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
-      beAssetId:'0',
-      collectionAsset:'0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',//todo data
-      expectingPrice:'50',
-      expectingPriceAddress:DFY_ADDRESS,
-    );//todo
+      collectionStandard: collectionStandard,
+      assetCID: assetCID,
+      beAssetId: beAssetId,
+      collectionAsset: collectionAsset,
+      expectingPrice: expectingPrice,
+      expectingPriceAddress: DFY_ADDRESS,
+    ); //todo
   }
 
   bool checkValidateDay(String day) {
@@ -121,6 +129,33 @@ class BlocCreateBookEvaluation {
       textValidateDate = '';
     }
     checkButton();
+  }
+
+  Future<void> createEvaluation({
+    required int appointmentTime,
+    required String assetId,
+    required String bcTxnHash,
+    required String evaluatorAddress,
+    required String evaluatorId,
+  }) async {
+    final Result<CreateEvaluationModel> result =
+        await _createHardNFTRepository.createEvaluation(
+      appointmentTime,
+      assetId,
+      bcTxnHash,
+      evaluatorAddress,
+      evaluatorId,
+    );
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        } else {
+          print('=--------------------------${res.status}');
+          print('sucseccff');
+        }
+      },
+      error: (error) {},
+    );
   }
 
   void getValidate(String hour, String minute) {
@@ -281,12 +316,13 @@ class BlocCreateBookEvaluation {
     required String evaluationID,
   }) async {
     final Result<EvaluatorsDetailModel> result =
-    await _createHardNFTRepository.getEvaluatorsDetail(
+        await _createHardNFTRepository.getEvaluatorsDetail(
       evaluationID,
     );
     result.when(
       success: (res) {
-        if (res.isBlank ?? false) {} else {
+        if (res.isBlank ?? false) {
+        } else {
           locationLat = res.locationLat ?? 0;
           locationLong = res.locationLong ?? 0;
           objDetail.add(res);
@@ -298,10 +334,11 @@ class BlocCreateBookEvaluation {
 
   Future<void> getEvaluationFee() async {
     final Result<List<EvaluationFee>> result =
-    await _createHardNFTRepository.getEvaluationFee();
+        await _createHardNFTRepository.getEvaluationFee();
     result.when(
       success: (res) {
-        if (res.isBlank ?? false) {} else {
+        if (res.isBlank ?? false) {
+        } else {
           for (final value in res) {
             if (value.id == EVALUATION_FEE) {
               evaluationFee = value;

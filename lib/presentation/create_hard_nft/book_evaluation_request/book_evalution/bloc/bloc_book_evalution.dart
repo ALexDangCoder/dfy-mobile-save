@@ -12,6 +12,7 @@ class BlocBookEvaluation {
   double locationLong = -0.12769100104405115;
   String id = '';
   String evaluatorId = '';
+  String? assetId;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 

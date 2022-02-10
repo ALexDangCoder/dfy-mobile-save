@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
+import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
@@ -36,7 +37,7 @@ abstract class CreateHardNFtService {
   Future<EvaluationFeeListResponse> getEvaluationFee();
 
   @POST(ApiConstants.CREATE_EVALUATION)
-  Future<EvaluationFeeListResponse> createEvaluation(
+  Future<CreateEvaluationResponse> createEvaluation(
     @Field('appointment_time') int appointmentTime,
     @Field('asset_id') String assetId,
     @Field('bc_txn_hash') String bcTxnHash,

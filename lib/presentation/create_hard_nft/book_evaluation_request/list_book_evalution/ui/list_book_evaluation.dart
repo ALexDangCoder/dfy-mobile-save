@@ -166,6 +166,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
                       cityId: widget.cityId ?? 0,
+                      assetId: _bloc.assetID,
                     ),
                   ),
                 );

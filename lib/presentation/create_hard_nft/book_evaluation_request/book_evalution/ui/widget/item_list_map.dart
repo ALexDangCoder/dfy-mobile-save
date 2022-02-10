@@ -67,6 +67,7 @@ class _ItemListMap extends State<ItemListMap> {
                       idEvaluation: value.id ?? '',
                       type: TypeEvaluation.NEW_CREATE,
                       typeNFT: widget.bloc.evaluatorId,
+                      assetId: widget.bloc.assetId ?? '',
                     ),
                   ),
                 );
