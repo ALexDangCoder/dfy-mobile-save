@@ -1,17 +1,26 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/cubit/evaluation_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
+import 'package:Dfy/widgets/item/successCkcCreateNft.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +30,12 @@ import 'evaluation_detail.dart';
 
 class EvaluationScreen extends StatefulWidget {
   const EvaluationScreen(
-      {Key? key, required this.evaluationId, required this.urlIcon})
+      {Key? key,
+      required this.evaluationId,
+      required this.isAccept})
       : super(key: key);
   final String evaluationId;
-  final String urlIcon;
+  final bool isAccept;
 
   @override
   _EvaluationScreenState createState() => _EvaluationScreenState();
@@ -36,7 +47,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   @override
   void initState() {
     super.initState();
-    cubit.getEvaluation(widget.evaluationId, widget.urlIcon);
+    cubit.getEvaluation(widget.evaluationId);
   }
 
   @override
@@ -87,7 +98,8 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                 ),
               ],
             ),
-            Padding(
+            if (widget.isAccept)
+              Padding(
               padding: EdgeInsets.only(top: 594.h),
               child: Container(
                 padding: EdgeInsets.only(
@@ -108,13 +120,13 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: _buildButtonReject(),
+                      child: _buildButtonReject(context,evaluation),
                     ),
                     SizedBox(
                       width: 23.w,
                     ),
                     Expanded(
-                      child: _buildButtonAccept(),
+                      child: _buildButtonAccept(context,evaluation),
                     ),
                   ],
                 ),
@@ -138,15 +150,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
       width: 318.w,
       child: Row(
         children: [
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATED,
-            stepCreate: '1',
-          ),
-          dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATED,
-            stepCreate: '2',
-          ),
+          const SuccessCkcCreateNft(),
+          dividerSuccessCreateNFT,
+          const SuccessCkcCreateNft(),
           dividerCreateNFT,
           const CircleStepCreateNft(
             circleStatus: CircleStatus.IS_CREATING,
@@ -163,7 +169,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   }
 }
 
-Widget _buildButtonReject() {
+Widget _buildButtonReject(BuildContext context,Evaluation evaluation) {
   return ButtonTransparent(
     child: Text(
       S.current.reject,
@@ -173,13 +179,90 @@ Widget _buildButtonReject() {
         FontWeight.w700,
       ),
     ),
-    onPressed: () {},
+    onPressed: () {
+      goTo(context, Approve(
+        hexString: '',
+        onSuccessSign: (context, data) async {
+          unawaited(showLoadSuccess(context));
+
+        },
+        onErrorSign: (context) {},
+        listDetail: [
+          DetailItemApproveModel(
+              title: '${S.current.hard_nft_type}:',
+              value: getNFTType(evaluation.assetType?.id ?? 7),
+            ),
+            DetailItemApproveModel(
+              title: '${S.current.evaluation_}:',
+              value: evaluation.evaluator?.name ?? '',
+            ),
+            DetailItemApproveModel(
+              title: '${S.current.nft_name}:',
+              value: evaluation.evaluator?.name ?? '',
+            ),
+          ],
+        title: S.current.book_appointment,
+        textActiveButton: 'Reject',
+        typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+        spender: eva_dev2,
+      ),);
+    },
   );
 }
+String getNFTType(int type){
+  switch (type) {
+    case 0:
+      return S.current.jewelry;
+    case 1:
+      return S.current.art_work;
+    case 2:
+      return S.current.car;
+    case 3:
+      return S.current.watch;
+    case 4:
+      return S.current.house;
+    default:
+      return S.current.jewelry;
+  }
+}
 
-Widget _buildButtonAccept() {
+Widget _buildButtonAccept(BuildContext context,Evaluation evaluation) {
   return ButtonGradient(
-    onPressed: () {},
+    onPressed: () {
+      goTo(context, Approve(
+        hexString: '',
+        onSuccessSign: (context, data) async {
+          unawaited(showLoadSuccess(context));
+
+        },
+        onErrorSign: (context) {},
+        listDetail: [
+          DetailItemApproveModel(
+            title: '${S.current.hard_nft_type}:',
+            value: getNFTType(evaluation.assetType?.id ?? 7),
+          ),
+          DetailItemApproveModel(
+            title: '${S.current.evaluation_}:',
+            value: evaluation.evaluator?.name ?? '',
+          ),
+          DetailItemApproveModel(
+            title: '${S.current.nft_name}:',
+            value: evaluation.evaluator?.name ?? '',
+          ),
+          DetailItemApproveModel(
+            title: '${S.current.evaluation_fee}:',
+            value: '50 DFY',
+          ),
+        ],
+        title: S.current.book_appointment,
+        textActiveButton: 'Accept Evaluation',
+        typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+        needApprove: true,
+        payValue: '1',
+        tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+        spender: eva_dev2,
+      ),);
+    },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),
       radius: 4,

@@ -37,12 +37,14 @@ class EvaluationHardNftResultCubit
     result.when(
       success: (res) {
         for(int i = 0;i<res.length;i++) {
-          if(res[i].status !=2 || res[i].status !=4 || res[i].status !=6) {
+          if(res[i].status !=2 && res[i].status !=4 && res[i].status !=6) {
             res.removeAt(i);
           }
-          for(int j = 0;j<listTokenSupport.length;j++){
-            if(res[i].evaluatedSymbol == listTokenSupport[j].symbol) {
-              res[i].urlToken = listTokenSupport[j].iconUrl;
+          if(res.isNotEmpty){
+            for(int j = 0;j<listTokenSupport.length;j++){
+              if(res[i].evaluatedSymbol == listTokenSupport[j].symbol) {
+                res[i].urlToken = listTokenSupport[j].iconUrl;
+              }
             }
           }
         }

@@ -125,9 +125,16 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                       builder: (BuildContext context) {
                                 return Scaffold(
                                   body: SizedBox(
-                                      child: PhotoView(
-                                    imageProvider: NetworkImage(img),
-                                  )),
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(img),
+                                      minScale:
+                                          PhotoViewComputedScale.contained *
+                                              0.8,
+                                      maxScale:
+                                          PhotoViewComputedScale.covered * 2,
+                                      enableRotation: true,
+                                    ),
+                                  ),
                                 );
                               }));
                             },
@@ -207,7 +214,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                               isCurrentImg: bloc.listImg[index] == img,
                               index: index,
                             ),
-                            spaceW8,
+                            spaceW12,
                           ],
                         );
                       },
@@ -231,21 +238,26 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             physics: const NeverScrollableScrollPhysics(),
             itemCount: widget.evaluation.document?.length,
             itemBuilder: (BuildContext context, int index) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: GestureDetector(
-                  onTap: () {
-                    launch(
-                        widget.evaluation.document![index].urlDocument ?? '');
-                  },
-                  child: Text(
-                    widget.evaluation.document![index].name ?? '',
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
+              return Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      onTap: () {
+                        launch(widget.evaluation.document![index].urlDocument ??
+                            '');
+                      },
+                      child: Text(
+                        widget.evaluation.document![index].name ?? '',
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  spaceH16,
+                ],
               );
             },
           )
@@ -411,7 +423,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             ),
             spaceW8,
             Text(
-              '${widget.evaluation.depreciationPercent.toString() ?? ''}% '
+              '${widget.evaluation.depreciationPercent ?? ''}% '
               '${S.current.depreciation}',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),

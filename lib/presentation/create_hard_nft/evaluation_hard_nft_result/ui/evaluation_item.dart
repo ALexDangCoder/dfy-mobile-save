@@ -22,12 +22,14 @@ class EvaluationItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EvaluationScreen(
-                      urlIcon: evaluationResult.urlToken ?? '',
-                      evaluationId: evaluationResult.evaluationId ?? '',
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => EvaluationScreen(
+              evaluationId: evaluationResult.evaluationId ?? '',
+              isAccept: evaluationResult.status == 2,
+            ),
+          ),
+        );
       },
       child: Container(
         width: 343.w,

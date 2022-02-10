@@ -163,14 +163,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 113.h,
                   ),
-                  const Image(
+                  Image(
                     image: AssetImage(ImageAssets.ic_symbol),
+                    height: 100.h,
+                    width: 100.w,
                   ),
                   SizedBox(
                     height: 28.h,
                   ),
-                  const Image(
+                  Image(
                     image: AssetImage(ImageAssets.centered),
+                    height: 35.h,
+                    width: 237.w,
                   ),
                   SizedBox(
                     height: 68.h,
@@ -271,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 36.h,
+                    height: 32.h,
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
@@ -356,14 +360,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                               if (widget.isFromConnectDialog) {
                                 _cubit.isLoginSuccessSubject.sink.add(true);
-                              } else{
+                              } else {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (context) => const MainScreen(
                                       index: 1,
                                     ),
                                   ),
-                                      (route) => route.isFirst,
+                                  (route) => route.isFirst,
                                 );
                               }
                             }
@@ -373,11 +377,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               _cubit.authenticate();
                             },
                             child: Platform.isIOS
-                                ? const Image(
+                                ? Image(
                                     image: AssetImage(ImageAssets.faceID),
+                                    height: 54.h,
+                                    width: 54.w,
                                   )
-                                : const Image(
+                                : Image(
                                     image: AssetImage(ImageAssets.ic_finger),
+                                    height: 54.h,
+                                    width: 54.w,
                                   ),
                           ),
                         ),

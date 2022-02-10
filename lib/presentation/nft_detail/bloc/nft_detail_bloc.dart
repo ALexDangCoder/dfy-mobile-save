@@ -123,12 +123,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   ///GetEvaluation
-  Future<void> getEvaluation(String evaluationId, String urlIcon) async {
+  Future<void> getEvaluation(String evaluationId) async {
     final Result<Evaluation> result =
         await _nftRepo.getEvaluation(evaluationId);
     result.when(
       success: (res) {
-        res.urlToken = urlIcon;
+        for(int i = 0; i<listTokenSupport.length;i++){
+          if(res.evaluatedSymbol == listTokenSupport[i].symbol){
+            res.urlToken = listTokenSupport[i].iconUrl;
+          }
+        }
         evaluationStream.add(res);
       },
       error: (error) {
@@ -171,7 +175,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+            getEvaluation(res.evaluationId ?? '');
           }
           for (final value in listTokenSupport) {
             final symbolToken = res.symbolToken ?? '';
@@ -206,7 +210,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+            getEvaluation(res.evaluationId ?? '');
           }
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.tokenBuyOut ?? '';
@@ -237,7 +241,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           nftOnAuction = res;
           emit(NftOnAuctionSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.evaluationId ?? '', res.urlToken ?? '');
+            getEvaluation(res.evaluationId ?? '');
           }
           getHistory(
             collectionAddress: res.collectionAddress ?? '',
@@ -287,7 +291,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(
               res.nftCollateralDetailDTO?.evaluationId ?? '',
-              res.urlToken ?? '',
             );
           }
           getHistory(

@@ -44,8 +44,8 @@ class EvaluationDetailResponse {
   int? depreciationPercent;
   @JsonKey(name: 'evaluated_price')
   double? evaluatedPrice;
-  @JsonKey(name: 'evaluated_symbol')
-  String? evaluatedSymbol;
+  @JsonKey(name: 'evaluated_price_symbol')
+  String? evaluatedPriceSymbol;
   @JsonKey(name: 'media_list')
   List<MediaResponse>? media;
   @JsonKey(name: 'document_list')
@@ -56,6 +56,7 @@ class EvaluationDetailResponse {
   String? bcTxnHash;
 
   EvaluationDetailResponse(
+    this.evaluatedPriceSymbol,
     this.id,
     this.evaluator,
     this.evaluatedTime,
@@ -64,7 +65,6 @@ class EvaluationDetailResponse {
     this.properties,
     this.depreciationPercent,
     this.evaluatedPrice,
-    this.evaluatedSymbol,
     this.media,
     this.document,
     this.additionalInformation,
@@ -85,7 +85,7 @@ class EvaluationDetailResponse {
         properties: properties?.map((e) => e.toDomain()).toList(),
         depreciationPercent: depreciationPercent,
         evaluatedPrice: evaluatedPrice,
-        evaluatedSymbol: evaluatedSymbol,
+        evaluatedSymbol: evaluatedPriceSymbol,
         media: media?.map((e) => e.toDomain()).toList(),
         document: document?.map((e) => e.toDomain()).toList(),
         additionalInformation: additionalInformation,

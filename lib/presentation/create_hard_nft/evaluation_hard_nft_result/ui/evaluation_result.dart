@@ -14,6 +14,7 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
+import 'package:Dfy/widgets/item/successCkcCreateNft.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +35,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult('620213354aec3d7ec50a749c');
+    cubit.getListEvaluationResult('620384b24aec3de4976bbbb5');
   }
 
   @override
@@ -47,7 +48,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult('620213354aec3d7ec50a749c');
+            await cubit.getListEvaluationResult('620384b24aec3de4976bbbb5');
           },
           textEmpty: '',
           child: content(state),
@@ -120,15 +121,9 @@ class _EvaluationResultState extends State<EvaluationResult> {
       width: 318.w,
       child: Row(
         children: [
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATED,
-            stepCreate: '1',
-          ),
-          dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATED,
-            stepCreate: '2',
-          ),
+          const SuccessCkcCreateNft(),
+          dividerSuccessCreateNFT,
+          const SuccessCkcCreateNft(),
           dividerCreateNFT,
           const CircleStepCreateNft(
             circleStatus: CircleStatus.IS_CREATING,
