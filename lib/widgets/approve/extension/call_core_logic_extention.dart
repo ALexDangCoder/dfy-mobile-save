@@ -71,9 +71,9 @@ extension CallCoreExtension on ApproveCubit {
         } else {
           final result = await sendRawData(rawData ?? '');
           if (result['isSuccess']) {
-            emit(SignSuccess(result['txHash'], type));
+            emit(SignSuccess(result['txHash']));
           } else {
-            emit(SignFail(S.current.buy_nft, type));
+            emit(SignFail(S.current.buy_nft));
           }
         }
         break;
