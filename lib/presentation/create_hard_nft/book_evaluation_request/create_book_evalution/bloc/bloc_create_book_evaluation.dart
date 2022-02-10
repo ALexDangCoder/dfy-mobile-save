@@ -5,6 +5,7 @@ import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:get/get.dart';
@@ -150,8 +151,6 @@ class BlocCreateBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          print('=--------------------------${res.status}');
-          print('sucseccff');
         }
       },
       error: (error) {},
@@ -179,34 +178,34 @@ class BlocCreateBookEvaluation {
     final workingHour = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String hourWorking = DateFormat('HH').format(workingHour);
+    final String hourWorking = DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
     //working Min
     final workingMin = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String minWorking = DateFormat('mm').format(workingMin);
+    final String minWorking = DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
     final int minWorkingInt = int.parse(minWorking);
 
     //time now
-    final String minNow = DateFormat('mm').format(DateTime.now());
+    final String minNow = DateFormat(DateTimeFormat.BOOK_MIN).format(DateTime.now());
     final int minNowInt = int.parse(minNow);
 
-    final String hourNow = DateFormat('HH').format(DateTime.now());
+    final String hourNow = DateFormat(DateTimeFormat.BOOK_HOUR).format(DateTime.now());
     final int hourNowInt = int.parse(hourNow);
 
     // working hour close
     final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
-    final String hourWorkingTo = DateFormat('HH').format(workingHourClose);
+    final String hourWorkingTo = DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
     final int hourWorkingIntTo = int.parse(hourWorkingTo);
 
     //working miu close
     final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
-    final String minWorkingTo = DateFormat('mm').format(workingMinClose);
+    final String minWorkingTo = DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
     final int minWorkingIntTo = int.parse(minWorkingTo);
 
     if (isDate) {
@@ -264,8 +263,8 @@ class BlocCreateBookEvaluation {
   String getTextCreateAt(int dateCreateAt) {
     String textDate = '';
     final dt = DateTime.fromMillisecondsSinceEpoch(dateCreateAt);
-    final String mm = DateFormat('MM').format(dt);
-    final String yyyy = DateFormat('yyyy').format(dt);
+    final String mm = DateFormat(DateTimeFormat.BOOK_MONTH).format(dt);
+    final String yyyy = DateFormat(DateTimeFormat.BOOK_YEAR).format(dt);
     textDate = '${S.current.joined_in}${getMonth(mm)}$yyyy';
     return textDate;
   }
@@ -273,8 +272,8 @@ class BlocCreateBookEvaluation {
   void getDataInput(int dateCreate) {
     if (dateCreate != 0) {
       final dt = DateTime.fromMillisecondsSinceEpoch(dateCreate);
-      final String time = DateFormat('HH:mm').format(dt);
-      final String day = DateFormat('dd/MM/yyyy').format(dt);
+      final String time = DateFormat(DateTimeFormat.BOOK_HOURS).format(dt);
+      final String day = DateFormat(DateTimeFormat.BOOK_DATE).format(dt);
       dateStream.add(day);
       timeStream.add(time);
     }
