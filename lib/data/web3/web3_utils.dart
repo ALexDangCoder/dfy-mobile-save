@@ -921,6 +921,23 @@ class Web3Utils {
     return hex.encode(createAssetRequest.data ?? []);
   }
 
+  Future<String> getCancelAppointmentData({
+    required String appointmentId, //int dang string
+    required String reason,
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('cancelAppointment');
+    final cancelAppointment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(appointmentId)),
+        reason,
+      ],
+    );
+    return hex.encode(cancelAppointment.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,

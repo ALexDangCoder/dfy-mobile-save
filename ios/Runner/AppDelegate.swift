@@ -39,7 +39,6 @@ import GoogleMaps
       self.chatChanel = chatChanel
       
       GMSServices.provideAPIKey("AIzaSyB0wre3T3qXDikdk7oGm8WN1pS60ucGl_E")
-      GeneratedPluginRegistrant.register(with: self)
       
       
     GeneratedPluginRegistrant.register(with: self)
@@ -178,6 +177,12 @@ extension AppDelegate {
         if call.method == "signTransactionWithData" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let contractAddress = arguments["contractAddress"] as? String, let nonce = arguments["nonce"] as? String, let chainId = arguments["chainId"] as? String, let gasPrice = arguments["gasPrice"] as? String, let gasLimit = arguments["gasLimit"] as? String, let withData = arguments["withData"] as? String {
                 result(signTransactionWithData(walletAddress: walletAddress, contractAddress: contractAddress.lowercased(), nonce: nonce, chainId: chainId, gasPrice: gasPrice, gasLimit: gasLimit, withData: withData))
+            }
+        }
+        
+        if call.method == "signWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? FlutterStandardTypedData {
+                result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
             }
         }
         
@@ -830,6 +835,37 @@ extension AppDelegate {
         chatChanel?.invokeMethod("signTransactionWithDataCallback", arguments: param)
         return param
     }
+    
+    private func signWallet(walletAddress: String, bytesSha3: FlutterStandardTypedData) -> [String: Any] {
+        var param = [String: Any]()
+        let walletModel = SharedPreference.shared.getListWallet().first(where: { $0.walletAddress == walletAddress })
+        if walletModel != nil && !walletModel!.privateKey.isEmpty {
+            if let privateKeyData = walletModel?.privateKey.hexadecimal {
+                let privateKey = PrivateKey(data: privateKeyData)
+                if let privKey = privateKey {
+                    let originalMessageHashInHexCore = privKey.sign(digest: Data(bytesSha3.data), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
+                    if originalMessageHashInHexCore != "" {
+                        let firstKey = Int( originalMessageHashInHexCore.substring(with: (originalMessageHashInHexCore.count-2)..<originalMessageHashInHexCore.count)) ?? 0
+                        var signature = originalMessageHashInHexCore.substring(with: 0..<originalMessageHashInHexCore.count-2)
+                        if firstKey % 2 == 0 {
+                            signature = signature + "1b"
+                        } else {
+                            signature = signature + "1c"
+                        }
+                        param["signature"] = signature
+                    }
+                } else {
+                    param["signature"] = ""
+                }
+            } else {
+                param["signature"] = ""
+            }
+        } else {
+            param["signature"] = ""
+        }
+        chatChanel?.invokeMethod("signWalletCallback", arguments: param)
+        return param
+    }
 }
 
 extension Data {
@@ -905,5 +941,27 @@ extension String {
                 return "0"
             }
         }
+    }
+}
+
+extension String {
+    func index(from: Int) -> Index {
+        return self.index(startIndex, offsetBy: from)
+    }
+
+    func substring(from: Int) -> String {
+        let fromIndex = index(from: from)
+        return String(self[fromIndex...])
+    }
+
+    func substring(to: Int) -> String {
+        let toIndex = index(from: to)
+        return String(self[..<toIndex])
+    }
+
+    func substring(with r: Range<Int>) -> String {
+        let startIndex = index(from: r.lowerBound)
+        let endIndex = index(from: r.upperBound)
+        return String(self[startIndex..<endIndex])
     }
 }
