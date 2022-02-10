@@ -21,7 +21,6 @@ import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/screen_controller.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
@@ -909,8 +908,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             textActiveButton:
                                             S.current.request_evaluation,
                                             spender: eva_dev2,
-                                            typeApprove:
-                                            TYPE_CONFIRM_BASE.SEND_TOKEN,
                                           ),
                                     ),
                                   ),

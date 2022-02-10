@@ -13,7 +13,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -243,8 +242,6 @@ class DialogCancel extends StatelessWidget {
                                           textActiveButton:
                                               S.current.cancel_appointment,
                                           spender: eva_dev2,
-                                          typeApprove:
-                                              TYPE_CONFIRM_BASE.SEND_TOKEN,
                                         ),
                                       ),
                                     ),
