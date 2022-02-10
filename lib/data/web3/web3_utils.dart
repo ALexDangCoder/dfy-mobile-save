@@ -938,6 +938,112 @@ class Web3Utils {
     return hex.encode(cancelAppointment.data ?? []);
   }
 
+  Future<String> getAcceptAppointmentData({
+    required String appointmentId, //int dang string
+    required String appointmentTime, // int dang string
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('acceptAppointment');
+    final acceptAppointment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(appointmentId)),
+        BigInt.from(num.parse(appointmentTime)),
+      ],
+    );
+    return hex.encode(acceptAppointment.data ?? []);
+  }
+
+  Future<String> getAcceptEvaluationData({
+    required String evaluationId, //int dang string
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('acceptEvaluation');
+    final acceptEvaluation = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(evaluationId)),
+      ],
+    );
+    return hex.encode(acceptEvaluation.data ?? []);
+  }
+
+  Future<String> getAcceptEvaluatorData({
+    required String evaluationId, //int dang string
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('acceptEvaluator');
+    final acceptEvaluator = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(evaluationId)),
+      ],
+    );
+    return hex.encode(acceptEvaluator.data ?? []);
+  }
+
+  Future<String> getEvaluateAssetData({
+    required String currency,
+    required String appointmentId,
+    required String price,
+    required String evaluationCID,
+    required String depreciationRate,
+    required String mintingFeeAddress,
+    required String beEvaluationId,
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('evaluateAsset');
+    final evaluateAsset = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(currency),
+        BigInt.from(num.parse(appointmentId)),
+        BigInt.from(num.parse(_handleAmount(18, price))),
+        evaluationCID,
+        BigInt.from(num.parse(depreciationRate)),
+        EthereumAddress.fromHex(mintingFeeAddress),
+        beEvaluationId,
+      ],
+    );
+    return hex.encode(evaluateAsset.data ?? []);
+  }
+
+  Future<String> getRejectAppointmentData({
+    required String appointmentId, //int dang string
+    required String reason,
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('rejectAppointment');
+    final rejectAppointment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(appointmentId)),
+        reason,
+      ],
+    );
+    return hex.encode(rejectAppointment.data ?? []);
+  }
+
+  Future<String> getRejectEvaluationData({
+    required String evaluationId, //int dang string
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('rejectEvaluation');
+    final rejectEvaluation = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(evaluationId)),
+      ],
+    );
+    return hex.encode(rejectEvaluation.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
