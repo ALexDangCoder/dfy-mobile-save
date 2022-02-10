@@ -81,7 +81,6 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
               hexString: widget.cubit.transactionData,
               title: S.current.create_collection,
               textActiveButton: S.current.create,
-              typeApprove: TYPE_CONFIRM_BASE.CREATE_SOFT_NFT,
               payValue: 10.toString(),
               tokenAddress: widget.cubit.tokenAddress,
               spender: widget.cubit.collectionAddress,

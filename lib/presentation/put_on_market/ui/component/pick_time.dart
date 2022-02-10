@@ -29,7 +29,7 @@ class _PickTimeState extends State<PickTime> {
     } else {
       myMiu =  int.parse(miu) < 10
           ? '0${int.parse(miu)}'
-          : miu;
+          : miu.replaceAll(' ', '');
     }
     return myMiu;
   }
@@ -43,7 +43,7 @@ class _PickTimeState extends State<PickTime> {
     } else {
       myHour =  int.parse(hour) < 10
           ? '0${int.parse(hour)}'
-          : hour;
+          : hour.replaceAll(' ', '');
     }
     return myHour;
   }

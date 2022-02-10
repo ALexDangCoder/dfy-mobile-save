@@ -15,12 +15,11 @@ class GotDataApprove extends ApproveState {
 
 class SignSuccess extends ApproveState {
   final String txh;
-  final TYPE_CONFIRM_BASE type;
 
-  SignSuccess(this.txh, this.type);
+  SignSuccess(this.txh);
 
   @override
-  List<Object?> get props => [txh, type];
+  List<Object?> get props => [txh];
 }
 
 
@@ -42,9 +41,8 @@ class ApproveSuccess extends ApproveState {
 
 class SignFail extends ApproveState {
   final String message;
-  final TYPE_CONFIRM_BASE type;
 
-  SignFail(this.message, this.type);
+  SignFail(this.message);
 
   @override
   List<Object?> get props => [];
