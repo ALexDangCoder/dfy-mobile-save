@@ -3,6 +3,8 @@ import 'dart:ui';
 
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -29,11 +31,24 @@ class BlocListBookEvaluation {
 //     SUCCESS(9),
 //     TIMEOUT_ACCEPTED(10),
 //     TIMEOUT_OPEN(11);
+  final Web3Utils web3utils = Web3Utils();
+
+  Future<void> getHexString({
+    required String appointmentId,
+    required String reason,
+  }) async {
+    hexString = await web3utils.getCancelAppointmentData(
+      appointmentId: appointmentId,
+      reason: reason,
+    );
+  }
+
   BehaviorSubject<List<AppointmentModel>> listPawnShop = BehaviorSubject();
   bool isCancel = true;
   bool isDetail = false;
   bool isLoadingText = false;
   String assetID = '';
+  String? hexString;
   TypeEvaluation type = TypeEvaluation.CREATE;
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
@@ -47,8 +62,10 @@ class BlocListBookEvaluation {
       return AppTheme.getInstance().greenMarketColors();
     } else if (S.current.evaluator_has_suggested == status) {
       return AppTheme.getInstance().blueMarketColors();
-    } else {
+    } else if (S.current.you_have_rejected == status) {
       return AppTheme.getInstance().redMarketColors();
+    } else {
+      return AppTheme.getInstance().whiteColor();
     }
   }
 
@@ -100,7 +117,7 @@ class BlocListBookEvaluation {
         isDetail = false;
         isCancel = false;
         isLoadingText = false;
-        type = TypeEvaluation.CREATE;
+        type = TypeEvaluation.NEW_CREATE;
         return S.current.you_have_rejected;
       default:
         isDetail = false;
@@ -109,6 +126,29 @@ class BlocListBookEvaluation {
         type = TypeEvaluation.CREATE;
         return S.current.processing_transaction;
     }
+  }
+
+  Future<void> cancelEvaluation({
+    required String evaluatorId,
+    required String bcTxnHashCancel,
+  }) async {
+    final Result<CancelEvaluationModel> result =
+        await _createHardNFTRepository.cancelEvaluation(
+      evaluatorId,
+      bcTxnHashCancel,
+    );
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        } else {
+          print('=--------------------------${res.status}');
+          if (res.status == CANCELLED) {
+            print('sucseccff');
+          }
+        }
+      },
+      error: (error) {},
+    );
   }
 
   Future<void> getListPawnShop({

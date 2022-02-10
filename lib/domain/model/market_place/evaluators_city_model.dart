@@ -9,6 +9,8 @@ class EvaluatorsCityModel {
   int? evaluatedCount;
   List<AcceptedAssetTypeResponse>? listAcceptedAssetType;
   String? description;
+  double? locationLat;
+  double? locationLong;
 
   EvaluatorsCityModel({
     this.id,
@@ -19,6 +21,8 @@ class EvaluatorsCityModel {
     this.evaluatedCount,
     this.listAcceptedAssetType,
     this.description,
+    this.locationLat,
+    this.locationLong,
   });
 }
 

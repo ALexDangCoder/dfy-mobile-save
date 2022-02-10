@@ -648,5 +648,9 @@
   "november": "November,",
   "december": "December,",
   "dont_ask_again": "Don’t ask again",
-  "invalid_file_format" : "Invalid file format"
+  "evaluator": "Evaluator:",
+  "date_time": "Date time:",
+  "evaluation_fee": "Evaluation fee:",
+  "invalid_file_format" : "Invalid file format",
+  "request_evaluation": "Request evaluation"
 }
