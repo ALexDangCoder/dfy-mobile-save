@@ -145,7 +145,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   void getListWallet({
     required String addressWallet,
-  })  {
+  }) {
     for (final Wallet value in listWallet) {
       if (addressWallet == value.address) {
         final AccountModel acc = AccountModel(
@@ -220,6 +220,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   int randomAvatar() {
     final Random rd = Random();
+
     return rd.nextInt(10);
   }
 
@@ -983,7 +984,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  ///
   NFTRepository get _nftRepo => Get.find();
   final BehaviorSubject<List<HistoryNFT>> listHistoryStream = BehaviorSubject();
 

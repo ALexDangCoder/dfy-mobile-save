@@ -37,7 +37,7 @@ class TransactionSubmit extends StatelessWidget {
           spaceH5,
           Expanded(
             child: Text(
-              justLoading! ? '': S.current.tran_submit,
+              (justLoading ?? false) ? '': S.current.tran_submit,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,
