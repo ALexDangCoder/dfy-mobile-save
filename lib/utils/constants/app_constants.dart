@@ -121,6 +121,7 @@ const String youtubeLink =
 const String linkedinLink = 'https://www.linkedin.com/company/defiforyou';
 const String twitterLink = 'https://twitter.com/Defiforyou';
 
+
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;

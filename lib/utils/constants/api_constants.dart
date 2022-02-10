@@ -172,4 +172,6 @@ class ApiConstants {
 
   static const String GET_CONDITION =
       'hard-nft-svc/public-api/assets/conditions';
+
+  static const String GET_HARD_NFT_TYPE = 'hard-nft-svc/public-api/asset/types';
 }

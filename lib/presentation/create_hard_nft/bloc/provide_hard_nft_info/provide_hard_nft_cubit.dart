@@ -8,6 +8,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -62,7 +63,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<String> listPathImage = [];
   String currentImagePath = '';
   int currentIndexImage = 0;
-
+  List<HardNftTypeModel> listHardNftType = [];
+  BehaviorSubject<List<HardNftTypeModel>> listHardNftTypeBHVSJ =
+      BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> phonesCodeBHVSJ =
@@ -75,6 +78,22 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   BehaviorSubject<List<String>> imagePathSubject = BehaviorSubject();
   BehaviorSubject<String> currentImagePathSubject = BehaviorSubject();
+
+  Future<void> getListHardNftTypeApi() async {
+    final Result<List<HardNftTypeModel>> resultHardNftTypes =
+        await _step1Repository.getHardNftTypes();
+    resultHardNftTypes.when(
+      success: (response) {
+        for (final element in response) {
+          listHardNftType.add(element);
+        }
+        listHardNftTypeBHVSJ.sink.add(listHardNftType);
+      },
+      error: (error) {
+        listHardNftTypeBHVSJ.sink.add([]);
+      },
+    );
+  }
 
   Future<void> getPhonesApi() async {
     final Result<List<PhoneCodeModel>> resultPhone =
@@ -307,7 +326,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       currentImagePath = listPathImage.first;
     }
     if (isNext) {
-      if (currentIndexImage == (listPathImage.length-1)) {
+      if (currentIndexImage == (listPathImage.length - 1)) {
         currentIndexImage = 0;
         currentImagePath = listPathImage.first;
       } else {
@@ -316,7 +335,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       }
     } else {
       if (currentIndexImage == 0) {
-        currentIndexImage = listPathImage.length-1;
+        currentIndexImage = listPathImage.length - 1;
         currentImagePath = listPathImage.last;
       } else {
         currentIndexImage--;
@@ -326,4 +345,76 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     log('List len: ${listPathImage.length} ---- Current Index = $currentIndexImage ---- Current path: $currentImagePath');
     currentImagePathSubject.sink.add(currentImagePath);
   }
+
+  List<DocumentModel> documents = [
+    DocumentModel('Giay phep kinh doanh', 'pdf'),
+    DocumentModel('Giay phep Su dung', 'doc'),
+  ];
+
+  Step1PassingModel fakeData = Step1PassingModel(
+    hardNftName: 'Sapphire ring',
+    imageToken: ImageAssets.ic_dfy,
+    nameContact: 'Nguyen Duc Hoa',
+    emailContact: 'john_hoahihung@gmail.com',
+    phoneContact: '(+84) 0123456789',
+    addressContact: 'So 9, ngo 4 Duy Tan, Cau Giay',
+    wallet:
+        'Wallet 0xcd...1029 will receive NFT after being minted by Evaluator. ',
+    collection: 'Hard NFT will be created in collection Collection of HoaND',
+    properties: [
+      PropertyModel(value: 'oo', property: 'ee'),
+    ],
+    informationNft:
+        'Habitasse molestie ullamcorper consequat lectus. Dignissim ut ut neque, et venenatis. Suspendisse morbi ac dignissim in est.',
+    amountToken: 500000,
+    symbolToken: 'DFY',
+    nameNftType: 'Jewelry',
+    conditionNft: 'Brand new',
+    documents: [
+      DocumentModel('giay phep', 'ok'),
+    ],
+  );
+}
+
+class DocumentModel {
+  final String title;
+  final String typeFile;
+
+  DocumentModel(this.title, this.typeFile);
+}
+
+class Step1PassingModel {
+  final String hardNftName;
+  final String nameContact;
+  final String emailContact;
+  final String phoneContact;
+  final String addressContact;
+  final String wallet;
+  final String collection;
+  final List<PropertyModel> properties;
+  final String informationNft;
+  final double amountToken;
+  final String symbolToken;
+  final String nameNftType;
+  final String conditionNft;
+  final String imageToken;
+  final List<DocumentModel> documents;
+
+  Step1PassingModel({
+    required this.hardNftName,
+    required this.imageToken,
+    required this.nameContact,
+    required this.emailContact,
+    required this.phoneContact,
+    required this.addressContact,
+    required this.wallet,
+    required this.collection,
+    required this.properties,
+    required this.informationNft,
+    required this.amountToken,
+    required this.symbolToken,
+    required this.nameNftType,
+    required this.conditionNft,
+    required this.documents,
+  });
 }

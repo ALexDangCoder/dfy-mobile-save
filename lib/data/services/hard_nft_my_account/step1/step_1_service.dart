@@ -2,6 +2,7 @@ import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/hard_nft_type_select.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
 
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -27,4 +28,8 @@ abstract class Step1Client {
 
   @GET(ApiConstants.GET_CONDITION)
   Future<ListConditionResponse> getConditions();
+
+  @GET(ApiConstants.GET_HARD_NFT_TYPE)
+  Future<ListHardNFTTypeResponse> getNFTTypes();
+
 }

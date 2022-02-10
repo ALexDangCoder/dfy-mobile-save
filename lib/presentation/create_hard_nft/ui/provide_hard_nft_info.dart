@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/select_collection_dropdown.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/step1__when_submit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/main_media_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -14,12 +16,22 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'components/btn_hard_nft_type.dart';
 import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
 
 enum CircleStatus {
   IS_CREATING,
   IS_NOT_CREATE,
+}
+
+enum NFT_TYPES {
+  ART,
+  CAR,
+  WATCH,
+  JEWELRY,
+  HOUSE,
+  OTHER,
 }
 
 List<String> brands = ['gucci, luis vuituoi, prada, zara,'];
@@ -47,6 +59,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getCountriesApi();
     cubit.getPhonesApi();
     cubit.getConditionsApi();
+    cubit.getListHardNftTypeApi();
     if (cubit.properties.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
@@ -129,53 +142,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                 ),
                 spaceH8,
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      btnSelectNftType(
-                        image: ImageAssets.diamond,
-                        textNftType: 'Jewelry',
-                      ),
-                      btnSelectNftType(
-                        image: ImageAssets.artWork,
-                        textNftType: 'Artwork',
-                      ),
-                      btnSelectNftType(
-                        image: ImageAssets.car,
-                        textNftType: 'Car',
-                      ),
-                      btnSelectNftType(
-                        image: ImageAssets.watch,
-                        textNftType: 'Watch',
-                      )
-                    ],
-                  ),
-                ),
-                spaceH16,
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Row(
-                    children: [
-                      btnSelectNftType(
-                        image: ImageAssets.house,
-                        textNftType: 'House',
-                      ),
-                      spaceW28,
-                      btnSelectNftType(
-                        image: ImageAssets.others,
-                        textNftType: 'Others',
-                      ),
-                    ],
-                  ),
-                ),
+                ButtonHardNftType(cubit: cubit),
                 spaceH24,
                 textShowWithPadding(
                   textShow: 'Hard NFT name',
@@ -379,8 +346,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                             )
                           else
                             FormDropDown(
-                                typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
-                                cubit: cubit),
+                              typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
+                              cubit: cubit,
+                            ),
                           Expanded(
                             child: CustomForm(
                               isSelectNumPrefix: true,
@@ -637,9 +605,29 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   }
 
   Widget btnSelectNftType({
-    required String image,
-    required String textNftType,
+    required HardNftTypeModel hardNftType,
   }) {
+    String image = '';
+    switch (hardNftType.id) {
+      case 0:
+        image = ImageAssets.diamond;
+        break;
+      case 1:
+        image = ImageAssets.watch;
+        break;
+      case 2:
+        image = ImageAssets.artWork;
+        break;
+      case 3:
+        image = ImageAssets.house;
+        break;
+      case 4:
+        image = ImageAssets.car;
+        break;
+      default:
+        image = ImageAssets.others;
+        break;
+    }
     return Container(
       width: 64.w,
       height: 64.h,
@@ -658,7 +646,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           FittedBox(
             fit: BoxFit.fill,
             child: Text(
-              textNftType,
+              hardNftType.name ?? '',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 14,

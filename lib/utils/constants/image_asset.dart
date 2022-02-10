@@ -38,16 +38,23 @@ class ImageAssets {
   ///create HARD NFT
   static const String diamond = '$baseImg/diamond.png';
   static const String artWork = '$baseImg/art.png';
-  static const String car = '$baseImg/Car.png';
-  static const String watch = '$baseImg/Watch.png';
-  static const String house = '$baseImg/House.png';
-  static const String others = '$baseImg/Other.png';
+  static const String car = '$baseImg/car.png';
+  static const String watch = '$baseImg/watch.png';
+  static const String house = '$baseImg/house.png';
+  static const String others = '$baseImg/other.png';
   static const String addFormProperties = '$baseImg/add_form_pro.png';
 
   static const String closeProperties = '$baseImg/close_pro.png';
   static const String deleteMediaFile = '$baseImg/delete_media.png';
   static const String leftArrowMediaFile = '$baseImg/left_arrow.png';
   static const String rightArrowMediaFile = '$baseImg/right_arrow.png';
+
+  static const String walletStep1 = '$baseImg/wallet_step1.png';
+  static const String profileStep1 = '$baseImg/profile_step1.png';
+  static const String mailStep1 = '$baseImg/mail.png';
+  static const String collectionStep1 = '$baseImg/collection_step1.png';
+  static const String locationStep1 = '$baseImg/Location.png';
+  static const String callStep1 = '$baseImg/call.png';
 
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
