@@ -79,6 +79,9 @@ class ItemPawnShop extends StatelessWidget {
                       child: Image.network(
                         '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                        ),
                       ),
                     ),
                   ),

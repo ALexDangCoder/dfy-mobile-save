@@ -137,6 +137,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                               '${pawn.avatarCid}',
                                               height: 68.h,
                                               width: 68.w,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Container(
+                                                height: 68.h,
+                                                width: 68.w,
+                                                color: AppTheme.getInstance()
+                                                    .backgroundBTSColor(),
+                                              ),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -804,7 +812,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 //get hex string
                                 await bloc.getHexString();
 
-
                                 goTo(
                                   context,
                                   Approve(
@@ -844,10 +851,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                       //scan
                                       print('------------------$data');
                                       //todo confirm BE
-                                      showLoadSuccess(context).then((value) => goTo(
-                                        context,
-                                        const ListBookEvaluation(),
-                                      ));
+                                      showLoadSuccess(context)
+                                          .then((value) => goTo(
+                                                context,
+                                                const ListBookEvaluation(),
+                                              ));
                                       //todo chuyển màn hinh
                                     },
                                     textActiveButton:
