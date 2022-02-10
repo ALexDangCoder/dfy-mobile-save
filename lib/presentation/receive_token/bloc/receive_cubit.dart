@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/token_price_model.dart';
-import 'package:Dfy/domain/repository/price_repository.dart';
+import 'package:Dfy/domain/repository/token_repository.dart';
 import 'package:Dfy/presentation/receive_token/bloc/receive_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,12 +32,12 @@ class ReceiveCubit extends BaseCubit<ReceiveState> {
     final String path = '$tempPath/$ts.png';
     return path;
   }
-  PriceRepository get _priceRepository => Get.find();
+  TokenRepository get _tokenRepository => Get.find();
 
   Future<void> getListPrice(String symbols) async {
     showLoading();
     final Result<List<TokenPrice>> result =
-    await _priceRepository.getListPriceToken(symbols);
+    await _tokenRepository.getListPriceToken(symbols);
     result.when(
       success: (res) {
         showContent();

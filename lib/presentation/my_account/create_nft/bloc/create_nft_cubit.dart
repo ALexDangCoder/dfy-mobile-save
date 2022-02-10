@@ -13,13 +13,22 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 
 part 'create_nft_state.dart';
 
+const String KEY_PROPERTY = 'key';
+const String VALUE_PROPERTY = 'value';
+const String MEDIA_KEY = 'media_file';
+const String COVER_PHOTO_KEY = 'cover_photo';
+const String INPUT_KEY = 'input_text';
+const String COLLECTION_KEY = 'collection';
+const String PROPERTIES_KEY = 'properties';
+
+
 class CreateNftCubit extends BaseCubit<CreateNftState> {
+
   CreateNftCubit() : super(CreateNftInitial());
 
   VideoPlayerController? controller;
@@ -27,6 +36,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   AudioPlayer audioPlayer = AudioPlayer();
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
+
 
   final PinToIPFS ipfsService = PinToIPFS();
 
@@ -99,20 +109,20 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   ///List Map value - properties
   final BehaviorSubject<List<Map<String, String>>> listPropertySubject =
       BehaviorSubject();
+  final BehaviorSubject<bool> showAddPropertySubject = BehaviorSubject();
 
   List<Map<String, String>> listProperty = [];
+  List<bool> boolProperties = [];
 
   Map<String, bool> createNftMapCheck = {
-    'media_file': false,
-    'cover_photo': false,
-    'input_text': false,
-    'collection': false,
-    'properties': true
+    MEDIA_KEY: false,
+    COVER_PHOTO_KEY: false,
+    INPUT_KEY: false,
+    COLLECTION_KEY: false,
+    PROPERTIES_KEY : true,
   };
 
   void validateCreate() {
-    log('Media type: $mediaType');
-    log('media_file: ${createNftMapCheck.toString()}');
     if (mediaType == MEDIA_IMAGE_FILE) {
       if (createNftMapCheck['media_file'] == false ||
           createNftMapCheck['input_text'] == false ||

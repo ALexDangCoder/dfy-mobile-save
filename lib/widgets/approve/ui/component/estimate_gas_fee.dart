@@ -33,23 +33,23 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       widget.cubit.gasLimitFirstSubject.listen((value) {
-        setState(() {
-          gasLimit = widget.cubit.gasLimitFirst ?? 0;
-          _editGasLimitController.text =
-              (widget.cubit.gasLimitFirst ?? 0).toInt().toString();
-        });
+        try {
+          setState(() {
+            gasLimit = widget.cubit.gasLimitFirst ?? 0;
+            _editGasLimitController.text =
+                (widget.cubit.gasLimitFirst ?? 0).toInt().toString();
+          });
+        } catch (_) {}
       });
       widget.cubit.gasPriceFirstStream.listen((event) {
-        try{
+        try {
           setState(() {
             gasPrice = (widget.cubit.gasPriceFirst ?? 0) / 1000000000;
             _editGasPriceController.text =
                 ((widget.cubit.gasPriceFirstSubject.valueOrNull ?? 10) ~/ 1e9)
                     .toString();
           });
-        }catch (e){
-          //
-        }
+        } catch (_) {}
       });
     });
     // TODO: implement initState

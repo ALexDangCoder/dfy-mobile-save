@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' hide log;
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
@@ -5,10 +6,16 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/call_api_be.dart';
+import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +43,7 @@ class _UploadProgressState extends State<UploadProgress>
     final int rdC = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: (rdC + 3)*2),
+      duration: Duration(seconds: (rdC + 3) * 2),
     );
     _coverAnimationController = AnimationController(
       vsync: this,
@@ -44,18 +51,18 @@ class _UploadProgressState extends State<UploadProgress>
     );
     _featureAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: (rdC + 3)*3),
+      duration: Duration(seconds: (rdC + 3) * 3),
     );
     widget.bloc.cidCreate(context);
     widget.bloc.upLoadStatusSubject.listen((value) {
-      if(value==1){
-        if(_avatarAnimationController.isAnimating) {
+      if (value == 1) {
+        if (_avatarAnimationController.isAnimating) {
           _avatarAnimationController.stop();
         }
-        if(_featureAnimationController.isAnimating) {
+        if (_featureAnimationController.isAnimating) {
           _featureAnimationController.stop();
         }
-        if(_coverAnimationController.isAnimating) {
+        if (_coverAnimationController.isAnimating) {
           _coverAnimationController.stop();
         }
         Navigator.pop(context);
@@ -64,7 +71,39 @@ class _UploadProgressState extends State<UploadProgress>
           MaterialPageRoute(
             builder: (_) => Approve(
               hexString: widget.bloc.transactionData,
-              createNftMap: widget.bloc.getMapCreateCollection(),
+              onSuccessSign: (context, data) async {
+                final navigator = Navigator.of(context);
+                unawaited(showLoadingDialog(context));
+                await widget.bloc.createCollection(
+                  txhHash: data,
+                );
+                await showLoadSuccess(context)
+                    .then(
+                        (value) => navigator.popUntil((route) => route.isFirst))
+                    .then(
+                      (value) => navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => BaseSuccess(
+                            title: S.current.create_collection,
+                            content: S.current.create_collection_successfully,
+                            callback: () {
+                              navigator.pop();
+                              navigator.push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      CollectionList(
+                                    typeScreen: PageRouter.MY_ACC,
+                                    addressWallet: widget.bloc.walletAddress,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+              },
+              onErrorSign: (context) {},
               listDetail: [
                 DetailItemApproveModel(
                   title: '${S.current.name}:',
@@ -80,16 +119,27 @@ class _UploadProgressState extends State<UploadProgress>
                 ),
                 DetailItemApproveModel(
                   title: '${S.current.royalties}:',
-                  value:
-                  '${widget.bloc.royalties.toString()} %',
+                  value: '${widget.bloc.royalties.toString()} %',
                 ),
               ],
               title: S.current.create_collection,
               textActiveButton: S.current.create,
               typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
-              collectionType: widget.bloc.collectionType,
+              spender: widget.bloc.collectionType == HARD_COLLECTION
+                  ? hard_nft_factory_address_dev2
+                  : nft_factory_dev2,
             ),
           ),
+        );
+      }
+      if (value == 0){
+        showErrDialog(
+          onCloseDialog: (){
+            Navigator.pop(context);
+          },
+          context: context,
+          title: S.current.create_nft,
+          content: S.current.something_went_wrong,
         );
       }
     });
@@ -201,29 +251,29 @@ class _UploadProgressState extends State<UploadProgress>
                     initialData: -1,
                     builder: (context, snapshot) {
                       final isComplete = snapshot.data ?? -1;
-                        return InkWell(
-                          onTap: () {
-                            if (isComplete == 0) {
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: SizedBox(
-                            height: 64.h,
-                            child: Center(
-                              child: Text(
-                                'OK',
-                                style: textCustom(
-                                  color: isComplete == -1
-                                      ? AppTheme.getInstance().disableColor()
-                                      : AppTheme.getInstance().fillColor(),
-                                  weight: FontWeight.w700,
-                                  fontSize: 20,
-                                ),
+                      return InkWell(
+                        onTap: () {
+                          if (isComplete == 0) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: SizedBox(
+                          height: 64.h,
+                          child: Center(
+                            child: Text(
+                              'OK',
+                              style: textCustom(
+                                color: isComplete == -1
+                                    ? AppTheme.getInstance().disableColor()
+                                    : AppTheme.getInstance().fillColor(),
+                                weight: FontWeight.w700,
+                                fontSize: 20,
                               ),
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      );
+                    },
                   )
                 ],
               ),

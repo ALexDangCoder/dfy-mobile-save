@@ -126,7 +126,7 @@ extension GetTypeByName on PickerType {
   List<String> get fileType {
     switch (this) {
       case PickerType.MEDIA_FILE:
-        return ['MP4', 'WEBM', 'MP3', 'WAV', 'OGG', 'PNG', 'JPG', 'JP', 'GIF'];
+        return ['MP4', 'WEBM', 'MP3', 'WAV', 'OGG', 'PNG', 'JPG', 'JPEG', 'GIF'];
       case PickerType.IMAGE_FILE:
         return ['JPG', 'PNG', 'GIF',]; //'JPEG'
       case PickerType.DOCUMENT:

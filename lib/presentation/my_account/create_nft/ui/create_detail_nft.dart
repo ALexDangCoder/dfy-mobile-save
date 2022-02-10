@@ -3,14 +3,15 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/pick_file_extension.dart';
+import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/properties_control.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/upload_ipfs_extension.dart';
 import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/add_property_button.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/categories_dropdown_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/create_nft_progress_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/input_information_widget.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/widget/properties_row.dart';
 import 'package:Dfy/presentation/my_account/create_nft/ui/widget/upload_widget_create_nft.dart';
+import 'package:Dfy/presentation/my_account/create_nft/ui/widget/validator_property_row.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -91,10 +92,13 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                             shrinkWrap: true,
                             itemCount: list.length,
                             itemBuilder: (context, index) {
-                              return propertyRow(
+                              return PropertyRowWidget(
                                 property: list[index],
                                 cubit: widget.cubit,
                                 index: index,
+                                onTap: () {
+                                  widget.cubit.removeProperty(index);
+                                },
                               );
                             },
                           );
@@ -103,7 +107,16 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                     ],
                   ),
                 ),
-                addPropertyButton(widget.cubit),
+                StreamBuilder<bool>(
+                  stream: widget.cubit.showAddPropertySubject,
+                  initialData: true,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: snapshot.data ?? true,
+                      child: addPropertyButton(widget.cubit),
+                    );
+                  },
+                ),
                 SizedBox(
                   height: 28.h,
                 ),
@@ -120,7 +133,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                       fontSize: 20,
                       onTap: () {
                         if (statusButton) {
-                          widget.cubit.uploadFileToIFPS();
+                          widget.cubit.uploadFileToIFPS(context);
                           widget.cubit.controlAudio(needStop: true);
                           showDialog(
                             context: context,
