@@ -41,6 +41,7 @@ class _SelectAccState extends State<SelectAcc> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = widget.bloc;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -95,45 +96,35 @@ class _SelectAccState extends State<SelectAcc> {
               spaceH20,
               line,
               StreamBuilder(
-                stream: widget.bloc.list,
+                stream: bloc.list,
                 builder: (context, AsyncSnapshot<List<AccountModel>> snapshot) {
                   if (snapshot.hasData) {
+                    final listAcc = snapshot.data ?? [];
                     return Expanded(
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: snapshot.data?.length,
+                        itemCount: listAcc.length,
                         itemBuilder: (context, index) {
                           return MaterialButton(
                             padding: EdgeInsets.zero,
                             onPressed: () {
-                              widget.bloc.chooseWallet(
+                              bloc.chooseWallet(
                                 walletAddress:
-                                    snapshot.data?[index].addressWallet ?? '',
+                                    listAcc[index].addressWallet ?? '',
                               );
                               PrefsService.clearWalletBE();
                               PrefsService.saveCurrentWalletCore(
                                 snapshot.data?[index].addressWallet ?? '',
                               );
-                              widget.bloc.click(index);
-                              if (widget.typeScreen2 == TypeScreen2.detail) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(
-                                      index: tabPawnIndex,
-                                    ),
+                              bloc.click(index);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(
+                                    index: 1,
                                   ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(
-                                      index: tabPawnIndex,
-                                    ),
-                                  ),
-                                );
-                              }
+                                ),
+                              );
                             },
                             onLongPress: () {
                               Navigator.of(context)
@@ -141,7 +132,7 @@ class _SelectAccState extends State<SelectAcc> {
                                     HeroDialogRoute(
                                       builder: (context) {
                                         return RemoveAcc(
-                                          bloc: widget.bloc,
+                                          bloc: bloc,
                                           index: index,
                                           walletAddress: snapshot
                                                   .data?[index].addressWallet ??
@@ -153,7 +144,7 @@ class _SelectAccState extends State<SelectAcc> {
                                   )
                                   .whenComplete(
                                     () => {
-                                      if (widget.bloc.listSelectAccBloc.isEmpty)
+                                      if (bloc.listSelectAccBloc.isEmpty)
                                         {
                                           Navigator.pushReplacement(
                                             context,
@@ -198,8 +189,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
-                                                        snapshot.data?[index]
-                                                                .url ??
+                                                        listAcc[index].url ??
                                                             '',
                                                       ),
                                                     ),
@@ -235,7 +225,7 @@ class _SelectAccState extends State<SelectAcc> {
                                                         ),
                                                         spaceW4,
                                                         Text(
-                                                          snapshot.data?[index]
+                                                          listAcc[index]
                                                                   .addressWallet
                                                                   ?.formatAddressWallet() ??
                                                               '',
@@ -249,13 +239,27 @@ class _SelectAccState extends State<SelectAcc> {
                                                         ),
                                                       ],
                                                     ),
-                                                    Text(
-                                                      '${snapshot.data?[index].amountWallet?.toStringAsFixed(5)} BNB',
-                                                      style: textNormalCustom(
-                                                        null,
-                                                        16,
-                                                        FontWeight.w400,
+                                                    FutureBuilder(
+                                                      future:
+                                                          bloc.getAmountWallet(
+                                                        listAcc[index]
+                                                                .addressWallet ??
+                                                            '',
                                                       ),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<double>
+                                                              snapshot) {
+                                                        return Text(
+                                                          '${snapshot.data?.toStringAsFixed(5) ?? 0} ${S.current.bnb}',
+                                                          style:
+                                                              textNormalCustom(
+                                                            null,
+                                                            16,
+                                                            FontWeight.w400,
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   ],
                                                 ),
@@ -264,7 +268,7 @@ class _SelectAccState extends State<SelectAcc> {
                                             Row(
                                               children: [
                                                 Container(
-                                                  child: snapshot.data?[index]
+                                                  child: listAcc[index]
                                                               .imported ??
                                                           false
                                                       ? Container(
@@ -309,18 +313,18 @@ class _SelectAccState extends State<SelectAcc> {
                                                 ),
                                                 spaceW10,
                                                 Container(
-                                                  child: snapshot.data?[index]
-                                                              .isCheck ??
-                                                          false
-                                                      ? Image.asset(
-                                                          ImageAssets
-                                                              .ic_selected,
-                                                          width: 24.w,
-                                                          height: 24.h,
-                                                        )
-                                                      : SizedBox(
-                                                          width: 24.w,
-                                                        ),
+                                                  child:
+                                                      listAcc[index].isCheck ??
+                                                              false
+                                                          ? Image.asset(
+                                                              ImageAssets
+                                                                  .ic_selected,
+                                                              width: 24.w,
+                                                              height: 24.h,
+                                                            )
+                                                          : SizedBox(
+                                                              width: 24.w,
+                                                            ),
                                                 ),
                                                 spaceW5,
                                               ],

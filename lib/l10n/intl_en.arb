@@ -418,6 +418,8 @@
   "copied_address": "Copied address!",
   "copied_private_key": "Copied private key!",
   "copied_seed_phrase": "Copied seed phrase!",
+  "bnb": "BNB",
+  "copied_seed_phrase": "Copied seed phrase!",
   "offer": "Offer",
   "cancel_sale": "Cancel sale",
   "cancel_sale_info": "Sale information will be cancelled",
