@@ -16,86 +16,8 @@ enum TYPE_FORM_DROPDOWN {
   NONE_DATA,
 }
 
-class Token {
-  final String shortName;
-  final String image;
-
-  Token(this.shortName, this.image);
-}
-
-List<Token> tokens = [
-  Token(
-    'Dfy',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'NFY',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'lgf',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    'fuk',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '123',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '312',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '1',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '2',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '3',
-    ImageAssets.ic_dfy,
-  ),
-  Token(
-    '66',
-    ImageAssets.ic_dfy,
-  )
-];
-
-
 List<Map<String, dynamic>> firstPhone = [
   {'label': '+84'},
-];
-
-List<Map<String, dynamic>> tokensMap = [
-  {
-    'label': '${tokens[0].shortName}',
-    'icon': SizedBox(
-      width: 20.w,
-      height: 20.h,
-      child: Image.asset(tokens[0].image),
-    ),
-  },
-  {
-    'label': '${tokens[1].shortName}',
-    'icon': SizedBox(
-      width: 20.w,
-      height: 20.h,
-      child: Image.asset(tokens[1].image),
-    ),
-  },
-  {
-    'label': '${tokens[2].shortName}',
-    'icon': SizedBox(
-      width: 20.w,
-      height: 20.h,
-      child: Image.asset(tokens[2].image),
-    ),
-  }
 ];
 
 class FormDropDown extends StatelessWidget {
@@ -273,12 +195,12 @@ class FormDropDown extends StatelessWidget {
                   dropdownItemMainAxis: MainAxisAlignment.start,
                   resultMainAxis: MainAxisAlignment.start,
                   isTriangle: false,
-                  dropdownList: tokensMap,
+                  dropdownList: cubit.tokensMap,
                   dropdownWidth: 113.w,
                   dropdownHeight: 228.h,
                   dropdownPadding: EdgeInsets.only(right: 11.w),
                   dropdownItemHeight: 54.h,
-                  defaultValue: tokensMap[0],
+                  defaultValue: cubit.tokensMap[0],
                   resultIcon: const SizedBox.shrink(),
                   dropdownItemReverse: true,
                   dropdownBD: BoxDecoration(
@@ -346,10 +268,9 @@ class FormDropDown extends StatelessWidget {
                 dropdownWidth: 109.w,
                 isTriangle: false,
                 dropdownPadding: EdgeInsets.only(right: 11.w),
-                dropdownList:
-                    cubit.phonesCode,
+                dropdownList: cubit.phonesCode,
                 defaultValue: cubit.phonesCode.isNotEmpty
-                    ? cubit.phonesCode[229]
+                    ? cubit.phonesCode[0]
                     : firstPhone[0],
                 resultIcon: const SizedBox.shrink(),
                 dropdownBD: BoxDecoration(
