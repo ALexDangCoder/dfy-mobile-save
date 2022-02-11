@@ -1,5 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/search/ui/nft_search.dart';
@@ -15,8 +17,6 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/market_place/ui/header.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
-import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -186,13 +186,24 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                       );
                     },
                     nftCallBack: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => ConnectWalletDialog(
-                          navigationTo: CreateNFTScreen(
-                            cubit: CreateNftCubit(),
+                      StepTwoPassingModel stepTwoPassingModel=StepTwoPassingModel(
+                        nameCity: 'doanh',
+                        locationLat: 0,
+                        locationLong: 0,
+                        assetCID:'QmPFLdGTx3X25Fp84wEAPdomq5fCZfeq4sMEjYsfhUGyeE',
+                        beAssetId:'0' ,
+                        collectionAsset: '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',
+                        assetId:'620605484aec3d812452a25e' ,
+                        cityId: 12,
+                        collectionStandard:0 ,
+                        typeNFT: 'dyamon',//
+                      );
+                      Navigator.push(
+                        context,//todo dùng ké
+                        MaterialPageRoute(
+                          builder: (context) =>  ListBookEvaluation(
+                            stepTwoPassing: stepTwoPassingModel,
                           ),
-                          isRequireLoginEmail: false,
                         ),
                       );
                     },

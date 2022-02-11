@@ -40,12 +40,12 @@ class _ItemListMap extends State<ItemListMap> {
   void getMarkers() {
     markers.add(
       Marker(
-        markerId: MarkerId(  widget.bloc.stepTwoPassingModel
-            ?.cityId.toString() ?? '',),
+        markerId: MarkerId(
+          'aa-${widget.bloc.stepTwoPassingModel?.cityId.toString() ?? ''}',
+        ),
         position: showLocation,
         infoWindow: InfoWindow(
-          title: widget.bloc.stepTwoPassingModel
-              ?.nameCity ?? '',
+          title: widget.bloc.stepTwoPassingModel?.nameCity ?? '',
         ),
       ),
     );

@@ -18,7 +18,8 @@ class StepTwoPassingModel {
     this.collectionStandard,
     this.typeNFT,
     this.cityId,
-    this.locationLat,
     this.locationLong,
+    this.locationLat,
+    this.nameCity,
   });
 }
