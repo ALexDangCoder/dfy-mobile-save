@@ -1,3 +1,5 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
 import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
@@ -9,10 +11,12 @@ import 'package:Dfy/data/services/market_place/create_hard_nft_service.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
+import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 
 class CreateHardNFTImpl implements CreateHardNFTRepository {
   final CreateHardNFtService _client;
@@ -85,6 +89,43 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
       () => _client.createEvaluation(
           appointmentTime, assetId, bcTxnHash, evaluatorAddress, evaluatorId),
       (response) => response.item?.toDomain() ?? CreateEvaluationModel(),
+    );
+  }
+
+  @override
+  Future<Result<List<EvaluationResult>>> getListEvaluationResult(
+    String assetId,
+    String page,
+  ) {
+    return runCatchingAsync<EvaluationResultResponse, List<EvaluationResult>>(
+      () => _client.getListEvaluationResult(
+        assetId,
+        page,
+        ApiConstants.DEFAULT_NFT_SIZE,
+      ),
+      (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmAcceptEvaluationToBE(String bcTxnHash, String evaluationID) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmAcceptEvaluation(
+        evaluationID,
+        bcTxnHash,
+      ),
+          (response) => response.code ?? '',
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmRejectEvaluationToBE(String bcTxnHash, String evaluationID) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmRejectEvaluation(
+        evaluationID,
+        bcTxnHash,
+      ),
+          (response) => response.code ?? '',
     );
   }
 }

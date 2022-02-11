@@ -1,4 +1,5 @@
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 
 extension PropertiesControl on CreateNftCubit {
   void addProperty() {
@@ -37,20 +38,31 @@ extension PropertiesControl on CreateNftCubit {
   }
 
   String getError(String _key, String _value) {
-    if (_key.isEmpty || _value.isEmpty) {
-      return 'Property or Value cannot be empty';
+    if(_key.isEmpty) {
+      return S.current.property_is_required;
     }
-    if (_key.length > 30 || _value.length > 30) {
-      return 'Maximum length is 30 character';
+    if(_value.isEmpty) {
+      return S.current.value_is_required;
+    }
+    if(_key.length > 30) {
+      return S.current.property_maximum_char;
+    }
+    if(_value.length > 30) {
+      return S.current.value_maximum_char;
     }
     return '';
   }
 
   void checkProperty() {
-    for (final e in boolProperties) {
-      e
-          ? createNftMapCheck[PROPERTIES_KEY] = true
-          : createNftMapCheck[PROPERTIES_KEY] = false;
+
+    if (boolProperties.isNotEmpty){
+      for (final e in boolProperties) {
+        e
+            ? createNftMapCheck[PROPERTIES_KEY] = true
+            : createNftMapCheck[PROPERTIES_KEY] = false;
+      }
+    } else{
+    createNftMapCheck[PROPERTIES_KEY] = true;
     }
     validateCreate();
   }

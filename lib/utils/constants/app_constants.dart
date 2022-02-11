@@ -24,6 +24,10 @@ enum PageTransitionType {
   BOTTOM_TO_TOP,
   RIGHT_TO_LEFT_WITH_FADE,
 }
+// enum CircleStatus {
+//   IS_CREATING,
+//   IS_NOT_CREATE,
+// }
 
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';

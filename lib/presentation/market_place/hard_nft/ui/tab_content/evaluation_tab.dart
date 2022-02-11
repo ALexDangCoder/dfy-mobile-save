@@ -226,11 +226,6 @@ class _EvaluationTabState extends State<EvaluationTab>
                             ),
                           ),
                           spaceH20,
-                          Padding(
-                            padding: EdgeInsets.only(left: 16.w,right: 16.w),
-                            child: divide,
-                          ),
-                          spaceH20,
                           Container(
                             padding: EdgeInsets.only(
                               left: 16.w,

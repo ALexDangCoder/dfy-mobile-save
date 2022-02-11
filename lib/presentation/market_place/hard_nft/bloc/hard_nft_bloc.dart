@@ -10,6 +10,8 @@ class HardNFTBloc {
     for (int i = 0; i < (evaluation.media?.length ?? 0); i++) {
       listImg.add(evaluation.media![i].urlImage ?? '');
     }
+    final tempList = listImg.toSet();
+    listImg = tempList.toList();
   }
 
   ///clear fake Data

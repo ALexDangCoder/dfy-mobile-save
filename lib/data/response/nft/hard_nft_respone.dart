@@ -50,7 +50,7 @@ class DetailHardNftResponse {
   @JsonKey(name: 'collection_name')
   String? collectionName;
   @JsonKey(name: 'nft_standard')
-  String? nftStandard;
+  int? nftStandard;
   @JsonKey(name: 'number_of_copies')
   int? numberOfCopies;
   @JsonKey(name: 'minting_fee_number')
@@ -70,9 +70,11 @@ class DetailHardNftResponse {
   @JsonKey(name: 'blockchain_network')
   String? blockChainNetwork;
   @JsonKey(name: 'nft_token_id')
-  String? nftTokenId;
+  int? nftTokenId;
   @JsonKey(name: 'collection_address')
   String? collectionAddress;
+  @JsonKey(name: 'wallet_address')
+  String? walletAddress;
   @JsonKey(name: 'evaluation_id')
   String? evaluationId;
   @JsonKey(name: 'is_white_list')
@@ -95,6 +97,7 @@ class DetailHardNftResponse {
     this.numberOfCopies,
     this.mintingFeeNumber,
     this.mintingFeeToken,
+    this.walletAddress,
     this.createAt,
     this.updateAt,
     this.royalties,
@@ -140,6 +143,7 @@ class DetailHardNftResponse {
   NftMarket toOnSale() => NftMarket(
         price: 0,
         marketId: marketId,
+        walletAddress: walletAddress,
         name: name ?? '',
         description: description,
         royalties: royalties,
@@ -158,8 +162,8 @@ class DetailHardNftResponse {
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,
-        nftTokenId: nftTokenId,
-        nftStandard: nftStandard,
+        nftTokenId: nftTokenId.toString(),
+        nftStandard: nftStandard.toString(),
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
@@ -185,8 +189,8 @@ class DetailHardNftResponse {
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,
-        nftTokenId: nftTokenId,
-        nftStandard: nftStandard,
+        nftTokenId: nftTokenId.toString(),
+        nftStandard: nftStandard.toString(),
         blockchainNetwork: blockChainNetwork,
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
