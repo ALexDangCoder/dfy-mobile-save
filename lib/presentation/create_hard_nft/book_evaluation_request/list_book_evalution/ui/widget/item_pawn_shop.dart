@@ -53,6 +53,10 @@ class ItemPawnShop extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
+                      bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -60,6 +64,8 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
+                            typeNFT: 'diamond',
+                            assetId: bloc.assetID, //todo type
                           ),
                         ),
                       );
@@ -74,12 +80,19 @@ class ItemPawnShop extends StatelessWidget {
                       child: Image.network(
                         '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                        ),
                       ),
                     ),
                   ),
                   spaceW8,
                   InkWell(
                     onTap: () {
+                      bloc.getTextStatus(
+                        appointment.status ?? 0,
+                        appointment.acceptedTime ?? 0,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -87,6 +100,8 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
+                            typeNFT: 'diamond',
+                            assetId: bloc.assetID, //todo type
                           ),
                         ),
                       );
@@ -123,41 +138,43 @@ class ItemPawnShop extends StatelessWidget {
                 ],
               ),
               spaceH4,
-              RichText(
-                textAlign: TextAlign.end,
-                text: TextSpan(
-                  style: textNormalCustom(
-                    bloc.checkColor(
-                      bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
+              Align(
+                alignment: Alignment.centerRight,
+                child: RichText(
+                  text: TextSpan(
+                    style: textNormalCustom(
+                      bloc.checkColor(
+                        bloc.getTextStatus(
+                          appointment.status ?? 0,
+                          appointment.acceptedTime ?? 0,
+                        ),
                       ),
+                      12,
+                      null,
                     ),
-                    12,
-                    null,
+                    children: [
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: bloc.isLoadingText
+                            ? Container(
+                                width: 18.w,
+                                height: 18.h,
+                                margin: EdgeInsets.only(right: 10.w),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                      TextSpan(
+                        text: bloc.getTextStatus(
+                          appointment.status ?? 0,
+                          appointment.acceptedTime ?? 0,
+                        ),
+                      ),
+                    ],
                   ),
-                  children: [
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: bloc.isLoadingText
-                          ? Container(
-                              width: 18.w,
-                              height: 18.h,
-                              margin: EdgeInsets.only(right: 10.w),
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                    TextSpan(
-                      text: bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
-                      ),
-                    ),
-                  ],
                 ),
               ),
               spaceH8,
@@ -171,7 +188,6 @@ class ItemPawnShop extends StatelessWidget {
                               HeroDialogRoute(
                                 builder: (context) {
                                   return DialogReasonDetail(
-                                    contentDetail: 'sdfsadf', //todo content
                                     dateDetail: 0.formatDateTimeMy(
                                       appointment.appointmentTime ?? 0,
                                     ),
@@ -197,40 +213,41 @@ class ItemPawnShop extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: -4.h,
-            right: -4.w,
+            top: -10.h,
+            right: -10.w,
             child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        HeroDialogRoute(
-                          builder: (context) {
-                            return DialogCancel(
-                              numPhoneCode:
-                                  appointment.evaluator?.phoneCode?.code ?? '',
-                              title: appointment.evaluator?.name ?? '',
-                              urlAvatar:
-                                  '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
-                              date: 0.formatDateTimeMy(
-                                  appointment.appointmentTime ?? 0),
-                              location: appointment.evaluator?.address ?? '',
-                              mail: appointment.evaluator?.email ?? '',
-                              numPhone: appointment.evaluator?.phone ?? '',
-                              status: bloc.getTextStatus(
-                                appointment.status ?? 0,
-                                appointment.acceptedTime ?? 0,
+                      if (!bloc.isLoadingText) {
+                        Navigator.of(context)
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return DialogCancel(
+                                    appointment: appointment,
+                                    bloc: bloc,
+                                  );
+                                },
+                                isNonBackground: false,
                               ),
-                              bloc: bloc,
+                            )
+                            .then(
+                              (value) => bloc.getListPawnShop(
+                                assetId: bloc.assetID,
+                              ),
                             );
-                          },
-                          isNonBackground: false,
-                        ),
-                      );
+                      }
                     },
-                    child: Image.asset(
-                      ImageAssets.imgCancelMarket,
-                      width: 20.w,
-                      height: 20.h,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 6.h,
+                      ),
+                      child: Image.asset(
+                        ImageAssets.imgCancelMarket,
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     ),
                   )
                 : const SizedBox.shrink(),

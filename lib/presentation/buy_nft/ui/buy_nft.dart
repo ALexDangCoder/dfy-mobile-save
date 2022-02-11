@@ -382,7 +382,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   },
                   textActiveButton: S.current.buy_nft,
                   hexString: hexString,
-                  typeApprove: TYPE_CONFIRM_BASE.BUY_NFT,
+                  spender: nft_sales_address_dev2,
                 ),
               ),
             ),

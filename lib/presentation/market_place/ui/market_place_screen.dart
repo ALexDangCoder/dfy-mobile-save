@@ -206,7 +206,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors:
-                          AppTheme.getInstance().listBackgroundMarketColor(),
+                      AppTheme.getInstance().listBackgroundMarketColor(),
                     ),
                   ),
                   child: Column(
@@ -236,7 +236,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                                 //priority by position in
                                 // listCollectionFtExploreFtNft
                                 for (Map<String, dynamic> e
-                                    in cubit.listCollectionFtExploreFtNft)
+                                in cubit.listCollectionFtExploreFtNft)
                                   if (e['name'] ==
                                       'Buy, sell, and create collectible NFTs') ...[
                                     ListNftBuySellCollectible(
@@ -300,15 +300,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                                   ]
                                   //this else handle explore categories
                                   else ...[
-                                    ListExploreCategory(
-                                      cubit: cubit,
-                                      isLoading: false,
-                                      isLoadFail: false,
-                                    ),
-                                    SizedBox(
-                                      height: 32.h,
-                                    ),
-                                  ],
+                                      ListExploreCategory(
+                                        cubit: cubit,
+                                        isLoading: false,
+                                        isLoadFail: false,
+                                      ),
+                                      SizedBox(
+                                        height: 32.h,
+                                      ),
+                                    ],
                                 SizedBox(
                                   height: 164.h,
                                 ),

@@ -15,7 +15,7 @@ extension GetGasLimit on ApproveCubit {
       gasLimit = await web3Client.
       getGasLimitByData(
         from: addressWallet ?? '',
-        toContractAddress: spender ?? getSpender(),
+        toContractAddress: spender,
         dataString: hexString,
       );
     } catch (e) {
@@ -26,19 +26,17 @@ extension GetGasLimit on ApproveCubit {
 
   Future<String> gesDataApprove(
       String contractAddress, BuildContext context) async {
-    if (type == TYPE_CONFIRM_BASE.PUT_ON_AUCTION ||
-        type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
-        type == TYPE_CONFIRM_BASE.PUT_ON_SALE) {
+    if (isPutOnMarket) {
       final data = await web3Client.getNftApproveForAllData(
         approved: true,
         collectionAddress: putOnMarketModel?.collectionAddress ?? '',
-        operatorAddress: spender ?? getSpender(),
+        operatorAddress: spender ,
       );
       return data;
     } else {
       final data = await web3Client.getTokenApproveData(
         context: context,
-        spender: spender ?? getSpender(),
+        spender: spender,
         contractAddress: contractAddress,
       );
       return data;
@@ -53,9 +51,7 @@ extension GetGasLimit on ApproveCubit {
     final web3Client = Web3Utils();
     final data = await gesDataApprove(contractAddress, context);
 
-    final String fromAddress = type == TYPE_CONFIRM_BASE.PUT_ON_AUCTION ||
-            type == TYPE_CONFIRM_BASE.PUT_ON_PAWN ||
-            type == TYPE_CONFIRM_BASE.PUT_ON_SALE
+    final String fromAddress = isPutOnMarket
         ? putOnMarketModel?.collectionAddress ?? ''
         : contractAddress;
 

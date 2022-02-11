@@ -70,7 +70,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         res.forEach(
           (e) => phonesCode.add({
             'value': e.code ?? '',
-            'label': e.id ?? '',
+            'label': e.id.toString(),
           }),
         );
         phonesCodeBHVSJ.sink.add(phonesCode);
@@ -97,7 +97,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       success: (res) {
         res.forEach(
           (e) => countries
-              .add({'value': e.id ?? '', 'label': e.name ?? ''}),
+              .add({'value': e.id.toString(), 'label': e.name ?? ''}),
         );
         countriesBHVSJ.sink.add(countries);
       },
@@ -115,7 +115,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       success: (res) {
         res.forEach((element) {
           conditions.add({
-            'value': element.id ?? '',
+            'value': element.id.toString() ,
             'label': element.name ?? '',
           });
         });

@@ -160,6 +160,12 @@ class ApiConstants {
 
   static const String GET_EVALUATORS_DETAIL_END = '/customer-view-profile';
 
+  static const String CREATE_EVALUATION = '/hard-nft-svc/api//appointments';
+
+  static const String CANCEL = '/hard-nft-svc/api/appointments/';
+
+  static const String CANCEL_END = '/cancel';
+
   ///HARD NFT MY ACCOUNT
   static const String GET_PHONE_CODE = 'hard-nft-svc/public-api/phone-codes';
 
@@ -172,6 +178,7 @@ class ApiConstants {
   static const String GET_LIST_EVALUATION_RESULT = '/hard-nft-svc/api/evaluations/';
   static const String ACCEPT = '/accept';
   static const String REJECT = '/reject';
+  static const String GET_EVALUATION_FEE = '/hard-nft-svc/public-api/system-fee';
   static const String PATH_GET_CITIES = '/cities';
 
   static const String GET_CONDITION =

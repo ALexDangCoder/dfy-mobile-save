@@ -32,6 +32,7 @@ class Approve extends StatefulWidget {
   final List<DetailItemApproveModel>? listDetail;
   final Widget? warning;
   final Widget? header;
+  final bool? isPutOnMarket;
   final PutOnMarketModel? putOnMarketModel;
   final bool? needApprove;
   final int? flexTitle;
@@ -41,12 +42,11 @@ class Approve extends StatefulWidget {
   final Function(BuildContext, String)? onSuccessSign;
   final String? purposeText;
   final String textActiveButton;
-  final String? spender;
+  final String spender;
 
   /// [gasLimitFirst] is min of gas limit
   final String? hexString;
 
-  final TYPE_CONFIRM_BASE typeApprove;
   final String? payValue;
   final String? tokenAddress;
   final Map<String, dynamic>? request;
@@ -55,7 +55,7 @@ class Approve extends StatefulWidget {
     Key? key,
     required this.title,
     this.listDetail,
-    this.spender,
+    required this.spender,
     this.warning,
     this.needApprove = false,
     required this.textActiveButton,
@@ -63,7 +63,6 @@ class Approve extends StatefulWidget {
     this.purposeText,
     this.flexTitle,
     this.flexContent,
-    required this.typeApprove,
     this.payValue,
     this.tokenAddress,
     this.hexString,
@@ -72,6 +71,7 @@ class Approve extends StatefulWidget {
     this.errorTextSign,
     this.onErrorSign,
     this.onSuccessSign,
+    this.isPutOnMarket,
   }) : super(key: key);
 
   @override
@@ -89,15 +89,15 @@ class _ApproveState extends State<Approve> {
   double heightOfBottom = 0;
   bool isShowLoading = false;
 
-  void initData(TYPE_CONFIRM_BASE typeBase) {
-    cubit.type = widget.typeApprove;
+  void initData() {
+    cubit.spender = widget.spender;
     accountImage = cubit.randomAvatar();
+    cubit.isPutOnMarket = widget.isPutOnMarket ?? false;
     cubit.context = context;
     cubit.putOnMarketModel = widget.putOnMarketModel;
     cubit.needApprove = widget.needApprove ?? false;
     cubit.payValue = widget.payValue ?? '';
     cubit.tokenAddress = widget.tokenAddress ?? '';
-    cubit.spender = widget.spender;
     cubit.hexString = widget.hexString;
     cubit.errorTextSign = widget.errorTextSign ?? '';
   }
@@ -106,7 +106,7 @@ class _ApproveState extends State<Approve> {
   void initState() {
     super.initState();
     cubit = ApproveCubit();
-    initData(widget.typeApprove);
+    initData();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       heightScaffold = scaffoldKey.currentContext?.size?.height;
       heightOfBottom = bottomKey.currentContext?.size?.height ?? 0;
@@ -142,7 +142,7 @@ class _ApproveState extends State<Approve> {
     final nonce = await cubit.getNonce();
     await cubit.signTransactionWithData(
       walletAddress: cubit.addressWallet ?? '',
-      contractAddress: widget.spender ?? cubit.getSpender(),
+      contractAddress: widget.spender,
       nonce: nonce.toString(),
       chainId: Get.find<AppConstants>().chaninId,
       gasPrice: gasPriceString,

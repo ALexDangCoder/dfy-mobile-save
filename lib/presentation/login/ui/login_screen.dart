@@ -104,6 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 content: S.current.something_went_wrong,
               );
             }
+          } else {
+            showErrDialog(
+              context: context,
+              title: S.current.notify,
+              content: S.current.something_went_wrong,
+            );
           }
         },
       );

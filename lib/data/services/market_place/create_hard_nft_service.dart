@@ -1,5 +1,8 @@
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
+import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
+import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
@@ -51,4 +54,25 @@ abstract class CreateHardNFtService {
       @Path('evaluator_id') String evaluatorId,
       @Query('bc_txn_hash_accept') String bcTxnHash,
       );
+}
+    @Path('evaluator_id') String evaluatorId,
+  );
+
+  @GET(ApiConstants.GET_EVALUATION_FEE)
+  Future<EvaluationFeeListResponse> getEvaluationFee();
+
+  @POST(ApiConstants.CREATE_EVALUATION)
+  Future<CreateEvaluationResponse> createEvaluation(
+    @Field('appointment_time') int appointmentTime,
+    @Field('asset_id') String assetId,
+    @Field('bc_txn_hash') String bcTxnHash,
+    @Field('evaluator_address') String evaluatorAddress,
+    @Field('evaluator_id') String evaluatorId,
+  );
+
+  @PUT('${ApiConstants.CANCEL}{evaluator_id}${ApiConstants.CANCEL_END}')
+  Future<CancelEvaluationResponse> cancelEvaluation(
+    @Path('evaluator_id') String evaluatorId,
+    @Query('bc_txn_hash_cancel') String bcTxnHashCancel,
+  );
 }

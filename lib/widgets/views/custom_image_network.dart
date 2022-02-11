@@ -1,3 +1,4 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loading_gifs/loading_gifs.dart';
 
@@ -16,6 +17,9 @@ class CustomImageNetwork extends StatelessWidget {
       placeholder: cupertinoActivityIndicatorSmall,
       image: image,
       fit: fit,
+      imageErrorBuilder: (context, error, stackTrace) => Container(
+        color: AppTheme.getInstance().backgroundBTSColor(),
+      ),
     );
   }
 }

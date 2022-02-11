@@ -161,8 +161,11 @@
   "saved": "Saved",
   "share": "Share",
   "receive_nft": "Receive NFT",
+  "receive_hard_nft": "Receive hard NFT",
   "receive": "Receive",
   "transaction_pending": "Pending",
+  "view_detail_nft": "View detail NFT",
+  "hard_nft_is_coming_to_your_wallet" : "Hard NFT is coming to your wallet, stay still and wait for a minutes",
   "no_transaction": "No transaction",
   "status": "Status",
   "gas_fee": "Gas fee",
@@ -347,7 +350,7 @@
   "confirm_account": "Confirm your account",
   "enter_email": "Enter email",
   "verify_account": "We have just sent a confirmation letter to the email address you just registered. Please check your email and enter Code to active your account.",
-  "connect_wallet": "Connect Wallet",
+  "connect_wallet": "Connect",
   "connect_to_continue": "You need to connect wallet to continue",
   "detected_email": "The system detected email ",
   "detected_email2": " has already been registered account on DeFi For You. Please check your Email and confirm to associate your account",
@@ -671,4 +674,9 @@
   "watch":"Watch",
   "house":"House"
 
+  "evaluator": "Evaluator:",
+  "date_time": "Date time:",
+  "evaluation_fee": "Evaluation fee:",
+  "invalid_file_format" : "Invalid file format",
+  "request_evaluation": "Request evaluation"
 }
