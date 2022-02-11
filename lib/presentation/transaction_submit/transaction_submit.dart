@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TransactionSubmit extends StatelessWidget {
-  const TransactionSubmit({Key? key}) : super(key: key);
+  const TransactionSubmit({Key? key, this.justLoading}) : super(key: key);
+  final bool? justLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class TransactionSubmit extends StatelessWidget {
           spaceH5,
           Expanded(
             child: Text(
-              S.current.tran_submit,
+              (justLoading ?? false) ? '': S.current.tran_submit,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,

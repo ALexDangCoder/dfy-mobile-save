@@ -92,17 +92,17 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
 
   @override
   void initState() {
-    _txtGasLimit = TextEditingController(
-      text: widget.gasLimitFirstFetch.toString(),
-    );
-    _txtGasPrice =
-        TextEditingController(text: widget.gasPriceFirstFetch.toString());
     //if token != bnb will not subtract else subtract, do not delete this line
     if (widget.nameToken != 'BNB') {
       balanceWallet = widget.balanceWallet;
     } else {
       balanceWallet = widget.balanceWallet - widget.amount!.toDouble();
     }
+    _txtGasLimit = TextEditingController(
+      text: widget.gasLimitFirstFetch.toString(),
+    );
+    _txtGasPrice =
+        TextEditingController(text: widget.gasPriceFirstFetch.toString());
     _informationWallet = InformationWallet(
       cubit: cubitFormCustomizeGasFee,
       nameWallet: widget.nameWallet,

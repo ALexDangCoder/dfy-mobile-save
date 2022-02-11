@@ -6,12 +6,14 @@ class OnBoardingContent {
   final String title;
   final String descriptionNormal;
   final String descriptionYellow;
+  String? partDescription; //for step 4 because yellow text in middle
 
   OnBoardingContent({
     required this.image,
     required this.title,
     required this.descriptionNormal,
     required this.descriptionYellow,
+    this.partDescription,
   });
 }
 
@@ -25,8 +27,8 @@ List<OnBoardingContent> contents = [
   OnBoardingContent(
     title: '${S.current.step} 2',
     image: ImageAssets.content2,
-    descriptionNormal: S.current.send_evalue_to_evaluator,
-    descriptionYellow: S.current.to_evaluator,
+    descriptionYellow: S.current.send_evalue_to_evaluator,
+    descriptionNormal: S.current.to_evaluator,
   ),
   OnBoardingContent(
     title: '${S.current.step} 3',
@@ -37,8 +39,8 @@ List<OnBoardingContent> contents = [
   OnBoardingContent(
     title: '${S.current.step} 4',
     image: ImageAssets.content4,
-    descriptionNormal:
-        '${S.current.put_hard_nft_market} ${S.current.marketplace}',
-    descriptionYellow: S.current.to_take_profit,
+    descriptionNormal: S.current.put_hard_nft_market,
+    partDescription: S.current.to_take_profit,
+    descriptionYellow: S.current.marketplace,
   ),
 ];

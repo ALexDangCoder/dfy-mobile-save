@@ -167,6 +167,13 @@ class _WalletState extends State<WalletScreen>
                                 );
                               },
                             ),
+                          ).whenComplete(
+                            () {
+                              trustWalletChannel.setMethodCallHandler(
+                                cubit.nativeMethodCallBackTrustWallet,
+                              );
+                              cubit.getListWallets();
+                            },
                           );
                         },
                         icon: Icon(
