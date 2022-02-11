@@ -9,6 +9,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -386,7 +387,7 @@ class _PawnTabState extends State<PawnTab>
                               DetailItemApproveModel(
                                 title: '${S.current.expected_loan} :',
                                 value:
-                                    '${widget.cubit.valueTokenInputPawn ?? 0} ${widget.cubit.tokenPawn?.symbol ?? 'DFY'}',
+                                    '${widget.cubit.valueTokenInputPawn ?? 0} ${_putOnMarketModel.loanSymbol ?? 'DFY'}',
                                 isToken: true,
                               ),
                               DetailItemApproveModel(
@@ -401,7 +402,8 @@ class _PawnTabState extends State<PawnTab>
                               )
                             ],
                             textActiveButton: S.current.put_on_pawn,
-                            typeApprove: TYPE_CONFIRM_BASE.PUT_ON_PAWN,
+                            spender: nft_pawn_dev2,
+                            isPutOnMarket: true,
                           ),
                           isRequireLoginEmail: true,
                         ),

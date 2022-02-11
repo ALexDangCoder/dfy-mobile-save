@@ -142,7 +142,7 @@ Widget buttonCancelAuction({
               nftOnAuction: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              type: TYPE_CONFIRM_BASE.CANCEL_AUCTION,
+              spender: nft_auction_dev2,
               cancelInfo: S.current.auction_cancel_info,
               cancelWarning: S.current.cancel_auction_warning,
               title: S.current.cancel_aution,

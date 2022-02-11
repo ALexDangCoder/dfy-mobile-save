@@ -56,6 +56,10 @@ class EvaluatorsResponse extends Equatable {
   List<AcceptedAssetTypeResponse>? acceptedAssetTypeList;
   @JsonKey(name: 'description')
   String? description;
+  @JsonKey(name: 'location_lat')
+  double? locationLat;
+  @JsonKey(name: 'location_long')
+  double? locationLong;
 
   EvaluatorsResponse(
     this.id,
@@ -66,6 +70,8 @@ class EvaluatorsResponse extends Equatable {
     this.evaluatedCount,
     this.acceptedAssetTypeList,
     this.description,
+    this.locationLat,
+    this.locationLong,
   );
 
   factory EvaluatorsResponse.fromJson(Map<String, dynamic> json) =>
@@ -80,6 +86,8 @@ class EvaluatorsResponse extends Equatable {
         listAcceptedAssetType: acceptedAssetTypeList,
         reviewsCount: reviewsCount,
         starCount: starCount,
+        locationLat: locationLat,
+        locationLong: locationLong,
       );
 
   @override
