@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
@@ -61,6 +60,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///List path image
   List<String> listPathImage = [];
+  List<String> listPathDocument = [];
   String currentImagePath = '';
   int currentIndexImage = 0;
   List<HardNftTypeModel> listHardNftType = [];
@@ -76,8 +76,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
       BehaviorSubject();
 
-  BehaviorSubject<List<String>> imagePathSubject = BehaviorSubject();
+  ///Control upload Image, Document
+  BehaviorSubject<List<String>> listImagePathSubject = BehaviorSubject();
   BehaviorSubject<String> currentImagePathSubject = BehaviorSubject();
+  BehaviorSubject<List<String>> listDocumentPathSubject = BehaviorSubject();
+
+  ///add Button subject
+  BehaviorSubject<bool> enableButtonUploadImageSubject = BehaviorSubject();
+  BehaviorSubject<bool> enableButtonUploadDocumentSubject = BehaviorSubject();
+
+
 
   Future<void> getListHardNftTypeApi() async {
     final Result<List<HardNftTypeModel>> resultHardNftTypes =

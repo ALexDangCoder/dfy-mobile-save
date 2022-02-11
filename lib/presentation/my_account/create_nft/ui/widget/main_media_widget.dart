@@ -1,4 +1,5 @@
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,10 @@ class MediaFileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (typeMedia == TYPE_MEDIA_WIDGET.MAIN) {
       return Container(
+        margin: EdgeInsets.symmetric(horizontal: 16.w),
+        clipBehavior: Clip.hardEdge,
         height: 290.h,
-        width: 343.w,
+        width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(10.r),
