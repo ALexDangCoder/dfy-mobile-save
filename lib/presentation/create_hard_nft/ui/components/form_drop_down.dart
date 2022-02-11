@@ -1,5 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -31,76 +33,178 @@ class FormDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (typeDrop == TYPE_FORM_DROPDOWN.CONDITION ||
-        typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
-      return Stack(
-        children: [
-          CoolDropdown(
-            // gap: 8.h,
-            dropdownItemMainAxis: MainAxisAlignment.start,
-            resultMainAxis: MainAxisAlignment.start,
-            dropdownList: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
-                ? cubit.countries
-                : cubit.conditions,
-            onChange: (value) {
-              if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
-                cubit.getCitiesApi(value['value']);
-              } else {}
-            },
-            dropdownItemHeight: 54.h,
-            dropdownHeight: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
-                ? (cubit.countries.isEmpty ? 54.h : 232.h)
-                : 232.h,
-            dropdownWidth: 343.w,
-            resultAlign: Alignment.centerRight,
-            resultWidth: 343.w,
-            resultHeight: 64.h,
-            dropdownPadding: EdgeInsets.only(right: 11.w),
-            dropdownBD: BoxDecoration(
-              color: AppTheme.getInstance().selectDialogColor(),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            resultBD: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            resultTS: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16,
-            ),
-            placeholder: typeDrop == TYPE_FORM_DROPDOWN.COUNTRY
-                ? 'Select Country'
-                : 'Select Condition',
-            resultIcon: const SizedBox.shrink(),
-            selectedItemTS: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16,
-            ),
-            unselectedItemTS: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16,
-            ),
-            placeholderTS: textNormal(
-              Colors.white.withOpacity(0.5),
-              16,
-            ),
-            isTriangle: false,
-            selectedItemBD: BoxDecoration(
-              color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
-            ),
-          ),
-          Positioned(
-            right: 19.w,
-            child: SizedBox(
-              height: 64.h,
-              child: sizedSvgImage(
-                w: 13,
-                h: 13,
-                image: ImageAssets.ic_expand_white_svg,
+    if (typeDrop == TYPE_FORM_DROPDOWN.CONDITION) {
+      return StreamBuilder<List<Map<String, dynamic>>>(
+        stream: cubit.conditionBHVSJ,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppTheme.getInstance().bgProgressingColors(),
               ),
-            ),
-          )
-        ],
+            );
+          } else if ((snapshot.data ?? []).isEmpty) {
+            return InkWell(
+              onTap: () {
+                cubit.getAllApiExceptCity();
+              },
+              child: SizedBox(
+                height: 54.h,
+                width: 54.w,
+                child: Image.asset(ImageAssets.reload_nft),
+              ),
+            );
+          } else {
+            return Stack(
+              children: [
+                CoolDropdown(
+                  // gap: 8.h,
+                  dropdownItemMainAxis: MainAxisAlignment.start,
+                  resultMainAxis: MainAxisAlignment.start,
+                  dropdownList: cubit.conditions,
+                  onChange: (value) {
+                    //todo
+                  },
+                  dropdownItemHeight: 54.h,
+                  dropdownHeight: 232.h,
+                  dropdownWidth: 343.w,
+                  resultAlign: Alignment.centerRight,
+                  resultWidth: 343.w,
+                  resultHeight: 64.h,
+                  dropdownPadding: EdgeInsets.only(right: 11.w),
+                  dropdownBD: BoxDecoration(
+                    color: AppTheme.getInstance().selectDialogColor(),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  resultBD: BoxDecoration(
+                    color: AppTheme.getInstance().backgroundBTSColor(),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  resultTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  placeholder: S.current.select_condition,
+                  resultIcon: const SizedBox.shrink(),
+                  selectedItemTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  unselectedItemTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  placeholderTS: textNormal(
+                    Colors.white.withOpacity(0.5),
+                    16,
+                  ),
+                  isTriangle: false,
+                  selectedItemBD: BoxDecoration(
+                    color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                  ),
+                ),
+                Positioned(
+                  right: 19.w,
+                  child: SizedBox(
+                    height: 64.h,
+                    child: sizedSvgImage(
+                      w: 13,
+                      h: 13,
+                      image: ImageAssets.ic_expand_white_svg,
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+        }
+      );
+    } else if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
+      return StreamBuilder<List<Map<String, dynamic>>>(
+        stream: cubit.countriesBHVSJ,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppTheme.getInstance().bgProgressingColors(),
+              ),
+            );
+          } else if ((snapshot.data ?? []).isEmpty) {
+            return InkWell(
+              onTap: () {
+                cubit.getAllApiExceptCity();
+              },
+              child: SizedBox(
+                height: 54.h,
+                width: 54.w,
+                child: Image.asset(ImageAssets.reload_nft),
+              ),
+            );
+          }
+          return Stack(
+            children: [
+              CoolDropdown(
+                // gap: 8.h,
+                dropdownItemMainAxis: MainAxisAlignment.start,
+                resultMainAxis: MainAxisAlignment.start,
+                dropdownList: cubit.countries,
+                onChange: (value) {
+                  if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
+                    cubit.getCitiesApi(value['value']);
+                  } else {}
+                },
+                dropdownItemHeight: 54.h,
+                dropdownHeight: cubit.countries.isEmpty ? 54.h : 232.h,
+                dropdownWidth: 343.w,
+                resultAlign: Alignment.centerRight,
+                resultWidth: 343.w,
+                resultHeight: 64.h,
+                dropdownPadding: EdgeInsets.only(right: 11.w),
+                dropdownBD: BoxDecoration(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                resultBD: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                resultTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                placeholder: S.current.select_country,
+                resultIcon: const SizedBox.shrink(),
+                selectedItemTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                unselectedItemTS: textNormal(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                ),
+                placeholderTS: textNormal(
+                  Colors.white.withOpacity(0.5),
+                  16,
+                ),
+                isTriangle: false,
+                selectedItemBD: BoxDecoration(
+                  color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                ),
+              ),
+              Positioned(
+                right: 19.w,
+                child: SizedBox(
+                  height: 64.h,
+                  child: sizedSvgImage(
+                    w: 13,
+                    h: 13,
+                    image: ImageAssets.ic_expand_white_svg,
+                  ),
+                ),
+              )
+            ],
+          );
+        }
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.CITY) {
       return StreamBuilder<List<Map<String, dynamic>>>(
@@ -247,74 +351,98 @@ class FormDropDown extends StatelessWidget {
         ),
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PHONE) {
-      return Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getInstance().backgroundBTSColor(),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            bottomLeft: Radius.circular(20.r),
-          ),
-        ),
-        width: 93.w,
-        height: 64.h,
-        child: Center(
-          child: Stack(
-            children: [
-              CoolDropdown(
-                dropdownItemGap: 8.h,
-                dropdownItemMainAxis: MainAxisAlignment.start,
-                resultMainAxis: MainAxisAlignment.spaceAround,
-                dropdownHeight: 324.h,
-                dropdownWidth: 109.w,
-                isTriangle: false,
-                dropdownPadding: EdgeInsets.only(right: 11.w),
-                dropdownList: cubit.phonesCode,
-                defaultValue: cubit.phonesCode.isNotEmpty
-                    ? cubit.phonesCode[0]
-                    : firstPhone[0],
-                resultIcon: const SizedBox.shrink(),
-                dropdownBD: BoxDecoration(
-                  color: AppTheme.getInstance().selectDialogColor(),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                unselectedItemTS: textNormal(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                ),
-                resultTS: textNormal(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                ),
-                selectedItemBD: BoxDecoration(
-                  color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
-                ),
-                selectedItemTS: textNormal(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                ),
-                resultBD: BoxDecoration(
-                  color: AppTheme.getInstance().backgroundBTSColor(),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                onChange: (value) {
-                  print(value['label']);
-                },
+      return StreamBuilder<List<Map<String, dynamic>>>(
+        stream: cubit.phonesCodeBHVSJ,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppTheme.getInstance().bgProgressingColors(),
               ),
-              Positioned(
-                top: 0.h,
-                left: 60.w,
-                child: SizedBox(
-                  height: 60.h,
-                  child: sizedSvgImage(
-                    w: 13,
-                    h: 13,
-                    image: ImageAssets.ic_expand_white_svg,
-                  ),
+            );
+          } else if ((snapshot.data ?? []).isEmpty) {
+            return InkWell(
+              onTap: () {
+                cubit.getAllApiExceptCity();
+              },
+              child: SizedBox(
+                height: 54.h,
+                width: 54.w,
+                child: Image.asset(ImageAssets.reload_nft),
+              ),
+            );
+          } else {
+            return Container(
+              decoration: BoxDecoration(
+                color: AppTheme.getInstance().backgroundBTSColor(),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  bottomLeft: Radius.circular(20.r),
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+              width: 93.w,
+              height: 64.h,
+              child: Center(
+                child: Stack(
+                  children: [
+                    CoolDropdown(
+                      dropdownItemGap: 8.h,
+                      dropdownItemMainAxis: MainAxisAlignment.start,
+                      resultMainAxis: MainAxisAlignment.spaceAround,
+                      dropdownHeight: 324.h,
+                      dropdownWidth: 109.w,
+                      isTriangle: false,
+                      dropdownPadding: EdgeInsets.only(right: 11.w),
+                      dropdownList: cubit.phonesCode,
+                      defaultValue: cubit.phonesCode.isNotEmpty
+                          ? cubit.phonesCode[0]
+                          : firstPhone[0],
+                      resultIcon: const SizedBox.shrink(),
+                      dropdownBD: BoxDecoration(
+                        color: AppTheme.getInstance().selectDialogColor(),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      unselectedItemTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      resultTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      selectedItemBD: BoxDecoration(
+                        color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                      ),
+                      selectedItemTS: textNormal(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                      ),
+                      resultBD: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onChange: (value) {
+                        print(value['label']);
+                      },
+                    ),
+                    Positioned(
+                      top: 0.h,
+                      left: 60.w,
+                      child: SizedBox(
+                        height: 60.h,
+                        child: sizedSvgImage(
+                          w: 13,
+                          h: 13,
+                          image: ImageAssets.ic_expand_white_svg,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+        }
       );
     } else {
       return Container();

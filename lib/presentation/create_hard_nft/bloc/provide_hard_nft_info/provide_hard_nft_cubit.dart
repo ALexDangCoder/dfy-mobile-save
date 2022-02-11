@@ -90,6 +90,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  void getAllApiExceptCity() {
+    getTokenInf();
+    getCountriesApi();
+    getPhonesApi();
+    getConditionsApi();
+    getListHardNftTypeApi();
+  }
+
   String? validateAdditionInfo(String value) {
     if (value.length > 255) {
       return S.current.validate_addition_info;
@@ -196,7 +204,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
-        //todo
+        phonesCodeBHVSJ.sink.add([]);
       },
     );
   }

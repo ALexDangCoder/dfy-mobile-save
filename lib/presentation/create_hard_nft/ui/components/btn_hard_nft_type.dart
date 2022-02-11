@@ -19,9 +19,24 @@ class ButtonHardNftType extends StatelessWidget {
       stream: cubit.listHardNftTypeBHVSJ,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              AppTheme.getInstance().bgProgressingColors(),
+            ),
+          );
+        } else if ((snapshot.data ?? []).isEmpty) {
+          return InkWell(
+            onTap: () {
+              cubit.getListHardNftTypeApi();
+            },
+            child: SizedBox(
+              height: 54.h,
+              width: 54.w,
+              child: Image.asset(ImageAssets.reload_nft),
+            ),
+          );
         } else {
-          List<HardNftTypeModel> hardNftTypes = snapshot.data ?? [];
+          final List<HardNftTypeModel> hardNftTypes = snapshot.data ?? [];
           return Column(
             children: [
               Container(

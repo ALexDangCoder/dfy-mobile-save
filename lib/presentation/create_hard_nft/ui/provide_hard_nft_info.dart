@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -92,7 +89,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                cubit.navigatorToConfirmInfo();
+              },
               child: ButtonGold(
                 title: S.current.next,
                 isEnable: true,
@@ -101,10 +100,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
           resizeBottomInset: true,
           title: S.current.provide_hard_nft_info,
-          child: BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
+          child: BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
             bloc: cubit,
             builder: (context, state) {
               if (state is ProvideHardNftConfirmInfo) {
@@ -362,38 +358,25 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
 
                         ///FORM NUMBER
 
-                        StreamBuilder<List<Map<String, dynamic>>>(
-                          initialData: [],
-                          stream: cubit.phonesCodeBHVSJ,
-                          builder: (context, snapshot) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
+                          child: Row(
+                            children: [
+                              FormDropDown(
+                                typeDrop: TYPE_FORM_DROPDOWN.PHONE,
+                                cubit: cubit,
                               ),
-                              child: Row(
-                                children: [
-                                  if (snapshot.hasData)
-                                    FormDropDown(
-                                      typeDrop: TYPE_FORM_DROPDOWN.PHONE,
-                                      cubit: cubit,
-                                    )
-                                  else
-                                    FormDropDown(
-                                      typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
-                                      cubit: cubit,
-                                    ),
-                                  Expanded(
-                                    child: TextFieldValidator(
-                                      validator: (value) {
-                                        return cubit
-                                            .validateMobile(value ?? '');
-                                      },
-                                    ),
-                                  ),
-                                ],
+                              Expanded(
+                                child: TextFieldValidator(
+                                  validator: (value) {
+                                    return cubit.validateMobile(value ?? '');
+                                  },
+                                ),
                               ),
-                            );
-                          },
+                            ],
+                          ),
                         ),
 
                         spaceH16,
@@ -406,23 +389,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           ),
                         ),
                         spaceH4,
-
-                        StreamBuilder<List<Map<String, dynamic>>>(
-                          initialData: [],
-                          stream: cubit.countriesBHVSJ,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return FormDropDown(
-                                typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
-                                cubit: cubit,
-                              );
-                            } else {
-                              return FormDropDown(
-                                typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
-                                cubit: cubit,
-                              );
-                            }
-                          },
+                        FormDropDown(
+                          typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
+                          cubit: cubit,
                         ),
                         spaceH16,
                         textShowWithPadding(
