@@ -363,7 +363,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           listener: (context, state) {
                             if (state is LoginSuccess) {
                               SystemChrome.setEnabledSystemUIMode(
-                                  SystemUiMode.immersive);
+                                SystemUiMode.manual,
+                                overlays: [SystemUiOverlay.top],
+                              );
                               PrefsService.saveCurrentWalletCore(
                                 _cubit.walletAddress,
                               );
