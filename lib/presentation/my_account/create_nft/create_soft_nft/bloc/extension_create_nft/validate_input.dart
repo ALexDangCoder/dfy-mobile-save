@@ -1,5 +1,5 @@
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 
 extension ValidateInput on CreateNftCubit {
   String? validateCollectionName(String vl) {

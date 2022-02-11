@@ -2,8 +2,8 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/properties_control.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/properties_control.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -60,6 +60,7 @@ class _PropertyRowWidgetState extends State<PropertyRowWidget> {
                         alignment: Alignment.centerLeft,
                         child: TextFieldValidator(
                           hint: S.current.properties,
+                          maxInputChar: 31,
                           errorTextHeight: 0,
                           onChange: (vl) {
                             _key = vl;
@@ -73,10 +74,10 @@ class _PropertyRowWidgetState extends State<PropertyRowWidget> {
                           validator: (value) {
                             final String vl = value ?? '';
                             if (vl.isEmpty) {
-                              return 'Cannot be empty';
+                              return S.current.property_is_required;
                             }
                             if (vl.length > 30) {
-                              return 'Max len is 30 char';
+                              return S.current.property_maximum_char;
                             }
                             return null;
                           },
@@ -87,6 +88,7 @@ class _PropertyRowWidgetState extends State<PropertyRowWidget> {
                         alignment: Alignment.centerLeft,
                         child: TextFieldValidator(
                           hint: S.current.value,
+                          maxInputChar: 31,
                           errorTextHeight: 0,
                           onChange: (vl) {
                             _value = vl;
@@ -100,10 +102,10 @@ class _PropertyRowWidgetState extends State<PropertyRowWidget> {
                           validator: (value) {
                             final String vl = value ?? '';
                             if (vl.isEmpty) {
-                              return 'Cannot be empty';
+                              return S.current.value_is_required;
                             }
                             if (vl.length > 30) {
-                              return 'Max len is 30 char';
+                              return S.current.value_maximum_char;
                             }
                             return null;
                           },

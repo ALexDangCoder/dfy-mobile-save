@@ -1,6 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 
 extension SelectNftCubit on CreateNftCubit{
   Future<void> getListTypeNFT() async {

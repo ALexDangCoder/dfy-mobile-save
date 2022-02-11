@@ -1,6 +1,6 @@
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 
 extension CallCore on CreateNftCubit {
 
