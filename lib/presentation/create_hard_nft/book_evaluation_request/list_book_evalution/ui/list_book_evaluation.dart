@@ -101,14 +101,16 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                                         padding: EdgeInsets.only(
                                           bottom: 24.h,
                                         ),
-                                        itemBuilder: (context, index) =>
-                                            ItemPawnShop(
-                                          bloc: _bloc,
-                                          appointment: _list[index],
-                                          isLoading: _bloc.checkIsLoading(
-                                            _list[index].status ?? 0,
-                                          ),
-                                        ),
+                                        itemBuilder: (context, index) {
+                                          _bloc.getIdEva(_list[index]);
+                                          return ItemPawnShop(
+                                            bloc: _bloc,
+                                            appointment: _list[index],
+                                            isLoading: _bloc.checkIsLoading(
+                                              _list[index].status ?? 0,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       const SizedBox(
                                         height: 120,
@@ -159,6 +161,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                     builder: (context) => BookEvaluation(
                       cityId: widget.cityId ?? 0,
                       assetId: _bloc.assetID,
+                      appointmentList: _bloc.appointmentList,
                     ),
                   ),
                 );

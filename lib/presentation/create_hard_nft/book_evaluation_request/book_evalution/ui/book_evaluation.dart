@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
+import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
@@ -17,11 +18,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BookEvaluation extends StatefulWidget {
   final int cityId;
   final String assetId;
+  final List<AppointmentModel> appointmentList;
 
   const BookEvaluation({
     Key? key,
     required this.cityId,
     required this.assetId,
+    required this.appointmentList,
   }) : super(key: key);
 
   @override
@@ -36,7 +39,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
     super.initState();
     bloc = BlocBookEvaluation();
     bloc.getListPawnShopStar(cityId: widget.cityId);
-    bloc.assetId=widget.assetId;
+    bloc.assetId = widget.assetId;
+    bloc.appointmentList = widget.appointmentList;
   }
 
   @override
@@ -117,17 +121,39 @@ class _BookEvaluationState extends State<BookEvaluation> {
                             padding: EdgeInsets.zero,
                             itemBuilder: (context, index) => GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CreateBookEvaluation(
-                                      idEvaluation: list[index].id ?? '',
-                                      type: TypeEvaluation.NEW_CREATE,
-                                      typeNFT: 'diamond',
-                                      assetId: widget.assetId, //todo type
-                                    ),
-                                  ),
+                                bloc.checkTypeCreate(
+                                  list[index].id ?? '',
                                 );
+                                if (bloc.type == TypeEvaluation.CREATE) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateBookEvaluation(
+                                        date: bloc.getDate(
+                                          list[index].id ?? '',
+                                        ),
+                                        idEvaluation: list[index].id ?? '',
+                                        type: TypeEvaluation.CREATE,
+                                        typeNFT: 'diamond',
+                                        assetId: widget.assetId, //todo type
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateBookEvaluation(
+                                        idEvaluation: list[index].id ?? '',
+                                        type: TypeEvaluation.NEW_CREATE,
+                                        typeNFT: 'diamond',
+                                        assetId: widget.assetId, //todo type
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                               child: ItemPawnShopStar(
                                 starNumber: '${list[index].starCount}',

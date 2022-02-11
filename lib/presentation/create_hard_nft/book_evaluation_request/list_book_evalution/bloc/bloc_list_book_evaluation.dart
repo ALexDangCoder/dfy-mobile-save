@@ -31,6 +31,9 @@ class BlocListBookEvaluation {
 //     SUCCESS(9),
 //     TIMEOUT_ACCEPTED(10),
 //     TIMEOUT_OPEN(11);
+
+  List<AppointmentModel> appointmentList = [];
+
   final Web3Utils web3utils = Web3Utils();
 
   Future<void> getHexString({
@@ -93,6 +96,17 @@ class BlocListBookEvaluation {
         return false;
       default:
         return true;
+    }
+  }
+
+  void getIdEva(AppointmentModel eva) {
+    switch (eva.status) {
+      case CANCELLED:
+        break;
+      case REJECTED:
+        break;
+      default:
+        appointmentList.add(eva);
     }
   }
 
