@@ -270,7 +270,7 @@ class FormDropDown extends StatelessWidget {
                 dropdownPadding: EdgeInsets.only(right: 11.w),
                 dropdownList: cubit.phonesCode,
                 defaultValue: cubit.phonesCode.isNotEmpty
-                    ? cubit.phonesCode[229]
+                    ? cubit.phonesCode[0]
                     : firstPhone[0],
                 resultIcon: const SizedBox.shrink(),
                 dropdownBD: BoxDecoration(

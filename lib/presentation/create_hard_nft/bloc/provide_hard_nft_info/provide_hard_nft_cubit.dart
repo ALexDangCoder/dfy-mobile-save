@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
@@ -13,10 +14,9 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -39,6 +39,8 @@ class PropertyModel {
 
 class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ProvideHardNftCubit() : super(ProvideHardNftInitial());
+
+  final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
 
   BehaviorSubject<bool> visibleDropDownCountry = BehaviorSubject();
 
@@ -85,7 +87,72 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<bool> enableButtonUploadImageSubject = BehaviorSubject();
   BehaviorSubject<bool> enableButtonUploadDocumentSubject = BehaviorSubject();
 
+  final regexEmail = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  String? validateAdditionInfo(String value) {
+    if (value.length > 255) {
+      return S.current.validate_addition_info;
+    } else {
+      return null;
+    }
+  }
+
+  String? validateAddress(String value) {
+    if (value.isEmpty) {
+      return S.current.address_required;
+    } else {
+      return null;
+    }
+  }
+
+  String? validateHardNftName(String value) {
+    if (value.isEmpty) {
+      return S.current.name_required;
+    }
+    if (value.length > 255) {
+      return S.current.maximum_255;
+    } else {
+      return null;
+    }
+  }
+
+  String validateAmountToken(String value) {
+    if (value.isEmpty) {
+      return S.current.amount_required;
+    } else if (!regexAmount.hasMatch(value)) {
+      return S.current.invalid_amount;
+    } else {
+      return '';
+    }
+  }
+
+  String validateFormAddProperty(String value) {
+    if (value.length > 30) {
+      return S.current.maximum_30;
+    } else {
+      return '';
+    }
+  }
+
+  String? validateMobile(String value) {
+    const String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    final RegExp regExp = RegExp(pattern);
+    if (value.isEmpty) {
+      return S.current.phone_required;
+    } else if (!regExp.hasMatch(value)) {
+      return S.current.invalid_phone;
+    }
+    return null;
+  }
+
+  String validateEmail(String value) {
+    if (!regexEmail.hasMatch(value)) {
+      return S.current.invalid_email;
+    } else {
+      return '';
+    }
+  }
 
   Future<void> getListHardNftTypeApi() async {
     final Result<List<HardNftTypeModel>> resultHardNftTypes =
@@ -108,12 +175,23 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        for (final e in res) {
+        final temp = res.map((e) => e.code.toString()).toList().toSet();
+        final listCode = temp.toList();
+        final listId = listCode
+            .map((e) => res.where((element) => element.code == e))
+            .toList();
+        for (final e in listCode) {
           phonesCode.add({
-            'value': e.code ?? '',
-            'label': e.id.toString(),
+            'value': listId[listCode.indexOf(e)],
+            'label': e,
           });
         }
+        // for (final e in res) {
+        //   phonesCode.add({
+        //     'value': e.code ?? '',
+        //     'label': e.id.toString(),
+        //   });
+        // }
         phonesCodeBHVSJ.sink.add(phonesCode);
         // phonesCodeBHVSJ.sink.add([]);
       },
@@ -214,22 +292,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     return PrefsService.getCurrentBEWallet();
   }
 
-  Future<void> getCollectionAfterConnectWallet() async {
-    print(getAddressWallet);
-    final resultCollection =
-        await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet(),
-    );
-    resultCollection.when(
-      success: (res) {
-        print(res);
-      },
-      error: (error) {
-        print(error);
-      },
-    );
-  }
-
   Future<void> getListCollection() async {
     List<CollectionMarketModel> listHardCl = [];
 
@@ -312,46 +374,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else {
       visibleDropDownCountry.sink.add(false);
     }
-  }
-
-  Future<void> pickFile() async {
-    final Map<String, dynamic> mediaMap =
-        await pickMediaFile(type: PickerType.MEDIA_FILE);
-    final _path = mediaMap.getStringValue('path');
-    if (mediaMap.getBoolValue('valid_format') && _path.isNotEmpty) {
-      listPathImage.add(_path);
-      imagePathSubject.sink.add(listPathImage);
-      if (currentImagePath.isEmpty) {
-        currentImagePath = listPathImage.first;
-        currentImagePathSubject.sink.add(currentImagePath);
-      }
-    }
-  }
-
-  void controlMainImage({required bool isNext}) {
-    if (currentImagePath.isEmpty) {
-      currentIndexImage = 0;
-      currentImagePath = listPathImage.first;
-    }
-    if (isNext) {
-      if (currentIndexImage == (listPathImage.length - 1)) {
-        currentIndexImage = 0;
-        currentImagePath = listPathImage.first;
-      } else {
-        currentIndexImage++;
-        currentImagePath = listPathImage[currentIndexImage];
-      }
-    } else {
-      if (currentIndexImage == 0) {
-        currentIndexImage = listPathImage.length - 1;
-        currentImagePath = listPathImage.last;
-      } else {
-        currentIndexImage--;
-        currentImagePath = listPathImage[currentIndexImage];
-      }
-    }
-    log('List len: ${listPathImage.length} ---- Current Index = $currentIndexImage ---- Current path: $currentImagePath');
-    currentImagePathSubject.sink.add(currentImagePath);
   }
 
   List<DocumentModel> documents = [

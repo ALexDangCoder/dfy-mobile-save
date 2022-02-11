@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/ui/create_seedphrase.dart';
 import 'package:Dfy/presentation/import_account/ui/import_account_login.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/on_boarding/ui/on_boarding.dart';
 import 'package:Dfy/presentation/select_acc/ui/select_acc.dart';
 import 'package:Dfy/presentation/setting_wallet/bloc/setting_wallet_cubit.dart';
 import 'package:Dfy/presentation/setting_wallet/ui/components/button_form.dart';
@@ -67,9 +68,9 @@ class _SettingWalletState extends State<SettingWallet> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            // return const ComingSoon();
-                            return const ProvideHardNftInfo();
-                            // return OnBoardingScreen(callbackSkip: () {  },);
+                            return const ComingSoon();
+                            // return const ProvideHardNftInfo();
+                            return OnBoardingScreen();
                           },
                         ),
                       );
