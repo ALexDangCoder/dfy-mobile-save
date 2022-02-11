@@ -1,3 +1,5 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
 import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
@@ -32,6 +34,27 @@ abstract class CreateHardNFtService {
   Future<EvaluatorsDetailResponse> getEvaluatorsDetail(
     @Path('evaluator_id') String evaluatorId,
   );
+
+  @GET(ApiConstants.GET_LIST_EVALUATION_RESULT)
+  Future<EvaluationResultResponse> getListEvaluationResult(
+    @Query('asset_id') String assetId,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @PUT(
+      '${ApiConstants.GET_LIST_EVALUATION_RESULT}{evaluator_id}${ApiConstants.ACCEPT}')
+  Future<ConfirmEvaluationResponse> confirmAcceptEvaluation(
+    @Path('evaluator_id') String evaluatorId,
+    @Query('bc_txn_hash_accept') String bcTxnHash,
+  );
+  @PUT(
+      '${ApiConstants.GET_LIST_EVALUATION_RESULT}{evaluator_id}${ApiConstants.REJECT}')
+  Future<ConfirmEvaluationResponse> confirmRejectEvaluation(
+      @Path('evaluator_id') String evaluatorId,
+      @Query('bc_txn_hash_accept') String bcTxnHash,
+      );
+
 
   @GET(ApiConstants.GET_EVALUATION_FEE)
   Future<EvaluationFeeListResponse> getEvaluationFee();

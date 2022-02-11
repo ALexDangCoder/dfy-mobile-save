@@ -19,12 +19,8 @@ class ComingScreen extends StatelessWidget {
           Container(
             height: 812.h,
             width: 375.w,
-            decoration: BoxDecoration(
-              color: const Color(0xff3e3d5c),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.h),
-                topRight: Radius.circular(30.h),
-              ),
+            decoration: const BoxDecoration(
+              color: Color(0xff3e3d5c),
             ),
             child: Column(
               children: [
