@@ -33,7 +33,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   void initState() {
     super.initState();
     _bloc = BlocListBookEvaluation();
-    _bloc.stepTwoPassingModel=widget.stepTwoPassing;
+    _bloc.stepTwoPassingModel = widget.stepTwoPassing;
     _bloc.getListPawnShop(assetId: _bloc.stepTwoPassingModel?.assetId ?? '');
     _bloc.reloadAPI();
   }
@@ -53,13 +53,17 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await _bloc.getListPawnShop(
-                  assetId:_bloc.stepTwoPassingModel?.assetId ?? '',
+                  assetId: _bloc.stepTwoPassingModel?.assetId ?? '',
                 );
               },
               child: Column(
                 children: [
                   spaceH24,
-                  const StepAppBar(),
+                  StepAppBar(
+                    stepTwoPassingModel:
+                        _bloc.stepTwoPassingModel ?? StepTwoPassingModel(),
+                    isSuccess: _bloc.isSuccess,
+                  ),
                   spaceH16,
                   Expanded(
                     child: SingleChildScrollView(
@@ -157,6 +161,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
+                      isSuccess: _bloc.isSuccess,
                       stepTwoPassing: widget.stepTwoPassing,
                       appointmentList: _bloc.appointmentList,
                     ),

@@ -36,6 +36,7 @@ class BlocListBookEvaluation {
   List<AppointmentModel> appointmentList = [];
 
   final Web3Utils web3utils = Web3Utils();
+  bool isSuccess=false;
 
   Future<void> getHexString({
     required String appointmentId,
@@ -139,6 +140,7 @@ class BlocListBookEvaluation {
         type = TypeEvaluation.CREATE;
         isDetail = false;
         isCancel = true;
+        isSuccess=true;
         isLoadingText = false;
         if (time != 0) {
           return S.current.evaluator_has_suggested;
@@ -173,8 +175,7 @@ class BlocListBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          if (res.status == CANCELLED) {
-          }
+          if (res.status == CANCELLED) {}
         }
       },
       error: (error) {},

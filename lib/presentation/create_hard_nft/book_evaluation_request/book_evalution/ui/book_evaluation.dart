@@ -19,11 +19,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BookEvaluation extends StatefulWidget {
   final StepTwoPassingModel? stepTwoPassing;
   final List<AppointmentModel> appointmentList;
+  final bool? isSuccess;
 
   const BookEvaluation({
     Key? key,
     required this.stepTwoPassing,
     required this.appointmentList,
+    this.isSuccess,
   }) : super(key: key);
 
   @override
@@ -54,7 +56,11 @@ class _BookEvaluationState extends State<BookEvaluation> {
       child: Column(
         children: [
           spaceH24,
-          const StepAppBar(),
+          StepAppBar(
+            stepTwoPassingModel:
+                bloc.stepTwoPassingModel ?? StepTwoPassingModel(),
+            isSuccess: widget.isSuccess ?? false,
+          ),
           spaceH16,
           Expanded(
             child: SingleChildScrollView(
@@ -134,7 +140,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                         ),
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.CREATE,
-                                       stepTwoPassing: bloc.stepTwoPassingModel,
+                                        stepTwoPassing:
+                                            bloc.stepTwoPassingModel,
                                       ),
                                     ),
                                   );

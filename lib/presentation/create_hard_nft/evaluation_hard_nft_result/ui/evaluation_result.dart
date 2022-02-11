@@ -23,7 +23,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'no_evaulation_result.dart';
 
 class EvaluationResult extends StatefulWidget {
-  const EvaluationResult({Key? key}) : super(key: key);
+  final String assetId;
+
+  const EvaluationResult({
+    Key? key,
+    required this.assetId,
+  }) : super(key: key);
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -35,9 +40,10 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult('6205f9544aec3d812452a253');
-    cubit.reloadAPI('6205f9544aec3d812452a253');
+    cubit.getListEvaluationResult(widget.assetId);
+    cubit.reloadAPI(widget.assetId);
   }
+
   @override
   void dispose() {
     cubit.close();
