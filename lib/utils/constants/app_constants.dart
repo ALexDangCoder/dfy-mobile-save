@@ -24,6 +24,10 @@ enum PageTransitionType {
   BOTTOM_TO_TOP,
   RIGHT_TO_LEFT_WITH_FADE,
 }
+// enum CircleStatus {
+//   IS_CREATING,
+//   IS_NOT_CREATE,
+// }
 
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
@@ -31,6 +35,8 @@ const String CALENDAR_TYPE_YEAR = 'Year';
 const String ERASE_WALLET = 'earse_wallet';
 const String SUCCESS = 'success';
 const String FAIL = 'fail';
+const String HOUR = 'hour';
+const String MINUTE = 'minute';
 NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
@@ -59,6 +65,16 @@ const _dtFormat3 = 'dd/MM hh:mm a';
 const _dtFormat4 = 'yyyy-MM-dd';
 const _dtFormat6 = 'yyyy-MM-dd hh : mm';
 const _dtFormat5 = 'MMM dd, yyyy';
+const _dtFormat7 = 'HH';
+const _dtFormat8 = 'mm';
+const _dtFormat9 = 'MM';
+const _dtFormat10 = 'yyyy';
+const _dtFormat11 = 'HH:mm';
+const _dtFormat12 = 'dd/MM/yyyy';
+const _dtFormat13 = 'EEEE';
+const _dtFormat14 = 'yyyy-MM-dd';
+const _dtFormat15 = 'dd/MM/yyyy HH:mm';
+
 //Regex
 final twoDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,2})?$');
 final fiveDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,5})?$');
@@ -128,6 +144,15 @@ class DateTimeFormat {
   static const DOB_FORMAT = _dtFormat4;
   static const CREATE_BLOG_FORMAT = _dtFormat5;
   static const DATE_TIME_AUCTION_FORMAT = _dtFormat6;
+  static const BOOK_HOUR = _dtFormat7;
+  static const BOOK_MIN = _dtFormat8;
+  static const BOOK_MONTH = _dtFormat9;
+  static const BOOK_YEAR = _dtFormat10;
+  static const BOOK_HOURS = _dtFormat11;
+  static const BOOK_DATE = _dtFormat12;
+  static const BOOK_IN_WEEK = _dtFormat13;
+  static const CREATE_DATE = _dtFormat14;
+  static const CREATE_STRING_TO_DATE = _dtFormat15;
 }
 
 const PERCENT = '%';

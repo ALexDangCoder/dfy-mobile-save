@@ -6,6 +6,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
@@ -31,6 +32,9 @@ class BlocListBookEvaluation {
 //     SUCCESS(9),
 //     TIMEOUT_ACCEPTED(10),
 //     TIMEOUT_OPEN(11);
+
+  List<AppointmentModel> appointmentList = [];
+
   final Web3Utils web3utils = Web3Utils();
 
   Future<void> getHexString({
@@ -47,7 +51,7 @@ class BlocListBookEvaluation {
   bool isCancel = true;
   bool isDetail = false;
   bool isLoadingText = false;
-  String assetID = '';
+  StepTwoPassingModel? stepTwoPassingModel;
   String? hexString;
   TypeEvaluation type = TypeEvaluation.CREATE;
 
@@ -74,9 +78,37 @@ class BlocListBookEvaluation {
     Timer.periodic(
       oneSec,
       (Timer timer) {
-        getListPawnShop(assetId: assetID);
+        getListPawnShop(assetId: stepTwoPassingModel?.assetId ?? '');
       },
     );
+  }
+
+  bool checkIsLoading(int status) {
+    switch (status) {
+      case OPEN:
+        return false;
+      case REJECTED:
+        return false;
+      case ACCEPTED:
+        return false;
+      case SUCCESS:
+        return false;
+      case CANCELLED:
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  void getIdEva(AppointmentModel eva) {
+    switch (eva.status) {
+      case CANCELLED:
+        break;
+      case REJECTED:
+        break;
+      default:
+        appointmentList.add(eva);
+    }
   }
 
   String getTextStatus(int status, int time) {
@@ -141,9 +173,7 @@ class BlocListBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          print('=--------------------------${res.status}');
           if (res.status == CANCELLED) {
-            print('sucseccff');
           }
         }
       },

@@ -1,6 +1,6 @@
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/validate_input.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/style_utils.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';

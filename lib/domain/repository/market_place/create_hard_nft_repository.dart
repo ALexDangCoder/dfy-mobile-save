@@ -1,5 +1,6 @@
 
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
@@ -34,4 +35,16 @@ mixin CreateHardNFTRepository {
     String evaluatorId,
     String bcTxnHashCancel,
   );
+
+  Future<Result<List<EvaluationResult>>> getListEvaluationResult(
+      String assetId, String page,
+      );
+
+  Future<Result<String>> confirmRejectEvaluationToBE(
+      String bcTxnHash, String evaluationID,
+      );
+
+  Future<Result<String>> confirmAcceptEvaluationToBE(
+      String bcTxnHash, String evaluationID,
+      );
 }

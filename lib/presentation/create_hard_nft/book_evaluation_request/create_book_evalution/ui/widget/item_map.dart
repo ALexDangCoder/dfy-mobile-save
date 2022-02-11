@@ -27,7 +27,7 @@ class _ItemMapState extends State<ItemMap> {
     setState(() {
       _markers.add(
         Marker(
-          markerId: const MarkerId('id'),
+          markerId: MarkerId(widget.bloc.cityId.toString()),
           position: LatLng(
             widget.bloc.locationLat,
             widget.bloc.locationLong,
