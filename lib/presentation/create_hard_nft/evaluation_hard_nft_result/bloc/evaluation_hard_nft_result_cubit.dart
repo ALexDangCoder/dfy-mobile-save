@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -16,7 +18,6 @@ class EvaluationHardNftResultCubit
     extends BaseCubit<EvaluationHardNftResultState> {
   EvaluationHardNftResultCubit() : super(EvaluationHardNftResultInitial());
 
-
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   List<TokenInf> listTokenSupport = [];
@@ -26,35 +27,50 @@ class EvaluationHardNftResultCubit
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  void reloadAPI(String assetID) {
+    const oneSec = Duration(seconds: 30);
+    Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        getListEvaluationResult(assetID);
+      },
+    );
+  }
 
   Future<void> getListEvaluationResult(String assetId) async {
     getTokenInf();
     final Result<List<EvaluationResult>> result =
-    await _createHardNFTRepository.getListEvaluationResult(
+        await _createHardNFTRepository.getListEvaluationResult(
       assetId,
       '1',
     );
     result.when(
       success: (res) {
-        for(int i = 0;i<res.length;i++) {
-          if(res[i].status !=2 && res[i].status !=4 && res[i].status !=6) {
-            res.removeAt(i);
+        final List<EvaluationResult> listCheck = [];
+        for (int i = 0; i < res.length; i++) {
+          if (res[i].status == 1 ||
+              res[i].status == 2 ||
+              res[i].status == 3 ||
+              res[i].status == 4 ||
+              res[i].status == 5 ||
+              res[i].status == 6) {
+            listCheck.add(res[i]);
           }
-          if(res.isNotEmpty){
-            for(int j = 0;j<listTokenSupport.length;j++){
-              if(res[i].evaluatedSymbol == listTokenSupport[j].symbol) {
-                res[i].urlToken = listTokenSupport[j].iconUrl;
+        }
+        if (listCheck.isNotEmpty) {
+          for (int i = 0; i < listCheck.length; i++) {
+            for (int j = 0; j < listTokenSupport.length; j++) {
+              if (listCheck[i].evaluatedSymbol == listTokenSupport[j].symbol) {
+                listCheck[i].urlToken = listTokenSupport[j].iconUrl;
               }
             }
           }
         }
-        emit(EvaluationResultSuccess(res));
+        emit(EvaluationResultSuccess(listCheck));
       },
-
       error: (error) {
         showError();
       },
     );
   }
-
 }

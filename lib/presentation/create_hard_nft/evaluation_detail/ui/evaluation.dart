@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/cubit/evaluation_cubit.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -29,12 +30,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'evaluation_detail.dart';
 
 class EvaluationScreen extends StatefulWidget {
-  const EvaluationScreen(
-      {Key? key,
-      required this.evaluationId,
-      required this.isAccept})
-      : super(key: key);
+  const EvaluationScreen({
+    Key? key,
+    required this.evaluationId,
+    required this.isAccept,
+    required this.bcEvaluationId,
+  }) : super(key: key);
   final String evaluationId;
+  final String bcEvaluationId;
   final bool isAccept;
 
   @override
@@ -82,9 +85,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                 step(),
                 spaceH32,
                 SizedBox(
-                  height: 530.h,
+                  height: widget.isAccept ? 530.h : 595.h,
                   child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Padding(
                       padding: EdgeInsets.only(
                         left: 16.w,
@@ -100,38 +103,40 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
             ),
             if (widget.isAccept)
               Padding(
-              padding: EdgeInsets.only(top: 594.h),
-              child: Container(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                ),
-                height: 91.h,
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.r),
-                    topLeft: Radius.circular(20.r),
+                padding: EdgeInsets.only(top: 595.h),
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
                   ),
-                  border: Border.all(
-                    color: AppTheme.getInstance().divideColor(),
+                  height: 91.h,
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.r),
+                      topLeft: Radius.circular(20.r),
+                    ),
+                    border: Border.all(
+                      color: AppTheme.getInstance().divideColor(),
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _buildButtonReject(context,evaluation),
-                    ),
-                    SizedBox(
-                      width: 23.w,
-                    ),
-                    Expanded(
-                      child: _buildButtonAccept(context,evaluation),
-                    ),
-                  ],
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildButtonReject(
+                            context, evaluation, cubit, widget.bcEvaluationId),
+                      ),
+                      SizedBox(
+                        width: 23.w,
+                      ),
+                      Expanded(
+                        child: _buildButtonAccept(
+                            context, evaluation, cubit, widget.bcEvaluationId),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            )
           ],
         ),
       );
@@ -169,7 +174,12 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   }
 }
 
-Widget _buildButtonReject(BuildContext context,Evaluation evaluation) {
+Widget _buildButtonReject(
+  BuildContext context,
+  Evaluation evaluation,
+  EvaluationCubit cubit,
+  String bcID,
+) {
   return ButtonTransparent(
     child: Text(
       S.current.reject,
@@ -179,16 +189,28 @@ Widget _buildButtonReject(BuildContext context,Evaluation evaluation) {
         FontWeight.w700,
       ),
     ),
-    onPressed: () {
-      goTo(context, Approve(
-        hexString: '',
-        onSuccessSign: (context, data) async {
-          unawaited(showLoadSuccess(context));
-
-        },
-        onErrorSign: (context) {},
-        listDetail: [
-          DetailItemApproveModel(
+    onPressed: () async {
+      final hexString = await cubit.acceptEvaluationToBlockchain(bcID);
+      goTo(
+        context,
+        Approve(
+          hexString: hexString,
+          onSuccessSign: (context, data) async {
+            /// PUT REJECT TO BE
+            await cubit.rejectEvaluationToBE(
+                bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
+            showLoadSuccess(context).then(
+              (value) => goTo(
+                context,
+                const EvaluationResult(),
+              ),
+            );
+          },
+          onErrorSign: (context) {
+            showLoadFail(context);
+          },
+          listDetail: [
+            DetailItemApproveModel(
               title: '${S.current.hard_nft_type}:',
               value: getNFTType(evaluation.assetType?.id ?? 7),
             ),
@@ -201,15 +223,17 @@ Widget _buildButtonReject(BuildContext context,Evaluation evaluation) {
               value: evaluation.evaluator?.name ?? '',
             ),
           ],
-        title: S.current.book_appointment,
-        textActiveButton: 'Reject',
-        typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
-        spender: eva_dev2,
-      ),);
+          title: S.current.book_appointment,
+          textActiveButton: 'Reject',
+          typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+          spender: eva_dev2,
+        ),
+      );
     },
   );
 }
-String getNFTType(int type){
+
+String getNFTType(int type) {
   switch (type) {
     case 0:
       return S.current.jewelry;
@@ -226,42 +250,59 @@ String getNFTType(int type){
   }
 }
 
-Widget _buildButtonAccept(BuildContext context,Evaluation evaluation) {
+Widget _buildButtonAccept(
+  BuildContext context,
+  Evaluation evaluation,
+  EvaluationCubit cubit,
+  String bcID,
+) {
   return ButtonGradient(
-    onPressed: () {
-      goTo(context, Approve(
-        hexString: '',
-        onSuccessSign: (context, data) async {
-          unawaited(showLoadSuccess(context));
-
-        },
-        onErrorSign: (context) {},
-        listDetail: [
-          DetailItemApproveModel(
-            title: '${S.current.hard_nft_type}:',
-            value: getNFTType(evaluation.assetType?.id ?? 7),
-          ),
-          DetailItemApproveModel(
-            title: '${S.current.evaluation_}:',
-            value: evaluation.evaluator?.name ?? '',
-          ),
-          DetailItemApproveModel(
-            title: '${S.current.nft_name}:',
-            value: evaluation.evaluator?.name ?? '',
-          ),
-          DetailItemApproveModel(
-            title: '${S.current.evaluation_fee}:',
-            value: '50 DFY',
-          ),
-        ],
-        title: S.current.book_appointment,
-        textActiveButton: 'Accept Evaluation',
-        typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
-        needApprove: true,
-        payValue: '1',
-        tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
-        spender: eva_dev2,
-      ),);
+    onPressed: () async {
+      final hexString = await cubit.rejectEvaluationToBlockchain(bcID);
+      goTo(
+        context,
+        Approve(
+          hexString: hexString,
+          onSuccessSign: (context, data) async {
+            await cubit.acceptEvaluationToBE(
+                bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
+            showLoadSuccess(context).then(
+              (value) => goTo(
+                context,
+                const EvaluationResult(),
+              ),
+            );
+          },
+          onErrorSign: (context) {
+            showLoadFail(context);
+          },
+          listDetail: [
+            DetailItemApproveModel(
+              title: '${S.current.hard_nft_type}:',
+              value: getNFTType(evaluation.assetType?.id ?? 7),
+            ),
+            DetailItemApproveModel(
+              title: '${S.current.evaluation_}:',
+              value: evaluation.evaluator?.name ?? '',
+            ),
+            DetailItemApproveModel(
+              title: '${S.current.nft_name}:',
+              value: evaluation.evaluator?.name ?? '',
+            ),
+            DetailItemApproveModel(
+              title: '${S.current.evaluation_fee}:',
+              value: '50 DFY',
+            ),
+          ],
+          title: S.current.book_appointment,
+          textActiveButton: 'Accept Evaluation',
+          typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
+          needApprove: true,
+          payValue: '1',
+          tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+          spender: eva_dev2,
+        ),
+      );
     },
     gradient: RadialGradient(
       center: const Alignment(0.5, -0.5),

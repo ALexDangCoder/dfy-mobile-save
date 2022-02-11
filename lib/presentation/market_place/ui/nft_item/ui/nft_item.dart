@@ -113,6 +113,8 @@ class _NFTItemState extends State<NFTItemWidget> {
               typeNft: widget.nftMarket.typeNFT,
               nftId: widget.nftMarket.nftId,
               pawnId: widget.nftMarket.pawnId,
+              collectionAddress: widget.nftMarket.collectionAddress,
+              nftTokenId: widget.nftMarket.nftTokenId,
             ),
           ),
         );

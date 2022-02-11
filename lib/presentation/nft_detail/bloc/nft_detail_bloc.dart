@@ -128,8 +128,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         await _nftRepo.getEvaluation(evaluationId);
     result.when(
       success: (res) {
-        for(int i = 0; i<listTokenSupport.length;i++){
-          if(res.evaluatedSymbol == listTokenSupport[i].symbol){
+        for (int i = 0; i < listTokenSupport.length; i++) {
+          if (res.evaluatedSymbol == listTokenSupport[i].symbol) {
             res.urlToken = listTokenSupport[i].iconUrl;
           }
         }
@@ -149,6 +149,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     required TypeNFT typeNFT,
     required String nftId,
     required int pawnId,
+    required String collectionAddress,
+    required String nftTokenId,
   }) async {
     getTokenInf();
     if (type == MarketType.NOT_ON_MARKET) {
@@ -157,12 +159,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       if (typeNFT == TypeNFT.SOFT_NFT) {
         result = await _nftRepo.getDetailNftMyAccNotOnMarket(nftId, '0');
       } else {
-        result = await _nftRepo.getDetailHardNftOnSale(nftId);
+        result = await _nftRepo.getDetailHardNftNotOnMarket(
+          collectionAddress,
+          nftTokenId,
+        );
       }
       result.when(
         success: (res) {
           final String wallet = PrefsService.getCurrentBEWallet();
-          if (res.owner?.toLowerCase() == wallet.toLowerCase()) {
+          if (res.walletAddress?.toLowerCase() == wallet.toLowerCase()) {
             res.isOwner = true;
           } else {
             res.isOwner = false;

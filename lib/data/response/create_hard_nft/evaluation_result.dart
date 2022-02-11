@@ -29,6 +29,7 @@ class EvaluationResultResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
+
   List<EvaluationResult>? toDomain() => item?.map((e) => e.toDomain()).toList();
 }
 
@@ -44,12 +45,15 @@ class EvaluationResponse extends Equatable {
   num? evaluatedPrice;
   @JsonKey(name: 'evaluated_price_symbol')
   String? evaluatedSymbol;
+  @JsonKey(name: 'bc_evaluation_id')
+  int? bcEvaluationId;
 
   EvaluationResponse(
     this.evaluationId,
     this.avatarEvaluator,
     this.status,
     this.evaluatedPrice,
+    this.bcEvaluationId,
     this.evaluatedSymbol,
   );
 
@@ -72,12 +76,12 @@ class EvaluationResponse extends Equatable {
         status: status,
         evaluatedSymbol: evaluatedSymbol,
         evaluatedPrice: evaluatedPrice,
+        bcEvaluationID: bcEvaluationId.toString(),
       );
 }
 
 @JsonSerializable()
 class EvaluatorResponse extends Equatable {
-
   @JsonKey(name: 'avatar_cid')
   String? avatarCid;
 
@@ -90,5 +94,4 @@ class EvaluatorResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
-
 }

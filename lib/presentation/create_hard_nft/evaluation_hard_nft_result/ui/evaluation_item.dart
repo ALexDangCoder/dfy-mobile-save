@@ -5,8 +5,6 @@ import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation_detail.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,6 +17,9 @@ class EvaluationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final checkProcess = evaluationResult.status == 1 ||
+        evaluationResult.status == 3 ||
+        evaluationResult.status == 5;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -27,13 +28,13 @@ class EvaluationItem extends StatelessWidget {
             builder: (context) => EvaluationScreen(
               evaluationId: evaluationResult.evaluationId ?? '',
               isAccept: evaluationResult.status == 2,
+              bcEvaluationId: evaluationResult.bcEvaluationID ?? '0',
             ),
           ),
         );
       },
       child: Container(
         width: 343.w,
-        height: 125.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           color: AppTheme.getInstance().itemBtsColors(),
@@ -62,14 +63,14 @@ class EvaluationItem extends StatelessWidget {
                   SizedBox(
                     height: 40.h,
                     width: 260.w,
-                    child: content(2),
+                    child: content(evaluationResult.status ?? 2),
                   ),
                 ],
               ),
             ),
             Padding(
               padding: EdgeInsets.only(
-                top: 23.h,
+                top: 18.h,
                 right: 16.w,
               ),
               child: Row(
@@ -103,6 +104,37 @@ class EvaluationItem extends StatelessWidget {
                 ],
               ),
             ),
+            spaceH10,
+            if (checkProcess)
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 5.h,
+                  right: 16.w,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 8.h,
+                      width: 8.w,
+                      child: CircularProgressIndicator(
+                        color: processingColor,
+                        strokeWidth: 1.r,
+                      ),
+                    ),
+                    spaceW5,
+                    Text(
+                      S.current.processing,
+                      style: textNormalCustom(
+                        processingColor,
+                        14,
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            spaceH10,
           ],
         ),
       ),
@@ -111,6 +143,7 @@ class EvaluationItem extends StatelessWidget {
 
   Widget content(int status) {
     switch (status) {
+      case 3:
       case 4:
         return RichText(
           text: TextSpan(
@@ -139,6 +172,7 @@ class EvaluationItem extends StatelessWidget {
             ],
           ),
         );
+      case 1:
       case 2:
         return RichText(
           text: TextSpan(

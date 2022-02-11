@@ -20,6 +20,7 @@ import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -355,6 +356,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           bloc: _cubit,
                           listener: (context, state) {
                             if (state is LoginSuccess) {
+                              SystemChrome.setEnabledSystemUIMode(
+                                  SystemUiMode.immersive);
                               PrefsService.saveCurrentWalletCore(
                                 _cubit.walletAddress,
                               );

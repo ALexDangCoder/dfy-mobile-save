@@ -35,7 +35,13 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult('620384b24aec3de4976bbbb5');
+    cubit.getListEvaluationResult('6205f9544aec3d812452a253');
+    cubit.reloadAPI('6205f9544aec3d812452a253');
+  }
+  @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
   }
 
   @override
@@ -48,7 +54,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult('620384b24aec3de4976bbbb5');
+            await cubit.getListEvaluationResult('6205f9544aec3d812452a253');
           },
           textEmpty: '',
           child: content(state),
@@ -71,11 +77,17 @@ class _EvaluationResultState extends State<EvaluationResult> {
             step(),
             spaceH32,
             if (listEvaluation.isNotEmpty)
-              SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: ListEvaluation(
-                  listEvaluation: listEvaluation,
-                  cubit: cubit,
+              RefreshIndicator(
+                onRefresh: () async {
+                  await cubit
+                      .getListEvaluationResult('6205e0584aec3d812452a23c');
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ListEvaluation(
+                    listEvaluation: listEvaluation,
+                    cubit: cubit,
+                  ),
                 ),
               )
             else

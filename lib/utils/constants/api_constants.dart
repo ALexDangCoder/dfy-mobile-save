@@ -169,7 +169,9 @@ class ApiConstants {
   static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
 
   ///get_evaluation_result
-  static const String GET_LIST_EVALUATION_RESULT = '/hard-nft-svc/api/evaluations';
+  static const String GET_LIST_EVALUATION_RESULT = '/hard-nft-svc/api/evaluations/';
+  static const String ACCEPT = '/accept';
+  static const String REJECT = '/reject';
   static const String PATH_GET_CITIES = '/cities';
 
   static const String GET_CONDITION =

@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
@@ -63,6 +64,28 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
         ApiConstants.DEFAULT_NFT_SIZE,
       ),
       (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmAcceptEvaluationToBE(String bcTxnHash, String evaluationID) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmAcceptEvaluation(
+        evaluationID,
+        bcTxnHash,
+      ),
+          (response) => response.code ?? '',
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmRejectEvaluationToBE(String bcTxnHash, String evaluationID) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmRejectEvaluation(
+        evaluationID,
+        bcTxnHash,
+      ),
+          (response) => response.code ?? '',
     );
   }
 }

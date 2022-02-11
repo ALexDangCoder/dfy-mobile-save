@@ -20,4 +20,12 @@ mixin CreateHardNFTRepository {
   Future<Result<List<EvaluationResult>>> getListEvaluationResult(
       String assetId, String page,
       );
+
+  Future<Result<String>> confirmRejectEvaluationToBE(
+      String bcTxnHash, String evaluationID,
+      );
+
+  Future<Result<String>> confirmAcceptEvaluationToBE(
+      String bcTxnHash, String evaluationID,
+      );
 }
