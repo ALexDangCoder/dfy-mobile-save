@@ -31,23 +31,24 @@ class _ItemListMap extends State<ItemListMap> {
     // TODO: implement initState
     super.initState();
     showLocation = LatLng(
-      widget.bloc.locationLat,
-      widget.bloc.locationLong,
+      widget.bloc.stepTwoPassingModel?.locationLat ?? 0,
+      widget.bloc.stepTwoPassingModel?.locationLong ?? 0,
     );
     markers = Set();
   }
 
   void getMarkers() {
-    // markers.add(
-    //   Marker(
-    //     markerId: MarkerId(showLocation.toString()),
-    //     position: showLocation,
-    //     infoWindow: InfoWindow(
-    //       title: widget.bloc.nameCity,
-    //       snippet: widget.bloc.nameCity,
-    //     ),
-    //   ),
-    // );
+    markers.add(
+      Marker(
+        markerId: MarkerId(  widget.bloc.stepTwoPassingModel
+            ?.cityId.toString() ?? '',),
+        position: showLocation,
+        infoWindow: InfoWindow(
+          title: widget.bloc.stepTwoPassingModel
+              ?.nameCity ?? '',
+        ),
+      ),
+    );
     for (final EvaluatorsCityModel value in widget.list) {
       if (!(value.locationLong?.isNaN ?? false) &&
           !(value.locationLat?.isNaN ?? false)) {
@@ -57,7 +58,7 @@ class _ItemListMap extends State<ItemListMap> {
             position: LatLng(
               value.locationLat ?? 0,
               value.locationLong ?? 0,
-            ), //position of marker
+            ),
             infoWindow: InfoWindow(
               onTap: () {
                 Navigator.push(
@@ -66,8 +67,7 @@ class _ItemListMap extends State<ItemListMap> {
                     builder: (context) => CreateBookEvaluation(
                       idEvaluation: value.id ?? '',
                       type: TypeEvaluation.NEW_CREATE,
-                      typeNFT: widget.bloc.evaluatorId,
-                      assetId: widget.bloc.assetId ?? '',
+                      stepTwoPassing: widget.bloc.stepTwoPassingModel,
                     ),
                   ),
                 );

@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
@@ -7,7 +8,12 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/text_helper.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/base_items/base_fail.dart';
+import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -291,7 +297,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     );
   }
 
-  Widget _buildButtonReject(BuildContext context, OfferDetailModel data) {
+  Widget _buildButtonReject(BuildContext context, OfferDetailModel obj) {
     return ButtonTransparent(
       child: Text(
         S.current.reject,
@@ -302,23 +308,187 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         ),
       ),
       onPressed: () {
-        _cubit.rejectOffer(
-          data.collateralId?.toInt() ?? 0,
-          data.id?.toInt() ?? 0,
-          data.walletAddress ?? '',
+        _cubit
+            .getCancelOfferData(
+          obj.collateralId?.toString() ?? '',
+          obj.id?.toString() ?? '',
+          context,
+        )
+            .then(
+              (value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Approve(
+                title: S.current.reject_offer,
+                spender: nft_pawn_dev2,
+                textActiveButton: S.current.reject_offer,
+                hexString: value,
+                header: Column(
+                  children: [
+                    buildRowCustom(
+                      isPadding: false,
+                      title: '${S.current.from}:',
+                      child: Text(
+                        obj.walletAddress?.formatAddressWalletConfirm() ?? '',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    buildRowCustom(
+                      isPadding: false,
+                      title: '${S.current.loan_amount}:',
+                      child: Text(
+                        '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    spaceH20,
+                    line,
+                  ],
+                ),
+                onSuccessSign: (context, data) async {
+                  Navigator.pop(context);
+                  _cubit.rejectOffer(obj.id?.toInt() ?? 0);
+                  await showLoadSuccess(context)
+                      .then((value) => Navigator.pop(context))
+                      .then(
+                        (value) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BaseSuccess(
+                          title: S.current.reject_offer,
+                          content: S.current.congratulation,
+                          callback: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                onErrorSign: (context) async {
+                  Navigator.pop(context);
+                  await showLoadFail(context)
+                      .then((_) => Navigator.pop(context))
+                      .then(
+                        (value) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BaseFail(
+                          title: S.current.reject_offer,
+                          onTapBtn: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
         );
       },
     );
   }
 
-  Widget _buildButtonAccept(BuildContext context, OfferDetailModel data) {
+  Widget _buildButtonAccept(BuildContext context, OfferDetailModel obj) {
     return ButtonGradient(
       onPressed: () {
-        _cubit.acceptOffer(
-          data.collateralId?.toInt() ?? 0,
-          data.id?.toInt() ?? 0,
-          data.walletAddress ?? '',
-        );
+        _cubit
+            .getAcceptOfferData(
+              obj.collateralId?.toString() ?? '',
+              obj.id?.toString() ?? '',
+              context,
+            )
+            .then(
+              (value) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Approve(
+                    title: S.current.accept_offer,
+                    spender: nft_pawn_dev2,
+                    textActiveButton: S.current.accept,
+                    hexString: value,
+                    header: Column(
+                      children: [
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.from}:',
+                          child: Text(
+                            obj.walletAddress?.formatAddressWalletConfirm() ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.loan_amount}:',
+                          child: Text(
+                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        spaceH20,
+                        line,
+                      ],
+                    ),
+                    onSuccessSign: (context, data) async {
+                      Navigator.pop(context);
+                      _cubit.acceptOffer(obj.id?.toInt() ?? 0);
+                      await showLoadSuccess(context)
+                          .then((value) => Navigator.pop(context))
+                          .then(
+                            (value) => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BaseSuccess(
+                                  title: S.current.accept_offer,
+                                  content: S.current.congratulation,
+                                  callback: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                    },
+                    onErrorSign: (context) async {
+                      Navigator.pop(context);
+                      await showLoadFail(context)
+                          .then((_) => Navigator.pop(context))
+                          .then(
+                            (value) => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BaseFail(
+                                  title: S.current.accept,
+                                  onTapBtn: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                ),
+              ),
+            );
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),

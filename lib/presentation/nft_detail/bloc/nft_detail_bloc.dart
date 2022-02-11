@@ -364,8 +364,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
-  /// handle Countdown Time
-  ///
   int dayOfMonth(int month, int year) {
     switch (month) {
       case 2:

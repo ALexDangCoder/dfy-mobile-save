@@ -143,18 +143,14 @@ class WalletCubit extends BaseCubit<WalletState> {
     return balanceOfBnb;
   }
 
-  Future<void> getListWallet({
+  void getListWallet({
     required String addressWallet,
-  }) async {
+  }) {
     for (final Wallet value in listWallet) {
-      final double balanceOfBnb = await getWalletDetail(
-        walletAddress: value.address ?? '',
-      );
       if (addressWallet == value.address) {
         final AccountModel acc = AccountModel(
           isCheck: true,
           addressWallet: value.address,
-          amountWallet: balanceOfBnb,
           imported: value.isImportWallet,
           nameWallet: value.name,
           url: '${ImageAssets.image_avatar}${randomAvatar()}'
@@ -165,7 +161,6 @@ class WalletCubit extends BaseCubit<WalletState> {
         final AccountModel acc = AccountModel(
           isCheck: false,
           addressWallet: value.address,
-          amountWallet: balanceOfBnb,
           imported: value.isImportWallet,
           nameWallet: value.name,
           url: '${ImageAssets.image_avatar}${randomAvatar()}'
@@ -175,6 +170,13 @@ class WalletCubit extends BaseCubit<WalletState> {
       }
     }
     getListAcc();
+  }
+
+  Future<double> getAmountWallet(String walletAddress) async {
+    final double balanceOfBnb = await getWalletDetail(
+      walletAddress: walletAddress,
+    );
+    return balanceOfBnb;
   }
 
   bool checkWalletExist = false;
@@ -218,6 +220,7 @@ class WalletCubit extends BaseCubit<WalletState> {
 
   int randomAvatar() {
     final Random rd = Random();
+
     return rd.nextInt(10);
   }
 
@@ -320,11 +323,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
     listSelectAccBloc[index].isCheck = true;
     list.sink.add(listSelectAccBloc);
-  }
-
-  String formatNumber(double amount) {
-    return '${amount.toStringAsExponential(5).substring(0, 5)}'
-        ',${amount.toStringAsExponential(5).substring(5, 7)}';
   }
 
   void checkAddressNullNFT() {
@@ -986,7 +984,6 @@ class WalletCubit extends BaseCubit<WalletState> {
     }
   }
 
-  ///
   NFTRepository get _nftRepo => Get.find();
   final BehaviorSubject<List<HistoryNFT>> listHistoryStream = BehaviorSubject();
 

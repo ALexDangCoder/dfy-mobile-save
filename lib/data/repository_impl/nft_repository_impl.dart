@@ -185,18 +185,19 @@ class NFTRepositoryImpl implements NFTRepository {
 
   @override
   Future<Result<String>> acceptOffer(
-      int idCollateral, int idOffer, String addressWallet) {
+    int idOffer,
+  ) {
     return runCatchingAsync<String, String>(
-      () => _nftClient.acceptOffer(idCollateral, idOffer, addressWallet),
+      () => _nftClient.acceptOffer(idOffer),
       (response) => response.toString(),
     );
   }
 
   @override
   Future<Result<String>> rejectOffer(
-      int idCollateral, int idOffer, String addressWallet) {
+      int idOffer) {
     return runCatchingAsync<String, String>(
-      () => _nftClient.rejectOffer(idCollateral, idOffer, addressWallet),
+      () => _nftClient.rejectOffer(idOffer),
       (response) => response.toString(),
     );
   }

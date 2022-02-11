@@ -40,7 +40,12 @@ class CustomForm extends StatelessWidget {
           fillColor: AppTheme.getInstance().itemBtsColors(),
           filled: true,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: isSelectNumPrefix ?? false
+                ? BorderRadius.only(
+                    topRight: Radius.circular(20.r),
+                    bottomRight: Radius.circular(20.r),
+                  )
+                : BorderRadius.circular(20.r),
             borderSide: BorderSide(
               color: AppTheme.getInstance().itemBtsColors(),
             ),
