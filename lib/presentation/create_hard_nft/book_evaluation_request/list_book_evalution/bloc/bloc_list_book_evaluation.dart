@@ -79,6 +79,23 @@ class BlocListBookEvaluation {
     );
   }
 
+  bool checkIsLoading(int status) {
+    switch (status) {
+      case OPEN:
+        return false;
+      case REJECTED:
+        return false;
+      case ACCEPTED:
+        return false;
+      case SUCCESS:
+        return false;
+      case CANCELLED:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   String getTextStatus(int status, int time) {
     switch (status) {
       case OPEN:

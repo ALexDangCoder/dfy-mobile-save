@@ -96,8 +96,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                                       ListView.builder(
                                         shrinkWrap: true,
                                         physics:
-                                            const
-                                            NeverScrollableScrollPhysics(),
+                                            const NeverScrollableScrollPhysics(),
                                         itemCount: _list.length,
                                         padding: EdgeInsets.only(
                                           bottom: 24.h,
@@ -106,6 +105,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                                             ItemPawnShop(
                                           bloc: _bloc,
                                           appointment: _list[index],
+                                          isLoading: _bloc.checkIsLoading(
+                                            _list[index].status ?? 0,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(

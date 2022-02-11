@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
@@ -17,11 +18,13 @@ import 'dialog_reason_detail.dart';
 class ItemPawnShop extends StatelessWidget {
   final BlocListBookEvaluation bloc;
   final AppointmentModel appointment;
+  final bool isLoading;
 
   const ItemPawnShop({
     Key? key,
     required this.bloc,
     required this.appointment,
+    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -78,7 +81,8 @@ class ItemPawnShop extends StatelessWidget {
                       ),
                       clipBehavior: Clip.hardEdge,
                       child: Image.network(
-                        '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
+                        '${ApiConstants.BASE_URL_IMAGE}'
+                        '${appointment.evaluator?.avatarCid ?? ''}',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: AppTheme.getInstance().bgBtsColor(),
@@ -213,12 +217,12 @@ class ItemPawnShop extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: -10.h,
-            right: -10.w,
+            top: -15.h,
+            right: -15.w,
             child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
-                      if (!bloc.isLoadingText) {
+                      if (!isLoading) {
                         Navigator.of(context)
                             .push(
                               HeroDialogRoute(
@@ -239,9 +243,9 @@ class ItemPawnShop extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 6.w,
-                        vertical: 6.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 11.w,
+                        vertical: 11.h,
                       ),
                       child: Image.asset(
                         ImageAssets.imgCancelMarket,
