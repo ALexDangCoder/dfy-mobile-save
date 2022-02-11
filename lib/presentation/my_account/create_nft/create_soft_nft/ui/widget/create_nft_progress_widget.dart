@@ -6,9 +6,9 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/call_api.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/extension_create_nft/core_bc.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/call_api.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/core_bc.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -159,6 +159,17 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_mediaFileAnimationController.isAnimating) {
+      _mediaFileAnimationController.stop();
+    }
+    if (_coverAnimationController.isAnimating) {
+      _coverAnimationController.stop();
+    }
+    super.dispose();
   }
 
   @override

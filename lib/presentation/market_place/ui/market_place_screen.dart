@@ -15,8 +15,8 @@ import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/market_place/ui/header.dart';
-import 'package:Dfy/presentation/my_account/create_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/ui/create_nft_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -637,5 +637,9 @@
   "december": "tháng 12,",
   "notify": "Thông báo",
   "dont_ask_again": "Không hỏi lại",
-  "invalid_file_format" : "Định dạng tệp tin không hợp lệ"
+  "invalid_file_format" : "Định dạng tệp tin không hợp lệ",
+  "property_is_required" : "Thuộc tính không được để trống",
+  "value_is_required" : "Giá trị không được để trống",
+  "property_maximum_char" : "Thuộc tính tối đa là 30 ký tự",
+  "value_maximum_char" : "Giá trị tối đa là 30 ký tự"
 }
