@@ -63,6 +63,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
           );
         } else if (statusActivity == DetailCollectionBloc.FAILED) {
           return SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
