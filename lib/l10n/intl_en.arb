@@ -654,5 +654,7 @@
   "date_time": "Date time:",
   "evaluation_fee": "Evaluation fee:",
   "invalid_file_format" : "Invalid file format",
-  "request_evaluation": "Request evaluation"
+  "request_evaluation": "Request evaluation",
+  "accept_offer": "Accept offer",
+  "reject_offer": "Reject offer"
 }

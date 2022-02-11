@@ -77,15 +77,11 @@ mixin NFTRepository {
   );
 
   Future<Result<String>> acceptOffer(
-    int idCollateral,
     int idOffer,
-    String addressWallet,
   );
 
   Future<Result<String>> rejectOffer(
-    int idCollateral,
     int idOffer,
-    String addressWallet,
   );
 
   Future<Result<String>> sendOffer(

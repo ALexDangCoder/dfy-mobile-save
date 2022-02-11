@@ -28,8 +28,8 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_AUCTION}{marketId}')
   Future<AuctionResponse> getDetailNFTAuction(
-      @Path('marketId') String marketID,
-      );
+    @Path('marketId') String marketID,
+  );
 
   @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
   Future<EvaluationResponse> getEvaluation(
@@ -114,17 +114,13 @@ abstract class NFTClient {
   //Accept offer
   @PUT(ApiConstants.ACCEPT_OFFER)
   Future<String> acceptOffer(
-    @Path('idCollateral') int idCollateral,
-    @Path('idOfer') int idOffer,
-    @Query('wallet-address') String addressWallet,
+    @Path('id') int idOffer,
   );
 
   //reject offer:
   @PUT(ApiConstants.REJECT_OFFER)
   Future<String> rejectOffer(
-    @Path('idCollateral') int idCollateral,
-    @Path('idOfer') int idOffer,
-    @Query('wallet-address') String addressWallet,
+    @Path('id') int idOffer,
   );
 
   //send offer

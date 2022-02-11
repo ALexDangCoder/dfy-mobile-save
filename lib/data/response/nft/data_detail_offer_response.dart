@@ -99,6 +99,8 @@ class OfferDetailResponse {
   OfferDetailModel toModel() => OfferDetailModel(
         id: id,
         walletAddress: walletAddress,
+        collateralId: collateralId,
+        bcCollateralId: bcCollateralId,
         description: description,
         createdAt: createdAt,
         interestRate: interestRate,
