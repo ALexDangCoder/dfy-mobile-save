@@ -49,6 +49,13 @@ import GoogleMaps
 extension AppDelegate {
     private func handleMethodCall(call: FlutterMethodCall, result: FlutterResult) {
         guard self.chatChanel != nil else { return }
+        
+        if call.method == "signWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? [Int] {
+                result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
+            }
+        }
+        
         if call.method == "getNFT" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
                 result(getNFT(walletAddress: walletAddress))
@@ -180,11 +187,7 @@ extension AppDelegate {
             }
         }
         
-        if call.method == "signWallet" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? [Int] {
-                result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
-            }
-        }
+        
         
         result(FlutterMethodNotImplemented)
     }
@@ -855,7 +858,7 @@ extension AppDelegate {
                         }
                         param["signature"] = signature
                     } else {
-                        param["signature"] = "d2b2eb17399dae5fe58e14d0b4f701ca3563abd1ac6c22d37f50a5ef81b024f490a24c3665879564b415fd1b766d5d67ebc3dc5832999d590ba25570cc161621c"
+                        param["signature"] = ""
                     }
                 } else {
                     param["signature"] = ""
