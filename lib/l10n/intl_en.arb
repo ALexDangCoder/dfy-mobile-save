@@ -652,5 +652,9 @@
   "date_time": "Date time:",
   "evaluation_fee": "Evaluation fee:",
   "invalid_file_format" : "Invalid file format",
-  "request_evaluation": "Request evaluation"
+  "request_evaluation": "Request evaluation",
+  "property_is_required" : "Properties is required",
+  "value_is_required" : "Value is required",
+  "property_maximum_char" : "Maximum property is 30 characters",
+  "value_maximum_char" : "Maximum value is 30 characters"
 }
