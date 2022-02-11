@@ -32,4 +32,5 @@ abstract class Step1Client {
   @GET(ApiConstants.GET_HARD_NFT_TYPE)
   Future<ListHardNFTTypeResponse> getNFTTypes();
 
+
 }

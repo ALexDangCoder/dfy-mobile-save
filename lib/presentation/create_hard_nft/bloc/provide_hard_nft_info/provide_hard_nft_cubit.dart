@@ -315,6 +315,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  void navigatorToConfirmInfo() {
+    emit(ProvideHardNftConfirmInfo());
+  }
+
   Future<void> getCitiesApi(dynamic id) async {
     cities.clear();
     citiesBHVSJ.sink.add(loadingDropDown);

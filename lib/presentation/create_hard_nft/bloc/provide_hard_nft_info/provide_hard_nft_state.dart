@@ -8,3 +8,8 @@ class ProvideHardNftInitial extends ProvideHardNftState {
   @override
   List<Object> get props => [];
 }
+
+class ProvideHardNftConfirmInfo extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
