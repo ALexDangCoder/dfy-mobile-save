@@ -854,6 +854,8 @@ extension AppDelegate {
                             signature = signature + "1c"
                         }
                         param["signature"] = signature
+                    } else {
+                        param["signature"] = "d2b2eb17399dae5fe58e14d0b4f701ca3563abd1ac6c22d37f50a5ef81b024f490a24c3665879564b415fd1b766d5d67ebc3dc5832999d590ba25570cc161621c"
                     }
                 } else {
                     param["signature"] = ""
