@@ -61,7 +61,7 @@ class CreateItemResponse extends Equatable {
   @JsonKey(name: 'evaluator_address')
   String? evaluatorAddress;
   @JsonKey(name: 'evaluation_fee')
-  int? evaluationFee;
+  double? evaluationFee;
   @JsonKey(name: 'evaluation_fee_symbol')
   String? evaluationFeeSymbol;
   @JsonKey(name: 'created_at')

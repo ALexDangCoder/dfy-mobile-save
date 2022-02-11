@@ -41,12 +41,6 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -102,20 +96,16 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                                       ListView.builder(
                                         shrinkWrap: true,
                                         physics:
-                                            const NeverScrollableScrollPhysics(),
+                                            const
+                                            NeverScrollableScrollPhysics(),
                                         itemCount: _list.length,
                                         padding: EdgeInsets.only(
                                           bottom: 24.h,
                                         ),
                                         itemBuilder: (context, index) =>
-                                            GestureDetector(
-                                          onTap: () {
-                                            //todo add event
-                                          },
-                                          child: ItemPawnShop(
-                                            bloc: _bloc,
-                                            appointment: _list[index],
-                                          ),
+                                            ItemPawnShop(
+                                          bloc: _bloc,
+                                          appointment: _list[index],
                                         ),
                                       ),
                                       const SizedBox(

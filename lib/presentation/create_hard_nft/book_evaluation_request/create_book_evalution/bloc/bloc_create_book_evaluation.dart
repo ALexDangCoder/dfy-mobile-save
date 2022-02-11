@@ -75,8 +75,19 @@ class BlocCreateBookEvaluation {
   bool isDate = false;
   String? hexString;
   String? assetId;
+  int appointmentTime = 0;
 
   final Web3Utils web3utils = Web3Utils();
+
+  void getDateStringToInt() {
+    final DateTime dateTimeCreate = DateFormat(
+      DateTimeFormat.CREATE_STRING_TO_DATE,
+    ).parse(
+      '${dateStream.value} '
+      '${timeStream.value}',
+    );
+    appointmentTime = dateTimeCreate.millisecondsSinceEpoch;
+  }
 
   Future<void> getHexString({
     required int collectionStandard,
@@ -150,8 +161,7 @@ class BlocCreateBookEvaluation {
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
-        } else {
-        }
+        } else {}
       },
       error: (error) {},
     );
@@ -178,34 +188,40 @@ class BlocCreateBookEvaluation {
     final workingHour = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String hourWorking = DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
+    final String hourWorking =
+        DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
     //working Min
     final workingMin = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
-    final String minWorking = DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
+    final String minWorking =
+        DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
     final int minWorkingInt = int.parse(minWorking);
 
     //time now
-    final String minNow = DateFormat(DateTimeFormat.BOOK_MIN).format(DateTime.now());
+    final String minNow =
+        DateFormat(DateTimeFormat.BOOK_MIN).format(DateTime.now());
     final int minNowInt = int.parse(minNow);
 
-    final String hourNow = DateFormat(DateTimeFormat.BOOK_HOUR).format(DateTime.now());
+    final String hourNow =
+        DateFormat(DateTimeFormat.BOOK_HOUR).format(DateTime.now());
     final int hourNowInt = int.parse(hourNow);
 
     // working hour close
     final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
-    final String hourWorkingTo = DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
+    final String hourWorkingTo =
+        DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
     final int hourWorkingIntTo = int.parse(hourWorkingTo);
 
     //working miu close
     final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
       (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
-    final String minWorkingTo = DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
+    final String minWorkingTo =
+        DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
     final int minWorkingIntTo = int.parse(minWorkingTo);
 
     if (isDate) {

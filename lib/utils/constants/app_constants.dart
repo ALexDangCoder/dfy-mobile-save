@@ -65,6 +65,10 @@ const _dtFormat9 = 'MM';
 const _dtFormat10 = 'yyyy';
 const _dtFormat11 = 'HH:mm';
 const _dtFormat12 = 'dd/MM/yyyy';
+const _dtFormat13 = 'EEEE';
+const _dtFormat14 = 'yyyy-MM-dd';
+const _dtFormat15 = 'dd/MM/yyyy HH:mm';
+
 //Regex
 final twoDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,2})?$');
 final fiveDecimal = RegExp(r'^(?=\D*(?:\d\D*){1,}$)\d+(?:\.\d{1,5})?$');
@@ -140,6 +144,9 @@ class DateTimeFormat {
   static const BOOK_YEAR = _dtFormat10;
   static const BOOK_HOURS = _dtFormat11;
   static const BOOK_DATE = _dtFormat12;
+  static const BOOK_IN_WEEK = _dtFormat13;
+  static const CREATE_DATE = _dtFormat14;
+  static const CREATE_STRING_TO_DATE = _dtFormat15;
 }
 
 const PERCENT = '%';
