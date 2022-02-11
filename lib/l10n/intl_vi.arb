@@ -644,6 +644,6 @@
   "date_time": "Ngày giờ:",
   "evaluation_fee": "Phí đánh giá:",
   "invalid_file_format" : "Định dạng tệp tin không hợp lệ",
-  "request_evaluation": "Yêu cầu đánh giá"
-
+  "request_evaluation": "Yêu cầu đánh giá",
+  "cancel_sale": "Hủy bán"
 }
