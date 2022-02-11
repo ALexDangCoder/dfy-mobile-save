@@ -712,5 +712,8 @@
   "property_is_required": "Properties is required",
   "value_is_required": "Value is required",
   "property_maximum_char": "Maximum property is 30 characters",
-  "value_maximum_char": "Maximum value is 30 characters"
+  "value_maximum_char": "Maximum value is 30 characters",
+  "phone_num": "Phone number",
+  "will_receive_nft": "will receive NFT after being minted by Evaluator",
+  "hard_nft_will_be_create": "Hard NFT will be created in collection"
 }

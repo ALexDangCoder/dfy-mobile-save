@@ -93,14 +93,14 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
               onTap: () {},
-              child: const ButtonGold(
-                title: 'NEXT',
+              child: ButtonGold(
+                title: S.current.next,
                 isEnable: true,
               ),
             ),
           ),
           resizeBottomInset: true,
-          title: 'Provide Hard NFT info',
+          title: S.current.provide_hard_nft_info,
           child: BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
             listener: (context, state) {
               // TODO: implement listener
@@ -123,7 +123,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         const CircleStatusProvideHardNft(),
                         spaceH32,
                         textShowWithPadding(
-                          textShow: 'Hard NFT picture/ video',
+                          textShow: 'Hard NFT ${S.current.picture}/ video',
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().unselectedTabLabelColor(),
                             14,
@@ -137,7 +137,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH32,
                         textShowWithPadding(
-                          textShow: 'DOCUMENTS',
+                          textShow: S.current.documents,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().unselectedTabLabelColor(),
                             14,
@@ -156,7 +156,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                                 visible: _isEnable,
                                 child: btnAdd(
                                   isEnable: _isEnable,
-                                  content: 'Add',
+                                  content: S.current.add,
                                   onTap: () {
                                     cubit.pickDocument();
                                   },
@@ -166,7 +166,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         spaceH20,
                         spaceH32,
                         textShowWithPadding(
-                          textShow: 'HARD NFT INFORMATION',
+                          textShow: S.current.hard_nft_info,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().unselectedTabLabelColor(),
                             14,
@@ -175,7 +175,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH20,
                         textShowWithPadding(
-                          textShow: 'Select NFT type',
+                          textShow: S.current.select_nft_type,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             14,
@@ -186,7 +186,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ButtonHardNftType(cubit: cubit),
                         spaceH24,
                         textShowWithPadding(
-                          textShow: 'Hard NFT name',
+                          textShow: S.current.hard_nft_name,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -208,7 +208,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH16,
                         textShowWithPadding(
-                          textShow: 'Condition',
+                          textShow: S.current.condition,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -224,7 +224,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH16,
                         textShowWithPadding(
-                          textShow: 'Expecting price',
+                          textShow: S.current.expecting_price,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -263,7 +263,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH16,
                         textShowWithPadding(
-                          textShow: 'Additional information',
+                          textShow: S.current.addition_info,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -286,7 +286,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH24,
                         textShowWithPadding(
-                          textShow: 'Properties',
+                          textShow: S.current.properties,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -296,7 +296,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         itemPropertiesFtBtnAdd(),
                         spaceH32,
                         textShowWithPadding(
-                          textShow: 'Contact information',
+                          textShow: S.current.contact_info,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().unselectedTabLabelColor(),
                             14,
@@ -305,7 +305,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH20,
                         textShowWithPadding(
-                          textShow: 'Name',
+                          textShow: S.current.name,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -321,7 +321,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           ),
                           child: CustomForm(
                             textValue: (value) {},
-                            hintText: 'Enter name',
+                            hintText: S.current.enter_name,
                             suffix: null,
                             inputType: null,
                           ),
@@ -351,7 +351,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         ),
                         spaceH16,
                         textShowWithPadding(
-                          textShow: 'Phone number',
+                          textShow: S.current.phone_num,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -398,7 +398,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
 
                         spaceH16,
                         textShowWithPadding(
-                          textShow: 'Country',
+                          textShow: S.current.country,
                           txtStyle: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -509,7 +509,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         ).then((value) => cubit.getListCollection());
       },
       child: textShowWithPadding(
-        textShow: 'Connect wallet',
+        textShow: S.current.connect_wallet,
         txtStyle: textNormalCustom(
           AppTheme.getInstance().fillColor(),
           16,
@@ -577,7 +577,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     );
                   },
                   child: Text(
-                    snapshot.data!.isEmpty ? 'Add' : 'Add more properties',
+                    snapshot.data!.isEmpty ? S.current.add : S.current.add_more,
                     style: textNormalCustom(
                       AppTheme.getInstance().fillColor(),
                       16,

@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -40,7 +41,7 @@ class Step1WhenSubmit extends StatelessWidget {
           const Center(child: CircleStatusProvideHardNft()),
           spaceH32,
           textShowWithPadding(
-            textShow: 'Hard NFT picture/ video',
+            textShow: 'Hard NFT ${S.current.picture}/ video',
             txtStyle: textNormalCustom(
               AppTheme.getInstance().unselectedTabLabelColor(),
               14,
@@ -50,7 +51,7 @@ class Step1WhenSubmit extends StatelessWidget {
           //todo WIDGET ẢNH
           spaceH32,
           textShowWithPadding(
-            textShow: 'DOCUMENTS',
+            textShow: S.current.documents,
             txtStyle: textNormalCustom(
               AppTheme.getInstance().unselectedTabLabelColor(),
               14,
@@ -80,7 +81,7 @@ class Step1WhenSubmit extends StatelessWidget {
             },
           ),
           textShowWithPadding(
-            textShow: 'HARD NFT INFORMATION',
+            textShow: S.current.hard_nft_info,
             txtStyle: textNormalCustom(
               AppTheme.getInstance().unselectedTabLabelColor(),
               14,
@@ -154,7 +155,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   ),
                   spaceW5,
                   Text(
-                    'Expect for',
+                    S.current.expecting_price,
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
                       16,
@@ -212,7 +213,7 @@ class Step1WhenSubmit extends StatelessWidget {
           ),
           spaceH20,
           textShowWithPadding(
-            textShow: 'Contact information',
+            textShow: S.current.contact_info,
             txtStyle: textNormalCustom(
               AppTheme.getInstance().unselectedTabLabelColor(),
               14,
@@ -241,7 +242,7 @@ class Step1WhenSubmit extends StatelessWidget {
           ),
           spaceH32,
           textShowWithPadding(
-            textShow: 'Wallet and colection',
+            textShow: S.current.wallet_and_collection,
             txtStyle: textNormalCustom(
               AppTheme.getInstance().unselectedTabLabelColor(),
               14,
@@ -431,7 +432,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 Flexible(
                   child: RichText(
                     text: TextSpan(
-                      text: 'Wallet ',
+                      text: '${S.current.wallet} ',
                       style: textNormalCustom(
                         AppTheme.getInstance().whiteColor(),
                         16,
@@ -448,9 +449,9 @@ class Step1WhenSubmit extends StatelessWidget {
                             decoration: TextDecoration.underline,
                           ),
                         ),
-                        const TextSpan(
+                        TextSpan(
                           text:
-                              ' will receive NFT after being minted by Evaluator',
+                              ' ${S.current.will_receive_nft}',
                         )
                       ],
                     ),
@@ -476,7 +477,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 Flexible(
                   child: RichText(
                     text: TextSpan(
-                      text: 'Hard NFT will be created in collection ',
+                      text: '${S.current.hard_nft_will_be_create} ',
                       style: textNormalCustom(
                         AppTheme.getInstance().whiteColor(),
                         16,

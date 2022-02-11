@@ -687,5 +687,8 @@
   "value_is_required": "Giá trị không được để trống",
   "property_maximum_char": "Thuộc tính tối đa là 30 ký tự",
   "value_maximum_char": "Giá trị tối đa là 30 ký tự",
-  "cancel_sale": "Hủy bán"
+  "cancel_sale": "Hủy bán",
+  "phone_num": "Số đt",
+  "will_receive_nft": "sẽ nhận được NFT sau khi được đánh giá bởi Người đánh giá",
+  "hard_nft_will_be_create": "HARD NFT sẽ được tạo trong bộ sưu tập"
 }
