@@ -20,6 +20,7 @@ import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -169,14 +170,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 113.h,
                   ),
-                  const Image(
+                  Image(
                     image: AssetImage(ImageAssets.ic_symbol),
+                    height: 100.h,
+                    width: 100.w,
                   ),
                   SizedBox(
                     height: 28.h,
                   ),
-                  const Image(
+                  Image(
                     image: AssetImage(ImageAssets.centered),
+                    height: 35.h,
+                    width: 237.w,
                   ),
                   SizedBox(
                     height: 68.h,
@@ -277,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 36.h,
+                    height: 32.h,
                   ),
                   BlocConsumer<LoginCubit, LoginState>(
                     bloc: _cubit,
@@ -357,6 +362,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           bloc: _cubit,
                           listener: (context, state) {
                             if (state is LoginSuccess) {
+                              SystemChrome.setEnabledSystemUIMode(
+                                  SystemUiMode.immersive);
                               PrefsService.saveCurrentWalletCore(
                                 _cubit.walletAddress,
                               );
@@ -379,11 +386,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               _cubit.authenticate();
                             },
                             child: Platform.isIOS
-                                ? const Image(
+                                ? Image(
                                     image: AssetImage(ImageAssets.faceID),
+                                    height: 54.h,
+                                    width: 54.w,
                                   )
-                                : const Image(
+                                : Image(
                                     image: AssetImage(ImageAssets.ic_finger),
+                                    height: 54.h,
+                                    width: 54.w,
                                   ),
                           ),
                         ),

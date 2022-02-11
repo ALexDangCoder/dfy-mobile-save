@@ -20,6 +20,7 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,6 +49,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     super.build(context);
     return BlocBuilder<MarketplaceCubit, MarketplaceState>(
       bloc: cubit,
