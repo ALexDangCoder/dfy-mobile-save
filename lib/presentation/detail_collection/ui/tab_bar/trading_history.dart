@@ -62,29 +62,31 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ),
           );
         } else if (statusActivity == DetailCollectionBloc.FAILED) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
-              ),
-              SizedBox(
-                width: 120.w,
-                height: 117.23.h,
-                child: Image.asset(
-                  ImageAssets.img_search_empty,
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 100.h,
                 ),
-              ),
-              spaceH16,
-              Text(
-                S.current.no_result_found,
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteWithOpacity(),
-                  20,
-                  FontWeight.bold,
+                SizedBox(
+                  width: 120.w,
+                  height: 117.23.h,
+                  child: Image.asset(
+                    ImageAssets.img_search_empty,
+                  ),
                 ),
-              ),
-            ],
+                spaceH16,
+                Text(
+                  S.current.no_result_found,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    20,
+                    FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           );
         } else if (statusActivity == DetailCollectionBloc.LOADING) {
           return const Align(
