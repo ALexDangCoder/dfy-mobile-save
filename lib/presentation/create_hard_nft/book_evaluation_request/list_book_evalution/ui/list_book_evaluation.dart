@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
@@ -14,13 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListBookEvaluation extends StatefulWidget {
-  final String? assetID;
-  final int? cityId;
+  final StepTwoPassingModel? stepTwoPassing;
 
   const ListBookEvaluation({
     Key? key,
-    this.assetID,
-    this.cityId,
+    this.stepTwoPassing,
   }) : super(key: key);
 
   @override
@@ -33,10 +32,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   @override
   void initState() {
     super.initState();
-
     _bloc = BlocListBookEvaluation();
-    _bloc.assetID = widget.assetID ?? '';
-    _bloc.getListPawnShop(assetId: _bloc.assetID);
+    _bloc.stepTwoPassingModel=widget.stepTwoPassing;
+    _bloc.getListPawnShop(assetId: _bloc.stepTwoPassingModel?.assetId ?? '');
     _bloc.reloadAPI();
   }
 
@@ -55,7 +53,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await _bloc.getListPawnShop(
-                  assetId: _bloc.assetID,
+                  assetId:_bloc.stepTwoPassingModel?.assetId ?? '',
                 );
               },
               child: Column(
@@ -159,8 +157,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
-                      cityId: widget.cityId ?? 0,
-                      assetId: _bloc.assetID,
+                      stepTwoPassing: widget.stepTwoPassing,
                       appointmentList: _bloc.appointmentList,
                     ),
                   ),

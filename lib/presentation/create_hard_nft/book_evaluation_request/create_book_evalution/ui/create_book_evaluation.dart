@@ -6,6 +6,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
@@ -32,18 +33,16 @@ enum TypeEvaluation { NEW_CREATE, CREATE }
 
 class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
-  final String assetId;
   final TypeEvaluation type;
   final int? date;
-  final String? typeNFT;
+  final StepTwoPassingModel? stepTwoPassing;
 
   const CreateBookEvaluation({
     Key? key,
     required this.idEvaluation,
     required this.type,
     this.date,
-    this.typeNFT,
-    required this.assetId,
+    this.stepTwoPassing,
   }) : super(key: key);
 
   @override
@@ -57,12 +56,12 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocCreateBookEvaluation();
+    bloc.stepTwoPassingModel=widget.stepTwoPassing;
     bloc.getDataInput(widget.date ?? 0);
     bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
     bloc.getEvaluationFee();
-    bloc.assetId = widget.assetId;
   }
 
   @override
@@ -98,7 +97,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                         slivers: [
                           BaseAppBar(
                             image:
-                                '${ApiConstants.BASE_URL_IMAGE}${pawn.coverCid}',
+                                '${ApiConstants.BASE_URL_IMAGE}'
+                                    '${pawn.coverCid}',
                             title: pawn.name ?? '',
                             initHeight: 145.h,
                             leading: SizedBox(
@@ -189,7 +189,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                     TextSpan(
                                                       text:
                                                           ' ${pawn.starCount} |'
-                                                          ' ${bloc.getTextCreateAt(
+                                                          ' ${bloc
+                                                              .getTextCreateAt(
                                                         pawn.createdAt ?? 0,
                                                       )}',
                                                     ),
@@ -446,9 +447,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
 
                                             if (result != null) {
                                               final String hour = result
-                                                  .stringValueOrEmpty('hour');
+                                                  .stringValueOrEmpty(HOUR);
                                               final String minute = result
-                                                  .stringValueOrEmpty('minute');
+                                                  .stringValueOrEmpty(MINUTE);
                                               bloc.timeStream
                                                   .add('$hour:$minute');
                                               bloc.hourMy = hour;
@@ -639,7 +640,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             ),
                                             TextSpan(
                                               text: '(${pawn.phoneCode?.code})'
-                                                  '${pawn.phone ?? ''}', //phone code
+                                                  '${pawn.phone ?? ''}',
                                             ),
                                           ],
                                         ),
@@ -819,26 +820,23 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                             if (snapshot.data ?? false) {
                               if (widget.type == TypeEvaluation.NEW_CREATE) {
                                 bloc.getDateStringToInt();
-                                // get hex string
-                                // collectionStandard: 0,
-                                // assetCID:'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
-                                // beAssetId:'0',
-                                // collectionAsset:'0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',//todo data
-                                // expectingPrice:'50',
-                                // expectingPriceAddress:DFY_ADDRESS,
+                                final NavigatorState navigator =
+                                    Navigator.of(context);
                                 await bloc.getHexString(
                                   expectingPrice:
                                       bloc.evaluationFee?.amount.toString() ??
                                           '',
-                                  collectionAsset:
-                                      '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',
-                                  beAssetId: '0',
-                                  assetCID:
-                                      'QmaSnkhzYx8k8dbaPKiv15DTCy1CUwi6NjRebeMJbLBu2E',
-                                  collectionStandard: 0,
+                                  collectionAsset: widget.stepTwoPassing
+                                      ?.collectionAsset ?? '',
+                                  beAssetId: widget
+                                      .stepTwoPassing?.beAssetId ?? '',
+                                  assetCID: widget.
+                                  stepTwoPassing?.assetCID ?? '',
+                                  collectionStandard:
+                                      widget.stepTwoPassing
+                                          ?.collectionStandard ?? 0,
                                 );
-                                final NavigatorState navigator =
-                                    Navigator.of(context);
+
                                 unawaited(
                                   navigator.push(
                                     MaterialPageRoute(
@@ -846,7 +844,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         needApprove: true,
                                         hexString: bloc.hexString,
                                         payValue:
-                                            '${bloc.evaluationFee?.amount ?? 0}',
+                                            '${bloc.evaluationFee?.amount
+                                                ?? 0}',
                                         tokenAddress: BlocCreateBookEvaluation
                                             .DFY_ADDRESS,
                                         title: S.current.book_appointment,
@@ -863,19 +862,21 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           ),
                                           DetailItemApproveModel(
                                             title: '${S.current.nft} :',
-                                            value: widget.typeNFT ?? '',
+                                            value: widget.
+                                            stepTwoPassing?.typeNFT ?? '',
                                           ),
                                           DetailItemApproveModel(
                                             title:
                                                 '${S.current.evaluation_fee} :',
                                             value:
-                                                '${bloc.evaluationFee?.amount ?? 0} '
-                                                '${bloc.evaluationFee?.symbol ?? ''}',
-                                          )
+                                                '${bloc.evaluationFee?.amount
+                                                    ?? 0} '
+                                                '${bloc.evaluationFee?.symbol
+                                                    ?? ''}',
+                                          ),
                                         ],
                                         onErrorSign: (context) {},
                                         onSuccessSign: (context, data) {
-                                          //todo confirm BE
                                           bloc.createEvaluation(
                                             evaluatorAddress:
                                                 pawn.walletAddress ?? '',
@@ -883,18 +884,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             appointmentTime:
                                                 bloc.appointmentTime,
                                             evaluatorId: pawn.id ?? '',
-                                            assetId: widget.assetId,
+                                            assetId: widget
+                                                .stepTwoPassing?.assetId ?? '',
                                           );
                                           showLoadSuccess(context).then(
                                             (value) => goTo(
                                               context,
                                               ListBookEvaluation(
-                                                assetID: bloc.assetId,
-                                                cityId: 12, //todo data fake
+                                              stepTwoPassing: widget
+                                                  .stepTwoPassing,
                                               ),
                                             ),
                                           );
-                                          //todo chuyển màn hinh
                                         },
                                         textActiveButton:
                                             S.current.request_evaluation,
@@ -905,7 +906,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 );
                               }
                             }
-                            //todo event
                           },
                           child: Container(
                             color: AppTheme.getInstance().bgBtsColor(),

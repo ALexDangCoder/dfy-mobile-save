@@ -31,6 +31,8 @@ const String CALENDAR_TYPE_YEAR = 'Year';
 const String ERASE_WALLET = 'earse_wallet';
 const String SUCCESS = 'success';
 const String FAIL = 'fail';
+const String HOUR = 'hour';
+const String MINUTE = 'minute';
 NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 

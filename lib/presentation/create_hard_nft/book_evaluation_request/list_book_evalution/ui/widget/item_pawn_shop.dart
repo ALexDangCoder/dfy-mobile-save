@@ -19,6 +19,7 @@ class ItemPawnShop extends StatelessWidget {
   final AppointmentModel appointment;
   final bool isLoading;
 
+
   const ItemPawnShop({
     Key? key,
     required this.bloc,
@@ -66,8 +67,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',
-                            assetId: bloc.assetID, //todo type
+                            stepTwoPassing: bloc.stepTwoPassingModel,
                           ),
                         ),
                       );
@@ -103,8 +103,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',
-                            assetId: bloc.assetID, //todo type
+                           stepTwoPassing: bloc.stepTwoPassingModel,
                           ),
                         ),
                       );
@@ -236,7 +235,7 @@ class ItemPawnShop extends StatelessWidget {
                             )
                             .then(
                               (value) => bloc.getListPawnShop(
-                                assetId: bloc.assetID,
+                                assetId: bloc.stepTwoPassingModel?.assetId ?? ''
                               ),
                             );
                       }

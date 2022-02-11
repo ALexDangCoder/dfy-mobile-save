@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
@@ -16,14 +17,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookEvaluation extends StatefulWidget {
-  final int cityId;
-  final String assetId;
+  final StepTwoPassingModel? stepTwoPassing;
   final List<AppointmentModel> appointmentList;
 
   const BookEvaluation({
     Key? key,
-    required this.cityId,
-    required this.assetId,
+    required this.stepTwoPassing,
     required this.appointmentList,
   }) : super(key: key);
 
@@ -38,8 +37,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocBookEvaluation();
-    bloc.getListPawnShopStar(cityId: widget.cityId);
-    bloc.assetId = widget.assetId;
+    bloc.stepTwoPassingModel = widget.stepTwoPassing;
+    bloc.getListPawnShopStar(cityId: widget.stepTwoPassing?.cityId ?? 0);
     bloc.appointmentList = widget.appointmentList;
   }
 
@@ -135,8 +134,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                         ),
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.CREATE,
-                                        typeNFT: 'diamond',
-                                        assetId: widget.assetId, //todo type
+                                       stepTwoPassing: bloc.stepTwoPassingModel,
                                       ),
                                     ),
                                   );
@@ -146,10 +144,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
+                                        stepTwoPassing: widget.stepTwoPassing,
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.NEW_CREATE,
-                                        typeNFT: 'diamond',
-                                        assetId: widget.assetId, //todo type
                                       ),
                                     ),
                                   );

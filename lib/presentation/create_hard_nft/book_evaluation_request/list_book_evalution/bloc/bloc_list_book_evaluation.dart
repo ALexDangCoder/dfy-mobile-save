@@ -6,6 +6,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
@@ -50,7 +51,7 @@ class BlocListBookEvaluation {
   bool isCancel = true;
   bool isDetail = false;
   bool isLoadingText = false;
-  String assetID = '';
+  StepTwoPassingModel? stepTwoPassingModel;
   String? hexString;
   TypeEvaluation type = TypeEvaluation.CREATE;
 
@@ -77,7 +78,7 @@ class BlocListBookEvaluation {
     Timer.periodic(
       oneSec,
       (Timer timer) {
-        getListPawnShop(assetId: assetID);
+        getListPawnShop(assetId: stepTwoPassingModel?.assetId ?? '');
       },
     );
   }
@@ -172,9 +173,7 @@ class BlocListBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          print('=--------------------------${res.status}');
           if (res.status == CANCELLED) {
-            print('sucseccff');
           }
         }
       },

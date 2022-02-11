@@ -76,7 +76,9 @@ class DialogCancel extends StatelessWidget {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.network(
-                                    '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
+                                    '${ApiConstants.BASE_URL_IMAGE}'
+                                        '${appointment.evaluator
+                                        ?.avatarCid ?? ''}',
                                     width: 46.w,
                                     height: 46.h,
                                     fit: BoxFit.cover,
@@ -101,7 +103,9 @@ class DialogCancel extends StatelessWidget {
                             spaceH16,
                             ItemIconText(
                               text:
-                                  '(${appointment.evaluator?.phoneCode?.code ?? ''})${appointment.evaluator?.phone ?? ''}',
+                                  '(${appointment.evaluator?.phoneCode
+                                      ?.code ?? ''})${appointment.evaluator
+                                      ?.phone ?? ''}',
                               icon: ImageAssets.ic_phone,
                             ),
                             spaceH16,

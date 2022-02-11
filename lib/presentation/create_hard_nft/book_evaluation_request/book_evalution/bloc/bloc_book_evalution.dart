@@ -1,6 +1,7 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:get/get.dart';
@@ -9,14 +10,10 @@ import 'package:rxdart/rxdart.dart';
 class BlocBookEvaluation {
   BehaviorSubject<List<EvaluatorsCityModel>> list = BehaviorSubject.seeded([]);
   List<EvaluatorsCityModel>? listMap;
-  double locationLat = 51.53523402237351;
-  String nameCity = '';
-  double locationLong = -0.12769100104405115;
-  String id = '';
-  String evaluatorId = '';
-  String? assetId;
   List<AppointmentModel>? appointmentList;
   TypeEvaluation? type;
+  StepTwoPassingModel? stepTwoPassingModel;
+
 
   void checkTypeCreate(String idEva) {
     for (final AppointmentModel value in appointmentList ?? []) {

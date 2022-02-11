@@ -3,6 +3,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -76,6 +77,9 @@ class BlocCreateBookEvaluation {
   String? hexString;
   String? assetId;
   int appointmentTime = 0;
+  int? cityId;
+  StepTwoPassingModel? stepTwoPassingModel;
+
 
   final Web3Utils web3utils = Web3Utils();
 

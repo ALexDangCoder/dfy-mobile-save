@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -172,12 +173,20 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                   padding: EdgeInsets.only(bottom: 114.h),
                   child: FABMarketBase(
                     collectionCallBack: () {
+                      StepTwoPassingModel stepTwoPassingModel=StepTwoPassingModel(
+                        assetCID:'QmPFLdGTx3X25Fp84wEAPdomq5fCZfeq4sMEjYsfhUGyeE',
+                        beAssetId:'0' ,
+                         collectionAsset: '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',
+                        assetId:'620605484aec3d812452a25e' ,
+                        cityId: 12,
+                        collectionStandard:0 ,
+                        typeNFT: 'dyamon',//
+                      );
                       Navigator.push(
                         context,//todo dùng ké
                         MaterialPageRoute(
-                          builder: (context) => const ListBookEvaluation(
-                            assetID: '620490544aec3d812452a20c',
-                            cityId: 1,
+                          builder: (context) =>  ListBookEvaluation(
+                           stepTwoPassing: stepTwoPassingModel,
                           ),
                         ),
                       );
