@@ -921,6 +921,27 @@ class Web3Utils {
     return hex.encode(createAssetRequest.data ?? []);
   }
 
+  Future<String> getCreateAppointmentData({
+    required String assetId,
+    required String evaluator,
+    required String evaluationFeeAddress,
+    required String appointmentTime,
+  }) async {
+    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final function = deployContract.function('createAppointment');
+    final createAppointment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(assetId)),
+        EthereumAddress.fromHex(evaluator),
+        EthereumAddress.fromHex(evaluationFeeAddress),
+        BigInt.from(num.parse(appointmentTime)),
+      ],
+    );
+    return hex.encode(createAppointment.data ?? []);
+  }
+
   Future<String> getCancelAppointmentData({
     required String appointmentId, //int dang string
     required String reason,
