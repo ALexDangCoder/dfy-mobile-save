@@ -643,10 +643,11 @@
   "evaluator": "Người đánh giá:",
   "date_time": "Ngày giờ:",
   "evaluation_fee": "Phí đánh giá:",
-  "request_evaluation": "Yêu cầu đánh giá",
   "invalid_file_format" : "Định dạng tệp tin không hợp lệ",
   "property_is_required" : "Thuộc tính không được để trống",
   "value_is_required" : "Giá trị không được để trống",
   "property_maximum_char" : "Thuộc tính tối đa là 30 ký tự",
-  "value_maximum_char" : "Giá trị tối đa là 30 ký tự"
+  "value_maximum_char" : "Giá trị tối đa là 30 ký tự",
+  "request_evaluation": "Yêu cầu đánh giá",
+  "cancel_sale": "Hủy bán"
 }
