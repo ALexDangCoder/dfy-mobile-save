@@ -36,6 +36,14 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamListenerCustom<String>(
       listen: (value) async {
+        if (value.isEmpty) {
+          showErrDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
+          return;
+        }
         final nav = Navigator.of(context);
         showLoading(context);
         final bool checkSuccess = await cubit.loginAndSaveInfo(
@@ -48,14 +56,14 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
           final userProfile = userProfileFromJson(data);
           final String email = userProfile.email ?? '';
           if (email.isNotEmpty) {
-            if(navigationTo != null){
+            if (navigationTo != null) {
               unawaited(
                 nav.pushReplacement(
                   MaterialPageRoute(builder: (context) => navigationTo!),
                 ),
               );
               return;
-            }else{
+            } else {
               nav.pop();
               return;
             }
@@ -66,7 +74,7 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
             final bool isNeedShowDialog =
                 PrefsService.getOptionShowDialogConnectEmail();
             if (isNeedShowDialog) {
-              if(email.isEmpty){
+              if (email.isEmpty) {
                 unawaited(
                   showDialog(
                     context: context,
@@ -77,7 +85,7 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
                 );
               }
             } else {
-              if(navigationTo != null){
+              if (navigationTo != null) {
                 unawaited(
                   nav.pushReplacement(
                     MaterialPageRoute(
@@ -85,7 +93,7 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
                     ),
                   ),
                 );
-              }else{
+              } else {
                 nav.pop();
               }
             }

@@ -103,6 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 content: S.current.something_went_wrong,
               );
             }
+          } else {
+            showErrDialog(
+              context: context,
+              title: S.current.notify,
+              content: S.current.something_went_wrong,
+            );
           }
         },
       );
@@ -356,14 +362,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                               if (widget.isFromConnectDialog) {
                                 _cubit.isLoginSuccessSubject.sink.add(true);
-                              } else{
+                              } else {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (context) => const MainScreen(
                                       index: 1,
                                     ),
                                   ),
-                                      (route) => route.isFirst,
+                                  (route) => route.isFirst,
                                 );
                               }
                             }
