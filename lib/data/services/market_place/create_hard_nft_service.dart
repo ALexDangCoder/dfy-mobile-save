@@ -54,9 +54,7 @@ abstract class CreateHardNFtService {
       @Path('evaluator_id') String evaluatorId,
       @Query('bc_txn_hash_accept') String bcTxnHash,
       );
-}
-    @Path('evaluator_id') String evaluatorId,
-  );
+
 
   @GET(ApiConstants.GET_EVALUATION_FEE)
   Future<EvaluationFeeListResponse> getEvaluationFee();

@@ -225,7 +225,6 @@ Widget _buildButtonReject(
           ],
           title: S.current.book_appointment,
           textActiveButton: 'Reject',
-          typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
           spender: eva_dev2,
         ),
       );
@@ -296,7 +295,6 @@ Widget _buildButtonAccept(
           ],
           title: S.current.book_appointment,
           textActiveButton: 'Accept Evaluation',
-          typeApprove: TYPE_CONFIRM_BASE.CREATE_COLLECTION,
           needApprove: true,
           payValue: '1',
           tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
