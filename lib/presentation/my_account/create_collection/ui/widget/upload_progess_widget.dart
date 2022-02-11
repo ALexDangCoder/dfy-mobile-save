@@ -13,7 +13,6 @@ import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -145,139 +144,155 @@ class _UploadProgressState extends State<UploadProgress>
   }
 
   @override
+  void dispose() {
+    if (_avatarAnimationController.isAnimating) {
+      _avatarAnimationController.stop();
+    }
+    if (_featureAnimationController.isAnimating) {
+      _featureAnimationController.stop();
+    }
+    if (_coverAnimationController.isAnimating) {
+      _coverAnimationController.stop();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return StateStreamLayout(
-      stream: widget.bloc.stateStream,
-      textEmpty: '',
-      retry: () {},
-      error: AppException('', S.current.something_went_wrong),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              // height: 244.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppTheme.getInstance().selectDialogColor(),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 20.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          S.current.cover_photo,
-                          style: textCustom(
-                            fontSize: 12,
-                          ),
-                        ),
-                        StreamBuilder<int>(
-                          stream: widget.bloc.coverPhotoUploadStatusSubject,
-                          initialData: -1,
-                          builder: (context, snapshot) {
-                            final status = snapshot.data ?? -1;
-                            if (status == -1) {
-                              _coverAnimationController.forward();
-                              return progressBar(_coverAnimationController);
-                            } else if (status == 0) {
-                              return uploadFailWidget();
-                            } else {
-                              return uploadSuccessWidget();
-                            }
-                          },
-                        ),
-                        spaceH20,
-                        Text(
-                          S.current.avatar_photo,
-                          style: textCustom(
-                            fontSize: 12,
-                          ),
-                        ),
-                        StreamBuilder<int>(
-                          stream: widget.bloc.avatarUploadStatusSubject,
-                          initialData: -1,
-                          builder: (context, snapshot) {
-                            final status = snapshot.data ?? -1;
-                            if (status == -1) {
-                              _avatarAnimationController.forward();
-                              return progressBar(_avatarAnimationController);
-                            } else if (status == 0) {
-                              return uploadFailWidget();
-                            } else {
-                              return uploadSuccessWidget();
-                            }
-                          },
-                        ),
-                        spaceH20,
-                        Text(
-                          S.current.feature_photo,
-                          style: textCustom(
-                            fontSize: 12,
-                          ),
-                        ),
-                        StreamBuilder<int>(
-                          stream: widget.bloc.featurePhotoUploadStatusSubject,
-                          initialData: -1,
-                          builder: (context, snapshot) {
-                            final status = snapshot.data ?? -1;
-                            if (status == -1) {
-                              _featureAnimationController.forward();
-                              return progressBar(_featureAnimationController);
-                            } else if (status == 0) {
-                              return uploadFailWidget();
-                            } else {
-                              return uploadSuccessWidget();
-                            }
-                          },
-                        ),
-                        spaceH20,
-                      ],
-                    ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: StateStreamLayout(
+        stream: widget.bloc.stateStream,
+        textEmpty: '',
+        retry: () {},
+        error: AppException('', S.current.something_went_wrong),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.r),
                   ),
-                  line,
-                  StreamBuilder<int>(
-                    stream: widget.bloc.upLoadStatusSubject,
-                    initialData: -1,
-                    builder: (context, snapshot) {
-                      final isComplete = snapshot.data ?? -1;
-                      return InkWell(
-                        onTap: () {
-                          if (isComplete == 0) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: SizedBox(
-                          height: 64.h,
-                          child: Center(
-                            child: Text(
-                              'OK',
-                              style: textCustom(
-                                color: isComplete == -1
-                                    ? AppTheme.getInstance().disableColor()
-                                    : AppTheme.getInstance().fillColor(),
-                                weight: FontWeight.w700,
-                                fontSize: 20,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 20.h,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            S.current.cover_photo,
+                            style: textCustom(
+                              fontSize: 12,
+                            ),
+                          ),
+                          StreamBuilder<int>(
+                            stream: widget.bloc.coverPhotoUploadStatusSubject,
+                            initialData: -1,
+                            builder: (context, snapshot) {
+                              final status = snapshot.data ?? -1;
+                              if (status == -1) {
+                                _coverAnimationController.forward();
+                                return progressBar(_coverAnimationController);
+                              } else if (status == 0) {
+                                return uploadFailWidget();
+                              } else {
+                                return uploadSuccessWidget();
+                              }
+                            },
+                          ),
+                          spaceH20,
+                          Text(
+                            S.current.avatar_photo,
+                            style: textCustom(
+                              fontSize: 12,
+                            ),
+                          ),
+                          StreamBuilder<int>(
+                            stream: widget.bloc.avatarUploadStatusSubject,
+                            initialData: -1,
+                            builder: (context, snapshot) {
+                              final status = snapshot.data ?? -1;
+                              if (status == -1) {
+                                _avatarAnimationController.forward();
+                                return progressBar(_avatarAnimationController);
+                              } else if (status == 0) {
+                                return uploadFailWidget();
+                              } else {
+                                return uploadSuccessWidget();
+                              }
+                            },
+                          ),
+                          spaceH20,
+                          Text(
+                            S.current.feature_photo,
+                            style: textCustom(
+                              fontSize: 12,
+                            ),
+                          ),
+                          StreamBuilder<int>(
+                            stream: widget.bloc.featurePhotoUploadStatusSubject,
+                            initialData: -1,
+                            builder: (context, snapshot) {
+                              final status = snapshot.data ?? -1;
+                              if (status == -1) {
+                                _featureAnimationController.forward();
+                                return progressBar(_featureAnimationController);
+                              } else if (status == 0) {
+                                return uploadFailWidget();
+                              } else {
+                                return uploadSuccessWidget();
+                              }
+                            },
+                          ),
+                          spaceH20,
+                        ],
+                      ),
+                    ),
+                    line,
+                    StreamBuilder<int>(
+                      stream: widget.bloc.upLoadStatusSubject,
+                      initialData: -1,
+                      builder: (context, snapshot) {
+                        final isComplete = snapshot.data ?? -1;
+                        return InkWell(
+                          onTap: () {
+                            if (isComplete == 0) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: SizedBox(
+                            height: 64.h,
+                            child: Center(
+                              child: Text(
+                                'OK',
+                                style: textCustom(
+                                  color: isComplete == -1
+                                      ? AppTheme.getInstance().disableColor()
+                                      : AppTheme.getInstance().fillColor(),
+                                  weight: FontWeight.w700,
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  )
-                ],
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
