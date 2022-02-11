@@ -17,11 +17,14 @@ import 'dialog_reason_detail.dart';
 class ItemPawnShop extends StatelessWidget {
   final BlocListBookEvaluation bloc;
   final AppointmentModel appointment;
+  final bool isLoading;
+
 
   const ItemPawnShop({
     Key? key,
     required this.bloc,
     required this.appointment,
+    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -64,8 +67,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',
-                            assetId: bloc.assetID, //todo type
+                            stepTwoPassing: bloc.stepTwoPassingModel,
                           ),
                         ),
                       );
@@ -78,7 +80,8 @@ class ItemPawnShop extends StatelessWidget {
                       ),
                       clipBehavior: Clip.hardEdge,
                       child: Image.network(
-                        '${ApiConstants.BASE_URL_IMAGE}${appointment.evaluator?.avatarCid ?? ''}',
+                        '${ApiConstants.BASE_URL_IMAGE}'
+                        '${appointment.evaluator?.avatarCid ?? ''}',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: AppTheme.getInstance().bgBtsColor(),
@@ -100,8 +103,7 @@ class ItemPawnShop extends StatelessWidget {
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.type,
                             date: appointment.appointmentTime,
-                            typeNFT: 'diamond',
-                            assetId: bloc.assetID, //todo type
+                           stepTwoPassing: bloc.stepTwoPassingModel,
                           ),
                         ),
                       );
@@ -213,12 +215,12 @@ class ItemPawnShop extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: -10.h,
-            right: -10.w,
+            top: -15.h,
+            right: -15.w,
             child: bloc.isCancel
                 ? InkWell(
                     onTap: () {
-                      if (!bloc.isLoadingText) {
+                      if (!isLoading) {
                         Navigator.of(context)
                             .push(
                               HeroDialogRoute(
@@ -233,15 +235,15 @@ class ItemPawnShop extends StatelessWidget {
                             )
                             .then(
                               (value) => bloc.getListPawnShop(
-                                assetId: bloc.assetID,
+                                assetId: bloc.stepTwoPassingModel?.assetId ?? ''
                               ),
                             );
                       }
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 6.w,
-                        vertical: 6.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 11.w,
+                        vertical: 11.h,
                       ),
                       child: Image.asset(
                         ImageAssets.imgCancelMarket,
