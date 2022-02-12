@@ -21,7 +21,7 @@ class ButtonHardNftType extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
-              AppTheme.getInstance().bgProgressingColors(),
+              AppTheme.getInstance().whiteColor(),
             ),
           );
         } else if ((snapshot.data ?? []).isEmpty) {

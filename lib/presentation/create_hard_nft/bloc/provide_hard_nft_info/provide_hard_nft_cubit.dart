@@ -263,7 +263,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         countriesBHVSJ.sink.add(countries);
       },
       error: (error) {
-        //todo
+        countriesBHVSJ.sink.add([]);
       },
     );
   }
@@ -287,14 +287,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       },
     );
   }
-
-  List<Map<String, dynamic>> loadingDropDown = [
-    {'label': 'Đang Tải'},
-  ];
-
-  List<Map<String, dynamic>> error = [
-    {'label': 'Không có dữ liệu'},
-  ];
 
   String getAddressWallet() {
     return PrefsService.getCurrentBEWallet();
@@ -327,29 +319,53 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     emit(ProvideHardNftConfirmInfo());
   }
 
+  List<Map<String, dynamic>> loadingDataDropDown = [
+    {'label': 'loading'},
+  ];
+
+  List<Map<String, dynamic>> errorData = [
+    {'label': 'error'},
+  ];
+
+  bool checkMapListContainsObj({
+    required List<Map<String, dynamic>> mapList,
+    required String valueNeedCheck,
+  }) {
+    for (final map in mapList) {
+      if (map.containsKey('label')) {
+        if (map['label'] == valueNeedCheck) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   Future<void> getCitiesApi(dynamic id) async {
     cities.clear();
-    citiesBHVSJ.sink.add(loadingDropDown);
+    cities.add({'label': 'loading'});
+    citiesBHVSJ.sink.add(cities);
     final Result<List<CityModel>> resultCities =
         await _step1Repository.getCities(id.toString());
     cities.clear();
     resultCities.when(
       success: (response) {
-        response.forEach((element) {
+        for (final element in response) {
           cities.add({
             'value': element.id,
             'label': element.name,
           });
-        });
-        if (cities.isEmpty) {
-          citiesBHVSJ.sink.add(error);
+        }
+        if(cities.isNotEmpty) {
+          citiesBHVSJ.sink.add(cities);
         } else {
+          cities.add({'label': 'none'});
           citiesBHVSJ.sink.add(cities);
         }
       },
       error: (error) {
-        //todo handle error
-        citiesBHVSJ.sink.add([]);
+        cities.add({'label': 'error'});
+        citiesBHVSJ.sink.add(cities);
       },
     );
   }
