@@ -20,6 +20,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'provide_hard_nft_state.dart';
@@ -66,6 +67,40 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   String currentImagePath = '';
   int currentIndexImage = 0;
   List<HardNftTypeModel> listHardNftType = [];
+
+  List<bool> listChangeColorFtChoose = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
+
+  BehaviorSubject<List<bool>> listChangeColorFtChooseBHVSJ =
+      BehaviorSubject.seeded([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  ///id is index
+  void chooseTypeNft({required int index}) {
+    bool result = false;
+    if (listChangeColorFtChoose[index]) {
+      result = false;
+    } else {
+      result = true;
+    }
+    listChangeColorFtChoose = List.filled(6, false);
+    listChangeColorFtChoose[index] = result;
+    listChangeColorFtChooseBHVSJ.sink.add(listChangeColorFtChoose);
+  }
+
+
   BehaviorSubject<List<HardNftTypeModel>> listHardNftTypeBHVSJ =
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
@@ -161,6 +196,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       return '';
     }
   }
+
+  BehaviorSubject<bool> changeColorWhenSelect = BehaviorSubject.seeded(false);
 
   Future<void> getListHardNftTypeApi() async {
     final Result<List<HardNftTypeModel>> resultHardNftTypes =
@@ -356,7 +393,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'label': element.name,
           });
         }
-        if(cities.isNotEmpty) {
+        if (cities.isNotEmpty) {
           citiesBHVSJ.sink.add(cities);
         } else {
           cities.add({'label': 'none'});
