@@ -17,7 +17,6 @@ class BlocListBookEvaluation {
   static const int OPEN = 1;
   static const int REJECTED = 3;
   static const int ACCEPTED = 7;
-  static const int PROCESSING_SUCCESS = 8;
   static const int SUCCESS = 9;
   static const int CANCELLED = 5;
 
@@ -34,7 +33,7 @@ class BlocListBookEvaluation {
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
   final Web3Utils web3utils = Web3Utils();
-  bool isSuccess = false;
+  BehaviorSubject<bool> isSuccess = BehaviorSubject.seeded(false);
 
   Future<void> getHexString({
     required String appointmentId,
@@ -45,7 +44,6 @@ class BlocListBookEvaluation {
       reason: reason,
     );
   }
-
 
   Color checkColor(String status) {
     if (S.current.your_appointment_request == status) {
@@ -119,22 +117,41 @@ class BlocListBookEvaluation {
     }
   }
 
+  bool getCheckStatusEva(int status) {
+    switch (status) {
+      case CANCELLED:
+        return false;
+      case REJECTED:
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  TypeEvaluation checkStatus(String idEvaluator) {
+    for (final AppointmentModel value in listPawnShop.value) {
+      if (value.evaluator?.id == idEvaluator) {
+        if (getCheckStatusEva(value.status ?? 0)) {
+          return type = TypeEvaluation.CREATE;
+        }
+      }
+    }
+    return type = TypeEvaluation.NEW_CREATE;
+  }
+
   String getTextStatus(int status, int time) {
     switch (status) {
       case OPEN:
         isCancel = true;
         isDetail = false;
         isLoadingText = false;
-        type = TypeEvaluation.CREATE;
         return S.current.your_appointment_request;
       case REJECTED:
         isDetail = true;
         isCancel = false;
         isLoadingText = false;
-        type = TypeEvaluation.NEW_CREATE;
         return S.current.the_evaluator_has_rejected;
       case ACCEPTED:
-        type = TypeEvaluation.CREATE;
         isDetail = false;
         isCancel = true;
         isLoadingText = false;
@@ -144,10 +161,8 @@ class BlocListBookEvaluation {
           return S.current.the_evaluator_has_accepted;
         }
       case SUCCESS:
-        type = TypeEvaluation.CREATE;
         isDetail = false;
         isCancel = true;
-        isSuccess = true;
         isLoadingText = false;
         if (time != 0) {
           return S.current.evaluator_has_suggested;
@@ -158,13 +173,11 @@ class BlocListBookEvaluation {
         isDetail = false;
         isCancel = false;
         isLoadingText = false;
-        type = TypeEvaluation.NEW_CREATE;
         return S.current.you_have_rejected;
       default:
         isDetail = false;
         isCancel = true;
         isLoadingText = true;
-        type = TypeEvaluation.CREATE;
         return S.current.processing_transaction;
     }
   }
@@ -189,6 +202,15 @@ class BlocListBookEvaluation {
     );
   }
 
+  bool checkIsSuccess(List<AppointmentModel> list) {
+    for (final AppointmentModel value in list) {
+      if (value.status == ACCEPTED) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<void> getListPawnShop({
     required String assetId,
   }) async {
@@ -200,6 +222,7 @@ class BlocListBookEvaluation {
       success: (res) {
         if (res.isNotEmpty) {
           listPawnShop.sink.add(res);
+          isSuccess.sink.add(checkIsSuccess(res));
         } else {
           listPawnShop.sink.add([]);
         }

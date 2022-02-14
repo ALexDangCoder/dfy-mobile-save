@@ -190,7 +190,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                         context, //todo dùng ké
                         MaterialPageRoute(
                           builder: (context) => ListBookEvaluation(
-                            assetId: '6209b3694aec3d07dc5587c8',
+                            assetId: '6209fc3d4aec3df7e3029f68',
                           ),
                         ),
                       );

@@ -58,10 +58,12 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
               child: Column(
                 children: [
                   spaceH24,
-                  StepAppBar(
-                    assetId: widget.assetId,
-                    isSuccess: _bloc.isSuccess,
-                  ),
+                 StreamBuilder<bool>(
+                   stream: _bloc.isSuccess,
+                   builder: (context, snapshot) =>  StepAppBar(
+                   assetId: widget.assetId,
+                   isSuccess:snapshot.data ?? false,
+                 ),),
                   spaceH16,
                   Expanded(
                     child: SingleChildScrollView(
@@ -159,11 +161,13 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
-                      isSuccess: _bloc.isSuccess,
+                      isSuccess: _bloc.isSuccess.value,
                       appointmentList: _bloc.appointmentList,
                       assetId: _bloc.assetId ?? '',
                     ),
                   ),
+                ).then(
+                  (value) => _bloc.appointmentList.clear(),
                 );
               },
               child: Container(

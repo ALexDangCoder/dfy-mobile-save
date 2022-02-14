@@ -17,13 +17,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookEvaluation extends StatefulWidget {
   final List<AppointmentModel> appointmentList;
-  final bool? isSuccess;
+  final bool isSuccess;
   final String assetId;
 
   const BookEvaluation({
     Key? key,
     required this.appointmentList,
-    this.isSuccess,
+    required this.isSuccess,
     required this.assetId,
   }) : super(key: key);
 
@@ -57,7 +57,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
           spaceH24,
           StepAppBar(
             assetId: widget.assetId,
-            isSuccess: widget.isSuccess ?? false,
+            isSuccess: widget.isSuccess,
           ),
           spaceH16,
           Expanded(
@@ -173,7 +173,6 @@ class _BookEvaluationState extends State<BookEvaluation> {
                     },
                   ),
                   spaceH32,
-
                 ],
               ),
             ),

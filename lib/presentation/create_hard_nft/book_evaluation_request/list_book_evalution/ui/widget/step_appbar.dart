@@ -26,6 +26,15 @@ class StepAppBar extends StatelessWidget {
         dividerSuccessCreateNFT,
         SizedBox(
           child: isSuccess
+              ? const SuccessCkcCreateNft()
+              : CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_CREATING,
+                  stepCreate: S.current.step2,
+                ),
+        ),
+        dividerCreateNFT,
+        SizedBox(
+          child: isSuccess
               ? GestureDetector(
                   onTap: () {
                     goTo(
@@ -35,17 +44,15 @@ class StepAppBar extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const SuccessCkcCreateNft(),
+                  child: CircleStepCreateNft(
+                    circleStatus: CircleStatus.IS_CREATING,
+                    stepCreate: S.current.step3,
+                  ),
                 )
               : CircleStepCreateNft(
-                  circleStatus: CircleStatus.IS_CREATING,
-                  stepCreate: S.current.step2,
+                  circleStatus: CircleStatus.IS_NOT_CREATE,
+                  stepCreate: S.current.step3,
                 ),
-        ),
-        dividerCreateNFT,
-        CircleStepCreateNft(
-          circleStatus: CircleStatus.IS_NOT_CREATE,
-          stepCreate: S.current.step3,
         ),
         dividerCreateNFT,
         CircleStepCreateNft(
