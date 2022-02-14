@@ -204,7 +204,9 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const EvaluationResult()
+              builder: (context) => EvaluationResult(
+                assetID: '6201eb134aec3d7ec50a7499',
+              )
             ),
           );
         }

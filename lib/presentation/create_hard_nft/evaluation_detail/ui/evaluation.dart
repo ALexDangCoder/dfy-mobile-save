@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
@@ -13,7 +11,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/screen_controller.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
@@ -35,10 +32,12 @@ class EvaluationScreen extends StatefulWidget {
     required this.evaluationId,
     required this.isAccept,
     required this.bcEvaluationId,
+    required this.assetID,
   }) : super(key: key);
   final String evaluationId;
   final String bcEvaluationId;
   final bool isAccept;
+  final String assetID;
 
   @override
   _EvaluationScreenState createState() => _EvaluationScreenState();
@@ -50,7 +49,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   @override
   void initState() {
     super.initState();
+    cubit.getTokenInf();
     cubit.getEvaluation(widget.evaluationId);
+    cubit.getEvaluationFee();
   }
 
   @override
@@ -124,14 +125,24 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                     children: [
                       Expanded(
                         child: _buildButtonReject(
-                            context, evaluation, cubit, widget.bcEvaluationId),
+                          context,
+                          evaluation,
+                          cubit,
+                          widget.bcEvaluationId,
+                          widget.assetID,
+                        ),
                       ),
                       SizedBox(
                         width: 23.w,
                       ),
                       Expanded(
                         child: _buildButtonAccept(
-                            context, evaluation, cubit, widget.bcEvaluationId),
+                          context,
+                          evaluation,
+                          cubit,
+                          widget.bcEvaluationId,
+                          widget.assetID,
+                        ),
                       ),
                     ],
                   ),
@@ -179,6 +190,7 @@ Widget _buildButtonReject(
   Evaluation evaluation,
   EvaluationCubit cubit,
   String bcID,
+  String assetID,
 ) {
   return ButtonTransparent(
     child: Text(
@@ -202,7 +214,9 @@ Widget _buildButtonReject(
             showLoadSuccess(context).then(
               (value) => goTo(
                 context,
-                const EvaluationResult(),
+                EvaluationResult(
+                  assetID: assetID,
+                ),
               ),
             );
           },
@@ -224,7 +238,7 @@ Widget _buildButtonReject(
             ),
           ],
           title: S.current.book_appointment,
-          textActiveButton: 'Reject',
+          textActiveButton: S.current.reject,
           spender: eva_dev2,
         ),
       );
@@ -249,12 +263,8 @@ String getNFTType(int type) {
   }
 }
 
-Widget _buildButtonAccept(
-  BuildContext context,
-  Evaluation evaluation,
-  EvaluationCubit cubit,
-  String bcID,
-) {
+Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
+    EvaluationCubit cubit, String bcID, String assetID) {
   return ButtonGradient(
     onPressed: () async {
       final hexString = await cubit.acceptEvaluationToBlockchain(bcID);
@@ -268,7 +278,9 @@ Widget _buildButtonAccept(
             showLoadSuccess(context).then(
               (value) => goTo(
                 context,
-                const EvaluationResult(),
+                EvaluationResult(
+                  assetID: assetID,
+                ),
               ),
             );
           },
@@ -290,14 +302,15 @@ Widget _buildButtonAccept(
             ),
             DetailItemApproveModel(
               title: '${S.current.evaluation_fee}:',
-              value: '50 DFY',
+              value: '${cubit.evaluationFee.amount} '
+                  '${cubit.evaluationFee.symbol ?? ''}',
             ),
           ],
           title: S.current.book_appointment,
-          textActiveButton: 'Accept Evaluation',
+          textActiveButton: S.current.accept_evaluation,
           needApprove: true,
-          payValue: '1',
-          tokenAddress: '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14',
+          payValue: '${cubit.evaluationFee.amount}',
+          tokenAddress: '${cubit.evaluationFee.address}',
           spender: eva_dev2,
         ),
       );

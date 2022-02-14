@@ -9,11 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EvaluationItem extends StatelessWidget {
-  const EvaluationItem(
-      {Key? key, required this.evaluationResult, required this.cubit})
-      : super(key: key);
+  const EvaluationItem({
+    Key? key,
+    required this.evaluationResult,
+    required this.cubit,
+    required this.assetID,
+  }) : super(key: key);
   final EvaluationResult evaluationResult;
   final EvaluationHardNftResultCubit cubit;
+  final String assetID;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +33,7 @@ class EvaluationItem extends StatelessWidget {
               evaluationId: evaluationResult.evaluationId ?? '',
               isAccept: evaluationResult.status == 2,
               bcEvaluationId: evaluationResult.bcEvaluationID ?? '0',
+              assetID: assetID,
             ),
           ),
         );
@@ -54,7 +59,8 @@ class EvaluationItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: NetworkImage(
-                            evaluationResult.avatarEvaluator ?? ''),
+                          evaluationResult.avatarEvaluator ?? '',
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),

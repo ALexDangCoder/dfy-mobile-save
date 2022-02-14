@@ -1,15 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation_detail.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/list_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/button/button_gradient.dart';
-import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
@@ -20,10 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'no_evaulation_result.dart';
 
 class EvaluationResult extends StatefulWidget {
-  const EvaluationResult({Key? key}) : super(key: key);
+  const EvaluationResult({Key? key, required this.assetID}) : super(key: key);
+
+  final String assetID;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -35,8 +31,8 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult('6201eb134aec3d7ec50a7499');
-    cubit.reloadAPI('6201eb134aec3d7ec50a7499');
+    cubit.getListEvaluationResult(widget.assetID);
+    cubit.reloadAPI(widget.assetID);
   }
   @override
   void dispose() {
@@ -54,7 +50,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult('6201eb134aec3d7ec50a7499');
+            await cubit.getListEvaluationResult(widget.assetID);
           },
           textEmpty: '',
           child: content(state),
@@ -87,6 +83,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
                   child: ListEvaluation(
                     listEvaluation: listEvaluation,
                     cubit: cubit,
+                    assetID: widget.assetID,
                   ),
                 ),
               )

@@ -425,7 +425,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             spaceW8,
             Text(
               '${widget.evaluation.depreciationPercent ?? ''}% '
-              '${S.current.depreciation}',
+              '${S.current.depreciationD}',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 16,
