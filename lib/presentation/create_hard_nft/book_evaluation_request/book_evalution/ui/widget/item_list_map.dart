@@ -67,6 +67,8 @@ class _ItemListMap extends State<ItemListMap> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CreateBookEvaluation(
+                        isSuccess: widget.bloc.isSuccess ?? false,
+                        appointmentList: widget.bloc.appointmentList ?? [],
                         date: widget.bloc.getDate(
                           value.id ?? '',
                         ),
@@ -81,6 +83,8 @@ class _ItemListMap extends State<ItemListMap> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CreateBookEvaluation(
+                        isSuccess: widget.bloc.isSuccess ?? false,
+                        appointmentList: widget.bloc.appointmentList ?? [],
                         assetId: widget.bloc.assetId ?? '',
                         idEvaluation: value.id ?? '',
                         type: TypeEvaluation.NEW_CREATE,

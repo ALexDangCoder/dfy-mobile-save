@@ -59,6 +59,8 @@ class ItemPawnShop extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
+                            isSuccess: bloc.isSuccess.value,
+                            appointmentList: bloc.appointmentList,
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.checkStatus(
                               appointment.evaluator?.id ?? '',
@@ -93,6 +95,8 @@ class ItemPawnShop extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
+                            isSuccess: bloc.isSuccess.value,
+                            appointmentList: bloc.appointmentList,
                             idEvaluation: appointment.evaluator?.id ?? '',
                             type: bloc.checkStatus(
                               appointment.evaluator?.id ?? '',

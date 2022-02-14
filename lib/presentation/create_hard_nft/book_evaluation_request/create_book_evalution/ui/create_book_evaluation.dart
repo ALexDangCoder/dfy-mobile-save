@@ -6,7 +6,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
+import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_working_time.dart';
@@ -35,6 +37,8 @@ class CreateBookEvaluation extends StatefulWidget {
   final TypeEvaluation type;
   final int? date;
   final String assetId;
+  final bool isSuccess;
+  final List<AppointmentModel> appointmentList;
 
   const CreateBookEvaluation({
     Key? key,
@@ -42,6 +46,8 @@ class CreateBookEvaluation extends StatefulWidget {
     required this.type,
     this.date,
     required this.assetId,
+    required this.isSuccess,
+    required this.appointmentList,
   }) : super(key: key);
 
   @override
@@ -62,7 +68,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
     );
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.getEvaluationFee();
-
   }
 
   @override
@@ -104,7 +109,16 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                             leading: SizedBox(
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookEvaluation(
+                                        assetId: bloc.assetId ?? '',
+                                        isSuccess: widget.isSuccess,
+                                        appointmentList: widget.appointmentList,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: SizedBox(
                                   height: 32,
@@ -826,7 +840,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   evaluationFeeAddress:
                                       BlocCreateBookEvaluation.DFY_ADDRESS,
                                   appointmentTime: bloc.appointmentTime,
-                                  assetId:bloc.bcAssetId ?? '',
+                                  assetId: bloc.bcAssetId ?? '',
                                 );
 
                                 unawaited(
@@ -836,8 +850,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         needApprove: true,
                                         hexString: bloc.hexString,
                                         payValue:
-                                            '${bloc.evaluationFee?.amount
-                                                ?? 0}',
+                                            '${bloc.evaluationFee?.amount ?? 0}',
                                         tokenAddress: BlocCreateBookEvaluation
                                             .DFY_ADDRESS,
                                         title: S.current.book_appointment,
@@ -854,17 +867,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           ),
                                           DetailItemApproveModel(
                                             title: '${S.current.nft} :',
-                                            value: bloc.typeNFT ??
-                                                '',
+                                            value: bloc.typeNFT ?? '',
                                           ),
                                           DetailItemApproveModel(
                                             title:
                                                 '${S.current.evaluation_fee} :',
                                             value:
-                                                '${bloc.evaluationFee?.amount
-                                                    ?? 0} '
-                                                '${bloc.evaluationFee?.symbol
-                                                    ?? ''}',
+                                                '${bloc.evaluationFee?.amount ?? 0} '
+                                                '${bloc.evaluationFee?.symbol ?? ''}',
                                           ),
                                         ],
                                         onErrorSign: (context) {},
@@ -876,14 +886,13 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             appointmentTime:
                                                 bloc.appointmentTimeBE,
                                             evaluatorId: pawn.id ?? '',
-                                            assetId: bloc.assetId ??
-                                                '',
+                                            assetId: bloc.assetId ?? '',
                                           );
                                           showLoadSuccess(context).then(
                                             (value) => goTo(
                                               context,
                                               ListBookEvaluation(
-                                               assetId: bloc.assetId ?? '',
+                                                assetId: bloc.assetId ?? '',
                                               ),
                                             ),
                                           );

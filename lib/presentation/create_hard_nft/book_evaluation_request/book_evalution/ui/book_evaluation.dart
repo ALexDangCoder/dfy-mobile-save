@@ -7,9 +7,11 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_ev
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,14 +40,22 @@ class _BookEvaluationState extends State<BookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocBookEvaluation();
-    bloc.assetId=widget.assetId;
+    bloc.assetId = widget.assetId;
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.appointmentList = widget.appointmentList;
+    bloc.isSuccess=widget.isSuccess;
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
+      isLeftClick: true,
+      onLeftClick: () {
+        goTo(
+          context,
+          ListBookEvaluation(assetId: bloc.assetId ?? ''),
+        );
+      },
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
@@ -133,6 +143,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
+                                            appointmentList: widget.appointmentList,
+                                        isSuccess: widget.isSuccess,
                                         date: bloc.getDate(
                                           list[index].id ?? '',
                                         ),
@@ -148,6 +160,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
+                                            isSuccess: widget.isSuccess,
+                                        appointmentList: widget.appointmentList,
                                         assetId: bloc.assetId ?? '',
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.NEW_CREATE,

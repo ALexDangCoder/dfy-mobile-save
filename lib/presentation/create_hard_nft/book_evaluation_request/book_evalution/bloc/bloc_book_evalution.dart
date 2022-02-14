@@ -12,6 +12,7 @@ class BlocBookEvaluation {
   List<EvaluatorsCityModel>? listMap;
   List<AppointmentModel>? appointmentList;
   TypeEvaluation? type;
+  bool? isSuccess;
   String? assetId;
   String? bcAssetId;
   double? locationLat;
