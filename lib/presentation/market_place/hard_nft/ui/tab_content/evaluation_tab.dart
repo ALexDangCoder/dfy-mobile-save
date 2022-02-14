@@ -8,10 +8,14 @@ import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_do
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
+import 'package:Dfy/widgets/common/hero_photo.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:video_player/video_player.dart';
 
 class EvaluationTab extends StatefulWidget {
   final Evaluation evaluation;
@@ -25,7 +29,7 @@ class EvaluationTab extends StatefulWidget {
 class _EvaluationTabState extends State<EvaluationTab>
     with AutomaticKeepAliveClientMixin {
   late ItemScrollController scrollController;
-
+  late VideoPlayerController controller;
   late final HardNFTBloc bloc;
 
   @override
@@ -36,6 +40,9 @@ class _EvaluationTabState extends State<EvaluationTab>
     bloc.getListImage(widget.evaluation);
     bloc.changeImage('');
     super.initState();
+    controller.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -91,26 +98,61 @@ class _EvaluationTabState extends State<EvaluationTab>
                   ),
                 ),
                 spaceH16,
-                StreamBuilder<String>(
+                StreamBuilder<Media>(
                   stream: bloc.imageStream,
-                  initialData: widget.evaluation.media?.first.urlImage,
+                  initialData: widget.evaluation.media?.first,
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
-                      final String img = snapShot.data ?? '';
+                      final Media? media = snapShot.data;
                       return Column(
                         children: [
                           Stack(
                             children: [
                               SizedBox(
-                                width: 350.w,
-                                height: 200.h,
+                                width: 343.w,
+                                height: 290.h,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(30.r),
                                   ),
-                                  child: Image.network(
-                                    img,
-                                    fit: BoxFit.cover,
+                                  child: PhotoHero(
+                                    photo: media?.urlImage ?? '',
+                                    width: double.infinity,
+                                    typeImage: media?.type ?? TypeImage.IMAGE,
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) {
+                                            return Scaffold(
+                                              body: SizedBox(
+                                                child: media?.type ==
+                                                        TypeImage.IMAGE
+                                                    ? PhotoView(
+                                                        imageProvider:
+                                                            NetworkImage(media
+                                                                    ?.urlImage ??
+                                                                ''),
+                                                        minScale:
+                                                            PhotoViewComputedScale
+                                                                    .contained *
+                                                                0.8,
+                                                        maxScale:
+                                                            PhotoViewComputedScale
+                                                                    .covered *
+                                                                2,
+                                                        enableRotation: true,
+                                                      )
+                                                    : VideoPlayerView(
+                                                        urlVideo:
+                                                            media?.urlImage ??
+                                                                '',
+                                                      ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ),
@@ -121,7 +163,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                   return Visibility(
                                     visible: snapPre.data ?? true,
                                     child: Positioned(
-                                      top: (200.h - 32.h) / 2,
+                                      top: (290.h - 32.h) / 2,
                                       left: 16.w,
                                       child: InkWell(
                                         onTap: () {
@@ -150,7 +192,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                                     return Visibility(
                                       visible: snapNext.data ?? true,
                                       child: Positioned(
-                                        top: (200.h - 32.h) / 2,
+                                        top: (290.h - 32.h) / 2,
                                         right: 16.w,
                                         child: InkWell(
                                           onTap: () {
@@ -174,7 +216,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                           ),
                           spaceH12,
                           SizedBox(
-                            height: 64.h,
+                            height: 83.h,
                             child: ScrollablePositionedList.builder(
                               itemScrollController: scrollController,
                               scrollDirection: Axis.horizontal,
@@ -184,10 +226,11 @@ class _EvaluationTabState extends State<EvaluationTab>
                                   children: [
                                     smallImage(
                                       img: bloc.listImg[index],
-                                      isCurrentImg: bloc.listImg[index] == img,
+                                      isCurrentImg:
+                                          bloc.listImg[index] == media,
                                       index: index,
                                     ),
-                                    spaceW8,
+                                    spaceW12,
                                   ],
                                 );
                               },
@@ -298,30 +341,35 @@ class _EvaluationTabState extends State<EvaluationTab>
   }
 
   Widget smallImage(
-      {required String img, required bool isCurrentImg, required int index}) {
+      {required Media img, required bool isCurrentImg, required int index}) {
     return InkWell(
       onTap: () {
-        bloc.changeImage(img);
+        bloc.changeImage(img.urlImage!);
         scrollController.scrollTo(
           index: index > 2 ? index - 1 : 0,
           duration: const Duration(milliseconds: 300),
         );
       },
       child: Container(
-        width: 79.w,
-        height: 64.h,
+        width: 105.w,
+        height: 83.h,
         decoration: BoxDecoration(
+          color: Colors.black,
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          border: Border.all(
-            color: isCurrentImg ? const Color(0xFFE4AC1A) : Colors.transparent,
-            width: 2,
-          ),
         ),
-        child: ClipRRect(
+        child: img.type == TypeImage.IMAGE
+            ? ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
           child: Image.network(
-            img,
+            img.urlImage!,
             fit: BoxFit.cover,
+          ),
+        )
+            : Center(
+          child: Icon(
+            Icons.play_circle_outline_sharp,
+            size: 24.sp,
+            color: Colors.white,
           ),
         ),
       ),
