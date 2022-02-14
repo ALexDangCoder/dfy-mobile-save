@@ -30,7 +30,7 @@ class ApiConstants {
       '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
-      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://marketplace.defiforyou.uk/';
+      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=';
   static const String GET_LIST_COLLECTION_FILTER =
       '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';

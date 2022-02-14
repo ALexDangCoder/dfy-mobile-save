@@ -59,7 +59,7 @@ extension IPFSUpLoad on CreateCollectionCubit{
               () async {
             final appConstants = Get.find<AppConstants>();
             final String uri = appConstants.baseUrl +
-                ApiConstants.GET_BOOL_CUSTOM_URL +
+                ApiConstants.GET_BOOL_CUSTOM_URL + appConstants.baseCustomUrl +
                 _customUrl;
             final response = await http.get(
               Uri.parse(uri),
@@ -67,10 +67,10 @@ extension IPFSUpLoad on CreateCollectionCubit{
             if (response.statusCode == 200) {
               if (response.body == 'true') {
                 customUrl = _customUrl;
-                mapCheck['custom_url'] = true;
+                mapCheck[CUSTOM_URL_MAP] = true;
               } else {
                 customURLSubject.sink.add(S.current.custom_url_taken);
-                mapCheck['custom_url'] = false;
+                mapCheck[CUSTOM_URL_MAP] = false;
               }
             } else {
               throw Exception('Get response fail');
@@ -78,11 +78,11 @@ extension IPFSUpLoad on CreateCollectionCubit{
           },
         );
       } else {
-        mapCheck['custom_url'] = false;
+        mapCheck[CUSTOM_URL_MAP] = false;
         customURLSubject.sink.add(S.current.custom_url_err);
       }
     } else {
-      mapCheck['custom_url'] = true;
+      mapCheck[CUSTOM_URL_MAP] = true;
       customURLSubject.sink.add('');
     }
   }

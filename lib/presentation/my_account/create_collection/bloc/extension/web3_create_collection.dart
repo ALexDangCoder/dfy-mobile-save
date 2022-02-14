@@ -17,14 +17,14 @@ extension Web3Call on CreateCollectionCubit {
     await generateRandomURL();
     final CreateCollectionIpfsRequest request = CreateCollectionIpfsRequest(
       external_link:
-          ApiConstants.URL_BASE + cidMap.getStringValue('avatar_cid'),
-      feature_cid: cidMap.getStringValue('feature_cid'),
-      image: ApiConstants.URL_BASE + (cidMap.getStringValue('avatar_cid')),
+          ApiConstants.URL_BASE + cidMap.getStringValue(AVATAR_CID),
+      feature_cid: cidMap.getStringValue(FEATURE_CID),
+      image: ApiConstants.URL_BASE + (cidMap.getStringValue(AVATAR_CID)),
       name: collectionName,
       custom_url: '$prefixURL$customUrl',
-      avatar_cid: cidMap.getStringValue('avatar_cid'),
+      avatar_cid: cidMap.getStringValue(AVATAR_CID),
       category: categoryId,
-      cover_cid: cidMap.getStringValue('cover_cid'),
+      cover_cid: cidMap.getStringValue(COVER_CID),
       social_links:
           socialLinkMap.map((e) => SocialLinkMapRequest.fromJson(e)).toList(),
     );
