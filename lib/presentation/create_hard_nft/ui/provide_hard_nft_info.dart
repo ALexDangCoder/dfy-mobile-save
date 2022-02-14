@@ -65,7 +65,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
-    if (cubit.properties.isEmpty) {
+    if (cubit.propertiesData.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
       isShowOrHideItemProperties = true;
@@ -107,7 +107,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 return Step1WhenSubmit(
                   cubit: cubit,
                   typeNftSelect: NFT_TYPE.WATCH,
-                  modelPassing: cubit.fakeData,
+                  modelPassing: cubit.dataStep1,
                 );
               } else {
                 return SingleChildScrollView(
@@ -196,7 +196,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           ),
                           child: TextFieldValidator(
                             hint: S.current.enter_name,
-                            onChange: (value) {},
+                            onChange: (value) {
+                              cubit.dataStep1.hardNftName = value;
+                            },
                             validator: (value) {
                               return cubit.validateHardNftName(value ?? '');
                             },
@@ -236,7 +238,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           ),
                           child: TextFieldValidator(
                             hint: S.current.enter_price,
-                            onChange: (value) {},
+                            onChange: (value) {
+                              cubit.dataStep1.amountToken = double.parse(value);
+                            },
                             validator: (value) {
                               return cubit.validateAmountToken(value ?? '');
                             },
@@ -275,6 +279,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           ),
                           child: TextFieldValidator(
                             hint: S.current.enter_info,
+                            onChange: (value) {
+                              cubit.dataStep1.additionalInfo = value;
+                            },
                             validator: (value) {
                               return cubit.validateAdditionInfo(value ?? '');
                             },
@@ -315,11 +322,14 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           padding: EdgeInsets.symmetric(
                             horizontal: 16.w,
                           ),
-                          child: CustomForm(
-                            textValue: (value) {},
-                            hintText: S.current.enter_name,
-                            suffix: null,
-                            inputType: null,
+                          child: TextFieldValidator(
+                            onChange: (value) {
+                              cubit.dataStep1.nameContact = value;
+                            },
+                            validator: (value) {
+                              return cubit.validateHardNftName(value ?? '');
+                            },
+                            hint: S.current.enter_name,
                           ),
                         ),
                         spaceH16,
@@ -339,6 +349,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                             horizontal: 16.w,
                           ),
                           child: TextFieldValidator(
+                            onChange: (value) {
+                              cubit.dataStep1.emailContact = value;
+                            },
                             validator: (value) {
                               return cubit.validateEmail(value ?? '');
                             },
@@ -370,6 +383,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                               ),
                               Expanded(
                                 child: TextFieldValidator(
+                                  onChange: (value) {
+                                    cubit.dataStep1.phoneContact = value;
+                                  },
                                   validator: (value) {
                                     return cubit.validateMobile(value ?? '');
                                   },
@@ -422,6 +438,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                             horizontal: 16.w,
                           ),
                           child: TextFieldValidator(
+                            onChange: (value) {
+                              cubit.dataStep1.addressContact = value;
+                            },
                             validator: (value) {
                               return cubit.validateAddress(value ?? '');
                             },
@@ -475,7 +494,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           builder: (ctx) => const ConnectWalletDialog(
             isRequireLoginEmail: false,
           ),
-        ).then((value) => cubit.getListCollection());
+        ).then(
+          (value) => {
+            cubit.getListCollection(),
+            cubit.dataStep1.wallet = cubit.getAddressWallet(),
+          },
+        );
       },
       child: textShowWithPadding(
         textShow: S.current.connect_wallet,
@@ -490,7 +514,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
 
   Widget itemPropertiesFtBtnAdd() {
     return StreamBuilder<List<PropertyModel>>(
-      initialData: cubit.properties,
+      initialData: cubit.propertiesData,
       stream: cubit.showItemProperties,
       builder: (context, snapshot) {
         return Column(
@@ -506,9 +530,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 padding: EdgeInsets.only(left: 16.w),
                 child: Wrap(
                   runSpacing: 10.h,
-                  children: cubit.properties.map(
+                  children: cubit.propertiesData.map(
                     (e) {
-                      final int index = cubit.properties.indexOf(e);
+                      final int index = cubit.propertiesData.indexOf(e);
                       return itemProperty(
                         property: e.property,
                         value: e.value,
@@ -695,7 +719,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             visible: isHaveClose ? true : false,
             child: InkWell(
               onTap: () {
-                cubit.properties.removeAt(index);
+                cubit.propertiesData.removeAt(index);
                 cubit.checkPropertiesWhenSave();
               },
               child: Image.asset(

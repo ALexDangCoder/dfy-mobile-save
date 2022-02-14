@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
@@ -59,7 +60,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<Map<String, dynamic>> countries = [];
   List<Map<String, dynamic>> cities = [];
   List<Map<String, dynamic>> conditions = [];
-  List<PropertyModel> properties = [];
+  List<PropertyModel> propertiesData = [];
 
   ///List path image
   List<String> listPathImage = [];
@@ -100,7 +101,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     listChangeColorFtChooseBHVSJ.sink.add(listChangeColorFtChoose);
   }
 
-
   BehaviorSubject<List<HardNftTypeModel>> listHardNftTypeBHVSJ =
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
@@ -112,6 +112,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
       BehaviorSubject();
+
+  ///value get by user submmit
 
   ///Control upload Image, Document
   BehaviorSubject<List<String>> listImagePathSubject = BehaviorSubject();
@@ -231,12 +233,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'label': e,
           });
         }
-        // for (final e in res) {
-        //   phonesCode.add({
-        //     'value': e.code ?? '',
-        //     'label': e.id.toString(),
-        //   });
-        // }
+
         phonesCodeBHVSJ.sink.add(phonesCode);
         // phonesCodeBHVSJ.sink.add([]);
       },
@@ -254,20 +251,25 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     for (final element in listTokenSupport) {
-      tokensMap.add(
-        {
-          'label': element.symbol,
-          'icon': SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: Image.asset(
-              ImageAssets.getSymbolAsset(
-                element.symbol ?? DFY,
+      if (element.symbol == 'USDT' ||
+          element.symbol == 'BNB' ||
+          element.symbol == 'DFY') {
+        tokensMap.add(
+          {
+            'value': element.id,
+            'label': element.symbol,
+            'icon': SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: Image.asset(
+                ImageAssets.getSymbolAsset(
+                  element.symbol ?? DFY,
+                ),
               ),
             ),
-          ),
-        },
-      );
+          },
+        );
+      }
       if (tokensMap.isEmpty) {
         tokensMap.add(
           {
@@ -288,15 +290,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Future<void> getCountriesApi() async {
-    //emit(Step1LoadingCountry());
     final Result<List<CountryModel>> resultCountries =
         await _step1Repository.getCountries();
     resultCountries.when(
       success: (res) {
-        res.forEach(
-          (e) =>
-              countries.add({'value': e.id.toString(), 'label': e.name ?? ''}),
-        );
+        for (final e in res) {
+          countries.add({'value': e.id.toString(), 'label': e.name ?? ''});
+        }
         countriesBHVSJ.sink.add(countries);
       },
       error: (error) {
@@ -391,6 +391,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           cities.add({
             'value': element.id,
             'label': element.name,
+            'latitude': element.latitude,
+            'longitude': element.longitude,
+            'countryID': element.countryID,
           });
         }
         if (cities.isNotEmpty) {
@@ -408,19 +411,24 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   void checkPropertiesWhenSave() {
-    properties.forEach(
-      (element) {
-        properties.removeWhere(
-          (element) => element.property.isEmpty || element.value.isEmpty,
-        );
-      },
-    );
-    if (properties.isEmpty) {
+    for (final _ in propertiesData) {
+      propertiesData.removeWhere(
+        (element) => element.property.isEmpty || element.value.isEmpty,
+      );
+    }
+    if (propertiesData.isEmpty) {
       showItemProperties.sink.add([]);
     } else {
-      showItemProperties.sink.add(properties);
+      showItemProperties.sink.add(propertiesData);
     }
   }
+
+  //todo
+  // bool validateAllDataBeforeSubmit() {
+  //   if (dataStep1.amountToken == 0 || dataStep1.nameContact.isEmpty ||
+  //       dataStep1.phoneContact.isEmpty || dataStep1.country.isEmpty)
+  //     return true;
+  // }
 
   void showHideDropDownBtn({
     DropDownBtnType? typeDropDown,
@@ -446,28 +454,29 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     DocumentModel('Giay phep Su dung', 'doc'),
   ];
 
-  Step1PassingModel fakeData = Step1PassingModel(
-    hardNftName: 'Sapphire ring',
-    imageToken: ImageAssets.ic_dfy,
-    nameContact: 'Nguyen Duc Hoa',
-    emailContact: 'john_hoahihung@gmail.com',
-    phoneContact: '(+84) 0123456789',
-    addressContact: 'So 9, ngo 4 Duy Tan, Cau Giay',
-    wallet:
-        'Wallet 0xcd...1029 will receive NFT after being minted by Evaluator. ',
-    collection: 'Hard NFT will be created in collection Collection of HoaND',
-    properties: [
-      PropertyModel(value: 'oo', property: 'ee'),
-    ],
-    informationNft:
-        'Habitasse molestie ullamcorper consequat lectus. Dignissim ut ut neque, et venenatis. Suspendisse morbi ac dignissim in est.',
-    amountToken: 500000,
-    symbolToken: 'DFY',
-    nameNftType: 'Jewelry',
-    conditionNft: 'Brand new',
-    documents: [
-      DocumentModel('giay phep', 'ok'),
-    ],
+  Step1PassingModel dataStep1 = Step1PassingModel(
+    hardNftName: '',
+    tokenInfo: TokenInf(),
+    nameContact: '',
+    emailContact: '',
+    phoneContact: '',
+    city: CityModel(),
+    addressContact: '',
+    phoneCodeModel: PhoneCodeModel(),
+    country: CountryModel(),
+    wallet: '',
+    collection: '',
+    properties: [],
+    informationNft: '',
+    amountToken: 0,
+    nameNftType: '',
+    conditionNft: ConditionModel(),
+    documents: [],
+    additionalInfo: '',
+    hardNftType: HardNftTypeModel(
+      id: 0,
+      name: S.current.jewelry,
+    ),
   );
 }
 
@@ -479,26 +488,34 @@ class DocumentModel {
 }
 
 class Step1PassingModel {
-  final String hardNftName;
-  final String nameContact;
-  final String emailContact;
-  final String phoneContact;
-  final String addressContact;
-  final String wallet;
-  final String collection;
-  final List<PropertyModel> properties;
-  final String informationNft;
-  final double amountToken;
-  final String symbolToken;
-  final String nameNftType;
-  final String conditionNft;
-  final String imageToken;
-  final List<DocumentModel> documents;
+  String hardNftName;
+  String nameContact;
+  String emailContact;
+  CountryModel country;
+  String phoneContact;
+  String addressContact;
+  String wallet;
+  String collection;
+  String additionalInfo;
+  List<PropertyModel> properties;
+  String informationNft;
+  double amountToken;
+  TokenInf tokenInfo;
+  String nameNftType;
+  ConditionModel conditionNft;
+  List<DocumentModel> documents;
+  HardNftTypeModel hardNftType;
+  PhoneCodeModel phoneCodeModel;
+  CityModel city;
 
   Step1PassingModel({
     required this.hardNftName,
-    required this.imageToken,
+    required this.phoneCodeModel,
+    required this.hardNftType,
+    required this.city,
     required this.nameContact,
+    required this.country,
+    required this.additionalInfo,
     required this.emailContact,
     required this.phoneContact,
     required this.addressContact,
@@ -507,7 +524,7 @@ class Step1PassingModel {
     required this.properties,
     required this.informationNft,
     required this.amountToken,
-    required this.symbolToken,
+    required this.tokenInfo,
     required this.nameNftType,
     required this.conditionNft,
     required this.documents,

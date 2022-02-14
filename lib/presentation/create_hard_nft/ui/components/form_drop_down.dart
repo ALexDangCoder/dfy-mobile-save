@@ -63,7 +63,8 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
-                      //todo
+                      cubit.dataStep1.conditionNft.id = value['value'];
+                      cubit.dataStep1.conditionNft.name = value['label'];
                     },
                     dropdownItemHeight: 54.h,
                     dropdownHeight: 232.h,
@@ -151,6 +152,8 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
                       cubit.getCitiesApi(value['value']);
+                      cubit.dataStep1.country.id = value['value'];
+                      cubit.dataStep1.country.name = value['label'];
                     } else {}
                   },
                   dropdownItemHeight: 54.h,
@@ -230,12 +233,10 @@ class FormDropDown extends StatelessWidget {
                 child: Image.asset(ImageAssets.reload_nft),
               ),
             );
-          }
-          else if(cubit.checkMapListContainsObj(
+          } else if (cubit.checkMapListContainsObj(
               mapList: snapshot.data ?? [], valueNeedCheck: 'none')) {
             return Container(child: Text('Empty data'));
-          }
-          else {
+          } else {
             return Stack(
               children: [
                 CoolDropdown(
@@ -243,7 +244,13 @@ class FormDropDown extends StatelessWidget {
                   dropdownItemMainAxis: MainAxisAlignment.start,
                   resultMainAxis: MainAxisAlignment.start,
                   dropdownList: snapshot.data ?? [],
-                  onChange: (value) {},
+                  onChange: (value) {
+                    cubit.dataStep1.city.id = value['value'];
+                    cubit.dataStep1.city.name = value['label'];
+                    cubit.dataStep1.city.countryID = value['countryID'];
+                    cubit.dataStep1.city.latitude = value['latitude'];
+                    cubit.dataStep1.city.longitude = value['longitude'];
+                  },
                   dropdownItemHeight: 54.h,
                   dropdownHeight: cubit.cities.isEmpty ? 60.h : 232.h,
                   dropdownWidth: 343.w,
@@ -342,7 +349,8 @@ class FormDropDown extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onChange: (value) {
-                    print(value['label']);
+                    cubit.dataStep1.tokenInfo.name = value['label'];
+                    cubit.dataStep1.tokenInfo.id = value['value'];
                   },
                 ),
               ),
@@ -435,7 +443,8 @@ class FormDropDown extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         onChange: (value) {
-                          print(value['label']);
+                          cubit.dataStep1.phoneCodeModel.id = value['value'];
+                          cubit.dataStep1.phoneCodeModel.code = value['label'];
                         },
                       ),
                       Positioned(

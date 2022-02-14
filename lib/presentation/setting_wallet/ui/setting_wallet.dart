@@ -68,9 +68,9 @@ class _SettingWalletState extends State<SettingWallet> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            // return const ComingSoon();
+                            return const ComingSoon();
                             // return const ProvideHardNftInfo();
-                            return OnBoardingScreen();
+                            // return OnBoardingScreen();
                           },
                         ),
                       );

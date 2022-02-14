@@ -700,7 +700,7 @@
   "select_city": "Select city",
   "wallet_and_collection": "WALLET AND COLLECTION",
   "connect_wallet_to_get_coll": "Connect wallet to get collection list",
-  "description_add_properties": "Properties provide more information about your hard NFT. This field will be displayed tab description",
+  "description_add_properties": "Properties provide more information \nabout your hard NFT. This field will be \ndisplayed tab description",
   "maximum_30": "Maximum character is 30 characters",
   "name_required": "Name is required",
   "maximum_255": "Maximum length allowed is 255 characters",

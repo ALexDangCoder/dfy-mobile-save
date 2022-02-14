@@ -676,7 +676,7 @@
   "maximum_30": "Giới hạn 30 ký tự",
   "wallet_and_collection": "Ví và bộ sưu tập",
   "connect_wallet_to_get_coll": "Kết nối ví và lấy bộ sưu tập",
-  "description_add_properties": "Cấp thêm thông tin về HARD NFT của bạn, Trường này sẽ được hiển thị",
+  "description_add_properties": "Cấp thêm thông tin \nvề HARD NFT của bạn, Trường này sẽ được hiển thị",
   "name_required": "Tên là bắt buộc",
   "maximum_255": "Giới hạn 255 ký tự",
   "invalid_phone": "Số ĐT không hợp lệ",

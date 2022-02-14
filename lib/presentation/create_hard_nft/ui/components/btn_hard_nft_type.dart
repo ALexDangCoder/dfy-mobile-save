@@ -115,6 +115,8 @@ class ButtonHardNftType extends StatelessWidget {
         builder: (context, snapshot) {
           return InkWell(
             onTap: () {
+              cubit.dataStep1.hardNftType.id = id;
+              cubit.dataStep1.hardNftType.name = nameTypeNft;
               cubit.chooseTypeNft(index: id,);
             },
             child: Container(

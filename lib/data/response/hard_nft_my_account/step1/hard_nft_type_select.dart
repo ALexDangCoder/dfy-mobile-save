@@ -55,8 +55,7 @@ class HardNftTypeResponse extends Equatable {
   List<Object?> get props => throw UnimplementedError();
 
   HardNftTypeModel toModel() => HardNftTypeModel(
-        id : id,
+        id: id,
         name: name,
-        isSelected: false,
       );
 }
