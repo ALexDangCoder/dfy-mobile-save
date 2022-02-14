@@ -86,7 +86,8 @@ class DialogReasonDetail extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text:
-                                      '${S.current.by_evaluator_at} $dateDetail',
+                                      '${S.current.by_evaluator_at} '
+                                          '$dateDetail',
                                 ),
                               ],
                             ),

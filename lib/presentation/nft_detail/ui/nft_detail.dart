@@ -74,10 +74,14 @@ class NFTDetailScreen extends StatefulWidget {
     this.typeNft,
     this.nftId,
     this.pawnId,
+    this.nftTokenId,
+    this.collectionAddress,
   }) : super(key: key);
   final MarketType typeMarket;
   final TypeNFT? typeNft;
   final String? marketId;
+  final String? nftTokenId;
+  final String? collectionAddress;
   final String? nftId;
   final int? pawnId;
 
@@ -429,6 +433,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       pawnId: widget.pawnId ?? 0,
       type: widget.typeMarket,
       typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
+      collectionAddress: widget.collectionAddress ?? '',
+      nftTokenId: widget.nftTokenId ?? '',
     );
     await bloc.getListWallets();
   }
@@ -448,6 +454,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               type: widget.typeMarket,
               typeNFT: widget.typeNft ?? TypeNFT.SOFT_NFT,
               pawnId: widget.pawnId ?? 0,
+              collectionAddress: widget.collectionAddress ?? '',
+              nftTokenId: widget.nftTokenId ?? '',
             );
           },
           textEmpty: '',
@@ -830,7 +838,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               tabs: _tabTit,
             ),
             bottomBar: nftOnPawn.walletAddress?.toLowerCase() ==
-                        PrefsService.getCurrentWalletCore().toLowerCase()
+                    PrefsService.getCurrentWalletCore().toLowerCase()
                 ? _buildButtonCancelOnPawn(
                     context,
                     bloc,

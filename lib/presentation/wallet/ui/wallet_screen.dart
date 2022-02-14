@@ -85,6 +85,8 @@ class _WalletState extends State<WalletScreen>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
     final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
       return Scaffold(
@@ -166,6 +168,13 @@ class _WalletState extends State<WalletScreen>
                                 );
                               },
                             ),
+                          ).whenComplete(
+                            () {
+                              trustWalletChannel.setMethodCallHandler(
+                                cubit.nativeMethodCallBackTrustWallet,
+                              );
+                              cubit.getListWallets();
+                            },
                           );
                         },
                         icon: Icon(

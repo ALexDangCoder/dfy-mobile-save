@@ -8,6 +8,8 @@ import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart'
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create_nft_screen.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -123,7 +125,18 @@ class _ListNftState extends State<ListNft> {
             ),
           );
         },
-        nftCallBack: () {},
+        nftCallBack: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateNFTScreen(
+                  cubit: CreateNftCubit(),
+                );
+              },
+            ),
+          );
+        },
       ),
       body: GestureDetector(
         onTap: () {
@@ -168,7 +181,10 @@ class _ListNftState extends State<ListNft> {
                           if (_cubit.canLoadMoreListNft &&
                               (scrollInfo.metrics.pixels ==
                                   scrollInfo.metrics.maxScrollExtent)) {
-                            _cubit.loadMorePosts(widget.pageRouter);
+                            _cubit.loadMorePosts(
+                              widget.pageRouter,
+                              controller.text.trim(),
+                            );
                           }
                           return true;
                         },
@@ -182,7 +198,12 @@ class _ListNftState extends State<ListNft> {
                                 return Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: () async {
-                                      _cubit.refreshPosts(widget.pageRouter);
+                                      FocusScope.of(context).unfocus();
+                                      if(controller.text.isEmpty){
+                                        _cubit.refreshPosts(
+                                          widget.pageRouter,
+                                        );
+                                      }
                                     },
                                     child: Stack(
                                       children: [
@@ -211,7 +232,7 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 585.h),
+                                                EdgeInsets.only(top: 535.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 24.h,

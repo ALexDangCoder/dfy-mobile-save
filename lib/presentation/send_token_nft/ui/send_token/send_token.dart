@@ -5,12 +5,14 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:Dfy/utils/extensions/double_extension.dart';
 
@@ -64,51 +66,101 @@ class _SendTokenState extends State<SendToken> {
           currentFocus.unfocus();
         }
       },
-      child: BaseBottomSheet(
-        isImage: true,
-        text: ImageAssets.ic_close,
-        title: '${S.current.send} ${widget.modelToken.nameShortToken}',
-        onRightClick: () {
-          Navigator.pop(context);
+      child: BlocConsumer<SendTokenCubit, SendTokenState>(
+        listener: (context, state) {
+          if (state is LoadingBeforeConfirm) {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmit(justLoading: true,),
+              ),
+            );
+          } else if(state is LoadSuccessBeforeConfirm){
+            if (tokenCubit.checkAddressFtAmount()) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) {
+                    return ConfirmBlockchainCategory(
+                      modelToken: widget.modelToken,
+                      nameWallet: widget.walletName,
+                      nameTokenWallet: 'BNB',
+                      balanceWallet: tokenCubit.balanceWallet,
+                      typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
+                      addressFrom: widget.walletAddress,
+                      addressTo: txtToAddressToken.text,
+                      imageWallet: ImageAssets.symbol,
+                      amount: double.parse(txtAmount.text),
+                      nameToken: widget.modelToken.nameShortToken,
+                      cubitCategory: tokenCubit,
+                      gasPriceFirstFetch: tokenCubit.gasPrice / 1000000000,
+                      gasFeeFirstFetch: ((tokenCubit.gasPrice / 1000000000) *
+                          tokenCubit.estimateGasFee) /
+                          1000000000,
+                      gasLimitFirstFetch: tokenCubit.estimateGasFee,
+                    );
+                  },
+                ),
+              ).then((_) => Navigator.pop(context));
+            } else {
+              //nothing
+            }
+          } else {
+            Navigator.pop(context);
+          }
         },
-        isHaveLeftIcon: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 24.h,
+        bloc: tokenCubit,
+        builder: (context, state) {
+          return BaseBottomSheet(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            title: '${S.current.send} ${widget.modelToken.nameShortToken}',
+            onRightClick: () {
+              Navigator.pop(context);
+            },
+            isHaveLeftIcon: false,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      formShowFtAddress(
-                        // hintText: snapshot.data ?? '',
-                        hintText: widget.walletAddress.formatAddressWallet(),
-                        readOnly: true,
-                        prefixImg: ImageAssets.ic_from,
-                        suffixImg: '',
-                      ),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formShowFtAddress(
-                        hintText: S.current.to_address,
-                        suffixImg: ImageAssets.ic_qr_code,
-                        prefixImg: ImageAssets.ic_to,
-                        callBack: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => QRViewExample(
-                                controller: txtToAddressToken,
-                              ),
-                            ),
-                          ).then((_) => {
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 24.h,
+                          ),
+                          formShowFtAddress(
+                            // hintText: snapshot.data ?? '',
+                            hintText:
+                            widget.walletAddress.formatAddressWallet(),
+                            readOnly: true,
+                            prefixImg: ImageAssets.ic_from,
+                            suffixImg: '',
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formShowFtAddress(
+                            hintText: S.current.to_address,
+                            suffixImg: ImageAssets.ic_qr_code,
+                            prefixImg: ImageAssets.ic_to,
+                            callBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      QRViewExample(
+                                        controller: txtToAddressToken,
+                                      ),
+                                ),
+                              ).then((_) =>
+                              {
                                 txtToAddressToken.text =
                                     tokenCubit.handleValueFromQR(
                                         value: txtToAddressToken.text),
@@ -118,92 +170,62 @@ class _SendTokenState extends State<SendToken> {
                                   type: typeSend.SEND_TOKEN,
                                 ),
                               });
-                        },
-                      ),
-                      txtWaringAddress(),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      formAmountFtQuantity(
-                        modelToken: widget.modelToken,
-                        hintText: S.current.amount,
-                        isAmount: true,
-                        isQuantity: false,
-                        prefixImg: ImageAssets.ic_token,
-                      ),
-                      txtWaringAmount(),
-                      SizedBox(
-                        height: 353.h,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            StreamBuilder<bool>(
-              stream: tokenCubit.isShowCFBlockChainStream,
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  child: ButtonGold(
-                    title: S.current.continue_s,
-                    isEnable: snapshot.data ?? true,
-                  ),
-                  onTap: () async {
-                    if (snapshot.data ?? false) {
-                      //show warning if appear error
-                      tokenCubit.checkValidAddress(txtToAddressToken.text);
-                      tokenCubit.checkValidAmount(txtAmount.text);
-                      await tokenCubit.getEstimateGas(
-                        from: widget.walletAddress,
-                        to: txtToAddressToken.text,
-                        value: double.parse(
-                          txtAmount.text,
-                        ),
-                        token: widget.modelToken,
-                        context: context,
-                      );
-                      //check validate before go to next screen
-                      if (tokenCubit.checkAddressFtAmount()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) {
-                              return ConfirmBlockchainCategory(
-                                modelToken: widget.modelToken,
-                                nameWallet: widget.walletName,
-                                nameTokenWallet: 'BNB',
-                                balanceWallet: tokenCubit.balanceWallet,
-                                typeConfirm: TYPE_CONFIRM.SEND_TOKEN,
-                                addressFrom: widget.walletAddress,
-                                addressTo: txtToAddressToken.text,
-                                imageWallet: ImageAssets.symbol,
-                                amount: double.parse(txtAmount.text),
-                                nameToken: widget.modelToken.nameShortToken,
-                                cubitCategory: tokenCubit,
-                                gasPriceFirstFetch:
-                                    tokenCubit.gasPrice / 1000000000,
-                                gasFeeFirstFetch:
-                                    (((tokenCubit.gasPrice / 1000000000) *
-                                            tokenCubit.estimateGasFee) /
-                                        1000000000),
-                                gasLimitFirstFetch: tokenCubit.estimateGasFee,
-                              );
                             },
                           ),
-                        );
-                      } else {
-                        //nothing
-                      }
-                    } else {
-                      //nothing
-                    }
+                          txtWaringAddress(),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          formAmountFtQuantity(
+                            modelToken: widget.modelToken,
+                            hintText: S.current.amount,
+                            isAmount: true,
+                            isQuantity: false,
+                            prefixImg: ImageAssets.ic_token,
+                          ),
+                          txtWaringAmount(),
+                          SizedBox(
+                            height: 353.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                StreamBuilder<bool>(
+                  stream: tokenCubit.isShowCFBlockChainStream,
+                  builder: (context, snapshot) {
+                    return GestureDetector(
+                      child: ButtonGold(
+                        title: S.current.continue_s,
+                        isEnable: snapshot.data ?? true,
+                      ),
+                      onTap: () async {
+                        if (snapshot.data ?? false) {
+                          //show warning if appear error
+                          tokenCubit.checkValidAddress(txtToAddressToken.text);
+                          tokenCubit.checkValidAmount(txtAmount.text);
+                          await tokenCubit.getEstimateGas(
+                            from: widget.walletAddress,
+                            to: txtToAddressToken.text,
+                            value: double.parse(
+                              txtAmount.text,
+                            ),
+                            token: widget.modelToken,
+                            context: context,
+                          );
+                        } else {
+                          //nothing
+                        }
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                spaceH38,
+              ],
             ),
-            spaceH38,
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -244,24 +266,24 @@ class _SendTokenState extends State<SendToken> {
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-                    AppTheme.getInstance().textThemeColor(),
-                    16,
-                    FontWeight.w400,
-                  )
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w400,
+            )
                 : textNormal(
-                    AppTheme.getInstance().disableColor(),
-                    14,
-                  ),
+              AppTheme.getInstance().disableColor(),
+              14,
+            ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                      width: 0,
-                    )
+                width: 0,
+              )
                   : ImageIcon(
-                      AssetImage(suffixImg),
-                      color: AppTheme.getInstance().textThemeColor(),
-                    ),
+                AssetImage(suffixImg),
+                color: AppTheme.getInstance().textThemeColor(),
+              ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
@@ -323,60 +345,60 @@ class _SendTokenState extends State<SendToken> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? InkWell(
-                      onTap: () {
-                        txtAmount.text = modelToken!.balanceToken
-                            .truncateToDecimalPlaces(4)
-                            .toString();
-                        tokenCubit.checkHaveVLAmountFormToken(
-                          txtAmount.text,
-                          amountBalance: widget.modelToken.balanceToken,
-                        );
-                      },
-                      child: Padding(
-                          padding: EdgeInsets.only(
-                            // top: 15.h,
-                            right: 15.w,
-                          ),
-                          child: Container(
-                            constraints: BoxConstraints(
-                              minWidth: 55.w,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  S.current.max,
-                                  style: textNormal(
-                                    const Color.fromRGBO(228, 172, 26, 1),
-                                    16,
-                                  ).copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                spaceW4,
-                                SizedBox(
-                                  height: 20.h,
-                                  width: 20.h,
-                                  child: CircleAvatar(
-                                    radius: 30.0.r,
-                                    backgroundImage: NetworkImage(
-                                        widget.modelToken.iconToken),
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
-                      child: Text(
-                        '${S.current.of_all} 10',
-                        style: textNormal(
-                          const Color.fromRGBO(255, 255, 255, 1),
-                          16,
-                        ).copyWith(fontWeight: FontWeight.w400),
-                      ),
+                onTap: () {
+                  txtAmount.text = modelToken!.balanceToken
+                      .truncateToDecimalPlaces(4)
+                      .toString();
+                  tokenCubit.checkHaveVLAmountFormToken(
+                    txtAmount.text,
+                    amountBalance: widget.modelToken.balanceToken,
+                  );
+                },
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      // top: 15.h,
+                      right: 15.w,
                     ),
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minWidth: 55.w,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            S.current.max,
+                            style: textNormal(
+                              const Color.fromRGBO(228, 172, 26, 1),
+                              16,
+                            ).copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          spaceW4,
+                          SizedBox(
+                            height: 20.h,
+                            width: 20.h,
+                            child: CircleAvatar(
+                              radius: 30.0.r,
+                              backgroundImage: NetworkImage(
+                                  widget.modelToken.iconToken),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              )
+                  : Padding(
+                padding: EdgeInsets.only(top: 15.h, right: 20.w),
+                child: Text(
+                  '${S.current.of_all} 10',
+                  style: textNormal(
+                    const Color.fromRGBO(255, 255, 255, 1),
+                    16,
+                  ).copyWith(fontWeight: FontWeight.w400),
+                ),
+              ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),

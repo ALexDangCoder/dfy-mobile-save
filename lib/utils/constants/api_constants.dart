@@ -114,9 +114,9 @@ class ApiConstants {
 
   //send offer
   static const String ACCEPT_OFFER =
-      'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/acceptOffer/{idOffer}';
+      'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/{id}/accept';
   static const String REJECT_OFFER =
-      'defi-pawn-crypto-service/public-api/v1.0.0/collaterals/{idCollateral}/rejectOffer/{idOffer}';
+      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{id}/cancel';
   static const String SEND_OFFER =
       'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
 
@@ -174,9 +174,15 @@ class ApiConstants {
   ///HARD NFT MY ACCOUNT
   static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
 
+  ///get_evaluation_result
+  static const String GET_LIST_EVALUATION_RESULT = '/hard-nft-svc/api/evaluations/';
+  static const String ACCEPT = '/accept';
+  static const String REJECT = '/reject';
   static const String GET_EVALUATION_FEE = '/hard-nft-svc/public-api/system-fee';
   static const String PATH_GET_CITIES = '/cities';
 
   static const String GET_CONDITION =
       'hard-nft-svc/public-api/assets/conditions';
+
+  static const String GET_HARD_NFT_TYPE = 'hard-nft-svc/public-api/asset/types';
 }

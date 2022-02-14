@@ -13,7 +13,7 @@ class CreateEvaluationModel {
   int? bcAppointmentId;
   String? ownerAddress;
   String? evaluatorAddress;
-  int? evaluationFee;
+  double? evaluationFee;
   String? evaluationFeeSymbol;
   int? createdAt;
   int? updatedAt;

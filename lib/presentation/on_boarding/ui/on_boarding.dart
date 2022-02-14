@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/on_boarding_content_model/content_model.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({
     Key? key,
-    required this.callbackSkip,
   }) : super(key: key);
-  final Function() callbackSkip;
 
   @override
   _OnBoardingScreenState createState() => _OnBoardingScreenState();
@@ -24,14 +23,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pageController.dispose();
   }
@@ -47,7 +44,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         color: AppTheme.getInstance().bgBtsColor(),
         child: GestureDetector(
           onTap: () {
-            if (currentIndex == contents.length - 1) {}
+            if (currentIndex == contents.length - 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (cxt) => const ProvideHardNftInfo(),
+                ),
+              );
+            }
             _pageController.nextPage(
               duration: const Duration(microseconds: 100),
               curve: Curves.bounceIn,
@@ -62,7 +66,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
       widget: GestureDetector(
-        onTap: widget.callbackSkip,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (cxt) => const ProvideHardNftInfo(),
+            ),
+          );
+        },
         child: Text(
           S.current.skip,
           style: textNormalCustom(
@@ -102,22 +113,72 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     SizedBox(
                       height: 12.h,
                     ),
-                    Text(
-                      contents[index].descriptionNormal,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        20,
-                        FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      contents[index].descriptionYellow,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().fillColor(),
-                        16,
-                        FontWeight.w600,
-                      ),
-                    ),
+                    if (index == 0)
+                      RichText(
+                        text: TextSpan(
+                          text: contents[index].descriptionNormal,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w600,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' ${contents[index].descriptionYellow}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w600,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    else if (index == 3)
+                      RichText(
+                        text: TextSpan(
+                          text: contents[index].descriptionNormal,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w600,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' ${contents[index].descriptionYellow} ',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: contents[index].partDescription,
+                            )
+                          ],
+                        ),
+                      )
+                    else
+                      RichText(
+                        text: TextSpan(
+                          text: '${contents[index].descriptionNormal} ',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w600,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: contents[index].descriptionYellow,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().fillColor(),
+                                16,
+                                FontWeight.w600,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
                   ],
                 );
               },

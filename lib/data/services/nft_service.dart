@@ -28,8 +28,8 @@ abstract class NFTClient {
 
   @GET('${ApiConstants.GET_DETAIL_NFT_AUCTION}{marketId}')
   Future<AuctionResponse> getDetailNFTAuction(
-      @Path('marketId') String marketID,
-      );
+    @Path('marketId') String marketID,
+  );
 
   @GET('${ApiConstants.GET_EVALUATION_HARD_NFT}{evaluationId}')
   Future<EvaluationResponse> getEvaluation(
@@ -49,6 +49,12 @@ abstract class NFTClient {
     @Path('nftId') String nftId,
     @Query('type') String type,
   );
+
+  @GET(ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET)
+  Future<HardNftResponse> getDetailHardNftNotOnMarket(
+      @Query('collection-address') String collectionAddress,
+      @Query('nft-token-id') String nftTokenId,
+      );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(
@@ -114,17 +120,13 @@ abstract class NFTClient {
   //Accept offer
   @PUT(ApiConstants.ACCEPT_OFFER)
   Future<String> acceptOffer(
-    @Path('idCollateral') int idCollateral,
-    @Path('idOfer') int idOffer,
-    @Query('wallet-address') String addressWallet,
+    @Path('id') int idOffer,
   );
 
   //reject offer:
   @PUT(ApiConstants.REJECT_OFFER)
   Future<String> rejectOffer(
-    @Path('idCollateral') int idCollateral,
-    @Path('idOfer') int idOffer,
-    @Query('wallet-address') String addressWallet,
+    @Path('id') int idOffer,
   );
 
   //send offer

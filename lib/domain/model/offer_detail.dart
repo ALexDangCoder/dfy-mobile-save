@@ -16,6 +16,7 @@ class OfferDetailModel {
   num? estimate;
   String? repaymentToken;
   num? repaymentCycleType;
+  String? repaymentAsset;
   String? latestBlockchainTxn;
   num? durationQty;
   int? durationType;

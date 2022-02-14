@@ -185,18 +185,19 @@ class NFTRepositoryImpl implements NFTRepository {
 
   @override
   Future<Result<String>> acceptOffer(
-      int idCollateral, int idOffer, String addressWallet) {
+    int idOffer,
+  ) {
     return runCatchingAsync<String, String>(
-      () => _nftClient.acceptOffer(idCollateral, idOffer, addressWallet),
+      () => _nftClient.acceptOffer(idOffer),
       (response) => response.toString(),
     );
   }
 
   @override
   Future<Result<String>> rejectOffer(
-      int idCollateral, int idOffer, String addressWallet) {
+      int idOffer) {
     return runCatchingAsync<String, String>(
-      () => _nftClient.rejectOffer(idCollateral, idOffer, addressWallet),
+      () => _nftClient.rejectOffer(idOffer),
       (response) => response.toString(),
     );
   }
@@ -214,6 +215,16 @@ class NFTRepositoryImpl implements NFTRepository {
     return runCatchingAsync<ConfirmResponse, ConfirmModel>(
       () => _nftClient.cancelPawn(id),
       (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<NftMarket>> getDetailHardNftNotOnMarket(
+      String collectionAddress, String nftTokenId) {
+    return runCatchingAsync<HardNftResponse, NftMarket>(
+      () =>
+          _nftClient.getDetailHardNftNotOnMarket(collectionAddress, nftTokenId),
+      (response) => response.item?.toOnSale() ?? NftMarket.init(),
     );
   }
 }

@@ -39,8 +39,8 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               padding: EdgeInsets.only(bottom: 24.h),
               child: ListActivity(
                 urlAvatar:
-                    '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ??
-                        ''}',
+                '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ??
+                    ''}',
                 copy: '${list[index].numberOfCopies ?? 0}',
                 auctionType: list[index].auctionType ?? 99,
                 addressWalletSend: list[index].fromAddress ?? '',
@@ -62,29 +62,32 @@ class _ActivityCollectionState extends State<ActivityCollection> {
             ),
           );
         } else if (statusActivity == DetailCollectionBloc.FAILED) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
-              ),
-              SizedBox(
-                width: 120.w,
-                height: 117.23.h,
-                child: Image.asset(
-                  ImageAssets.img_search_empty,
+          return SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 100.h,
                 ),
-              ),
-              spaceH16,
-              Text(
-                S.current.no_result_found,
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteWithOpacity(),
-                  20,
-                  FontWeight.bold,
+                SizedBox(
+                  width: 120.w,
+                  height: 117.23.h,
+                  child: Image.asset(
+                    ImageAssets.img_search_empty,
+                  ),
                 ),
-              ),
-            ],
+                spaceH16,
+                Text(
+                  S.current.no_result_found,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteWithOpacity(),
+                    20,
+                    FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           );
         } else if (statusActivity == DetailCollectionBloc.LOADING) {
           return const Align(
