@@ -200,6 +200,7 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+  Color textGrayColor();
 
   Color getGrayColor();
 
@@ -655,6 +656,11 @@ class LightApp extends AppColor {
   Color bgDropdownBtn() {
     return bgDropdown;
   }
+
+  @override
+  Color textGrayColor() {
+    return disableText;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -1109,6 +1115,12 @@ class DarkApp extends AppColor {
   @override
   Color getGrayColor() {
     return grayColor;
+  }
+
+  @override
+  Color textGrayColor() {
+    // TODO: implement textGrayColor
+    throw UnimplementedError();
   }
 }
 

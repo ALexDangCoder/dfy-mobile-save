@@ -4,8 +4,9 @@ class SendOfferState extends BaseState {
   @override
   List<Object?> get props => [];
 }
-class SendOfferInitial extends SendOfferState{
+
+class SendOfferInitial extends SendOfferState {
   @override
   List<Object?> get props => [];
-
 }
+

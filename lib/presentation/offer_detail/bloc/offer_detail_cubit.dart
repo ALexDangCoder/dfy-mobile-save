@@ -12,6 +12,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
+class Status {
+  final bool isEnable;
+  final bool isProcess;
+
+  Status({required this.isEnable, required this.isProcess});
+}
+
 class OfferDetailCubit extends BaseCubit<SendOfferState> {
   OfferDetailCubit() : super(SendOfferInitial());
   final _offerDetailSubject =
@@ -24,6 +31,18 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
   NFTRepository get _nftRepo => Get.find();
   ColorText colorText = ColorText.empty();
   List<TokenInf> listTokenSupport = [];
+  final _btnReject =
+      BehaviorSubject<Status>.seeded(Status(isProcess: false, isEnable: true));
+
+  Stream<Status> get btnRejectStream => _btnReject.stream;
+
+  Sink<Status> get btnRejectSink => _btnReject.sink;
+  final _btnAccept =
+      BehaviorSubject<Status>.seeded(Status(isProcess: false, isEnable: true));
+
+  Stream<Status> get btnAcceptStream => _btnAccept.stream;
+
+  Sink<Status> get btnAcceptSink => _btnAccept.sink;
 
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
