@@ -58,9 +58,6 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
           final String nonce = res.data ?? '';
           final List<int> listNonce = nonce.codeUnits;
           final Uint8List bytesNonce = Uint8List.fromList(listNonce);
-          final List<int> listSha3 =
-              rHash.hashList(HashType.KECCAK_256, bytesNonce);
-          final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
           if (Platform.isIOS) {
             final data = {
               'walletAddress': walletAddress,
@@ -68,6 +65,9 @@ extension LoginForMarketPlace on BLocCreateSeedPhrase {
             };
             unawaited(trustWalletChannel.invokeMethod('signWallet', data));
           } else {
+            final List<int> listSha3 =
+                rHash.hashList(HashType.KECCAK_256, bytesNonce);
+            final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
             final data = {
               'walletAddress': walletAddress,
               'bytesSha3': bytesSha3,
