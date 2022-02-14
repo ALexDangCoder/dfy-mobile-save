@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/my_account/create_collection/ui/create_collecti
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/select_nft_type_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create_detail_nft.dart';
+import 'package:Dfy/presentation/on_boarding/ui/on_boarding.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
@@ -176,7 +177,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         ),
                       );
                     } else {
-                      ///TODO: Push to Create NFT Screen
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const OnBoardingScreen()));
                     }
                   }
                 },

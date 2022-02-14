@@ -37,12 +37,12 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
 
   @override
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
-    int cityId,
-  ) {
+      int cityId, int assetTypeId) {
     return runCatchingAsync<ListEvaluatorsCityResponse,
         List<EvaluatorsCityModel>>(
       () => _client.getListEvaluatorsCity(
         cityId,
+        assetTypeId,
       ),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
@@ -110,35 +110,34 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
   }
 
   @override
-  Future<Result<String>> confirmAcceptEvaluationToBE(String bcTxnHash, String evaluationID) {
+  Future<Result<String>> confirmAcceptEvaluationToBE(
+      String bcTxnHash, String evaluationID) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmAcceptEvaluation(
+      () => _client.confirmAcceptEvaluation(
         evaluationID,
         bcTxnHash,
       ),
-          (response) => response.code ?? '',
+      (response) => response.code ?? '',
     );
   }
 
   @override
-  Future<Result<String>> confirmRejectEvaluationToBE(String bcTxnHash, String evaluationID) {
+  Future<Result<String>> confirmRejectEvaluationToBE(
+      String bcTxnHash, String evaluationID) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmRejectEvaluation(
+      () => _client.confirmRejectEvaluation(
         evaluationID,
         bcTxnHash,
       ),
-          (response) => response.code ?? '',
+      (response) => response.code ?? '',
     );
   }
-
 
   @override
   Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(String assetId) {
     return runCatchingAsync<DetailAssetHardNftResponse, DetailAssetHardNft>(
-          () => _client.getDetailAssetHardNFT(
-     assetId
-      ),
-          (response) => response.item?.toDomain() ?? DetailAssetHardNft(),
+      () => _client.getDetailAssetHardNFT(assetId),
+      (response) => response.item?.toDomain() ?? DetailAssetHardNft(),
     );
   }
 }
