@@ -60,7 +60,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult('6205f9544aec3d812452a253');
+            await cubit.getListEvaluationResult(widget.assetId);
           },
           textEmpty: '',
           child: content(state),
@@ -86,7 +86,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
               RefreshIndicator(
                 onRefresh: () async {
                   await cubit
-                      .getListEvaluationResult('6205e0584aec3d812452a23c');
+                      .getListEvaluationResult(widget.assetId);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

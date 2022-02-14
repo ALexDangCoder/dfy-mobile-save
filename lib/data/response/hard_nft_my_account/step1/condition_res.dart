@@ -15,7 +15,6 @@ class ListConditionResponse extends Equatable {
   @JsonKey(name: 'rows')
   List<ConditionResponse>? rows;
 
-
   ListConditionResponse(this.rc, this.rd, this.total, this.rows);
 
   factory ListConditionResponse.fromJson(Map<String, dynamic> json) =>
@@ -47,5 +46,5 @@ class ConditionResponse extends Equatable {
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 
-  ConditionModel toModel() => ConditionModel(id, name);
+  ConditionModel toModel() => ConditionModel(id: id, name: name);
 }

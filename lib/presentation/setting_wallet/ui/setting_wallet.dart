@@ -70,7 +70,7 @@ class _SettingWalletState extends State<SettingWallet> {
                           builder: (context) {
                             return const ComingSoon();
                             // return const ProvideHardNftInfo();
-                            return OnBoardingScreen();
+                            // return OnBoardingScreen();
                           },
                         ),
                       );

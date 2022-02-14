@@ -178,7 +178,8 @@ class DetailNftMyAccResponse {
         collectionAddress: collectionAddress,
         nftTokenId: nftTokenId.toString(),
         nftStandard: (nftStandard == 0) ? '0' : '1',
-        typeImage: getTypeImage(fileType ?? 'image'),
+        typeImage:
+            getTypeImage(((fileType != '') ? fileType : 'video') ?? 'video'),
         isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );

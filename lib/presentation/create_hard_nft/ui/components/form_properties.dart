@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class FormProperties extends StatelessWidget {
               if (value!.length > 30) {
                 data.property = '';
                 cubit.checkPropertiesWhenSave();
-                return 'Maximum character is 30 characters';
+                return S.current.maximum_30;
               }
               return null;
             },
@@ -59,7 +60,7 @@ class FormProperties extends StatelessWidget {
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Properties',
+              hintText: S.current.properties,
               hintStyle: textNormalCustom(
                 AppTheme.getInstance().whiteOpacityDot5(),
                 16,
@@ -84,7 +85,7 @@ class FormProperties extends StatelessWidget {
               if (value!.length > 30) {
                 data.value = '';
                 cubit.checkPropertiesWhenSave();
-                return 'Maximum character is 30 characters';
+                return S.current.maximum_30;
               }
               return null;
             },
@@ -99,7 +100,7 @@ class FormProperties extends StatelessWidget {
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Value',
+              hintText: S.current.value,
               hintStyle: textNormalCustom(
                 AppTheme.getInstance().whiteOpacityDot5(),
                 16,

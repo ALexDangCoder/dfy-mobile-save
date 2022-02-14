@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_properties.dart';
@@ -21,8 +22,8 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
   @override
   void initState() {
     super.initState();
-    if (widget.cubit.properties.isEmpty) {
-      widget.cubit.properties.add(
+    if (widget.cubit.propertiesData.isEmpty) {
+      widget.cubit.propertiesData.add(
         PropertyModel(value: '', property: ''),
       );
     } else {}
@@ -30,7 +31,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
 
   void _addFormWidget() {
     setState(() {
-      widget.cubit.properties.add(
+      widget.cubit.propertiesData.add(
         PropertyModel(value: '', property: ''),
       );
     });
@@ -60,7 +61,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               Container(
                 padding: EdgeInsets.only(left: 26.w),
                 child: Text(
-                  'Add properties',
+                  S.current.add,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
                     24,
@@ -72,7 +73,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               Container(
                 padding: EdgeInsets.only(left: 26.w),
                 child: Text(
-                  'Properties provide more information \nabout your hard NFT. This field will be \ndisplayed tab description',
+                  S.current.description_add_properties,
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteColor(),
                     16,
@@ -83,10 +84,10 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
               spaceH20,
               Expanded(
                 child: ListView.builder(
-                  itemCount: widget.cubit.properties.length,
+                  itemCount: widget.cubit.propertiesData.length,
                   itemBuilder: (context, index) {
                     return FormProperties(
-                      data: widget.cubit.properties[index],
+                      data: widget.cubit.propertiesData[index],
                       cubit: widget.cubit,
                     );
                   },

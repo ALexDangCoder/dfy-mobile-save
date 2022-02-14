@@ -190,7 +190,7 @@ Widget _buildButtonReject(
       ),
     ),
     onPressed: () async {
-      final hexString = await cubit.acceptEvaluationToBlockchain(bcID);
+      final hexString = await cubit.rejectEvaluationToBlockchain(bcID);
       goTo(
         context,
         Approve(
@@ -259,7 +259,7 @@ Widget _buildButtonAccept(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      final hexString = await cubit.rejectEvaluationToBlockchain(bcID);
+      final hexString = await cubit.acceptEvaluationToBlockchain(bcID);
       goTo(
         context,
         Approve(

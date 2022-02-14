@@ -140,7 +140,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   ),
                   spaceW5,
                   Text(
-                    modelPassing.conditionNft,
+                    modelPassing.conditionNft.name ?? '',
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
                       16,
@@ -166,7 +166,8 @@ class Step1WhenSubmit extends StatelessWidget {
                   SizedBox(
                     width: 16.w,
                     height: 16.h,
-                    child: Image.asset(modelPassing.imageToken),
+                    //todo
+                    // child: Image.asset(modelPassing.imageToken),
                   ),
                   spaceW4,
                   Text(
@@ -183,7 +184,7 @@ class Step1WhenSubmit extends StatelessWidget {
           ),
           spaceH8,
           textShowWithPadding(
-            textShow: cubit.fakeData.informationNft,
+            textShow: cubit.dataStep1.informationNft,
             txtStyle: textNormalCustom(
               AppTheme.getInstance().whiteOpacityDot5(),
               16,
@@ -200,8 +201,8 @@ class Step1WhenSubmit extends StatelessWidget {
               ),
               child: Wrap(
                 runSpacing: 10.h,
-                children: cubit.fakeData.properties.map((e) {
-                  final int index = cubit.fakeData.properties.indexOf(e);
+                children: cubit.dataStep1.properties.map((e) {
+                  final int index = cubit.dataStep1.properties.indexOf(e);
                   return itemProperty(
                     property: e.property,
                     value: e.value,
@@ -222,22 +223,22 @@ class Step1WhenSubmit extends StatelessWidget {
           ),
           spaceH12,
           informationContactWidget(
-            title: cubit.fakeData.nameContact,
+            title: cubit.dataStep1.nameContact,
             image: ImageAssets.profileStep1,
           ),
           spaceH15,
           informationContactWidget(
-            title: cubit.fakeData.emailContact,
+            title: cubit.dataStep1.emailContact,
             image: ImageAssets.mailStep1,
           ),
           spaceH15,
           informationContactWidget(
-            title: cubit.fakeData.phoneContact,
+            title: cubit.dataStep1.phoneContact,
             image: ImageAssets.callStep1,
           ),
           spaceH15,
           informationContactWidget(
-            title: cubit.fakeData.addressContact,
+            title: cubit.dataStep1.addressContact,
             image: ImageAssets.locationStep1,
           ),
           spaceH32,
@@ -363,7 +364,7 @@ class Step1WhenSubmit extends StatelessWidget {
             visible: isHaveClose ? true : false,
             child: InkWell(
               onTap: () {
-                cubit.properties.removeAt(index);
+                cubit.propertiesData.removeAt(index);
                 cubit.checkPropertiesWhenSave();
               },
               child: Image.asset(
@@ -450,8 +451,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text:
-                              ' ${S.current.will_receive_nft}',
+                          text: ' ${S.current.will_receive_nft}',
                         )
                       ],
                     ),
