@@ -49,7 +49,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
   @override
   Widget build(BuildContext context) {
     return BaseBottomSheet(
-      isLeftClick: true,
+      isCustomLeftClick: true,
       onLeftClick: () {
         goTo(
           context,

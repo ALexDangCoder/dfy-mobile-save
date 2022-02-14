@@ -43,6 +43,10 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
       body: Stack(
         children: [
           BaseBottomSheet(
+            isCustomLeftClick: true,
+            onLeftClick: () {
+              //todo
+            },
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {

@@ -221,6 +221,7 @@ class BlocListBookEvaluation {
     result.when(
       success: (res) {
         if (res.isNotEmpty) {
+          appointmentList.clear();
           listPawnShop.sink.add(res);
           isSuccess.sink.add(checkIsSuccess(res));
         } else {
