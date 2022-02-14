@@ -167,7 +167,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           final String wallet = PrefsService.getCurrentBEWallet();
-          if (res.walletAddress?.toLowerCase() == wallet.toLowerCase()) {
+          if (res.walletAddress?.toLowerCase() == wallet.toLowerCase() ||
+              res.owner?.toLowerCase() == wallet.toLowerCase()) {
             res.isOwner = true;
           } else {
             res.isOwner = false;
