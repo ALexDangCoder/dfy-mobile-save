@@ -3,6 +3,7 @@ import Flutter
 import WalletCore
 import BigInt
 import GoogleMaps
+import CryptoSwift
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -847,7 +848,9 @@ extension AppDelegate {
                 let privateKey = PrivateKey(data: privateKeyData)
                 if let privKey = privateKey {
                     let listUint8: [UInt8] = bytesSha3.map({UInt8($0)})
-                    let originalMessageHashInHexCore = privKey.sign(digest: Data(listUint8), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
+                    let hashData = Data(listUint8)
+                    let hash = hashData.sha3(.keccak256)
+                    let originalMessageHashInHexCore = privKey.sign(digest: Data(hash), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
                     if originalMessageHashInHexCore != "" {
                         let firstKey = Int( originalMessageHashInHexCore.substring(with: (originalMessageHashInHexCore.count-2)..<originalMessageHashInHexCore.count)) ?? 0
                         var signature = originalMessageHashInHexCore.substring(with: 0..<originalMessageHashInHexCore.count-2)
@@ -873,6 +876,7 @@ extension AppDelegate {
         return param
     }
 }
+//signature    String    "db30c0ed110f54e747a21f745b507f48725f8ceada5668230d62aaccf06e20c042fc2b825580b9f4877854229967c61d72ad757c533b91ddb9988c66cc3500ed1c"
 
 extension Data {
     struct HexEncodingOptions: OptionSet {

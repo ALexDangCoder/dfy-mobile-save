@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/exception/app_exception.dart';
@@ -72,11 +73,19 @@ extension LoginForMarketPlace on LoginCubit {
           final List<int> listSha3 =
               rHash.hashList(HashType.KECCAK_256, bytesNonce);
           final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
-          final data = {
-            'walletAddress': walletAddress,
-            'bytesSha3': listSha3,
-          };
-          unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          if (Platform.isIOS) {
+            final data = {
+              'walletAddress': walletAddress,
+              'bytesSha3': listNonce,
+            };
+            unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          } else {
+            final data = {
+              'walletAddress': walletAddress,
+              'bytesSha3': bytesSha3,
+            };
+            unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          }
         },
         error: (error) {
           showErrDialog(
