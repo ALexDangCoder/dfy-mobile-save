@@ -156,7 +156,7 @@ class EvaluationItem extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: S.current.accepted,
+                text: S.current.ACCEPTED,
                 style: textNormal(
                   successTransactionColor,
                   16,
@@ -199,7 +199,7 @@ class EvaluationItem extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: S.current.rejected,
+                text: S.current.REJECTED,
                 style: textNormal(
                   failTransactionColor,
                   16,

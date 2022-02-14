@@ -3,5 +3,5 @@ class PhoneCodeModel {
   String? name;
   String? code;
 
-  PhoneCodeModel(this.id, this.name, this.code);
+  PhoneCodeModel({this.id, this.name, this.code});
 }
