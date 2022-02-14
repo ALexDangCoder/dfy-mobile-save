@@ -1,9 +1,9 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -75,11 +75,13 @@ class BlocCreateBookEvaluation {
   EvaluationFee? evaluationFee;
   bool isDate = false;
   String? hexString;
+  String? scanString;
   String? assetId;
-  int appointmentTime = 0;
+  String? bcAssetId;
+  String? typeNFT;
+  String appointmentTime = '0';
+  int appointmentTimeBE = 0;
   int? cityId;
-  StepTwoPassingModel? stepTwoPassingModel;
-
 
   final Web3Utils web3utils = Web3Utils();
 
@@ -90,25 +92,45 @@ class BlocCreateBookEvaluation {
       '${dateStream.value} '
       '${timeStream.value}',
     );
-    appointmentTime = dateTimeCreate.millisecondsSinceEpoch;
+    appointmentTimeBE = dateTimeCreate.millisecondsSinceEpoch;
+    double myDate = appointmentTimeBE / 1000;
+    int secondInt = myDate.toInt();
+    appointmentTime = secondInt.toString();
   }
 
   Future<void> getHexString({
-    required int collectionStandard,
-    required String assetCID,
-    required String beAssetId,
-    required String collectionAsset,
-    required String expectingPrice,
+    required String assetId,
+    required String appointmentTime,
+    required String evaluationFeeAddress,
+    required String evaluator,
   }) async {
-    hexString = await web3utils.getCreateAssetRequestData(
-      collectionStandard: collectionStandard,
-      assetCID: assetCID,
-      beAssetId: beAssetId,
-      collectionAsset: collectionAsset,
-      expectingPrice: expectingPrice,
-      expectingPriceAddress: DFY_ADDRESS,
-    ); //todo
+    hexString = await web3utils.getCreateAppointmentData(
+      assetId: assetId,
+      appointmentTime: appointmentTime,
+      evaluationFeeAddress: evaluationFeeAddress,
+      evaluator: evaluator,
+    );
   }
+
+  Future<void> getDetailAssetHardNFT({
+    required String assetId,
+  }) async {
+    final Result<DetailAssetHardNft> result =
+    await _createHardNFTRepository.getDetailAssetHardNFT(
+      assetId,
+    );
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        } else {
+          bcAssetId=res.bcAssetId.toString();
+          typeNFT=res.assetType?.name;
+        }
+      },
+      error: (error) {},
+    );
+  }
+
 
   bool checkValidateDay(String day) {
     bool isDay = false;

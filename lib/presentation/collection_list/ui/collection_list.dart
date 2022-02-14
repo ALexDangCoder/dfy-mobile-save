@@ -15,6 +15,7 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
@@ -150,7 +151,7 @@ class _CollectionListState extends State<CollectionList> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                       goTo(context, const MenuAccount());
                       },
                       child: Container(
                         margin: EdgeInsets.only(
