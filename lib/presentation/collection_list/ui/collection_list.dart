@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collec
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
+import 'package:Dfy/presentation/my_account/menu_account/ui/menu_account.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';

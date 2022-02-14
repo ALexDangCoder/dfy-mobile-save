@@ -118,7 +118,6 @@ class _MyAppState extends State<MyApp> {
 
   void callAllApi() {
     getConfig();
-    clearLoginModel();
   }
 
   void getConfig() {
@@ -133,7 +132,4 @@ class _MyAppState extends State<MyApp> {
     return loginFromJson(login);
   }
 
-  Future<void> clearLoginModel() async {
-    await PrefsService.clearWalletLogin();
-  }
 }
