@@ -267,6 +267,10 @@ class _SendOfferState extends State<SendOffer> {
     return BaseBottomSheet(
       title: S.current.send_offer,
       isImage: true,
+      onRightClick: (){
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
       text: ImageAssets.ic_close,
       bottomBar: Container(
         padding: EdgeInsets.only(bottom: 38.h),
