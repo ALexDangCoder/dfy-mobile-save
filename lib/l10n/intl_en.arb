@@ -608,6 +608,8 @@
   "select_date": "Select date",
   "select_time": "Select time",
   "asset_accepted": "Asset accepted",
+  "ACCEPTED":"ACCEPTED ",
+  "REJECTED":"REJECTED ",
   "contact": "Contact",
   "working_time": "Working time",
   "location": "Location",

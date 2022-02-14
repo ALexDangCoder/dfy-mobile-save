@@ -22,7 +22,8 @@ class _HomeState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
     return const ComingScreen();
   }
 }
