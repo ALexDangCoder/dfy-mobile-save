@@ -10,11 +10,12 @@ import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
-import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/create_nft_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
@@ -150,7 +151,7 @@ class _CollectionListState extends State<CollectionList> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                       goTo(context, const MenuAccount());
                       },
                       child: Container(
                         margin: EdgeInsets.only(
