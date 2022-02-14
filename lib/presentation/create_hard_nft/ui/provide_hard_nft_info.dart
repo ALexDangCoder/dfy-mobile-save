@@ -212,10 +212,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_name,
                       onChange: (value) {
                         cubit.dataStep1.hardNftName = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                              _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateHardNftName(value ?? '');
@@ -261,10 +260,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_price,
                       onChange: (value) {
                         cubit.dataStep1.amountToken = double.parse(value);
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAmountToken(value ?? '');
@@ -306,10 +304,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_info,
                       onChange: (value) {
                         cubit.dataStep1.additionalInfo = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAdditionInfo(value ?? '');
@@ -354,10 +351,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.nameContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateHardNftName(value ?? '');
@@ -384,10 +380,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.emailContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateEmail(value ?? '');
@@ -419,10 +414,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       ),
                       onChange: (value) {
                         cubit.dataStep1.phoneContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateMobile(value ?? '');
@@ -475,10 +469,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.addressContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAddress(value ?? '');

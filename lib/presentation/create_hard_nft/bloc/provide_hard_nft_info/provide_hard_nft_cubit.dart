@@ -135,6 +135,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.length > 255) {
       return S.current.validate_addition_info;
     } else {
+      print('INFOR: TRUE');
       return null;
     }
   }
@@ -143,6 +144,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.isEmpty) {
       return S.current.address_required;
     } else {
+      print('ADDRESS: TRUE');
       return null;
     }
   }
@@ -151,28 +153,31 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.isEmpty) {
       return S.current.name_required;
     }
-    if (value.length > 255) {
+    else if (value.length > 255) {
       return S.current.maximum_255;
     } else {
+      print('NAME: TRUE');
       return null;
     }
   }
 
-  String validateAmountToken(String value) {
+  String? validateAmountToken(String value) {
     if (value.isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
     } else {
-      return '';
+      print('AMOUNT: TRUE');
+      return null;
     }
   }
 
-  String validateFormAddProperty(String value) {
+  String? validateFormAddProperty(String value) {
     if (value.length > 30) {
       return S.current.maximum_30;
     } else {
-      return '';
+      print('PROPERTY: TRUE');
+      return null;
     }
   }
 
@@ -184,14 +189,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else if (!regExp.hasMatch(value)) {
       return S.current.invalid_phone;
     }
+    print('MOBILE: TRUE');
     return null;
   }
 
-  String validateEmail(String value) {
+  String? validateEmail(String value) {
     if (!regexEmail.hasMatch(value)) {
       return S.current.invalid_email;
     } else {
-      return '';
+      print('EMAIL: TRUE');
+      return null;
     }
   }
 
@@ -375,7 +382,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     return false;
   }
 
-  void checkAllValidate({required bool inputFormCheck}) {
+  void checkAllValidate() {
     if (inputFormValidate) {
       nextBtnBHVSJ.sink.add(true);
     } else {
@@ -429,27 +436,24 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Map<String, bool> mapValidate = {
-    'connectWallet': false,
-    'mediaFiles': false,
-    'hardNFTName': false,
-    'condition': false,
-    'price': false,
-    'additionInfo': false,
-    'nameContact': false,
-    'email': false,
-    'phone': false,
-    'country': false,
-    'city': false,
-    'address': false,
+    'connectWallet': true,
+    'mediaFiles': true,
+    'inputForm': false,
+    'condition': true,
+    'country': true,
+    'city': true,
   };
 
   void validateAll() {
-    if(mapValidate['hardNFTName'] == true || mapValidate['price'] == true) {
-
+    print(mapValidate);
+    if(mapValidate.containsValue(false)) {
+      nextBtnBHVSJ.sink.add(false);
+    } else {
+      nextBtnBHVSJ.sink.add(true);
     }
   }
 
-  BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(false);
 
   bool validateAllDataBeforeSubmit() {
     if ((dataStep1.conditionNft.name ?? '').isEmpty ||
