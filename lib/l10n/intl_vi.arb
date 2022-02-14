@@ -262,7 +262,7 @@
   "nft_on_sell": "NFT đang bán",
   "animals": "Động vật",
   "painting": "Tranh vẽ",
-  "art_work": "Tranh điện tử",
+  "art_work": "Nghệ thuật",
   "another": "Khác",
   "collection_list": "Danh sách bộ sưu tập",
   "my_collection": "Bộ sưu tập của tôi",
@@ -661,7 +661,7 @@
   "hard_nft_name": "Tên HARD NFT",
   "expecting_price": "Dự kiến giá",
   "add_info": "Thông tin thêm",
-  "provide_hard_nft_info": "Cấp T.Tin Hard NFT",
+  "provide_hard_nft_info": "Cấp Thông Tin Hard NFT",
   "jewelry": "Đá quý",
   "watch": "Phụ kiện",
   "house": "Nhà cửa",
@@ -677,7 +677,7 @@
   "maximum_30": "Giới hạn 30 ký tự",
   "wallet_and_collection": "Ví và bộ sưu tập",
   "connect_wallet_to_get_coll": "Kết nối ví và lấy bộ sưu tập",
-  "description_add_properties": "Cấp thêm thông tin về HARD NFT của bạn, Trường này sẽ được hiển thị",
+  "description_add_properties": "Cấp thêm thông tin \nvề HARD NFT của bạn, Trường này sẽ được hiển thị",
   "name_required": "Tên là bắt buộc",
   "maximum_255": "Giới hạn 255 ký tự",
   "invalid_phone": "Số ĐT không hợp lệ",
@@ -695,6 +695,7 @@
   "cancel_sale": "Hủy bán",
   "request_evaluation": "Yêu cầu đánh giá",
   "accept_offer": "Chấp thuận đề nghị",
-  "reject_offer": "Huỷ đề nghị"
+  "reject_offer": "Huỷ đề nghị",
+  "enter_add": "Nhập địa chỉ"
 
 }

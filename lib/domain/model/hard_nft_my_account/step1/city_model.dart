@@ -5,5 +5,6 @@ class CityModel {
   int? latitude;
   int? longitude;
 
-  CityModel(this.id, this.name, this.countryID, this.latitude, this.longitude);
+  CityModel(
+      {this.id, this.name, this.countryID, this.latitude, this.longitude});
 }

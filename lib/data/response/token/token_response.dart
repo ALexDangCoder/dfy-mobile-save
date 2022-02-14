@@ -22,6 +22,8 @@ class TokenResponse extends Equatable {
   bool? whitelistCollateral;
   @JsonKey(name: 'whitelistSupply')
   bool? whitelistSupply;
+  @JsonKey(name: 'whitelistAsset')
+  bool? whiteListAsset;
 
   TokenResponse(
     this.id,
@@ -32,6 +34,7 @@ class TokenResponse extends Equatable {
     this.iconUrl,
     this.whitelistCollateral,
     this.whitelistSupply,
+    this.whiteListAsset,
   );
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) =>
@@ -49,6 +52,7 @@ class TokenResponse extends Equatable {
         address: address,
         name: name,
         iconUrl: iconUrl,
+        whiteListAsset: whiteListAsset,
         whitelistCollateral: whitelistCollateral,
         whitelistSupply: whitelistSupply,
       );
