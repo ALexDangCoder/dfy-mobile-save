@@ -3,15 +3,16 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ButtonTransparent extends StatelessWidget {
+class ButtonCustom extends StatelessWidget {
   final Widget child;
   final Function() onPressed;
   final bool isEnable;
   final bool isProcess;
 
-  const ButtonTransparent({
+  const ButtonCustom({
     Key? key,
     required this.child,
+
     required this.onPressed,
     this.isEnable = true,
     this.isProcess = false,
@@ -19,22 +20,26 @@ class ButtonTransparent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 298.w,
-      height: 64.h,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(22.r)),
-        border: Border.all(
-          color: isEnable
-              ? AppTheme.getInstance().fillColor()
-              : AppTheme.getInstance().errorColorButton(),
+    return GestureDetector(
+      onTap: isEnable ? onPressed : null,
+      child: Container(
+        height: 64.h,
+        decoration: BoxDecoration(
+          gradient: isEnable
+              ? RadialGradient(
+                  center: const Alignment(0.5, -0.5),
+                  radius: 4,
+                  colors: AppTheme.getInstance().gradientButtonColor(),
+                )
+              : RadialGradient(
+                  center: const Alignment(0.5, -0.5),
+                  radius: 4,
+                  colors: [AppTheme.getInstance().errorColorButton()],
+                ),
+          borderRadius: BorderRadius.all(Radius.circular(22.0.r)),
         ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: isEnable ? onPressed : null,
+        child: Material(
+          color: Colors.transparent,
           child: Center(
             child: !isProcess
                 ? child
