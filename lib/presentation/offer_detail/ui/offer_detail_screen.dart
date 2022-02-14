@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_cubit.dart';
@@ -13,8 +12,7 @@ import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
-import 'package:Dfy/widgets/base_items/base_success.dart';
-import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:Dfy/widgets/button/button_custom.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
@@ -55,67 +53,132 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       retry: onRefresh,
       textEmpty: '',
       stream: _cubit.stateStream,
-      child: BaseBottomSheet(
-        title: S.current.offer_detail,
-        isImage: true,
-        text: ImageAssets.ic_close,
-        onRightClick: () {},
-        child: StreamBuilder<OfferDetailModel>(
+      child: StreamBuilder<OfferDetailModel>(
           stream: _cubit.offerStream,
           builder: (context, snapshot) {
             final offer = snapshot.data;
             return snapshot.data != null
-                ? SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        spaceH20,
-                        Text(
-                          (offer?.walletAddress ?? '').formatAddress(index: 4),
-                          style: richTextWhite.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                          ),
-                        ),
-                        spaceH8,
-                        _rowStar(40),
-                        spaceH18,
-                        _textButton(),
-                        Divider(
-                          color: AppTheme.getInstance().divideColor(),
-                        ),
-                        spaceH20,
-                        ..._buildTable(offer),
-                        if (offer?.status == 3 &&
-                            PrefsService.getOwnerPawn().toLowerCase() ==
-                                PrefsService.getCurrentBEWallet()
-                                    .toLowerCase()) ...[
-                          Container(
-                            margin: EdgeInsets.only(top: 152.h),
-                            padding: EdgeInsets.only(
-                              bottom: 38.h,
-                              right: 16.w,
-                              left: 16.w,
+                ? BaseBottomSheet(
+                    title: S.current.offer_detail,
+                    isImage: true,
+                    text: ImageAssets.ic_close,
+                    onRightClick: () {},
+                    bottomBar: (isShow(offer?.status ?? 0))
+                        ? rowButton(context, offer!)
+                        : null,
+                    child: RefreshIndicator(
+                      onRefresh: onRefresh,
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            spaceH20,
+                            Text(
+                              (offer?.walletAddress ?? '')
+                                  .formatAddress(index: 4),
+                              style: richTextWhite.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                              ),
                             ),
-                            color: AppTheme.getInstance().bgBtsColor(),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: _buildButtonReject(context, offer!),
-                                ),
-                                spaceW25,
-                                Expanded(
-                                  child: _buildButtonAccept(context, offer),
-                                ),
-                              ],
+                            spaceH8,
+                            _rowStar(offer?.point?.toInt() ?? 0),
+                            spaceH18,
+                            _textButton(),
+                            Divider(
+                              color: AppTheme.getInstance().divideColor(),
                             ),
-                          ),
-                        ]
-                      ],
+                            spaceH20,
+                            ..._buildTable(offer),
+                          ],
+                        ),
+                      ),
                     ),
                   )
                 : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
-          },
-        ),
+          }),
+    );
+  }
+
+  bool isShow(num status) {
+    switch (status) {
+      case 1:
+        return false;
+      case 2:
+        return false;
+      case 3:
+        return true;
+      case 4:
+        return true;
+      case 5:
+        return true;
+      case 6:
+        return false;
+      case 7:
+        return false;
+      case 8:
+        return false;
+      case 9:
+        return false;
+      default:
+        return false;
+    }
+  }
+
+  Widget rowButton(
+    BuildContext context,
+    OfferDetailModel obj,
+  ) {
+    bool rejectEnable = true;
+    bool acceptEnable = true;
+
+    final acceptText =
+        obj.status == 3 ? S.current.accept : _cubit.colorText.status ?? '';
+    final rejectText =
+        obj.status == 3 ? S.current.reject : _cubit.colorText.status ?? '';
+    bool acceptProcess = false;
+    bool rejectProcess = false;
+    if (obj.status == 4) {
+      acceptProcess = true;
+      rejectEnable = false;
+    } else if (obj.status == 5) {
+      rejectProcess = true;
+      acceptEnable = false;
+    } else {
+      rejectEnable = true;
+      acceptEnable = true;
+      acceptProcess = false;
+      rejectProcess = false;
+    }
+    return Container(
+      padding: EdgeInsets.only(
+        bottom: 38.h,
+        right: 16.w,
+        left: 16.w,
+      ),
+      color: AppTheme.getInstance().bgBtsColor(),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildButtonReject(
+              context,
+              obj,
+              acceptEnable,
+              rejectText,
+              isProcess: rejectProcess,
+            ),
+          ),
+          spaceW25,
+          Expanded(
+            child: _buildButtonAccept(
+              context,
+              obj,
+              acceptText,
+              acceptEnable,
+              isProcess: acceptProcess,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -297,110 +360,115 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     );
   }
 
-  Widget _buildButtonReject(BuildContext context, OfferDetailModel obj) {
+  Widget _buildButtonReject(
+    BuildContext context,
+    OfferDetailModel obj,
+    bool isEnable,
+    String status, {
+    bool isProcess = false,
+  }) {
     return ButtonTransparent(
+      isEnable: isEnable,
+      isProcess: isProcess,
+      onPressed: () {
+        _cubit
+            .getCancelOfferData(
+              obj.collateralId?.toString() ?? '',
+              obj.id?.toString() ?? '',
+              context,
+            )
+            .then(
+              (value) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Approve(
+                    title: S.current.reject_offer,
+                    spender: nft_pawn_dev2,
+                    textActiveButton: S.current.reject_offer,
+                    hexString: value,
+                    header: Column(
+                      children: [
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.from}:',
+                          child: Text(
+                            obj.walletAddress?.formatAddressWalletConfirm() ??
+                                '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        buildRowCustom(
+                          isPadding: false,
+                          title: '${S.current.loan_amount}:',
+                          child: Text(
+                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        spaceH20,
+                        line,
+                      ],
+                    ),
+                    onSuccessSign: (context, data) async {
+                      Navigator.pop(context);
+                      _cubit.rejectOffer(obj.id?.toInt() ?? 0);
+                      await showLoadSuccess(context)
+                          .then((value) => Navigator.pop(context, true));
+                    },
+                    onErrorSign: (context) async {
+                      Navigator.pop(context);
+                      await showLoadFail(context)
+                          .then((_) => Navigator.pop(context))
+                          .then(
+                            (value) => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BaseFail(
+                                  title: S.current.reject_offer,
+                                  onTapBtn: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                ),
+              ),
+            );
+      },
       child: Text(
-        S.current.reject,
+        status,
         style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
+          isEnable
+              ? AppTheme.getInstance().textThemeColor()
+              : AppTheme.getInstance().textGrayColor(),
           16,
           FontWeight.w700,
         ),
       ),
-      onPressed: () {
-        _cubit
-            .getCancelOfferData(
-          obj.collateralId?.toString() ?? '',
-          obj.id?.toString() ?? '',
-          context,
-        )
-            .then(
-              (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Approve(
-                title: S.current.reject_offer,
-                spender: nft_pawn_dev2,
-                textActiveButton: S.current.reject_offer,
-                hexString: value,
-                header: Column(
-                  children: [
-                    buildRowCustom(
-                      isPadding: false,
-                      title: '${S.current.from}:',
-                      child: Text(
-                        obj.walletAddress?.formatAddressWalletConfirm() ?? '',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          16,
-                          FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    buildRowCustom(
-                      isPadding: false,
-                      title: '${S.current.loan_amount}:',
-                      child: Text(
-                        '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          16,
-                          FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    spaceH20,
-                    line,
-                  ],
-                ),
-                onSuccessSign: (context, data) async {
-                  Navigator.pop(context);
-                  _cubit.rejectOffer(obj.id?.toInt() ?? 0);
-                  await showLoadSuccess(context)
-                      .then((value) => Navigator.pop(context))
-                      .then(
-                        (value) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BaseSuccess(
-                          title: S.current.reject_offer,
-                          content: S.current.congratulation,
-                          callback: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                onErrorSign: (context) async {
-                  Navigator.pop(context);
-                  await showLoadFail(context)
-                      .then((_) => Navigator.pop(context))
-                      .then(
-                        (value) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BaseFail(
-                          title: S.current.reject_offer,
-                          onTapBtn: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
-  Widget _buildButtonAccept(BuildContext context, OfferDetailModel obj) {
-    return ButtonGradient(
+  Widget _buildButtonAccept(
+    BuildContext context,
+    OfferDetailModel obj,
+    String status,
+    bool isEnable, {
+    bool isProcess = false,
+  }) {
+    return ButtonCustom(
+      isEnable: isEnable,
+      isProcess: isProcess,
       onPressed: () {
         _cubit
             .getAcceptOfferData(
@@ -423,7 +491,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                           isPadding: false,
                           title: '${S.current.from}:',
                           child: Text(
-                            obj.walletAddress?.formatAddressWalletConfirm() ?? '',
+                            obj.walletAddress?.formatAddressWalletConfirm() ??
+                                '',
                             style: textNormalCustom(
                               AppTheme.getInstance().textThemeColor(),
                               16,
@@ -451,52 +520,20 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                       Navigator.pop(context);
                       _cubit.acceptOffer(obj.id?.toInt() ?? 0);
                       await showLoadSuccess(context)
-                          .then((value) => Navigator.pop(context))
-                          .then(
-                            (value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BaseSuccess(
-                                  title: S.current.accept_offer,
-                                  content: S.current.congratulation,
-                                  callback: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
+                          .then((value) => Navigator.pop(context));
                     },
                     onErrorSign: (context) async {
                       Navigator.pop(context);
                       await showLoadFail(context)
-                          .then((_) => Navigator.pop(context))
-                          .then(
-                            (value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BaseFail(
-                                  title: S.current.accept,
-                                  onTapBtn: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
+                          .then((_) => Navigator.pop(context));
                     },
                   ),
                 ),
               ),
             );
       },
-      gradient: RadialGradient(
-        center: const Alignment(0.5, -0.5),
-        radius: 4,
-        colors: AppTheme.getInstance().gradientButtonColor(),
-      ),
       child: Text(
-        S.current.accept,
+        status,
         style: textNormalCustom(
           AppTheme.getInstance().textThemeColor(),
           16,

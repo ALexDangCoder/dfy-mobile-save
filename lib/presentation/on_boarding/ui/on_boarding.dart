@@ -23,14 +23,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pageController.dispose();
   }
@@ -163,7 +161,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     else
                       RichText(
                         text: TextSpan(
-                          text: '${contents[index].descriptionYellow} ',
+                          text: '${contents[index].descriptionNormal} ',
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             16,
@@ -171,7 +169,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: contents[index].descriptionNormal,
+                              text: contents[index].descriptionYellow,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,

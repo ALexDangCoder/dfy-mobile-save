@@ -57,7 +57,7 @@ extension OfferExtension on StatusOffer {
       case StatusOffer.ACCEPTED:
         return S.current.accepted;
       case StatusOffer.REJECTED:
-        return S.current.rejected;
+        return S.current.reject_ed;
       case StatusOffer.CANCELED:
         return S.current.canceled;
     }

@@ -36,11 +36,11 @@ extension UploadCreateCollection on CreateCollectionCubit{
       case AVATAR_PHOTO:
         {
           if (imageSizeInMB > maximumFileSize) {
-            mapCheck['avatar'] = false;
+            mapCheck[AVATAR_PHOTO_MAP] = false;
             avatarMessSubject.sink.add(S.current.maximum_size);
             break;
           } else {
-            mapCheck['avatar'] = true;
+            mapCheck[AVATAR_PHOTO_MAP] = true;
             avatarMessSubject.sink.add('');
             avatarSubject.sink.add(image);
             avatarPath = imagePath;
@@ -51,11 +51,11 @@ extension UploadCreateCollection on CreateCollectionCubit{
       case COVER_PHOTO:
         {
           if (imageSizeInMB > maximumFileSize) {
-            mapCheck['cover_photo'] = false;
+            mapCheck[COVER_PHOTO_MAP] = false;
             coverPhotoMessSubject.sink.add(S.current.maximum_size);
             break;
           } else {
-            mapCheck['cover_photo'] = true;
+            mapCheck[COVER_PHOTO_MAP] = true;
             coverPhotoMessSubject.sink.add('');
             coverPhotoSubject.sink.add(image);
             coverPhotoPath = imagePath;
@@ -66,11 +66,11 @@ extension UploadCreateCollection on CreateCollectionCubit{
       case FEATURE_PHOTO:
         {
           if (imageSizeInMB > maximumFileSize) {
-            mapCheck['feature_photo'] = false;
+            mapCheck[FEATURE_PHOTO_MAP] = false;
             featurePhotoMessSubject.sink.add(S.current.maximum_size);
             break;
           } else {
-            mapCheck['feature_photo'] = true;
+            mapCheck[FEATURE_PHOTO_MAP] = true;
             featurePhotoMessSubject.sink.add('');
             featurePhotoSubject.sink.add(image);
             featurePhotoPath = imagePath;
