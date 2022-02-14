@@ -28,11 +28,10 @@ class _ItemListMap extends State<ItemListMap> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     showLocation = LatLng(
-      widget.bloc.stepTwoPassingModel?.locationLat ?? 0,
-      widget.bloc.stepTwoPassingModel?.locationLong ?? 0,
+      widget.bloc.locationLat ?? 0,
+      widget.bloc.locationLong ?? 0,
     );
     markers = Set();
   }
@@ -41,12 +40,11 @@ class _ItemListMap extends State<ItemListMap> {
     markers.add(
       Marker(
         markerId: MarkerId(
-          'aa-${widget.bloc.stepTwoPassingModel?.cityId.toString() ?? ''}',
+          widget.bloc.cityIdMap.toString(),
         ),
         position: showLocation,
         infoWindow: InfoWindow(
-          title: widget.bloc.stepTwoPassingModel?.nameCity ?? '',
-        ),
+            title: widget.bloc.nameCity ?? '', snippet: widget.bloc.nameMap),
       ),
     );
     for (final EvaluatorsCityModel value in widget.list) {
@@ -61,16 +59,35 @@ class _ItemListMap extends State<ItemListMap> {
             ),
             infoWindow: InfoWindow(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateBookEvaluation(
-                      idEvaluation: value.id ?? '',
-                      type: TypeEvaluation.NEW_CREATE,
-                      stepTwoPassing: widget.bloc.stepTwoPassingModel,
-                    ),
-                  ),
+                widget.bloc.checkTypeCreate(
+                  value.id ?? '',
                 );
+                if (widget.bloc.type == TypeEvaluation.CREATE) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateBookEvaluation(
+                        date: widget.bloc.getDate(
+                          value.id ?? '',
+                        ),
+                        idEvaluation: value.id ?? '',
+                        type: TypeEvaluation.CREATE,
+                        assetId: widget.bloc.assetId ?? '',
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateBookEvaluation(
+                        assetId: widget.bloc.assetId ?? '',
+                        idEvaluation: value.id ?? '',
+                        type: TypeEvaluation.NEW_CREATE,
+                      ),
+                    ),
+                  );
+                }
               },
               //popup info
               title: value.name,

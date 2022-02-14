@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
@@ -17,15 +16,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookEvaluation extends StatefulWidget {
-  final StepTwoPassingModel? stepTwoPassing;
   final List<AppointmentModel> appointmentList;
   final bool? isSuccess;
+  final String assetId;
 
   const BookEvaluation({
     Key? key,
-    required this.stepTwoPassing,
     required this.appointmentList,
     this.isSuccess,
+    required this.assetId,
   }) : super(key: key);
 
   @override
@@ -39,8 +38,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocBookEvaluation();
-    bloc.stepTwoPassingModel = widget.stepTwoPassing;
-    bloc.getListPawnShopStar(cityId: widget.stepTwoPassing?.cityId ?? 0);
+    bloc.assetId=widget.assetId;
+    bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.appointmentList = widget.appointmentList;
   }
 
@@ -57,8 +56,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
         children: [
           spaceH24,
           StepAppBar(
-            stepTwoPassingModel:
-                bloc.stepTwoPassingModel ?? StepTwoPassingModel(),
+            assetId: widget.assetId,
             isSuccess: widget.isSuccess ?? false,
           ),
           spaceH16,
@@ -140,8 +138,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                         ),
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.CREATE,
-                                        stepTwoPassing:
-                                            bloc.stepTwoPassingModel,
+                                        assetId: bloc.assetId ?? '',
                                       ),
                                     ),
                                   );
@@ -151,7 +148,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
-                                        stepTwoPassing: widget.stepTwoPassing,
+                                        assetId: bloc.assetId ?? '',
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.NEW_CREATE,
                                       ),
@@ -175,6 +172,8 @@ class _BookEvaluationState extends State<BookEvaluation> {
                       );
                     },
                   ),
+                  spaceH32,
+
                 ],
               ),
             ),

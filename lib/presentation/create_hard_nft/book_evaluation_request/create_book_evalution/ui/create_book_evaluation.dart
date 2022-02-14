@@ -6,7 +6,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
@@ -35,14 +34,14 @@ class CreateBookEvaluation extends StatefulWidget {
   final String idEvaluation;
   final TypeEvaluation type;
   final int? date;
-  final StepTwoPassingModel? stepTwoPassing;
+  final String assetId;
 
   const CreateBookEvaluation({
     Key? key,
     required this.idEvaluation,
     required this.type,
     this.date,
-    this.stepTwoPassing,
+    required this.assetId,
   }) : super(key: key);
 
   @override
@@ -56,12 +55,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocCreateBookEvaluation();
-    bloc.stepTwoPassingModel=widget.stepTwoPassing;
+    bloc.assetId = widget.assetId;
     bloc.getDataInput(widget.date ?? 0);
     bloc.getDetailEvaluation(
       evaluationID: widget.idEvaluation,
     );
+    bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.getEvaluationFee();
+
   }
 
   @override
@@ -96,9 +97,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                         physics: const ScrollPhysics(),
                         slivers: [
                           BaseAppBar(
-                            image:
-                                '${ApiConstants.BASE_URL_IMAGE}'
-                                    '${pawn.coverCid}',
+                            image: '${ApiConstants.BASE_URL_IMAGE}'
+                                '${pawn.coverCid}',
                             title: pawn.name ?? '',
                             initHeight: 145.h,
                             leading: SizedBox(
@@ -189,8 +189,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                     TextSpan(
                                                       text:
                                                           ' ${pawn.starCount} |'
-                                                          ' ${bloc
-                                                              .getTextCreateAt(
+                                                          ' ${bloc.getTextCreateAt(
                                                         pawn.createdAt ?? 0,
                                                       )}',
                                                     ),
@@ -823,18 +822,11 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 final NavigatorState navigator =
                                     Navigator.of(context);
                                 await bloc.getHexString(
-                                  expectingPrice:
-                                      bloc.evaluationFee?.amount.toString() ??
-                                          '',
-                                  collectionAsset: widget.stepTwoPassing
-                                      ?.collectionAsset ?? '',
-                                  beAssetId: widget
-                                      .stepTwoPassing?.beAssetId ?? '',
-                                  assetCID: widget.
-                                  stepTwoPassing?.assetCID ?? '',
-                                  collectionStandard:
-                                      widget.stepTwoPassing
-                                          ?.collectionStandard ?? 0,
+                                  evaluator: pawn.walletAddress ?? '',
+                                  evaluationFeeAddress:
+                                      BlocCreateBookEvaluation.DFY_ADDRESS,
+                                  appointmentTime: bloc.appointmentTime,
+                                  assetId:bloc.bcAssetId ?? '',
                                 );
 
                                 unawaited(
@@ -862,8 +854,8 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                           ),
                                           DetailItemApproveModel(
                                             title: '${S.current.nft} :',
-                                            value: widget.
-                                            stepTwoPassing?.typeNFT ?? '',
+                                            value: bloc.typeNFT ??
+                                                '',
                                           ),
                                           DetailItemApproveModel(
                                             title:
@@ -882,17 +874,16 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                                 pawn.walletAddress ?? '',
                                             bcTxnHash: data,
                                             appointmentTime:
-                                                bloc.appointmentTime,
+                                                bloc.appointmentTimeBE,
                                             evaluatorId: pawn.id ?? '',
-                                            assetId: widget
-                                                .stepTwoPassing?.assetId ?? '',
+                                            assetId: bloc.assetId ??
+                                                '',
                                           );
                                           showLoadSuccess(context).then(
                                             (value) => goTo(
                                               context,
                                               ListBookEvaluation(
-                                              stepTwoPassing: widget
-                                                  .stepTwoPassing,
+                                               assetId: bloc.assetId ?? '',
                                               ),
                                             ),
                                           );

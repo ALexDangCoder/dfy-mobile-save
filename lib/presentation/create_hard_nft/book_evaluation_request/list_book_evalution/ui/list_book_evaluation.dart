@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
@@ -15,11 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListBookEvaluation extends StatefulWidget {
-  final StepTwoPassingModel? stepTwoPassing;
+  final String assetId;
 
   const ListBookEvaluation({
     Key? key,
-    this.stepTwoPassing,
+    required this.assetId,
   }) : super(key: key);
 
   @override
@@ -33,8 +32,8 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   void initState() {
     super.initState();
     _bloc = BlocListBookEvaluation();
-    _bloc.stepTwoPassingModel = widget.stepTwoPassing;
-    _bloc.getListPawnShop(assetId: _bloc.stepTwoPassingModel?.assetId ?? '');
+    _bloc.assetId = widget.assetId;
+    _bloc.getListPawnShop(assetId: widget.assetId);
     _bloc.reloadAPI();
   }
 
@@ -53,15 +52,14 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await _bloc.getListPawnShop(
-                  assetId: _bloc.stepTwoPassingModel?.assetId ?? '',
+                  assetId: _bloc.assetId ?? '',
                 );
               },
               child: Column(
                 children: [
                   spaceH24,
                   StepAppBar(
-                    stepTwoPassingModel:
-                        _bloc.stepTwoPassingModel ?? StepTwoPassingModel(),
+                    assetId: widget.assetId,
                     isSuccess: _bloc.isSuccess,
                   ),
                   spaceH16,
@@ -162,8 +160,8 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   MaterialPageRoute(
                     builder: (context) => BookEvaluation(
                       isSuccess: _bloc.isSuccess,
-                      stepTwoPassing: widget.stepTwoPassing,
                       appointmentList: _bloc.appointmentList,
+                      assetId: _bloc.assetId ?? '',
                     ),
                   ),
                 );

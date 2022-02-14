@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -31,7 +30,8 @@ class MarketPlaceScreen extends StatefulWidget {
   _MarketPlaceState createState() => _MarketPlaceState();
 }
 
-class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliveClientMixin<MarketPlaceScreen>{
+class _MarketPlaceState extends State<MarketPlaceScreen>
+    with AutomaticKeepAliveClientMixin<MarketPlaceScreen> {
   late MarketplaceCubit cubit;
 
   @override
@@ -186,23 +186,11 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                       );
                     },
                     nftCallBack: () {
-                      StepTwoPassingModel stepTwoPassingModel=StepTwoPassingModel(
-                        nameCity: 'doanh',
-                        locationLat: 0,
-                        locationLong: 0,
-                        assetCID:'QmPFLdGTx3X25Fp84wEAPdomq5fCZfeq4sMEjYsfhUGyeE',
-                        beAssetId:'0' ,
-                        collectionAsset: '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1',
-                        assetId:'620605484aec3d812452a25e' ,
-                        cityId: 12,
-                        collectionStandard:0 ,
-                        typeNFT: 'dyamon',//
-                      );
                       Navigator.push(
-                        context,//todo dùng ké
+                        context, //todo dùng ké
                         MaterialPageRoute(
-                          builder: (context) =>  ListBookEvaluation(
-                            stepTwoPassing: stepTwoPassingModel,
+                          builder: (context) => ListBookEvaluation(
+                            assetId: '6209b3694aec3d07dc5587c8',
                           ),
                         ),
                       );
@@ -217,7 +205,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors:
-                      AppTheme.getInstance().listBackgroundMarketColor(),
+                          AppTheme.getInstance().listBackgroundMarketColor(),
                     ),
                   ),
                   child: Column(
@@ -247,7 +235,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                                 //priority by position in
                                 // listCollectionFtExploreFtNft
                                 for (Map<String, dynamic> e
-                                in cubit.listCollectionFtExploreFtNft)
+                                    in cubit.listCollectionFtExploreFtNft)
                                   if (e['name'] ==
                                       'Buy, sell, and create collectible NFTs') ...[
                                     ListNftBuySellCollectible(
@@ -311,15 +299,15 @@ class _MarketPlaceState extends State<MarketPlaceScreen>  with AutomaticKeepAliv
                                   ]
                                   //this else handle explore categories
                                   else ...[
-                                      ListExploreCategory(
-                                        cubit: cubit,
-                                        isLoading: false,
-                                        isLoadFail: false,
-                                      ),
-                                      SizedBox(
-                                        height: 32.h,
-                                      ),
-                                    ],
+                                    ListExploreCategory(
+                                      cubit: cubit,
+                                      isLoading: false,
+                                      isLoadFail: false,
+                                    ),
+                                    SizedBox(
+                                      height: 32.h,
+                                    ),
+                                  ],
                                 SizedBox(
                                   height: 164.h,
                                 ),
