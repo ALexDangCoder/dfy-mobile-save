@@ -439,6 +439,7 @@
   "offer_create_by_day": "Offer create by day",
   "accept": "Accept",
   "reject": "Reject",
+  "reject_ed": "Rejected",
   "name_of_collection": "Name of collection",
   "all_category": "All category",
   "no_more_info": "No more information",
