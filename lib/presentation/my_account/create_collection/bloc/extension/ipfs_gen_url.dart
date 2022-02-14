@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' hide log;
 
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -8,18 +8,15 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-
-extension IPFSUpLoad on CreateCollectionCubit{
-
+extension IPFSUpLoad on CreateCollectionCubit {
   ///GET IPFS collection
-
 
   ///Gen random URL
   Future<void> generateRandomURL({int len = 11}) async {
     final r = Random();
     const _chars = 'abcdefghijklmnopqrstuvwxyz_0123456789';
     final autogenURL =
-    List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
+        List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
     final appConstants = Get.find<AppConstants>();
     final String uri =
         appConstants.baseUrl + ApiConstants.GET_BOOL_CUSTOM_URL + autogenURL;
@@ -56,10 +53,11 @@ extension IPFSUpLoad on CreateCollectionCubit{
         customURLSubject.sink.add('');
         debounceTime = Timer(
           const Duration(milliseconds: 500),
-              () async {
+          () async {
             final appConstants = Get.find<AppConstants>();
             final String uri = appConstants.baseUrl +
-                ApiConstants.GET_BOOL_CUSTOM_URL + appConstants.baseCustomUrl +
+                ApiConstants.GET_BOOL_CUSTOM_URL +
+                appConstants.baseCustomUrl +
                 _customUrl;
             final response = await http.get(
               Uri.parse(uri),
@@ -68,9 +66,11 @@ extension IPFSUpLoad on CreateCollectionCubit{
               if (response.body == 'true') {
                 customUrl = _customUrl;
                 mapCheck[CUSTOM_URL_MAP] = true;
+                validateCreate();
               } else {
                 customURLSubject.sink.add(S.current.custom_url_taken);
                 mapCheck[CUSTOM_URL_MAP] = false;
+                validateCreate();
               }
             } else {
               throw Exception('Get response fail');
@@ -85,5 +85,6 @@ extension IPFSUpLoad on CreateCollectionCubit{
       mapCheck[CUSTOM_URL_MAP] = true;
       customURLSubject.sink.add('');
     }
+    validateCreate();
   }
 }

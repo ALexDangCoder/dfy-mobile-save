@@ -14,7 +14,9 @@ import 'package:get/get.dart';
 extension Web3Call on CreateCollectionCubit {
   Future<void> sendDataWeb3(BuildContext context) async {
     final prefixURL = Get.find<AppConstants>().baseCustomUrl;
-    await generateRandomURL();
+    if (customUrl.isEmpty){
+      await generateRandomURL();
+    }
     final CreateCollectionIpfsRequest request = CreateCollectionIpfsRequest(
       external_link:
           ApiConstants.URL_BASE + cidMap.getStringValue(AVATAR_CID),
