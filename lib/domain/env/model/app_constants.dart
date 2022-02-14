@@ -10,6 +10,12 @@ class AppConstants {
   @JsonKey(name: 'base_url')
   String baseUrl;
 
+  @JsonKey(name: 'base_url_pinata')
+  String baseUrlPinata;
+
+  @JsonKey(name: 'base_custom_url')
+  String baseCustomUrl;
+
   @JsonKey(name: 'base_image_url')
   String baseImageUrl;
 
@@ -25,6 +31,8 @@ class AppConstants {
   AppConstants(
     this.type,
     this.baseUrl,
+    this.baseUrlPinata,
+    this.baseCustomUrl,
     this.baseImageUrl,
     this.rpcUrl,
     this.chaninId,

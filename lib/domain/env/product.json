@@ -4,5 +4,7 @@
   "base_image_url": "https://gwapi.defiforyou.uk/nft-market-svc/public-api/",
   "rpc_url": "https://bsc-dataseed1.binance.org:443",
   "chain_id": "56",
-  "bsc_scan": "https://bscscan.com/"
+  "bsc_scan": "https://bscscan.com/",
+  "base_url_pinata": "https://api.pinata.cloud/",
+  "base_custom_url" : "https://marketplace.defiforyou.uk/"
 }

@@ -30,7 +30,7 @@ class ApiConstants {
       '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
   static const String GET_BOOL_CUSTOM_URL =
-      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=https://marketplace.defiforyou.uk/';
+      'nft-market-svc/public-api/collection/check-validated-custom-url?custom_url=';
   static const String GET_LIST_COLLECTION_FILTER =
       '/nft-market-svc/public-api/collection';
   static const String GET_LIST_NFT = '/nft-market-svc/public-api/search/nft';
@@ -126,8 +126,7 @@ class ApiConstants {
       'cd1b0dc4478a40abd0b80e127e1184697f6d2f23ed3452326fe92ff3e92324df';
   static const String PIN_FILE_TO_IPFS =
       'https://api.pinata.cloud/pinning/pinFileToIPFS?file';
-  static const String PIN_JSON_TO_IPFS =
-      'https://api.pinata.cloud/pinning/pinJSONToIPFS';
+  static const String PIN_JSON_TO_IPFS = '/pinning/pinJSONToIPFS';
 
   //Custom URL
   static const String PREFIX_CUSTOM_URL = 'https://marketplace.defiforyou.uk/';
@@ -179,7 +178,8 @@ class ApiConstants {
   static const String GET_DETAIL_ASSETS_HARD_NFT = '/hard-nft-svc/api/assets/';
   static const String ACCEPT = '/accept';
   static const String REJECT = '/reject';
-  static const String GET_EVALUATION_FEE = '/hard-nft-svc/public-api/system-fee';
+  static const String GET_EVALUATION_FEE =
+      '/hard-nft-svc/public-api/system-fee';
   static const String PATH_GET_CITIES = '/cities';
 
   static const String GET_CONDITION =

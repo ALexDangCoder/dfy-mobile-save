@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -44,7 +42,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   NFTRepository get nftRepo => Get.find();
 
-  List<TypeNFTModel> listSoftNft = [];
+  List<TypeNFTModel> listNft = [];
   List<CollectionMarketModel> softCollectionList = [];
 
   String selectedId = '';
@@ -78,6 +76,8 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   ///Stream
   ///id of nft
   final BehaviorSubject<String> selectIdSubject = BehaviorSubject();
+
+  final BehaviorSubject<List<TypeNFTModel>> listNftSubject = BehaviorSubject();
 
   ///Create NFT Button
   final BehaviorSubject<bool> createNftButtonSubject = BehaviorSubject();

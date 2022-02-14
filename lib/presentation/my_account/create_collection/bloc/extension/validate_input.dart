@@ -96,9 +96,9 @@ extension ValidateInput on CreateCollectionCubit {
     nameCollectionSubject.sink.add(mess);
     if (mess.isEmpty) {
       collectionName = value;
-      mapCheck['collection_name'] = true;
+      mapCheck[COLLECTION_NAME_MAP] = true;
     } else {
-      mapCheck['collection_name'] = false;
+      mapCheck[COLLECTION_NAME_MAP] = false;
     }
   }
 
@@ -106,18 +106,18 @@ extension ValidateInput on CreateCollectionCubit {
     descriptionSubject.sink.add(mess);
     if (mess.isEmpty) {
       description = value;
-      mapCheck['description'] = true;
+      mapCheck[DESCRIPTION_MAP] = true;
     } else {
-      mapCheck['description'] = false;
+      mapCheck[DESCRIPTION_MAP] = false;
     }
   }
 
   void validateRoyalty(String mess) {
     royaltySubject.sink.add(mess);
     if (mess.isEmpty) {
-      mapCheck['royalties'] = true;
+      mapCheck[ROYALTIES_MAP] = true;
     } else {
-      mapCheck['royalties'] = false;
+      mapCheck[ROYALTIES_MAP] = false;
     }
   }
 
@@ -125,9 +125,9 @@ extension ValidateInput on CreateCollectionCubit {
     facebookSubject.sink.add(mess);
     if (mess.isEmpty) {
       faceBook = value;
-      mapCheck['facebook'] = true;
+      mapCheck[FACEBOOK_MAP] = true;
     } else {
-      mapCheck['facebook'] = false;
+      mapCheck[FACEBOOK_MAP] = false;
     }
   }
 
@@ -135,9 +135,9 @@ extension ValidateInput on CreateCollectionCubit {
     twitterSubject.sink.add(mess);
     if (mess.isEmpty) {
       twitter = value;
-      mapCheck['twitter'] = true;
+      mapCheck[TWITTER_MAP] = true;
     } else {
-      mapCheck['twitter'] = false;
+      mapCheck[TWITTER_MAP] = false;
     }
   }
 
@@ -145,9 +145,9 @@ extension ValidateInput on CreateCollectionCubit {
     instagramSubject.sink.add(mess);
     if (mess.isEmpty) {
       instagram = value;
-      mapCheck['instagram'] = true;
+      mapCheck[INSTAGRAM_MAP] = true;
     } else {
-      mapCheck['instagram'] = false;
+      mapCheck[INSTAGRAM_MAP] = false;
     }
   }
 
@@ -155,9 +155,9 @@ extension ValidateInput on CreateCollectionCubit {
     telegramSubject.sink.add(mess);
     if (mess.isEmpty) {
       telegram = value;
-      mapCheck['telegram'] = true;
+      mapCheck[TELEGRAM_MAP] = true;
     } else {
-      mapCheck['telegram'] = false;
+      mapCheck[TELEGRAM_MAP] = false;
     }
   }
 
@@ -165,10 +165,10 @@ extension ValidateInput on CreateCollectionCubit {
     if (value.isNotEmpty) {
       categoryId = value;
       getCategoryNameById(value);
-      mapCheck['categories'] = true;
+      mapCheck[CATEGORIES_MAP] = true;
     } else {
       categoriesSubject.sink.add(S.current.category_require);
-      mapCheck['categories'] = false;
+      mapCheck[CATEGORIES_MAP] = false;
     }
   }
 
