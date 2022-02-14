@@ -8,10 +8,13 @@ class HardNFTBloc {
 
   void getListImage(Evaluation evaluation) {
     for (int i = 0; i < (evaluation.media?.length ?? 0); i++) {
+      for(int j = i+1; j < (evaluation.media?.length ?? 0); j++){
+        if(evaluation.media?[i].name == evaluation.media?[j].name){
+          evaluation.media?.removeAt(j);
+        }
+      }
       listImg.add(evaluation.media![i]);
     }
-    final tempList = listImg.toSet();
-    listImg = tempList.toList();
   }
 
   ///clear fake Data

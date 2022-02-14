@@ -27,12 +27,17 @@ class EvaluationHardNftResultCubit
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  static const oneSec = Duration(seconds: 30);
+  bool cancelTimer = false;
+
   void reloadAPI(String assetID) {
-    const oneSec = Duration(seconds: 30);
     Timer.periodic(
       oneSec,
       (Timer timer) {
         getListEvaluationResult(assetID);
+        if(cancelTimer){
+          timer.cancel();
+        }
       },
     );
   }

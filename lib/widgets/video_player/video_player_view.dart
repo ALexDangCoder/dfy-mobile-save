@@ -36,31 +36,31 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: GestureDetector(
-          onTap: () {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          },
-          child: Stack(
-            children: [
-              Align(
+        child: Stack(
+          children: [
+            Align(
+              child: GestureDetector(
+                onTap: () {
+                  _controller.value.isPlaying
+                      ? _controller.pause()
+                      : _controller.play();
+                },
                 child: SizedBox(
                   height: 290.h,
                   child: VideoPlayer(_controller),
                 ),
               ),
-              Align(
-                child: Icon(
-                  _controller.value.isPlaying
-                      ? Icons.pause_circle_outline_sharp
-                      : Icons.play_circle_outline_sharp,
-                  size: 36.sp,
-                  color: Colors.white,
-                ),
+            ),
+            Align(
+              child: Icon(
+                _controller.value.isPlaying
+                    ? Icons.pause_circle_outline_sharp
+                    : Icons.play_circle_outline_sharp,
+                size: 36.sp,
+                color: Colors.white,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

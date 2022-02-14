@@ -36,6 +36,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
   }
   @override
   void dispose() {
+    cubit.cancelTimer = true;
     cubit.close();
     super.dispose();
   }
@@ -76,7 +77,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
               RefreshIndicator(
                 onRefresh: () async {
                   await cubit
-                      .getListEvaluationResult('6201eb134aec3d7ec50a7499');
+                      .getListEvaluationResult(widget.assetID);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

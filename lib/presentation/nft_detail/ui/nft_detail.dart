@@ -267,9 +267,21 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context,
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
-                return EvaluationTab(
-                  evaluation: snapshot.data ?? Evaluation(),
-                );
+                if (snapshot.hasData) {
+                  return EvaluationTab(
+                    evaluation: snapshot.data ?? Evaluation(),
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100.h,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.r,
+                        color: AppTheme.getInstance().whiteColor(),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
         ];

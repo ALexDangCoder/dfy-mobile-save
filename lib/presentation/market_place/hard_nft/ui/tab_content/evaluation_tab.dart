@@ -29,7 +29,6 @@ class EvaluationTab extends StatefulWidget {
 class _EvaluationTabState extends State<EvaluationTab>
     with AutomaticKeepAliveClientMixin {
   late ItemScrollController scrollController;
-  late VideoPlayerController controller;
   late final HardNFTBloc bloc;
 
   @override
@@ -39,10 +38,6 @@ class _EvaluationTabState extends State<EvaluationTab>
     scrollController = ItemScrollController();
     bloc.getListImage(widget.evaluation);
     bloc.changeImage('');
-    super.initState();
-    controller.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
