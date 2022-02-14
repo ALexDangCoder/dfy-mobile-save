@@ -1,30 +1,38 @@
+import 'package:Dfy/data/request/collection/create_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/social_link_map_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/ipfs_gen_url.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 extension Web3Call on CreateCollectionCubit {
   Future<void> sendDataWeb3(BuildContext context) async {
-    const prefixURL = ApiConstants.PREFIX_CUSTOM_URL;
+    final prefixURL = Get.find<AppConstants>().baseCustomUrl;
     await generateRandomURL();
-    final Map<String, dynamic> jsonBody = {
-      'external_link':
+    final CreateCollectionIpfsRequest request = CreateCollectionIpfsRequest(
+      external_link:
           ApiConstants.URL_BASE + cidMap.getStringValue('avatar_cid'),
-      'feature_cid': cidMap.getStringValue('feature_cid'),
-      'image': ApiConstants.URL_BASE + (cidMap.getStringValue('avatar_cid')),
-      'name': collectionName,
-      'custom_url': '$prefixURL$customUrl',
-      'avatar_cid': cidMap['avatar_cid'],
-      'category': categoryId,
-      'cover_cid': cidMap['cover_cid'],
-      'social_links': socialLinkMap.toString(),
-
-    };
-    collectionIPFS = await ipfsService.pinJsonToIPFS(bodyMap: jsonBody);
-    if (collectionIPFS.isNotEmpty){
+      feature_cid: cidMap.getStringValue('feature_cid'),
+      image: ApiConstants.URL_BASE + (cidMap.getStringValue('avatar_cid')),
+      name: collectionName,
+      custom_url: '$prefixURL$customUrl',
+      avatar_cid: cidMap.getStringValue('avatar_cid'),
+      category: categoryId,
+      cover_cid: cidMap.getStringValue('cover_cid'),
+      social_links:
+          socialLinkMap.map((e) => SocialLinkMapRequest.fromJson(e)).toList(),
+    );
+    collectionIPFS = await ipfsService.pinJsonToIPFS(
+      type: PinJsonType.COLLECTION,
+      collectionRequest: request,
+    );
+    if (collectionIPFS.isNotEmpty) {
       if (collectionType == 0) {
         transactionData = await web3utils.getCreateCollectionData(
           contractAddress: nft_factory_dev2,

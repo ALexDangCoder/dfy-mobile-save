@@ -35,7 +35,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   int collectionType = 0;
   final walletAddress = PrefsService.getCurrentBEWallet();
 
-
   String collectionName = '';
   String customUrl = '';
   String description = '';
@@ -256,7 +255,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     avatarUploadStatusSubject.sink.add(-1);
     featurePhotoUploadStatusSubject.sink.add(-1);
 
-    final coverCid = await ipfsService.pinFileToIPFS(pathFile: avatarPath);
+    final coverCid = await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
     coverCid.isEmpty
         ? coverPhotoUploadStatusSubject.sink.add(0)
         : coverPhotoUploadStatusSubject.sink.add(1);
@@ -264,7 +263,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     avatarCid.isEmpty
         ? avatarUploadStatusSubject.sink.add(0)
         : avatarUploadStatusSubject.sink.add(1);
-    final featureCid = await ipfsService.pinFileToIPFS(pathFile: avatarPath);
+    final featureCid = await ipfsService.pinFileToIPFS(
+      pathFile: featurePhotoPath,
+    );
     featureCid.isEmpty
         ? featurePhotoUploadStatusSubject.sink.add(0)
         : featurePhotoUploadStatusSubject.sink.add(1);
@@ -283,8 +284,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Create parameter Map
   Map<String, dynamic> getMapCreateCollection() {
-    final String standard =
-        collectionStandard == ERC721 ? ERC_721 : ERC_1155;
+    final String standard = collectionStandard == ERC721 ? ERC_721 : ERC_1155;
     if (collectionType == SOFT_COLLECTION) {
       return {
         'avatar_cid': cidMap['avatar_cid'],
@@ -297,12 +297,11 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'name': collectionName,
         'royalty': royalties.toString(),
         'social_links': socialLinkMap,
-        'txn_hash': 'txnHash',
+        'txn_hash': '',
       };
     } else {
       return {
         'avatar_cid': cidMap['avatar_cid'],
-        'bc_txn_hash': 'txnHash',
         'category_id': categoryId,
         'category_name': categoryName,
         'collection_address': '',
@@ -312,6 +311,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'description': description,
         'name': collectionName,
         'social_links': socialLinkMap,
+        'bc_txn_hash': '',
       };
     }
   }
