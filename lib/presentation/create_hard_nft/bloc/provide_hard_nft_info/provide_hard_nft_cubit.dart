@@ -54,6 +54,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
+  bool inputFormValidate = false;
+
   ///api
   ///convert to map to use in cool dropdown
   List<Map<String, dynamic>> phonesCode = [];
@@ -70,7 +72,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<HardNftTypeModel> listHardNftType = [];
 
   List<bool> listChangeColorFtChoose = [
-    false,
+    true,
     false,
     false,
     false,
@@ -80,7 +82,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   BehaviorSubject<List<bool>> listChangeColorFtChooseBHVSJ =
       BehaviorSubject.seeded([
-    false,
+    true,
     false,
     false,
     false,
@@ -90,14 +92,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///id is index
   void chooseTypeNft({required int index}) {
-    bool result = false;
-    if (listChangeColorFtChoose[index]) {
-      result = false;
-    } else {
-      result = true;
-    }
     listChangeColorFtChoose = List.filled(6, false);
-    listChangeColorFtChoose[index] = result;
+    listChangeColorFtChoose[index] = true;
     listChangeColorFtChooseBHVSJ.sink.add(listChangeColorFtChoose);
   }
 
@@ -247,6 +243,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   List<Map<String, dynamic>> tokensMap = [];
 
+  final test = PrefsService.getCurrentBEWallet(); //
+
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
@@ -258,6 +256,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           {
             'value': element.id,
             'label': element.symbol,
+            'symbol': element.symbol ?? DFY,
             'icon': SizedBox(
               width: 20.w,
               height: 20.h,
@@ -352,9 +351,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  void navigatorToConfirmInfo() {
-    emit(ProvideHardNftConfirmInfo());
-  }
+  void navigatorToConfirmInfo() {}
 
   List<Map<String, dynamic>> loadingDataDropDown = [
     {'label': 'loading'},
@@ -376,6 +373,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       }
     }
     return false;
+  }
+
+  void checkAllValidate({required bool inputFormCheck}) {
+    if (inputFormValidate) {
+      nextBtnBHVSJ.sink.add(true);
+    } else {
+      nextBtnBHVSJ.sink.add(false);
+    }
   }
 
   Future<void> getCitiesApi(dynamic id) async {
@@ -423,12 +428,44 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
-  //todo
-  // bool validateAllDataBeforeSubmit() {
-  //   if (dataStep1.amountToken == 0 || dataStep1.nameContact.isEmpty ||
-  //       dataStep1.phoneContact.isEmpty || dataStep1.country.isEmpty)
-  //     return true;
-  // }
+  Map<String, bool> mapValidate = {
+    'connectWallet': false,
+    'mediaFiles': false,
+    'hardNFTName': false,
+    'condition': false,
+    'price': false,
+    'additionInfo': false,
+    'nameContact': false,
+    'email': false,
+    'phone': false,
+    'country': false,
+    'city': false,
+    'address': false,
+  };
+
+  void validateAll() {
+    if(mapValidate['hardNFTName'] == true || mapValidate['price'] == true) {
+
+    }
+  }
+
+  BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(true);
+
+  bool validateAllDataBeforeSubmit() {
+    if ((dataStep1.conditionNft.name ?? '').isEmpty ||
+        dataStep1.amountToken == 0 ||
+        dataStep1.nameContact.isEmpty ||
+        dataStep1.phoneContact.isEmpty ||
+        (dataStep1.country.name ?? '').isEmpty ||
+        (dataStep1.city.name ?? '').isEmpty ||
+        dataStep1.addressContact.isEmpty) {
+      nextBtnBHVSJ.sink.add(true);
+      return true;
+    } else {
+      nextBtnBHVSJ.sink.add(false);
+      return false;
+    }
+  }
 
   void showHideDropDownBtn({
     DropDownBtnType? typeDropDown,
@@ -467,7 +504,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     wallet: '',
     collection: '',
     properties: [],
-    informationNft: '',
     amountToken: 0,
     nameNftType: '',
     conditionNft: ConditionModel(),
@@ -498,7 +534,6 @@ class Step1PassingModel {
   String collection;
   String additionalInfo;
   List<PropertyModel> properties;
-  String informationNft;
   double amountToken;
   TokenInf tokenInfo;
   String nameNftType;
@@ -522,7 +557,6 @@ class Step1PassingModel {
     required this.wallet,
     required this.collection,
     required this.properties,
-    required this.informationNft,
     required this.amountToken,
     required this.tokenInfo,
     required this.nameNftType,
