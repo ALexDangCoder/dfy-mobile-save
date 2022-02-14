@@ -183,7 +183,7 @@ class _ListNftState extends State<ListNft> {
                                   scrollInfo.metrics.maxScrollExtent)) {
                             _cubit.loadMorePosts(
                               widget.pageRouter,
-                              controller.value.text.trim(),
+                              controller.text.trim(),
                             );
                           }
                           return true;
@@ -198,10 +198,12 @@ class _ListNftState extends State<ListNft> {
                                 return Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: () async {
-                                      _cubit.refreshPosts(
-                                        widget.pageRouter,
-                                        controller.value.text.trim(),
-                                      );
+                                      FocusScope.of(context).unfocus();
+                                      if(controller.text.isEmpty){
+                                        _cubit.refreshPosts(
+                                          widget.pageRouter,
+                                        );
+                                      }
                                     },
                                     child: Stack(
                                       children: [
@@ -230,7 +232,7 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 585.h),
+                                                EdgeInsets.only(top: 535.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 24.h,

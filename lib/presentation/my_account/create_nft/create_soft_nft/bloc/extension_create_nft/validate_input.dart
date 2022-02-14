@@ -14,6 +14,7 @@ extension ValidateInput on CreateNftCubit {
   }
 
   String? validateDescription(String vl) {
+    description = vl;
     if (vl.length > 255) {
       return S.current.maximum_len;
     }

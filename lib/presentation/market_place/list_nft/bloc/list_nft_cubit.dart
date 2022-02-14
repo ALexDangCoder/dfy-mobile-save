@@ -163,6 +163,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         canLoadMoreListNft = true;
         loadMore = true;
         getListNft(
+          name: name,
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
@@ -175,6 +176,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         canLoadMoreListNft = true;
         loadMore = true;
         getListNft(
+          name:name,
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
@@ -185,7 +187,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
   }
 
-  void refreshPosts(PageRouter pageRouter,String name) {
+  void refreshPosts(PageRouter pageRouter) {
     checkStatus();
     canLoadMoreListNft = true;
     page = 1;
