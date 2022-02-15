@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -82,7 +84,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                             ),
                           ),
                           spaceH8,
-                          _rowStar(offer?.point?.toInt() ?? 0),
+                          _rowStar(Random().nextInt(100)),
                           spaceH18,
                           _textButton(),
                           Divider(
