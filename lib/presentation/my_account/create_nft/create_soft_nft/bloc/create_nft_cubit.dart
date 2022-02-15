@@ -124,20 +124,20 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   void validateCreate() {
     if (mediaType == MEDIA_IMAGE_FILE) {
-      if (createNftMapCheck['media_file'] == false ||
-          createNftMapCheck['input_text'] == false ||
-          createNftMapCheck['collection'] == false ||
-          createNftMapCheck['properties'] == false) {
+      if (createNftMapCheck[MEDIA_KEY] == false ||
+          createNftMapCheck[INPUT_KEY] == false ||
+          createNftMapCheck[COLLECTION_KEY] == false ||
+          createNftMapCheck[PROPERTIES_KEY] == false) {
         createNftButtonSubject.sink.add(false);
       } else {
         createNftButtonSubject.sink.add(true);
       }
     } else {
-      if (createNftMapCheck['media_file'] == false ||
-          createNftMapCheck['cover_photo'] == false ||
-          createNftMapCheck['input_text'] == false ||
-          createNftMapCheck['collection'] == false ||
-          createNftMapCheck['properties'] == false) {
+      if (createNftMapCheck[MEDIA_KEY] == false ||
+          createNftMapCheck[COVER_PHOTO_KEY] == false ||
+          createNftMapCheck[INPUT_KEY] == false ||
+          createNftMapCheck[COLLECTION_KEY] == false ||
+          createNftMapCheck[PROPERTIES_KEY] == false) {
         createNftButtonSubject.sink.add(false);
       } else {
         createNftButtonSubject.sink.add(true);
