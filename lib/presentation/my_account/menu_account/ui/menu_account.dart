@@ -188,7 +188,7 @@ class _MenuAccountState extends State<MenuAccount> {
       }
       case 'collection_list':
         {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CollectionList(
