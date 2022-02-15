@@ -132,24 +132,29 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     bool rejectEnable = true;
     bool acceptEnable = true;
 
-    final acceptText =
-        obj.status == 3 ? S.current.accept : _cubit.colorText.status ?? '';
-    final rejectText =
-        obj.status == 3 ? S.current.reject : _cubit.colorText.status ?? '';
+    String acceptText = '';
+    String rejectText = '';
     bool acceptProcess = false;
     bool rejectProcess = false;
-    if (obj.status == 4) {
-      acceptProcess = true;
-      rejectEnable = false;
-    } else if (obj.status == 5) {
-      rejectProcess = true;
-      acceptEnable = false;
-    } else {
+    if (obj.status == 3) {
+      acceptText = S.current.accept;
+      rejectText = S.current.reject;
       rejectEnable = true;
       acceptEnable = true;
       acceptProcess = false;
       rejectProcess = false;
+    } else if (obj.status == 4) {
+      acceptText = S.current.processing;
+      rejectText = S.current.reject;
+      acceptProcess = true;
+      rejectEnable = false;
+    } else if (obj.status == 5) {
+      acceptText = S.current.accept;
+      rejectText = S.current.processing;
+      rejectProcess = true;
+      acceptEnable = false;
     }
+
     return Container(
       padding: EdgeInsets.only(
         bottom: 38.h,
@@ -403,7 +408,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                         ),
                         buildRowCustom(
                           isPadding: false,
-                          title: '${S.current.loan_amount}:',
+                          title: '${S.current.loan_amount}',
                           child: Text(
                             '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
                             style: textNormalCustom(
