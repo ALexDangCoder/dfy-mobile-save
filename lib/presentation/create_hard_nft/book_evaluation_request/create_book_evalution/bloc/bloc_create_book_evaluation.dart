@@ -45,13 +45,13 @@ class BlocCreateBookEvaluation {
   static const NOVEMBER = 11;
   static const DECEMBER = 12;
 
-  static const String MON = 'THỨ HAI';
-  static const String TUE = 'THỨ BA';
-  static const String WED = 'THỨ TƯ';
-  static const String THU = 'THỨ NĂM';
-  static const String FRI = 'THỨ SÁU';
-  static const String SAT = 'THỨ BẢY';
-  static const String SUN = 'CHỦ NHẬT';
+  static final String MON = S.current.mon;
+  static final String TUE = S.current.tue;
+  static final String WED = S.current.wed;
+  static final String THU = S.current.thu;
+  static final String FRI = S.current.fri;
+  static final String SAT = S.current.sat;
+  static final String SUN = S.current.sun;
 
   static const String MINTING_FEE = '1';
   static const String EVALUATION_FEE = '2';
@@ -116,21 +116,20 @@ class BlocCreateBookEvaluation {
     required String assetId,
   }) async {
     final Result<DetailAssetHardNft> result =
-    await _createHardNFTRepository.getDetailAssetHardNFT(
+        await _createHardNFTRepository.getDetailAssetHardNFT(
       assetId,
     );
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          bcAssetId=res.bcAssetId.toString();
-          typeNFT=res.assetType?.name;
+          bcAssetId = res.bcAssetId.toString();
+          typeNFT = res.assetType?.name;
         }
       },
       error: (error) {},
     );
   }
-
 
   bool checkValidateDay(String day) {
     bool isDay = false;

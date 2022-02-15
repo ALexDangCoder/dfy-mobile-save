@@ -14,7 +14,8 @@ mixin CreateHardNFTRepository {
   );
 
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
-    int cityId,
+      int cityId,
+      int assetTypeId,
   );
 
   Future<Result<EvaluatorsDetailModel>> getEvaluatorsDetail(
