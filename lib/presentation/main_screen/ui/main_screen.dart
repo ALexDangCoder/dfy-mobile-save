@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/staking/ui/staking_screen.dart';
 import 'package:Dfy/presentation/wallet/ui/wallet_screen.dart';
 import 'package:Dfy/widgets/bottom_appbar.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';

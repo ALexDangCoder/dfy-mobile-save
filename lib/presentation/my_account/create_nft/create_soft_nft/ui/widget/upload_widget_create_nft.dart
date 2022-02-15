@@ -9,7 +9,9 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/exte
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
+import 'package:Dfy/widgets/select_media_type.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
@@ -262,7 +264,8 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                                     horizontal: 40.w,
                                     vertical: 20.h,
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.w),
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(19.r),
@@ -429,7 +432,37 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    cubit.pickFile();
+                    if (Platform.isIOS) {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (_) => CupertinoActionSheet(
+                          actions: [
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                cubit.pickImageIos();
+                              },
+                              child: const Text('Image'),
+                            ),
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                cubit.pickFile();
+                              },
+                              child: const Text('Files'),
+                            ),
+                          ],
+                          cancelButton: CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(S.current.cancel),
+                          ),
+                        ),
+                      );
+                    } else {
+                      cubit.pickFile();
+                    }
                   },
                   child: DottedBorder(
                     borderType: BorderType.RRect,
