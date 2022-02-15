@@ -26,10 +26,6 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
 
   ConfirmRepository get confirmRepository => Get.find();
 
-  final BehaviorSubject<List<TokenInf>> _listTokenSubject =
-      BehaviorSubject<List<TokenInf>>();
-
-  Stream<List<TokenInf>> get listTokenStream => _listTokenSubject.stream;
 
   late List<TokenInf> listToken;
 
@@ -84,7 +80,6 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   void getListToken() {
     final String listTokenString = PrefsService.getListTokenSupport();
     listToken = TokenInf.decode(listTokenString);
-    _listTokenSubject.sink.add(listToken);
   }
 
   Future<String> getHexStringPutOnSale(

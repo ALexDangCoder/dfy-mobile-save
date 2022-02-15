@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
@@ -155,8 +154,6 @@ class _PutOnMarketScreenState extends State<PutOnMarketScreen>
 
   Container header() {
     return Container(
-      width: 343,
-      // height: 28.h,
       margin: const EdgeInsets.only(
         top: 16,
         // bottom: 20.h,
