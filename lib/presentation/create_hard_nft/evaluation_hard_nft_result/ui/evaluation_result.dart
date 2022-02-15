@@ -15,11 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class EvaluationResult extends StatefulWidget {
-  const EvaluationResult({Key? key, required this.assetID}) : super(key: key);
+  const EvaluationResult(
+      {Key? key, required this.assetID, this.isSuccess = false})
+      : super(key: key);
 
   final String assetID;
+  final bool isSuccess;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -34,6 +36,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
     cubit.getListEvaluationResult(widget.assetID);
     cubit.reloadAPI(widget.assetID);
   }
+
   @override
   void dispose() {
     cubit.cancelTimer = true;
@@ -65,6 +68,8 @@ class _EvaluationResultState extends State<EvaluationResult> {
       final listEvaluation = state.list;
       return BaseBottomSheet(
         text: ImageAssets.ic_close,
+        isCustomLeftClick: true,
+        onLeftClick: () {},
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {},
@@ -76,8 +81,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
             if (listEvaluation.isNotEmpty)
               RefreshIndicator(
                 onRefresh: () async {
-                  await cubit
-                      .getListEvaluationResult(widget.assetID);
+                  await cubit.getListEvaluationResult(widget.assetID);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -134,16 +138,25 @@ class _EvaluationResultState extends State<EvaluationResult> {
           const SuccessCkcCreateNft(),
           dividerSuccessCreateNFT,
           const SuccessCkcCreateNft(),
+          if (widget.isSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
+          if (!widget.isSuccess)
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_CREATING,
+              stepCreate: '3',
+            )
+          else
+            const SuccessCkcCreateNft(),
           dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATING,
-            stepCreate: '3',
-          ),
-          dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_NOT_CREATE,
-            stepCreate: '4',
-          ),
+          if (!widget.isSuccess)
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_NOT_CREATE,
+              stepCreate: '4',
+            )
+          else
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_CREATING,
+              stepCreate: '4',
+            ),
         ],
       ),
     );

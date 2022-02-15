@@ -19,16 +19,6 @@ MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top],
-  );
-  SystemChrome.setSystemUIOverlayStyle(
-     SystemUiOverlayStyle(
-      systemNavigationBarColor:
-          Colors.white10.withOpacity(0.02), // navigation bar colorstatus bar color
-    ),
-  );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await PrefsService.init();
   SystemChrome.setSystemUIOverlayStyle(

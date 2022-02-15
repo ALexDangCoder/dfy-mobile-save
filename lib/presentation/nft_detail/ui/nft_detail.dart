@@ -1003,7 +1003,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
-              isScrollable: true,
               onTap: (value) {
                 pageController.animateToPage(
                   value,

@@ -280,6 +280,7 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
                 context,
                 EvaluationResult(
                   assetID: assetID,
+                  isSuccess: true,
                 ),
               ),
             );
