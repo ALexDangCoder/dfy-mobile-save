@@ -447,7 +447,7 @@ class _BuyNFTState extends State<BuyNFT> {
             refresh();
           },
           textEmpty: '',
-          child: BaseBottomSheet(
+          child: BaseDesignScreen(
             isImage: true,
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',

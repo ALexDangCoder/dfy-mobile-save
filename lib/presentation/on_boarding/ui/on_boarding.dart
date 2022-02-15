@@ -35,7 +35,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: S.current.how_to_create_hard_nft,
       isImage: false,
       isLockTextInSetting: true,

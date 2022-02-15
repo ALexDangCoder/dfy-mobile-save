@@ -34,7 +34,7 @@ class _EmailExistedState extends State<EmailExisted> {
         onTap: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: BaseBottomSheet(
+      body: BaseDesignScreen(
         title: S.current.enter_email,
         child: Column(
           children: [

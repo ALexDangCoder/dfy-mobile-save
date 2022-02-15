@@ -32,7 +32,7 @@ class Step1WhenSubmit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: S.current.provide_hard_nft_info,
       bottomBar: Container(
         padding: EdgeInsets.only(bottom: 38.h),

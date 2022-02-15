@@ -66,7 +66,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
       },
       bloc: widget.cubit,
       builder: (context, state) {
-        return BaseBottomSheet(
+        return BaseDesignScreen(
           title: S.current.prv_key_ft_seed_phr,
           text: ImageAssets.ic_close,
           isImage: true,

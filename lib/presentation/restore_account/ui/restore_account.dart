@@ -146,7 +146,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 return Future.value(true);
               }
             },
-            child: BaseBottomSheet(
+            child: BaseDesignScreen(
               title: S.current.restore_account,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),

@@ -507,7 +507,7 @@ class _PlaceBidState extends State<PlaceBid> {
       error: AppException(S.current.error, S.current.something_went_wrong),
       retry: () async {},
       textEmpty: '',
-      child: BaseBottomSheet(
+      child: BaseDesignScreen(
         title: S.current.place_a_bid,
         isImage: true,
         text: ImageAssets.ic_close,

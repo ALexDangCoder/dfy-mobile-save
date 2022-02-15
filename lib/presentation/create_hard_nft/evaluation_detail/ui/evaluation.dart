@@ -72,7 +72,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   Widget content(EvaluationState state) {
     if (state is DetailEvaluationResult) {
       final Evaluation evaluation = state.evaluation;
-      return BaseBottomSheet(
+      return BaseDesignScreen(
         text: ImageAssets.ic_close,
         isImage: true,
         title: S.current.evaluation_results,
