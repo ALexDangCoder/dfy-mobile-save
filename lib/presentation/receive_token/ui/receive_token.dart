@@ -85,7 +85,7 @@ class _ReceiveState extends State<Receive> {
           await receiveCubit.getListPrice(widget.symbol ?? '');
         },
         textEmpty: '',
-        child: BaseBottomSheet(
+        child: BaseDesignScreen(
           title: textTitle(widget.type),
           child: CustomRefreshIndicator(
             onRefresh: widget.type == TokenType.QR

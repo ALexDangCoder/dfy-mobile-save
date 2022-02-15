@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/detail_asset_hard_nft_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
 import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/create_hard_nft_service.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
@@ -36,11 +38,13 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
   @override
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
     int cityId,
+    int assetTypeId,
   ) {
     return runCatchingAsync<ListEvaluatorsCityResponse,
         List<EvaluatorsCityModel>>(
       () => _client.getListEvaluatorsCity(
         cityId,
+        assetTypeId,
       ),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
@@ -87,7 +91,12 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
   ) {
     return runCatchingAsync<CreateEvaluationResponse, CreateEvaluationModel>(
       () => _client.createEvaluation(
-          appointmentTime, assetId, bcTxnHash, evaluatorAddress, evaluatorId),
+        appointmentTime,
+        assetId,
+        bcTxnHash,
+        evaluatorAddress,
+        evaluatorId,
+      ),
       (response) => response.item?.toDomain() ?? CreateEvaluationModel(),
     );
   }
@@ -108,24 +117,38 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
   }
 
   @override
-  Future<Result<String>> confirmAcceptEvaluationToBE(String bcTxnHash, String evaluationID) {
+  Future<Result<String>> confirmAcceptEvaluationToBE(
+    String bcTxnHash,
+    String evaluationID,
+  ) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmAcceptEvaluation(
+      () => _client.confirmAcceptEvaluation(
         evaluationID,
         bcTxnHash,
       ),
-          (response) => response.code ?? '',
+      (response) => response.code ?? '',
     );
   }
 
   @override
-  Future<Result<String>> confirmRejectEvaluationToBE(String bcTxnHash, String evaluationID) {
+  Future<Result<String>> confirmRejectEvaluationToBE(
+    String bcTxnHash,
+    String evaluationID,
+  ) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmRejectEvaluation(
+      () => _client.confirmRejectEvaluation(
         evaluationID,
         bcTxnHash,
       ),
-          (response) => response.code ?? '',
+      (response) => response.code ?? '',
+    );
+  }
+
+  @override
+  Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(String assetId) {
+    return runCatchingAsync<DetailAssetHardNftResponse, DetailAssetHardNft>(
+      () => _client.getDetailAssetHardNFT(assetId),
+      (response) => response.item?.toDomain() ?? DetailAssetHardNft(),
     );
   }
 }

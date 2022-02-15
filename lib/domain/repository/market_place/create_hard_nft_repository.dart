@@ -1,5 +1,5 @@
-
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
@@ -14,7 +14,8 @@ mixin CreateHardNFTRepository {
   );
 
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
-    int cityId,
+      int cityId,
+      int assetTypeId,
   );
 
   Future<Result<EvaluatorsDetailModel>> getEvaluatorsDetail(
@@ -37,14 +38,21 @@ mixin CreateHardNFTRepository {
   );
 
   Future<Result<List<EvaluationResult>>> getListEvaluationResult(
-      String assetId, String page,
-      );
+    String assetId,
+    String page,
+  );
 
   Future<Result<String>> confirmRejectEvaluationToBE(
-      String bcTxnHash, String evaluationID,
-      );
+    String bcTxnHash,
+    String evaluationID,
+  );
 
   Future<Result<String>> confirmAcceptEvaluationToBE(
-      String bcTxnHash, String evaluationID,
-      );
+    String bcTxnHash,
+    String evaluationID,
+  );
+
+  Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(
+    String assetId,
+  );
 }

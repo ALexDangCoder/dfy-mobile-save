@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -55,10 +57,10 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
     return StreamListenerCustom(
       listen: (event) async {
         await cubit.checkStatusLogin();
-        await cubit.getBalance(
+        unawaited(cubit.getBalance(
           walletAddress: cubit.wallet?.address ?? '',
           context: context,
-        );
+        ));
       },
       stream: cubit.isHaveWalletStream,
       child: StreamBuilder<LoginStatus>(
@@ -293,7 +295,6 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
               );
             } else {
               return WalletDialogWhenLoggedCore(
-                balance: cubit.balanceSubject.value,
                 cubit: cubit,
                 wallet: cubit.wallet ?? Wallet(),
                 navigationTo: widget.navigationTo,

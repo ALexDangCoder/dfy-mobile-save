@@ -56,7 +56,7 @@ class _BodyState extends State<_Body> {
       stream: widget.bloc.privateKeySubject,
       builder: (context, snapshotModel) {
         if (snapshotModel.hasData) {
-          return BaseBottomSheet(
+          return BaseDesignScreen(
             title: S.current.prv_key_ft_seed_phr,
             isImage: true,
             onRightClick: () {

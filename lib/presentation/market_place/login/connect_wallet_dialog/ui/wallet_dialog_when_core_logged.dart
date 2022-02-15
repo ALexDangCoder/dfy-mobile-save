@@ -17,20 +17,30 @@ import 'package:Dfy/widgets/stream/stream_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WalletDialogWhenLoggedCore extends StatelessWidget {
+class WalletDialogWhenLoggedCore extends StatefulWidget {
   const WalletDialogWhenLoggedCore({
     Key? key,
     required this.cubit,
     required this.wallet,
-    required this.balance,
     required this.isRequireLoginEmail,
     this.navigationTo,
   }) : super(key: key);
   final ConnectWalletDialogCubit cubit;
   final Wallet wallet;
-  final double balance;
   final Widget? navigationTo;
   final bool isRequireLoginEmail;
+
+  @override
+  State<WalletDialogWhenLoggedCore> createState() =>
+      _WalletDialogWhenLoggedCoreState();
+}
+
+class _WalletDialogWhenLoggedCoreState
+    extends State<WalletDialogWhenLoggedCore> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +56,8 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
         }
         final nav = Navigator.of(context);
         showLoading(context);
-        final bool checkSuccess = await cubit.loginAndSaveInfo(
-          walletAddress: cubit.wallet?.address ?? '',
+        final bool checkSuccess = await widget.cubit.loginAndSaveInfo(
+          walletAddress: widget.cubit.wallet?.address ?? '',
           signature: value,
         );
         hideLoading(context);
@@ -56,10 +66,10 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
           final userProfile = userProfileFromJson(data);
           final String email = userProfile.email ?? '';
           if (email.isNotEmpty) {
-            if (navigationTo != null) {
+            if (widget.navigationTo != null) {
               unawaited(
                 nav.pushReplacement(
-                  MaterialPageRoute(builder: (context) => navigationTo!),
+                  MaterialPageRoute(builder: (context) => widget.navigationTo!),
                 ),
               );
               return;
@@ -68,7 +78,7 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
               return;
             }
           }
-          if (!isRequireLoginEmail) {
+          if (!widget.isRequireLoginEmail) {
             //không yêu cầu login email:
             nav.pop();
             final bool isNeedShowDialog =
@@ -79,17 +89,17 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => ConnectEmailDialog(
-                      navigationTo: navigationTo,
+                      navigationTo: widget.navigationTo,
                     ),
                   ),
                 );
               }
             } else {
-              if (navigationTo != null) {
+              if (widget.navigationTo != null) {
                 unawaited(
                   nav.pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => navigationTo!,
+                      builder: (context) => widget.navigationTo!,
                     ),
                   ),
                 );
@@ -120,7 +130,7 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
           );
         }
       },
-      stream: cubit.signatureStream,
+      stream: widget.cubit.signatureStream,
       child: GestureDetector(
         onTap: () => Navigator.pop(context),
         child: Scaffold(
@@ -154,12 +164,11 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
                           txtConnectWallet(),
                           spaceH27,
                           informationWallet(
-                            addressWallet: wallet.address ?? '',
-                            nameWallet: wallet.name ?? '',
-                            moneyWallet: balance,
+                            addressWallet: widget.wallet.address ?? '',
+                            nameWallet: widget.wallet.name ?? '',
                             nameToken: 'BNB',
                             imgWallet: '${ImageAssets.image_avatar}'
-                                '${cubit.randomAvatar()}'
+                                '${widget.cubit.randomAvatar()}'
                                 '.png',
                           )
                         ],
@@ -169,8 +178,8 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
                       bottom: 0.h,
                       child: GestureDetector(
                         onTap: () {
-                          cubit.getSignature(
-                            walletAddress: wallet.address ?? '',
+                          widget.cubit.getSignature(
+                            walletAddress: widget.wallet.address ?? '',
                             context: context,
                           );
                         },
@@ -210,7 +219,6 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
     required String nameToken,
     required String nameWallet,
     required String addressWallet,
-    required double moneyWallet,
     required String imgWallet,
   }) {
     return Row(
@@ -259,17 +267,27 @@ class WalletDialogWhenLoggedCore extends StatelessWidget {
             ),
             spaceH2,
             StreamBuilder<Object>(
-              stream: cubit.balanceStream,
-              initialData: 0,
+              stream: widget.cubit.balanceStream,
               builder: (context, snapshot) {
-                return Text(
-                  '${snapshot.data ?? 0} $nameToken',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    16,
-                    FontWeight.w400,
-                  ),
-                );
+                if (snapshot.hasData) {
+                  return Text(
+                    '${snapshot.data ?? 0} $nameToken',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  );
+                } else {
+                  return Text(
+                    S.current.loading_text,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  );
+                }
               },
             ),
           ],

@@ -23,7 +23,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'no_evaulation_result.dart';
 
 class EvaluationResult extends StatefulWidget {
-  const EvaluationResult({Key? key}) : super(key: key);
+  final String assetId;
+
+  const EvaluationResult({
+    Key? key,
+    required this.assetId,
+  }) : super(key: key);
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -35,9 +40,10 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult('6201eb134aec3d7ec50a7499');
-    cubit.reloadAPI('6201eb134aec3d7ec50a7499');
+    cubit.getListEvaluationResult(widget.assetId);
+    cubit.reloadAPI(widget.assetId);
   }
+
   @override
   void dispose() {
     cubit.close();
@@ -54,7 +60,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult('6201eb134aec3d7ec50a7499');
+            await cubit.getListEvaluationResult(widget.assetId);
           },
           textEmpty: '',
           child: content(state),
@@ -66,7 +72,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
   Widget content(EvaluationHardNftResultState state) {
     if (state is EvaluationResultSuccess) {
       final listEvaluation = state.list;
-      return BaseBottomSheet(
+      return BaseDesignScreen(
         text: ImageAssets.ic_close,
         isImage: true,
         title: S.current.evaluation_results,
@@ -80,7 +86,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
               RefreshIndicator(
                 onRefresh: () async {
                   await cubit
-                      .getListEvaluationResult('6201eb134aec3d7ec50a7499');
+                      .getListEvaluationResult(widget.assetId);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

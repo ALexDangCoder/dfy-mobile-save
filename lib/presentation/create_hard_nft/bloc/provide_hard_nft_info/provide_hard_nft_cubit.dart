@@ -1,10 +1,8 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
@@ -54,6 +52,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
+  bool inputFormValidate = false;
+
   ///api
   ///convert to map to use in cool dropdown
   List<Map<String, dynamic>> phonesCode = [];
@@ -70,7 +70,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<HardNftTypeModel> listHardNftType = [];
 
   List<bool> listChangeColorFtChoose = [
-    false,
+    true,
     false,
     false,
     false,
@@ -80,7 +80,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   BehaviorSubject<List<bool>> listChangeColorFtChooseBHVSJ =
       BehaviorSubject.seeded([
-    false,
+    true,
     false,
     false,
     false,
@@ -90,14 +90,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///id is index
   void chooseTypeNft({required int index}) {
-    bool result = false;
-    if (listChangeColorFtChoose[index]) {
-      result = false;
-    } else {
-      result = true;
-    }
     listChangeColorFtChoose = List.filled(6, false);
-    listChangeColorFtChoose[index] = result;
+    listChangeColorFtChoose[index] = true;
     listChangeColorFtChooseBHVSJ.sink.add(listChangeColorFtChoose);
   }
 
@@ -154,29 +148,28 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   String? validateHardNftName(String value) {
     if (value.isEmpty) {
       return S.current.name_required;
-    }
-    if (value.length > 255) {
+    } else if (value.length > 255) {
       return S.current.maximum_255;
     } else {
       return null;
     }
   }
 
-  String validateAmountToken(String value) {
+  String? validateAmountToken(String value) {
     if (value.isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
     } else {
-      return '';
+      return null;
     }
   }
 
-  String validateFormAddProperty(String value) {
+  String? validateFormAddProperty(String value) {
     if (value.length > 30) {
       return S.current.maximum_30;
     } else {
-      return '';
+      return null;
     }
   }
 
@@ -191,11 +184,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     return null;
   }
 
-  String validateEmail(String value) {
+  String? validateEmail(String value) {
     if (!regexEmail.hasMatch(value)) {
       return S.current.invalid_email;
     } else {
-      return '';
+      return null;
     }
   }
 
@@ -247,6 +240,20 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   List<Map<String, dynamic>> tokensMap = [];
 
+  String checkConnectWL = '';
+
+  bool checkConnectWallet() {
+    if (checkConnectWL.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  String resultCurrentBeWallet() {
+    return checkConnectWL = PrefsService.getCurrentBEWallet();
+  }
+
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
@@ -258,6 +265,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           {
             'value': element.id,
             'label': element.symbol,
+            'symbol': element.symbol ?? DFY,
             'icon': SizedBox(
               width: 20.w,
               height: 20.h,
@@ -352,9 +360,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  void navigatorToConfirmInfo() {
-    emit(ProvideHardNftConfirmInfo());
-  }
+  void navigatorToConfirmInfo() {}
 
   List<Map<String, dynamic>> loadingDataDropDown = [
     {'label': 'loading'},
@@ -376,6 +382,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       }
     }
     return false;
+  }
+
+  void checkAllValidate() {
+    if (inputFormValidate) {
+      nextBtnBHVSJ.sink.add(true);
+    } else {
+      nextBtnBHVSJ.sink.add(false);
+    }
   }
 
   Future<void> getCitiesApi(dynamic id) async {
@@ -423,12 +437,41 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
-  //todo
-  // bool validateAllDataBeforeSubmit() {
-  //   if (dataStep1.amountToken == 0 || dataStep1.nameContact.isEmpty ||
-  //       dataStep1.phoneContact.isEmpty || dataStep1.country.isEmpty)
-  //     return true;
-  // }
+  Map<String, bool> mapValidate = {
+    'connectWallet': true,
+    'mediaFiles': true,
+    'inputForm': false,
+    'condition': false,
+    'country': false,
+    'city': false,
+    'phone': false,
+  };
+
+  void validateAll() {
+    if (mapValidate.containsValue(false)) {
+      nextBtnBHVSJ.sink.add(false);
+    } else {
+      nextBtnBHVSJ.sink.add(true);
+    }
+  }
+
+  BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(false);
+
+  bool validateAllDataBeforeSubmit() {
+    if ((dataStep1.conditionNft.name ?? '').isEmpty ||
+        dataStep1.amountToken == 0 ||
+        dataStep1.nameContact.isEmpty ||
+        dataStep1.phoneContact.isEmpty ||
+        (dataStep1.country.name ?? '').isEmpty ||
+        (dataStep1.city.name ?? '').isEmpty ||
+        dataStep1.addressContact.isEmpty) {
+      nextBtnBHVSJ.sink.add(true);
+      return true;
+    } else {
+      nextBtnBHVSJ.sink.add(false);
+      return false;
+    }
+  }
 
   void showHideDropDownBtn({
     DropDownBtnType? typeDropDown,
@@ -449,6 +492,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
+  void createModel() {
+    dataStep1.mediaFiles = listPathImage;
+    dataStep1.documents = listPathDocument;
+  }
+
   List<DocumentModel> documents = [
     DocumentModel('Giay phep kinh doanh', 'pdf'),
     DocumentModel('Giay phep Su dung', 'doc'),
@@ -456,7 +504,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Step1PassingModel dataStep1 = Step1PassingModel(
     hardNftName: '',
-    tokenInfo: TokenInf(),
+    tokenInfo: TokenInf(id: 1, symbol: 'DFY'),
     nameContact: '',
     emailContact: '',
     phoneContact: '',
@@ -467,7 +515,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     wallet: '',
     collection: '',
     properties: [],
-    informationNft: '',
     amountToken: 0,
     nameNftType: '',
     conditionNft: ConditionModel(),
@@ -477,6 +524,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       id: 0,
       name: S.current.jewelry,
     ),
+    mediaFiles: [],
   );
 }
 
@@ -498,18 +546,19 @@ class Step1PassingModel {
   String collection;
   String additionalInfo;
   List<PropertyModel> properties;
-  String informationNft;
   double amountToken;
   TokenInf tokenInfo;
   String nameNftType;
   ConditionModel conditionNft;
-  List<DocumentModel> documents;
+  List<String> documents;
+  List<String> mediaFiles;
   HardNftTypeModel hardNftType;
   PhoneCodeModel phoneCodeModel;
   CityModel city;
 
   Step1PassingModel({
     required this.hardNftName,
+    required this.mediaFiles,
     required this.phoneCodeModel,
     required this.hardNftType,
     required this.city,
@@ -522,7 +571,6 @@ class Step1PassingModel {
     required this.wallet,
     required this.collection,
     required this.properties,
-    required this.informationNft,
     required this.amountToken,
     required this.tokenInfo,
     required this.nameNftType,

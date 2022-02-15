@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// padding bottom is 38, use common for bts have button
 /// if has right icon or text, assign value for arg text
 /// if this is arg text is image isImage = true, opposite with text
-class BaseBottomSheet extends StatelessWidget {
+class BaseDesignScreen extends StatelessWidget {
   final String title;
   final Widget child;
   final String? text;
@@ -21,8 +21,10 @@ class BaseBottomSheet extends StatelessWidget {
   final Widget? widget;
   final Widget? bottomBar;
   final bool resizeBottomInset;
+  final Function()? onLeftClick;
+  final bool isCustomLeftClick;
 
-  const BaseBottomSheet({
+  const BaseDesignScreen({
     Key? key,
     required this.title,
     required this.child,
@@ -34,6 +36,8 @@ class BaseBottomSheet extends StatelessWidget {
     this.widget,
     this.resizeBottomInset = false,
     this.bottomBar,
+    this.onLeftClick,
+    this.isCustomLeftClick = false,
   }) : super(key: key);
 
   @override
@@ -46,8 +50,8 @@ class BaseBottomSheet extends StatelessWidget {
         body: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: bottomBar != null ? 665.h : 764.h,
             width: 375.w,
+            margin: EdgeInsets.only(top: 46.h),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: const BorderRadius.only(
@@ -68,9 +72,11 @@ class BaseBottomSheet extends StatelessWidget {
                         if (isHaveLeftIcon)
                           Flexible(
                             child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
+                              onTap: isCustomLeftClick
+                                  ? onLeftClick
+                                  : () {
+                                      Navigator.pop(context);
+                                    },
                               child: Container(
                                 margin: EdgeInsets.only(
                                   left: 11.w,

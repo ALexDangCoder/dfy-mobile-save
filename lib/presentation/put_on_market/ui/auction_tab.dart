@@ -13,7 +13,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
@@ -69,6 +68,12 @@ class _AuctionTabState extends State<AuctionTab>
     _putOnMarketModel.numberOfCopies = 1;
     dateStartController.text = now;
     dateEndController.text = now;
+    widget.cubit.changeTokenSale(
+      indexToken: 0,
+    );
+    _putOnMarketModel.tokenAddress =
+        widget.cubit.listToken[0].address ?? '';
+    _tokenInf = widget.cubit.listToken[0];
     super.initState();
   }
 
@@ -97,6 +102,9 @@ class _AuctionTabState extends State<AuctionTab>
           errorTextEndTime = S.current.min_duration_auction;
         });
       }
+      // todo
+
+
       // else if (difference < 12) {
       //   setState(() {
       //     errorTextStartTime = null;
@@ -202,87 +210,67 @@ class _AuctionTabState extends State<AuctionTab>
               const SizedBox(
                 height: 4,
               ),
-              StreamBuilder<List<TokenInf>>(
-                stream: widget.cubit.listTokenStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data ?? [];
-                  if (data.isNotEmpty) {
-                    widget.cubit.changeTokenSale(
-                      indexToken: 0,
-                    );
-                    _putOnMarketModel.tokenAddress =
-                        widget.cubit.listToken[0].address ?? '';
-                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                      if (_tokenInf == null) {
-                        setState(() {
-                          _tokenInf = widget.cubit.listToken[0];
-                        });
-                      }
-                    });
-                  }
-                  return InputWithSelectType(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,5}'),
-                      ),
-                    ],
-                    maxSize: 100,
-                    keyboardType: TextInputType.number,
-                    typeInput: data
-                        .map(
-                          (e) => SizedBox(
-                            height: 64,
-                            width: 70,
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  child: Image.network(
-                                    e.iconUrl ?? '',
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Flexible(
-                                  child: Text(
-                                    e.symbol ?? '',
-                                    style: textValueNFT.copyWith(
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                )
-                              ],
+              InputWithSelectType(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d+\.?\d{0,5}'),
+                  ),
+                ],
+                maxSize: 100,
+                keyboardType: TextInputType.number,
+                typeInput: widget.cubit.listToken
+                    .map(
+                      (e) => SizedBox(
+                    height: 64,
+                    width: 70,
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Image.network(
+                            e.iconUrl ?? '',
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            e.symbol ?? '',
+                            style: textValueNFT.copyWith(
+                              decoration: TextDecoration.none,
                             ),
                           ),
                         )
-                        .toList(),
-                    hintText: S.current.enter_price,
-                    onChangeType: (index) {
-                      widget.cubit.changeTokenAuction(
-                        indexToken: index,
-                      );
-                      _putOnMarketModel.tokenAddress =
-                          widget.cubit.listToken[index].address ?? '';
-                      setState(() {
-                        _tokenInf = widget.cubit.listToken[index];
-                      });
-                    },
-                    onchangeText: (value) {
-                      widget.cubit.changeTokenAuction(
-                        value: value != '' ? double.parse(value) : 0,
-                      );
-                      _putOnMarketModel.price = value;
-                      if (!validateBuyOutPrice()) {
-                        setState(() {
-                          buyOutPriceErrorText = S.current.buy_out_price_error;
-                        });
-                      } else {
-                        setState(() {
-                          buyOutPriceErrorText = null;
-                        });
-                      }
-                    },
+                      ],
+                    ),
+                  ),
+                )
+                    .toList(),
+                hintText: S.current.enter_price,
+                onChangeType: (index) {
+                  widget.cubit.changeTokenAuction(
+                    indexToken: index,
                   );
+                  _putOnMarketModel.tokenAddress =
+                      widget.cubit.listToken[index].address ?? '';
+                  setState(() {
+                    _tokenInf = widget.cubit.listToken[index];
+                  });
+                },
+                onchangeText: (value) {
+                  widget.cubit.changeTokenAuction(
+                    value: value != '' ? double.parse(value) : 0,
+                  );
+                  _putOnMarketModel.price = value;
+                  if (!validateBuyOutPrice()) {
+                    setState(() {
+                      buyOutPriceErrorText = S.current.buy_out_price_error;
+                    });
+                  } else {
+                    setState(() {
+                      buyOutPriceErrorText = null;
+                    });
+                  }
                 },
               ),
               const SizedBox(
@@ -870,7 +858,7 @@ class _AuctionTabState extends State<AuctionTab>
                           context: context,
                           builder: (_) => BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child: AlertDialog(
+                            child:  AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
                               content: PickTime(

@@ -72,7 +72,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   Widget content(EvaluationState state) {
     if (state is DetailEvaluationResult) {
       final Evaluation evaluation = state.evaluation;
-      return BaseBottomSheet(
+      return BaseDesignScreen(
         text: ImageAssets.ic_close,
         isImage: true,
         title: S.current.evaluation_results,
@@ -199,12 +199,14 @@ Widget _buildButtonReject(
             /// PUT REJECT TO BE
             await cubit.rejectEvaluationToBE(
                 bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
-            showLoadSuccess(context).then(
-              (value) => goTo(
-                context,
-                const EvaluationResult(),
-              ),
-            );
+            showLoadSuccess(context)//.then(
+              //(value) =>
+              //     goTo(
+              //   context,
+              //   const EvaluationResult(),
+              // ),
+            //)
+            ;
           },
           onErrorSign: (context) {
             showLoadFail(context);
@@ -263,14 +265,14 @@ Widget _buildButtonAccept(
         Approve(
           hexString: hexString,
           onSuccessSign: (context, data) async {
-            await cubit.acceptEvaluationToBE(
-                bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
-            showLoadSuccess(context).then(
-              (value) => goTo(
-                context,
-                const EvaluationResult(),
-              ),
-            );
+            // await cubit.acceptEvaluationToBE(
+            //     bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
+            // showLoadSuccess(context).then(
+            //   (value) => goTo(
+            //     context,
+            //      EvaluationResult(),
+            //   ),
+            // );//todo
           },
           onErrorSign: (context) {
             showLoadFail(context);

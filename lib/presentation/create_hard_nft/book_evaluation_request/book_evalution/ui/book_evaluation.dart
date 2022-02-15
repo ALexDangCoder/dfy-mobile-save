@@ -2,28 +2,31 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
-import 'package:Dfy/domain/model/market_place/step_two_passing_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookEvaluation extends StatefulWidget {
-  final StepTwoPassingModel? stepTwoPassing;
   final List<AppointmentModel> appointmentList;
+  final bool isSuccess;
+  final String assetId;
 
   const BookEvaluation({
     Key? key,
-    required this.stepTwoPassing,
     required this.appointmentList,
+    required this.isSuccess,
+    required this.assetId,
   }) : super(key: key);
 
   @override
@@ -37,14 +40,22 @@ class _BookEvaluationState extends State<BookEvaluation> {
   void initState() {
     super.initState();
     bloc = BlocBookEvaluation();
-    bloc.stepTwoPassingModel = widget.stepTwoPassing;
-    bloc.getListPawnShopStar(cityId: widget.stepTwoPassing?.cityId ?? 0);
+    bloc.assetId = widget.assetId;
+    bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.appointmentList = widget.appointmentList;
+    bloc.isSuccess=widget.isSuccess;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
+      isCustomLeftClick: true,
+      onLeftClick: () {
+        goTo(
+          context,
+          ListBookEvaluation(assetId: bloc.assetId ?? ''),
+        );
+      },
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
@@ -54,7 +65,10 @@ class _BookEvaluationState extends State<BookEvaluation> {
       child: Column(
         children: [
           spaceH24,
-          const StepAppBar(),
+          StepAppBar(
+            assetId: widget.assetId,
+            isSuccess: widget.isSuccess,
+          ),
           spaceH16,
           Expanded(
             child: SingleChildScrollView(
@@ -129,12 +143,14 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
+                                            appointmentList: widget.appointmentList,
+                                        isSuccess: widget.isSuccess,
                                         date: bloc.getDate(
                                           list[index].id ?? '',
                                         ),
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.CREATE,
-                                       stepTwoPassing: bloc.stepTwoPassingModel,
+                                        assetId: bloc.assetId ?? '',
                                       ),
                                     ),
                                   );
@@ -144,7 +160,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
-                                        stepTwoPassing: widget.stepTwoPassing,
+                                            isSuccess: widget.isSuccess,
+                                        appointmentList: widget.appointmentList,
+                                        assetId: bloc.assetId ?? '',
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.NEW_CREATE,
                                       ),
@@ -168,6 +186,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                       );
                     },
                   ),
+                  spaceH32,
                 ],
               ),
             ),
