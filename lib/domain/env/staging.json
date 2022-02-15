@@ -2,7 +2,7 @@
   "type": "staging",
   "base_url": "https://staginggw.defiforyou.uk/",
   "base_image_url": "https://staginggw.defiforyou.uk/",
-  "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545",
+  "rpc_url": "https://data-seed-prebsc-2-s2.binance.org:8545",
   "chain_id": "97",
   "bsc_scan": "https://testnet.bscscan.com/",
   "base_url_pinata": "https://api.pinata.cloud/",
