@@ -10,8 +10,8 @@ import 'package:Dfy/presentation/send_offer/ui/day_drop_down.dart';
 import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
@@ -67,9 +67,10 @@ class _SendOfferState extends State<SendOffer> {
                 header: Column(
                   children: [
                     buildRowCustom(
-                      title: S.current.from,
+                      title: '${S.current.from}:',
                       child: Text(
-                        PrefsService.getCurrentBEWallet(),
+                        PrefsService.getCurrentBEWallet()
+                            .formatAddress(index: 10),
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -78,10 +79,10 @@ class _SendOfferState extends State<SendOffer> {
                       ),
                     ),
                     buildRowCustom(
-                      title: S.current.to,
+                      title: '${S.current.to}:',
                       child: Text(
                         (widget.nftOnPawn.walletAddress ?? '')
-                            .formatAddressWalletConfirm(),
+                            .formatAddress(index: 10),
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
