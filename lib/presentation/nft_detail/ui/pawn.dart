@@ -234,7 +234,7 @@ Widget _buildButtonCancelOnPawn(
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
-    child: nftMarket.status == 7
+    child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
             S.current.cancel_pawn,
