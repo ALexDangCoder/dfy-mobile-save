@@ -263,13 +263,13 @@ Container _priceContainerOnAuction({
             ),
             Expanded(
               child: Text(
-                formatUSD.format(
+                '~ ${formatUSD.format(
                   isBidding
                       ? ((nftOnAuction.reservePrice ?? 0) *
                           (nftOnAuction.usdExchange ?? 0))
                       : ((nftOnAuction.currentPrice ?? 0) *
                           (nftOnAuction.usdExchange ?? 0)),
-                ),
+                )}',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                   14,

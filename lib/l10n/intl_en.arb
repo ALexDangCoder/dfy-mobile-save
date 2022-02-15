@@ -736,5 +736,6 @@
   "sat": "SATURDAY",
   "sun": "SUNDAY",
   "submit": "Submit",
-  "phone": "Phone"
+  "phone": "Phone",
+  "collections": "Collections"
 }
