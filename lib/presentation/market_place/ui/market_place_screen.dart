@@ -50,8 +50,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
+    // SystemChrome.setEnabledSystemUIMode(
+    //     SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
     super.build(context);
     return BlocBuilder<MarketplaceCubit, MarketplaceState>(
       bloc: cubit,

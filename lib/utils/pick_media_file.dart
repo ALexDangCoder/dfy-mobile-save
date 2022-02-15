@@ -59,12 +59,16 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
 Future<String> pickImageFunc({
   required String imageType,
   required String tittle,
+  bool needCrop = true,
 }) async {
   String filePath = '';
   try {
     final newImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (newImage == null) {
       return '';
+    }
+    if (!needCrop){
+      return newImage.path;
     }
     final List<CropAspectRatioPreset> presetAndroid = imageType == AVATAR_PHOTO
         ? [
