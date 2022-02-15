@@ -3,6 +3,7 @@ import Flutter
 import WalletCore
 import BigInt
 import GoogleMaps
+import CryptoSwift
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -13,8 +14,8 @@ import GoogleMaps
     private let TYPE_WALLET_PRIVATE_KEY = "PRIVATE_KEY"
     
     private let TOKEN_BNB_ADDRESS = "0x0000000000000000000000000000000000000000"
-    private let TOKEN_DFY_ADDRESS = "0xD98560689C6e748DC37bc410B4d3096B1aA3D8C2"
-//    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+//    private let TOKEN_DFY_ADDRESS = "0xD98560689C6e748DC37bc410B4d3096B1aA3D8C2"
+    private let TOKEN_DFY_ADDRESS = "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
 
     
     private let TYPE_EARSE_WALLET = "earse_wallet"
@@ -49,6 +50,13 @@ import GoogleMaps
 extension AppDelegate {
     private func handleMethodCall(call: FlutterMethodCall, result: FlutterResult) {
         guard self.chatChanel != nil else { return }
+        
+        if call.method == "signWallet" {
+            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? [Int] {
+                result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
+            }
+        }
+        
         if call.method == "getNFT" {
             if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String {
                 result(getNFT(walletAddress: walletAddress))
@@ -180,11 +188,7 @@ extension AppDelegate {
             }
         }
         
-        if call.method == "signWallet" {
-            if let arguments = call.arguments as? [String: Any], let walletAddress = arguments["walletAddress"] as? String, let bytesSha3 = arguments["bytesSha3"] as? FlutterStandardTypedData {
-                result(signWallet(walletAddress: walletAddress, bytesSha3: bytesSha3))
-            }
-        }
+        
         
         result(FlutterMethodNotImplemented)
     }
@@ -836,14 +840,17 @@ extension AppDelegate {
         return param
     }
     
-    private func signWallet(walletAddress: String, bytesSha3: FlutterStandardTypedData) -> [String: Any] {
+    private func signWallet(walletAddress: String, bytesSha3: [Int]) -> [String: Any] {
         var param = [String: Any]()
         let walletModel = SharedPreference.shared.getListWallet().first(where: { $0.walletAddress == walletAddress })
         if walletModel != nil && !walletModel!.privateKey.isEmpty {
             if let privateKeyData = walletModel?.privateKey.hexadecimal {
                 let privateKey = PrivateKey(data: privateKeyData)
                 if let privKey = privateKey {
-                    let originalMessageHashInHexCore = privKey.sign(digest: Data(bytesSha3.data), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
+                    let listUint8: [UInt8] = bytesSha3.map({UInt8($0)})
+                    let hashData = Data(listUint8)
+                    let hash = hashData.sha3(.keccak256)
+                    let originalMessageHashInHexCore = privKey.sign(digest: Data(hash), curve: Curve.secp256k1)?.hexEncodedString() ?? ""
                     if originalMessageHashInHexCore != "" {
                         let firstKey = Int( originalMessageHashInHexCore.substring(with: (originalMessageHashInHexCore.count-2)..<originalMessageHashInHexCore.count)) ?? 0
                         var signature = originalMessageHashInHexCore.substring(with: 0..<originalMessageHashInHexCore.count-2)
@@ -853,6 +860,8 @@ extension AppDelegate {
                             signature = signature + "1c"
                         }
                         param["signature"] = signature
+                    } else {
+                        param["signature"] = ""
                     }
                 } else {
                     param["signature"] = ""
@@ -867,6 +876,7 @@ extension AppDelegate {
         return param
     }
 }
+//signature    String    "db30c0ed110f54e747a21f745b507f48725f8ceada5668230d62aaccf06e20c042fc2b825580b9f4877854229967c61d72ad757c533b91ddb9988c66cc3500ed1c"
 
 extension Data {
     struct HexEncodingOptions: OptionSet {
