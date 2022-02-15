@@ -27,7 +27,7 @@ class ReceiveHardNFTScreen extends StatelessWidget {
     const String tokenSymbol = 'DFY';
     final String tokenIcon = ImageAssets.getSymbolAsset('DFY');
     const bool isVerify = true;
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {

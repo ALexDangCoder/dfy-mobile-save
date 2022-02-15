@@ -69,7 +69,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: BaseBottomSheet(
+        body: BaseDesignScreen(
           title: S.current.enter_email,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

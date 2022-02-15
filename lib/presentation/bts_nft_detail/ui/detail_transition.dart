@@ -28,7 +28,7 @@ class TransactionDetail extends StatelessWidget {
     final String? nonce = obj.nonce;
     final String? isSuccess = obj.status;
     final appConstants = Get.find<AppConstants>();
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: S.current.detail_transaction,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),

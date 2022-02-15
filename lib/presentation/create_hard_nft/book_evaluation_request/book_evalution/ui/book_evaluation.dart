@@ -48,7 +48,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       isCustomLeftClick: true,
       onLeftClick: () {
         goTo(

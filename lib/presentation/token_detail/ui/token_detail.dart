@@ -66,7 +66,7 @@ class TokenDetail extends StatelessWidget {
       stream: bloc.tokenStream,
       builder: (context, snapshot) {
         final modelToken = snapshot.data ?? token;
-        return BaseBottomSheet(
+        return BaseDesignScreen(
           title: modelToken.nameShortToken,
           child: Column(
             children: [

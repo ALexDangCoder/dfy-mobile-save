@@ -96,7 +96,7 @@ class _BodyState extends State<_Body> {
       },
       bloc: widget.bloc,
       builder: (context, _) {
-        return BaseBottomSheet(
+        return BaseDesignScreen(
           title: S.current.import_nft,
           child: Column(
             children: [

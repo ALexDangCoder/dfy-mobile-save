@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -89,8 +90,17 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     showLoading(context);
     if (loginStatusSubject.hasValue) {
       if (loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG) {
-        final double balance = await client.getBalanceOfBnb(ofAddress: walletAddress);
-        balanceSubject.sink.add(balance);
+        try {
+          final double balance =
+              await client.getBalanceOfBnb(ofAddress: walletAddress);
+          balanceSubject.sink.add(balance);
+        } catch (e) {
+          showErrDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
+        }
       }
     }
     hideLoading(context);
@@ -122,7 +132,6 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
       }
       return;
     }
-
     //Có ví, chưa login core - chưa login BE => yêu cầu login
     if (walletAddressCore.isEmpty &&
         walletConnectBE.isEmpty &&
@@ -209,14 +218,22 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
           final String nonce = res.data ?? '';
           final List<int> listNonce = nonce.codeUnits;
           final Uint8List bytesNonce = Uint8List.fromList(listNonce);
-          final List<int> listSha3 =
-              rHash.hashList(HashType.KECCAK_256, bytesNonce);
-          final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
-          final data = {
-            'walletAddress': walletAddress,
-            'bytesSha3': bytesSha3,
-          };
-          unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          if (Platform.isIOS) {
+            final data = {
+              'walletAddress': walletAddress,
+              'bytesSha3': listNonce,
+            };
+            unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          } else {
+            final List<int> listSha3 =
+                rHash.hashList(HashType.KECCAK_256, bytesNonce);
+            final Uint8List bytesSha3 = Uint8List.fromList(listSha3);
+            final data = {
+              'walletAddress': walletAddress,
+              'bytesSha3': bytesSha3,
+            };
+            unawaited(trustWalletChannel.invokeMethod('signWallet', data));
+          }
         },
         error: (error) {
           showErrDialog(

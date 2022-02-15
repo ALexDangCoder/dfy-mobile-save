@@ -85,7 +85,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             currentFocus.unfocus();
           }
         },
-        child: BaseBottomSheet(
+        child: BaseDesignScreen(
           bottomBar: Container(
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),

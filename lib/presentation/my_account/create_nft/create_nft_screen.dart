@@ -47,7 +47,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
         widget.cubit.getListTypeNFT();
       },
       error: AppException('', S.current.something_went_wrong),
-      child: BaseBottomSheet(
+      child: BaseDesignScreen(
         title: S.current.create_nft,
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -177,12 +177,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         ),
                       );
                     } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const OnBoardingScreen(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const OnBoardingScreen()));
                     }
                   }
                 },

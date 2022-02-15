@@ -247,7 +247,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             backgroundColor: Colors.black,
             body: Align(
               alignment: Alignment.bottomCenter,
-              child: BaseBottomSheet(
+              child: BaseDesignScreen(
                 title: titleBts,
                 child: Column(
                   children: [
