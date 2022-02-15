@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/detail_asset_hard_nft_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluation_result.dart';
 import 'package:Dfy/data/response/create_hard_nft/cancel_evaluation.dart';
 import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/create_hard_nft_service.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
@@ -126,6 +128,17 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
         bcTxnHash,
       ),
           (response) => response.code ?? '',
+    );
+  }
+
+
+  @override
+  Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(String assetId) {
+    return runCatchingAsync<DetailAssetHardNftResponse, DetailAssetHardNft>(
+          () => _client.getDetailAssetHardNFT(
+     assetId
+      ),
+          (response) => response.item?.toDomain() ?? DetailAssetHardNft(),
     );
   }
 }

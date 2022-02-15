@@ -4,6 +4,7 @@ class TokenInf {
   int? id;
   bool? whitelistCollateral;
   bool? whitelistSupply;
+  bool? whiteListAsset;
   double? usdExchange;
   String? symbol;
   String? address;
@@ -13,6 +14,7 @@ class TokenInf {
   TokenInf({
     this.symbol,
     this.name,
+    this.whiteListAsset,
     this.id,
     this.whitelistCollateral,
     this.whitelistSupply,
@@ -27,6 +29,7 @@ class TokenInf {
       symbol: json['symbol'],
       iconUrl: json['iconUrl'],
       usdExchange: json['usdExchange'],
+      whiteListAsset: json['whitelistAsset']
     );
   }
 
@@ -35,6 +38,7 @@ class TokenInf {
         'symbol': tokenInf.symbol,
         'iconUrl': tokenInf.iconUrl,
         'usdExchange': tokenInf.usdExchange,
+        'whitelistAsset': tokenInf.whiteListAsset,
       };
 
   static String encode(List<TokenInf> listTokens) => json.encode(

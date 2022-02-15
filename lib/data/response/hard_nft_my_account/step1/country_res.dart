@@ -48,7 +48,7 @@ class CountryResponse extends Equatable {
   List<Object?> get props => [];
 
   CountryModel toModel() => CountryModel(
-        id,
-        name,
+        id: id,
+        name: name,
       );
 }

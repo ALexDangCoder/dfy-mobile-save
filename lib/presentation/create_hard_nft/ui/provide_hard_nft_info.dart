@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -18,6 +15,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/dialog/pls_connect_wallet.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
@@ -68,7 +66,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
-    if (cubit.properties.isEmpty) {
+    if (cubit.propertiesData.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
       isShowOrHideItemProperties = true;
@@ -91,407 +89,433 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           bottomBar: Container(
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),
-            child: GestureDetector(
-              onTap: () {},
-              child: ButtonGold(
-                title: S.current.next,
-                isEnable: true,
-              ),
+            child: StreamBuilder<bool>(
+              initialData: true,
+              stream: cubit.nextBtnBHVSJ.stream,
+              builder: (context, snapshot) {
+                return GestureDetector(
+                  onTap: () {
+                    if ((snapshot.data ?? false)) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                        ),
+                      );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (_) => const AlertDialog(
+                      //     backgroundColor: Colors.transparent,
+                      //     content: PleaseConnectWallet(),
+                      //   ),
+                      // );
+                    } else {
+                      //nothing
+                    }
+                  },
+                  child: ButtonGold(
+                    title: S.current.next,
+                    isEnable: (snapshot.data ?? false) ? true : false,
+                  ),
+                );
+              },
             ),
           ),
           resizeBottomInset: true,
           title: S.current.provide_hard_nft_info,
-          child: BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            bloc: cubit,
-            builder: (context, state) {
-              if (state is ProvideHardNftConfirmInfo) {
-                return Step1WhenSubmit(
-                  cubit: cubit,
-                  typeNftSelect: NFT_TYPE.WATCH,
-                  modelPassing: cubit.fakeData,
-                );
-              } else {
-                return SingleChildScrollView(
-                  child: FormGroup(
-                    key: _keyForm,
-                    child: Column(
-                      children: [
-                        spaceH24,
-                        const CircleStatusProvideHardNft(),
-                        spaceH32,
-                        textShowWithPadding(
-                          textShow: 'Hard NFT ${S.current.picture}/ video',
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        // addMediaFile(),
-                        UploadWidget(
-                          cubit: cubit,
-                        ),
-                        spaceH32,
-                        textShowWithPadding(
-                          textShow: S.current.documents,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        UploadDocumentWidget(
-                          cubit: cubit,
-                        ),
-                        StreamBuilder<bool>(
-                            stream: cubit.enableButtonUploadDocumentSubject,
-                            builder: (context, snapshot) {
-                              final _isEnable = snapshot.data ?? true;
-                              return Visibility(
-                                visible: _isEnable,
-                                child: btnAdd(
-                                  isEnable: _isEnable,
-                                  content: S.current.add,
-                                  onTap: () {
-                                    cubit.pickDocument();
-                                  },
-                                ),
-                              );
-                            }),
-                        spaceH20,
-                        spaceH32,
-                        textShowWithPadding(
-                          textShow: S.current.hard_nft_info,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        textShowWithPadding(
-                          textShow: S.current.select_nft_type,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH8,
-                        ButtonHardNftType(cubit: cubit),
-                        spaceH24,
-                        textShowWithPadding(
-                          textShow: S.current.hard_nft_name,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: TextFieldValidator(
-                            hint: S.current.enter_name,
-                            onChange: (value) {},
-                            validator: (value) {
-                              return cubit.validateHardNftName(value ?? '');
-                            },
-                          ),
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.condition,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///form select condition
-                        FormDropDown(
-                          typeDrop: TYPE_FORM_DROPDOWN.CONDITION,
-                          cubit: cubit,
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.expecting_price,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///form expecting price
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: TextFieldValidator(
-                            hint: S.current.enter_price,
-                            onChange: (value) {},
-                            validator: (value) {
-                              return cubit.validateAmountToken(value ?? '');
-                            },
-                            suffixIcon: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  width: 1.w,
-                                  height: 32.h,
-                                  color: AppTheme.getInstance().whiteDot2(),
-                                ),
-                                FormDropDown(
-                                  typeDrop: TYPE_FORM_DROPDOWN.PRICE,
-                                  cubit: cubit,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.addition_info,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///form add information
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: TextFieldValidator(
-                            hint: S.current.enter_info,
-                            validator: (value) {
-                              return cubit.validateAdditionInfo(value ?? '');
-                            },
-                          ),
-                        ),
-                        spaceH24,
-                        textShowWithPadding(
-                          textShow: S.current.properties,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        itemPropertiesFtBtnAdd(),
-                        spaceH32,
-                        textShowWithPadding(
-                          textShow: S.current.contact_info,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        textShowWithPadding(
-                          textShow: S.current.name,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///form enter name
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: CustomForm(
-                            textValue: (value) {},
-                            hintText: S.current.enter_name,
-                            suffix: null,
-                            inputType: null,
-                          ),
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: 'Email',
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///form enter email
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: TextFieldValidator(
-                            validator: (value) {
-                              return cubit.validateEmail(value ?? '');
-                            },
-                            hint: S.current.enter_email,
-                          ),
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.phone_num,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        ///FORM NUMBER
-
-                        StreamBuilder<List<Map<String, dynamic>>>(
-                          initialData: [],
-                          stream: cubit.phonesCodeBHVSJ,
-                          builder: (context, snapshot) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                              ),
-                              child: Row(
-                                children: [
-                                  if (snapshot.hasData)
-                                    FormDropDown(
-                                      typeDrop: TYPE_FORM_DROPDOWN.PHONE,
-                                      cubit: cubit,
-                                    )
-                                  else
-                                    FormDropDown(
-                                      typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
-                                      cubit: cubit,
-                                    ),
-                                  Expanded(
-                                    child: TextFieldValidator(
-                                      validator: (value) {
-                                        return cubit
-                                            .validateMobile(value ?? '');
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.country,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-
-                        StreamBuilder<List<Map<String, dynamic>>>(
-                          initialData: [],
-                          stream: cubit.countriesBHVSJ,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return FormDropDown(
-                                typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
-                                cubit: cubit,
-                              );
-                            } else {
-                              return FormDropDown(
-                                typeDrop: TYPE_FORM_DROPDOWN.NONE_DATA,
-                                cubit: cubit,
-                              );
-                            }
-                          },
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.city,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-                        FormDropDown(
-                          typeDrop: TYPE_FORM_DROPDOWN.CITY,
-                          cubit: cubit,
-                        ),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.address,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH4,
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
-                          child: TextFieldValidator(
-                            validator: (value) {
-                              return cubit.validateAddress(value ?? '');
-                            },
-                            hint: S.current.enter_add,
-                          ),
-                        ),
-                        spaceH32,
-                        textShowWithPadding(
-                          textShow: S.current.wallet_and_collection,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH14,
-                        btnConnectWallet(),
-                        spaceH16,
-                        textShowWithPadding(
-                          textShow: S.current.collection,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().whiteOpacityDot5(),
-                            16,
-                            FontWeight.w600,
-                          ),
-                        ),
-                        spaceH4,
-                        CategoriesDropDown(
-                          cubit: cubit,
-                        ),
-                        SizedBox(
-                          height: 48.h,
-                        ),
-                      ],
+          child: SingleChildScrollView(
+            child: FormGroup(
+              key: _keyForm,
+              child: Column(
+                children: [
+                  spaceH24,
+                  const CircleStatusProvideHardNft(),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: 'Hard NFT ${S.current.picture}/ video',
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
                     ),
                   ),
-                );
-              }
-            },
+                  spaceH20,
+                  // addMediaFile(),
+                  UploadWidget(
+                    cubit: cubit,
+                  ),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: S.current.documents,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH20,
+                  UploadDocumentWidget(
+                    cubit: cubit,
+                  ),
+                  StreamBuilder<bool>(
+                    stream: cubit.enableButtonUploadDocumentSubject,
+                    builder: (context, snapshot) {
+                      final _isEnable = snapshot.data ?? true;
+                      return Visibility(
+                        visible: _isEnable,
+                        child: btnAdd(
+                          isEnable: _isEnable,
+                          content: S.current.add,
+                          onTap: () {
+                            cubit.pickDocument();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  spaceH20,
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: S.current.hard_nft_info,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH20,
+                  textShowWithPadding(
+                    textShow: S.current.select_nft_type,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH8,
+                  ButtonHardNftType(cubit: cubit),
+                  spaceH24,
+                  textShowWithPadding(
+                    textShow: S.current.hard_nft_name,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      hint: S.current.enter_name,
+                      onChange: (value) {
+                        cubit.dataStep1.hardNftName = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                              _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateHardNftName(value ?? '');
+                      },
+                    ),
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.condition,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///form select condition
+                  FormDropDown(
+                    typeDrop: TYPE_FORM_DROPDOWN.CONDITION,
+                    cubit: cubit,
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.expecting_price,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///form expecting price
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      textInputType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      hint: S.current.enter_price,
+                      onChange: (value) {
+                        cubit.dataStep1.amountToken = double.parse(value);
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateAmountToken(value ?? '');
+                      },
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 1.w,
+                            height: 32.h,
+                            color: AppTheme.getInstance().whiteDot2(),
+                          ),
+                          FormDropDown(
+                            typeDrop: TYPE_FORM_DROPDOWN.PRICE,
+                            cubit: cubit,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.addition_info,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///form add information
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      hint: S.current.enter_info,
+                      onChange: (value) {
+                        cubit.dataStep1.additionalInfo = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateAdditionInfo(value ?? '');
+                      },
+                    ),
+                  ),
+                  spaceH24,
+                  textShowWithPadding(
+                    textShow: S.current.properties,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  itemPropertiesFtBtnAdd(),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: S.current.contact_info,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH20,
+                  textShowWithPadding(
+                    textShow: S.current.name,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///form enter name
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      onChange: (value) {
+                        cubit.dataStep1.nameContact = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateHardNftName(value ?? '');
+                      },
+                      hint: S.current.enter_name,
+                    ),
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: 'Email',
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///form enter email
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      onChange: (value) {
+                        cubit.dataStep1.emailContact = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateEmail(value ?? '');
+                      },
+                      hint: S.current.enter_email,
+                    ),
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.phone_num,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+
+                  ///FORM NUMBER
+
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      prefixIcon: FormDropDown(
+                        typeDrop: TYPE_FORM_DROPDOWN.PHONE,
+                        cubit: cubit,
+                      ),
+                      onChange: (value) {
+                        cubit.dataStep1.phoneContact = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateMobile(value ?? '');
+                      },
+                    ),
+                  ),
+
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.country,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+                  FormDropDown(
+                    typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
+                    cubit: cubit,
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.city,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+                  FormDropDown(
+                    typeDrop: TYPE_FORM_DROPDOWN.CITY,
+                    cubit: cubit,
+                  ),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.address,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH4,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: TextFieldValidator(
+                      onChange: (value) {
+                        cubit.dataStep1.addressContact = value;
+                        cubit.checkAllValidate(
+                          inputFormCheck:
+                          _keyForm.currentState?.checkValidator() ?? false,
+                        );
+                      },
+                      validator: (value) {
+                        return cubit.validateAddress(value ?? '');
+                      },
+                      hint: S.current.enter_add,
+                    ),
+                  ),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: S.current.wallet_and_collection,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH14,
+                  btnConnectWallet(),
+                  spaceH16,
+                  textShowWithPadding(
+                    textShow: S.current.collection,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteOpacityDot5(),
+                      16,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  spaceH4,
+                  CategoriesDropDown(
+                    cubit: cubit,
+                  ),
+                  SizedBox(
+                    height: 48.h,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -506,7 +530,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           builder: (ctx) => const ConnectWalletDialog(
             isRequireLoginEmail: false,
           ),
-        ).then((value) => cubit.getListCollection());
+        ).then(
+          (value) => {
+            cubit.getListCollection(),
+            cubit.dataStep1.wallet = cubit.getAddressWallet(),
+          },
+        );
       },
       child: textShowWithPadding(
         textShow: S.current.connect_wallet,
@@ -521,7 +550,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
 
   Widget itemPropertiesFtBtnAdd() {
     return StreamBuilder<List<PropertyModel>>(
-      initialData: cubit.properties,
+      initialData: cubit.propertiesData,
       stream: cubit.showItemProperties,
       builder: (context, snapshot) {
         return Column(
@@ -537,9 +566,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 padding: EdgeInsets.only(left: 16.w),
                 child: Wrap(
                   runSpacing: 10.h,
-                  children: cubit.properties.map(
+                  children: cubit.propertiesData.map(
                     (e) {
-                      final int index = cubit.properties.indexOf(e);
+                      final int index = cubit.propertiesData.indexOf(e);
                       return itemProperty(
                         property: e.property,
                         value: e.value,
@@ -726,7 +755,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             visible: isHaveClose ? true : false,
             child: InkWell(
               onTap: () {
-                cubit.properties.removeAt(index);
+                cubit.propertiesData.removeAt(index);
                 cubit.checkPropertiesWhenSave();
               },
               child: Image.asset(

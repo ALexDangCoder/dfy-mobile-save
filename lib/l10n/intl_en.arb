@@ -439,6 +439,7 @@
   "offer_create_by_day": "Offer create by day",
   "accept": "Accept",
   "reject": "Reject",
+  "reject_ed": "Rejected",
   "name_of_collection": "Name of collection",
   "all_category": "All category",
   "no_more_info": "No more information",
@@ -702,7 +703,7 @@
   "select_city": "Select city",
   "wallet_and_collection": "WALLET AND COLLECTION",
   "connect_wallet_to_get_coll": "Connect wallet to get collection list",
-  "description_add_properties": "Properties provide more information about your hard NFT. This field will be displayed tab description",
+  "description_add_properties": "Properties provide more information \nabout your hard NFT. This field will be \ndisplayed tab description",
   "maximum_30": "Maximum character is 30 characters",
   "name_required": "Name is required",
   "maximum_255": "Maximum length allowed is 255 characters",
@@ -721,5 +722,8 @@
   "value_maximum_char": "Maximum value is 30 characters",
   "phone_num": "Phone number",
   "will_receive_nft": "will receive NFT after being minted by Evaluator",
-  "hard_nft_will_be_create": "Hard NFT will be created in collection"
+  "hard_nft_will_be_create": "Hard NFT will be created in collection",
+  "pls_connect_wallet": "You have to connect wallet",
+  "edit_info": "Edit info",
+  "submit": "Submit"
 }

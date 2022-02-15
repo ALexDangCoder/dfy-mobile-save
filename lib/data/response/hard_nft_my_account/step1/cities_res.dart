@@ -15,7 +15,6 @@ class CitiesResponse extends Equatable {
   @JsonKey(name: 'rows')
   List<CityResponse>? rows;
 
-
   CitiesResponse(this.rc, this.rd, this.total, this.rows);
 
   factory CitiesResponse.fromJson(Map<String, dynamic> json) =>
@@ -42,16 +41,20 @@ class CityResponse extends Equatable {
   @JsonKey(name: 'longitude')
   int longitude;
 
-
-  CityResponse(this.id, this.name, this.country_id, this.latitude,
-      this.longitude);
+  CityResponse(
+      this.id, this.name, this.country_id, this.latitude, this.longitude);
 
   factory CityResponse.fromJson(Map<String, dynamic> json) =>
       _$CityResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CityResponseToJson(this);
 
-  CityModel toModel() => CityModel(id, name, country_id, latitude, longitude);
+  CityModel toModel() => CityModel(
+      id: id,
+      name: name,
+      countryID: country_id,
+      latitude: latitude,
+      longitude: longitude);
 
   @override
   List<Object?> get props => [];

@@ -201,12 +201,12 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'hard_nft_mint':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const EvaluationResult()
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const EvaluationResult()
+          //   ),
+          // );//todo
         }
         break;
     }
