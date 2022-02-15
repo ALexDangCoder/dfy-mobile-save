@@ -283,7 +283,7 @@ class _WalletDialogWhenLoggedCoreState
                     S.current.loading_text,
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
-                      14,
+                      16,
                       FontWeight.w400,
                     ),
                   );
