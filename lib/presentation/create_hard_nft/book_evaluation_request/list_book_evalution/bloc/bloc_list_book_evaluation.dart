@@ -139,6 +139,15 @@ class BlocListBookEvaluation {
     return type = TypeEvaluation.NEW_CREATE;
   }
 
+  bool checkStatusList() {
+    for (final AppointmentModel value in listPawnShop.value) {
+        if (checkIsLoading(value.status ?? 0)) {
+          return false;
+      }
+    }
+    return true;
+  }
+
   String getTextStatus(int status, int time) {
     switch (status) {
       case OPEN:

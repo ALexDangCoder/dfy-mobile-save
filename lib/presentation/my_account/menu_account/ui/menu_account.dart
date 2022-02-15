@@ -6,7 +6,6 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -188,15 +187,17 @@ class _MenuAccountState extends State<MenuAccount> {
       }
       case 'collection_list':
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CollectionList(
-                typeScreen: PageRouter.MY_ACC,
-                addressWallet: walletAddress,
+          if(walletAddress.isNotEmpty){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionList(
+                  typeScreen: PageRouter.MY_ACC,
+                  addressWallet: walletAddress.toLowerCase(),
+                ),
               ),
-            ),
-          ).then((_) => cubit.getLoginState());
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'hard_nft_mint':

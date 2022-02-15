@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -68,6 +69,9 @@ class ItemPawnShop extends StatelessWidget {
                             date: appointment.appointmentTime,
                             assetId: bloc.assetId ?? '',
                           ),
+                          settings: const RouteSettings(
+                            name: AppRouter.step2Create,
+                          ),
                         ),
                       );
                     },
@@ -103,6 +107,9 @@ class ItemPawnShop extends StatelessWidget {
                             ),
                             date: appointment.appointmentTime,
                             assetId: bloc.assetId ?? '',
+                          ),
+                          settings: const RouteSettings(
+                            name: AppRouter.step2Create,
                           ),
                         ),
                       );
