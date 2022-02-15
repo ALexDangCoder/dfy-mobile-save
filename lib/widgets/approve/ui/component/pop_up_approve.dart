@@ -9,6 +9,7 @@ import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/extension/get_gas_limit_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -69,223 +70,229 @@ class _PopUpApproveState extends State<PopUpApprove> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            GestureDetector(
-              onTap: () {
-                final FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus) {
-                  currentFocus.unfocus();
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                margin: const EdgeInsets.only(top: 48),
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+        body: SafeArea(
+          top: false,
+          right: false,
+          left: false,
+          bottom: defaultTargetPlatform == TargetPlatform.android,
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  final FocusScopeNode currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus) {
+                    currentFocus.unfocus();
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  margin: const EdgeInsets.only(top: 48),
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
-                ),
-                child: Scaffold(
-                  resizeToAvoidBottomInset: true,
-                  backgroundColor: Colors.transparent,
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 18),
-                        SizedBox(
-                          height: 44,
-                          width: 44,
-                          child: Image.asset(ImageAssets.imgTokenDFY),
-                        ),
-                        const SizedBox(height: 8),
-                        RichText(
-                          text: TextSpan(
-                            text: '• ',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().blueText(),
-                              14,
-                              FontWeight.w400,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Testnet',
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  14,
-                                  FontWeight.w400,
-                                ),
+                  child: Scaffold(
+                    resizeToAvoidBottomInset: true,
+                    backgroundColor: Colors.transparent,
+                    body: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 18),
+                          SizedBox(
+                            height: 44,
+                            width: 44,
+                            child: Image.asset(ImageAssets.imgTokenDFY),
+                          ),
+                          const SizedBox(height: 8),
+                          RichText(
+                            text: TextSpan(
+                              text: '• ',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().blueText(),
+                                14,
+                                FontWeight.w400,
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        Text(
-                          widget.purposeText,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().textThemeColor(),
-                            20,
-                            FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 24),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppTheme.getInstance()
-                                  .whiteBackgroundButtonColor(),
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        '${ImageAssets.image_avatar}${widget.imageAccount}'
-                                        '.png',
-                                      ),
-                                    ),
+                                TextSpan(
+                                  text: 'Testnet',
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().textThemeColor(),
+                                    14,
+                                    FontWeight.w400,
                                   ),
-                                  height: 40,
-                                  width: 40,
                                 ),
-                                const SizedBox(width: 8),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          widget.accountName,
-                                          style: textNormal(
-                                            AppTheme.getInstance().whiteColor(),
-                                            16,
-                                          ).copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          widget.addressWallet
-                                              .formatAddressWallet(),
-                                          style: textNormal(
-                                            AppTheme.getInstance()
-                                                .currencyDetailTokenColor(),
-                                            14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      '${S.current.balance}: ${widget.balanceWallet}',
-                                      style: textNormal(
-                                        AppTheme.getInstance().whiteColor(),
-                                        16,
-                                      ),
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        EstimateGasFee(
-                          cubit: widget.cubit,
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height:
-                              MediaQuery.of(context).viewInsets.bottom <= 160
-                                  ? heightOfBottom
-                                  : 0,
-                        )
-                      ],
+                          const SizedBox(height: 30),
+                          Text(
+                            widget.purposeText,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              20,
+                              FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppTheme.getInstance()
+                                    .whiteBackgroundButtonColor(),
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          '${ImageAssets.image_avatar}${widget.imageAccount}'
+                                          '.png',
+                                        ),
+                                      ),
+                                    ),
+                                    height: 40,
+                                    width: 40,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            widget.accountName,
+                                            style: textNormal(
+                                              AppTheme.getInstance().whiteColor(),
+                                              16,
+                                            ).copyWith(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            widget.addressWallet
+                                                .formatAddressWallet(),
+                                            style: textNormal(
+                                              AppTheme.getInstance()
+                                                  .currencyDetailTokenColor(),
+                                              14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        '${S.current.balance}: ${widget.balanceWallet}',
+                                        style: textNormal(
+                                          AppTheme.getInstance().whiteColor(),
+                                          16,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          EstimateGasFee(
+                            cubit: widget.cubit,
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).viewInsets.bottom <= 160
+                                    ? heightOfBottom
+                                    : 0,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                color: AppTheme.getInstance().bgBtsColor(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  key: bottomKey,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: ButtonGold(
-                              haveGradient: false,
-                              textColor: AppTheme.getInstance().yellowColor(),
-                              border: Border.all(
-                                color: AppTheme.getInstance().yellowColor(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    key: bottomKey,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: ButtonGold(
+                                haveGradient: false,
+                                textColor: AppTheme.getInstance().yellowColor(),
+                                border: Border.all(
+                                  color: AppTheme.getInstance().yellowColor(),
+                                ),
+                                radiusButton: 15,
+                                textSize: 16,
+                                title: S.current.reject,
+                                isEnable: true,
+                                fixSize: false,
+                                height: 48.h,
+                                haveMargin: false,
                               ),
-                              radiusButton: 15,
-                              textSize: 16,
-                              title: S.current.reject,
-                              isEnable: true,
-                              fixSize: false,
-                              height: 48.h,
-                              haveMargin: false,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 23),
-                        Expanded(
-                          child: StreamBuilder<bool>(
-                            stream: widget.cubit.canActionStream,
-                            builder: (context, snapshot) {
-                              final canAction = snapshot.data ?? false;
-                              return GestureDetector(
-                                onTap: () {
-                                  print(canAction);
-                                  if (canAction) {
-                                    widget.approve();
-                                  }
-                                },
-                                child: ButtonGold(
-                                  radiusButton: 15,
-                                  textSize: 16,
-                                  title: S.current.approve,
-                                  isEnable: canAction,
-                                  height: 48.h,
-                                  fixSize: false,
-                                  haveMargin: false,
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 38),
-                  ],
+                          const SizedBox(width: 23),
+                          Expanded(
+                            child: StreamBuilder<bool>(
+                              stream: widget.cubit.canActionStream,
+                              builder: (context, snapshot) {
+                                final canAction = snapshot.data ?? false;
+                                return GestureDetector(
+                                  onTap: () {
+                                    print(canAction);
+                                    if (canAction) {
+                                      widget.approve();
+                                    }
+                                  },
+                                  child: ButtonGold(
+                                    radiusButton: 15,
+                                    textSize: 16,
+                                    title: S.current.approve,
+                                    isEnable: canAction,
+                                    height: 48.h,
+                                    fixSize: false,
+                                    haveMargin: false,
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 38),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
