@@ -52,10 +52,10 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
             ),
             Expanded(
               child: Text(
-                formatUSD.format(
+                '~ ${formatUSD.format(
                   (nftOnPawn.expectedLoanAmount ?? 0) *
                       (nftOnPawn.usdExchange ?? 0),
-                ),
+                )}',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                   14,
