@@ -328,7 +328,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             wallets.add(Wallet.fromJson(element));
           }
           walletAddress = wallets.first.address ?? '';
-          //todo: sau khi có login cần sửa
           if (wallets.first.address?.toLowerCase() == owner.toLowerCase()) {
             pairSink.add(false);
           } else {
