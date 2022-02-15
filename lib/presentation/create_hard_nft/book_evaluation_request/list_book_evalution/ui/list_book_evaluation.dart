@@ -1,3 +1,4 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
@@ -46,6 +47,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isCustomLeftClick: true,
             onLeftClick: () {
               //todo
+              Navigator.pop(context);
             },
             isImage: true,
             text: ImageAssets.ic_close,

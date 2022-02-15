@@ -1,8 +1,9 @@
-import 'package:Dfy/config/base/base_screen.dart';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -62,14 +63,27 @@ class Step1WhenSubmit extends StatelessWidget {
             ),
             const SizedBox(width: 23),
             Expanded(
-              child: ButtonGold(
-                radiusButton: 15,
-                textSize: 16,
-                title: S.current.submit,
-                isEnable: true,
-                height: 48.h,
-                fixSize: false,
-                haveMargin: false,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ListBookEvaluation(
+                            assetId: '620a34cf4aec3df7e3029fcb'); //todo data
+                      },
+                    ),
+                  );
+                },
+                child: ButtonGold(
+                  radiusButton: 15,
+                  textSize: 16,
+                  title: S.current.submit,
+                  isEnable: true,
+                  height: 48.h,
+                  fixSize: false,
+                  haveMargin: false,
+                ),
               ),
             ),
           ],
