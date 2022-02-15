@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
+import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -96,13 +97,10 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
   }
 
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
-    showLoading();
-    final result = await nftRepo.bidNftRequest(bidNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
-    );
+    await nftRepo.bidNftRequest(bidNftRequest);
+  }
+
+  Future<void> buyOutRequest(BuyOutRequest buyOutRequest) async {
+    await nftRepo.buyOutRequest(buyOutRequest);
   }
 }
