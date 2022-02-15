@@ -47,7 +47,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
