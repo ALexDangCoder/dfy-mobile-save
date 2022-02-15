@@ -60,7 +60,7 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
 
   BehaviorSubject<String> signatureSubject = BehaviorSubject();
 
-  BehaviorSubject<double> balanceSubject = BehaviorSubject.seeded(0);
+  BehaviorSubject<double> balanceSubject = BehaviorSubject();
 
   BehaviorSubject<LoginStatus> loginStatusSubject = BehaviorSubject();
 
@@ -87,7 +87,6 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     required String walletAddress,
     required BuildContext context,
   }) async {
-    showLoading(context);
     if (loginStatusSubject.hasValue) {
       if (loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG) {
         try {
@@ -103,7 +102,6 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
         }
       }
     }
-    hideLoading(context);
   }
 
   int randomAvatar() {
