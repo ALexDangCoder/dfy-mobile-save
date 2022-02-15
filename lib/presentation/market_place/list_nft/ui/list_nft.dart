@@ -147,7 +147,7 @@ class _ListNftState extends State<ListNft> {
           child: StreamBuilder<String>(
             stream: _cubit.title,
             builder: (context, AsyncSnapshot<String> snapshot) {
-              return BaseBottomSheet(
+              return BaseDesignScreen(
                 onRightClick: () {
                   showModalBottomSheet(
                     backgroundColor: Colors.black,

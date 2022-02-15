@@ -27,7 +27,7 @@ class TransactionHistoryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appConstants = Get.find<AppConstants>();
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: S.current.detail_transaction,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.h),

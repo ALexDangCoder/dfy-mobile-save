@@ -1,4 +1,3 @@
-import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

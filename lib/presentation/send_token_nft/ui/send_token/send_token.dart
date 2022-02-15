@@ -113,7 +113,7 @@ class _SendTokenState extends State<SendToken> {
         },
         bloc: tokenCubit,
         builder: (context, state) {
-          return BaseBottomSheet(
+          return BaseDesignScreen(
             isImage: true,
             text: ImageAssets.ic_close,
             title: '${S.current.send} ${widget.modelToken.nameShortToken}',

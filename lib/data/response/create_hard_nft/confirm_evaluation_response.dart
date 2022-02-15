@@ -15,10 +15,10 @@ class ConfirmEvaluationResponse extends Equatable {
   String? code;
 
   ConfirmEvaluationResponse(
-      this.rd,
-      this.rc,
-      this.code,
-      );
+    this.rd,
+    this.rc,
+    this.code,
+  );
 
   factory ConfirmEvaluationResponse.fromJson(Map<String, dynamic> json) =>
       _$ConfirmEvaluationResponseFromJson(json);
@@ -27,6 +27,4 @@ class ConfirmEvaluationResponse extends Equatable {
 
   @override
   List<Object?> get props => [];
-
-
 }
