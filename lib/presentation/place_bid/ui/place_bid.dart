@@ -296,22 +296,15 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    if (widget.typeBid == TypeBid.PLACE_BID) {
-                                      cubit.bidNftRequest(
-                                        BidNftRequest(
-                                          widget.marketId,
-                                          double.parse(bidValue),
-                                          data,
-                                        ),
-                                      );
-                                    } else {
-                                      cubit.buyOutRequest(
-                                        BuyOutRequest(
-                                          widget.marketId,
-                                          data,
-                                        ),
-                                      );
-                                    }
+
+                                    cubit.bidNftRequest(
+                                      BidNftRequest(
+                                        widget.marketId,
+                                        double.parse(bidValue),
+                                        data,
+                                      ),
+                                    );
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -365,6 +358,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   title: S.current.place_a_bid,
                                   needApprove: true,
                                   payValue: bidValue,
+                                  tokenAddress: widget.nftOnAuction.token,
                                   header: Column(
                                     children: [
                                       buildRowCustom(
@@ -408,10 +402,9 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    cubit.bidNftRequest(
-                                      BidNftRequest(
+                                    cubit.buyOutRequest(
+                                      BuyOutRequest(
                                         widget.marketId,
-                                        double.parse(bidValue),
                                         data,
                                       ),
                                     );
