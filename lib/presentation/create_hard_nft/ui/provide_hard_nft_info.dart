@@ -31,15 +31,6 @@ enum CircleStatus {
   IS_NOT_CREATE,
 }
 
-enum NFT_TYPES {
-  ART,
-  CAR,
-  WATCH,
-  JEWELRY,
-  HOUSE,
-  OTHER,
-}
-
 class ProvideHardNftInfo extends StatefulWidget {
   const ProvideHardNftInfo({Key? key}) : super(key: key);
 
@@ -95,7 +86,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   onTap: () {
-                    if ((snapshot.data ?? false)) {
+                    if (snapshot.data ?? false) {
                       if (cubit.checkConnectWallet()) {
                         cubit.createModel();
                         Navigator.push(
@@ -530,7 +521,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         ).then(
           (value) => {
             if (cubit.resultCurrentBeWallet().isEmpty)
-              {}
+              {
+                //nothing
+              }
             else
               {
                 cubit.getListCollection(),
@@ -705,7 +698,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     );
   }
 
-  //todo refactor stl
   Container itemProperty({
     bool isHaveClose = false,
     required String property,

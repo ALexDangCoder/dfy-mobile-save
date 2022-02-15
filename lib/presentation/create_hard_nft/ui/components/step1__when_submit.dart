@@ -70,7 +70,7 @@ class Step1WhenSubmit extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return ListBookEvaluation(
+                        return const ListBookEvaluation(
                             assetId: '620a34cf4aec3df7e3029fcb'); //todo data
                       },
                     ),
@@ -297,7 +297,8 @@ class Step1WhenSubmit extends StatelessWidget {
             spaceH15,
             informationContactWidget(
               title:
-                  '${cubit.dataStep1.phoneCodeModel.code} ${cubit.dataStep1.phoneContact}',
+                  '${cubit.dataStep1.phoneCodeModel.code} '
+                      '${cubit.dataStep1.phoneContact}',
               image: ImageAssets.callStep1,
             ),
             spaceH15,
