@@ -13,7 +13,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
@@ -870,7 +869,7 @@ class _AuctionTabState extends State<AuctionTab>
                           context: context,
                           builder: (_) => BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child: AlertDialog(
+                            child:  AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
                               content: PickTime(

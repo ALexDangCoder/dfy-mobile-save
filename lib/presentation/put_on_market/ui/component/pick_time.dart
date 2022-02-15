@@ -107,15 +107,15 @@ class _PickTimeState extends State<PickTime> {
                         contentPadding: EdgeInsets.only(bottom: 5),
                       ),
                       style: textNormalCustom(
-                        fillYellowColor,
+                        AppTheme.getInstance().fillColor(),
                         28,
                         FontWeight.w600,
                       ),
                       onChanged: (text) {
-                        final int hour = int.parse(text) % 24;
+                        final int hour = int.parse(text) % 100;
                         editHourController
-                          ..text = editHourController.text = hour < 10
-                              ? '0${hour.toString()}'
+                          ..text = editHourController.text = hour < 10 || hour >= 12
+                              ? '0${(int.parse(text) % 10).toString()}'
                               : hour.toString()
                           ..selection = TextSelection.collapsed(
                             offset: editHourController.text.length,
@@ -151,10 +151,10 @@ class _PickTimeState extends State<PickTime> {
                       ),
                       controller: editMinuteController,
                       onChanged: (text) {
-                        final int minute = int.parse(text) % 60;
+                        final int minute = int.parse(text) % 100;
                         editMinuteController
-                          ..text = editMinuteController.text = minute < 10
-                              ? '0${minute.toString()}'
+                          ..text = editMinuteController.text = minute < 10 || minute >= 60
+                              ? '0${(int.parse(text) % 10).toString()}'
                               : minute.toString()
                           ..selection = TextSelection.collapsed(
                             offset: editMinuteController.text.length,

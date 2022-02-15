@@ -439,6 +439,7 @@
   "offer_create_by_day": "Offer create by day",
   "accept": "Accept",
   "reject": "Reject",
+  "reject_ed": "Rejected",
   "name_of_collection": "Name of collection",
   "all_category": "All category",
   "no_more_info": "No more information",
@@ -721,5 +722,8 @@
   "value_maximum_char": "Maximum value is 30 characters",
   "phone_num": "Phone number",
   "will_receive_nft": "will receive NFT after being minted by Evaluator",
-  "hard_nft_will_be_create": "Hard NFT will be created in collection"
+  "hard_nft_will_be_create": "Hard NFT will be created in collection",
+  "pls_connect_wallet": "You have to connect wallet",
+  "edit_info": "Edit info",
+  "submit": "Submit"
 }

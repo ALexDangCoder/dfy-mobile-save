@@ -21,6 +21,8 @@ class BaseBottomSheet extends StatelessWidget {
   final Widget? widget;
   final Widget? bottomBar;
   final bool resizeBottomInset;
+  final Function()? onLeftClick;
+  final bool isCustomLeftClick;
 
   const BaseBottomSheet({
     Key? key,
@@ -34,6 +36,8 @@ class BaseBottomSheet extends StatelessWidget {
     this.widget,
     this.resizeBottomInset = false,
     this.bottomBar,
+    this.onLeftClick,
+    this.isCustomLeftClick = false,
   }) : super(key: key);
 
   @override
@@ -68,9 +72,11 @@ class BaseBottomSheet extends StatelessWidget {
                         if (isHaveLeftIcon)
                           Flexible(
                             child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
+                              onTap: isCustomLeftClick
+                                  ? onLeftClick
+                                  : () {
+                                      Navigator.pop(context);
+                                    },
                               child: Container(
                                 margin: EdgeInsets.only(
                                   left: 11.w,

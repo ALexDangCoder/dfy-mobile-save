@@ -19,7 +19,6 @@ class ItemPawnShop extends StatelessWidget {
   final AppointmentModel appointment;
   final bool isLoading;
 
-
   const ItemPawnShop({
     Key? key,
     required this.bloc,
@@ -56,18 +55,18 @@ class ItemPawnShop extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
-                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
+                            isSuccess: bloc.isSuccess.value,
+                            appointmentList: bloc.appointmentList,
                             idEvaluation: appointment.evaluator?.id ?? '',
-                            type: bloc.type,
+                            type: bloc.checkStatus(
+                              appointment.evaluator?.id ?? '',
+                            ),
                             date: appointment.appointmentTime,
-                            stepTwoPassing: bloc.stepTwoPassingModel,
+                            assetId: bloc.assetId ?? '',
                           ),
                         ),
                       );
@@ -92,18 +91,18 @@ class ItemPawnShop extends StatelessWidget {
                   spaceW8,
                   InkWell(
                     onTap: () {
-                      bloc.getTextStatus(
-                        appointment.status ?? 0,
-                        appointment.acceptedTime ?? 0,
-                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateBookEvaluation(
+                            isSuccess: bloc.isSuccess.value,
+                            appointmentList: bloc.appointmentList,
                             idEvaluation: appointment.evaluator?.id ?? '',
-                            type: bloc.type,
+                            type: bloc.checkStatus(
+                              appointment.evaluator?.id ?? '',
+                            ),
                             date: appointment.appointmentTime,
-                           stepTwoPassing: bloc.stepTwoPassingModel,
+                            assetId: bloc.assetId ?? '',
                           ),
                         ),
                       );
@@ -235,7 +234,7 @@ class ItemPawnShop extends StatelessWidget {
                             )
                             .then(
                               (value) => bloc.getListPawnShop(
-                                assetId: bloc.stepTwoPassingModel?.assetId ?? ''
+                                assetId: bloc.assetId ?? '',
                               ),
                             );
                       }

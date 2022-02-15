@@ -13,7 +13,6 @@ import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateNFTScreen extends StatefulWidget {
@@ -26,7 +25,6 @@ class CreateNFTScreen extends StatefulWidget {
 }
 
 class _CreateNFTScreenState extends State<CreateNFTScreen> {
-
   @override
   void initState() {
     widget.cubit.getListTypeNFT();
@@ -52,65 +50,107 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
         title: S.current.create_nft,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 16.h,
+          body: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 16.h,
+                    ),
+                    child: Text(
+                      S.current.soft_nft,
+                      style: textLabelNFT,
+                    ),
                   ),
-                  child: Text(
-                    S.current.soft_nft,
-                    style: textLabelNFT,
-                  ),
-                ),
-
-                BlocBuilder<CreateNftCubit, CreateNftState>(
-                  bloc: widget.cubit,
-                  builder: (context, state) {
-                    if (state is TypeNFT) {
-                      final List<TypeNFTModel> list = state.listSoftNft;
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 3.w / 4.h,
-                        ),
-                        itemBuilder: (context, index) {
-                          return nftItem(
-                            context: context,
-                            typeNFTModel: list[index],
+                  StreamBuilder<List<TypeNFTModel>>(
+                      stream: widget.cubit.listNftSubject,
+                      builder: (context, snapshot) {
+                        final List<TypeNFTModel> data = snapshot.data ?? [];
+                        final list =
+                            data.where((element) => element.type == 0).toList();
+                        if (list.isNotEmpty) {
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 3.w / 4.h,
+                            ),
+                            itemBuilder: (context, index) {
+                              return nftItem(
+                                context: context,
+                                typeNFTModel: list[index],
+                              );
+                            },
+                            itemCount: list.length,
                           );
-                        },
-                        itemCount: list.length,
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
-                spaceH24,
-                Text(
-                  S.current.not_supported_standard,
-                  style: textCustom(
-                    fontStyle: FontStyle.italic,
-                    fontSize: 14,
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 16.h,
+                    ),
+                    child: Text(
+                      S.current.hard_nft,
+                      style: textLabelNFT,
+                    ),
                   ),
-                ),
+                  StreamBuilder<List<TypeNFTModel>>(
+                    stream: widget.cubit.listNftSubject,
+                    builder: (context, snapshot) {
+                      final List<TypeNFTModel> data = snapshot.data ?? [];
+                      final list =
+                          data.where((element) => element.type == 1).toList();
+                      if (list.isNotEmpty) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 3.w / 4.h,
+                          ),
+                          itemBuilder: (context, index) {
+                            return nftItem(
+                              context: context,
+                              typeNFTModel: list[index],
+                            );
+                          },
+                          itemCount: list.length,
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  spaceH24,
+                  Text(
+                    S.current.not_supported_standard,
+                    style: textCustom(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 14,
+                    ),
+                  ),
 
-                ///Space bottom + space top + height of the button
-                SizedBox(
-                  height: (64 + 38 + 24).h,
-                )
-              ],
+                  ///Space bottom + space top + height of the button
+                  SizedBox(
+                    height: (64 + 38 + 24).h,
+                  )
+                ],
+              ),
             ),
           ),
           floatingActionButton: StreamBuilder<String>(
@@ -125,15 +165,19 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                 fontSize: 20,
                 onTap: () {
                   if (enable) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CreateDetailNFT(
-                          cubit: CreateNftCubit(),
-                          nftType: widget.cubit.selectedNftType,
+                    if (widget.cubit.selectedNftType == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CreateDetailNFT(
+                            cubit: CreateNftCubit(),
+                            nftType: widget.cubit.selectedNftType,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      ///TODO: Push to Create NFT Screen
+                    }
                   }
                 },
               );

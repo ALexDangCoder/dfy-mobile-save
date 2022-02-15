@@ -38,11 +38,12 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  void checkAppLock() {
+  Future<void> checkAppLock() async {
     if (PrefsService.getFirstAppConfig() == 'true') {
       index = 3;
     } else if (PrefsService.getAppLockConfig() == 'true') {
       index = 2;
+      await PrefsService.clearWalletLogin();
     } else {
       index = 1;
     }

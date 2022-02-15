@@ -12,6 +12,7 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/web3_create_collection.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,23 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'create_collection_state.dart';
+
+const String COVER_PHOTO_MAP = 'cover_photo';
+const String AVATAR_PHOTO_MAP = 'avatar';
+const String FEATURE_PHOTO_MAP = 'feature_photo';
+const String COLLECTION_NAME_MAP = 'collection_name';
+const String CUSTOM_URL_MAP = 'custom_url';
+const String DESCRIPTION_MAP = 'description';
+const String CATEGORIES_MAP = 'categories';
+const String ROYALTIES_MAP = 'royalties';
+const String FACEBOOK_MAP = 'facebook';
+const String TWITTER_MAP = 'twitter';
+const String INSTAGRAM_MAP = 'instagram';
+const String TELEGRAM_MAP = 'telegram';
+const String COVER_CID = 'cover_cid';
+const String AVATAR_CID = 'avatar_cid';
+const String FEATURE_CID = 'feature_cid';
+
 
 class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   CreateCollectionCubit() : super(CreateCollectionInitial());
@@ -34,7 +52,6 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   int collectionStandard = ERC721;
   int collectionType = 0;
   final walletAddress = PrefsService.getCurrentBEWallet();
-
 
   String collectionName = '';
   String customUrl = '';
@@ -66,9 +83,9 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Image cid map
   Map<String, String> cidMap = {
-    'avatar_cid': '',
-    'cover_cid': '',
-    'feature_cid': '',
+    AVATAR_CID: '',
+    COVER_CID: '',
+    FEATURE_CID: '',
   };
 
   ///IPFS of the collection send to Web3
@@ -76,18 +93,18 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Default value of validate field
   Map<String, bool> mapCheck = {
-    'cover_photo': false,
-    'avatar': false,
-    'feature_photo': false,
-    'collection_name': false,
-    'custom_url': true,
-    'description': true,
-    'categories': false,
-    'royalties': true,
-    'facebook': true,
-    'twitter': true,
-    'instagram': true,
-    'telegram': true,
+    COVER_PHOTO_MAP: false,
+    AVATAR_PHOTO_MAP: false,
+    FEATURE_PHOTO_MAP: false,
+    COLLECTION_NAME_MAP: false,
+    CUSTOM_URL_MAP: true,
+    DESCRIPTION_MAP: true,
+    CATEGORIES_MAP: false,
+    ROYALTIES_MAP: true,
+    FACEBOOK_MAP: true,
+    TWITTER_MAP: true,
+    INSTAGRAM_MAP: true,
+    TELEGRAM_MAP: true,
   };
 
   NFTRepository get _nftRepo => Get.find();
@@ -153,18 +170,18 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   }
 
   void validateCreate() {
-    if (mapCheck['cover_photo'] == false ||
-        mapCheck['avatar'] == false ||
-        mapCheck['feature_photo'] == false ||
-        mapCheck['collection_name'] == false ||
-        mapCheck['custom_url'] == false ||
-        mapCheck['description'] == false ||
-        mapCheck['categories'] == false ||
-        mapCheck['royalties'] == false ||
-        mapCheck['facebook'] == false ||
-        mapCheck['twitter'] == false ||
-        mapCheck['instagram'] == false ||
-        mapCheck['telegram'] == false) {
+    if (mapCheck[COVER_PHOTO_MAP] == false ||
+        mapCheck[AVATAR_PHOTO_MAP] == false ||
+        mapCheck[FEATURE_PHOTO_MAP] == false ||
+        mapCheck[COLLECTION_NAME_MAP] == false ||
+        mapCheck[CUSTOM_URL_MAP] == false ||
+        mapCheck[DESCRIPTION_MAP] == false ||
+        mapCheck[CATEGORIES_MAP] == false ||
+        mapCheck[ROYALTIES_MAP] == false ||
+        mapCheck[FACEBOOK_MAP] == false ||
+        mapCheck[TWITTER_MAP] == false ||
+        mapCheck[INSTAGRAM_MAP] == false ||
+        mapCheck[TELEGRAM_MAP] == false) {
       enableCreateSubject.sink.add(false);
     } else {
       enableCreateSubject.sink.add(true);
@@ -224,25 +241,25 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     final List<Map<String, String>> list = [];
     if (faceBook.isNotEmpty) {
       list.add({
-        'type': 'facebook',
+        'type': FACEBOOK_MAP,
         'url': faceBook,
       });
     }
     if (instagram.isNotEmpty) {
       list.add({
-        'type': 'instagram',
+        'type': INSTAGRAM_MAP,
         'url': instagram,
       });
     }
     if (twitter.isNotEmpty) {
       list.add({
-        'type': 'twitter',
+        'type': TWITTER_MAP,
         'url': twitter,
       });
     }
     if (telegram.isNotEmpty) {
       list.add({
-        'type': 'telegram',
+        'type': TELEGRAM_MAP,
         'url': telegram,
       });
     }
@@ -256,7 +273,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     avatarUploadStatusSubject.sink.add(-1);
     featurePhotoUploadStatusSubject.sink.add(-1);
 
-    final coverCid = await ipfsService.pinFileToIPFS(pathFile: avatarPath);
+    final coverCid = await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
     coverCid.isEmpty
         ? coverPhotoUploadStatusSubject.sink.add(0)
         : coverPhotoUploadStatusSubject.sink.add(1);
@@ -264,13 +281,15 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
     avatarCid.isEmpty
         ? avatarUploadStatusSubject.sink.add(0)
         : avatarUploadStatusSubject.sink.add(1);
-    final featureCid = await ipfsService.pinFileToIPFS(pathFile: avatarPath);
+    final featureCid = await ipfsService.pinFileToIPFS(
+      pathFile: featurePhotoPath,
+    );
     featureCid.isEmpty
         ? featurePhotoUploadStatusSubject.sink.add(0)
         : featurePhotoUploadStatusSubject.sink.add(1);
-    cidMap['cover_cid'] = coverCid;
-    cidMap['avatar_cid'] = avatarCid;
-    cidMap['feature_cid'] = featureCid;
+    cidMap[COVER_CID] = coverCid;
+    cidMap[AVATAR_CID] = avatarCid;
+    cidMap[FEATURE_CID] = featureCid;
     if (coverPhotoUploadStatusSubject.value == 0 ||
         avatarUploadStatusSubject.value == 0 ||
         featurePhotoUploadStatusSubject.value == 0) {
@@ -283,26 +302,24 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
 
   ///Create parameter Map
   Map<String, dynamic> getMapCreateCollection() {
-    final String standard =
-        collectionStandard == ERC721 ? ERC_721 : ERC_1155;
+    final String standard = collectionStandard == ERC721 ? ERC_721 : ERC_1155;
     if (collectionType == SOFT_COLLECTION) {
       return {
-        'avatar_cid': cidMap['avatar_cid'],
+        'avatar_cid': cidMap.getStringValue(AVATAR_CID),
         'category_id': categoryId,
         'collection_standard': standard,
-        'cover_cid': cidMap['cover_cid'],
+        'cover_cid': cidMap.getStringValue(COVER_CID),
         'custom_url': customUrl,
         'description': description,
-        'feature_cid': cidMap['feature_cid'],
+        'feature_cid': cidMap.getStringValue(FEATURE_CID),
         'name': collectionName,
         'royalty': royalties.toString(),
         'social_links': socialLinkMap,
-        'txn_hash': 'txnHash',
+        'txn_hash': '',
       };
     } else {
       return {
-        'avatar_cid': cidMap['avatar_cid'],
-        'bc_txn_hash': 'txnHash',
+        'avatar_cid': cidMap.getStringValue(AVATAR_CID),
         'category_id': categoryId,
         'category_name': categoryName,
         'collection_address': '',
@@ -312,6 +329,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         'description': description,
         'name': collectionName,
         'social_links': socialLinkMap,
+        'bc_txn_hash': '',
       };
     }
   }

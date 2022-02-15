@@ -90,9 +90,17 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
     showLoading(context);
     if (loginStatusSubject.hasValue) {
       if (loginStatusSubject.value == LoginStatus.NEED_CONNECT_BY_DIALOG) {
-        final double balance =
-            await client.getBalanceOfBnb(ofAddress: walletAddress);
-        balanceSubject.sink.add(balance);
+        try {
+          final double balance =
+              await client.getBalanceOfBnb(ofAddress: walletAddress);
+          balanceSubject.sink.add(balance);
+        } catch (e) {
+          showErrDialog(
+            context: context,
+            title: S.current.notify,
+            content: S.current.something_went_wrong,
+          );
+        }
       }
     }
     hideLoading(context);
@@ -124,7 +132,6 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
       }
       return;
     }
-
     //Có ví, chưa login core - chưa login BE => yêu cầu login
     if (walletAddressCore.isEmpty &&
         walletConnectBE.isEmpty &&
