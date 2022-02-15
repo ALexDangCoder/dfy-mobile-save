@@ -1,6 +1,7 @@
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -171,7 +172,16 @@ class MediaResponse {
 
   Map<String, dynamic> toJson() => _$MediaResponseToJson(this);
 
-  Media toDomain() => Media(name, type, getPath(urlImage ?? ''));
+  TypeImage getTypeImage(String type) {
+    if (type.toLowerCase().contains('image')) {
+      return TypeImage.IMAGE;
+    } else {
+      return TypeImage.VIDEO;
+    }
+  }
+
+  Media toDomain() =>
+      Media(name, getTypeImage(type ?? 'video'), getPath(urlImage ?? ''));
 }
 
 @JsonSerializable()

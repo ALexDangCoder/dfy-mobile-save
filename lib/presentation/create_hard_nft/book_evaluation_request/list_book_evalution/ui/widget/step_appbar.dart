@@ -40,7 +40,7 @@ class StepAppBar extends StatelessWidget {
                     goTo(
                       context,
                       EvaluationResult(
-                        assetId: assetId ?? '',
+                        assetID: assetId ?? '',
                       ),
                     );
                   },
