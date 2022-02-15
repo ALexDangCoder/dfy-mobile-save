@@ -8,18 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListEvaluation extends StatelessWidget {
-  const ListEvaluation(
-      {Key? key, required this.listEvaluation, required this.cubit})
-      : super(key: key);
+  const ListEvaluation({
+    Key? key,
+    required this.listEvaluation,
+    required this.cubit,
+    required this.assetID,
+  }) : super(key: key);
   final List<EvaluationResult> listEvaluation;
   final EvaluationHardNftResultCubit cubit;
+  final String assetID;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 16.w,right: 16.w),
+          padding: EdgeInsets.only(left: 16.w, right: 16.w),
           child: Text(
             S.current.to_mint_hard_nft_you,
             style: textNormalCustom(
@@ -40,6 +44,7 @@ class ListEvaluation extends StatelessWidget {
                   EvaluationItem(
                     evaluationResult: listEvaluation[index],
                     cubit: cubit,
+                    assetID: assetID,
                   ),
                   spaceH20,
                 ],

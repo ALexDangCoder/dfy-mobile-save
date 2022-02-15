@@ -23,8 +23,6 @@ class _PawnState extends State<PawnScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIMode(
-    //   SystemUiMode.immersive, overlays: [SystemUiOverlay.top],);
     return const ComingScreen();
   }
 }

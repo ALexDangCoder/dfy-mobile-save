@@ -23,8 +23,6 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIMode(
-    //   SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
     return GestureDetector(
       onTap: () => showDialog(
         context: context,

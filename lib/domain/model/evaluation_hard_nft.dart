@@ -1,5 +1,6 @@
 
 import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 
 class Evaluation {
   String? id;
@@ -59,7 +60,7 @@ class AssetType {
 
 class Media {
   String? name;
-  String? type;
+  TypeImage? type;
   String? urlImage;
 
   Media(this.name, this.type, this.urlImage);
