@@ -37,7 +37,9 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
 
   @override
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
-      int cityId, int assetTypeId) {
+    int cityId,
+    int assetTypeId,
+  ) {
     return runCatchingAsync<ListEvaluatorsCityResponse,
         List<EvaluatorsCityModel>>(
       () => _client.getListEvaluatorsCity(
@@ -89,7 +91,12 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
   ) {
     return runCatchingAsync<CreateEvaluationResponse, CreateEvaluationModel>(
       () => _client.createEvaluation(
-          appointmentTime, assetId, bcTxnHash, evaluatorAddress, evaluatorId),
+        appointmentTime,
+        assetId,
+        bcTxnHash,
+        evaluatorAddress,
+        evaluatorId,
+      ),
       (response) => response.item?.toDomain() ?? CreateEvaluationModel(),
     );
   }
@@ -111,7 +118,9 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
 
   @override
   Future<Result<String>> confirmAcceptEvaluationToBE(
-      String bcTxnHash, String evaluationID) {
+    String bcTxnHash,
+    String evaluationID,
+  ) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmAcceptEvaluation(
         evaluationID,
@@ -123,7 +132,9 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
 
   @override
   Future<Result<String>> confirmRejectEvaluationToBE(
-      String bcTxnHash, String evaluationID) {
+    String bcTxnHash,
+    String evaluationID,
+  ) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmRejectEvaluation(
         evaluationID,
