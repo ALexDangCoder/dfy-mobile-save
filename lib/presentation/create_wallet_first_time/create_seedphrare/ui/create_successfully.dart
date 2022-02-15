@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrare_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -16,6 +17,8 @@ import 'package:Dfy/widgets/form/form_switch_face.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../main.dart';
 
 enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
@@ -42,30 +45,6 @@ class _CreateSuccessfullyState extends State<CreateSuccessfully> {
   @override
   void initState() {
     super.initState();
-    if (widget.isFromConnectWlDialog) {
-      widget.bLocCreateSeedPhrase.getSignature(
-        walletAddress: widget.wallet.address ?? '',
-        context: context,
-      );
-      widget.bLocCreateSeedPhrase.signatureStream.listen(
-        (event) async {
-          if (event.isNotEmpty) {
-            showLoading(context);
-            await widget.bLocCreateSeedPhrase.loginAndSaveInfo(
-              walletAddress: widget.wallet.address ?? '',
-              signature: event,
-            );
-            hideLoading(context);
-          } else {
-            showErrDialog(
-              context: context,
-              title: S.current.notify,
-              content: S.current.something_went_wrong,
-            );
-          }
-        },
-      );
-    }
   }
 
   @override

@@ -3,7 +3,7 @@
   "ok": "Đồng ý",
   "cancel": "Huỷ",
   "something_went_wrong": "Có lỗi xảy ra. Bạn vui lòng thử lại sau",
-  "empty_data": "Dữ liệu rỗng",
+  "empty_data": "Hiện chưa có dữ liệu",
   "error": "Lỗi",
   "error_network": "Vui lòng kiểm tra kết nối mạng!",
   "retry": "Thử lại",
@@ -655,7 +655,7 @@
   "add": "Thêm",
   "add_more": "Thêm nữa",
   "documents": "Tài liệu",
-  "hard_nft_info": "thông tin Hard NFT",
+  "hard_nft_info": "Thông tin Hard NFT",
   "select_nft_type": "Chọn tên NFT",
   "condition": "Điều kiện",
   "hard_nft_name": "Tên HARD NFT",
@@ -696,6 +696,9 @@
   "request_evaluation": "Yêu cầu đánh giá",
   "accept_offer": "Chấp thuận đề nghị",
   "reject_offer": "Huỷ đề nghị",
-  "enter_add": "Nhập địa chỉ"
+  "enter_add": "Nhập địa chỉ",
+  "pls_connect_wallet": "Bạn phải kết nối ví để thực hiện",
+  "edit_info": "Sửa T.Tin",
+  "submit": "Gửi"
 
 }

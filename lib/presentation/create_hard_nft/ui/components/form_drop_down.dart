@@ -63,7 +63,7 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
-                      cubit.dataStep1.conditionNft.id = value['value'];
+                      cubit.dataStep1.conditionNft.id = int.tryParse(value['value']);
                       cubit.dataStep1.conditionNft.name = value['label'];
                     },
                     dropdownItemHeight: 54.h,
@@ -235,7 +235,22 @@ class FormDropDown extends StatelessWidget {
             );
           } else if (cubit.checkMapListContainsObj(
               mapList: snapshot.data ?? [], valueNeedCheck: 'none')) {
-            return Container(child: Text('Empty data'));
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                ),
+                child: Text(
+                  S.current.empty_data,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+              ),
+            );
           } else {
             return Stack(
               children: [
@@ -319,7 +334,7 @@ class FormDropDown extends StatelessWidget {
                   isTriangle: false,
                   dropdownList: cubit.tokensMap,
                   dropdownWidth: 113.w,
-                  dropdownHeight: 228.h,
+                  dropdownHeight: 200.h,
                   dropdownPadding: EdgeInsets.only(right: 11.w),
                   dropdownItemHeight: 54.h,
                   defaultValue: cubit.tokensMap[0],
@@ -351,6 +366,17 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     cubit.dataStep1.tokenInfo.name = value['label'];
                     cubit.dataStep1.tokenInfo.id = value['value'];
+                    if(value['label'] == 'DFY') {
+                      cubit.dataStep1.tokenInfo.symbol = 'DFY';
+                      cubit.dataStep1.tokenInfo.id = 1;
+                    } else if (value['label'] == 'USDT') {
+                      cubit.dataStep1.tokenInfo.symbol = 'USDT';
+                      cubit.dataStep1.tokenInfo.id = 5;
+                    } else {
+                      cubit.dataStep1.tokenInfo.symbol = 'BNB';
+                      cubit.dataStep1.tokenInfo.id = 38;
+                    }
+
                   },
                 ),
               ),
