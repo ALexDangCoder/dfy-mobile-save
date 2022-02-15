@@ -1,5 +1,5 @@
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -64,12 +64,13 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
               child: Column(
                 children: [
                   spaceH24,
-                 StreamBuilder<bool>(
-                   stream: _bloc.isSuccess,
-                   builder: (context, snapshot) =>  StepAppBar(
-                   assetId: widget.assetId,
-                   isSuccess:snapshot.data ?? false,
-                 ),),
+                  StreamBuilder<bool>(
+                    stream: _bloc.isSuccess,
+                    builder: (context, snapshot) => StepAppBar(
+                      assetId: widget.assetId,
+                      isSuccess: snapshot.data ?? false,
+                    ),
+                  ),
                   spaceH16,
                   Expanded(
                     child: SingleChildScrollView(
@@ -163,18 +164,23 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             bottom: 0,
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookEvaluation(
-                      isSuccess: _bloc.isSuccess.value,
-                      appointmentList: _bloc.appointmentList,
-                      assetId: _bloc.assetId ?? '',
+                if (_bloc.checkStatusList()) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookEvaluation(
+                        isSuccess: _bloc.isSuccess.value,
+                        appointmentList: _bloc.appointmentList,
+                        assetId: _bloc.assetId ?? '',
+                      ),
+                      settings: const RouteSettings(
+                        name: AppRouter.step2Book,
+                      ),
                     ),
-                  ),
-                ).then(
-                  (value) => _bloc.appointmentList.clear(),
-                );
+                  ).then(
+                    (value) => _bloc.appointmentList.clear(),
+                  );
+                }
               },
               child: Container(
                 padding: EdgeInsets.only(

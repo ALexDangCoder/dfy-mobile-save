@@ -107,12 +107,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         } else {
           if (res.length < 2) {
             for (final element in res) {
-              listAcc.add(element.walletAddress ?? '');
+              if(element.walletAddress?.isNotEmpty ??false){
+                listAcc.add(element.walletAddress ?? '');
+              }
             }
             checkWalletAddress = false;
           } else {
             for (final element in res) {
-              listAcc.add(element.walletAddress ?? '');
+              if(element.walletAddress?.isNotEmpty ??false){
+                listAcc.add(element.walletAddress ?? '');
+              }
             }
             checkWalletAddress = true;
           }
@@ -161,7 +165,18 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     addressWallet = textAddressFilter.value;
     if (addressWallet == S.current.all) {
-      addressWallet = null;
+      addressWallet = '';
+      for (final String value in listAcc) {
+        if (value != S.current.all) {
+          if (value.isNotEmpty) {
+           if(addressWallet?.isNotEmpty ?? false){
+             addressWallet = '$addressWallet,$value';
+           }else{
+             addressWallet = value;
+           }
+          }
+        }
+      }
     } else {
       addressWallet = textAddressFilter.value;
     }

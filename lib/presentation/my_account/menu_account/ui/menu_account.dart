@@ -188,15 +188,17 @@ class _MenuAccountState extends State<MenuAccount> {
       }
       case 'collection_list':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CollectionList(
-                typeScreen: PageRouter.MY_ACC,
-                addressWallet: walletAddress,
+          if(walletAddress.isNotEmpty){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionList(
+                  typeScreen: PageRouter.MY_ACC,
+                  addressWallet: walletAddress.toLowerCase(),
+                ),
               ),
-            ),
-          ).then((_) => cubit.getLoginState());
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'hard_nft_mint':

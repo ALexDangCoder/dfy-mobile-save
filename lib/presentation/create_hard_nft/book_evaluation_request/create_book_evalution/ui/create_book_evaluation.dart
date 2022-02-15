@@ -3,17 +3,16 @@ import 'dart:ui';
 
 import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/item_working_time.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/widget/type_nft.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/custom_calandar.dart';
 import 'package:Dfy/presentation/put_on_market/ui/component/pick_time.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -22,7 +21,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
@@ -109,16 +107,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                             leading: SizedBox(
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookEvaluation(
-                                        assetId: bloc.assetId ?? '',
-                                        isSuccess: widget.isSuccess,
-                                        appointmentList: widget.appointmentList,
-                                      ),
-                                    ),
-                                  );
+                                  Navigator.pop(context);
                                 },
                                 child: SizedBox(
                                   height: 32,
@@ -888,14 +877,14 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             evaluatorId: pawn.id ?? '',
                                             assetId: bloc.assetId ?? '',
                                           );
-                                          showLoadSuccess(context).then(
-                                            (value) => goTo(
-                                              context,
-                                              ListBookEvaluation(
-                                                assetId: bloc.assetId ?? '',
-                                              ),
-                                            ),
-                                          );
+                                          showLoadSuccess(context)
+                                              .then((value) {
+                                            Navigator.of(context)
+                                                .popUntil((route) {
+                                              return route.settings.name ==
+                                                  AppRouter.step2ListBook;
+                                            });
+                                          });
                                         },
                                         textActiveButton:
                                             S.current.request_evaluation,

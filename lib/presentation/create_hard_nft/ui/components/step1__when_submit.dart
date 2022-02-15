@@ -1,5 +1,5 @@
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
@@ -73,6 +73,9 @@ class Step1WhenSubmit extends StatelessWidget {
                         return const ListBookEvaluation(
                             assetId: '620a34cf4aec3df7e3029fcb'); //todo data
                       },
+                      settings: const RouteSettings(
+                        name: AppRouter.step2ListBook,
+                      ),
                     ),
                   );
                 },
