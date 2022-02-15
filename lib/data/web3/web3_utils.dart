@@ -42,8 +42,9 @@ class Web3Utils {
   factory Web3Utils() => _shared;
 
   //client
-  //final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
-  final client = Web3Client('https://data-seed-prebsc-1-s2.binance.org:8545', Client());
+  // final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
+  final client =
+      Web3Client('https://data-seed-prebsc-2-s2.binance.org:8545', Client());
 
   Future<ImportNftResponse> importNFT({
     required String contract,
