@@ -117,7 +117,7 @@ class _PopUpApproveState extends State<PopUpApprove> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Testnet',
+                                  text: 'Testnet',// todo
                                   style: textNormalCustom(
                                     AppTheme.getInstance().textThemeColor(),
                                     14,

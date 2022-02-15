@@ -362,10 +362,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           bloc: _cubit,
                           listener: (context, state) {
                             if (state is LoginSuccess) {
-                              SystemChrome.setEnabledSystemUIMode(
-                                SystemUiMode.manual,
-                                overlays: [SystemUiOverlay.top],
-                              );
                               PrefsService.saveCurrentWalletCore(
                                 _cubit.walletAddress,
                               );

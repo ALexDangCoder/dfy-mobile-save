@@ -705,5 +705,8 @@
   "thu": "THỨ NĂM",
   "fri": "THỨ SÁU",
   "sat": "THỨ BẢY",
-  "sun": "CHỦ NHẬT"
+  "sun": "CHỦ NHẬT",
+  "submit": "Gửi",
+  "phone": "SĐT"
+
 }

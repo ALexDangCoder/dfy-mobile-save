@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -54,49 +56,50 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       textEmpty: '',
       stream: _cubit.stateStream,
       child: StreamBuilder<OfferDetailModel>(
-          stream: _cubit.offerStream,
-          builder: (context, snapshot) {
-            final offer = snapshot.data;
-            return snapshot.data != null
-                ? BaseBottomSheet(
-                    title: S.current.offer_detail,
-                    isImage: true,
-                    text: ImageAssets.ic_close,
-                    onRightClick: () {},
-                    bottomBar: (isShow(offer?.status ?? 0))
-                        ? rowButton(context, offer!)
-                        : null,
-                    child: RefreshIndicator(
-                      onRefresh: onRefresh,
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            spaceH20,
-                            Text(
-                              (offer?.walletAddress ?? '')
-                                  .formatAddress(index: 4),
-                              style: richTextWhite.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20,
-                              ),
+        stream: _cubit.offerStream,
+        builder: (context, snapshot) {
+          final offer = snapshot.data;
+          return snapshot.data != null
+              ? BaseDesignScreen(
+                  title: S.current.offer_detail,
+                  isImage: true,
+                  text: ImageAssets.ic_close,
+                  onRightClick: () {},
+                  bottomBar: (isShow(offer?.status ?? 0))
+                      ? rowButton(context, offer!)
+                      : null,
+                  child: RefreshIndicator(
+                    onRefresh: onRefresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          spaceH20,
+                          Text(
+                            (offer?.walletAddress ?? '')
+                                .formatAddress(index: 4),
+                            style: richTextWhite.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
                             ),
-                            spaceH8,
-                            _rowStar(offer?.point?.toInt() ?? 0),
-                            spaceH18,
-                            _textButton(),
-                            Divider(
-                              color: AppTheme.getInstance().divideColor(),
-                            ),
-                            spaceH20,
-                            ..._buildTable(offer),
-                          ],
-                        ),
+                          ),
+                          spaceH8,
+                          _rowStar(Random().nextInt(100)),
+                          spaceH18,
+                          _textButton(),
+                          Divider(
+                            color: AppTheme.getInstance().divideColor(),
+                          ),
+                          spaceH20,
+                          ..._buildTable(offer),
+                        ],
                       ),
                     ),
-                  )
-                : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
-          }),
+                  ),
+                )
+              : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+        },
+      ),
     );
   }
 

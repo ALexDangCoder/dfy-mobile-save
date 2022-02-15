@@ -1,15 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation_detail.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/list_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/button/button_gradient.dart';
-import 'package:Dfy/widgets/button/button_transparent.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
@@ -20,15 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'no_evaulation_result.dart';
-
 class EvaluationResult extends StatefulWidget {
-  final String assetId;
+  const EvaluationResult(
+      {Key? key, required this.assetID, this.isSuccess = false})
+      : super(key: key);
 
-  const EvaluationResult({
-    Key? key,
-    required this.assetId,
-  }) : super(key: key);
+  final String assetID;
+  final bool isSuccess;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -40,12 +33,13 @@ class _EvaluationResultState extends State<EvaluationResult> {
   @override
   void initState() {
     super.initState();
-    cubit.getListEvaluationResult(widget.assetId);
-    cubit.reloadAPI(widget.assetId);
+    cubit.getListEvaluationResult(widget.assetID);
+    cubit.reloadAPI(widget.assetID);
   }
 
   @override
   void dispose() {
+    cubit.cancelTimer = true;
     cubit.close();
     super.dispose();
   }
@@ -60,7 +54,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.getListEvaluationResult(widget.assetId);
+            await cubit.getListEvaluationResult(widget.assetID);
           },
           textEmpty: '',
           child: content(state),
@@ -72,8 +66,10 @@ class _EvaluationResultState extends State<EvaluationResult> {
   Widget content(EvaluationHardNftResultState state) {
     if (state is EvaluationResultSuccess) {
       final listEvaluation = state.list;
-      return BaseBottomSheet(
+      return BaseDesignScreen(
         text: ImageAssets.ic_close,
+        isCustomLeftClick: true,
+        onLeftClick: () {},
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {},
@@ -85,14 +81,14 @@ class _EvaluationResultState extends State<EvaluationResult> {
             if (listEvaluation.isNotEmpty)
               RefreshIndicator(
                 onRefresh: () async {
-                  await cubit
-                      .getListEvaluationResult(widget.assetId);
+                  await cubit.getListEvaluationResult(widget.assetID);
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: ListEvaluation(
                     listEvaluation: listEvaluation,
                     cubit: cubit,
+                    assetID: widget.assetID,
                   ),
                 ),
               )
@@ -142,16 +138,25 @@ class _EvaluationResultState extends State<EvaluationResult> {
           const SuccessCkcCreateNft(),
           dividerSuccessCreateNFT,
           const SuccessCkcCreateNft(),
+          if (widget.isSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
+          if (!widget.isSuccess)
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_CREATING,
+              stepCreate: '3',
+            )
+          else
+            const SuccessCkcCreateNft(),
           dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_CREATING,
-            stepCreate: '3',
-          ),
-          dividerCreateNFT,
-          const CircleStepCreateNft(
-            circleStatus: CircleStatus.IS_NOT_CREATE,
-            stepCreate: '4',
-          ),
+          if (!widget.isSuccess)
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_NOT_CREATE,
+              stepCreate: '4',
+            )
+          else
+            const CircleStepCreateNft(
+              circleStatus: CircleStatus.IS_CREATING,
+              stepCreate: '4',
+            ),
         ],
       ),
     );

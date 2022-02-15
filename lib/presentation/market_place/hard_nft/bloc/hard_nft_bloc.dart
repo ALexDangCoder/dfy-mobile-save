@@ -4,22 +4,25 @@ import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HardNFTBloc {
-  List<String> listImg = [];
+  List<Media> listImg = [];
 
   void getListImage(Evaluation evaluation) {
     for (int i = 0; i < (evaluation.media?.length ?? 0); i++) {
-      listImg.add(evaluation.media![i].urlImage ?? '');
+      for(int j = i+1; j < (evaluation.media?.length ?? 0); j++){
+        if(evaluation.media?[i].name == evaluation.media?[j].name){
+          evaluation.media?.removeAt(j);
+        }
+      }
+      listImg.add(evaluation.media![i]);
     }
-    final tempList = listImg.toSet();
-    listImg = tempList.toList();
   }
 
   ///clear fake Data
   int currentIndexImage = 0;
-  String currentImage = '';
+  Media currentImage = Media('', null, '');
   bool showMore = false;
 
-  final BehaviorSubject<String> _imageSubject = BehaviorSubject();
+  final BehaviorSubject<Media> _imageSubject = BehaviorSubject();
 
   final BehaviorSubject<bool> _showPreSubject = BehaviorSubject();
 
@@ -29,7 +32,7 @@ class HardNFTBloc {
 
   final BehaviorSubject<int> _changeTabSubject = BehaviorSubject();
 
-  Stream<String> get imageStream => _imageSubject.stream;
+  Stream<Media> get imageStream => _imageSubject.stream;
 
   Stream<bool> get showPreStream => _showPreSubject.stream;
 
@@ -40,13 +43,13 @@ class HardNFTBloc {
   Stream<int> get changeTabStream => _changeTabSubject.stream;
 
   void changeImage(String _img) {
-    if (currentImage != '') {
+    if (currentImage.urlImage?.isNotEmpty ?? false) {
       getIndex(_img);
     }
     checkButton();
     currentImage = listImg[currentIndexImage];
     _imageSubject.sink.add(currentImage);
-    getIndex(currentImage);
+    getIndex(currentImage.urlImage ?? '');
   }
 
   void nextImage() {
@@ -55,7 +58,7 @@ class HardNFTBloc {
       _imageSubject.sink.add(currentImage);
       _showPreSubject.sink.add(true);
       _showNextSubject.sink.add(currentIndexImage != listImg.length - 2);
-      getIndex(currentImage);
+      getIndex(currentImage.urlImage ?? '');
     }
   }
 
@@ -65,12 +68,13 @@ class HardNFTBloc {
       _imageSubject.sink.add(currentImage);
       _showNextSubject.sink.add(true);
       _showPreSubject.sink.add((currentIndexImage - 1) != 0);
-      getIndex(currentImage);
+      getIndex(currentImage.urlImage ?? '');
     }
   }
 
   void getIndex(String _img) {
-    currentIndexImage = listImg.indexWhere((element) => element == _img);
+    currentIndexImage =
+        listImg.indexWhere((element) => element.urlImage == _img);
   }
 
   void checkButton() {

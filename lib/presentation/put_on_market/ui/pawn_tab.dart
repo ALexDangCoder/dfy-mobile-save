@@ -11,7 +11,6 @@ import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/input_number_of_quantity.dart';
@@ -51,6 +50,13 @@ class _PawnTabState extends State<PawnTab>
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.durationType = 0;
     _putOnMarketModel.numberOfCopies = 1;
+    widget.cubit.changeTokenPawn(
+      indexToken: 0,
+    );
+      _putOnMarketModel.tokenAddress =
+          widget.cubit.listToken[0].address ?? '';
+      _putOnMarketModel.loanSymbol =
+          widget.cubit.listToken[0].symbol ?? '';
     super.initState();
   }
 
@@ -129,72 +135,57 @@ class _PawnTabState extends State<PawnTab>
               const SizedBox(
                 height: 4,
               ),
-              StreamBuilder<List<TokenInf>>(
-                stream: widget.cubit.listTokenStream,
-                builder: (context, snapshot) {
-                  final data = snapshot.data ?? [];
-                  if (data.isNotEmpty) {
-                    widget.cubit.changeTokenPawn(
-                      indexToken: 0,
-                    );
-                    _putOnMarketModel.tokenAddress =
-                        widget.cubit.listToken[0].address ?? '';
-                    _putOnMarketModel.loanSymbol =
-                        widget.cubit.listToken[0].symbol ?? '';
-                  }
-                  return InputWithSelectType(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,5}'),
-                      ),
-                    ],
-                    maxSize: 100,
-                    keyboardType: TextInputType.number,
-                    typeInput: data
-                        .map(
-                          (e) => SizedBox(
-                            height: 64,
-                            width: 70,
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  child: Image.network(
-                                    e.iconUrl ?? '',
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Flexible(
-                                  child: Text(
-                                    e.symbol ?? '',
-                                    style: textValueNFT.copyWith(
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                )
-                              ],
+              InputWithSelectType(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d+\.?\d{0,5}'),
+                  ),
+                ],
+                maxSize: 100,
+                keyboardType: TextInputType.number,
+                typeInput: widget.cubit.listToken
+                    .map(
+                      (e) => SizedBox(
+                    height: 64,
+                    width: 70,
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Image.network(
+                            e.iconUrl ?? '',
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            e.symbol ?? '',
+                            style: textValueNFT.copyWith(
+                              decoration: TextDecoration.none,
                             ),
                           ),
                         )
-                        .toList(),
-                    hintText: S.current.enter_price,
-                    onChangeType: (index) {
-                      widget.cubit.changeTokenPawn(
-                        indexToken: index,
-                      );
-                      _putOnMarketModel.tokenAddress =
-                          widget.cubit.listToken[index].address ?? '';
-                      _putOnMarketModel.loanSymbol =
-                          widget.cubit.listToken[index].symbol ?? '';
-                    },
-                    onchangeText: (value) {
-                      widget.cubit.changeTokenPawn(
-                        value: value != '' ? int.parse(value) : 0,
-                      );
-                      _putOnMarketModel.price = value;
-                    },
+                      ],
+                    ),
+                  ),
+                )
+                    .toList(),
+                hintText: S.current.enter_price,
+                onChangeType: (index) {
+                  widget.cubit.changeTokenPawn(
+                    indexToken: index,
                   );
+                  _putOnMarketModel.tokenAddress =
+                      widget.cubit.listToken[index].address ?? '';
+                  _putOnMarketModel.loanSymbol =
+                      widget.cubit.listToken[index].symbol ?? '';
+                },
+                onchangeText: (value) {
+                  widget.cubit.changeTokenPawn(
+                    value: value != '' ? int.parse(value) : 0,
+                  );
+                  _putOnMarketModel.price = value;
                 },
               ),
               const SizedBox(

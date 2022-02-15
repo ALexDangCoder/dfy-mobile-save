@@ -75,7 +75,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           }
         },
         builder: (context, state) {
-          return BaseBottomSheet(
+          return BaseDesignScreen(
             title: S.current.change_password,
             child: Column(
               children: [

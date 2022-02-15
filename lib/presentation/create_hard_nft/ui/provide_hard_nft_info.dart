@@ -31,15 +31,6 @@ enum CircleStatus {
   IS_NOT_CREATE,
 }
 
-enum NFT_TYPES {
-  ART,
-  CAR,
-  WATCH,
-  JEWELRY,
-  HOUSE,
-  OTHER,
-}
-
 class ProvideHardNftInfo extends StatefulWidget {
   const ProvideHardNftInfo({Key? key}) : super(key: key);
 
@@ -85,7 +76,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             currentFocus.unfocus();
           }
         },
-        child: BaseBottomSheet(
+        child: BaseDesignScreen(
           bottomBar: Container(
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),
@@ -95,20 +86,24 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   onTap: () {
-                    if ((snapshot.data ?? false)) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => Step1WhenSubmit(cubit: cubit),
-                        ),
-                      );
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (_) => const AlertDialog(
-                      //     backgroundColor: Colors.transparent,
-                      //     content: PleaseConnectWallet(),
-                      //   ),
-                      // );
+                    if (snapshot.data ?? false) {
+                      if (cubit.checkConnectWallet()) {
+                        cubit.createModel();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: PleaseConnectWallet(),
+                          ),
+                        );
+                      }
                     } else {
                       //nothing
                     }
@@ -212,10 +207,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_name,
                       onChange: (value) {
                         cubit.dataStep1.hardNftName = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                              _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateHardNftName(value ?? '');
@@ -261,10 +255,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_price,
                       onChange: (value) {
                         cubit.dataStep1.amountToken = double.parse(value);
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAmountToken(value ?? '');
@@ -306,10 +299,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       hint: S.current.enter_info,
                       onChange: (value) {
                         cubit.dataStep1.additionalInfo = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAdditionInfo(value ?? '');
@@ -354,10 +346,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.nameContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateHardNftName(value ?? '');
@@ -384,10 +375,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.emailContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateEmail(value ?? '');
@@ -419,10 +409,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       ),
                       onChange: (value) {
                         cubit.dataStep1.phoneContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateMobile(value ?? '');
@@ -475,10 +464,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     child: TextFieldValidator(
                       onChange: (value) {
                         cubit.dataStep1.addressContact = value;
-                        cubit.checkAllValidate(
-                          inputFormCheck:
-                          _keyForm.currentState?.checkValidator() ?? false,
-                        );
+                        cubit.mapValidate['inputForm'] =
+                            _keyForm.currentState?.checkValidator() ?? false;
+                        cubit.validateAll();
                       },
                       validator: (value) {
                         return cubit.validateAddress(value ?? '');
@@ -532,8 +520,15 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
         ).then(
           (value) => {
-            cubit.getListCollection(),
-            cubit.dataStep1.wallet = cubit.getAddressWallet(),
+            if (cubit.resultCurrentBeWallet().isEmpty)
+              {
+                //nothing
+              }
+            else
+              {
+                cubit.getListCollection(),
+                cubit.dataStep1.wallet = cubit.getAddressWallet(),
+              }
           },
         );
       },
@@ -703,7 +698,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     );
   }
 
-  //todo refactor stl
   Container itemProperty({
     bool isHaveClose = false,
     required String property,

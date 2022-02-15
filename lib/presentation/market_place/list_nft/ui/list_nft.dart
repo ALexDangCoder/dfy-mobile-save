@@ -147,7 +147,7 @@ class _ListNftState extends State<ListNft> {
           child: StreamBuilder<String>(
             stream: _cubit.title,
             builder: (context, AsyncSnapshot<String> snapshot) {
-              return BaseBottomSheet(
+              return BaseDesignScreen(
                 onRightClick: () {
                   showModalBottomSheet(
                     backgroundColor: Colors.black,
@@ -232,7 +232,7 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 535.h),
+                                                EdgeInsets.only(top: 5605.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 24.h,
@@ -286,6 +286,7 @@ class _ListNftState extends State<ListNft> {
                                   shrinkWrap: true,
                                   mainAxisSpacing: 20.h,
                                   itemCount: 6,
+                                  physics: NeverScrollableScrollPhysics(),
                                   crossAxisCount: 2,
                                   itemBuilder: (
                                     BuildContext context,

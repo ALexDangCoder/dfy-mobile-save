@@ -297,6 +297,7 @@
   "evaluated_time": "Evaluated time",
   "maximum_amount": "Maximum amount",
   "depreciation": "Depreciation (% annually)",
+  "depreciationD":"Depreciation",
   "addition_info": "Additional information",
   "images_videos": "Images and videos",
   "nft_on_pawn": "NFT on pawn",
@@ -722,6 +723,8 @@
   "phone_num": "Phone number",
   "will_receive_nft": "will receive NFT after being minted by Evaluator",
   "hard_nft_will_be_create": "Hard NFT will be created in collection",
+  "accept_evaluation":"Accept Evaluation",
+  "hard_nft_will_be_create": "Hard NFT will be created in collection",
   "pls_connect_wallet": "You have to connect wallet",
   "edit_info": "Edit info",
   "submit": "Submit",
@@ -731,5 +734,7 @@
   "thu": "THURSDAY",
   "fri": "FRIDAY",
   "sat": "SATURDAY",
-  "sun": "SUNDAY"
+  "sun": "SUNDAY",
+  "submit": "Submit",
+  "phone": "Phone"
 }
