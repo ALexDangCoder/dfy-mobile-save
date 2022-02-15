@@ -54,11 +54,14 @@ class BlocBookEvaluation {
       success: (res) {
         if (res.isBlank ?? false) {
         } else {
-          getListPawnShopStar(cityId: res.contactCity?.countryId ?? 0);
+          getListPawnShopStar(
+            cityId: res.contactCity?.id ?? 0,
+            assetTypeId: res.assetType?.id ?? 0,
+          );
           bcAssetId = res.bcAssetId.toString();
           locationLat = res.contactCity?.latitude ?? 0;
           locationLong = res.contactCity?.longitude ?? 0;
-          cityIdMap = res.contactCity?.countryId.toString() ?? '';
+          cityIdMap = res.contactCity?.id.toString() ?? '';
           nameCity = res.contactCity?.name ?? '';
           nameMap = res.contactCountry?.name ?? '';
         }
@@ -69,10 +72,12 @@ class BlocBookEvaluation {
 
   Future<void> getListPawnShopStar({
     required int cityId,
+    required int assetTypeId,
   }) async {
     final Result<List<EvaluatorsCityModel>> result =
         await _createHardNFTRepository.getListAppointmentWithCity(
       cityId,
+      assetTypeId,
     );
     result.when(
       success: (res) {

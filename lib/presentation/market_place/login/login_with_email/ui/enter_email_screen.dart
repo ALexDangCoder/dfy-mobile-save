@@ -94,7 +94,7 @@ class _EnterEmailState extends State<EnterEmail> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: KeyboardDismisser(
-        child: BaseBottomSheet(
+        child: BaseDesignScreen(
           title: S.current.enter_email,
           child: Column(
             children: [

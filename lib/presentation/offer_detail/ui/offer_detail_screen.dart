@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -54,49 +56,50 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       textEmpty: '',
       stream: _cubit.stateStream,
       child: StreamBuilder<OfferDetailModel>(
-          stream: _cubit.offerStream,
-          builder: (context, snapshot) {
-            final offer = snapshot.data;
-            return snapshot.data != null
-                ? BaseBottomSheet(
-                    title: S.current.offer_detail,
-                    isImage: true,
-                    text: ImageAssets.ic_close,
-                    onRightClick: () {},
-                    bottomBar: (isShow(offer?.status ?? 0))
-                        ? rowButton(context, offer!)
-                        : null,
-                    child: RefreshIndicator(
-                      onRefresh: onRefresh,
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            spaceH20,
-                            Text(
-                              (offer?.walletAddress ?? '')
-                                  .formatAddress(index: 4),
-                              style: richTextWhite.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20,
-                              ),
+        stream: _cubit.offerStream,
+        builder: (context, snapshot) {
+          final offer = snapshot.data;
+          return snapshot.data != null
+              ? BaseDesignScreen(
+                  title: S.current.offer_detail,
+                  isImage: true,
+                  text: ImageAssets.ic_close,
+                  onRightClick: () {},
+                  bottomBar: (isShow(offer?.status ?? 0))
+                      ? rowButton(context, offer!)
+                      : null,
+                  child: RefreshIndicator(
+                    onRefresh: onRefresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          spaceH20,
+                          Text(
+                            (offer?.walletAddress ?? '')
+                                .formatAddress(index: 4),
+                            style: richTextWhite.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
                             ),
-                            spaceH8,
-                            _rowStar(offer?.point?.toInt() ?? 0),
-                            spaceH18,
-                            _textButton(),
-                            Divider(
-                              color: AppTheme.getInstance().divideColor(),
-                            ),
-                            spaceH20,
-                            ..._buildTable(offer),
-                          ],
-                        ),
+                          ),
+                          spaceH8,
+                          _rowStar(Random().nextInt(100)),
+                          spaceH18,
+                          _textButton(),
+                          Divider(
+                            color: AppTheme.getInstance().divideColor(),
+                          ),
+                          spaceH20,
+                          ..._buildTable(offer),
+                        ],
                       ),
                     ),
-                  )
-                : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
-          }),
+                  ),
+                )
+              : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+        },
+      ),
     );
   }
 
@@ -132,24 +135,29 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     bool rejectEnable = true;
     bool acceptEnable = true;
 
-    final acceptText =
-        obj.status == 3 ? S.current.accept : _cubit.colorText.status ?? '';
-    final rejectText =
-        obj.status == 3 ? S.current.reject : _cubit.colorText.status ?? '';
+    String acceptText = '';
+    String rejectText = '';
     bool acceptProcess = false;
     bool rejectProcess = false;
-    if (obj.status == 4) {
-      acceptProcess = true;
-      rejectEnable = false;
-    } else if (obj.status == 5) {
-      rejectProcess = true;
-      acceptEnable = false;
-    } else {
+    if (obj.status == 3) {
+      acceptText = S.current.accept;
+      rejectText = S.current.reject;
       rejectEnable = true;
       acceptEnable = true;
       acceptProcess = false;
       rejectProcess = false;
+    } else if (obj.status == 4) {
+      acceptText = S.current.processing;
+      rejectText = S.current.reject;
+      acceptProcess = true;
+      rejectEnable = false;
+    } else if (obj.status == 5) {
+      acceptText = S.current.accept;
+      rejectText = S.current.processing;
+      rejectProcess = true;
+      acceptEnable = false;
     }
+
     return Container(
       padding: EdgeInsets.only(
         bottom: 38.h,
@@ -403,7 +411,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                         ),
                         buildRowCustom(
                           isPadding: false,
-                          title: '${S.current.loan_amount}:',
+                          title: '${S.current.loan_amount}',
                           child: Text(
                             '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
                             style: textNormalCustom(

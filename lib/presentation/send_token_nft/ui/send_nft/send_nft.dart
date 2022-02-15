@@ -115,7 +115,7 @@ class _SendNftState extends State<SendNft> {
             },
             bloc: sendNftCubit,
             builder: (context, state) {
-              return BaseBottomSheet(
+              return BaseDesignScreen(
                 text: ImageAssets.ic_close,
                 isImage: true,
                 isHaveLeftIcon: false,

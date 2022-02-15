@@ -27,7 +27,7 @@ class WalletHasEmail extends StatelessWidget {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: BaseBottomSheet(
+      body: BaseDesignScreen(
         title: S.current.connect_wallet,
         child: Column(
           children: [

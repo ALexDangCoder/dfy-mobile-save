@@ -103,7 +103,7 @@ class _ImportAccountState extends State<ImportAccount> {
               currentFocus.unfocus();
             }
           },
-          child: BaseBottomSheet(
+          child: BaseDesignScreen(
             title: S.current.import_acc,
             child: Column(
               children: [

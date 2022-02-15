@@ -66,7 +66,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
   Widget content(EvaluationHardNftResultState state) {
     if (state is EvaluationResultSuccess) {
       final listEvaluation = state.list;
-      return BaseBottomSheet(
+      return BaseDesignScreen(
         text: ImageAssets.ic_close,
         isCustomLeftClick: true,
         onLeftClick: () {},

@@ -29,7 +29,7 @@ class CreateCollectionScreen extends StatelessWidget {
         bloc.getListTypeNFT();
       },
       error: AppException('', S.current.something_went_wrong),
-      child: BaseBottomSheet(
+      child: BaseDesignScreen(
         title: S.current.create_collection,
         child: Scaffold(
           backgroundColor: Colors.transparent,

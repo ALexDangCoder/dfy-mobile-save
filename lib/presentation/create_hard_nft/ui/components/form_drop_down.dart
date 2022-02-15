@@ -63,8 +63,11 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
-                      cubit.dataStep1.conditionNft.id = value['value'];
+                      cubit.dataStep1.conditionNft.id =
+                          int.tryParse(value['value']);
                       cubit.dataStep1.conditionNft.name = value['label'];
+                      cubit.mapValidate['condition'] = true;
+                      cubit.validateAll();
                     },
                     dropdownItemHeight: 54.h,
                     dropdownHeight: 232.h,
@@ -152,8 +155,11 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
                       cubit.getCitiesApi(value['value']);
-                      cubit.dataStep1.country.id = value['value'];
+                      // cubit.dataStep1.country.id = value['value'];
                       cubit.dataStep1.country.name = value['label'];
+                      cubit.mapValidate['country'] = true;
+                      cubit.mapValidate['city'] = false;
+                      cubit.validateAll();
                     } else {}
                   },
                   dropdownItemHeight: 54.h,
@@ -235,7 +241,22 @@ class FormDropDown extends StatelessWidget {
             );
           } else if (cubit.checkMapListContainsObj(
               mapList: snapshot.data ?? [], valueNeedCheck: 'none')) {
-            return Container(child: Text('Empty data'));
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                ),
+                child: Text(
+                  S.current.empty_data,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+              ),
+            );
           } else {
             return Stack(
               children: [
@@ -250,6 +271,8 @@ class FormDropDown extends StatelessWidget {
                     cubit.dataStep1.city.countryID = value['countryID'];
                     cubit.dataStep1.city.latitude = value['latitude'];
                     cubit.dataStep1.city.longitude = value['longitude'];
+                    cubit.mapValidate['city'] = true;
+                    cubit.validateAll();
                   },
                   dropdownItemHeight: 54.h,
                   dropdownHeight: cubit.cities.isEmpty ? 60.h : 232.h,
@@ -319,7 +342,7 @@ class FormDropDown extends StatelessWidget {
                   isTriangle: false,
                   dropdownList: cubit.tokensMap,
                   dropdownWidth: 113.w,
-                  dropdownHeight: 228.h,
+                  dropdownHeight: 200.h,
                   dropdownPadding: EdgeInsets.only(right: 11.w),
                   dropdownItemHeight: 54.h,
                   defaultValue: cubit.tokensMap[0],
@@ -351,6 +374,16 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     cubit.dataStep1.tokenInfo.name = value['label'];
                     cubit.dataStep1.tokenInfo.id = value['value'];
+                    if (value['label'] == 'DFY') {
+                      cubit.dataStep1.tokenInfo.symbol = 'DFY';
+                      cubit.dataStep1.tokenInfo.id = 1;
+                    } else if (value['label'] == 'USDT') {
+                      cubit.dataStep1.tokenInfo.symbol = 'USDT';
+                      cubit.dataStep1.tokenInfo.id = 5;
+                    } else {
+                      cubit.dataStep1.tokenInfo.symbol = 'BNB';
+                      cubit.dataStep1.tokenInfo.id = 38;
+                    }
                   },
                 ),
               ),
@@ -399,7 +432,7 @@ class FormDropDown extends StatelessWidget {
                     bottomLeft: Radius.circular(20.r),
                   ),
                 ),
-                width: 93.w,
+                width: 100.w,
                 height: 64.h,
                 child: Center(
                   child: Stack(
@@ -411,11 +444,13 @@ class FormDropDown extends StatelessWidget {
                         dropdownHeight: 324.h,
                         dropdownWidth: 109.w,
                         isTriangle: false,
+                        placeholder: S.current.phone,
                         dropdownPadding: EdgeInsets.only(right: 11.w),
                         dropdownList: cubit.phonesCode,
-                        defaultValue: cubit.phonesCode.isNotEmpty
-                            ? cubit.phonesCode[0]
-                            : firstPhone[0],
+                        placeholderTS: textNormal(
+                          Colors.white.withOpacity(0.5),
+                          16,
+                        ),
                         resultIcon: const SizedBox.shrink(),
                         dropdownBD: BoxDecoration(
                           color: AppTheme.getInstance().selectDialogColor(),
@@ -443,8 +478,10 @@ class FormDropDown extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         onChange: (value) {
-                          cubit.dataStep1.phoneCodeModel.id = value['value'];
+                          // cubit.dataStep1.phoneCodeModel.id =
+                          //     int.tryParse(value['value']);
                           cubit.dataStep1.phoneCodeModel.code = value['label'];
+                          cubit.mapValidate['phone'] = true;
                         },
                       ),
                       Positioned(

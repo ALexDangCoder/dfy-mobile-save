@@ -66,7 +66,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Padding(
-        padding: const EdgeInsets.only(top:48),
+        padding: const EdgeInsets.only(top: 48),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(30),
@@ -110,22 +110,26 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                         ),
                         const SizedBox(height: 32),
                         Expanded(
-                          child: StaggeredGridView.countBuilder(
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 15,
+                              childAspectRatio: 13 / 15,
+                            ),
                             padding: const EdgeInsets.only(
                               left: 21,
                               right: 21,
                               top: 10,
                               bottom: 20,
                             ),
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 15,
                             itemCount: 10,
                             itemBuilder: (context, index) {
                               return const ItemCollectionLoad();
                             },
-                            crossAxisCount: 2,
-                            staggeredTileBuilder: (int index) =>
-                                const StaggeredTile.fit(1),
                           ),
                         )
                       ],
@@ -263,12 +267,17 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                     final data = snapshot.data ?? [];
                                     return Column(
                                       children: [
-                                        StaggeredGridView.countBuilder(
+                                        GridView.builder(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisSpacing: 20,
+                                            crossAxisSpacing: 15,
+                                            childAspectRatio: 13 / 15,
+                                          ),
                                           shrinkWrap: true,
-                                          mainAxisSpacing: 20,
-                                          crossAxisSpacing: 15,
                                           itemCount: data.length,
                                           itemBuilder: (context, index) {
                                             return InkWell(
@@ -282,7 +291,9 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                                       collectionAddress: data[
                                                                   index]
                                                               .collectionAddress ??
-                                                          '', typeScreen: PageRouter.MARKET,
+                                                          '',
+                                                      typeScreen:
+                                                          PageRouter.MARKET,
                                                     ),
                                                   ),
                                                 );
@@ -314,9 +325,6 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                               ),
                                             );
                                           },
-                                          crossAxisCount: 2,
-                                          staggeredTileBuilder: (int index) =>
-                                              const StaggeredTile.fit(1),
                                         ),
                                         StreamBuilder<LoadMoreType>(
                                           stream: cubit.canLoadMoreStream,
@@ -379,20 +387,25 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                 color: backgroundBottomSheetColor,
                                 child: Column(
                                   children: [
-                                    StaggeredGridView.countBuilder(
+                                    GridView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 15,
+                                        childAspectRatio: 13 / 15,
+                                      ),
                                       shrinkWrap: true,
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 15,
                                       itemCount: 10,
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           onTap: () async {
                                             cubit.nextPage = 1;
                                             await cubit.getListCollection(
-                                                widget.exploreCategory.id ??
-                                                    '');
+                                              widget.exploreCategory.id ?? '',
+                                            );
                                           },
                                           child: state
                                                   is LoadListCollectionFailState
@@ -400,9 +413,6 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                                               : const ItemCollectionLoad(),
                                         );
                                       },
-                                      crossAxisCount: 2,
-                                      staggeredTileBuilder: (int index) =>
-                                          const StaggeredTile.fit(1),
                                     ),
                                   ],
                                 ),

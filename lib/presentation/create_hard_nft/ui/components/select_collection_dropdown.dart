@@ -62,6 +62,7 @@ class CategoriesDropDown extends StatelessWidget {
               ),
               onChange: (selected) {
                 selected as Map<String, dynamic>;
+                cubit.dataStep1.collection = selected.getStringValue('label');
                 // cubit.voidCheckCollectionId(selected.getStringValue('value'));
                 // cubit.collectionName = selected.getStringValue('label');
               },

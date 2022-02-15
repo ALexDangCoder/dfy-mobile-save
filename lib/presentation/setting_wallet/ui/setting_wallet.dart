@@ -50,7 +50,7 @@ class _SettingWalletState extends State<SettingWallet> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: S.current.setting,
       isLockTextInSetting: true,
       widget: buildTextHideFtShow(),
@@ -69,8 +69,6 @@ class _SettingWalletState extends State<SettingWallet> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const ComingSoon();
-                            // return const ProvideHardNftInfo();
-                            // return OnBoardingScreen();
                           },
                         ),
                       );

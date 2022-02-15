@@ -48,7 +48,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismisser(
-      child: BaseBottomSheet(
+      child: BaseDesignScreen(
         resizeBottomInset: true,
         title: S.current.create_nft,
         child: FormGroup(

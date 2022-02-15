@@ -23,7 +23,7 @@ class BaseFail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseBottomSheet(
+    return BaseDesignScreen(
       title: title,
       child: Column(
         mainAxisSize: MainAxisSize.min,
