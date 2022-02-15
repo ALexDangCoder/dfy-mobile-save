@@ -10,10 +10,15 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class UploadWidget extends StatelessWidget {
+class UploadImageWidget extends StatelessWidget {
   final ProvideHardNftCubit cubit;
+  final bool showAddMore;
 
-  const UploadWidget({Key? key, required this.cubit}) : super(key: key);
+  const UploadImageWidget({
+    Key? key,
+    required this.cubit,
+    this.showAddMore = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +59,17 @@ class UploadWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        positionedBtn(
-                          onPressed: () {
-                            cubit.removeCurrentImage();
-                          },
-                          topSpace: 8,
-                          rightSpace: 8,
-                          size: 24,
-                          icon: ImageAssets.deleteMediaFile,
+                        Visibility(
+                          visible: showAddMore,
+                          child: positionedBtn(
+                            onPressed: () {
+                              cubit.removeCurrentImage();
+                            },
+                            topSpace: 8,
+                            rightSpace: 8,
+                            size: 24,
+                            icon: ImageAssets.deleteMediaFile,
+                          ),
                         ),
                         Positioned(
                           top: 127.w,
@@ -127,7 +135,8 @@ class UploadWidget extends StatelessWidget {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _listPath.length,
                                   itemBuilder: (_, index) => Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 12.w),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 12.w),
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.r),
@@ -146,7 +155,8 @@ class UploadWidget extends StatelessWidget {
                                 height: 85.h,
                                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     smallImageWidget(_listPath[0]),
                                     smallImageWidget(_listPath[1]),
@@ -159,7 +169,8 @@ class UploadWidget extends StatelessWidget {
                                 height: 85.h,
                                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     smallImageWidget(_listPath[0]),
                                     smallImageWidget(_listPath[1]),
@@ -181,7 +192,12 @@ class UploadWidget extends StatelessWidget {
                   StreamBuilder<bool>(
                       stream: cubit.enableButtonUploadImageSubject,
                       builder: (context, snapshot) {
-                        final _isEnable = snapshot.data ?? true;
+                        bool _isEnable = false;
+                        if (showAddMore) {
+                          _isEnable = snapshot.data ?? true;
+                        } else {
+                          _isEnable = showAddMore;
+                        }
                         return Visibility(
                           visible: _isEnable,
                           child: btnAdd(
@@ -192,8 +208,7 @@ class UploadWidget extends StatelessWidget {
                             content: 'Add more images',
                           ),
                         );
-                      }
-                  ),
+                      }),
                 ],
               );
             }

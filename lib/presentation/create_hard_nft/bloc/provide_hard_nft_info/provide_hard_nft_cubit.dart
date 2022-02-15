@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
@@ -13,13 +14,14 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'provide_hard_nft_state.dart';
@@ -52,6 +54,75 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
+  final PinToIPFS _pinToIPFS = PinToIPFS();
+
+  final List<DocumentFeatMediaListRequest> documentsRequest = [];
+  final List<DocumentFeatMediaListRequest> mediasRequest = [];
+
+  Future<void> postFileMediaFeatDocumentApi() async {
+    final listCidMedia = [];
+    final listCidDocument = [];
+    for (final e in listPathImage) {
+      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+      if (cid.isNotEmpty) {
+        mediasRequest.add(
+          DocumentFeatMediaListRequest(
+            name: 'fakeImage', type: 'image/jpeg', cid: cid,),);
+        listCidMedia.add(cid);
+      }
+    }
+    for (final e in listPathDocument) {
+      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+      if (cid.isNotEmpty) {
+        documentsRequest.add(DocumentFeatMediaListRequest(
+          name: 'fakeDoc', type: 'application/pdf', cid: cid,),);
+        listCidDocument.add(cid);
+      }
+    }
+    convertPropertiesToAdditionalInfo();
+    final hardNftIpfs = CreateHardNftIpfsRequest(
+      name: dataStep1.hardNftName,
+      additional_info_list: listAddtional,
+      additional_information: dataStep1.additionalInfo,
+      contact_email: dataStep1.emailContact,
+      contact_address: dataStep1.addressContact,
+      contact_name: dataStep1.nameContact,
+      expecting_price: dataStep1.amountToken,
+      expecting_price_symbol: dataStep1.tokenInfo.symbol,
+      contact_phone: dataStep1.phoneContact.trim().substring(1),
+      document_list
+          : documentsRequest,
+      //ok
+      collection_address: dataStep1.addressCollection,
+      asset_type_id: dataStep1.hardNftType.id,
+      //ok
+      bc_txn_hash: '',
+      condition_id: dataStep1.conditionNft.id,
+      contact_city_id: dataStep1.city.id,
+      contact_country_id: dataStep1.city.countryID.toString(),
+      contact_phone_code_id: dataStep1.phoneCodeModel.id.toString(),
+      media_list
+          : mediasRequest,
+    );
+    final thxHash = await _pinToIPFS.pinJsonToIPFS(
+      type: PinJsonType.HARD_NFT,
+      hardNftRequest: hardNftIpfs,
+    );
+  }
+
+  final List<AdditionalInfoListRequest> listAddtional = [];
+
+  void convertPropertiesToAdditionalInfo() {
+    for (final element in dataStep1.properties) {
+      listAddtional.add(
+        AdditionalInfoListRequest(
+          trait_type: element.property,
+          value: element.value,
+        ),
+      );
+    }
+  }
+
   bool inputFormValidate = false;
 
   ///api
@@ -79,7 +150,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ];
 
   BehaviorSubject<List<bool>> listChangeColorFtChooseBHVSJ =
-      BehaviorSubject.seeded([
+  BehaviorSubject.seeded([
     true,
     false,
     false,
@@ -96,16 +167,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   BehaviorSubject<List<HardNftTypeModel>> listHardNftTypeBHVSJ =
-      BehaviorSubject();
+  BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> countriesBHVSJ =
-      BehaviorSubject();
+  BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> phonesCodeBHVSJ =
-      BehaviorSubject();
+  BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> citiesBHVSJ = BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> conditionBHVSJ =
-      BehaviorSubject();
+  BehaviorSubject();
   BehaviorSubject<List<Map<String, dynamic>>> collectionsBHVSJ =
-      BehaviorSubject();
+  BehaviorSubject();
 
   ///value get by user submmit
 
@@ -196,7 +267,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> getListHardNftTypeApi() async {
     final Result<List<HardNftTypeModel>> resultHardNftTypes =
-        await _step1Repository.getHardNftTypes();
+    await _step1Repository.getHardNftTypes();
     resultHardNftTypes.when(
       success: (response) {
         for (final element in response) {
@@ -212,7 +283,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> getPhonesApi() async {
     final Result<List<PhoneCodeModel>> resultPhone =
-        await _step1Repository.getPhoneCode();
+    await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
         final temp = res.map((e) => e.code.toString()).toList().toSet();
@@ -299,7 +370,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> getCountriesApi() async {
     final Result<List<CountryModel>> resultCountries =
-        await _step1Repository.getCountries();
+    await _step1Repository.getCountries();
     resultCountries.when(
       success: (res) {
         for (final e in res) {
@@ -315,7 +386,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> getConditionsApi() async {
     final Result<List<ConditionModel>> resultConditions =
-        await _step1Repository.getConditions();
+    await _step1Repository.getConditions();
 
     resultConditions.when(
       success: (res) {
@@ -341,7 +412,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     List<CollectionMarketModel> listHardCl = [];
 
     final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollection(
+    await _collectionDetailRepository.getListCollection(
       addressWallet: getAddressWallet(),
     );
     result.when(
@@ -349,9 +420,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         listHardCl = res
             .where(
               (element) =>
-                  (element.type == HARD_COLLECTION) &&
-                  ((element.addressCollection ?? '').isNotEmpty),
-            )
+          (element.type == HARD_COLLECTION) &&
+              ((element.addressCollection ?? '').isNotEmpty),
+        )
             .toList();
         final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
         collectionsBHVSJ.sink.add(listDropDown);
@@ -397,7 +468,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     cities.add({'label': 'loading'});
     citiesBHVSJ.sink.add(cities);
     final Result<List<CityModel>> resultCities =
-        await _step1Repository.getCities(id.toString());
+    await _step1Repository.getCities(id.toString());
     cities.clear();
     resultCities.when(
       success: (response) {
@@ -427,7 +498,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   void checkPropertiesWhenSave() {
     for (final _ in propertiesData) {
       propertiesData.removeWhere(
-        (element) => element.property.isEmpty || element.value.isEmpty,
+            (element) => element.property.isEmpty || element.value.isEmpty,
       );
     }
     if (propertiesData.isEmpty) {
@@ -525,6 +596,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       name: S.current.jewelry,
     ),
     mediaFiles: [],
+    addressCollection: '',
   );
 }
 
@@ -536,6 +608,7 @@ class DocumentModel {
 }
 
 class Step1PassingModel {
+  String addressCollection;
   String hardNftName;
   String nameContact;
   String emailContact;
@@ -561,6 +634,7 @@ class Step1PassingModel {
     required this.mediaFiles,
     required this.phoneCodeModel,
     required this.hardNftType,
+    required this.addressCollection,
     required this.city,
     required this.nameContact,
     required this.country,

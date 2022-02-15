@@ -63,6 +63,7 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
+                      value as Map<String, dynamic>;
                       cubit.dataStep1.conditionNft.id =
                           int.tryParse(value['value']);
                       cubit.dataStep1.conditionNft.name = value['label'];
@@ -154,8 +155,9 @@ class FormDropDown extends StatelessWidget {
                   dropdownList: snapshot.data ?? [],
                   onChange: (value) {
                     if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
+                      value as Map<String, dynamic>;
                       cubit.getCitiesApi(value['value']);
-                      // cubit.dataStep1.country.id = value['value'];
+                      cubit.dataStep1.country.id = value['value'];
                       cubit.dataStep1.country.name = value['label'];
                       cubit.mapValidate['country'] = true;
                       cubit.mapValidate['city'] = false;

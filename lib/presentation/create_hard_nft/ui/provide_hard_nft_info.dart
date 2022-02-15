@@ -136,7 +136,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   ),
                   spaceH20,
                   // addMediaFile(),
-                  UploadWidget(
+                  UploadImageWidget(
                     cubit: cubit,
                   ),
                   spaceH32,
