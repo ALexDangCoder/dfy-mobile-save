@@ -725,5 +725,6 @@
   "hard_nft_will_be_create": "Hard NFT will be created in collection",
   "pls_connect_wallet": "You have to connect wallet",
   "edit_info": "Edit info",
-  "submit": "Submit"
+  "submit": "Submit",
+  "phone": "Phone"
 }

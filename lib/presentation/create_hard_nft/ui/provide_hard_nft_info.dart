@@ -96,19 +96,23 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 return GestureDetector(
                   onTap: () {
                     if ((snapshot.data ?? false)) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => Step1WhenSubmit(cubit: cubit),
-                        ),
-                      );
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (_) => const AlertDialog(
-                      //     backgroundColor: Colors.transparent,
-                      //     content: PleaseConnectWallet(),
-                      //   ),
-                      // );
+                      if (cubit.checkConnectWallet()) {
+                        cubit.createModel();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: PleaseConnectWallet(),
+                          ),
+                        );
+                      }
                     } else {
                       //nothing
                     }
@@ -525,8 +529,13 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
         ).then(
           (value) => {
-            cubit.getListCollection(),
-            cubit.dataStep1.wallet = cubit.getAddressWallet(),
+            if (cubit.resultCurrentBeWallet().isEmpty)
+              {}
+            else
+              {
+                cubit.getListCollection(),
+                cubit.dataStep1.wallet = cubit.getAddressWallet(),
+              }
           },
         );
       },

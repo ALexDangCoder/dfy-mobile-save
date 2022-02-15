@@ -1,10 +1,8 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/web3/abi/token.g.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
@@ -135,7 +133,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.length > 255) {
       return S.current.validate_addition_info;
     } else {
-      print('INFOR: TRUE');
       return null;
     }
   }
@@ -144,7 +141,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.isEmpty) {
       return S.current.address_required;
     } else {
-      print('ADDRESS: TRUE');
       return null;
     }
   }
@@ -152,11 +148,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   String? validateHardNftName(String value) {
     if (value.isEmpty) {
       return S.current.name_required;
-    }
-    else if (value.length > 255) {
+    } else if (value.length > 255) {
       return S.current.maximum_255;
     } else {
-      print('NAME: TRUE');
       return null;
     }
   }
@@ -167,7 +161,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
     } else {
-      print('AMOUNT: TRUE');
       return null;
     }
   }
@@ -176,7 +169,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.length > 30) {
       return S.current.maximum_30;
     } else {
-      print('PROPERTY: TRUE');
       return null;
     }
   }
@@ -189,7 +181,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     } else if (!regExp.hasMatch(value)) {
       return S.current.invalid_phone;
     }
-    print('MOBILE: TRUE');
     return null;
   }
 
@@ -197,7 +188,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (!regexEmail.hasMatch(value)) {
       return S.current.invalid_email;
     } else {
-      print('EMAIL: TRUE');
       return null;
     }
   }
@@ -250,7 +240,19 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   List<Map<String, dynamic>> tokensMap = [];
 
-  final test = PrefsService.getCurrentBEWallet(); //
+  String checkConnectWL = '';
+
+  bool checkConnectWallet() {
+    if (checkConnectWL.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  String resultCurrentBeWallet() {
+    return checkConnectWL = PrefsService.getCurrentBEWallet();
+  }
 
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
@@ -439,14 +441,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     'connectWallet': true,
     'mediaFiles': true,
     'inputForm': false,
-    'condition': true,
-    'country': true,
-    'city': true,
+    'condition': false,
+    'country': false,
+    'city': false,
+    'phone': false,
   };
 
   void validateAll() {
-    print(mapValidate);
-    if(mapValidate.containsValue(false)) {
+    if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
       nextBtnBHVSJ.sink.add(true);
@@ -490,6 +492,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
+  void createModel() {
+    dataStep1.mediaFiles = listPathImage;
+    dataStep1.documents = listPathDocument;
+  }
+
   List<DocumentModel> documents = [
     DocumentModel('Giay phep kinh doanh', 'pdf'),
     DocumentModel('Giay phep Su dung', 'doc'),
@@ -497,7 +504,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Step1PassingModel dataStep1 = Step1PassingModel(
     hardNftName: '',
-    tokenInfo: TokenInf(),
+    tokenInfo: TokenInf(id: 1, symbol: 'DFY'),
     nameContact: '',
     emailContact: '',
     phoneContact: '',
@@ -517,6 +524,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       id: 0,
       name: S.current.jewelry,
     ),
+    mediaFiles: [],
   );
 }
 
@@ -542,13 +550,15 @@ class Step1PassingModel {
   TokenInf tokenInfo;
   String nameNftType;
   ConditionModel conditionNft;
-  List<DocumentModel> documents;
+  List<String> documents;
+  List<String> mediaFiles;
   HardNftTypeModel hardNftType;
   PhoneCodeModel phoneCodeModel;
   CityModel city;
 
   Step1PassingModel({
     required this.hardNftName,
+    required this.mediaFiles,
     required this.phoneCodeModel,
     required this.hardNftType,
     required this.city,

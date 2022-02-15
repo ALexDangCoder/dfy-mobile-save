@@ -699,6 +699,7 @@
   "enter_add": "Nhập địa chỉ",
   "pls_connect_wallet": "Bạn phải kết nối ví để thực hiện",
   "edit_info": "Sửa T.Tin",
-  "submit": "Gửi"
+  "submit": "Gửi",
+  "phone": "SĐT"
 
 }

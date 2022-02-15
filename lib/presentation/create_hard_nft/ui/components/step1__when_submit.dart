@@ -1,4 +1,4 @@
-import 'package:Dfy/config/base/base_screen.dart';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/prov
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -104,14 +105,14 @@ class Step1WhenSubmit extends StatelessWidget {
             // spaceH20,
             ListView.builder(
               shrinkWrap: true,
-              itemCount: cubit.documents.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: cubit.dataStep1.documents.length,
               itemBuilder: (ctx, index) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     textShowWithPadding(
-                      textShow: cubit.documents[index].title,
-                      typeFile: cubit.documents[index].typeFile,
+                      textShow: cubit.dataStep1.documents[index],
                       txtStyle: textNormalCustom(
                         AppTheme.getInstance().whiteColor(),
                         16,
@@ -143,7 +144,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     imageNftByTypeSelect(
-                      id: cubit.dataStep1.conditionNft.id ?? 0,
+                      id: cubit.dataStep1.hardNftType.id ?? 0,
                     ),
                     spaceW4,
                     Text(
@@ -282,7 +283,7 @@ class Step1WhenSubmit extends StatelessWidget {
             spaceH15,
             informationContactWidget(
               title:
-                  '${cubit.dataStep1.phoneCodeModel.name} ${cubit.dataStep1.phoneContact}',
+                  '${cubit.dataStep1.phoneCodeModel.code} ${cubit.dataStep1.phoneContact}',
               image: ImageAssets.callStep1,
             ),
             spaceH15,
@@ -301,10 +302,12 @@ class Step1WhenSubmit extends StatelessWidget {
             ),
             spaceH16,
             widgetShowCollectionFtWallet(
-                isWallet: true, walletAddress: '0xcd...1029'),
+              isWallet: true,
+              walletAddress: cubit.dataStep1.wallet.formatAddressWallet(),
+            ),
             spaceH18,
             widgetShowCollectionFtWallet(
-              nameCollection: 'Collection of HUYTQ',
+              nameCollection: cubit.dataStep1.collection,
               isWallet: false,
             ),
             spaceH46,
