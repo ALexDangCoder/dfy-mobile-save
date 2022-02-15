@@ -69,7 +69,6 @@ class _SettingWalletState extends State<SettingWallet> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const ComingSoon();
-                            // return OnBoardingScreen();
                           },
                         ),
                       );

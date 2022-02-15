@@ -731,5 +731,7 @@
   "thu": "THURSDAY",
   "fri": "FRIDAY",
   "sat": "SATURDAY",
-  "sun": "SUNDAY"
+  "sun": "SUNDAY",
+  "submit": "Submit",
+  "phone": "Phone"
 }
