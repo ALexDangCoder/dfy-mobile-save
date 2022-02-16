@@ -359,7 +359,7 @@ class _CollectionListState extends State<CollectionList> {
                                       ),
                                     ),
                                     SizedBox(
-                                      child: list.length == 20
+                                      child: collectionBloc.resList.length != 20
                                           ? const SizedBox.shrink()
                                           : StreamBuilder<bool>(
                                               stream:
