@@ -273,11 +273,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
             if (value.addressCollection?.isEmpty ?? false) {
-              isCanLoadMore.add(false);
             } else {
-              if (listCollection.length != 20) {
-                isCanLoadMore.add(false);
-              }
               listCollection.add(value);
             }
           }
@@ -339,6 +335,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
             if (value.addressCollection?.isEmpty ?? false) {
+              isCanLoadMore.add(false);
             } else {
               listCollection.add(value);
             }

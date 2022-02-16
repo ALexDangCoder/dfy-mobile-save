@@ -326,7 +326,8 @@ class _CollectionListState extends State<CollectionList> {
                                               },
                                               child: ItemCollection(
                                                 items:
-                                                    '${list[index].totalNft ?? 0}',
+                                                    '${list[index].totalNft
+                                                        ?? 0}',
                                                 text: list[index]
                                                         .description
                                                         ?.parseHtml() ??
@@ -335,7 +336,8 @@ class _CollectionListState extends State<CollectionList> {
                                                     (list[index].avatarCid ??
                                                         ''),
                                                 owners:
-                                                    '${list[index].nftOwnerCount ?? 0}',
+                                                    '${list[index].nftOwnerCount
+                                                        ?? 0}',
                                                 title: snapshot
                                                         .data?[index].name
                                                         ?.parseHtml() ??
@@ -357,7 +359,7 @@ class _CollectionListState extends State<CollectionList> {
                                       ),
                                     ),
                                     SizedBox(
-                                      child: list.length < 7
+                                      child: list.length == 20
                                           ? const SizedBox.shrink()
                                           : StreamBuilder<bool>(
                                               stream:
