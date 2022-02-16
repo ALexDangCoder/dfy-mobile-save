@@ -409,6 +409,11 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         }
       },
       error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getListNft(
+            collectionAddress: collectionAddress,
+          );
+        }//todo BE
         statusNft.add(FAILED);
       },
     );
