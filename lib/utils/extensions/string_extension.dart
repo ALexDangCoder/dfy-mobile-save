@@ -75,6 +75,14 @@ extension StringParse on String {
         parse(document.body?.text).documentElement?.text ?? '';
     return parsedString;
   }
+
+  int parseToInt(){
+    int vl = -1;
+    try {
+      vl = int.parse(this);
+    } catch (_){}
+    return vl;
+  }
 }
 
 extension DiacriticsAwareString on String {
