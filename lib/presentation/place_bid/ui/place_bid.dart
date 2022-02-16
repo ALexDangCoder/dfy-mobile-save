@@ -47,7 +47,8 @@ class _PlaceBidState extends State<PlaceBid> {
   @override
   void initState() {
     cubit = PlaceBidCubit();
-    trustWalletChannel.setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getBalance();
     super.initState();
   }
@@ -392,7 +393,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       buildRowCustom(
                                         title: S.current.amount,
                                         child: Text(
-                                          bidValue,
+                                          '$bidValue ${widget.nftOnAuction.tokenSymbol ?? ''}',
                                           style: textNormalCustom(
                                             AppTheme.getInstance().fillColor(),
                                             20,
