@@ -6,6 +6,7 @@ import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/place_bid/bloc/place_bid_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -46,6 +47,8 @@ class _PlaceBidState extends State<PlaceBid> {
   @override
   void initState() {
     cubit = PlaceBidCubit();
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getBalance();
     super.initState();
   }
@@ -336,7 +339,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           ),
                                         );
                                   },
-                                  textActiveButton: S.current.approve,
+                                  textActiveButton: S.current.place_a_bid,
                                   hexString: value,
                                   spender: nft_auction_dev2,
                                 ),
@@ -390,7 +393,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       buildRowCustom(
                                         title: S.current.amount,
                                         child: Text(
-                                          bidValue,
+                                          '$bidValue ${widget.nftOnAuction.tokenSymbol ?? ''}',
                                           style: textNormalCustom(
                                             AppTheme.getInstance().fillColor(),
                                             20,
@@ -407,6 +410,15 @@ class _PlaceBidState extends State<PlaceBid> {
                                         widget.marketId,
                                         data,
                                       ),
+                                    );
+                                    cubit.importNft(
+                                      contract: widget
+                                              .nftOnAuction.collectionAddress ??
+                                          '',
+                                      id: int.parse(
+                                          widget.nftOnAuction.nftTokenId ?? ''),
+                                      address:
+                                          PrefsService.getCurrentBEWallet(),
                                     );
                                     Navigator.push(
                                       context,
@@ -439,7 +451,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           ),
                                         );
                                   },
-                                  textActiveButton: S.current.approve,
+                                  textActiveButton: S.current.buy_out,
                                   hexString: value,
                                   spender: nft_auction_dev2,
                                 ),

@@ -491,7 +491,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                   builder: (context) => Approve(
                     title: S.current.accept_offer,
                     spender: nft_pawn_dev2,
-                    textActiveButton: S.current.accept,
+                    textActiveButton: S.current.accept_offer,
                     hexString: value,
                     header: Column(
                       children: [
