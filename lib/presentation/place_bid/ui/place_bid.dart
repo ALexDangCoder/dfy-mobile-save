@@ -339,7 +339,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           ),
                                         );
                                   },
-                                  textActiveButton: S.current.approve,
+                                  textActiveButton: S.current.place_a_bid,
                                   hexString: value,
                                   spender: nft_auction_dev2,
                                 ),
@@ -451,7 +451,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           ),
                                         );
                                   },
-                                  textActiveButton: S.current.approve,
+                                  textActiveButton: S.current.buy_out,
                                   hexString: value,
                                   spender: nft_auction_dev2,
                                 ),

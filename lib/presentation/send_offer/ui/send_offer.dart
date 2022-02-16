@@ -205,7 +205,7 @@ class _SendOfferState extends State<SendOffer> {
                         ),
                       );
                 },
-                textActiveButton: S.current.approve,
+                textActiveButton: S.current.send_offer,
                 tokenAddress: repaymentAsset,
                 hexString: value,
                 spender: nft_pawn_dev2,
