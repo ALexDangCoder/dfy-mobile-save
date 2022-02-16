@@ -150,14 +150,20 @@ class _NFTItemState extends State<NFTItemWidget> {
                             borderRadius: BorderRadius.circular(10.r),
                             child:
                                 (widget.nftMarket.typeImage != TypeImage.VIDEO)
-                                    ? Image.network(
-                                        widget.nftMarket.image ?? '',
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.network(
-                                        widget.nftMarket.cover ?? '',
-                                        fit: BoxFit.cover,
-                                      ),
+                                    ? FadeInImage.assetNetwork(
+                                  placeholder: ImageAssets.image_loading,
+                                  image: widget.nftMarket.image ?? '',
+                                  imageCacheHeight: 200,
+                                  placeholderCacheHeight: 50,
+                                  fit: BoxFit.cover,
+                                )
+                                    : FadeInImage.assetNetwork(
+                                  placeholder: ImageAssets.image_loading,
+                                  image: widget.nftMarket.cover ?? '',
+                                  imageCacheHeight: 200,
+                                  placeholderCacheHeight: 50,
+                                  fit: BoxFit.cover,
+                                ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),

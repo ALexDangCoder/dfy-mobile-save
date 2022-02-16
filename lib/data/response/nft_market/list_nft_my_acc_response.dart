@@ -42,6 +42,8 @@ class NftMyAccResponse extends Equatable {
   String? name;
   @JsonKey(name: 'file_cid')
   String? fileCid;
+  @JsonKey(name: 'cover_cid')
+  String? coverCid;
   @JsonKey(name: 'type')
   int? type;
   @JsonKey(name: 'standard')
@@ -62,6 +64,10 @@ class NftMyAccResponse extends Equatable {
   String? walletAddress;
   @JsonKey(name: 'nft_token_id')
   String? nftTokenId;
+  @JsonKey(name: 'price')
+  double? price;
+  @JsonKey(name: 'price_symbol')
+  String? priceSymbol;
 
   NftMyAccResponse(
     this.id,
@@ -79,6 +85,9 @@ class NftMyAccResponse extends Equatable {
     this.collectionAddress,
     this.walletAddress,
     this.nftTokenId,
+    this.price,
+    this.priceSymbol,
+      this.coverCid,
   );
 
   factory NftMyAccResponse.fromJson(Map<String, dynamic> json) =>
@@ -133,12 +142,14 @@ class NftMyAccResponse extends Equatable {
         marketId: marketId,
         marketType: getTypeMarket(marketStatus ?? 0),
         typeImage: getTypeImage(fileType ?? 'image'),
+        cover: getPath(coverCid ?? ''),
         typeNFT: getTypeNft(type ?? 0),
         image: getPath(fileCid ?? ''),
         nftId: id,
         nftTokenId: nftTokenId,
-        price: 0,
+        price: price,
         name: name,
+        tokenBuyOut: priceSymbol,
         pawnId: returnPawnId(pawnId ?? ''),
         totalCopies: totalOfCopies,
         numberOfCopies: numberOfCopies,
