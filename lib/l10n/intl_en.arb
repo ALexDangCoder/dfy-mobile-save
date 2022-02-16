@@ -724,7 +724,6 @@
   "will_receive_nft": "will receive NFT after being minted by Evaluator",
   "hard_nft_will_be_create": "Hard NFT will be created in collection",
   "accept_evaluation":"Accept Evaluation",
-  "hard_nft_will_be_create": "Hard NFT will be created in collection",
   "pls_connect_wallet": "You have to connect wallet",
   "edit_info": "Edit info",
   "submit": "Submit",
@@ -735,7 +734,7 @@
   "fri": "FRIDAY",
   "sat": "SATURDAY",
   "sun": "SUNDAY",
-  "submit": "Submit",
   "phone": "Phone",
-  "collections": "Collections"
+  "collections": "Collections",
+  "login_expired": "Login session has expired. Please log in again"
 }
