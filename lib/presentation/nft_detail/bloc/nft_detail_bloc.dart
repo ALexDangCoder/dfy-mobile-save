@@ -173,6 +173,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           } else {
             res.isOwner = false;
           }
+          for (final value in listTokenSupport) {
+            final symbolToken = res.symbolToken ?? '';
+            final symbol = value.symbol ?? '';
+            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+            }
+          }
           showContent();
           emit(NftNotOnMarketSuccess(res));
           getHistory(
@@ -182,15 +191,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '');
-          }
-          for (final value in listTokenSupport) {
-            final symbolToken = res.symbolToken ?? '';
-            final symbol = value.symbol ?? '';
-            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
-              res.urlToken = value.iconUrl;
-              res.symbolToken = value.symbol;
-              res.usdExchange = value.usdExchange;
-            }
           }
         },
         error: (error) {
@@ -208,6 +208,17 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
+          final tokenBuyOut =
+              res.tokenBuyOut == '' ? res.tokenBuyOut : res.token;
+          for (final value in listTokenSupport) {
+            if (tokenBuyOut?.toLowerCase() == value.address?.toLowerCase() ||
+                tokenBuyOut?.toLowerCase() == value.symbol?.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+              break;
+            }
+          }
           showContent();
           emit(NftOnSaleSuccess(res));
           getHistory(
@@ -217,15 +228,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '');
-          }
-          for (final value in listTokenSupport) {
-            final tokenBuyOut = res.tokenBuyOut ?? '';
-            final address = value.address ?? '';
-            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
-              res.urlToken = value.iconUrl;
-              res.symbolToken = value.symbol;
-              res.usdExchange = value.usdExchange;
-            }
           }
         },
         error: (error) {
@@ -244,6 +246,16 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       result.when(
         success: (res) {
           showContent();
+          final tokenBuyOut = res.token ?? '';
+          for (final value in listTokenSupport) {
+            if (tokenBuyOut.toLowerCase() == value.address?.toLowerCase()||
+                tokenBuyOut.toLowerCase() == value.symbol?.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.tokenSymbol = value.symbol;
+              res.usdExchange = value.usdExchange;
+              symbolToken = value.symbol ?? '';
+            }
+          }
           nftOnAuction = res;
           emit(NftOnAuctionSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
@@ -255,16 +267,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
           getBidding(res.id.toString());
-          for (final value in listTokenSupport) {
-            final tokenBuyOut = res.token ?? '';
-            final address = value.address ?? '';
-            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
-              res.urlToken = value.iconUrl;
-              res.tokenSymbol = value.symbol;
-              res.usdExchange = value.usdExchange;
-              symbolToken = value.symbol ?? '';
-            }
-          }
         },
         error: (error) {
           showError();
@@ -283,7 +285,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           } else {
             res.isYou = false;
           }
-          getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';
             final symbol = value.symbol ?? '';
@@ -293,6 +294,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               res.repaymentAsset = value.address;
             }
           }
+          getOffer(pawnId.toString());
           emit(NftOnPawnSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(
