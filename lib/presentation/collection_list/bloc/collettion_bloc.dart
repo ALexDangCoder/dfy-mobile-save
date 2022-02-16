@@ -115,7 +115,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           }
         }
       },
-      error: (error) {},
+      error: (error) {
+        if(error.code==CODE_ERROR_AUTH){
+          getListWallet();
+        }
+      },
     );
   }
 
