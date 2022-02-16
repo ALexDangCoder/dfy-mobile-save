@@ -262,6 +262,7 @@ class ImageAssets {
   static const String img_collection = '$baseImg/img_collection.png';
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
+  static const String image_loading = '$baseImg/img_loading.gif';
 
   //img activity collection detail
 

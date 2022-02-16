@@ -232,14 +232,14 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 5605.h),
+                                                EdgeInsets.only(top: 555.h),
                                             child: Center(
                                               child: SizedBox(
-                                                height: 24.h,
-                                                width: 24.w,
+                                                height: 16.h,
+                                                width: 16.w,
                                                 child:
                                                     CircularProgressIndicator(
-                                                  strokeWidth: 2.r,
+                                                  strokeWidth: 1.r,
                                                   color: AppTheme.getInstance()
                                                       .whiteColor(),
                                                 ),

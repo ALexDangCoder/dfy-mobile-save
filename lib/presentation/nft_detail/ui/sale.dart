@@ -68,20 +68,19 @@ Container _priceContainerOnSale({
             children: [
               Row(
                 children: [
-                  if (urlToken != ApiConstants.BASE_URL_IMAGE)
-                    Image(
-                      image: NetworkImage(
-                        urlToken,
-                      ),
-                      width: 20.w,
-                      height: 20.h,
-                    )
-                  else
-                    Image(
-                      image: const AssetImage(ImageAssets.symbol),
-                      width: 20.w,
-                      height: 20.h,
+                  SizedBox(
+                    height: 20.w,
+                    width: 20.w,
+                    child: Image.network(
+                      urlToken ,
+                      errorBuilder: (context, url, error) {
+                        return const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        );
+                      },
                     ),
+                  ),
                   spaceW4,
                   Text(
                     '$price $shortName',

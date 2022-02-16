@@ -36,7 +36,6 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
@@ -721,7 +720,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           const SizedBox()
                         else
                           _rowCollection(
-                            objSale.symbolToken ?? '',
+                            objSale.token ?? '',
                             objSale.collectionName ?? '',
                             objSale.ticked == 1,
                           ),
