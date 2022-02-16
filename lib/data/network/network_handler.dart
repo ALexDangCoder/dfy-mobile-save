@@ -1,5 +1,6 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:dio/dio.dart';
 
@@ -18,12 +19,11 @@ class NetworkHandler {
     }
     final parsedException = _parseError(error);
     final errorCode = error.response?.statusCode;
-    if (errorCode == 503) {
+    if (errorCode == CODE_ERROR_MAINTAIN) {
       return MaintenanceException();
     }
-    if (errorCode == 401) {
-      eventBus.fire(UnAuthEvent(''));
-      return MaintenanceException();
+    if (errorCode == CODE_ERROR_AUTH) {
+      return UnauthorizedException();
     }
     return parsedException;
   }
