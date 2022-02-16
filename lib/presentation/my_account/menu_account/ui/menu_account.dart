@@ -179,16 +179,27 @@ class _MenuAccountState extends State<MenuAccount> {
           ).then((_) => cubit.getLoginState());
         }
         break;
-      case 'step4' : {
+      case 'step4':
+        {
           goTo(
             context,
             const ReceiveHardNFTScreen(),
           );
           break;
-      }
+        }
       case 'collection_list':
         {
-          if(walletAddress.isNotEmpty){
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: CollectionList(
+                  typeScreen: PageRouter.MY_ACC,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -206,10 +217,9 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => EvaluationResult(
-                assetID: '6209d62e4aec3d07dc5587d6',
-              )
-            ),
+                builder: (context) => EvaluationResult(
+                      assetID: '6209d62e4aec3d07dc5587d6',
+                    )),
           );
         }
         break;
@@ -418,8 +428,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                         return Text(
                                           data,
                                           style: textNormalCustom(
-                                            AppTheme.getInstance()
-                                                .whiteColor(),
+                                            AppTheme.getInstance().whiteColor(),
                                             16,
                                             FontWeight.w400,
                                           ),
@@ -473,8 +482,7 @@ class _MenuAccountState extends State<MenuAccount> {
                               onChangeExpand: () {
                                 final indexOpen = openTab
                                     .indexWhere((element) => element == true);
-                                if (indexOpen >= 0)
-                                  openTab[indexOpen] = false;
+                                if (indexOpen >= 0) openTab[indexOpen] = false;
                                 if (indexOpen != index) {
                                   setState(() {
                                     openTab[index] = !openTab[index];
@@ -516,14 +524,14 @@ class _MenuAccountState extends State<MenuAccount> {
                                                 children: [
                                                   Expanded(
                                                     child: Container(
-                                                      constraints:const BoxConstraints (
-                                                        minHeight: 60
-                                                      ),
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                              minHeight: 60),
                                                       child: Container(
                                                         alignment: Alignment
                                                             .centerLeft,
-                                                        color: Colors
-                                                            .transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                         child: Text(
                                                           child.title,
                                                           style:
@@ -583,8 +591,8 @@ class _MenuAccountState extends State<MenuAccount> {
                                       ImageIcon(
                                         AssetImage(e.icon),
                                         size: 28,
-                                        color: AppTheme.getInstance()
-                                            .whiteColor(),
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
                                       ),
                                       const SizedBox(
                                         width: 16,
@@ -696,7 +704,6 @@ class _MenuAccountState extends State<MenuAccount> {
                           return InkWell(
                             onTap: () {
                               cubit.logout();
-
                             },
                             child: Image.asset(ImageAssets.ic_logout),
                           );
