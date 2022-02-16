@@ -5,6 +5,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -76,17 +77,21 @@ class RelatedDocument extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().whiteColor(),
-                    fontSize: 16,
+                SizedBox(
+                  width: 305.w,
+                  child: Text(
+                    title,
+                    style: tokenDetailAmount(
+                      color: AppTheme.getInstance().whiteColor(),
+                      fontSize: 16,
+                    ),
+                    overflow: TextOverflow.clip,
                   ),
                 ),
                 Text(
                   'Created on ${formatDateTime.format(
-                        DateTime.fromMillisecondsSinceEpoch(createDate),
-                      )}',
+                    DateTime.fromMillisecondsSinceEpoch(createDate),
+                  )}',
                   style: tokenDetailAmount(
                     color: AppTheme.getInstance().currencyDetailTokenColor(),
                     fontSize: 12,
