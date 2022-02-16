@@ -27,7 +27,11 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
   final _web3utils = Web3Utils();
 
   NFTRepository get nftRepo => Get.find();
-
+  void dispose() {
+    _btnSubject.close();
+    _streamController.close();
+    close();
+  }
   Future<String> getPawnHexString({
     required String nftCollateralId,
     required String repaymentAsset,

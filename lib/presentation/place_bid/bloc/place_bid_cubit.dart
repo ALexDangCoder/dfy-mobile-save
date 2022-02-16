@@ -37,6 +37,13 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
 
   NFTRepository get nftRepo => Get.find();
 
+  void dispose() {
+    _warnSubject.close();
+    _btnSubject.close();
+    _balanceSubject.close();
+    close();
+  }
+
   Future<double> getBalanceToken({
     required String ofAddress,
     required String tokenAddress,
@@ -108,6 +115,7 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
   Future<void> buyOutRequest(BuyOutRequest buyOutRequest) async {
     await nftRepo.buyOutRequest(buyOutRequest);
   }
+
   Future<void> importNft({
     required String contract,
     required String address,
