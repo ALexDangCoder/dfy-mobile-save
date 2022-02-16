@@ -94,7 +94,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
   CollectionDetailModel arg = CollectionDetailModel();
-  List<ActivityCollectionModel> argActivity = [];
 
   String linkUrlFacebook = '';
   String linkUrlTwitter = '';
@@ -356,7 +355,8 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           collectionDetailModel.sink.add(arg);
           collectionAddress = collectionAddressDetail ?? '';
           getListFilterCollectionDetail(
-              collectionAddress: arg.collectionAddress ?? '');
+            collectionAddress: arg.collectionAddress ?? '',
+          );
           getListNft(
             collectionAddress: collectionAddressDetail ?? '',
           );
@@ -434,8 +434,18 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           listActivity.add([]);
           statusActivity.add(ERROR);
         } else {
-          argActivity.addAll(res);
-          listActivity.add(res);
+          if (typeScreen == PageRouter.MARKET) {
+            final List<ActivityCollectionModel> listActivityMyAcc = [];
+            for (final ActivityCollectionModel value in res) {
+              if (value.marketStatus == NOT_ON_MARKET) {
+              } else {
+                listActivityMyAcc.add(value);
+              }
+            }
+            listActivity.add(listActivityMyAcc);
+          } else {
+            listActivity.add(res);
+          }
           statusActivity.add(SUCCESS);
         }
       },

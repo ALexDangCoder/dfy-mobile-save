@@ -238,20 +238,19 @@ Container _priceContainerOnAuction({
           children: [
             Row(
               children: [
-                if (nftOnAuction.urlToken != ApiConstants.BASE_URL_IMAGE)
-                  Image(
-                    image: NetworkImage(
-                      nftOnAuction.urlToken ?? '',
-                    ),
-                    width: 20.w,
-                    height: 20.h,
-                  )
-                else
-                  Image(
-                    image: const AssetImage(ImageAssets.symbol),
-                    width: 20.w,
-                    height: 20.h,
+                SizedBox(
+                  height: 20.w,
+                  width: 20.w,
+                  child: Image.network(
+                    nftOnAuction.urlToken ?? '',
+                    errorBuilder: (context, url, error) {
+                      return const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      );
+                    },
                   ),
+                ),
                 spaceW4,
                 Text(
                   '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '

@@ -49,6 +49,14 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
 
   double get balanceValue => _balanceSubject.valueOrNull ?? 0;
 
+  void dispose() {
+    _balanceSubject.close();
+    _btnSubject.close();
+    _balanceSubject.close();
+    _warnSubject.close();
+    close();
+  }
+
   NFTRepository get nftRepo => Get.find();
 
   Future<double> getBalanceToken({

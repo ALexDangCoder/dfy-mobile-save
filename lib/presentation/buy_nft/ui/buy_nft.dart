@@ -89,6 +89,11 @@ class _BuyNFTState extends State<BuyNFT> {
   }
 
   @override
+  void dispose() {
+    cubit.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget warningAmount() {
       return StreamBuilder<String>(
