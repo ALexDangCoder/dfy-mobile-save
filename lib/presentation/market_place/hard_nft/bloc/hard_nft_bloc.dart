@@ -43,7 +43,7 @@ class HardNFTBloc {
   Stream<int> get changeTabStream => _changeTabSubject.stream;
 
   void changeImage(String _img) {
-    if (currentImage.urlImage?.isNotEmpty ?? false) {
+    if (currentImage.urlImage != '') {
       getIndex(_img);
     }
     checkButton();

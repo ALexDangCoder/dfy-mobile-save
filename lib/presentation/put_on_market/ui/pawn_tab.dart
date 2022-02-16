@@ -53,10 +53,8 @@ class _PawnTabState extends State<PawnTab>
     widget.cubit.changeTokenPawn(
       indexToken: 0,
     );
-      _putOnMarketModel.tokenAddress =
-          widget.cubit.listToken[0].address ?? '';
-      _putOnMarketModel.loanSymbol =
-          widget.cubit.listToken[0].symbol ?? '';
+    _putOnMarketModel.tokenAddress = widget.cubit.listToken[0].address ?? '';
+    _putOnMarketModel.loanSymbol = widget.cubit.listToken[0].symbol ?? '';
     super.initState();
   }
 
@@ -146,30 +144,30 @@ class _PawnTabState extends State<PawnTab>
                 typeInput: widget.cubit.listToken
                     .map(
                       (e) => SizedBox(
-                    height: 64,
-                    width: 70,
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: Image.network(
-                            e.iconUrl ?? '',
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Flexible(
-                          child: Text(
-                            e.symbol ?? '',
-                            style: textValueNFT.copyWith(
-                              decoration: TextDecoration.none,
+                        height: 64,
+                        width: 70,
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Image.network(
+                                e.iconUrl ?? '',
+                                height: 20,
+                                width: 20,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                            const SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                e.symbol ?? '',
+                                style: textValueNFT.copyWith(
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                     .toList(),
                 hintText: S.current.enter_price,
                 onChangeType: (index) {
@@ -372,6 +370,7 @@ class _PawnTabState extends State<PawnTab>
                             onErrorSign: (context) async {
                               final nav = Navigator.of(context);
                               nav.pop();
+
                               await showLoadFail(context);
                             },
                             listDetail: [
@@ -384,7 +383,7 @@ class _PawnTabState extends State<PawnTab>
                               DetailItemApproveModel(
                                 title: '${S.current.duration} :',
                                 value:
-                                    '${widget.cubit.valueDuration ?? 0} ${widget.cubit.typeDuration == 0 ? S.current.week : S.current.month}',
+                                    '${widget.cubit.valueDuration ?? 0} ${(_putOnMarketModel.durationType ?? 0) == 0 ? S.current.week : S.current.month}',
                               ),
                               DetailItemApproveModel(
                                 title: '${S.current.price_per_1} :',

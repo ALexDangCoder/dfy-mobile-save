@@ -64,6 +64,17 @@ extension CallCoreExtension on ApproveCubit {
           await loopCheckApprove();
           // isApprovedSubject.sink.add(resultApprove.boolValue('isSuccess'));
           if (isApprove) {
+            showLoading();
+            try {
+              balanceWallet = await web3Client.getBalanceOfBnb(
+                ofAddress: addressWalletCoreSubject.valueOrNull ?? '',
+              );
+              balanceWalletSubject.sink.add(balanceWallet ?? 0);
+              showContent();
+            } catch (e) {
+              showError();
+              AppException('title', e.toString());
+            }
             emit(ApproveSuccess());
           } else {
             emit(ApproveFail());

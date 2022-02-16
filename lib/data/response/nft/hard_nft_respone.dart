@@ -50,7 +50,7 @@ class DetailHardNftResponse {
   @JsonKey(name: 'collection_name')
   String? collectionName;
   @JsonKey(name: 'nft_standard')
-  String? nftStandard;
+  dynamic nftStandard;
   @JsonKey(name: 'number_of_copies')
   int? numberOfCopies;
   @JsonKey(name: 'minting_fee_number')
@@ -141,61 +141,10 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
-        price: mintingFeeNumber,
-        marketId: marketId,
-        walletAddress: walletAddress,
-        name: name ?? '',
-        token: mintingFeeToken,
-        description: description,
-        royalties: royalties,
-        properties: properties?.map((e) => e.toDomain()).toList(),
-        owner: owner,
-        typeNFT: TypeNFT.HARD_NFT,
-        txnHash: txnHash,
-        image: getPath(fileCid ?? ''),
-        collectionID: collectionId,
-        collectionName: collectionName,
-        countProperties: countProperties,
-        numberOfCopies: numberOfCopies,
-        mintingFeeNumber: mintingFeeNumber,
-        mintingFeeToken: mintingFeeToken,
-        marketType: getTypeMarket(marketType ?? 0),
-        createAt: createAt,
-        updateAt: updateAt,
-        collectionAddress: collectionAddress,
-        nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard,
-        blockchainNetwork: blockChainNetwork.toString(),
-        typeImage: getTypeImage(fileType ?? ''),
-        isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
 
   NFTOnAuction toAuction() => NFTOnAuction(
-        marketId: marketId,
-        name: name ?? '',
-        description: description,
-        royalties: royalties,
-        properties: properties?.map((e) => e.toDomain()).toList(),
-        owner: owner,
-        txnHash: txnHash,
-        fileCid: getPath(fileCid ?? ''),
-        token: mintingFeeToken,
-        collectionId: collectionId,
-        collectionName: collectionName,
-        countProperties: countProperties,
-        numberOfCopies: numberOfCopies,
-        mintingFeeNumber: mintingFeeNumber,
-        mintingFeeToken: mintingFeeToken,
-        marketType: getTypeMarket(marketType ?? 0),
-        createAt: createAt,
-        updateAt: updateAt,
-        collectionAddress: collectionAddress,
-        nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard,
-        blockchainNetwork: blockChainNetwork.toString(),
-        typeImage: getTypeImage(fileType ?? ''),
-        isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
 }
