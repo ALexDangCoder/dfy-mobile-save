@@ -1,226 +1,573 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/market_place/activity_collection_model.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_bid.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_burn.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_buy.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_buy_out.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_cancel.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_like.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_put_on_market.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_receive_offer.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_report.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_sign_contract.dart';
-import 'package:Dfy/presentation/detail_collection/ui/activity/activity_transfer.dart';
+import 'package:Dfy/presentation/detail_collection/ui/activity/base_activity.dart';
+import 'package:Dfy/presentation/detail_collection/ui/activity/base_text_bsc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListActivity extends StatelessWidget {
-  final String urlAvatar;
-  final String title;
-  final String date;
-  final String copy;
-  final int marketStatus;
-  final String addressWalletSend;
-  final String addressWallet;
-  final String price;
-  final String priceSymbol;
-  final int typeActivity;
-  final int auctionType;
-  final int nftType;
-  final String urlSymbol;
+  final ActivityCollectionModel objActivity;
   final int index;
   final DetailCollectionBloc bloc;
 
   const ListActivity({
     Key? key,
-    required this.urlAvatar,
-    required this.title,
-    required this.date,
-    required this.copy,
-    required this.marketStatus,
-    required this.addressWalletSend,
-    required this.addressWallet,
-    required this.typeActivity,
-    required this.auctionType,
-    required this.nftType,
-    required this.price,
-    required this.priceSymbol,
-    required this.urlSymbol,
     required this.index,
     required this.bloc,
+    required this.objActivity,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final String each = bloc.funCheckEach(
-      nftType: nftType,
-    );
-    final String myCopy = bloc.funCheckCopy(
-      copy: copy,
-      nftType: nftType,
-    );
-    final String market = bloc.funGetMarket(marketStatus);
-
     return itemActivity(
-      price: price,
-      typeActivity: typeActivity,
-      urlSymbol: urlSymbol,
-      urlAvatar: urlAvatar,
-      priceSymbol: priceSymbol,
-      title: title,
-      addressWallet: addressWallet,
-      addressWalletSend: addressWalletSend,
-      auctionType: auctionType,
-      copy: myCopy,
-      date: date,
-      each: each,
-      market: market.toLowerCase(),
+      objActivity: objActivity,
       index: index,
       bloc: bloc,
+      context: context,
     );
   }
 
-  Widget itemActivity({
-    String? urlAvatar,
-    String? title,
-    String? date,
-    String? copy,
-    String? market,
-    String? addressWalletSend,
-    String? addressWallet,
-    String? price,
-    String? priceSymbol,
-    String? each,
-    int? typeActivity,
-    int? auctionType,
-    String? urlSymbol,
-    required int index,
-    required DetailCollectionBloc bloc,
-  }) {
-    switch (typeActivity) {
+  Widget itemActivity(
+      {required ActivityCollectionModel objActivity,
+      required int index,
+      required DetailCollectionBloc bloc,
+      required BuildContext context}) {
+    final String myCopy = bloc.funCheckCopy(
+      copy: objActivity.numberOfCopies.toString(),
+      nftType: objActivity.nftType ?? 0,
+    );
+    final String market = bloc
+        .funGetMarket(
+          objActivity.marketStatus ?? 0,
+        )
+        .toLowerCase();
+    final String each = bloc.funCheckEach(
+      nftType: objActivity.nftType ?? 0,
+    );
+    final String urlSymbol =
+        bloc.funGetSymbolUrl(objActivity.priceSymbol ?? '');
+    final String? urlAvatar;
+    final String fromAddress = objActivity.fromAddress ?? '';
+    final String priceSymbol = objActivity.priceSymbol ?? '';
+    final double price = objActivity.price ?? 0;
+    final String nftName = objActivity.nftName ?? '';
+    final int date = objActivity.eventDateTime ?? 0;
+    final String toAddress = objActivity.toAddress ?? '';
+    final double widthActivity = MediaQuery.of(context).size.width - 106;
+    if ((objActivity.fileType ?? '') == VIDEO_ACTIVITY) {
+      urlAvatar = objActivity.coverCid ?? '';
+    } else {
+      urlAvatar = objActivity.avatarCid ?? '';
+    }
+    switch (objActivity.activityType) {
       case DetailCollectionBloc.PUT_ON_MARKET:
-        return PutOnMarket(
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
-          money: price ?? '',
-          copy: copy ?? '',
-          each: each ?? '',
-          market: market ?? '',
-          moneySymbol: priceSymbol ?? '',
-          urlSymbol: urlSymbol ?? '',
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
           index: index,
+          statusIconActivity: ImageAssets.img_activity_put_on_market,
+          bloc: bloc,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_put} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: myCopy.isEmpty
+                        ? ''
+                        : '${S.current.activity_copied} '
+                            '$myCopy ${S.current.activity_on} ',
+                  ),
+                  TextSpan(
+                    text: '$market ${S.current.activity_by} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                  TextSpan(
+                    text: ' ${S.current.activity_for} ',
+                  ),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: urlSymbol.isNotEmpty
+                        ? Image.asset(
+                            urlSymbol,
+                            width: 14.w,
+                            height: 14.w,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(45.r),
+                              ),
+                            ),
+                            width: 14.w,
+                            height: 14.w,
+                            child: FittedBox(
+                              child: Text(
+                                priceSymbol.substring(0, 1),
+                              ),
+                            ),
+                          ),
+                  ),
+                  TextSpan(
+                    text: ' $price $priceSymbol',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().amountTextColor(),
+                      14,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: each.isEmpty ? null : ' ${S.current.activity_each}',
+                    style: textNormalCustom(
+                      null,
+                      14,
+                      null,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.TRANSFER_ACTIVITY:
-        return TransferActivity(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
+          statusIconActivity: ImageAssets.img_activity_transfer,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          copy: copy ?? '',
-          addressSend: addressWalletSend ?? '',
-          address: addressWallet ?? '',
+          bloc: bloc,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_transferred} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: myCopy.isEmpty
+                        ? '${S.current.activity_by} '
+                        : '${S.current.activity_copied} '
+                            '$myCopy ${S.current.activity_by} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                  TextSpan(
+                    text: ' ${S.current.activity_from_to} ',
+                  ),
+                  baseTextBSC(toAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.BURN:
-        return Burn(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
+          statusIconActivity: ImageAssets.img_activity_burn,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
-          copy: copy ?? '',
+          bloc: bloc,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_burned} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: myCopy.isEmpty
+                        ? '${S.current.activity_by} '
+                        : '${S.current.activity_copied} $myCopy '
+                            '${S.current.activity_by} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.CANCEL:
-        return Cancel(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
-          market: market ?? '',
-          copy: copy ?? '',
+          bloc: bloc,
+          statusIconActivity: ImageAssets.img_activity_cancel,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_cancelled} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: myCopy.isEmpty
+                        ? ''
+                        : '${S.current.activity_copied} $myCopy '
+                            '${S.current.activity_on} ',
+                  ),
+                  TextSpan(
+                    text: '$market ${S.current.activity_by} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.LIKE:
-        return Like(
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
           bloc: bloc,
+          statusIconActivity: ImageAssets.img_activity_like,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_liked_by} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.REPORT:
-        return Report(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
+          bloc: bloc,
+          statusIconActivity: ImageAssets.img_activity_report,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_reported_by} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.BUY:
-        return Buy(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
+          statusIconActivity: ImageAssets.img_activity_buy,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
-          amount: price ?? '',
-          copy: copy ?? '',
-          amountSymbol: priceSymbol ?? '',
-          urlSymbol: urlSymbol ?? '',
+          bloc: bloc,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_bought} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: myCopy.isEmpty
+                        ? ''
+                        : '${S.current.activity_copied} '
+                            '$myCopy ${S.current.activity_for} ',
+                  ),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: urlSymbol.isNotEmpty
+                        ? Image.asset(
+                            urlSymbol,
+                            width: 14.w,
+                            height: 14.w,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(45.r),
+                              ),
+                            ),
+                            width: 14.w,
+                            height: 14.w,
+                            child: FittedBox(
+                              child: Text(
+                                priceSymbol.substring(0, 1),
+                              ),
+                            ),
+                          ),
+                  ),
+                  TextSpan(
+                    text: ' $price $priceSymbol',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().amountTextColor(),
+                      14,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' ${S.current.activity_by} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.BID_BUY_OUT:
-        if (auctionType == 0) {
-          return Bid(
-            bloc: bloc,
+        if (objActivity.auctionType == 0) {
+          return BaseActivity(
+            urlAvatar: urlAvatar,
+            title: nftName,
+            date: date,
+            statusIconActivity: ImageAssets.img_activity_bid,
             index: index,
-            urlAvatar: urlAvatar ?? '',
-            title: title ?? '',
-            date: date ?? '',
-            content: addressWallet ?? '',
-            amount: price ?? '',
-            urlSymbol: urlSymbol ?? '',
-            amountSymbol: priceSymbol ?? '',
+            bloc: bloc,
+            childText: SizedBox(
+              width: widthActivity,
+              child: RichText(
+                text: TextSpan(
+                  text: '${S.current.activity_bid} ',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: urlSymbol.isNotEmpty
+                          ? Image.asset(
+                              urlSymbol,
+                              width: 14.w,
+                              height: 14.w,
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(45.r),
+                                ),
+                              ),
+                              width: 14.w,
+                              height: 14.w,
+                              child: FittedBox(
+                                child: Text(
+                                  priceSymbol.substring(0, 1),
+                                ),
+                              ),
+                            ),
+                    ),
+                    TextSpan(
+                      text: ' $price $priceSymbol',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().amountTextColor(),
+                        14,
+                        FontWeight.w600,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' ${S.current.activity_by} ',
+                    ),
+                    baseTextBSC(fromAddress),
+                  ],
+                ),
+              ),
+            ),
           );
         } else {
-          return BuyOut(
-            bloc: bloc,
+          return BaseActivity(
+            urlAvatar: urlAvatar,
+            title: nftName,
+            date: date,
+            statusIconActivity: ImageAssets.img_activity_bid,
             index: index,
-            urlAvatar: urlAvatar ?? '',
-            title: title ?? '',
-            date: date ?? '',
-            content: addressWallet ?? '',
-            amount: price ?? '',
-            urlSymbol: urlSymbol ?? '',
-            amountSymbol: priceSymbol ?? '',
+            bloc: bloc,
+            childText: SizedBox(
+              width: widthActivity,
+              child: RichText(
+                text: TextSpan(
+                  text: '${S.current.activity_bought_out} ',
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: urlSymbol.isNotEmpty
+                          ? Image.asset(
+                              urlSymbol,
+                              width: 14.w,
+                              height: 14.w,
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(45.r),
+                                ),
+                              ),
+                              width: 14.w,
+                              height: 14.w,
+                              child: FittedBox(
+                                child: Text(
+                                  priceSymbol.substring(0, 1),
+                                ),
+                              ),
+                            ),
+                    ),
+                    TextSpan(
+                      text: ' $price $priceSymbol',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().amountTextColor(),
+                        14,
+                        FontWeight.w600,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' ${S.current.activity_by} ',
+                    ),
+                    baseTextBSC(fromAddress),
+                  ],
+                ),
+              ),
+            ),
           );
         }
       case DetailCollectionBloc.RECEIVE_OFFER:
-        return ReceiveOffer(
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
+          statusIconActivity: ImageAssets.img_activity_receive_offer,
           bloc: bloc,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          content: addressWallet ?? '',
-          value: price ?? '',
-          valueSymbol: priceSymbol ?? '',
-          urlSymbol: urlSymbol ?? '',
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_received_an_offer_worth} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: urlSymbol.isNotEmpty
+                        ? Image.asset(
+                            urlSymbol,
+                            width: 14.w,
+                            height: 14.w,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(45.r),
+                              ),
+                            ),
+                            width: 14.w,
+                            height: 14.w,
+                            child: FittedBox(
+                              child: Text(
+                                priceSymbol.substring(0, 1),
+                              ),
+                            ),
+                          ),
+                  ),
+                  TextSpan(
+                    text: ' $price $priceSymbol',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().amountTextColor(),
+                      14,
+                      FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' ${S.current.from} ',
+                  ),
+                  baseTextBSC(fromAddress),
+                ],
+              ),
+            ),
+          ),
         );
       case DetailCollectionBloc.SIGN_CONTRACT:
-        return SignContract(
-          bloc: bloc,
+        return BaseActivity(
+          urlAvatar: urlAvatar,
+          title: nftName,
+          date: date,
           index: index,
-          urlAvatar: urlAvatar ?? '',
-          title: title ?? '',
-          date: date ?? '',
-          addressSend: addressWalletSend ?? '',
-          address: addressWallet ?? '',
+          bloc: bloc,
+          statusIconActivity: ImageAssets.img_activity_sign_contract,
+          childText: SizedBox(
+            width: widthActivity,
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.activity_signed_a_pawn_contract_between} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                  14,
+                  FontWeight.w400,
+                ),
+                children: [
+                  baseTextBSC(fromAddress),
+                  TextSpan(
+                    text: ' ${S.current.activity_and} ',
+                  ),
+                  baseTextBSC(toAddress),
+                ],
+              ),
+            ),
+          ),
         );
       default:
         return const SizedBox.shrink();
