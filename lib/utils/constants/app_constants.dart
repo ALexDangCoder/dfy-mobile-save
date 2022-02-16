@@ -29,6 +29,11 @@ enum PageTransitionType {
 //   IS_NOT_CREATE,
 // }
 
+
+const int CODE_ERROR_AUTH = 401;
+const int CODE_ERROR_MAINTAIN = 503;
+const int CODE_ERROR_NETWORK = 0;
+
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
 const String CALENDAR_TYPE_YEAR = 'Year';

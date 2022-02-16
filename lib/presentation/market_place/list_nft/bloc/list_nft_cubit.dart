@@ -309,10 +309,20 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         emit(ListNftSuccess());
       },
       error: (error) {
-        updateStateError();
-        emit(ListNftError());
-        loadMore = false;
-        refresh = false;
+        if (error.code == CODE_ERROR_AUTH) {
+          getListNft(
+              status: status,
+              nftType: nftType,
+              name: name,
+              collectionId: collectionId,
+              walletAddress: walletAddress,
+              pageRouter: pageRouter);
+        } else {
+          updateStateError();
+          emit(ListNftError());
+          loadMore = false;
+          refresh = false;
+        }
       },
     );
   }

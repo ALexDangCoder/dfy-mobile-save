@@ -529,11 +529,25 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                   fit: BoxFit.cover,
                 ),
               )
-            : Center(
-                child: Icon(
-                  Icons.play_circle_outline_sharp,
-                  size: 24.sp,
-                  color: Colors.white,
+            : Container(
+                color: Colors.black,
+                child: Stack(
+                  children: [
+                    VideoPlayer(
+                      VideoPlayerController.network(img.urlImage!)
+                        ..initialize().then((_) {
+                          setState(() {
+                          });
+                        }),
+                    ),
+                    Center(
+                      child: Icon(
+                        Icons.play_circle_outline_sharp,
+                        size: 34.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
       ),
