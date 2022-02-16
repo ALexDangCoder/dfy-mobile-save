@@ -141,33 +141,6 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
-        price: mintingFeeNumber,
-        marketId: marketId,
-        walletAddress: walletAddress,
-        name: name ?? '',
-        token: mintingFeeToken,
-        description: description,
-        royalties: royalties,
-        properties: properties?.map((e) => e.toDomain()).toList(),
-        owner: owner,
-        typeNFT: TypeNFT.HARD_NFT,
-        txnHash: txnHash,
-        image: getPath(fileCid ?? ''),
-        collectionID: collectionId,
-        collectionName: collectionName,
-        countProperties: countProperties,
-        numberOfCopies: numberOfCopies,
-        mintingFeeNumber: mintingFeeNumber,
-        mintingFeeToken: mintingFeeToken,
-        marketType: getTypeMarket(marketType ?? 0),
-        createAt: createAt,
-        updateAt: updateAt,
-        collectionAddress: collectionAddress,
-        nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard.toString(),
-        blockchainNetwork: blockChainNetwork.toString(),
-        typeImage: getTypeImage(fileType ?? ''),
-        isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
 
