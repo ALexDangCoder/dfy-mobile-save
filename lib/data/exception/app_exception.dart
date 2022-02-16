@@ -1,10 +1,12 @@
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 
 class AppException implements Exception {
+  int? code = CODE_ERROR_NETWORK;
   String title;
   String message;
 
-  AppException(this.title, this.message);
+  AppException(this.title, this.message, {this.code});
 
   @override
   String toString() => '$title $message';
@@ -23,9 +25,19 @@ class ExpiredException extends AppException {
 }
 
 class UnauthorizedException extends AppException {
-  UnauthorizedException() : super(S.current.error, S.current.error_network);
+  UnauthorizedException()
+      : super(
+          S.current.error,
+          S.current.error_network,
+          code: CODE_ERROR_AUTH,
+        );
 }
 
 class MaintenanceException extends AppException {
-  MaintenanceException() : super(S.current.error, S.current.error_network);
+  MaintenanceException()
+      : super(
+          S.current.error,
+          S.current.error_network,
+          code: CODE_ERROR_MAINTAIN,
+        );
 }
