@@ -95,7 +95,7 @@ Container _priceContainerOnSale({
               ),
               Expanded(
                 child: Text(
-                  formatUSD.format(price * usdExchange),
+                  '~ ${formatUSD.format(price * usdExchange)}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                     14,

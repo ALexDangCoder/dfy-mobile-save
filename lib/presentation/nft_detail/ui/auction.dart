@@ -70,8 +70,11 @@ Widget _buildButtonBuyOut(
   BuildContext context,
   NFTOnAuction nftOnAuction,
   String marketId,
+  bool start,
+  bool end,
 ) {
   return ButtonTransparent(
+    isEnable: !start == true && end == true,
     child: Text(
       S.current.buy_out,
       style: textNormalCustom(
@@ -106,7 +109,7 @@ Widget buttonCancelAuction({
   if (!approveAdmin) {
     return ButtonGradient(
       onPressed: () async {
-        if(nftMarket.marketStatus == 8){
+        if (nftMarket.marketStatus == 8) {
           return;
         }
         final nav = Navigator.of(context);
@@ -151,8 +154,8 @@ Widget buttonCancelAuction({
                   context,
                   MaterialPageRoute(
                     builder: (context) => BaseFail(
-                        title: S.current.cancel_aution,
-                        content: S.current.failed,
+                      title: S.current.cancel_aution,
+                      content: S.current.failed,
                       onTapBtn: () {
                         Navigator.pop(context);
                       },
@@ -263,13 +266,13 @@ Container _priceContainerOnAuction({
             ),
             Expanded(
               child: Text(
-                formatUSD.format(
+                '~ ${formatUSD.format(
                   isBidding
                       ? ((nftOnAuction.reservePrice ?? 0) *
                           (nftOnAuction.usdExchange ?? 0))
                       : ((nftOnAuction.currentPrice ?? 0) *
                           (nftOnAuction.usdExchange ?? 0)),
-                ),
+                )}',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                   14,

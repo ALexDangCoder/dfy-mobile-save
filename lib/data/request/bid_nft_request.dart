@@ -4,11 +4,11 @@ part 'bid_nft_request.g.dart';
 
 @JsonSerializable()
 class BidNftRequest {
-  final String nft_market_id;
+  final String market_id;
   final double bid_value;
   final String txn_hash;
 
-  BidNftRequest(this.nft_market_id, this.bid_value, this.txn_hash);
+  BidNftRequest(this.market_id, this.bid_value, this.txn_hash);
 
   factory BidNftRequest.fromJson(Map<String, dynamic> json) =>
       _$BidNftRequestFromJson(json);

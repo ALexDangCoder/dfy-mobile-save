@@ -42,7 +42,9 @@ class Web3Utils {
   factory Web3Utils() => _shared;
 
   //client
-  final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
+  // final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
+  final client =
+      Web3Client('https://data-seed-prebsc-2-s2.binance.org:8545', Client());
 
   Future<ImportNftResponse> importNFT({
     required String contract,
@@ -613,7 +615,7 @@ class Web3Utils {
       function: function,
       parameters: [
         BigInt.from(num.parse(auctionId)),
-        BigInt.from(num.parse(bidValue)),
+        BigInt.from(num.parse(_handleAmount(18, bidValue))),
       ],
     );
     return hex.encode(bid.data ?? []);
