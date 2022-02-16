@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
@@ -194,8 +195,7 @@ class NFTRepositoryImpl implements NFTRepository {
   }
 
   @override
-  Future<Result<String>> rejectOffer(
-      int idOffer) {
+  Future<Result<String>> rejectOffer(int idOffer) {
     return runCatchingAsync<String, String>(
       () => _nftClient.rejectOffer(idOffer),
       (response) => response.toString(),
@@ -225,6 +225,14 @@ class NFTRepositoryImpl implements NFTRepository {
       () =>
           _nftClient.getDetailHardNftNotOnMarket(collectionAddress, nftTokenId),
       (response) => response.item?.toOnSale() ?? NftMarket.init(),
+    );
+  }
+
+  @override
+  Future<Result<String>> buyOutRequest(BuyOutRequest buyOutRequest) {
+    return runCatchingAsync<String, String>(
+      () => _nftClient.buyOutRequest(buyOutRequest),
+      (response) => response.toString(),
     );
   }
 }
