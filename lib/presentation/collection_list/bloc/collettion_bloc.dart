@@ -32,14 +32,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   BehaviorSubject<List<CollectionMarketModel>> list =
       BehaviorSubject.seeded([]);
-  BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOldest = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOwnerFromHighToLow = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOwnerFromLowToHigh = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isItemFromHighToLow = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isItemFromLowToHigh = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isHardCollection = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftCollection = BehaviorSubject.seeded(false);
@@ -107,14 +99,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         } else {
           if (res.length < 2) {
             for (final element in res) {
-              if(element.walletAddress?.isNotEmpty ??false){
+              if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
             checkWalletAddress = false;
           } else {
             for (final element in res) {
-              if(element.walletAddress?.isNotEmpty ??false){
+              if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
@@ -169,11 +161,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       for (final String value in listAcc) {
         if (value != S.current.all) {
           if (value.isNotEmpty) {
-           if(addressWallet?.isNotEmpty ?? false){
-             addressWallet = '$addressWallet,$value';
-           }else{
-             addressWallet = value;
-           }
+            if (addressWallet?.isNotEmpty ?? false) {
+              addressWallet = '$addressWallet,$value';
+            } else {
+              addressWallet = value;
+            }
           }
         }
       }
@@ -281,7 +273,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
             if (value.addressCollection?.isEmpty ?? false) {
+              isCanLoadMore.add(false);
             } else {
+              if (listCollection.length != 20) {
+                isCanLoadMore.add(false);
+              }
               listCollection.add(value);
             }
           }
@@ -359,6 +355,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   void dispone() {
     isHardCollection.close();
     isSoftCollection.close();
+    isChooseAcc.close();
+    isCanLoadMore.close();
+    listCategoryStream.close();
     list.close();
+    listCheckBoxFilterStream.close();
   }
 }

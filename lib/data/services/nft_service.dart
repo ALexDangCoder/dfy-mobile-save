@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/data/response/market_place/confirm_res.dart';
 import 'package:Dfy/data/response/market_place/list_type_nft_res.dart';
@@ -52,9 +53,9 @@ abstract class NFTClient {
 
   @GET(ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET)
   Future<HardNftResponse> getDetailHardNftNotOnMarket(
-      @Query('collection-address') String collectionAddress,
-      @Query('nft-token-id') String nftTokenId,
-      );
+    @Query('collection-address') String collectionAddress,
+    @Query('nft-token-id') String nftTokenId,
+  );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(
@@ -96,6 +97,11 @@ abstract class NFTClient {
   @POST(ApiConstants.BID_NFT)
   Future<String> bidNftRequest(
     @Body() BidNftRequest bidNftRequest,
+  );
+
+  @POST(ApiConstants.BUY_OUT)
+  Future<String> buyOutRequest(
+    @Body() BuyOutRequest buyOutRequest,
   );
 
   @GET('${ApiConstants.OFFER_DETAIL}{id}')

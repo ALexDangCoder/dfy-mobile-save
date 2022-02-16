@@ -44,6 +44,11 @@ class _SendOfferState extends State<SendOffer> {
 
   String message = '';
 
+  @override
+  void dispose() {
+    _cubit.dispose();
+  }
+
   Future<void> getHexStringThenNav() async {
     await _cubit
         .getPawnHexString(
@@ -205,7 +210,7 @@ class _SendOfferState extends State<SendOffer> {
                         ),
                       );
                 },
-                textActiveButton: S.current.approve,
+                textActiveButton: S.current.send_offer,
                 tokenAddress: repaymentAsset,
                 hexString: value,
                 spender: nft_pawn_dev2,

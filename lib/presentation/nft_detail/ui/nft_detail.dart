@@ -36,7 +36,6 @@ import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
@@ -165,9 +164,22 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context,
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
-                return EvaluationTab(
-                  evaluation: snapshot.data ?? Evaluation(),
-                );
+                if(snapshot.hasData){
+                  return EvaluationTab(
+                    evaluation: snapshot.data ?? Evaluation(),
+                  );
+                }
+                else {
+                  return SizedBox(
+                    height: 100.h,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.r,
+                        color: AppTheme.getInstance().whiteColor(),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           StreamBuilder<List<BiddingNft>>(
@@ -721,7 +733,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           const SizedBox()
                         else
                           _rowCollection(
-                            objSale.symbolToken ?? '',
+                            objSale.token ?? '',
                             objSale.collectionName ?? '',
                             objSale.ticked == 1,
                           ),
@@ -1036,6 +1048,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                               context,
                               nftOnAuction,
                               widget.marketId ?? '',
+                              bloc.isStartAuction(
+                                nftOnAuction.startTime ?? 0,
+                              ),
+                              bloc.isStartAuction(
+                                nftOnAuction.endTime ?? 0,
+                              ),
                             ),
                           ),
                           SizedBox(

@@ -20,7 +20,6 @@ class ComingSoon extends StatelessWidget {
             height: 48.h,
           ),
           Container(
-            height: 764.h,
             width: 375.w,
             decoration: BoxDecoration(
               color: const Color(0xff3e3d5c),

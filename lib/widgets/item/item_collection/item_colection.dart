@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,7 +25,7 @@ class ItemCollection extends StatelessWidget {
     required this.items,
     required this.owners,
     required this.text,
-    this.backgroundFit = BoxFit.fitWidth,
+    this.backgroundFit = BoxFit.cover,
     this.fixWidth = true,
     this.itemsKey,
     this.ownersKey,
@@ -62,7 +63,7 @@ class ItemCollection extends StatelessWidget {
                     image: NetworkImage(
                       urlBackGround,
                     ),
-                    fit: backgroundFit ?? BoxFit.fitWidth,
+                    fit: backgroundFit ?? BoxFit.cover,
                   ),
                 ),
                 // child: ,
@@ -140,9 +141,15 @@ class ItemCollection extends StatelessWidget {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Image.network(
-                urlIcon,
+              child: FadeInImage.assetNetwork(
+                image: urlIcon,
                 fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) => Container(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                ),
+                placeholder: ImageAssets.image_loading_collection,
+                imageCacheHeight: 200,
+                placeholderCacheHeight: 50,
               ),
             ),
           ),

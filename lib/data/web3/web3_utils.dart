@@ -615,7 +615,7 @@ class Web3Utils {
       function: function,
       parameters: [
         BigInt.from(num.parse(auctionId)),
-        BigInt.from(num.parse(bidValue)),
+        BigInt.from(num.parse(_handleAmount(18, bidValue))),
       ],
     );
     return hex.encode(bid.data ?? []);
