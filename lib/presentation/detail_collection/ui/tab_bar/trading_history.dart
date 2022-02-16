@@ -3,9 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/detail_collection/ui/widget/list_activity.dart';
-import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,24 +36,7 @@ class _ActivityCollectionState extends State<ActivityCollection> {
               color: Colors.transparent,
               padding: EdgeInsets.only(bottom: 24.h),
               child: ListActivity(
-                urlAvatar:
-                '${ApiConstants.BASE_URL_IMAGE}${list[index].avatarCid ??
-                    ''}',
-                copy: '${list[index].numberOfCopies ?? 0}',
-                auctionType: list[index].auctionType ?? 99,
-                addressWalletSend: list[index].fromAddress ?? '',
-                marketStatus: list[index].marketStatus ?? 99,
-                price: '${list[index].price ?? 0}',
-                priceSymbol: list[index].priceSymbol ?? '',
-                title: list[index].nftName ?? '',
-                date: 0.formatDateTimeMy(
-                  list[index].eventDateTime ?? 0,
-                ),
-                addressWallet: list[index].toAddress ?? '',
-                urlSymbol: widget.detailCollectionBloc
-                    .funGetSymbolUrl(list[index].priceSymbol ?? ''),
-                nftType: list[index].nftType ?? 99,
-                typeActivity: list[index].activityType ?? 99,
+                objActivity: list[index],
                 index: index,
                 bloc: widget.detailCollectionBloc,
               ),

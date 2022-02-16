@@ -102,6 +102,7 @@ const String DOCUMENT_FILE = 'document';
 const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';
+const String VIDEO_ACTIVITY = 'video/MP4';
 
 //Collection type, standard
 const int SOFT_COLLECTION = 0;

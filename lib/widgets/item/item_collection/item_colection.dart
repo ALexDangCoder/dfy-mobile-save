@@ -88,7 +88,8 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey ?? S.current.owners.toLowerCase()}',
+                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey
+                      ?? S.current.owners.toLowerCase()}',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     12.sp,
@@ -143,6 +144,9 @@ class ItemCollection extends StatelessWidget {
               child: Image.network(
                 urlIcon,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: AppTheme.getInstance().selectDialogColor(),
+                ),
               ),
             ),
           ),
