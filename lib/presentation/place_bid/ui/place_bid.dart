@@ -55,13 +55,6 @@ class _PlaceBidState extends State<PlaceBid> {
       ofAddress: PrefsService.getCurrentBEWallet(),
       tokenAddress: widget.nftOnAuction.token ?? '',
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    String bidValue = widget.typeBid == TypeBid.PLACE_BID
-        ? ''
-        : (widget.nftOnAuction.buyOutPrice ?? 0).toString();
     if (widget.typeBid == TypeBid.BUY_OUT) {
       if (cubit.balanceValue < (widget.nftOnAuction.buyOutPrice ?? 0)) {
         cubit.warnSink.add(S.current.insufficient_balance);
@@ -75,6 +68,14 @@ class _PlaceBidState extends State<PlaceBid> {
         }
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String bidValue = widget.typeBid == TypeBid.PLACE_BID
+        ? ''
+        : (widget.nftOnAuction.buyOutPrice ?? 0).toString();
+
     Widget balanceWidget() {
       return StreamBuilder<double>(
           stream: cubit.balanceStream,
@@ -284,7 +285,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       buildRowCustom(
                                         title: S.current.amount,
                                         child: Text(
-                                          bidValue,
+                                          '$bidValue ${widget.nftOnAuction.tokenSymbol ?? ''}',
                                           style: textNormalCustom(
                                             AppTheme.getInstance().fillColor(),
                                             20,
@@ -296,7 +297,6 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-
                                     cubit.bidNftRequest(
                                       BidNftRequest(
                                         widget.marketId,
@@ -305,7 +305,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       ),
                                     );
 
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => BaseSuccess(
