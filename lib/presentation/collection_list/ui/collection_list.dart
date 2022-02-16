@@ -248,9 +248,6 @@ class _CollectionListState extends State<CollectionList> {
                         ),
                       );
                     } else {
-                      if (collectionBloc.list.value.length < 9) {
-                        collectionBloc.isCanLoadMore.add(false);
-                      }
                       return StreamBuilder(
                         stream: collectionBloc.list,
                         builder: (
@@ -271,97 +268,113 @@ class _CollectionListState extends State<CollectionList> {
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: EdgeInsets.only(
-                                        left: 21.w,
-                                        right: 21.w,
-                                        top: 10.h,
-                                        bottom: 16.h,
+                                    SizedBox(
+                                      height: list.length < 7
+                                          ? MediaQuery.of(context).size.height
+                                          -180.h//16+28+20+24+22+12+10+48 - header
+                                          : null,
+                                      child: GridView.builder(
+                                        shrinkWrap:
+                                            list.length < 7 ? false : true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        padding: EdgeInsets.only(
+                                          left: 21.w,
+                                          right: 21.w,
+                                          top: 10.h,
+                                          bottom: 16.h,
+                                        ),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 20.h,
+                                          crossAxisSpacing: 26.w,
+                                          childAspectRatio: 4 / 5,
+                                        ),
+                                        itemCount: state is LoadingDataSuccess
+                                            ? list.length
+                                            : 20,
+                                        itemBuilder: (context, index) {
+                                          if (state is LoadingDataSuccess) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return DetailCollection(
+                                                        collectionAddress:
+                                                            collectionBloc
+                                                                    .list
+                                                                    .value[
+                                                                        index]
+                                                                    .addressCollection ??
+                                                                '',
+                                                        typeScreen:
+                                                            widget.typeScreen,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: ItemCollection(
+                                                items:
+                                                    '${list[index].totalNft ?? 0}',
+                                                text: list[index]
+                                                        .description
+                                                        ?.parseHtml() ??
+                                                    '',
+                                                urlIcon: ApiConstants.URL_BASE +
+                                                    (list[index].avatarCid ??
+                                                        ''),
+                                                owners:
+                                                    '${list[index].nftOwnerCount ?? 0}',
+                                                title: snapshot
+                                                        .data?[index].name
+                                                        ?.parseHtml() ??
+                                                    '',
+                                                urlBackGround:
+                                                    ApiConstants.URL_BASE +
+                                                        (list[index].coverCid ??
+                                                            ''),
+                                              ),
+                                            );
+                                          } else if (state is LoadingDataFail) {
+                                            return ItemCollectionError(
+                                              cubit: collectionBloc,
+                                            );
+                                          } else {
+                                            return const ItemCollectionLoad();
+                                          }
+                                        },
                                       ),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 20.h,
-                                        crossAxisSpacing: 26.w,
-                                        childAspectRatio: 4 / 5,
-                                      ),
-                                      itemCount: state is LoadingDataSuccess
-                                          ? list.length
-                                          : 20,
-                                      itemBuilder: (context, index) {
-                                        if (state is LoadingDataSuccess) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return DetailCollection(
-                                                      collectionAddress:
-                                                          collectionBloc
-                                                                  .list
-                                                                  .value[index]
-                                                                  .addressCollection ??
-                                                              '',
-                                                      typeScreen:
-                                                          widget.typeScreen,
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            child: ItemCollection(
-                                              items:
-                                                  '${list[index].totalNft ?? 0}',
-                                              text: list[index]
-                                                      .description
-                                                      ?.parseHtml() ??
-                                                  '',
-                                              urlIcon: ApiConstants.URL_BASE +
-                                                  (list[index].avatarCid ?? ''),
-                                              owners:
-                                                  '${list[index].nftOwnerCount
-                                                      ?? 0}',
-                                              title: snapshot.data?[index].name
-                                                      ?.parseHtml() ??
-                                                  '',
-                                              urlBackGround: ApiConstants
-                                                      .URL_BASE +
-                                                  (list[index].coverCid ?? ''),
-                                            ),
-                                          );
-                                        } else if (state is LoadingDataFail) {
-                                          return ItemCollectionError(
-                                            cubit: collectionBloc,
-                                          );
-                                        } else {
-                                          return const ItemCollectionLoad();
-                                        }
-                                      },
                                     ),
-                                    StreamBuilder<bool>(
-                                      stream: collectionBloc.isCanLoadMore,
-                                      builder: (context, snapshot) {
-                                        return snapshot.data ?? false
-                                            ? Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    bottom: 16.h,
-                                                  ),
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 3,
-                                                    color:
-                                                        AppTheme.getInstance()
-                                                            .whiteColor(),
-                                                  ),
-                                                ),
-                                              )
-                                            : const SizedBox.shrink();
-                                      },
+                                    SizedBox(
+                                      child: list.length < 7
+                                          ? const SizedBox.shrink()
+                                          : StreamBuilder<bool>(
+                                              stream:
+                                                  collectionBloc.isCanLoadMore,
+                                              builder: (context, snapshot) {
+                                                return snapshot.data ?? false
+                                                    ? Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            bottom: 16.h,
+                                                          ),
+                                                          child:
+                                                          CircularProgressIndicator(
+                                                            strokeWidth: 3,
+                                                            color: AppTheme
+                                                                    .getInstance()
+                                                                .whiteColor(),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const SizedBox.shrink();
+                                              },
+                                            ),
                                     ),
                                   ],
                                 ),
