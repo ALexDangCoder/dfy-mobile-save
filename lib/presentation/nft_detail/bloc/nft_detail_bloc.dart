@@ -540,7 +540,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
     result.when(
       success: (res) {},
-      error: (err) {},
+      error: (err) {
+        if (err.code == CODE_ERROR_AUTH) {
+          confirmCancelSaleWithBE(
+            txnHash: txnHash,
+            marketId: marketId,
+          );
+        }
+      },
     );
   }
 
@@ -554,13 +561,25 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
     result.when(
       success: (res) {},
-      error: (err) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          confirmCancelAuctionWithBE(marketId: marketId, txnHash: txnHash);
+        }
+      },
     );
   }
 
   Future<void> confirmCancelPawnWithBE({
     required int id,
   }) async {
-    await _nftRepo.cancelPawn(id);
+    final result = await _nftRepo.cancelPawn(id);
+    result.when(
+      success: (res) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          confirmCancelPawnWithBE(id: id);
+        }
+      },
+    );
   }
 }

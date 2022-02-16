@@ -45,6 +45,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       BehaviorSubject.seeded([]);
   int nextPage = 1;
   bool checkWalletAddress = false;
+  List<CollectionMarketModel> resList =[];
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -270,16 +271,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
+          resList.clear();
+          resList=res;
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-              isCanLoadMore.add(false);
-            } else {
-              if (listCollection.length != 20) {
-                isCanLoadMore.add(false);
-              }
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add([...currentList, ...listCollection]);
         } else {
@@ -335,13 +336,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         if (res.isEmpty) {
           emit(LoadingDataErorr());
         } else {
+          resList.clear();
+          resList=res;
           emit(LoadingDataSuccess());
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-            } else {
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add(listCollection);
         }
