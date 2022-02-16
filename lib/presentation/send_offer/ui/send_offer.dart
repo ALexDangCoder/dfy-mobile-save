@@ -44,6 +44,11 @@ class _SendOfferState extends State<SendOffer> {
 
   String message = '';
 
+  @override
+  void dispose() {
+    _cubit.dispose();
+  }
+
   Future<void> getHexStringThenNav() async {
     await _cubit
         .getPawnHexString(

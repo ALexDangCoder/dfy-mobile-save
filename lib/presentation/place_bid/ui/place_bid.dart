@@ -53,6 +53,12 @@ class _PlaceBidState extends State<PlaceBid> {
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    cubit.dispose();
+  }
+
   Future<void> getBalance() async {
     await cubit.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
