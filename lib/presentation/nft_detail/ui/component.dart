@@ -196,7 +196,7 @@ Widget _rowCollection(String symbol, String collectionName, bool verify) {
           radius: 18.r,
           child: Center(
             child: Text(
-              symbol.substring(0, 1),
+              collectionName.substring(0, 1),
               style: textNormalCustom(
                 Colors.black,
                 20,

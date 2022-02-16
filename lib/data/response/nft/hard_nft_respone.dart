@@ -50,7 +50,7 @@ class DetailHardNftResponse {
   @JsonKey(name: 'collection_name')
   String? collectionName;
   @JsonKey(name: 'nft_standard')
-  int? nftStandard;
+  String? nftStandard;
   @JsonKey(name: 'number_of_copies')
   int? numberOfCopies;
   @JsonKey(name: 'minting_fee_number')
@@ -68,7 +68,7 @@ class DetailHardNftResponse {
   @JsonKey(name: 'txn_hash')
   String? txnHash;
   @JsonKey(name: 'blockchain_network')
-  String? blockChainNetwork;
+  int? blockChainNetwork;
   @JsonKey(name: 'nft_token_id')
   int? nftTokenId;
   @JsonKey(name: 'collection_address')
@@ -141,10 +141,11 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
-        price: 0,
+        price: mintingFeeNumber,
         marketId: marketId,
         walletAddress: walletAddress,
         name: name ?? '',
+        token: mintingFeeToken,
         description: description,
         royalties: royalties,
         properties: properties?.map((e) => e.toDomain()).toList(),
@@ -163,8 +164,8 @@ class DetailHardNftResponse {
         updateAt: updateAt,
         collectionAddress: collectionAddress,
         nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard.toString(),
-        blockchainNetwork: blockChainNetwork,
+        nftStandard: nftStandard,
+        blockchainNetwork: blockChainNetwork.toString(),
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
         evaluationId: evaluationId,
@@ -179,6 +180,7 @@ class DetailHardNftResponse {
         owner: owner,
         txnHash: txnHash,
         fileCid: getPath(fileCid ?? ''),
+        token: mintingFeeToken,
         collectionId: collectionId,
         collectionName: collectionName,
         countProperties: countProperties,
@@ -190,8 +192,8 @@ class DetailHardNftResponse {
         updateAt: updateAt,
         collectionAddress: collectionAddress,
         nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard.toString(),
-        blockchainNetwork: blockChainNetwork,
+        nftStandard: nftStandard,
+        blockchainNetwork: blockChainNetwork.toString(),
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
         evaluationId: evaluationId,

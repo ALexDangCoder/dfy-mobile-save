@@ -66,7 +66,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListNft(
                   marketType: MarketType.NOT_ON_MARKET,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -78,7 +78,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 builder: (context) => ListNft(
                   marketType: MarketType.NOT_ON_MARKET,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -94,7 +94,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListNft(
                   marketType: MarketType.SALE,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -106,7 +106,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 builder: (context) => ListNft(
                   marketType: MarketType.SALE,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -122,7 +122,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListNft(
                   marketType: MarketType.AUCTION,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -134,7 +134,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 builder: (context) => ListNft(
                   marketType: MarketType.AUCTION,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -150,7 +150,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListNft(
                   marketType: MarketType.PAWN,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -162,7 +162,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 builder: (context) => ListNft(
                   marketType: MarketType.PAWN,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());

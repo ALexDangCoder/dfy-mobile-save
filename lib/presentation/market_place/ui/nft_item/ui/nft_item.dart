@@ -31,7 +31,6 @@ class NFTItemWidget extends StatefulWidget {
 
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
-  late VideoPlayerController? _controller;
   late CountdownTimerController countdownController;
   late CountdownTimerController coutdownStartTime;
   DateTime? startTimeAuction;
@@ -45,12 +44,6 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.nftMarket.image ?? '');
-    _controller!.addListener(() {
-      setState(() {});
-    });
-    _controller!.setLooping(true);
-    _controller!.initialize().then((_) => setState(() {}));
 
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
@@ -87,7 +80,6 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   void dispose() {
-    _controller!.dispose();
     if (timer != null) {
       timer?.cancel();
     }
@@ -98,9 +90,6 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-          _controller!.pause();
-        }
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -138,25 +127,19 @@ class _NFTItemState extends State<NFTItemWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-                        _controller!.value.isPlaying
-                            ? _controller!.pause()
-                            : _controller!.play();
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NFTDetailScreen(
-                              typeMarket: widget.nftMarket.marketType ??
-                                  MarketType.SALE,
-                              marketId: widget.nftMarket.marketId,
-                              typeNft: widget.nftMarket.typeNFT,
-                              nftId: widget.nftMarket.nftId,
-                              pawnId: widget.nftMarket.pawnId,
-                            ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NFTDetailScreen(
+                            typeMarket:
+                                widget.nftMarket.marketType ?? MarketType.SALE,
+                            marketId: widget.nftMarket.marketId,
+                            typeNft: widget.nftMarket.typeNFT,
+                            nftId: widget.nftMarket.nftId,
+                            pawnId: widget.nftMarket.pawnId,
                           ),
-                        );
-                      }
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
@@ -171,7 +154,10 @@ class _NFTItemState extends State<NFTItemWidget> {
                                         widget.nftMarket.image ?? '',
                                         fit: BoxFit.cover,
                                       )
-                                    : VideoPlayer(_controller!),
+                                    : Image.network(
+                                        widget.nftMarket.cover ?? '',
+                                        fit: BoxFit.cover,
+                                      ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
@@ -404,9 +390,7 @@ class _NFTItemState extends State<NFTItemWidget> {
             right: 6.w,
           ),
           child: Icon(
-            _controller!.value.isPlaying
-                ? Icons.pause_circle_outline_sharp
-                : Icons.play_circle_outline_sharp,
+            Icons.play_circle_outline_sharp,
             size: 24.sp,
             color: Colors.white,
           ),
