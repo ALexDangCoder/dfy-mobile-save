@@ -1520,7 +1520,7 @@
     "info": {
       "url": "https://www.binance.org/en/smartChain",
       "source": "https://github.com/binance-chain/bsc",
-      "rpc": "https://data-seed-prebsc-1-s1.binance.org:8545",
+      "rpc": "https://data-seed-prebsc-2-s2.binance.org:8545",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
     "deprecated": true
@@ -1546,7 +1546,7 @@
     "info": {
       "url": "https://www.binance.org/en/smartChain",
       "source": "https://github.com/binance-chain/bsc",
-      "rpc": "https://data-seed-prebsc-1-s1.binance.org:8545",
+      "rpc": "https://data-seed-prebsc-2-s2.binance.org:8545",
       "documentation": "https://eth.wiki/json-rpc/API"
     }
   },
