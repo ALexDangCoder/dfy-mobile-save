@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
+import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/place_bid/bloc/place_bid_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -30,6 +36,13 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
   double get balanceValue => _balanceSubject.valueOrNull ?? 0;
 
   NFTRepository get nftRepo => Get.find();
+
+  void dispose() {
+    _warnSubject.close();
+    _btnSubject.close();
+    _balanceSubject.close();
+    close();
+  }
 
   Future<double> getBalanceToken({
     required String ofAddress,
@@ -96,13 +109,76 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
   }
 
   Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
-    showLoading();
-    final result = await nftRepo.bidNftRequest(bidNftRequest);
-    result.when(
-      success: (res) {
-        showContent();
-      },
-      error: (error) {},
+    await nftRepo.bidNftRequest(bidNftRequest);
+  }
+
+  Future<void> buyOutRequest(BuyOutRequest buyOutRequest) async {
+    await nftRepo.buyOutRequest(buyOutRequest);
+  }
+
+  Future<void> importNft({
+    required String contract,
+    required String address,
+    required int id,
+  }) async {
+    final res = await web3Client.importNFT(
+      contract: contract,
+      address: address,
+      id: id,
     );
+    if (res.isSuccess) {
+      await emitJsonNftToWalletCore(
+        contract: contract,
+        address: address,
+        id: id,
+      );
+    }
+  }
+
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    required int id,
+    required String address,
+  }) async {
+    final result = await web3Client.getCollectionInfo(
+        contract: contract, address: address, id: id);
+    await importNftIntoWalletCore(
+      jsonNft: json.encode(result),
+      address: address,
+    );
+  }
+
+  Future<void> importNftIntoWalletCore({
+    required String jsonNft,
+    required String address,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+        'walletAddress': address,
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
+    } on PlatformException {
+      //todo
+    }
+  }
+
+  Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
+    switch (methodCall.method) {
+      case 'importNftCallback':
+        final int code = await methodCall.arguments['code'];
+        switch (code) {
+          case 200:
+            await Fluttertoast.showToast(msg: S.current.nft_success);
+            break;
+          case 400:
+            await Fluttertoast.showToast(msg: S.current.nft_fail);
+            break;
+          case 401:
+            await Fluttertoast.showToast(msg: S.current.nft_fail);
+            break;
+        }
+        break;
+    }
   }
 }

@@ -70,8 +70,11 @@ Widget _buildButtonBuyOut(
   BuildContext context,
   NFTOnAuction nftOnAuction,
   String marketId,
+  bool start,
+  bool end,
 ) {
   return ButtonTransparent(
+    isEnable: !start == true && end == true,
     child: Text(
       S.current.buy_out,
       style: textNormalCustom(

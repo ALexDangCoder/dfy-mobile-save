@@ -1035,6 +1035,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                               context,
                               nftOnAuction,
                               widget.marketId ?? '',
+                              bloc.isStartAuction(
+                                nftOnAuction.startTime ?? 0,
+                              ),
+                              bloc.isStartAuction(
+                                nftOnAuction.endTime ?? 0,
+                              ),
                             ),
                           ),
                           SizedBox(
