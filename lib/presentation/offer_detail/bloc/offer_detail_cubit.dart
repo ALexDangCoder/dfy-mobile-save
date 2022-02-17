@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/enum_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -112,10 +113,26 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
   }
 
   Future<void> acceptOffer(int idOffer) async {
-    await _nftRepo.acceptOffer(idOffer);
+    final result = await _nftRepo.acceptOffer(idOffer);
+    result.when(
+      success: (success) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          acceptOffer(idOffer);
+        }
+      },
+    );
   }
 
   Future<void> rejectOffer(int idOffer) async {
-    await _nftRepo.rejectOffer(idOffer);
+    final result = await _nftRepo.rejectOffer(idOffer);
+    result.when(
+      success: (success) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          rejectOffer(idOffer);
+        }
+      },
+    );
   }
 }
