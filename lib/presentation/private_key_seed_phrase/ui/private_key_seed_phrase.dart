@@ -62,6 +62,7 @@ class _BodyState extends State<_Body> {
             onRightClick: () {
               Navigator.pop(context);
               Navigator.pop(context);
+              widget.bloc.emit(ConfirmPwPrvKeySeedpharseInitial());
             },
             text: ImageAssets.ic_close,
             child: Column(

@@ -66,16 +66,18 @@ class ConfirmPwPrvKeySeedpharseCubit
 
   String passWord = '';
 
-  void getListPrivateKeyAndSeedPhrase({
+  Future<void> getListPrivateKeyAndSeedPhrase({
     required String password,
     required bool isFaceId,
-  }) {
+  }) async {
     for (final value in listWalletCore) {
-      exportWallet(
-        walletAddress: value.address ?? '',
-        password: password,
-        isFaceId: isFaceId,
-      );
+      try {
+        await exportWallet(
+          walletAddress: value.address ?? '',
+          password: password,
+          isFaceId: isFaceId,
+        );
+      } on PlatformException catch (error) {}
     }
   }
 
@@ -122,6 +124,9 @@ class ConfirmPwPrvKeySeedpharseCubit
           walletAddress: walletAddress,
         );
         listWallet.add(obj);
+        emit(
+          ConfirmPWToShowSuccess(),
+        );
         break;
       case 'checkPasswordCallback':
         bool isCorrect = false;
@@ -138,7 +143,7 @@ class ConfirmPwPrvKeySeedpharseCubit
   }
 
   void scanFaceIdFinger({required bool value}) {
-    if (value) {
+    if (value == true) {
       emit(ConfirmPWToShowSuccess());
     } else {}
   }
@@ -150,6 +155,10 @@ class ConfirmPwPrvKeySeedpharseCubit
     } on PlatformException {
       //nothing
     }
+  }
+
+  void dispose() {
+    _isSuccessWhenScan.close();
   }
 
 //exportWallet
@@ -182,8 +191,11 @@ class ConfirmPwPrvKeySeedpharseCubit
     }
   }
 
-  Future<void> authenticate() async {
-    isSuccessWhenScanSink.add(false);
+  Future<void> authenticate({
+    required String pw,
+    required bool isFaceId,
+  }) async {
+    // isSuccessWhenScanSink.add(false);
     authenticated = await auth.authenticate(
       localizedReason:
           'Scan your fingerprint (or face or whatever) to authenticate',
@@ -192,6 +204,11 @@ class ConfirmPwPrvKeySeedpharseCubit
     );
     if (authenticated == true) {
       isSuccessWhenScanSink.add(true);
+      await getListPrivateKeyAndSeedPhrase(password: pw, isFaceId: isFaceId);
+
+    } else {
+      isSuccessWhenScanSink.add(false);
+      emit(ConfirmPwPrvKeySeedpharseInitial());
     }
   }
 
