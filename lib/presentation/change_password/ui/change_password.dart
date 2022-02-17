@@ -6,7 +6,7 @@ import 'package:Dfy/presentation/change_password/bloc/change_password_cubit.dart
 import 'package:Dfy/presentation/change_password/ui/components/form_setup_password.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/wallet_dialog_when_core_logged.dart';
 import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:flutter/material.dart';

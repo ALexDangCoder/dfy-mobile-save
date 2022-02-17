@@ -498,6 +498,7 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
+  "you_must_bid_equal": "Bạn phải nhập giá bằng bước giá tiếp theo",
   "address": "Địa chỉ",
   "item_price": "Giá",
   "start_in": "Bắt đầu trong",
@@ -707,5 +708,6 @@
   "sun": "CHỦ NHẬT",
   "collections": "Bộ sưu tập",
   "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại",
-  "transaction_failed": "Giao dịch thất bại "
+  "transaction_failed": "Giao dịch thất bại ",
+  "warning_send_offer": "Bạn đang gửi một đề nghị đến một NFT chưa được DeFi For You đánh giá. Giá trị của NFT này có thể không được đảm bảo. Vui lòng xem xét các rủi ro một cách cẩn thận khi gửi một đề nghị."
 }

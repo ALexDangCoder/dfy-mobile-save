@@ -12,7 +12,7 @@ import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_address_ft_amount.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/form_sale_ft_pawn.dart';
 import 'package:Dfy/widgets/confirm_blockchain/components/information_wallet.dart';
