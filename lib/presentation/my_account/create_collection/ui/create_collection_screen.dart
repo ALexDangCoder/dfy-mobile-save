@@ -7,7 +7,7 @@ import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collec
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_detail_collection.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +33,26 @@ class CreateCollectionScreen extends StatelessWidget {
         title: S.current.create_collection,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 16.w,
-              ),
+          body: Container(
+            margin: EdgeInsets.only(
+              left: 16.w,
+              bottom: (64 + 38 + 24).h,
+              right: 16.w,
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   Text(
                     S.current.soft_nft,
                     style: textLabelNFT,
+                  ),
+                  SizedBox(
+                    height: 16.h,
                   ),
                   StreamBuilder<List<TypeNFTModel>>(
                     stream: bloc.listSoftNFTSubject,
@@ -55,7 +62,8 @@ class CreateCollectionScreen extends StatelessWidget {
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
@@ -74,10 +82,13 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  spaceH24,
+                  SizedBox(height: 12.h,),
                   Text(
                     S.current.hard_nft,
                     style: textLabelNFT,
+                  ),
+                  SizedBox(
+                    height: 16.h,
                   ),
                   StreamBuilder<List<TypeNFTModel>>(
                     stream: bloc.listHardNFTSubject,
@@ -87,7 +98,8 @@ class CreateCollectionScreen extends StatelessWidget {
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
@@ -106,10 +118,6 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  ///Space bottom + space top + height of the button
-                  SizedBox(
-                    height: (64 + 38 + 24).h,
-                  )
                 ],
               ),
             ),
@@ -196,7 +204,9 @@ class CreateCollectionScreen extends StatelessWidget {
                       : ImageAssets.create_collection_1155,
                 ),
                 if (!isActive)
-                  Center(
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    alignment: Alignment.center,
                     child: Text(
                       S.current.coming_soon,
                       style: titleText(),

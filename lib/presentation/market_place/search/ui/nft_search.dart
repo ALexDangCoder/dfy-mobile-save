@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
@@ -432,6 +433,9 @@ class _SearchNFTState extends State<SearchNFT> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: AppRouter.listNft,
+                              ),
                               builder: (ctx) => ListNft(
                                 queryAllResult: controller.text,
                                 pageRouter: PageRouter.MARKET,

@@ -17,7 +17,7 @@ import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/bloc/confirm_pw_prvke
 import 'package:Dfy/presentation/show_pw_prvkey_seedpharse/ui/confirm_pw_prvkey_seedpharse.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -251,7 +251,7 @@ class _SettingWalletState extends State<SettingWallet> {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: tabHomeIndex,
+                      index: loginIndex,
                     ),
                   ),
                   (route) => route.isFirst,

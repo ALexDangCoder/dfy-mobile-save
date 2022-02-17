@@ -23,11 +23,12 @@ class ConnectWalletDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
   final Widget? navigationTo;
   final bool isRequireLoginEmail;
+  final RouteSettings? settings;
 
   const ConnectWalletDialog({
     Key? key,
     this.navigationTo,
-    required this.isRequireLoginEmail,
+    required this.isRequireLoginEmail, this.settings,
   }) : super(key: key);
 
   @override
@@ -82,35 +83,38 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                   final userProfile = userProfileFromJson(data);
                   final String email = userProfile.email ?? '';
                   final bool isNeedShowDialog =
-                      PrefsService.getOptionShowDialogConnectEmail();
-                    if (email.isEmpty) {
-                      if(isNeedShowDialog){
-                        showDialog(
-                          context: context,
-                          builder: (context) => ConnectEmailDialog(
-                            navigationTo: widget.navigationTo,
-                          ),
-                        );
-                      }else{
-                        if(widget.navigationTo != null){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => widget.navigationTo!,
+                  PrefsService.getOptionShowDialogConnectEmail();
+                  if (email.isEmpty) {
+                    if (isNeedShowDialog) {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            ConnectEmailDialog(
+                              navigationTo: widget.navigationTo,
                             ),
-                          );
-                        }
-                      }
+                      );
                     } else {
-                      if(widget.navigationTo != null){
+                      if (widget.navigationTo != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            settings: widget.settings,
                             builder: (context) => widget.navigationTo!,
                           ),
                         );
                       }
                     }
+                  } else {
+                    if (widget.navigationTo != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          settings: widget.settings,
+                          builder: (context) => widget.navigationTo!,
+                        ),
+                      );
+                    }
+                  }
                 } else {
                   //yêu cầu login email:
                   final profileJson = PrefsService.getUserProfile();
@@ -128,10 +132,11 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                     );
                   } else {
                     //ví đã liên kết email: => di chuyển đến màn tiếp theo
-                    if(widget.navigationTo != null){
+                    if (widget.navigationTo != null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
+                          settings: widget.settings,
                           builder: (context) => widget.navigationTo!,
                         ),
                       );
@@ -160,7 +165,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                         decoration: BoxDecoration(
                           color: AppTheme.getInstance().bgBtsColor(),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(36)),
+                          const BorderRadius.all(Radius.circular(36)),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,9 +248,9 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const MainScreen(
+                                              const MainScreen(
                                                 isFormConnectWlDialog: true,
-                                                index: tabHomeIndex,
+                                                index: loginIndex,
                                               ),
                                             ),
                                           );
@@ -256,7 +261,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   const MainScreen(
-                                                index: tabMarketingPlaceIndex,
+                                                index: registerIndex,
                                                 isFormConnectWlDialog: true,
                                               ),
                                             ),

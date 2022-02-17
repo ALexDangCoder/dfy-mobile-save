@@ -4,7 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
 import 'package:Dfy/widgets/item/successCkcCreateNft.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';

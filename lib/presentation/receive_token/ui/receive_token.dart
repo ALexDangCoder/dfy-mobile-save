@@ -11,7 +11,7 @@ import 'package:Dfy/presentation/receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/pull_to_refresh/custom_refresh_indicator.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
