@@ -121,7 +121,7 @@ class _SelectAccState extends State<SelectAcc> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const MainScreen(
-                                    index: 1,
+                                    index: walletInfoIndex,
                                   ),
                                 ),
                               );
@@ -151,7 +151,7 @@ class _SelectAccState extends State<SelectAcc> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   const MainScreen(
-                                                index: tabMarketingPlaceIndex,
+                                                index: registerIndex,
                                               ),
                                             ),
                                           ),
