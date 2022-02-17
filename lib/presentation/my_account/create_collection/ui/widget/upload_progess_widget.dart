@@ -130,9 +130,9 @@ class _UploadProgressState extends State<UploadProgress>
           ),
         );
       }
-      if (value == 0){
+      if (value == 0) {
         showErrDialog(
-          onCloseDialog: (){
+          onCloseDialog: () {
             Navigator.pop(context);
           },
           context: context,

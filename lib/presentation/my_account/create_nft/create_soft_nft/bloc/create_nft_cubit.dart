@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
@@ -47,7 +48,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   String selectedId = '';
   int selectedNftType = 0;
-  String walletAddress = '';
+  String walletAddress = PrefsService.getCurrentBEWallet();
 
   String nftIPFS = '';
   String transactionData = '';
