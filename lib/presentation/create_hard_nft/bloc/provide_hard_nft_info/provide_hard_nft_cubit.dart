@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.dart';
 import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -67,15 +68,24 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       if (cid.isNotEmpty) {
         mediasRequest.add(
           DocumentFeatMediaListRequest(
-            name: 'fakeImage', type: 'image/jpeg', cid: cid,),);
+            name: 'fakeImage',
+            type: 'image/jpeg',
+            cid: cid,
+          ),
+        );
         listCidMedia.add(cid);
       }
     }
     for (final e in listPathDocument) {
       final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
       if (cid.isNotEmpty) {
-        documentsRequest.add(DocumentFeatMediaListRequest(
-          name: 'fakeDoc', type: 'application/pdf', cid: cid,),);
+        documentsRequest.add(
+          DocumentFeatMediaListRequest(
+            name: 'fakeDoc',
+            type: 'application/pdf',
+            cid: cid,
+          ),
+        );
         listCidDocument.add(cid);
       }
     }
@@ -90,24 +100,40 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       expecting_price: dataStep1.amountToken,
       expecting_price_symbol: dataStep1.tokenInfo.symbol,
       contact_phone: dataStep1.phoneContact.trim().substring(1),
-      document_list
-          : documentsRequest,
-      //ok
+      document_list: documentsRequest,
       collection_address: dataStep1.addressCollection,
       asset_type_id: dataStep1.hardNftType.id,
-      //ok
       bc_txn_hash: '',
       condition_id: dataStep1.conditionNft.id,
       contact_city_id: dataStep1.city.id,
       contact_country_id: dataStep1.city.countryID.toString(),
       contact_phone_code_id: dataStep1.phoneCodeModel.id.toString(),
-      media_list
-          : mediasRequest,
+      media_list: mediasRequest,
     );
-    final thxHash = await _pinToIPFS.pinJsonToIPFS(
+    final ipfsHash = await _pinToIPFS.pinJsonToIPFS(
       type: PinJsonType.HARD_NFT,
       hardNftRequest: hardNftIpfs,
     );
+    final requestAsset = CreateHardNftAssetsRequest(
+      additional_info_list: listAddtional,
+      additional_information: dataStep1.additionalInfo,
+      name: dataStep1.hardNftName,
+      asset_type_id: dataStep1.hardNftType.id,
+      condition_id: dataStep1.conditionNft.id,
+      contact_address: dataStep1.addressContact,
+      contact_city_id: dataStep1.city.id,
+      contact_country_id: dataStep1.city.countryID.toString(),
+      contact_email: dataStep1.emailContact,
+      contact_name: dataStep1.nameContact,
+      contact_phone: dataStep1.phoneContact.trim().substring(1),
+      contact_phone_code_id: dataStep1.phoneCodeModel.id.toString(),
+      document_list: documentsRequest,
+      expecting_price: dataStep1.amountToken,
+      expecting_price_symbol: dataStep1.tokenInfo.symbol,
+      media_list: mediasRequest,
+      bc_txn_hash: '',
+      asset_cid: ipfsHash,);
+    // final resultAsset = await _step1Repository.getAssetAfterPost(request)
   }
 
   final List<AdditionalInfoListRequest> listAddtional = [];
@@ -286,15 +312,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        final temp = res.map((e) => e.code.toString()).toList().toSet();
-        final listCode = temp.toList();
-        final listId = listCode
-            .map((e) => res.where((element) => element.code == e))
-            .toList();
-        for (final e in listCode) {
+        // final temp = res.map((e) => e.code.toString()).toList().toSet().toList();
+        // final listId = temp
+        //     .map((e) => res.where((element) => element.code == e))
+        //     .toList();
+        for (final e in res) {
           phonesCode.add({
-            'value': listId[listCode.indexOf(e)],
-            'label': e,
+            // 'value': listId[temp.indexOf(e)],
+            'code': e.code,
+            'id': e.id,
+            'label': e.name,
           });
         }
 
@@ -509,7 +536,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Map<String, bool> mapValidate = {
-    'connectWallet': true,
     'mediaFiles': true,
     'inputForm': false,
     'condition': false,
@@ -519,6 +545,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
+    print('validateeee ${mapValidate}');
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {

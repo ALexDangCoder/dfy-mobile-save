@@ -13,17 +13,16 @@ import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_w
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_image_widget.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
 import 'package:Dfy/widgets/dialog/pls_connect_wallet.dart';
-import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
+import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'components/btn_hard_nft_type.dart';
-import 'components/dashed_btn_add_img_vid.dart';
 import 'components/form_add_properties.dart';
 
 enum CircleStatus {
@@ -57,6 +56,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
+    cubit.getListCollection();
     if (cubit.propertiesData.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
@@ -87,23 +87,32 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 return GestureDetector(
                   onTap: () {
                     if (snapshot.data ?? false) {
-                      if (cubit.checkConnectWallet()) {
-                        cubit.createModel();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => Step1WhenSubmit(cubit: cubit),
-                          ),
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const AlertDialog(
-                            backgroundColor: Colors.transparent,
-                            content: PleaseConnectWallet(),
-                          ),
-                        );
-                      }
+                      // cubit.createModel();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                          // builder: (ctx) => ComingSoon(),
+                        ),
+                      );
+                      // if (cubit.checkConnectWallet()) {
+                      //   cubit.createModel();
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                      //     ),
+                      //   );
+                      // } else {
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (_) =>
+                      //     const AlertDialog(
+                      //       backgroundColor: Colors.transparent,
+                      //       content: PleaseConnectWallet(),
+                      //     ),
+                      //   );
+                      // }
                     } else {
                       //nothing
                     }
@@ -484,7 +493,13 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     ),
                   ),
                   spaceH14,
-                  btnConnectWallet(),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w,),
+                    child: TextFieldValidator(
+                      readOnly: true,
+                      hint: cubit.getAddressWallet().formatAddressWallet(),
+                    ),
+                  ),
                   spaceH16,
                   textShowWithPadding(
                     textShow: S.current.collection,
@@ -510,38 +525,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     );
   }
 
-  InkWell btnConnectWallet() {
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (ctx) => const ConnectWalletDialog(
-            isRequireLoginEmail: false,
-          ),
-        ).then(
-          (value) => {
-            if (cubit.resultCurrentBeWallet().isEmpty)
-              {
-                //nothing
-              }
-            else
-              {
-                cubit.getListCollection(),
-                cubit.dataStep1.wallet = cubit.getAddressWallet(),
-              }
-          },
-        );
-      },
-      child: textShowWithPadding(
-        textShow: S.current.connect_wallet,
-        txtStyle: textNormalCustom(
-          AppTheme.getInstance().fillColor(),
-          16,
-          FontWeight.w600,
-        ),
-      ),
-    );
-  }
 
   Widget itemPropertiesFtBtnAdd() {
     return StreamBuilder<List<PropertyModel>>(
@@ -562,7 +545,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 child: Wrap(
                   runSpacing: 10.h,
                   children: cubit.propertiesData.map(
-                    (e) {
+                        (e) {
                       final int index = cubit.propertiesData.indexOf(e);
                       return itemProperty(
                         property: e.property,
@@ -592,16 +575,18 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (_) => Dialog(
-                        backgroundColor: Colors.transparent,
-                        child: FormAddProperties(
-                          cubit: cubit,
-                        ),
-                      ),
+                      builder: (_) =>
+                          Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: FormAddProperties(
+                              cubit: cubit,
+                            ),
+                          ),
                     );
                   },
                   child: Text(
-                    snapshot.data!.isEmpty ? S.current.add : S.current.add_more,
+                    (snapshot.data ?? []).isEmpty ? S.current.add : S.current
+                        .add_more,
                     style: textNormalCustom(
                       AppTheme.getInstance().fillColor(),
                       16,
@@ -687,7 +672,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         ),
         spaceW8,
         Text(
-          'Add',
+          S.current.add,
           style: textNormalCustom(
             AppTheme.getInstance().fillColor(),
             16,

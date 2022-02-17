@@ -37,6 +37,7 @@ class Step1WhenSubmit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cubit.dataStep1.wallet = cubit.getAddressWallet().formatAddressWallet();
     return BaseDesignScreen(
       title: S.current.provide_hard_nft_info,
       bottomBar: Container(

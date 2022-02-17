@@ -5,45 +5,45 @@ part 'create_hard_nft_assets_request.g.dart';
 
 @JsonSerializable()
 class CreateHardNftAssetsRequest {
-  final List<AdditionalInfoListRequest> additional_info_list;
-  final String additional_information;
-  final String name;
-  final int asset_type_id;
-  final int condition_id;
-  final String contact_address;
-  final int contact_city_id;
-  final String contact_country_id;
-  final String contact_email;
-  final String contact_name;
-  final String contact_phone;
-  final String contact_phone_code_id;
-  final List<DocumentFeatMediaListRequest> document_list;
-  final double expecting_price;
-  final String expecting_price_symbol;
-  final List<DocumentFeatMediaListRequest> media_list;
-  final String bc_txn_hash;
-  final String asset_cid;
+  List<AdditionalInfoListRequest>? additional_info_list;
+  String? additional_information;
+  String? name;
+  int? asset_type_id;
+  int? condition_id;
+  String? contact_address;
+  int? contact_city_id;
+  String? contact_country_id;
+  String? contact_email;
+  String? contact_name;
+  String? contact_phone;
+  String? contact_phone_code_id;
+  List<DocumentFeatMediaListRequest>? document_list;
+  double? expecting_price;
+  String? expecting_price_symbol;
+  List<DocumentFeatMediaListRequest>? media_list;
+  String? bc_txn_hash;
+  String? asset_cid;
 
-  CreateHardNftAssetsRequest({
-    required this.additional_info_list,
-    required this.additional_information,
-    required this.name,
-    required this.asset_type_id,
-    required this.condition_id,
-    required this.contact_address,
-    required this.contact_city_id,
-    required this.contact_country_id,
-    required this.contact_email,
-    required this.contact_name,
-    required this.contact_phone,
-    required this.contact_phone_code_id,
-    required this.document_list,
-    required this.expecting_price,
-    required this.expecting_price_symbol,
-    required this.media_list,
-    required this.bc_txn_hash,
-    required this.asset_cid,
-  });
+
+  CreateHardNftAssetsRequest(
+      {this.additional_info_list,
+      this.additional_information,
+      this.name,
+      this.asset_type_id,
+      this.condition_id,
+      this.contact_address,
+      this.contact_city_id,
+      this.contact_country_id,
+      this.contact_email,
+      this.contact_name,
+      this.contact_phone,
+      this.contact_phone_code_id,
+      this.document_list,
+      this.expecting_price,
+      this.expecting_price_symbol,
+      this.media_list,
+      this.bc_txn_hash,
+      this.asset_cid});
 
   factory CreateHardNftAssetsRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateHardNftAssetsRequestFromJson(json);
