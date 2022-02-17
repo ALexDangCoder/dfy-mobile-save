@@ -20,6 +20,7 @@ MethodChannel trustWalletChannel = const MethodChannel('flutter/trust_wallet');
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await PrefsService.init();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

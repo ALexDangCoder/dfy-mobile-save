@@ -64,7 +64,8 @@ Row buildRow({
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: detail.handleString(),
+                        text:
+                            detail.length > 10 ? detail.handleString() : detail,
                         style: richTextBlue,
                       ),
                     ],

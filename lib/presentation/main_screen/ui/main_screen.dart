@@ -113,6 +113,7 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
             DateTime.now().difference(_lastQuitTime!).inSeconds > 1) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              duration: const Duration(seconds: 1),
               content: Text(
                 S.current.out_app,
               ),
