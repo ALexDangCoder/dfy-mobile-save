@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TransactionSubmitFail extends StatelessWidget {
-  const TransactionSubmitFail({Key? key}) : super(key: key);
+  final String? content;
+  const TransactionSubmitFail({Key? key, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class TransactionSubmitFail extends StatelessWidget {
           spaceH5,
           Expanded(
             child: Text(
-              S.current.transaction_fail,
+              content ?? S.current.transaction_fail,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,
