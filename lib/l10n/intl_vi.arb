@@ -706,6 +706,7 @@
   "fri": "THỨ SÁU",
   "sat": "THỨ BẢY",
   "sun": "CHỦ NHẬT",
-  "submit": "Gửi",
-  "collections": "Bộ sưu tập"
+  "collections": "Bộ sưu tập",
+  "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại"
+
 }

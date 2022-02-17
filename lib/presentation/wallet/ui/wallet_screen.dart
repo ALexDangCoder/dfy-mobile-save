@@ -87,6 +87,7 @@ class _WalletState extends State<WalletScreen>
   Widget build(BuildContext context) {
     final String addressWallet = cubit.addressWalletCore;
     if (widget.index == 1) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

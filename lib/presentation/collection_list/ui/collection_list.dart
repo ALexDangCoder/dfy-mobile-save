@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
@@ -76,11 +77,18 @@ class _CollectionListState extends State<CollectionList> {
     } else {
       tittleScreen = S.current.collection_list;
     }
-
     collectionBloc = CollectionBloc(widget.typeScreen);
-    collectionBloc.addressWallet = widget.addressWallet;
+
     if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.addressWallet = widget.addressWallet;
       collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    } else {
+      if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
+        collectionBloc.textAddressFilter
+            .add(PrefsService.getCurrentBEWallet().toLowerCase());
+        collectionBloc.addressWallet =
+            PrefsService.getCurrentBEWallet().toLowerCase();
+      }
     }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
@@ -248,9 +256,6 @@ class _CollectionListState extends State<CollectionList> {
                         ),
                       );
                     } else {
-                      if (collectionBloc.list.value.length < 9) {
-                        collectionBloc.isCanLoadMore.add(false);
-                      }
                       return StreamBuilder(
                         stream: collectionBloc.list,
                         builder: (
@@ -267,7 +272,9 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
+                                physics: const ClampingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
@@ -323,8 +330,7 @@ class _CollectionListState extends State<CollectionList> {
                                               urlIcon: ApiConstants.URL_BASE +
                                                   (list[index].avatarCid ?? ''),
                                               owners:
-                                                  '${list[index].nftOwnerCount
-                                                      ?? 0}',
+                                                  '${list[index].nftOwnerCount ?? 0}',
                                               title: snapshot.data?[index].name
                                                       ?.parseHtml() ??
                                                   '',
@@ -342,26 +348,32 @@ class _CollectionListState extends State<CollectionList> {
                                         }
                                       },
                                     ),
-                                    StreamBuilder<bool>(
-                                      stream: collectionBloc.isCanLoadMore,
-                                      builder: (context, snapshot) {
-                                        return snapshot.data ?? false
-                                            ? Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    bottom: 16.h,
-                                                  ),
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 3,
-                                                    color:
-                                                        AppTheme.getInstance()
-                                                            .whiteColor(),
-                                                  ),
-                                                ),
-                                              )
-                                            : const SizedBox.shrink();
-                                      },
+                                    SizedBox(
+                                      child: collectionBloc.resList.length != 20
+                                          ? const SizedBox.shrink()
+                                          : StreamBuilder<bool>(
+                                              stream:
+                                                  collectionBloc.isCanLoadMore,
+                                              builder: (context, snapshot) {
+                                                return snapshot.data ?? false
+                                                    ? Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            bottom: 16.h,
+                                                          ),
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 3,
+                                                            color: AppTheme
+                                                                    .getInstance()
+                                                                .whiteColor(),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const SizedBox.shrink();
+                                              },
+                                            ),
                                     ),
                                   ],
                                 ),
