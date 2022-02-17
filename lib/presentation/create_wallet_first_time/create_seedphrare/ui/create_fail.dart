@@ -127,7 +127,7 @@ class CreateFail extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(
-                            index: 3,
+                            index: registerIndex,
                           ),
                         ),
                       );
