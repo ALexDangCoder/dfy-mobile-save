@@ -9,7 +9,6 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/exte
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
-import 'package:Dfy/widgets/select_media_type.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -192,7 +191,8 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                       } else {
                         return GestureDetector(
                           onTap: () async {
-                            await cubit.pickCoverPhoto();
+                            // await cubit.pickCoverPhoto();
+                            await cubit.pickImage();
                           },
                           child: DottedBorder(
                             borderType: BorderType.RRect,
@@ -303,7 +303,8 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                       } else {
                         return GestureDetector(
                           onTap: () async {
-                            await cubit.pickCoverPhoto();
+                            // await cubit.pickCoverPhoto();
+                            await cubit.pickImage();
                           },
                           child: DottedBorder(
                             borderType: BorderType.RRect,
@@ -380,7 +381,8 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                       } else {
                         return GestureDetector(
                           onTap: () async {
-                            await cubit.pickCoverPhoto();
+                            // await cubit.pickCoverPhoto();
+                            await cubit.pickImage();
                           },
                           child: DottedBorder(
                             borderType: BorderType.RRect,
@@ -440,7 +442,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                             CupertinoActionSheetAction(
                               onPressed: () {
                                 Navigator.pop(context);
-                                cubit.pickImageIos();
+                                cubit.pickImage(isMainMedia: true);
                               },
                               child: const Text('Image'),
                             ),
@@ -462,6 +464,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                       );
                     } else {
                       cubit.pickFile();
+                      // cubit.pickImage(isMainMedia: true);
                     }
                   },
                   child: DottedBorder(

@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -177,6 +178,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       showDialog(
                         context: context,
                         builder: (_) => ConnectWalletDialog(
+                          settings: const RouteSettings(
+                            name: AppRouter.collectionList,
+                          ),
                           navigationTo: CreateCollectionScreen(
                             bloc: CreateCollectionCubit(),
                           ),
@@ -188,6 +192,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       showDialog(
                         context: context,
                         builder: (_) => ConnectWalletDialog(
+                          settings: const RouteSettings(
+                            name: AppRouter.create_nft,
+                          ),
                           navigationTo: CreateNFTScreen(
                             cubit: CreateNftCubit(),
                           ),

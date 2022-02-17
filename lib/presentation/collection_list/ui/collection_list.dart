@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
@@ -110,6 +111,9 @@ class _CollectionListState extends State<CollectionList> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.collectionList,
+              ),
               builder: (context) {
                 return CreateCollectionScreen(
                   bloc: CreateCollectionCubit(),
@@ -122,6 +126,9 @@ class _CollectionListState extends State<CollectionList> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_nft,
+              ),
               builder: (context) {
                 return CreateNFTScreen(
                   cubit: CreateNftCubit(),
