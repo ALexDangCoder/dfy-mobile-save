@@ -251,7 +251,7 @@ class _SettingWalletState extends State<SettingWallet> {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: tabHomeIndex,
+                      index: loginIndex,
                     ),
                   ),
                   (route) => route.isFirst,
