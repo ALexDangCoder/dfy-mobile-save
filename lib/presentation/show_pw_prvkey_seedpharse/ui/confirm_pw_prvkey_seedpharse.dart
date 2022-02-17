@@ -44,12 +44,7 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
     return BlocConsumer<ConfirmPwPrvKeySeedpharseCubit,
         ConfirmPwPrvKeySeedpharseState>(
       listener: (context, state) {
-          if (state is ConfirmPWToShowSuccess) {
-          widget.cubit.getListPrivateKeyAndSeedPhrase(
-            password: isFaceIdWalletCore ? '' : txtController.text,
-            isFaceId: isFaceIdWalletCore,
-          );
-          widget.cubit.listPrivateKey.sink.add(widget.cubit.listWallet);
+        if (state is ConfirmPWToShowSuccess) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -58,10 +53,12 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
               ),
             ),
           ).whenComplete(() => txtController.clear());
-        } else {
+        } else if (state is ConfirmPWToShowFail){
           _showDialog(
             alert: S.current.password_is_not_correct,
           );
+        } else {
+
         }
       },
       bloc: widget.cubit,
@@ -102,23 +99,19 @@ class _ConfirmPWShowPRVSeedPhrState extends State<ConfirmPWShowPRVSeedPhr> {
                   );
                 },
               ),
-              //todo handel scan finger or faceID, done
               spaceH40,
               StreamBuilder<bool>(
+                initialData: false,
                 stream: widget.cubit.isSuccessWhenScanStream,
                 builder: (context, snapshot) {
                   return Visibility(
                     child: GestureDetector(
                       onTap: () async {
-                        await widget.cubit
-                            .authenticate(); //todo change stream not bloc
-                        if (snapshot.data == true) {
-                          isFaceIdWalletCore = true;
-                          widget.cubit
-                              .scanFaceIdFinger(value: isFaceIdWalletCore);
-                        } else {
-                          //nothing
-                        }
+                        isFaceIdWalletCore = snapshot.data ?? false;
+                        await widget.cubit.authenticate(
+                          pw: isFaceIdWalletCore ? '' : txtController.text,
+                          isFaceId: isFaceIdWalletCore,
+                        );
                       },
                       child: Platform.isIOS
                           ? const Image(
