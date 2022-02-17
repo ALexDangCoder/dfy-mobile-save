@@ -129,7 +129,7 @@
   "put_on_market": "Đưa lên chợ",
   "contract_interaction": "Hơp đồng tương tác",
   "create_collateral": "Tạo tài sản thế chấp",
-  "view_more": "Xem thêm",
+  "see_more": "Xem thêm",
   "view_less": "Thu gọn",
   "name_not_null": "Tên ví là bắt buộc",
   "copy": "Copy thành công",
@@ -379,7 +379,6 @@
   "create_now": "Bạn không có ví nào. Hãy tạo ngay",
   "email_too_long": "Email có tối đa 50 ký tự",
   "email_invalid": "Email không hợp lệ",
-  "see_more": "Xem thêm",
   "activity_bid": "bid",
   "activity_bought": "bought",
   "activity_bought_out": "bought out",
@@ -708,5 +707,4 @@
   "sun": "CHỦ NHẬT",
   "collections": "Bộ sưu tập",
   "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại"
-
 }

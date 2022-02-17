@@ -57,6 +57,7 @@ class _PlaceBidState extends State<PlaceBid> {
   @override
   void dispose() {
     cubit.dispose();
+    super.dispose();
   }
 
   Future<void> getBalance() async {

@@ -311,8 +311,8 @@ class _EvaluationTabState extends State<EvaluationTab>
                             ),
                             Text(
                               isShow
-                                  ? S.current.view_less
-                                  : S.current.view_more,
+                                  ? S.current.see_less
+                                  : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,
