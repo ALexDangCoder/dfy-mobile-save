@@ -196,7 +196,9 @@ class CreateCollectionScreen extends StatelessWidget {
                       : ImageAssets.create_collection_1155,
                 ),
                 if (!isActive)
-                  Center(
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    alignment: Alignment.center,
                     child: Text(
                       S.current.coming_soon,
                       style: titleText(),

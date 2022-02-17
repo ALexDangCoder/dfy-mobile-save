@@ -162,7 +162,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                   (value) => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => const MainScreen(
-                    index: tabPawnIndex,
+                    index: walletInfoIndex,
                   ),
                 ),
                     (route) => route.isFirst,
@@ -187,7 +187,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
             ).then((value) => Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const MainScreen(
-                  index: tabPawnIndex,
+                  index: walletInfoIndex,
                 ),
               ),
                   (route) => route.isFirst,

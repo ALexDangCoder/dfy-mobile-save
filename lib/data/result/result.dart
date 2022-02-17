@@ -132,7 +132,7 @@ Future<Result<E>> runCatchingAsync<T, E>(
                                 onTap: () {
                                   Get.off(
                                     const MainScreen(
-                                      index: 2,
+                                      index: loginIndex,
                                       isFormConnectWlDialog: true,
                                     ),
                                   );
