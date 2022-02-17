@@ -45,6 +45,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       BehaviorSubject.seeded([]);
   int nextPage = 1;
   bool checkWalletAddress = false;
+  List<CollectionMarketModel> resList =[];
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -99,14 +100,14 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         } else {
           if (res.length < 2) {
             for (final element in res) {
-              if(element.walletAddress?.isNotEmpty ??false){
+              if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
             checkWalletAddress = false;
           } else {
             for (final element in res) {
-              if(element.walletAddress?.isNotEmpty ??false){
+              if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
@@ -114,7 +115,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           }
         }
       },
-      error: (error) {},
+      error: (error) {
+        if(error.code==CODE_ERROR_AUTH){
+          getListWallet();
+        }
+      },
     );
   }
 
@@ -161,11 +166,11 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       for (final String value in listAcc) {
         if (value != S.current.all) {
           if (value.isNotEmpty) {
-           if(addressWallet?.isNotEmpty ?? false){
-             addressWallet = '$addressWallet,$value';
-           }else{
-             addressWallet = value;
-           }
+            if (addressWallet?.isNotEmpty ?? false) {
+              addressWallet = '$addressWallet,$value';
+            } else {
+              addressWallet = value;
+            }
           }
         }
       }
@@ -270,12 +275,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
+          resList.clear();
+          resList=res;
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-            } else {
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add([...currentList, ...listCollection]);
         } else {
@@ -331,13 +340,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         if (res.isEmpty) {
           emit(LoadingDataErorr());
         } else {
+          resList.clear();
+          resList=res;
           emit(LoadingDataSuccess());
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-            } else {
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add(listCollection);
         }

@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
-import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -74,7 +73,11 @@ class EvaluationHardNftResultCubit
         emit(EvaluationResultSuccess(listCheck));
       },
       error: (error) {
-        showError();
+        if (error.code == CODE_ERROR_AUTH) {
+          getListEvaluationResult(assetId);
+        } else {
+          showError();
+        }
       },
     );
   }

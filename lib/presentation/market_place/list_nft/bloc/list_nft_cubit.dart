@@ -188,6 +188,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   void refreshPosts(PageRouter pageRouter) {
+    emit(ListNftLoading());
     checkStatus();
     canLoadMoreListNft = true;
     page = 1;
@@ -309,10 +310,20 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         emit(ListNftSuccess());
       },
       error: (error) {
-        updateStateError();
-        emit(ListNftError());
-        loadMore = false;
-        refresh = false;
+        if (error.code == CODE_ERROR_AUTH) {
+          getListNft(
+              status: status,
+              nftType: nftType,
+              name: name,
+              collectionId: collectionId,
+              walletAddress: walletAddress,
+              pageRouter: pageRouter);
+        } else {
+          updateStateError();
+          emit(ListNftError());
+          loadMore = false;
+          refresh = false;
+        }
       },
     );
   }
@@ -503,11 +514,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else if (type == MarketType.SALE) {
       return S.current.nft_on_sell;
     } else if (type == MarketType.AUCTION) {
-      return S.current.on_auction;
+      return S.current.nft_on_auction;
     } else if (type == MarketType.NOT_ON_MARKET) {
       return S.current.not_on_market;
     } else {
-      return S.current.on_pawn;
+      return S.current.nft_on_pawn;
     }
   }
 

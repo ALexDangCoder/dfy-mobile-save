@@ -9,6 +9,7 @@ import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/place_bid/bloc/place_bid_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -108,12 +109,28 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
     return hexString;
   }
 
-  Future<void> bidNftRequest(BidNftRequest bidNftRequest) async {
-    await nftRepo.bidNftRequest(bidNftRequest);
+  Future<void> bidRequest(BidNftRequest bidNftRequest) async {
+    final result = await nftRepo.bidNftRequest(bidNftRequest);
+    result.when(
+      success: (res) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          bidRequest(bidNftRequest);
+        }
+      },
+    );
   }
 
-  Future<void> buyOutRequest(BuyOutRequest buyOutRequest) async {
-    await nftRepo.buyOutRequest(buyOutRequest);
+  Future<void> buyRequest(BuyOutRequest buyOutRequest) async {
+    final result = await nftRepo.buyOutRequest(buyOutRequest);
+    result.when(
+      success: (res) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          buyRequest(buyOutRequest);
+        }
+      },
+    );
   }
 
   Future<void> importNft({

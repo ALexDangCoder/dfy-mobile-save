@@ -144,7 +144,7 @@ class _OwnerTabState extends State<OwnerTab>
                 ),
               ),
               TextSpan(
-                text: 'each',
+                text: ' each',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
                   14,
@@ -194,7 +194,7 @@ class _OwnerTabState extends State<OwnerTab>
                 ),
               ),
               TextSpan(
-                text: 'each in $time $timeDurationType',
+                text: ' each in $time $timeDurationType',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor(),
                   14,

@@ -111,5 +111,6 @@ class LoginCubit extends BaseCubit<LoginState> {
     if (authenticated == true) {
       emit(LoginSuccess());
     }
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 }

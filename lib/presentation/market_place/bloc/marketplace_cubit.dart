@@ -92,25 +92,26 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsBuySellCreateCollectible.add(
             NftMarket(
-              marketId: element.id,
-              nftId: element.nftId ?? '',
-              tokenBuyOut: element.token ?? '',
-              name: element.name ?? '',
-              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-              price: element.price ?? 0,
-              marketType: element.marketType == 1
-                  ? MarketType.SALE
-                  : (element.marketType == 2
-                      ? MarketType.AUCTION
-                      : MarketType.PAWN),
-              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif')
-                  ? TypeImage.IMAGE
-                  : TypeImage.VIDEO,
-              numberOfCopies: element.numberOfCopies,
-              totalCopies: element.totalCopies ?? 0,
-            ),
+                marketId: element.id,
+                nftId: element.nftId ?? '',
+                tokenBuyOut: element.token ?? '',
+                name: element.name ?? '',
+                image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
+                price: element.price ?? 0,
+                marketType: element.marketType == 1
+                    ? MarketType.SALE
+                    : (element.marketType == 2
+                        ? MarketType.AUCTION
+                        : MarketType.PAWN),
+                typeNFT:
+                    element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+                typeImage: (element.fileType == 'image/jpeg' ||
+                        element.fileType == 'image/gif')
+                    ? TypeImage.IMAGE
+                    : TypeImage.VIDEO,
+                numberOfCopies: element.numberOfCopies,
+                totalCopies: element.totalCopies ?? 0,
+                cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? '')),
           ),
         );
         listCollectionFtExploreFtNft.add({
@@ -141,6 +142,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
               totalCopies: element.totalCopies ?? 0,
+              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
             ),
           ),
         );
@@ -173,6 +175,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
               totalCopies: element.totalCopies ?? 0,
+              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
             ),
           ),
         );
@@ -204,6 +207,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
               totalCopies: element.totalCopies ?? 0,
+              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
             ),
           ),
         );
@@ -256,6 +260,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
               totalCopies: element.totalCopies ?? 0,
+              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
             ),
           ),
         );
@@ -287,6 +292,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
               totalCopies: element.totalCopies ?? 0,
+              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
             ),
           ),
         );

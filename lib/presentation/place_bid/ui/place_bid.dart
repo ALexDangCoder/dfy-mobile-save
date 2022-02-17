@@ -87,18 +87,19 @@ class _PlaceBidState extends State<PlaceBid> {
 
     Widget balanceWidget() {
       return StreamBuilder<double>(
-          stream: cubit.balanceStream,
-          builder: (context, snapshot) {
-            return Text(
-              '${S.current.your_balance} ${snapshot.data} '
-              '${widget.nftOnAuction.tokenSymbol}',
-              style: textNormalCustom(
-                Colors.white.withOpacity(0.7),
-                14,
-                FontWeight.w400,
-              ),
-            );
-          });
+        stream: cubit.balanceStream,
+        builder: (context, snapshot) {
+          return Text(
+            '${S.current.your_balance} ${snapshot.data} '
+            '${widget.nftOnAuction.tokenSymbol}',
+            style: textNormalCustom(
+              Colors.white.withOpacity(0.7),
+              14,
+              FontWeight.w400,
+            ),
+          );
+        },
+      );
     }
 
     Widget _yourBid() => Align(
@@ -306,7 +307,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    cubit.bidNftRequest(
+                                    cubit.bidRequest(
                                       BidNftRequest(
                                         widget.marketId,
                                         double.parse(bidValue),
@@ -411,7 +412,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    cubit.buyOutRequest(
+                                    cubit.buyRequest(
                                       BuyOutRequest(
                                         widget.marketId,
                                         data,
