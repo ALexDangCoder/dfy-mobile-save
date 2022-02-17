@@ -9,7 +9,6 @@ class DetailAssetHardNft {
   String? name;
   String? expectingPriceSymbol;
   String? additionalInformation;
-  List<String>? additionalInfoList;
   String? contactName;
   String? contactEmail;
   String? contactAddress;
@@ -21,10 +20,11 @@ class DetailAssetHardNft {
   int? displayStatus;
   CollectionResponse? collection;
   ContactCountryResponse? condition;
-  List<String>? documentList;
   List<MediaListResponse>? mediaList;
   String? bcTxnHash;
   String? assetCid;
+  NFTResponse? nftAssetHard;
+
   int? ipfsStatus;
   int? bcAssetId;
 
@@ -37,7 +37,6 @@ class DetailAssetHardNft {
     this.name,
     this.expectingPriceSymbol,
     this.additionalInformation,
-    this.additionalInfoList,
     this.contactName,
     this.contactEmail,
     this.contactAddress,
@@ -49,12 +48,12 @@ class DetailAssetHardNft {
     this.displayStatus,
     this.collection,
     this.condition,
-    this.documentList,
     this.mediaList,
     this.bcTxnHash,
     this.assetCid,
     this.ipfsStatus,
     this.bcAssetId,
+    this.nftAssetHard,
   });
 }
 
@@ -77,6 +76,30 @@ class ContactCountryAssetHardNft {
   ContactCountryAssetHardNft({
     this.id,
     this.name,
+  });
+}
+
+class NFTAssetHard {
+  String? id;
+  String? name;
+  String? mediaId;
+  String? coverId;
+  int? numberOfCopies;
+  int? status;
+  int? bcTokenId;
+  String? nftId;
+  String? assetId;
+
+  NFTAssetHard({
+    this.id,
+    this.name,
+    this.mediaId,
+    this.coverId,
+    this.numberOfCopies,
+    this.status,
+    this.bcTokenId,
+    this.nftId,
+    this.assetId,
   });
 }
 

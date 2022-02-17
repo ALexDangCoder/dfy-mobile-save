@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
 
 const String TYPE_OF_FILE = 'type';
 const String PATH_OF_FILE = 'path';
@@ -29,7 +30,7 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
   if (result != null) {
     _fileExtension = (result.files.single.extension ?? '').toUpperCase();
     _validFormat = allowedExtensions.contains(_fileExtension);
-    if(PickerType.DOCUMENT.fileType.contains(_fileExtension)){
+    if (PickerType.DOCUMENT.fileType.contains(_fileExtension)) {
       _fileType = DOCUMENT_FILE;
     } else {
       if (_fileExtension == 'MP4' || _fileExtension == 'WEBM') {
@@ -52,23 +53,36 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
     PATH_OF_FILE: _filePath,
     SIZE_OF_FILE: _fileSize,
     EXTENSION_OF_FILE: _fileExtension,
-    VALID_FORMAT_OF_FILE : _validFormat,
+    VALID_FORMAT_OF_FILE: _validFormat,
   };
 }
 
-Future<String> pickImageFunc({
+Future<Map<String, dynamic>> pickImageFunc({
   required String imageType,
   required String tittle,
   bool needCrop = true,
 }) async {
   String filePath = '';
+  final Map<String, dynamic> _resultMap = {
+    PATH_OF_FILE: '',
+    SIZE_OF_FILE: 0,
+    EXTENSION_OF_FILE: '',
+    VALID_FORMAT_OF_FILE: '',
+  };
   try {
     final newImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (newImage == null) {
-      return '';
+      return _resultMap;
     }
-    if (!needCrop){
-      return newImage.path;
+    final extension = (p.extension(newImage.path)).replaceAll('.', '');
+    _resultMap[EXTENSION_OF_FILE] = extension;
+    _resultMap[VALID_FORMAT_OF_FILE] =
+        PickerType.IMAGE_FILE.fileType.contains(extension.toUpperCase());
+    if (!needCrop) {
+      _resultMap[SIZE_OF_FILE] =
+          File(newImage.path).readAsBytesSync().lengthInBytes;
+      _resultMap[PATH_OF_FILE] = newImage.path;
+      return _resultMap;
     }
     final List<CropAspectRatioPreset> presetAndroid = imageType == AVATAR_PHOTO
         ? [
@@ -118,8 +132,11 @@ Future<String> pickImageFunc({
     );
     if (croppedFile != null) {
       filePath = croppedFile.path;
+      _resultMap[SIZE_OF_FILE] =
+          File(filePath).readAsBytesSync().lengthInBytes;
     }
-    return filePath;
+    _resultMap[PATH_OF_FILE] = filePath;
+    return _resultMap;
   } on PlatformException catch (e) {
     throw 'Cant upload image $e';
   }
@@ -135,11 +152,21 @@ extension GetTypeByName on PickerType {
   List<String> get fileType {
     switch (this) {
       case PickerType.MEDIA_FILE:
-        return ['MP4', 'WEBM', 'MP3', 'WAV', 'OGG', 'PNG', 'JPG', 'JPEG', 'GIF'];
+        return [
+          'MP4',
+          'WEBM',
+          'MP3',
+          'WAV',
+          'OGG',
+          'PNG',
+          'JPG',
+          'JPEG',
+          'GIF'
+        ];
       case PickerType.IMAGE_FILE:
-        return ['JPG', 'PNG', 'GIF',]; //'JPEG'
+        return ['JPG', 'PNG', 'GIF', 'JPEG'];
       case PickerType.DOCUMENT:
-        return ['DOC','DOCX','PDF','XLS','XLSX'];
+        return ['DOC', 'DOCX', 'PDF', 'XLS', 'XLSX'];
     }
   }
 }

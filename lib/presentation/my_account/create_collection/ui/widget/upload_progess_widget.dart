@@ -78,7 +78,11 @@ class _UploadProgressState extends State<UploadProgress>
                 );
                 await showLoadSuccess(context)
                     .then(
-                        (value) => navigator.popUntil((route) => route.isFirst))
+                      (value) => navigator.popUntil(
+                        (route) =>
+                            route.isFirst,
+                      ),
+                    )
                     .then(
                       (value) => navigator.push(
                         MaterialPageRoute(

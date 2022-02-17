@@ -253,6 +253,7 @@ class DropDown extends StatelessWidget {
                                     children: [
                                       const SizedBox(
                                         width: 10,
+                                        height: 10,
                                       ),
                                       e,
                                       const SizedBox(

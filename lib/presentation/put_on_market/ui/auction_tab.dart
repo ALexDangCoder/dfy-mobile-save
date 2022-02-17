@@ -222,8 +222,9 @@ class _AuctionTabState extends State<AuctionTab>
                     .map(
                       (e) => SizedBox(
                     height: 64,
-                    width: 70,
+                    width: 100,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
                           child: Image.network(
