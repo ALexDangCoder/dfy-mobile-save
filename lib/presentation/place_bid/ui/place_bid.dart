@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
@@ -52,7 +53,6 @@ class _PlaceBidState extends State<PlaceBid> {
     getBalance();
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -148,10 +148,15 @@ class _PlaceBidState extends State<PlaceBid> {
                 cubit.warnSink.add('');
                 bidValue = value;
                 cubit.btnSink.add(true);
-                //nftDetailBloc.bidValue = double.parse(value);
               } else if (cubit.balanceValue > double.parse(value) &&
                   double.parse(value) < bid) {
                 cubit.warnSink.add(S.current.you_must_bid_greater);
+                cubit.btnSink.add(false);
+              } else if (cubit.balanceValue > double.parse(value) &&
+                  double.parse(value) > bid &&
+                  double.parse(value) !=
+                      bid + (widget.nftOnAuction.priceStep ?? 0)) {
+                cubit.warnSink.add(S.current.you_must_bid_equal);
                 cubit.btnSink.add(false);
               } else {
                 cubit.btnSink.add(false);
@@ -542,7 +547,8 @@ class _PlaceBidState extends State<PlaceBid> {
         isImage: true,
         text: ImageAssets.ic_close,
         onRightClick: () {
-          Navigator.pop(context);
+          Navigator.popUntil(
+              context, (route) => route.settings.name == AppRouter.listNft);
         },
         child: Container(
           padding: EdgeInsets.only(

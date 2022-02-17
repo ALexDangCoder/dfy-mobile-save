@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
@@ -453,6 +454,9 @@ class _BuyNFTState extends State<BuyNFT> {
           textEmpty: '',
           child: BaseDesignScreen(
             isImage: true,
+            onRightClick: () {
+              Navigator.popUntil(context, (route) => route.settings.name == AppRouter.listNft);
+            },
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',
             child: Column(

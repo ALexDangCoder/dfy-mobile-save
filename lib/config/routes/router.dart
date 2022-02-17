@@ -21,6 +21,7 @@ class AppRouter {
   static const step2Book = '/book_evaluation';
   static const step2ListBook = '/book_evaluation';
   static const step2Create = '/book_evaluation';
+  static const listNft = '/listNft';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

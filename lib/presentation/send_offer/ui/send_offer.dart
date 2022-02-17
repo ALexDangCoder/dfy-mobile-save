@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -36,7 +37,7 @@ class _SendOfferState extends State<SendOffer> {
   final SendOfferCubit _cubit = SendOfferCubit();
   int loanDurationType = 0;
   String duration = '';
-  String loanAmount = '';
+  late String loanAmount;
   int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
@@ -45,8 +46,9 @@ class _SendOfferState extends State<SendOffer> {
   String message = '';
 
   @override
-  void dispose() {
-    _cubit.dispose();
+  void initState() {
+    loanAmount = widget.nftOnPawn.expectedLoanAmount.toString();
+    super.initState();
   }
 
   Future<void> getHexStringThenNav() async {
@@ -101,7 +103,7 @@ class _SendOfferState extends State<SendOffer> {
                     buildRowCustom(
                       title: S.current.loan_amount,
                       child: Text(
-                        loanAmount + shortName,
+                        '$loanAmount $shortName',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -165,7 +167,7 @@ class _SendOfferState extends State<SendOffer> {
                     'durationType': loanDurationType,
                     'interestRate': num.parse(interest),
                     'liquidationThreshold': 0,
-                    'loanAmount': num.parse(loanAmount),
+                    'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
                     'repaymentCycleType': repaymentCycleType,
                     'repaymentTokenSymbol': shortName,
@@ -257,6 +259,15 @@ class _SendOfferState extends State<SendOffer> {
               ]
             : [
                 {
+                  'value': ID_MONTH.toString(),
+                  'label': DFY,
+                  'icon': SizedBox(
+                    height: 20.h,
+                    child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
+                  ),
+                  'contract': contract_defy
+                },
+                {
                   'value': ID_WEEK.toString(),
                   'label': widget.nftOnPawn.expectedCollateralSymbol ?? '',
                   'icon': SizedBox(
@@ -275,30 +286,48 @@ class _SendOfferState extends State<SendOffer> {
       title: S.current.send_offer,
       isImage: true,
       onRightClick: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.popUntil(
+            context, (route) => route.settings.name == AppRouter.listNft);
       },
       text: ImageAssets.ic_close,
       bottomBar: Container(
         padding: EdgeInsets.only(bottom: 38.h),
         color: AppTheme.getInstance().bgBtsColor(),
-        child: StreamBuilder<bool>(
-            initialData: false,
-            stream: _cubit.btnStream,
-            builder: (context, snapshot) {
-              final isEnable = snapshot.data ?? false;
-              return GestureDetector(
-                onTap: isEnable
-                    ? () {
-                        getHexStringThenNav();
-                      }
-                    : () {},
-                child: ButtonGold(
-                  title: S.current.send_offer,
-                  isEnable: isEnable,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.nftOnPawn.type != 1) ...[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                child: Text(
+                  S.current.warning_send_offer,
+                  style: textNormalCustom(
+                    AppTheme.getInstance().wrongColor(),
+                    12,
+                    FontWeight.w400,
+                  ),
                 ),
-              );
-            }),
+              ),
+            ],
+            StreamBuilder<bool>(
+                initialData: false,
+                stream: _cubit.btnStream,
+                builder: (context, snapshot) {
+                  final isEnable = snapshot.data ?? false;
+                  return GestureDetector(
+                    onTap: isEnable
+                        ? () {
+                            getHexStringThenNav();
+                          }
+                        : () {},
+                    child: ButtonGold(
+                      title: S.current.send_offer,
+                      isEnable: isEnable,
+                    ),
+                  );
+                }),
+          ],
+        ),
       ),
       child: Column(
         children: [
@@ -354,6 +383,7 @@ class _SendOfferState extends State<SendOffer> {
                     CustomFormValidate(
                       maxLength: 20,
                       validator: validator,
+                      initText: widget.nftOnPawn.expectedLoanAmount.toString(),
                       onChange: (value) {
                         _cubit.btnSink.add(!validator.values.contains(false));
                       },

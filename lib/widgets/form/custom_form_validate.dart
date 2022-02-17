@@ -16,12 +16,14 @@ class CustomFormValidate extends StatefulWidget {
     this.onChange,
     this.formatter = const [],
     required this.maxLength,
+    this.initText,
   }) : super(key: key);
   final String? Function(String? value) validatorValue;
   final String hintText;
   final Widget? prefix;
   final Widget? suffix;
   final int maxLength;
+  final String? initText;
   final List<TextInputFormatter>? formatter;
   final TextInputType inputType;
   final Function(String)? onChange;
@@ -33,11 +35,16 @@ class CustomFormValidate extends StatefulWidget {
 
 class _CustomFormValidateState extends State<CustomFormValidate> {
   final _key = GlobalKey<FormState>();
+  late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     widget.validator.addAll({_key: false});
+    if (widget.initText != null) {
+      widget.validator[_key] = true;
+    }
+    _controller = TextEditingController(text: widget.initText ?? '');
   }
 
   @override
@@ -46,11 +53,15 @@ class _CustomFormValidateState extends State<CustomFormValidate> {
       child: Form(
         key: _key,
         child: TextFormField(
+          controller: _controller,
           maxLength: widget.maxLength,
           validator: (value) {
             return widget.validatorValue(value);
           },
           onChanged: (value) {
+            if (widget.initText != null) {
+              widget.validator[_key] = true;
+            }
             if (_key.currentState!.validate() == true) {
               widget.validator[_key] = true;
             } else {
