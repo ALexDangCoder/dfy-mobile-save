@@ -139,7 +139,6 @@ const String youtubeLink =
 const String linkedinLink = 'https://www.linkedin.com/company/defiforyou';
 const String twitterLink = 'https://twitter.com/Defiforyou';
 
-
 class DateTimeFormat {
   static const DEFAULT_FORMAT = _dtFormat1;
   static const HOUR_FORMAT = _dtFormat2;
@@ -193,3 +192,16 @@ const String PNG = 'image/png';
 const String JPG = 'image/jpeg';
 const String JPEG = 'image/jpeg';
 const String GIF = 'image/gif';
+const String DOCX =
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+const String DOC = 'application/msword';
+const String PDF = 'application/pdf';
+const String POWER_POINT = 'application/vnd.ms-powerpoint';
+const String POWER_POINT_XML =
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+const String ADDRESS_COLLECTION_721 =
+    '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1';
+const String ADDRESS_COLLECTION_1155 =
+    '0x45e42092ee4c4c1bed3476cc1ed85b26517cece1';
+const String ID_COLLECTION_721 = '61ca6cf4b05ecbb0d62b7b37';
+const String ID_COLLECTION_1155 = '61ca6d06b05ecbb0d62b7b9e';

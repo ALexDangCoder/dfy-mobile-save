@@ -23,27 +23,29 @@ class CreateHardNftAssetsRequest {
   List<DocumentFeatMediaListRequest>? media_list;
   String? bc_txn_hash;
   String? asset_cid;
+  String? collection_id;
 
-
-  CreateHardNftAssetsRequest(
-      {this.additional_info_list,
-      this.additional_information,
-      this.name,
-      this.asset_type_id,
-      this.condition_id,
-      this.contact_address,
-      this.contact_city_id,
-      this.contact_country_id,
-      this.contact_email,
-      this.contact_name,
-      this.contact_phone,
-      this.contact_phone_code_id,
-      this.document_list,
-      this.expecting_price,
-      this.expecting_price_symbol,
-      this.media_list,
-      this.bc_txn_hash,
-      this.asset_cid});
+  CreateHardNftAssetsRequest({
+    this.additional_info_list,
+    this.additional_information,
+    this.name,
+    this.asset_type_id,
+    this.condition_id,
+    this.contact_address,
+    this.contact_city_id,
+    this.contact_country_id,
+    this.contact_email,
+    this.contact_name,
+    this.contact_phone,
+    this.contact_phone_code_id,
+    this.document_list,
+    this.expecting_price,
+    this.expecting_price_symbol,
+    this.media_list,
+    this.bc_txn_hash,
+    this.asset_cid,
+    this.collection_id,
+  });
 
   factory CreateHardNftAssetsRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateHardNftAssetsRequestFromJson(json);

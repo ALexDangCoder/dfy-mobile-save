@@ -551,6 +551,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         property: e.property,
                         value: e.value,
                         index: index,
+                        isHaveClose: true,
                       );
                     },
                   ).toList(),
