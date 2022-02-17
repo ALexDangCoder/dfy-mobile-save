@@ -179,14 +179,6 @@ class _MenuAccountState extends State<MenuAccount> {
           ).then((_) => cubit.getLoginState());
         }
         break;
-      case 'step4':
-        {
-          goTo(
-            context,
-            const ReceiveHardNFTScreen(),
-          );
-          break;
-        }
       case 'collection_list':
         {
           if (state is NoLoginState) {
@@ -288,7 +280,7 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_token_symbol,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'step4',
+          routeName: 'about_us',
           title: S.current.collateral,
         ),
         ItemMenuModel.createChild(
@@ -676,7 +668,15 @@ class _MenuAccountState extends State<MenuAccount> {
                         if (state is NoLoginState) {
                           return InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              if (cubit.checkLoginCore() ) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const ConnectWalletDialog(
+                                    isRequireLoginEmail: false,
+                                  ),
+                                ).then((_) => cubit.getLoginState());
+                              }else {
+                                Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MainScreen(
@@ -685,6 +685,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                   ),
                                 ),
                               );
+                              }
                             },
                             child: SizedBox(
                               width: 100,

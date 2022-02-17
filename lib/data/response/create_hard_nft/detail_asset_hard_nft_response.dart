@@ -52,8 +52,6 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? expectingPriceSymbol;
   @JsonKey(name: 'additional_information')
   String? additionalInformation;
-  @JsonKey(name: 'additional_info_list')
-  List<String>? additionalInfoList;
   @JsonKey(name: 'contact_name')
   String? contactName;
   @JsonKey(name: 'contact_email')
@@ -62,6 +60,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? contactAddress;
   @JsonKey(name: 'contact_phone_code')
   ContactPhoneCodeResponse? contactPhoneCode;
+  @JsonKey(name: 'nft')
+  NFTResponse nftResponse;
   @JsonKey(name: 'contact_phone')
   String? contactPhone;
   @JsonKey(name: 'contact_country')
@@ -76,8 +76,6 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   CollectionResponse? collection;
   @JsonKey(name: 'condition')
   ContactCountryResponse? condition;
-  @JsonKey(name: 'document_list')
-  List<String>? documentList;
   @JsonKey(name: 'media_list')
   List<MediaListResponse>? mediaList;
   @JsonKey(name: 'bc_txn_hash')
@@ -98,7 +96,6 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.name,
     this.expectingPriceSymbol,
     this.additionalInformation,
-    this.additionalInfoList,
     this.contactName,
     this.contactEmail,
     this.contactAddress,
@@ -110,12 +107,12 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.displayStatus,
     this.collection,
     this.condition,
-    this.documentList,
     this.mediaList,
     this.bcTxnHash,
     this.assetCid,
     this.ipfsStatus,
     this.bcAssetId,
+    this.nftResponse,
   );
 
   factory ItemDetailAssetHardNftResponse.fromJson(Map<String, dynamic> json) =>
@@ -130,7 +127,6 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         contactName: contactName,
         assetType: assetType,
         expectingPrice: expectingPrice,
-        additionalInfoList: additionalInfoList,
         additionalInformation: additionalInformation,
         assetCid: assetCid,
         bcAssetId: bcAssetId,
@@ -143,11 +139,11 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         contactPhone: contactPhone,
         contactPhoneCode: contactPhoneCode,
         displayStatus: displayStatus,
-        documentList: documentList,
         expectingPriceSymbol: expectingPriceSymbol,
         ipfsStatus: ipfsStatus,
         mediaList: mediaList,
         walletAddress: walletAddress,
+        nftAssetHard: nftResponse,
       );
 
   @override
@@ -177,6 +173,60 @@ class ContactPhoneCodeResponse extends Equatable {
         id: id,
         name: name,
         code: code,
+      );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+
+@JsonSerializable()
+class NFTResponse extends Equatable {
+  @JsonKey(name: 'id')
+  String? id;
+  @JsonKey(name: 'name')
+  String? name;
+  @JsonKey(name: 'media_cid')
+  String? mediaId;
+  @JsonKey(name: 'cover_cid')
+  String? coverId;
+  @JsonKey(name: 'number_of_copies')
+  int? numberOfCopies;
+  @JsonKey(name: 'status')
+  int? status;
+  @JsonKey(name: 'bc_token_id')
+  int? bcTokenId;
+  @JsonKey(name: 'nft_cid')
+  String? nftId;
+  @JsonKey(name: 'asset_id')
+  String? assetId;
+
+  NFTResponse(
+    this.id,
+    this.name,
+    this.mediaId,
+    this.coverId,
+    this.numberOfCopies,
+    this.status,
+    this.bcTokenId,
+    this.nftId,
+    this.assetId,
+  );
+
+  factory NFTResponse.fromJson(Map<String, dynamic> json) =>
+      _$NFTResponseFromJson(json);
+
+  NFTAssetHard toDomain() => NFTAssetHard(
+        id: id,
+        name: name,
+        mediaId: mediaId,
+        coverId: coverId,
+        numberOfCopies: numberOfCopies,
+        status: status,
+        bcTokenId: bcTokenId,
+        nftId: nftId,
+        assetId: assetId,
       );
 
   @override

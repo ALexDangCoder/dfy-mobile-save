@@ -7,17 +7,18 @@ class CustomImageNetwork extends StatelessWidget {
   const CustomImageNetwork({
     Key? key,
     required this.image,
-    this.fit = BoxFit.fitWidth,
+    this.fit, this.placeholderImage ,
   }) : super(key: key);
   final String image;
   final BoxFit? fit;
+  final String? placeholderImage;
 
   @override
   Widget build(BuildContext context) {
     return FadeInImage.assetNetwork(
-      placeholder: ImageAssets.img_loading_transparent,
+      placeholder: placeholderImage ??  cupertinoActivityIndicatorSmall ,
       image: image,
-      fit: fit,
+      fit: fit ?? BoxFit.fitWidth,
       imageErrorBuilder: (context, error, stackTrace) => Container(
         color: AppTheme.getInstance().backgroundBTSColor(),
       ),

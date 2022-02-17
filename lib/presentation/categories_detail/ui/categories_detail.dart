@@ -196,6 +196,7 @@ class _CategoriesDetailState extends State<CategoriesDetail> {
                               fit: BoxFit.fitHeight,
                               image: ApiConstants.BASE_URL_IMAGE +
                                   (data?.bannerCid ?? ''),
+                              placeholderImage:ImageAssets.img_loading_transparent ,
                               title:
                                   '${widget.exploreCategory.name} ${S.current.categories}',
                               initHeight: 145.h,
