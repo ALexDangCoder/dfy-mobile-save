@@ -14,6 +14,7 @@ class BaseAppBar extends SliverAppBar {
     required String image,
     required String title,
     BoxFit? fit,
+    String? placeholderImage,
     required double initHeight,
     required Widget leading,
     required List<Widget> actions,
@@ -25,6 +26,7 @@ class BaseAppBar extends SliverAppBar {
             title: title,
             image: image,
             initHeight: initHeight,
+            placeholderImage:  placeholderImage,
             fit: fit,
             typeImage: typeImage ?? TypeImage.IMAGE,
           ),
@@ -42,10 +44,11 @@ class BaseSpace extends StatefulWidget {
     required this.image,
     required this.initHeight,
     required this.typeImage,
-    this.fit,
+    this.fit, this.placeholderImage,
   }) : super(key: key);
   final String title;
   final String image;
+  final String? placeholderImage;
   final BoxFit? fit;
   final double initHeight;
   final TypeImage typeImage;
@@ -139,6 +142,7 @@ class _BaseSpaceState extends State<BaseSpace> {
                 ? CustomImageNetwork(
                     image: widget.image,
                     fit: widget.fit,
+                    placeholderImage: widget.placeholderImage,
                   )
                 : VideoPlayer(_controller!),
           ),
