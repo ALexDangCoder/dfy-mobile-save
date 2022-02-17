@@ -48,17 +48,15 @@ class _NFTItemState extends State<NFTItemWidget> {
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: widget.nftMarket.startTime ?? 0,
+        value: widget.nftMarket.startTime ?? 0,
         // value: 1642637464000,
-        value: 1642471860000,
+        // value: 1642471860000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
+        value: widget.nftMarket.endTime ?? 0,
         // value: 1642637464000,
-        value: 1642558260000,
+        // value: 1642558260000,
       );
-      //todo đang hardcode startTime
-      // timeStartStamp = 1642637464000;
       countdownController = CountdownTimerController(
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
@@ -151,19 +149,19 @@ class _NFTItemState extends State<NFTItemWidget> {
                             child:
                                 (widget.nftMarket.typeImage != TypeImage.VIDEO)
                                     ? FadeInImage.assetNetwork(
-                                  placeholder: ImageAssets.image_loading,
-                                  image: widget.nftMarket.image ?? '',
-                                  imageCacheHeight: 200,
-                                  placeholderCacheHeight: 50,
-                                  fit: BoxFit.cover,
-                                )
+                                        placeholder: ImageAssets.image_loading,
+                                        image: widget.nftMarket.image ?? '',
+                                        imageCacheHeight: 200,
+                                        placeholderCacheHeight: 50,
+                                        fit: BoxFit.cover,
+                                      )
                                     : FadeInImage.assetNetwork(
-                                  placeholder: ImageAssets.image_loading,
-                                  image: widget.nftMarket.cover ?? '',
-                                  imageCacheHeight: 200,
-                                  placeholderCacheHeight: 50,
-                                  fit: BoxFit.cover,
-                                ),
+                                        placeholder: ImageAssets.image_loading,
+                                        image: widget.nftMarket.cover ?? '',
+                                        imageCacheHeight: 200,
+                                        placeholderCacheHeight: 50,
+                                        fit: BoxFit.cover,
+                                      ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
@@ -221,7 +219,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                 child: Text(
                                   formatValue.format(widget.nftMarket.price),
                                   style: textNormalCustom(
-                                    Colors.yellow,
+                                    AppTheme.getInstance().yellowColor(),
                                     13,
                                     FontWeight.w600,
                                   ),
@@ -236,7 +234,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                           '${S.current.of_all} '
                           '${widget.nftMarket.totalCopies}',
                           style: textNormalCustom(
-                            Colors.white,
+                            AppTheme.getInstance().whiteColor(),
                             13,
                             FontWeight.w600,
                           ),
@@ -292,7 +290,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                 const AssetImage(
                   ImageAssets.ic_clock2,
                 ),
-                color: Colors.white,
+                color: AppTheme.getInstance().whiteColor(),
                 size: 13.sp,
               ),
               SizedBox(
