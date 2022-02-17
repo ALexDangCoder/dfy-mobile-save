@@ -336,7 +336,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.buyNftRequest(
+                    cubit.buyNftReq(
                       BuyNftRequest(
                         widget.marketId,
                         widget.nftMarket.nftStandard == ERC_721
