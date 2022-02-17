@@ -79,7 +79,8 @@ class _UploadProgressState extends State<UploadProgress>
                 await showLoadSuccess(context)
                     .then(
                       (value) => navigator.popUntil(
-                        (route) => route.isFirst,
+                        (route) =>
+                            route.isFirst,
                       ),
                     )
                     .then(

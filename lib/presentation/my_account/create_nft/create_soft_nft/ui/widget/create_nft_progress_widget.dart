@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -111,6 +112,8 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                               navigator.pop();
                               navigator.push(
                                 MaterialPageRoute(
+                                  settings: const RouteSettings(
+                                      name: AppRouter.listNft),
                                   builder: (BuildContext context) => ListNft(
                                     marketType: MarketType.NOT_ON_MARKET,
                                     pageRouter: PageRouter.MY_ACC,
