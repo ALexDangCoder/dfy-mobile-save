@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
+import 'package:Dfy/data/response/collection/collection_list_res.dart';
 import 'package:Dfy/data/response/collection/collection_res.dart';
 import 'package:Dfy/data/response/collection/list_collection_res_market.dart';
 import 'package:Dfy/data/response/collection_detail/collection_detail_filter_response.dart';
@@ -61,6 +62,11 @@ abstract class CollectionDetailService {
     @Query('name') String? name,
     @Query('sort') int? sort,
     @Query('page') int? page,
+    @Query('size') int? size,
+  );
+
+  @GET(ApiConstants.GET_ALL_COLLECTION)
+  Future<CollectionListRes> getAllCollection(
     @Query('size') int? size,
   );
 }

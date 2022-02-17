@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
@@ -76,11 +77,18 @@ class _CollectionListState extends State<CollectionList> {
     } else {
       tittleScreen = S.current.collection_list;
     }
-
     collectionBloc = CollectionBloc(widget.typeScreen);
-    collectionBloc.addressWallet = widget.addressWallet;
+
     if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.addressWallet = widget.addressWallet;
       collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    } else {
+      if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
+        collectionBloc.textAddressFilter
+            .add(PrefsService.getCurrentBEWallet().toLowerCase());
+        collectionBloc.addressWallet =
+            PrefsService.getCurrentBEWallet().toLowerCase();
+      }
     }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
@@ -264,93 +272,84 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
+                                physics: const ClampingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
-                                    SizedBox(
-                                      height: list.length < 7
-                                          ? MediaQuery.of(context).size.height
-                                          -180.h//16+28+20+24+22+12+10+48 - header
-                                          : null,
-                                      child: GridView.builder(
-                                        shrinkWrap:
-                                            list.length < 7 ? false : true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.only(
-                                          left: 21.w,
-                                          right: 21.w,
-                                          top: 10.h,
-                                          bottom: 16.h,
-                                        ),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          mainAxisSpacing: 20.h,
-                                          crossAxisSpacing: 26.w,
-                                          childAspectRatio: 4 / 5,
-                                        ),
-                                        itemCount: state is LoadingDataSuccess
-                                            ? list.length
-                                            : 20,
-                                        itemBuilder: (context, index) {
-                                          if (state is LoadingDataSuccess) {
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) {
-                                                      return DetailCollection(
-                                                        collectionAddress:
-                                                            collectionBloc
-                                                                    .list
-                                                                    .value[
-                                                                        index]
-                                                                    .addressCollection ??
-                                                                '',
-                                                        typeScreen:
-                                                            widget.typeScreen,
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                              child: ItemCollection(
-                                                items:
-                                                    '${list[index].totalNft ?? 0}',
-                                                text: list[index]
-                                                        .description
-                                                        ?.parseHtml() ??
-                                                    '',
-                                                urlIcon: ApiConstants.URL_BASE +
-                                                    (list[index].avatarCid ??
-                                                        ''),
-                                                owners:
-                                                    '${list[index].nftOwnerCount ?? 0}',
-                                                title: snapshot
-                                                        .data?[index].name
-                                                        ?.parseHtml() ??
-                                                    '',
-                                                urlBackGround:
-                                                    ApiConstants.URL_BASE +
-                                                        (list[index].coverCid ??
-                                                            ''),
-                                              ),
-                                            );
-                                          } else if (state is LoadingDataFail) {
-                                            return ItemCollectionError(
-                                              cubit: collectionBloc,
-                                            );
-                                          } else {
-                                            return const ItemCollectionLoad();
-                                          }
-                                        },
+                                    GridView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      padding: EdgeInsets.only(
+                                        left: 21.w,
+                                        right: 21.w,
+                                        top: 10.h,
+                                        bottom: 16.h,
                                       ),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 20.h,
+                                        crossAxisSpacing: 26.w,
+                                        childAspectRatio: 4 / 5,
+                                      ),
+                                      itemCount: state is LoadingDataSuccess
+                                          ? list.length
+                                          : 20,
+                                      itemBuilder: (context, index) {
+                                        if (state is LoadingDataSuccess) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return DetailCollection(
+                                                      collectionAddress:
+                                                          collectionBloc
+                                                                  .list
+                                                                  .value[index]
+                                                                  .addressCollection ??
+                                                              '',
+                                                      typeScreen:
+                                                          widget.typeScreen,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            child: ItemCollection(
+                                              items:
+                                                  '${list[index].totalNft ?? 0}',
+                                              text: list[index]
+                                                      .description
+                                                      ?.parseHtml() ??
+                                                  '',
+                                              urlIcon: ApiConstants.URL_BASE +
+                                                  (list[index].avatarCid ?? ''),
+                                              owners:
+                                                  '${list[index].nftOwnerCount ?? 0}',
+                                              title: snapshot.data?[index].name
+                                                      ?.parseHtml() ??
+                                                  '',
+                                              urlBackGround: ApiConstants
+                                                      .URL_BASE +
+                                                  (list[index].coverCid ?? ''),
+                                            ),
+                                          );
+                                        } else if (state is LoadingDataFail) {
+                                          return ItemCollectionError(
+                                            cubit: collectionBloc,
+                                          );
+                                        } else {
+                                          return const ItemCollectionLoad();
+                                        }
+                                      },
                                     ),
                                     SizedBox(
-                                      child: list.length < 7
+                                      child: collectionBloc.resList.length != 20
                                           ? const SizedBox.shrink()
                                           : StreamBuilder<bool>(
                                               stream:
@@ -364,7 +363,7 @@ class _CollectionListState extends State<CollectionList> {
                                                             bottom: 16.h,
                                                           ),
                                                           child:
-                                                          CircularProgressIndicator(
+                                                              CircularProgressIndicator(
                                                             strokeWidth: 3,
                                                             color: AppTheme
                                                                     .getInstance()
