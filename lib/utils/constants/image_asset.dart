@@ -375,6 +375,8 @@ class ImageAssets {
 
   static const String more_circle_white = '$baseImg/more_circle_white.png';
 
+  static const String categories_create_collection = '$baseImg/categories_svg.svg';
+
   static SvgPicture svgAssets(
     String name, {
     Color? color,

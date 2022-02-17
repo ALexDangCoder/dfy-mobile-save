@@ -46,6 +46,16 @@ abstract class CollectionDetailService {
     @Field('owner') bool? owner,
   );
 
+  @POST(ApiConstants.GET_LIST_NFT_COLLECTION_MY_ACC)
+  Future<ListNftCollectionResponse> getListNftCollectionMyAcc(
+      @Field('collection_address') String? collectionAddress,
+      @Field('page') int? page,
+      @Field('size') int? size,
+      @Field('name') String? nameNft,
+      @Field('market_type') List<int>? listMarketType,
+      @Field('owner') bool? owner,
+      );
+
   @GET(ApiConstants.GET_LIST_COLLECTION)
   Future<ListCollectionResponse> getListCollection(
     @Query('wallet_address') String? addressWallet,

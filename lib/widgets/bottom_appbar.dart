@@ -61,19 +61,20 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabPawnIndex);
+                    widget.mainCubit.indexSink.add(tabMarketingPlaceIndex);
                   },
                   child: itemBottomBar(
                     ImageAssets.svgAssets(
-                      snapshot.data == tabPawnIndex
-                          ? ImageAssets.icTabPawnSelected
-                          : ImageAssets.icTabPawnUnselected,
+                      snapshot.data == tabMarketingPlaceIndex
+                          ? ImageAssets.icTabMarketPlaceSelected
+                          : ImageAssets.icTabMarketPlaceUnselected,
                     ),
-                    S.current.tab_pawn,
-                    snapshot.data == tabPawnIndex,
+                    S.current.tab_market_place,
+                    snapshot.data == tabMarketingPlaceIndex,
                   ),
                 ),
               ),
+
               Expanded(
                 child: InkWell(
                   onTap: () {
@@ -93,16 +94,16 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabMarketingPlaceIndex);
+                    widget.mainCubit.indexSink.add(tabPawnIndex);
                   },
                   child: itemBottomBar(
                     ImageAssets.svgAssets(
-                      snapshot.data == tabMarketingPlaceIndex
-                          ? ImageAssets.icTabMarketPlaceSelected
-                          : ImageAssets.icTabMarketPlaceUnselected,
+                      snapshot.data == tabPawnIndex
+                          ? ImageAssets.icTabPawnSelected
+                          : ImageAssets.icTabPawnUnselected,
                     ),
-                    S.current.tab_market_place,
-                    snapshot.data == tabMarketingPlaceIndex,
+                    S.current.tab_pawn,
+                    snapshot.data == tabPawnIndex,
                   ),
                 ),
               ),
