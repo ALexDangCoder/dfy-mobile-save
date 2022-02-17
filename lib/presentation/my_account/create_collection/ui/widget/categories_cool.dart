@@ -86,8 +86,11 @@ class CategoriesCool extends StatelessWidget {
           left: 14.w,
           child: SizedBox(
             height: 64.h,
-            child:
-                sizedSvgImage(w: 20, h: 20, image: ImageAssets.ic_folder_svg),
+            child: sizedSvgImage(
+              w: 20,
+              h: 20,
+              image: ImageAssets.categories_create_collection,
+            ),
           ),
         ),
       ],
