@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:intl/intl.dart';
 
 enum AppMode { LIGHT, DARK }
@@ -178,3 +180,16 @@ enum StatusOffer {
   REJECTED,
   CANCELED,
 }
+
+//file type
+const String MP4 = 'video/mp4';
+const String WEBM = 'video/webm';
+const String MP3 = 'audio/mpeg';
+const String WAV = 'audio/wav';
+const String OGG_AUDIO = 'audio/ogg';
+const String OGG_VIDEO = 'video/ogg';
+const String OGG = 'application/ogg';
+const String PNG = 'image/png';
+const String JPG = 'image/jpeg';
+const String JPEG = 'image/jpeg';
+const String GIF = 'image/gif';
