@@ -261,7 +261,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                           width: 13.15.w,
                         ),
                         Text(
-                          isShow ? S.current.view_less : S.current.see_more,
+                          isShow ? S.current.see_less : S.current.see_more,
                           style: textNormalCustom(
                             AppTheme.getInstance().fillColor(),
                             16,
