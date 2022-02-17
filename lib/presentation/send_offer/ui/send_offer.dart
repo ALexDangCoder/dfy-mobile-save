@@ -47,6 +47,7 @@ class _SendOfferState extends State<SendOffer> {
   @override
   void dispose() {
     _cubit.dispose();
+    super.dispose();
   }
 
   Future<void> getHexStringThenNav() async {
