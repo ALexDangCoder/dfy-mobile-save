@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
@@ -46,7 +47,9 @@ Future<void> showLoadFail(BuildContext context) async {
             body: Center(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitFail(),
+                child: TransactionSubmitFail(
+                  content: S.current.transaction_failed,
+                ),
               ),
             ),
           );
