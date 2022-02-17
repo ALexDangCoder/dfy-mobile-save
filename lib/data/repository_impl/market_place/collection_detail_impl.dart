@@ -81,6 +81,28 @@ class CollectionDetailImpl implements CollectionDetailRepository {
   }
 
   @override
+  Future<Result<List<NftMarket>>> getListNftCollectionMyAcc({
+    String? collectionAddress,
+    int? page,
+    int? size,
+    String? nameNft,
+    List<int>? listMarketType,
+    bool? owner,
+  }) {
+    return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
+          () => _client.getListNftCollectionMyAcc(
+        collectionAddress,
+        page,
+        size,
+        nameNft,
+        listMarketType,
+        owner,
+      ),
+          (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
   Future<Result<List<CollectionMarketModel>>> getListCollection({
     String? addressWallet,
     String? name,

@@ -379,15 +379,27 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
     required String collectionAddress,
   }) async {
     statusNft.add(LOADING);
-    final Result<List<NftMarket>> result =
-        await _collectionDetailRepository.getListNftCollection(
-      collectionAddress: collectionAddress,
-      nameNft: name,
-      listMarketType: listMarketType,
-      size: size,
-      page: page,
-      owner: owner,
-    );
+    late final Result<List<NftMarket>> result;
+    if (typeScreen == PageRouter.MY_ACC) {
+      result = await _collectionDetailRepository.getListNftCollectionMyAcc(
+        collectionAddress: collectionAddress,
+        nameNft: name,
+        listMarketType: listMarketType,
+        size: size,
+        page: page,
+        owner: owner,
+      );
+    } else {
+      result = await _collectionDetailRepository.getListNftCollection(
+        collectionAddress: collectionAddress,
+        nameNft: name,
+        listMarketType: listMarketType,
+        size: size,
+        page: page,
+        owner: owner,
+      );
+    }
+
     result.when(
       success: (res) {
         if (res.isBlank ?? false) {
@@ -409,11 +421,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
         }
       },
       error: (error) {
-        if (error.code == CODE_ERROR_AUTH) {
-          getListNft(
-            collectionAddress: collectionAddress,
-          );
-        }//todo BE
+        if (typeScreen == PageRouter.MY_ACC) {
+          if (error.code == CODE_ERROR_AUTH) {
+            getListNft(
+              collectionAddress: collectionAddress,
+            );
+          }
+        }
         statusNft.add(FAILED);
       },
     );
