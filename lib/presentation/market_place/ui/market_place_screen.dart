@@ -179,7 +179,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                         context: context,
                         builder: (_) => ConnectWalletDialog(
                           settings: const RouteSettings(
-                            name: AppRouter.collectionList,
+                            name: AppRouter.create_collection,
                           ),
                           navigationTo: CreateCollectionScreen(
                             bloc: CreateCollectionCubit(),

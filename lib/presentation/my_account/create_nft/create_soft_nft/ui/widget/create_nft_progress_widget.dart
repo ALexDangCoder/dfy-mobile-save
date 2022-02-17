@@ -99,7 +99,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                 await showLoadSuccess(context)
                     .then(
                       (value) => navigator.popUntil(
-                        (route) => route.isFirst,
+                        (route) => route.settings.name == AppRouter.create_nft,
                       ),
                     )
                     .then(
@@ -110,10 +110,12 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                             content: S.current.create_nft_successfully,
                             callback: () {
                               navigator.pop();
+                              navigator.pop();
                               navigator.push(
                                 MaterialPageRoute(
                                   settings: const RouteSettings(
-                                      name: AppRouter.listNft),
+                                    name: AppRouter.listNft,
+                                  ),
                                   builder: (BuildContext context) => ListNft(
                                     marketType: MarketType.NOT_ON_MARKET,
                                     pageRouter: PageRouter.MY_ACC,

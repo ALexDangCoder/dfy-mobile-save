@@ -112,7 +112,7 @@ class _CollectionListState extends State<CollectionList> {
             context,
             MaterialPageRoute(
               settings: const RouteSettings(
-                name: AppRouter.collectionList,
+                name: AppRouter.create_collection,
               ),
               builder: (context) {
                 return CreateCollectionScreen(
