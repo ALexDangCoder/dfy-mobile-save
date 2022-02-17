@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/color.dart';
+import 'package:Dfy/config/resources/images.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 @immutable
 class CustomBottomHomeAppbar extends StatefulWidget {
@@ -24,7 +26,7 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
     return Container(
       decoration: BoxDecoration(
         color: bgBottomTab,
-        borderRadius: BorderRadius.only(
+        borderRadius:  BorderRadius.only(
           topLeft: Radius.circular(20.0.r),
           topRight: Radius.circular(20.0.r),
         ),
@@ -59,16 +61,16 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabMarketingPlaceIndex);
+                    widget.mainCubit.indexSink.add(tabPawnIndex);
                   },
                   child: itemBottomBar(
                     ImageAssets.svgAssets(
-                      snapshot.data == tabMarketingPlaceIndex
-                          ? ImageAssets.icTabMarketPlaceSelected
-                          : ImageAssets.icTabMarketPlaceUnselected,
+                      snapshot.data == tabPawnIndex
+                          ? ImageAssets.icTabPawnSelected
+                          : ImageAssets.icTabPawnUnselected,
                     ),
-                    S.current.tab_market_place,
-                    snapshot.data == tabMarketingPlaceIndex,
+                    S.current.tab_pawn,
+                    snapshot.data == tabPawnIndex,
                   ),
                 ),
               ),
@@ -91,16 +93,16 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    widget.mainCubit.indexSink.add(tabPawnIndex);
+                    widget.mainCubit.indexSink.add(tabMarketingPlaceIndex);
                   },
                   child: itemBottomBar(
                     ImageAssets.svgAssets(
-                      snapshot.data == tabPawnIndex
-                          ? ImageAssets.icTabPawnSelected
-                          : ImageAssets.icTabPawnUnselected,
+                      snapshot.data == tabMarketingPlaceIndex
+                          ? ImageAssets.icTabMarketPlaceSelected
+                          : ImageAssets.icTabMarketPlaceUnselected,
                     ),
-                    S.current.tab_pawn,
-                    snapshot.data == tabPawnIndex,
+                    S.current.tab_market_place,
+                    snapshot.data == tabMarketingPlaceIndex,
                   ),
                 ),
               ),
