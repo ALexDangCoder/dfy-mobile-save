@@ -379,10 +379,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                               }
                             }
+                            if (state is LoginError) {
+                              _showDialog(
+                                alert: S.current.error,
+                                text: state.error,
+                              );
+                            }
                           },
                           child: GestureDetector(
                             onTap: () {
-                              _cubit.authenticate();
+                              _cubit.checkBiometrics();
                             },
                             child: Platform.isIOS
                                 ? Image(
@@ -523,6 +529,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   12,
                   FontWeight.w400,
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -542,6 +549,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
+                  _cubit.emit(LoginInitial());
                   Navigator.of(ctx).pop();
                 },
               ),

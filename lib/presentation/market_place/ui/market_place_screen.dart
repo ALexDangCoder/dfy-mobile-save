@@ -76,7 +76,7 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,               
                   children: [
                     HeaderMarketPlace(cubit: cubit),
                     SizedBox(

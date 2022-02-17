@@ -707,6 +707,7 @@
   "sat": "THỨ BẢY",
   "sun": "CHỦ NHẬT",
   "collections": "Bộ sưu tập",
-  "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại"
+  "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại",
+  "you_have_try_more_than_5":"Bạn đã thử sai quá 5 lần. Vui lòng thử lại sau 30 giây."
 
 }

@@ -266,7 +266,7 @@ Container _priceContainerOnAuction({
             Expanded(
               child: Text(
                 '~ ${formatUSD.format(
-                  isBidding
+                  !isBidding
                       ? ((nftOnAuction.reservePrice ?? 0) *
                           (nftOnAuction.usdExchange ?? 0))
                       : ((nftOnAuction.currentPrice ?? 0) *
