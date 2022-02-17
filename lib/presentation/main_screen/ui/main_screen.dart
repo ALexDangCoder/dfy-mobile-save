@@ -15,10 +15,14 @@ import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 const int tabWalletIndex = 0;
-const int tabPawnIndex = 1;
+const int tabMarketingPlaceIndex = 1;
 const int tabHomeIndex = 2;
-const int tabMarketingPlaceIndex = 3;
+const int tabPawnIndex = 3;
 const int tabStakingIndex = 4;
+
+const int walletInfoIndex = 1;
+const int loginIndex = 2;
+const int registerIndex = 3;
 
 class MainScreen extends BaseScreen {
   const MainScreen({
@@ -80,9 +84,9 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
         wallet: widget.wallet,
         isFromConnectWlDialog: widget.isFormConnectWlDialog,
       ),
-      const PawnScreen(),
-      const HomeScreen(),
       const MarketPlaceScreen(),
+      const HomeScreen(),
+      const PawnScreen(),
       const StakingScreen(),
     ];
 
