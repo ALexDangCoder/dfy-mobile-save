@@ -1,10 +1,10 @@
 import 'package:Dfy/data/request/collection/social_link_map_request.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'create_collection_ipfs_request.g.dart';
+part 'create_soft_collection_ipfs_request.g.dart';
 
 @JsonSerializable()
-class CreateCollectionIpfsRequest {
+class CreateSoftCollectionIpfsRequest {
   String external_link = '';
   String feature_cid = '';
   String image = '';
@@ -13,9 +13,10 @@ class CreateCollectionIpfsRequest {
   String avatar_cid = '';
   String category = '';
   String cover_cid = '';
+  String description = '';
   List<SocialLinkMapRequest> social_links = [];
 
-  CreateCollectionIpfsRequest({
+  CreateSoftCollectionIpfsRequest({
     required this.external_link,
     required this.feature_cid,
     required this.image,
@@ -25,12 +26,13 @@ class CreateCollectionIpfsRequest {
     required this.category,
     required this.cover_cid,
     required this.social_links,
+    required this.description,
   });
 
-  CreateCollectionIpfsRequest.init();
+  CreateSoftCollectionIpfsRequest.init();
 
-  factory CreateCollectionIpfsRequest.fromJson(Map<String, dynamic> json) =>
-      _$CreateCollectionIpfsRequestFromJson(json);
+  factory CreateSoftCollectionIpfsRequest.fromJson(Map<String, dynamic> json) =>
+      _$CreateSoftCollectionIpfsRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreateCollectionIpfsRequestToJson(this);
+  Map<String, dynamic> toJson() => _$CreateSoftCollectionIpfsRequestToJson(this);
 }

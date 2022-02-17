@@ -95,18 +95,24 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
     result.when(
       success: (res) {
-        if (res.isEmpty) {
+        final listWallet=[];
+        for (final element in res) {
+          if (element.walletAddress?.isNotEmpty ?? false) {
+            listWallet.add(element.walletAddress ?? '');
+          }
+        }
+        if (listWallet.isEmpty) {
           checkWalletAddress = false;
         } else {
-          if (res.length < 2) {
-            for (final element in res) {
+          if (listWallet.length < 2) {
+            for (final element in listWallet) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
             checkWalletAddress = false;
           } else {
-            for (final element in res) {
+            for (final element in listWallet) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
@@ -114,6 +120,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
             checkWalletAddress = true;
           }
         }
+
       },
       error: (error) {
         if(error.code==CODE_ERROR_AUTH){

@@ -8,19 +8,6 @@ import 'package:flutter/cupertino.dart';
 
 extension UploadIPFS on CreateNftCubit {
   Future<void> uploadFileToIFPS(BuildContext context) async {
-    final dataRequest = CreateSoftNftIpfsRequest(
-      collection_id: collectionAddress,
-      cover_cid: coverCid,
-      description: description,
-      file_cid: mediaFileCid,
-      file_type: fileType,
-      minting_fee_number: mintingFeeNumber.toString(),
-      minting_fee_token: mintingFeeToken,
-      name: nftName,
-      royalties: royalty.toString(),
-      properties:
-          listProperty.map((e) => PropertiesMapRequest.fromJson(e)).toList(),
-    );
     if (mediaType != MEDIA_IMAGE_FILE) {
       upLoadStatusSubject.sink.add(-1);
       mediaFileUploadStatusSubject.sink.add(-1);
@@ -37,6 +24,19 @@ extension UploadIPFS on CreateNftCubit {
           mediaFileUploadStatusSubject.value == 0) {
         upLoadStatusSubject.sink.add(0);
       } else {
+        final dataRequest = CreateSoftNftIpfsRequest(
+          collection_id: collectionAddress,
+          cover_cid: coverCid,
+          description: description,
+          file_cid: mediaFileCid,
+          file_type: fileType,
+          minting_fee_number: mintingFeeNumber.toString(),
+          minting_fee_token: mintingFeeToken,
+          name: nftName,
+          royalties: royalty.toString(),
+          properties:
+          listProperty.map((e) => PropertiesMapRequest.fromJson(e)).toList(),
+        );
         showLoading(context);
         nftIPFS = await ipfsService.pinJsonToIPFS(
           type: PinJsonType.SOFT_NFT,
@@ -59,6 +59,19 @@ extension UploadIPFS on CreateNftCubit {
       if (mediaFileUploadStatusSubject.value != 1) {
         upLoadStatusSubject.sink.add(0);
       } else {
+        final dataRequest = CreateSoftNftIpfsRequest(
+          collection_id: collectionAddress,
+          cover_cid: coverCid,
+          description: description,
+          file_cid: mediaFileCid,
+          file_type: fileType,
+          minting_fee_number: mintingFeeNumber.toString(),
+          minting_fee_token: mintingFeeToken,
+          name: nftName,
+          royalties: royalty.toString(),
+          properties:
+          listProperty.map((e) => PropertiesMapRequest.fromJson(e)).toList(),
+        );
         showLoading(context);
         nftIPFS = await ipfsService.pinJsonToIPFS(
           type: PinJsonType.SOFT_NFT,

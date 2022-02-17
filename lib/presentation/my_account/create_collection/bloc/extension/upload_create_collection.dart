@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
 
 extension UploadCreateCollection on CreateCollectionCubit{
@@ -11,7 +12,8 @@ extension UploadCreateCollection on CreateCollectionCubit{
     required String imageType,
     required String tittle,
   }) async {
-    final filePath = await pickImageFunc(imageType: imageType, tittle: tittle);
+    final fileMap = await pickImageFunc(imageType: imageType, tittle: tittle);
+    final filePath = fileMap.getStringValue(PATH_OF_FILE);
     if (filePath.isNotEmpty) {
       final imageTemp = File(filePath);
       final imageSize =
