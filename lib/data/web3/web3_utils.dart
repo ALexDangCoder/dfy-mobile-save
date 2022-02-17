@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -42,9 +43,7 @@ class Web3Utils {
   factory Web3Utils() => _shared;
 
   //client
-  // final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
-  final client =
-      Web3Client('https://data-seed-prebsc-2-s2.binance.org:8545', Client());
+  final client = Web3Client(Get.find<AppConstants>().rpcUrl, Client());
 
   Future<ImportNftResponse> importNFT({
     required String contract,
@@ -678,9 +677,9 @@ class Web3Utils {
       parameters: [
         BigInt.from(num.parse(tokenId)),
         EthereumAddress.fromHex(collectionAddress),
-        BigInt.from(num.parse(startingPrice)),
-        BigInt.from(num.parse(buyOutPrice)),
-        BigInt.from(num.parse(priceStep)),
+        BigInt.from(num.parse(_handleAmount(18, startingPrice))),
+        BigInt.from(num.parse(_handleAmount(18, buyOutPrice))),
+        BigInt.from(num.parse(_handleAmount(18, priceStep))),
         EthereumAddress.fromHex(currencyAddress),
         BigInt.from(num.parse(startTime)),
         BigInt.from(num.parse(endTime)),

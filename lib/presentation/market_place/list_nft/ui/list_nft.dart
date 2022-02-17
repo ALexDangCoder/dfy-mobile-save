@@ -200,6 +200,7 @@ class _ListNftState extends State<ListNft> {
                                     onRefresh: () async {
                                       FocusScope.of(context).unfocus();
                                       if(controller.text.isEmpty){
+
                                         _cubit.refreshPosts(
                                           widget.pageRouter,
                                         );

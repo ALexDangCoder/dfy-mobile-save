@@ -6,5 +6,11 @@
   "chain_id": "56",
   "bsc_scan": "https://bscscan.com/",
   "base_url_pinata": "https://api.pinata.cloud/",
-  "base_custom_url" : "https://marketplace.defiforyou.uk/"
+  "base_custom_url" : "https://marketplace.defiforyou.uk/",
+  "nft_sales_address": "0x0B918C44977275cE660b6CC9f0801C1cf463eAAB",
+  "nft_factory": "0x2714A6e4219b7aC329C988175C585d587f52a757",
+  "nft_auction": "0x1888893F3370af06b413D6259D0e420971d07CA0",
+  "nft_pawn": "0x6cA1dc9B29b4Ec704f74F8114CdF9ea59642be2E",
+  "hard_nft_factory": "0x5b10b008c0d7b51307410f5296f7770b988f50e0",
+  "eva": "0x9a698C7c01fE931290fb8ad89689832833264398"
 }

@@ -153,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
           },
           child: Container(
             width: 375.sw,

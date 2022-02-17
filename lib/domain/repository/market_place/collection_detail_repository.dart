@@ -47,4 +47,6 @@ mixin CollectionDetailRepository {
     int? page,
     int? size,
   });
+
+  Future<Result<List<CollectionMarketModel>>> getAllCollection({int size = 999});
 }
