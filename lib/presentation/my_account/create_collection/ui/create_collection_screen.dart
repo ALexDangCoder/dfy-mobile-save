@@ -33,19 +33,26 @@ class CreateCollectionScreen extends StatelessWidget {
         title: S.current.create_collection,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 16.w,
-              ),
+          body: Container(
+            margin: EdgeInsets.only(
+              left: 16.w,
+              bottom: (64 + 38 + 24).h,
+              right: 16.w,
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   Text(
                     S.current.soft_nft,
                     style: textLabelNFT,
+                  ),
+                  SizedBox(
+                    height: 16.h,
                   ),
                   StreamBuilder<List<TypeNFTModel>>(
                     stream: bloc.listSoftNFTSubject,
@@ -55,7 +62,8 @@ class CreateCollectionScreen extends StatelessWidget {
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
@@ -74,10 +82,13 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  spaceH24,
+                  SizedBox(height: 12.h,),
                   Text(
                     S.current.hard_nft,
                     style: textLabelNFT,
+                  ),
+                  SizedBox(
+                    height: 16.h,
                   ),
                   StreamBuilder<List<TypeNFTModel>>(
                     stream: bloc.listHardNFTSubject,
@@ -87,7 +98,8 @@ class CreateCollectionScreen extends StatelessWidget {
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
@@ -106,10 +118,6 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  ///Space bottom + space top + height of the button
-                  SizedBox(
-                    height: (64 + 38 + 24).h,
-                  )
                 ],
               ),
             ),
