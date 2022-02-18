@@ -291,6 +291,8 @@ class CollectionResponse extends Equatable {
   String? latitude;
   @JsonKey(name: 'longitude')
   String? longitude;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
 
   CollectionResponse(
     this.id,
@@ -307,6 +309,7 @@ class CollectionResponse extends Equatable {
     this.collectionType,
     this.isWhitelist,
     this.latitude,
+    this.collectionAddress,
     this.longitude,
   );
 

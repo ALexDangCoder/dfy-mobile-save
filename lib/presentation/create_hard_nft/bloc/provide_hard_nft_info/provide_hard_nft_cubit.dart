@@ -5,6 +5,7 @@ import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.dart';
 import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
@@ -12,11 +13,14 @@ import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
@@ -52,6 +56,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
+  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -140,12 +145,60 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
     resultAsset.when(
       success: (res) {
-        //todo
-        // print(res.id);
-        // print(res.status);
+        if(res == null) {
+
+        } else {
+          assetId = res.id ?? '';
+          getDetailAssetHardNFT(assetId: assetId);
+        }
       },
       error: (error) {},
     );
+  }
+
+  String assetId = '';
+
+  ///
+  Future<void> getDetailAssetHardNFT({
+    required String assetId,
+  }) async {
+    final Result<DetailAssetHardNft> result =
+    await _createHardNFTRepository.getDetailAssetHardNFT(
+      assetId,
+    );
+    result.when(
+      success: (res) {
+        if(res == null) {
+        } else {
+          assetCid = res.assetCid ?? '';
+          beAssetId = assetId;
+          expectingPrice = res.expectingPrice.toString() ?? '';
+          expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+          collectionStandard = res.collection?.collectionType?.standard ?? 0;
+          collectionAsset = res.collection?.walletAddress ?? '';
+        }
+      },
+      error: (error) {},
+    );
+  }
+
+  String assetCid = '';
+  String collectionAsset = '';
+  String expectingPrice = '';
+  String expectingPriceAddress = '';
+  int? collectionStandard;
+  String beAssetId = '';
+
+  Future<String> getHexStringFromWeb3() async {
+    final result = await Web3Utils().getCreateAssetRequestData(
+      assetCID: assetCid,
+      collectionAsset: collectionAsset,
+      expectingPrice: dataStep1.amountToken.toString(),
+      expectingPriceAddress: expectingPriceAddress,
+      collectionStandard: collectionStandard ?? 0,
+      beAssetId: beAssetId,
+    );
+    return result;
   }
 
   //todo phân loại file type khi upload
