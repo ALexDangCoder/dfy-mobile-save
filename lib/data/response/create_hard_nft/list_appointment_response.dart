@@ -74,7 +74,7 @@ class AppointmentsResponse extends Equatable {
         acceptedTime: acceptedTime,
         appointmentTime: appointmentTime,
         bcAppointmentId: bcAppointmentId,
-        evaluator: evaluator,
+        evaluator: evaluator?.toDomain(),
         rejectedReason: rejectedReason,
       );
 
@@ -120,7 +120,7 @@ class EvaluatorResponse extends Equatable {
         avatarCid: avatarCid,
         id: id,
         phone: phone,
-        phoneCode: phoneCode,
+        phoneCode: phoneCode?.toDomain(),
       );
 
   @override

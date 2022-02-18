@@ -1,4 +1,4 @@
-class ConfirmModel{
+class ConfirmModel {
   String rd;
   int rc;
 

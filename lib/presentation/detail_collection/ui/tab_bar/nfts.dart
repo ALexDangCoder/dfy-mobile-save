@@ -76,6 +76,8 @@ class _NFTSCollectionState extends State<NFTSCollection> {
                           14,
                         ),
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
                           counterText: '',
                           hintText: S.current.search,
                           hintStyle: textNormal(

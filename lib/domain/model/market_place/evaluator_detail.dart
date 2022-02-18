@@ -1,4 +1,4 @@
-import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
+
 
 class EvaluatorsDetailModel {
   String? id;
@@ -10,7 +10,7 @@ class EvaluatorsDetailModel {
   String? description;
   double? locationLat;
   double? locationLong;
-  List<AcceptedAssetTypeDetail>? acceptedAssetTypeList;
+  List<AcceptedAssetTypeDetailModel>? acceptedAssetTypeList;
   int? workingTimeFrom;
   int? workingTimeTo;
   List<int>? workingDays;
@@ -21,7 +21,7 @@ class EvaluatorsDetailModel {
   int? reviewsCount;
   int? evaluatedCount;
   int? createdAt;
-  PhoneCodeResponse? phoneCode;
+  PhoneCode? phoneCode;
 
   EvaluatorsDetailModel({
     this.id,

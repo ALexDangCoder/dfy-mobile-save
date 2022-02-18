@@ -278,7 +278,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
             ? ''
             : nftType?[0],
-        walletAddress: walletAddress == 'All'
+        walletAddress: walletAddress == S.current.all
             ? getParam(walletAddressFilter)
             : walletAddress,
         collectionId: '',

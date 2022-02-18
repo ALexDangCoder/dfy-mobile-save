@@ -54,6 +54,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
+
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
@@ -143,8 +144,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
     resultAsset.when(
       success: (res) {
-        if(res == null) {
-
+        if (res == null) {
         } else {
           assetId = res.id ?? '';
           getDetailAssetHardNFT(assetId: assetId);
@@ -161,12 +161,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     required String assetId,
   }) async {
     final Result<DetailAssetHardNft> result =
-    await _createHardNFTRepository.getDetailAssetHardNFT(
+        await _createHardNFTRepository.getDetailAssetHardNFT(
       assetId,
     );
     result.when(
       success: (res) {
-        if(res == null) {
+        if (res == null) {
         } else {
           assetCid = res.assetCid ?? '';
           beAssetId = assetId;

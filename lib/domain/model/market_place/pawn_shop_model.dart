@@ -1,7 +1,5 @@
-import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
-
 class AppointmentModel {
-  EvaluatorResponse? evaluator;
+  Evaluator? evaluator;
   int? status;
   String? id;
   int? appointmentTime;
@@ -26,7 +24,7 @@ class Evaluator {
   String? email;
   String? phone;
   String? address;
-  PhoneCodeResponse? phoneCode;
+  PhoneCode? phoneCode;
   String? avatarCid;
 
   Evaluator({
