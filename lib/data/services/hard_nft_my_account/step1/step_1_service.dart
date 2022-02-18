@@ -6,6 +6,7 @@ import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/hard_nft_type_select.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/put_hard_nft_response.dart';
 
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -37,5 +38,11 @@ abstract class Step1Client {
   @POST(ApiConstants.POST_ASSETS)
   Future<AssetResponse> createHardNFTAssets(
     @Body() CreateHardNftAssetsRequest request,
+  );
+
+  @PUT(
+      '${ApiConstants.PUT_HARD_NFT_PREFIX}{id}${ApiConstants.PUT_HARD_NFT_SUFFIX}')
+  Future<PutHardNftResponse> putHardNftBeforeConfirm(
+    @Path('id') String id,
   );
 }

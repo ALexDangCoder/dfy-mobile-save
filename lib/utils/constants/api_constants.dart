@@ -140,6 +140,8 @@ class ApiConstants {
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
   static const String GET_ALL_COLLECTION = '/nft-market-svc/api/collection/self';
+  static const String PUT_HARD_NFT_PREFIX = '/hard-nft-svc/api/assets/';
+  static const String PUT_HARD_NFT_SUFFIX = '/submit';
 
   //Liên kết email:
   static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';
