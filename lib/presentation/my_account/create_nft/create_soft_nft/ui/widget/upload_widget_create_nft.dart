@@ -21,7 +21,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
     children: [
       Text(
         S.current.upload_file,
-        style: uploadText,
+        style: uploadFileText,
       ),
       spaceH22,
       StreamBuilder<String>(
@@ -152,7 +152,7 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                   spaceH24,
                   Text(
                     S.current.upload_cover_photo,
-                    style: uploadText,
+                    style: uploadFileText,
                   ),
                   spaceH24,
                   StreamBuilder<String>(
