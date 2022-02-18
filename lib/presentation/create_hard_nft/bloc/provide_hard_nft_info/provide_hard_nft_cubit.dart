@@ -172,7 +172,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         } else {
           assetCid = res.assetCid ?? '';
           beAssetId = assetId;
-          expectingPrice = res.expectingPrice.toString() ?? '';
+          expectingPrice = res.expectingPrice.toString();
           expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
           collectionStandard = res.collection?.collectionType?.standard ?? 0;
           collectionAsset = res.collection?.walletAddress ?? '';

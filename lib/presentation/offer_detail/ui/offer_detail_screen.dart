@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_cubit.dart';
@@ -65,7 +66,9 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                   isImage: true,
                   text: ImageAssets.ic_close,
                   onRightClick: () {},
-                  bottomBar: (isShow(offer?.status ?? 0))
+                  bottomBar: (isShow(offer?.status ?? 0) &&
+                          PrefsService.getCurrentBEWallet().toLowerCase() ==
+                              PrefsService.getOwnerPawn().toLowerCase())
                       ? rowButton(context, offer!)
                       : null,
                   child: RefreshIndicator(
