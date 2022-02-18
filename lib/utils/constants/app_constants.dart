@@ -31,6 +31,11 @@ enum PageTransitionType {
 //   IS_NOT_CREATE,
 // }
 
+
+const int CODE_ERROR_AUTH = 401;
+const int CODE_ERROR_MAINTAIN = 503;
+const int CODE_ERROR_NETWORK = 0;
+
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
 const String CALENDAR_TYPE_YEAR = 'Year';
@@ -39,6 +44,7 @@ const String SUCCESS = 'success';
 const String FAIL = 'fail';
 const String HOUR = 'hour';
 const String MINUTE = 'minute';
+const String EVALUATION_FEE = '2';
 NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
@@ -103,6 +109,7 @@ const String DOCUMENT_FILE = 'document';
 const String AVATAR_PHOTO = 'AVATAR';
 const String COVER_PHOTO = 'COVER_PHOTO';
 const String FEATURE_PHOTO = 'FEATURE_PHOTO';
+const String VIDEO_ACTIVITY = 'video/MP4';
 
 //Collection type, standard
 const int SOFT_COLLECTION = 0;

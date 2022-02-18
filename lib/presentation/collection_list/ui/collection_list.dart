@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collection_state.dart';
@@ -11,12 +13,10 @@ import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collec
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
-import 'package:Dfy/presentation/my_account/menu_account/ui/menu_account.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:Dfy/widgets/item/item_collection/item_colection.dart';
@@ -78,11 +78,18 @@ class _CollectionListState extends State<CollectionList> {
     } else {
       tittleScreen = S.current.collection_list;
     }
-
     collectionBloc = CollectionBloc(widget.typeScreen);
-    collectionBloc.addressWallet = widget.addressWallet;
+
     if (widget.addressWallet?.isNotEmpty ?? false) {
+      collectionBloc.addressWallet = widget.addressWallet;
       collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+    } else {
+      if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
+        collectionBloc.textAddressFilter
+            .add(PrefsService.getCurrentBEWallet().toLowerCase());
+        collectionBloc.addressWallet =
+            PrefsService.getCurrentBEWallet().toLowerCase();
+      }
     }
     searchCollection = TextEditingController();
     searchCollection.text = widget.query ?? '';
@@ -104,6 +111,9 @@ class _CollectionListState extends State<CollectionList> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_collection,
+              ),
               builder: (context) {
                 return CreateCollectionScreen(
                   bloc: CreateCollectionCubit(),
@@ -116,6 +126,9 @@ class _CollectionListState extends State<CollectionList> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_nft,
+              ),
               builder: (context) {
                 return CreateNFTScreen(
                   cubit: CreateNftCubit(),
@@ -152,7 +165,7 @@ class _CollectionListState extends State<CollectionList> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                       goTo(context, const MenuAccount());
+                        Navigator.pop(context);
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -250,9 +263,6 @@ class _CollectionListState extends State<CollectionList> {
                         ),
                       );
                     } else {
-                      if (collectionBloc.list.value.length < 9) {
-                        collectionBloc.isCanLoadMore.add(false);
-                      }
                       return StreamBuilder(
                         stream: collectionBloc.list,
                         builder: (
@@ -269,7 +279,9 @@ class _CollectionListState extends State<CollectionList> {
                                 );
                               },
                               child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
+                                physics: const ClampingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
                                 controller: _listCollectionController,
                                 child: Column(
                                   children: [
@@ -343,26 +355,32 @@ class _CollectionListState extends State<CollectionList> {
                                         }
                                       },
                                     ),
-                                    StreamBuilder<bool>(
-                                      stream: collectionBloc.isCanLoadMore,
-                                      builder: (context, snapshot) {
-                                        return snapshot.data ?? false
-                                            ? Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    bottom: 16.h,
-                                                  ),
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 3,
-                                                    color:
-                                                        AppTheme.getInstance()
-                                                            .whiteColor(),
-                                                  ),
-                                                ),
-                                              )
-                                            : const SizedBox.shrink();
-                                      },
+                                    SizedBox(
+                                      child: collectionBloc.resList.length != 20
+                                          ? const SizedBox.shrink()
+                                          : StreamBuilder<bool>(
+                                              stream:
+                                                  collectionBloc.isCanLoadMore,
+                                              builder: (context, snapshot) {
+                                                return snapshot.data ?? false
+                                                    ? Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            bottom: 16.h,
+                                                          ),
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 3,
+                                                            color: AppTheme
+                                                                    .getInstance()
+                                                                .whiteColor(),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const SizedBox.shrink();
+                                              },
+                                            ),
                                     ),
                                   ],
                                 ),

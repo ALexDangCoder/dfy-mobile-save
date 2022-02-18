@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
@@ -77,8 +78,7 @@ class DialogCancel extends StatelessWidget {
                                   ),
                                   child: Image.network(
                                     '${ApiConstants.BASE_URL_IMAGE}'
-                                        '${appointment.evaluator
-                                        ?.avatarCid ?? ''}',
+                                    '${appointment.evaluator?.avatarCid ?? ''}',
                                     width: 46.w,
                                     height: 46.h,
                                     fit: BoxFit.cover,
@@ -103,9 +103,7 @@ class DialogCancel extends StatelessWidget {
                             spaceH16,
                             ItemIconText(
                               text:
-                                  '(${appointment.evaluator?.phoneCode
-                                      ?.code ?? ''})${appointment.evaluator
-                                      ?.phone ?? ''}',
+                                  '(${appointment.evaluator?.phoneCode?.code ?? ''})${appointment.evaluator?.phone ?? ''}',
                               icon: ImageAssets.ic_phone,
                             ),
                             spaceH16,
@@ -236,9 +234,12 @@ class DialogCancel extends StatelessWidget {
                                               showLoadSuccess(context)
                                                   .whenComplete(
                                                 () {
-                                                  navigator.pop();
-                                                  navigator.pop();
-                                                  navigator.pop();
+                                                  Navigator.of(context)
+                                                      .popUntil((route) {
+                                                    return route
+                                                            .settings.name ==
+                                                        AppRouter.step2ListBook;
+                                                  });
                                                 },
                                               ),
                                             );

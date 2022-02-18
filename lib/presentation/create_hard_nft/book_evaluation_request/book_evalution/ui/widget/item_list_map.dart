@@ -1,3 +1,4 @@
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/bloc/bloc_book_evalution.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
@@ -88,6 +89,9 @@ class _ItemListMap extends State<ItemListMap> {
                         assetId: widget.bloc.assetId ?? '',
                         idEvaluation: value.id ?? '',
                         type: TypeEvaluation.NEW_CREATE,
+                      ),
+                      settings: const RouteSettings(
+                        name: AppRouter.step2Create,
                       ),
                     ),
                   );

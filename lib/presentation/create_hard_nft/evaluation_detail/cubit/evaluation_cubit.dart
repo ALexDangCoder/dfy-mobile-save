@@ -3,9 +3,11 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
+import 'package:Dfy/domain/model/market_place/evaluation_fee.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -22,13 +24,37 @@ class EvaluationCubit extends BaseCubit<EvaluationState> {
 
   List<TokenInf> listTokenSupport = [];
 
+  EvaluationFee evaluationFee = EvaluationFee();
+
+  Future<void> getEvaluationFee() async {
+    final Result<List<EvaluationFee>> result =
+    await _createHardNFTRepository.getEvaluationFee();
+    result.when(
+      success: (res) {
+        if (res.isBlank ?? false) {
+        } else {
+          for (final value in res) {
+            if (value.id == EVALUATION_FEE) {
+              evaluationFee = value;
+              for (int i = 0; i < listTokenSupport.length; i++) {
+                if (value.symbol == listTokenSupport[i].symbol) {
+                  value.address = listTokenSupport[i].address;
+                }
+              }
+            }
+          }
+        }
+      },
+      error: (error) {},
+    );
+  }
+
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
   }
 
   Future<void> getEvaluation(String evaluationId) async {
-    getTokenInf();
     final Result<Evaluation> result =
         await _nftRepo.getEvaluation(evaluationId);
     result.when(

@@ -48,6 +48,17 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
     }
   }
 
+  bool checkLoginCore() {
+    final walletAddressCore = PrefsService.getCurrentWalletCore();
+    final walletConnectBE = PrefsService.getCurrentBEWallet();
+
+    if (walletAddressCore.isNotEmpty && walletConnectBE.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<void> getWallets() async {
     try {
       showLoading();
@@ -75,7 +86,6 @@ class MenuAccountCubit extends BaseCubit<MenuAccountState> {
   int getIndexLogin() {
     return haveWalletInCore ? 2 : 3;
   }
-
 
   void dispose() {
     addressWalletSubject.close();

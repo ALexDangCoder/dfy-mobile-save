@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -63,10 +64,13 @@ class _MenuAccountState extends State<MenuAccount> {
             showDialog(
               context: context,
               builder: (context) => ConnectWalletDialog(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 navigationTo: ListNft(
                   marketType: MarketType.NOT_ON_MARKET,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -78,7 +82,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 builder: (context) => ListNft(
                   marketType: MarketType.NOT_ON_MARKET,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -91,10 +95,13 @@ class _MenuAccountState extends State<MenuAccount> {
             showDialog(
               context: context,
               builder: (context) => ConnectWalletDialog(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 navigationTo: ListNft(
                   marketType: MarketType.SALE,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -103,10 +110,13 @@ class _MenuAccountState extends State<MenuAccount> {
             Navigator.push(
               context,
               MaterialPageRoute(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 builder: (context) => ListNft(
                   marketType: MarketType.SALE,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -122,7 +132,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListNft(
                   marketType: MarketType.AUCTION,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -131,10 +141,13 @@ class _MenuAccountState extends State<MenuAccount> {
             Navigator.push(
               context,
               MaterialPageRoute(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 builder: (context) => ListNft(
                   marketType: MarketType.AUCTION,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -147,10 +160,13 @@ class _MenuAccountState extends State<MenuAccount> {
             showDialog(
               context: context,
               builder: (context) => ConnectWalletDialog(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 navigationTo: ListNft(
                   marketType: MarketType.PAWN,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
                 isRequireLoginEmail: false,
               ),
@@ -159,10 +175,13 @@ class _MenuAccountState extends State<MenuAccount> {
             Navigator.push(
               context,
               MaterialPageRoute(
+                settings: const RouteSettings(
+                  name: AppRouter.listNft,
+                ),
                 builder: (context) => ListNft(
                   marketType: MarketType.PAWN,
                   pageRouter: PageRouter.MY_ACC,
-                  walletAddress: walletAddress,
+                  walletAddress: walletAddress.toLowerCase(),
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -179,34 +198,40 @@ class _MenuAccountState extends State<MenuAccount> {
           ).then((_) => cubit.getLoginState());
         }
         break;
-      case 'step4' : {
-          goTo(
-            context,
-            const ReceiveHardNFTScreen(),
-          );
-          break;
-      }
       case 'collection_list':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CollectionList(
-                typeScreen: PageRouter.MY_ACC,
-                addressWallet: walletAddress,
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: CollectionList(
+                  typeScreen: PageRouter.MY_ACC,
+                ),
+                isRequireLoginEmail: false,
               ),
-            ),
-          ).then((_) => cubit.getLoginState());
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionList(
+                  typeScreen: PageRouter.MY_ACC,
+                  addressWallet: walletAddress.toLowerCase(),
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'hard_nft_mint':
         {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const EvaluationResult()
-          //   ),
-          // );//todo
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EvaluationResult(
+                      assetID: '6209d62e4aec3d07dc5587d6',
+                    )),
+          );
         }
         break;
     }
@@ -274,7 +299,7 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_token_symbol,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'step4',
+          routeName: 'about_us',
           title: S.current.collateral,
         ),
         ItemMenuModel.createChild(
@@ -414,8 +439,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                         return Text(
                                           data,
                                           style: textNormalCustom(
-                                            AppTheme.getInstance()
-                                                .whiteColor(),
+                                            AppTheme.getInstance().whiteColor(),
                                             16,
                                             FontWeight.w400,
                                           ),
@@ -469,8 +493,7 @@ class _MenuAccountState extends State<MenuAccount> {
                               onChangeExpand: () {
                                 final indexOpen = openTab
                                     .indexWhere((element) => element == true);
-                                if (indexOpen >= 0)
-                                  openTab[indexOpen] = false;
+                                if (indexOpen >= 0) openTab[indexOpen] = false;
                                 if (indexOpen != index) {
                                   setState(() {
                                     openTab[index] = !openTab[index];
@@ -512,14 +535,14 @@ class _MenuAccountState extends State<MenuAccount> {
                                                 children: [
                                                   Expanded(
                                                     child: Container(
-                                                      constraints:const BoxConstraints (
-                                                        minHeight: 60
-                                                      ),
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                              minHeight: 60),
                                                       child: Container(
                                                         alignment: Alignment
                                                             .centerLeft,
-                                                        color: Colors
-                                                            .transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                         child: Text(
                                                           child.title,
                                                           style:
@@ -579,8 +602,8 @@ class _MenuAccountState extends State<MenuAccount> {
                                       ImageIcon(
                                         AssetImage(e.icon),
                                         size: 28,
-                                        color: AppTheme.getInstance()
-                                            .whiteColor(),
+                                        color:
+                                            AppTheme.getInstance().whiteColor(),
                                       ),
                                       const SizedBox(
                                         width: 16,
@@ -664,7 +687,15 @@ class _MenuAccountState extends State<MenuAccount> {
                         if (state is NoLoginState) {
                           return InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              if (cubit.checkLoginCore() ) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const ConnectWalletDialog(
+                                    isRequireLoginEmail: false,
+                                  ),
+                                ).then((_) => cubit.getLoginState());
+                              }else {
+                                Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MainScreen(
@@ -673,6 +704,7 @@ class _MenuAccountState extends State<MenuAccount> {
                                   ),
                                 ),
                               );
+                              }
                             },
                             child: SizedBox(
                               width: 100,
@@ -692,7 +724,6 @@ class _MenuAccountState extends State<MenuAccount> {
                           return InkWell(
                             onTap: () {
                               cubit.logout();
-
                             },
                             child: Image.asset(ImageAssets.ic_logout),
                           );

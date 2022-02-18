@@ -1,22 +1,24 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
+import 'package:Dfy/data/request/buy_out_request.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/place_bid/bloc/place_bid_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -46,8 +48,15 @@ class _PlaceBidState extends State<PlaceBid> {
   @override
   void initState() {
     cubit = PlaceBidCubit();
+    trustWalletChannel
+        .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getBalance();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cubit.dispose();
   }
 
   Future<void> getBalance() async {
@@ -55,13 +64,6 @@ class _PlaceBidState extends State<PlaceBid> {
       ofAddress: PrefsService.getCurrentBEWallet(),
       tokenAddress: widget.nftOnAuction.token ?? '',
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    String bidValue = widget.typeBid == TypeBid.PLACE_BID
-        ? ''
-        : (widget.nftOnAuction.buyOutPrice ?? 0).toString();
     if (widget.typeBid == TypeBid.BUY_OUT) {
       if (cubit.balanceValue < (widget.nftOnAuction.buyOutPrice ?? 0)) {
         cubit.warnSink.add(S.current.insufficient_balance);
@@ -75,33 +77,42 @@ class _PlaceBidState extends State<PlaceBid> {
         }
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String bidValue = widget.typeBid == TypeBid.PLACE_BID
+        ? ''
+        : (widget.nftOnAuction.buyOutPrice ?? 0).toString();
+
     Widget balanceWidget() {
       return StreamBuilder<double>(
-          stream: cubit.balanceStream,
-          builder: (context, snapshot) {
-            return Text(
-              '${S.current.your_balance} ${snapshot.data} '
-                  '${widget.nftOnAuction.tokenSymbol}',
-              style: textNormalCustom(
-                Colors.white.withOpacity(0.7),
-                14,
-                FontWeight.w400,
-              ),
-            );
-          });
+        stream: cubit.balanceStream,
+        builder: (context, snapshot) {
+          return Text(
+            '${S.current.your_balance} ${snapshot.data} '
+            '${widget.nftOnAuction.tokenSymbol}',
+            style: textNormalCustom(
+              Colors.white.withOpacity(0.7),
+              14,
+              FontWeight.w400,
+            ),
+          );
+        },
+      );
     }
 
     Widget _yourBid() => Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        S.current.your_bid,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w600,
-        ),
-      ),
-    );
+          alignment: Alignment.centerLeft,
+          child: Text(
+            S.current.your_bid,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w600,
+            ),
+          ),
+        );
 
     Widget _buildRow(String label, double price) {
       return Row(
@@ -137,10 +148,15 @@ class _PlaceBidState extends State<PlaceBid> {
                 cubit.warnSink.add('');
                 bidValue = value;
                 cubit.btnSink.add(true);
-                //nftDetailBloc.bidValue = double.parse(value);
               } else if (cubit.balanceValue > double.parse(value) &&
                   double.parse(value) < bid) {
                 cubit.warnSink.add(S.current.you_must_bid_greater);
+                cubit.btnSink.add(false);
+              } else if (cubit.balanceValue > double.parse(value) &&
+                  double.parse(value) > bid &&
+                  double.parse(value) !=
+                      bid + (widget.nftOnAuction.priceStep ?? 0)) {
+                cubit.warnSink.add(S.current.you_must_bid_equal);
                 cubit.btnSink.add(false);
               } else {
                 cubit.btnSink.add(false);
@@ -222,257 +238,276 @@ class _PlaceBidState extends State<PlaceBid> {
       }
     }
 
-    Widget _spaceButton(BuildContext context,  String marketId,) => StreamBuilder<bool>(
-      initialData: false,
-      stream: cubit.btnStream,
-      builder: (ctx, snapshot) {
-        final isEnable = snapshot.data!;
-        if (isEnable) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: ButtonGradient(
-              onPressed: () async {
-                if (widget.typeBid == TypeBid.PLACE_BID) {
-                  await cubit
-                      .getBidData(
-                    contractAddress: nft_auction_dev2,
-                    auctionId: widget.nftOnAuction.auctionId.toString(),
-                    bidValue: bidValue,
-                    context: context,
-                  )
-                      .then(
-                        (value) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Approve(
-                          title: S.current.place_a_bid,
-                          needApprove: true,
-                          payValue: bidValue,
-                          header: Column(
-                            children: [
-                              buildRowCustom(
-                                title: S.current.from,
-                                child: Text(
-                                  PrefsService.getCurrentBEWallet()
-                                      .formatAddressWalletConfirm(),
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance()
-                                        .textThemeColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              buildRowCustom(
-                                title: S.current.to,
-                                child: Text(
-                                  (widget.nftOnAuction.owner ?? '')
-                                      .formatAddressWalletConfirm(),
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance()
-                                        .textThemeColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              buildRowCustom(
-                                title: S.current.amount,
-                                child: Text(
-                                  bidValue,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().fillColor(),
-                                    20,
-                                    FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          onSuccessSign: (context, data){
-                            Navigator.pop(context);
-                            cubit.bidNftRequest(
-                              BidNftRequest(
-                                widget.marketId,
-                                double.parse(bidValue),
-                                data,
-                              ),
-                            );
-                            Navigator.push(
+    Widget _spaceButton(
+      BuildContext context,
+      String marketId,
+    ) =>
+        StreamBuilder<bool>(
+          initialData: false,
+          stream: cubit.btnStream,
+          builder: (ctx, snapshot) {
+            final isEnable = snapshot.data!;
+            if (isEnable) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: ButtonGradient(
+                  onPressed: () async {
+                    if (widget.typeBid == TypeBid.PLACE_BID) {
+                      await cubit
+                          .getBidData(
+                            contractAddress: nft_auction_dev2,
+                            auctionId: widget.nftOnAuction.auctionId.toString(),
+                            bidValue: bidValue,
+                            context: context,
+                          )
+                          .then(
+                            (value) => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BaseSuccess(
-                                  title: S.current.bidding,
-                                  content: S.current.congratulation,
-                                  callback: () {
+                                builder: (context) => Approve(
+                                  title: S.current.place_a_bid,
+                                  needApprove: true,
+                                  payValue: bidValue,
+                                  tokenAddress: widget.nftOnAuction.token,
+                                  header: Column(
+                                    children: [
+                                      buildRowCustom(
+                                        title: S.current.from,
+                                        child: Text(
+                                          PrefsService.getCurrentBEWallet()
+                                              .formatAddressWalletConfirm(),
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance()
+                                                .textThemeColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      buildRowCustom(
+                                        title: S.current.to,
+                                        child: Text(
+                                          (widget.nftOnAuction.owner ?? '')
+                                              .formatAddressWalletConfirm(),
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance()
+                                                .textThemeColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      buildRowCustom(
+                                        title: S.current.amount,
+                                        child: Text(
+                                          '$bidValue ${widget.nftOnAuction.tokenSymbol ?? ''}',
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance().fillColor(),
+                                            20,
+                                            FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  onSuccessSign: (context, data) {
                                     Navigator.pop(context);
+                                    cubit.bidRequest(
+                                      BidNftRequest(
+                                        widget.marketId,
+                                        double.parse(bidValue),
+                                        data,
+                                      ),
+                                    );
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BaseSuccess(
+                                          title: S.current.bidding,
+                                          content: S.current.congratulation,
+                                          callback: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    );
                                   },
+                                  onErrorSign: (context) async {
+                                    Navigator.pop(context);
+                                    await showLoadFail(context)
+                                        .then((_) => Navigator.pop(context))
+                                        .then(
+                                          (value) => Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => BaseFail(
+                                                title: S.current.place_a_bid,
+                                                onTapBtn: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                  },
+                                  textActiveButton: S.current.place_a_bid,
+                                  hexString: value,
+                                  spender: nft_auction_dev2,
                                 ),
                               ),
-                            );
-                          },
-                          onErrorSign: (context) async {
-                            Navigator.pop(context);
-                            await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                                  (value) => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BaseFail(
-                                    title: S.current.place_a_bid,
-                                    onTapBtn: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          textActiveButton: S.current.approve,
-                          hexString: value,
-                          spender: nft_auction_dev2,
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  await cubit
-                      .getBuyOutData(
-                    contractAddress: nft_auction_dev2,
-                    auctionId: widget.nftOnAuction.auctionId.toString(),
-                    context: context,
-                  )
-                      .then(
-                        (value) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Approve(
-                          title: S.current.place_a_bid,
-                          needApprove: true,
-                          payValue: bidValue,
-                          header: Column(
-                            children: [
-                              buildRowCustom(
-                                title: S.current.from,
-                                child: Text(
-                                  PrefsService.getCurrentBEWallet()
-                                      .formatAddressWalletConfirm(),
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance()
-                                        .textThemeColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              buildRowCustom(
-                                title: S.current.to,
-                                child: Text(
-                                  (widget.nftOnAuction.owner ?? '')
-                                      .formatAddressWalletConfirm(),
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance()
-                                        .textThemeColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              buildRowCustom(
-                                title: S.current.amount,
-                                child: Text(
-                                  bidValue,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().fillColor(),
-                                    20,
-                                    FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          onSuccessSign: (context, data){
-                            Navigator.pop(context);
-                            cubit.bidNftRequest(
-                              BidNftRequest(
-                                widget.marketId,
-                                double.parse(bidValue),
-                                data,
-                              ),
-                            );
-                            Navigator.push(
+                            ),
+                          );
+                    } else {
+                      await cubit
+                          .getBuyOutData(
+                            contractAddress: nft_auction_dev2,
+                            auctionId: widget.nftOnAuction.auctionId.toString(),
+                            context: context,
+                          )
+                          .then(
+                            (value) => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BaseSuccess(
-                                  title: S.current.bidding,
-                                  content: S.current.congratulation,
-                                  callback: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                          onErrorSign: (context) async {
-                            Navigator.pop(context);
-                            await showLoadFail(context).then((_) => Navigator.pop(context)).then(
-                                  (value) => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BaseFail(
-                                    title: S.current.place_a_bid,
-                                    onTapBtn: () {
-                                      Navigator.pop(context);
-                                    },
+                                builder: (context) => Approve(
+                                  title: S.current.place_a_bid,
+                                  needApprove: true,
+                                  payValue: bidValue,
+                                  tokenAddress: widget.nftOnAuction.token,
+                                  header: Column(
+                                    children: [
+                                      buildRowCustom(
+                                        title: S.current.from,
+                                        child: Text(
+                                          PrefsService.getCurrentBEWallet()
+                                              .formatAddressWalletConfirm(),
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance()
+                                                .textThemeColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      buildRowCustom(
+                                        title: S.current.to,
+                                        child: Text(
+                                          (widget.nftOnAuction.owner ?? '')
+                                              .formatAddressWalletConfirm(),
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance()
+                                                .textThemeColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      buildRowCustom(
+                                        title: S.current.amount,
+                                        child: Text(
+                                          '$bidValue ${widget.nftOnAuction.tokenSymbol ?? ''}',
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance().fillColor(),
+                                            20,
+                                            FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  onSuccessSign: (context, data) {
+                                    Navigator.pop(context);
+                                    cubit.buyRequest(
+                                      BuyOutRequest(
+                                        widget.marketId,
+                                        data,
+                                      ),
+                                    );
+                                    cubit.importNft(
+                                      contract: widget
+                                              .nftOnAuction.collectionAddress ??
+                                          '',
+                                      id: int.parse(
+                                          widget.nftOnAuction.nftTokenId ?? ''),
+                                      address:
+                                          PrefsService.getCurrentBEWallet(),
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BaseSuccess(
+                                          title: S.current.bidding,
+                                          content: S.current.congratulation,
+                                          callback: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onErrorSign: (context) async {
+                                    Navigator.pop(context);
+                                    await showLoadFail(context)
+                                        .then((_) => Navigator.pop(context))
+                                        .then(
+                                          (value) => Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => BaseFail(
+                                                title: S.current.place_a_bid,
+                                                onTapBtn: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                  },
+                                  textActiveButton: S.current.buy_out,
+                                  hexString: value,
+                                  spender: nft_auction_dev2,
                                 ),
                               ),
-                            );
-                          },
-                          textActiveButton: S.current.approve,
-                          hexString: value,
-                          spender: nft_auction_dev2,
-                        ),
-                      ),
+                            ),
+                          );
+                    }
+                  },
+                  gradient: RadialGradient(
+                    center: const Alignment(0.5, -0.5),
+                    radius: 4,
+                    colors: AppTheme.getInstance().gradientButtonColor(),
+                  ),
+                  child: Text(
+                    widget.typeBid == TypeBid.PLACE_BID
+                        ? S.current.place_a_bid
+                        : S.current.buy_out,
+                    style: textNormal(
+                      AppTheme.getInstance().textThemeColor(),
+                      20,
                     ),
-                  );
-                }
-              },
-              gradient: RadialGradient(
-                center: const Alignment(0.5, -0.5),
-                radius: 4,
-                colors: AppTheme.getInstance().gradientButtonColor(),
-              ),
-              child: Text(
-                widget.typeBid == TypeBid.PLACE_BID
-                    ? S.current.place_a_bid
-                    : S.current.buy_out,
-                style: textNormal(
-                  AppTheme.getInstance().textThemeColor(),
-                  20,
-                ),
-              ),
-            ),
-          );
-        } else {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: ErrorButton(
-              child: Center(
-                child: Text(
-                  widget.typeBid == TypeBid.PLACE_BID
-                      ? S.current.place_a_bid
-                      : S.current.buy_out,
-                  style: textNormal(
-                    AppTheme.getInstance().textThemeColor(),
-                    20,
                   ),
                 ),
-              ),
-            ),
-          );
-        }
-      },
-    );
+              );
+            } else {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: ErrorButton(
+                  child: Center(
+                    child: Text(
+                      widget.typeBid == TypeBid.PLACE_BID
+                          ? S.current.place_a_bid
+                          : S.current.buy_out,
+                      style: textNormal(
+                        AppTheme.getInstance().textThemeColor(),
+                        20,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        );
 
     Widget warningAmount() {
       return StreamBuilder<String>(
@@ -512,7 +547,8 @@ class _PlaceBidState extends State<PlaceBid> {
         isImage: true,
         text: ImageAssets.ic_close,
         onRightClick: () {
-          Navigator.pop(context);
+          Navigator.popUntil(
+              context, (route) => route.settings.name == AppRouter.listNft);
         },
         child: Container(
           padding: EdgeInsets.only(

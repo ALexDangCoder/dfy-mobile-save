@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluators_city_model.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
@@ -7,12 +8,10 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_ev
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/screen_controller.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,13 +48,6 @@ class _BookEvaluationState extends State<BookEvaluation> {
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
-      isCustomLeftClick: true,
-      onLeftClick: () {
-        goTo(
-          context,
-          ListBookEvaluation(assetId: bloc.assetId ?? ''),
-        );
-      },
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
@@ -152,6 +144,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                         type: TypeEvaluation.CREATE,
                                         assetId: bloc.assetId ?? '',
                                       ),
+                                      settings: const RouteSettings(
+                                        name: AppRouter.step2Create,
+                                      ),
                                     ),
                                   );
                                 } else {
@@ -165,6 +160,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                         assetId: bloc.assetId ?? '',
                                         idEvaluation: list[index].id ?? '',
                                         type: TypeEvaluation.NEW_CREATE,
+                                      ),
+                                      settings: const RouteSettings(
+                                        name: AppRouter.step2Create,
                                       ),
                                     ),
                                   );

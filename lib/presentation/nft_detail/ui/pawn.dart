@@ -52,10 +52,10 @@ Container _priceContainerOnPawn({required NftOnPawn nftOnPawn}) {
             ),
             Expanded(
               child: Text(
-                formatUSD.format(
+                '~ ${formatUSD.format(
                   (nftOnPawn.expectedLoanAmount ?? 0) *
                       (nftOnPawn.usdExchange ?? 0),
-                ),
+                )}',
                 style: textNormalCustom(
                   AppTheme.getInstance().textThemeColor().withOpacity(0.7),
                   14,
@@ -234,7 +234,7 @@ Widget _buildButtonCancelOnPawn(
       radius: 4,
       colors: AppTheme.getInstance().gradientButtonColor(),
     ),
-    child: nftMarket.status == 7
+    child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
             S.current.cancel_pawn,

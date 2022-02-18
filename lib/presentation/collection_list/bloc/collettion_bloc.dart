@@ -32,14 +32,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
   BehaviorSubject<List<CollectionMarketModel>> list =
       BehaviorSubject.seeded([]);
-  BehaviorSubject<bool> isHighestTradingVolume = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isLowestTradingVolume = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isNewest = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOldest = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOwnerFromHighToLow = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isOwnerFromLowToHigh = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isItemFromHighToLow = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> isItemFromLowToHigh = BehaviorSubject.seeded(false);
 
   BehaviorSubject<bool> isHardCollection = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftCollection = BehaviorSubject.seeded(false);
@@ -53,6 +45,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       BehaviorSubject.seeded([]);
   int nextPage = 1;
   bool checkWalletAddress = false;
+  List<CollectionMarketModel> resList =[];
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -107,18 +100,27 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         } else {
           if (res.length < 2) {
             for (final element in res) {
-              listAcc.add(element.walletAddress ?? '');
+              if (element.walletAddress?.isNotEmpty ?? false) {
+                listAcc.add(element.walletAddress ?? '');
+              }
             }
             checkWalletAddress = false;
           } else {
             for (final element in res) {
-              listAcc.add(element.walletAddress ?? '');
+              if (element.walletAddress?.isNotEmpty ?? false) {
+                listAcc.add(element.walletAddress ?? '');
+              }
             }
             checkWalletAddress = true;
           }
         }
+
       },
-      error: (error) {},
+      error: (error) {
+        if(error.code==CODE_ERROR_AUTH){
+          getListWallet();
+        }
+      },
     );
   }
 
@@ -161,7 +163,18 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     }
     addressWallet = textAddressFilter.value;
     if (addressWallet == S.current.all) {
-      addressWallet = null;
+      addressWallet = '';
+      for (final String value in listAcc) {
+        if (value != S.current.all) {
+          if (value.isNotEmpty) {
+            if (addressWallet?.isNotEmpty ?? false) {
+              addressWallet = '$addressWallet,$value';
+            } else {
+              addressWallet = value;
+            }
+          }
+        }
+      }
     } else {
       addressWallet = textAddressFilter.value;
     }
@@ -263,12 +276,16 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
+          resList.clear();
+          resList=res;
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-            } else {
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add([...currentList, ...listCollection]);
         } else {
@@ -324,13 +341,17 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         if (res.isEmpty) {
           emit(LoadingDataErorr());
         } else {
+          resList.clear();
+          resList=res;
           emit(LoadingDataSuccess());
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
-            if (value.addressCollection?.isEmpty ?? false) {
-            } else {
+            if (value.addressCollection?.isNotEmpty ?? false) {
               listCollection.add(value);
             }
+          }
+          if (res.length != 20) {
+            isCanLoadMore.add(false);
           }
           list.sink.add(listCollection);
         }
@@ -344,6 +365,10 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   void dispone() {
     isHardCollection.close();
     isSoftCollection.close();
+    isChooseAcc.close();
+    isCanLoadMore.close();
+    listCategoryStream.close();
     list.close();
+    listCheckBoxFilterStream.close();
   }
 }

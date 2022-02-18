@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
+import 'package:Dfy/data/response/collection/collection_list_res.dart';
 import 'package:Dfy/data/response/collection/collection_res.dart';
 import 'package:Dfy/data/response/collection/list_collection_res_market.dart';
 import 'package:Dfy/data/response/collection_detail/collection_detail_filter_response.dart';
@@ -45,6 +46,16 @@ abstract class CollectionDetailService {
     @Field('owner') bool? owner,
   );
 
+  @POST(ApiConstants.GET_LIST_NFT_COLLECTION_MY_ACC)
+  Future<ListNftCollectionResponse> getListNftCollectionMyAcc(
+      @Field('collection_address') String? collectionAddress,
+      @Field('page') int? page,
+      @Field('size') int? size,
+      @Field('name') String? nameNft,
+      @Field('market_type') List<int>? listMarketType,
+      @Field('owner') bool? owner,
+      );
+
   @GET(ApiConstants.GET_LIST_COLLECTION)
   Future<ListCollectionResponse> getListCollection(
     @Query('wallet_address') String? addressWallet,
@@ -61,6 +72,11 @@ abstract class CollectionDetailService {
     @Query('name') String? name,
     @Query('sort') int? sort,
     @Query('page') int? page,
+    @Query('size') int? size,
+  );
+
+  @GET(ApiConstants.GET_ALL_COLLECTION)
+  Future<CollectionListRes> getAllCollection(
     @Query('size') int? size,
   );
 }

@@ -2,15 +2,17 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BaseActivity extends StatelessWidget {
+class BaseActivity extends StatefulWidget {
   final String urlAvatar;
   final String title;
-  final String date;
+  final int date;
   final Widget childText;
   final String statusIconActivity;
   final int index;
@@ -28,6 +30,13 @@ class BaseActivity extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BaseActivity> createState() => _BaseActivityState();
+}
+
+class _BaseActivityState extends State<BaseActivity> {
+
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,14 +44,15 @@ class BaseActivity extends StatelessWidget {
         spaceW12,
         GestureDetector(
           onTap: () {
-            final list = bloc.listActivity.value;
+            final list = widget.bloc.listActivity.value;
             late final MarketType type;
-            if (list[index].marketStatus ==
+            if (list[widget.index].marketStatus ==
                 DetailCollectionBloc.NOT_ON_MARKET) {
               type = MarketType.NOT_ON_MARKET;
-            } else if (list[index].marketStatus == DetailCollectionBloc.SALE) {
+            } else if (list[widget.index].marketStatus ==
+                DetailCollectionBloc.SALE) {
               type = MarketType.SALE;
-            } else if (list[index].marketStatus ==
+            } else if (list[widget.index].marketStatus ==
                 DetailCollectionBloc.AUCTION) {
               type = MarketType.AUCTION;
             } else {
@@ -53,11 +63,11 @@ class BaseActivity extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) {
                   return NFTDetailScreen(
-                    nftId: list[index].nftId ?? '',
-                    pawnId: int.parse(list[index].pawnId ?? '0'),
+                    nftId: list[widget.index].nftId ?? '',
+                    pawnId: int.parse(list[widget.index].pawnId ?? '0'),
                     key: nftKey,
                     typeMarket: type,
-                    marketId: list[index].marketId ?? '',
+                    marketId: list[widget.index].marketId ?? '',
                   );
                 },
               ),
@@ -74,21 +84,27 @@ class BaseActivity extends StatelessWidget {
                   ),
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: Image.network(
-                  urlAvatar,
+                child:Image.network(
+                  '${ApiConstants.BASE_URL_IMAGE}${widget.urlAvatar}',
                   width: 66.w,
                   height: 66.w,
                   fit: BoxFit.fill,
                   errorBuilder: (context, url, error) => Container(
                     color: Colors.yellow,
-                    child: Text(
-                      title.isEmpty ? title : title.substring(0, 1),
-                      style: textNormalCustom(
-                        Colors.black,
-                        60,
-                        FontWeight.bold,
+                    child: SizedBox(
+                      width: 66.w,
+                      height: 66.w,
+                      child: Text(
+                        widget.title.isEmpty
+                            ? widget.title
+                            : widget.title.substring(0, 1),
+                        style: textNormalCustom(
+                          Colors.black,
+                          60,
+                          FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -108,7 +124,7 @@ class BaseActivity extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage(
-                        statusIconActivity,
+                        widget.statusIconActivity,
                       ),
                     ),
                   ),
@@ -123,18 +139,17 @@ class BaseActivity extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //title
               GestureDetector(
                 onTap: () {
-                  final list = bloc.listActivity.value;
+                  final list = widget.bloc.listActivity.value;
                   late final MarketType type;
-                  if (list[index].marketStatus ==
+                  if (list[widget.index].marketStatus ==
                       DetailCollectionBloc.NOT_ON_MARKET) {
                     type = MarketType.NOT_ON_MARKET;
-                  } else if (list[index].marketStatus ==
+                  } else if (list[widget.index].marketStatus ==
                       DetailCollectionBloc.SALE) {
                     type = MarketType.SALE;
-                  } else if (list[index].marketStatus ==
+                  } else if (list[widget.index].marketStatus ==
                       DetailCollectionBloc.AUCTION) {
                     type = MarketType.AUCTION;
                   } else {
@@ -145,18 +160,21 @@ class BaseActivity extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) {
                         return NFTDetailScreen(
-                          nftId: list[index].nftId ?? '',
-                          pawnId: int.parse(list[index].pawnId ?? '0'),
+                          typeNft: list[widget.index].nftType == SOFT_COLLECTION
+                              ? TypeNFT.SOFT_NFT
+                              : TypeNFT.HARD_NFT,
+                          nftId: list[widget.index].nftId ?? '',
+                          pawnId: int.parse(list[widget.index].pawnId ?? '0'),
                           key: nftKey,
                           typeMarket: type,
-                          marketId: list[index].marketId ?? '',
+                          marketId: list[widget.index].marketId ?? '',
                         );
                       },
                     ),
                   );
                 },
                 child: Text(
-                  title,
+                  widget.title,
                   style: textNormalCustom(
                     null,
                     14,
@@ -165,12 +183,12 @@ class BaseActivity extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              //content
-              childText,
-              //date
+              widget.childText,
               spaceH6,
               Text(
-                date,
+                0.formatDateTimeMy(
+                  widget.date,
+                ),
                 style: textNormalCustom(
                   AppTheme.getInstance().activityDateColor(),
                   14,

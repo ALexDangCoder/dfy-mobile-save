@@ -51,7 +51,7 @@ class BaseDesignScreen extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: 375.w,
-            margin: EdgeInsets.only(top: 46.h),
+            margin: EdgeInsets.only(top: 26.h),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: const BorderRadius.only(
@@ -77,11 +77,9 @@ class BaseDesignScreen extends StatelessWidget {
                                   : () {
                                       Navigator.pop(context);
                                     },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: 11.w,
-                                  right: 11.w,
-                                ),
+                              child: SizedBox(
+                                height: 30.h,
+                                width: 30.w,
                                 child: Image.asset(ImageAssets.ic_back),
                               ),
                             ),

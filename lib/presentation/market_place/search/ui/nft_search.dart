@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
@@ -200,6 +201,7 @@ class _SearchNFTState extends State<SearchNFT> {
                         16.sp,
                       ),
                       decoration: InputDecoration(
+                        contentPadding:  const EdgeInsets.only(bottom: 8.0),
                         hintText: S.current.search,
                         hintStyle: textNormal(
                           Colors.white54,
@@ -267,7 +269,7 @@ class _SearchNFTState extends State<SearchNFT> {
             Padding(
               padding: EdgeInsets.only(left: 17.w),
               child: Text(
-                S.current.collection,
+                S.current.collections,
                 style: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
                   20.sp,
@@ -431,6 +433,9 @@ class _SearchNFTState extends State<SearchNFT> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: AppRouter.listNft,
+                              ),
                               builder: (ctx) => ListNft(
                                 queryAllResult: controller.text,
                                 pageRouter: PageRouter.MARKET,

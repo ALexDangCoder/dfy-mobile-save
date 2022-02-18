@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
@@ -62,6 +63,9 @@ class ListFeaturedSoftNft extends StatelessWidget {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
+                            settings: const RouteSettings(
+                              name: AppRouter.listNft,
+                            ),
                             builder: (context) => ListNft(
                               marketType: marketTypeEnum,
                               pageRouter: PageRouter.MARKET,

@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/activity_collection/activity_collection.dart';
+import 'package:Dfy/data/response/collection/collection_list_res.dart';
 import 'package:Dfy/data/response/collection/collection_res.dart';
 import 'package:Dfy/data/response/collection/list_collection_res_market.dart';
 import 'package:Dfy/data/response/collection_detail/collection_detail_filter_response.dart';
@@ -80,6 +81,28 @@ class CollectionDetailImpl implements CollectionDetailRepository {
   }
 
   @override
+  Future<Result<List<NftMarket>>> getListNftCollectionMyAcc({
+    String? collectionAddress,
+    int? page,
+    int? size,
+    String? nameNft,
+    List<int>? listMarketType,
+    bool? owner,
+  }) {
+    return runCatchingAsync<ListNftCollectionResponse, List<NftMarket>>(
+          () => _client.getListNftCollectionMyAcc(
+        collectionAddress,
+        page,
+        size,
+        nameNft,
+        listMarketType,
+        owner,
+      ),
+          (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
   Future<Result<List<CollectionMarketModel>>> getListCollection({
     String? addressWallet,
     String? name,
@@ -119,6 +142,16 @@ class CollectionDetailImpl implements CollectionDetailRepository {
         page,
         size,
       ),
+      (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<CollectionMarketModel>>> getAllCollection({
+    int size = 999,
+  }) {
+    return runCatchingAsync<CollectionListRes, List<CollectionMarketModel>>(
+      () => _client.getAllCollection(size),
       (response) => response.rows?.map((e) => e.toDomain()).toList() ?? [],
     );
   }

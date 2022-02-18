@@ -31,6 +31,15 @@ mixin CollectionDetailRepository {
     bool? owner,
   });
 
+  Future<Result<List<NftMarket>>> getListNftCollectionMyAcc({
+    String? collectionAddress,
+    int? page,
+    int? size,
+    String? nameNft,
+    List<int>? listMarketType,
+    bool? owner,
+  });
+
   Future<Result<List<CollectionMarketModel>>> getListCollection({
     String? addressWallet,
     String? name,
@@ -47,4 +56,6 @@ mixin CollectionDetailRepository {
     int? page,
     int? size,
   });
+
+  Future<Result<List<CollectionMarketModel>>> getAllCollection({int size = 999});
 }

@@ -3,18 +3,19 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/cubit/evaluation_cubit.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/common/hero_photo.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
+import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 
 class EvaluationDetail extends StatefulWidget {
   const EvaluationDetail({
@@ -41,6 +42,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
     scrollController = ItemScrollController();
     bloc.getListImage(widget.evaluation);
     bloc.changeImage('');
+    ;
     super.initState();
   }
 
@@ -100,12 +102,12 @@ class _EvaluationDetailState extends State<EvaluationDetail>
         spaceH32,
         title(S.current.hard_nft_picture_video),
         spaceH20,
-        StreamBuilder<String>(
+        StreamBuilder<Media>(
           stream: bloc.imageStream,
-          initialData: widget.evaluation.media?.first.urlImage,
+          initialData: widget.evaluation.media?.first,
           builder: (context, snapShot) {
             if (snapShot.hasData) {
-              final String img = snapShot.data ?? '';
+              final Media? media = snapShot.data;
               return Column(
                 children: [
                   Stack(
@@ -118,23 +120,30 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                             Radius.circular(30.r),
                           ),
                           child: PhotoHero(
-                            photo: img,
+                            photo: media?.urlImage ?? '',
                             width: double.infinity,
+                            typeImage: media?.type ?? TypeImage.IMAGE,
                             onTap: () {
                               Navigator.of(context).push(
                                   MaterialPageRoute<void>(
                                       builder: (BuildContext context) {
                                 return Scaffold(
                                   body: SizedBox(
-                                    child: PhotoView(
-                                      imageProvider: NetworkImage(img),
-                                      minScale:
-                                          PhotoViewComputedScale.contained *
-                                              0.8,
-                                      maxScale:
-                                          PhotoViewComputedScale.covered * 2,
-                                      enableRotation: true,
-                                    ),
+                                    child: media?.type == TypeImage.IMAGE
+                                        ? PhotoView(
+                                            imageProvider: NetworkImage(
+                                                media?.urlImage ?? ''),
+                                            minScale: PhotoViewComputedScale
+                                                    .contained *
+                                                0.8,
+                                            maxScale:
+                                                PhotoViewComputedScale.covered *
+                                                    2,
+                                            enableRotation: true,
+                                          )
+                                        : VideoPlayerView(
+                                            urlVideo: media?.urlImage ?? '',
+                                          ),
                                   ),
                                 );
                               }));
@@ -212,7 +221,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                           children: [
                             smallImage(
                               img: bloc.listImg[index],
-                              isCurrentImg: bloc.listImg[index] == img,
+                              isCurrentImg: bloc.listImg[index] == media,
                               index: index,
                             ),
                             spaceW12,
@@ -425,7 +434,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             spaceW8,
             Text(
               '${widget.evaluation.depreciationPercent ?? ''}% '
-              '${S.current.depreciation}',
+              '${S.current.depreciationD}',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 16,
@@ -496,10 +505,10 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   }
 
   Widget smallImage(
-      {required String img, required bool isCurrentImg, required int index}) {
+      {required Media img, required bool isCurrentImg, required int index}) {
     return InkWell(
       onTap: () {
-        bloc.changeImage(img);
+        bloc.changeImage(img.urlImage!);
         scrollController.scrollTo(
           index: index > 2 ? index - 1 : 0,
           duration: const Duration(milliseconds: 300),
@@ -509,15 +518,38 @@ class _EvaluationDetailState extends State<EvaluationDetail>
         width: 105.w,
         height: 83.h,
         decoration: BoxDecoration(
+          color: Colors.black,
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          child: Image.network(
-            img,
-            fit: BoxFit.cover,
-          ),
-        ),
+        child: img.type == TypeImage.IMAGE
+            ? ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                child: Image.network(
+                  img.urlImage!,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : Container(
+                color: Colors.black,
+                child: Stack(
+                  children: [
+                    VideoPlayer(
+                      VideoPlayerController.network(img.urlImage!)
+                        ..initialize().then((_) {
+                          setState(() {
+                          });
+                        }),
+                    ),
+                    Center(
+                      child: Icon(
+                        Icons.play_circle_outline_sharp,
+                        size: 34.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

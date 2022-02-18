@@ -24,11 +24,13 @@ class WalletDialogWhenLoggedCore extends StatefulWidget {
     required this.wallet,
     required this.isRequireLoginEmail,
     this.navigationTo,
+    this.settings,
   }) : super(key: key);
   final ConnectWalletDialogCubit cubit;
   final Wallet wallet;
   final Widget? navigationTo;
   final bool isRequireLoginEmail;
+  final RouteSettings? settings;
 
   @override
   State<WalletDialogWhenLoggedCore> createState() =>
@@ -69,7 +71,10 @@ class _WalletDialogWhenLoggedCoreState
             if (widget.navigationTo != null) {
               unawaited(
                 nav.pushReplacement(
-                  MaterialPageRoute(builder: (context) => widget.navigationTo!),
+                  MaterialPageRoute(
+                    settings: widget.settings,
+                    builder: (context) => widget.navigationTo!,
+                  ),
                 ),
               );
               return;
@@ -89,6 +94,7 @@ class _WalletDialogWhenLoggedCoreState
                   showDialog(
                     context: context,
                     builder: (context) => ConnectEmailDialog(
+                      settings: widget.settings,
                       navigationTo: widget.navigationTo,
                     ),
                   ),
@@ -99,6 +105,7 @@ class _WalletDialogWhenLoggedCoreState
                 unawaited(
                   nav.pushReplacement(
                     MaterialPageRoute(
+                      settings: widget.settings,
                       builder: (context) => widget.navigationTo!,
                     ),
                   ),
@@ -283,7 +290,7 @@ class _WalletDialogWhenLoggedCoreState
                     S.current.loading_text,
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
-                      14,
+                      16,
                       FontWeight.w400,
                     ),
                   );

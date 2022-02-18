@@ -13,7 +13,7 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/upload_widget_create_nft.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/validator_property_row.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

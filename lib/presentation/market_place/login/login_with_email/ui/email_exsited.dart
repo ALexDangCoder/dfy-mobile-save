@@ -6,7 +6,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/button/button_luxury_big_size.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmailExisted extends StatefulWidget {

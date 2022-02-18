@@ -15,7 +15,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/dialog/pls_connect_wallet.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';

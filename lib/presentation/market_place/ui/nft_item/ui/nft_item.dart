@@ -31,7 +31,6 @@ class NFTItemWidget extends StatefulWidget {
 
 class _NFTItemState extends State<NFTItemWidget> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
-  late VideoPlayerController? _controller;
   late CountdownTimerController countdownController;
   late CountdownTimerController coutdownStartTime;
   DateTime? startTimeAuction;
@@ -45,27 +44,19 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   void initState() {
     super.initState();
-      _controller = VideoPlayerController.network(widget.nftMarket.image ?? '');
-      _controller!.addListener(() {
-        setState(() {});
-      });
-      _controller!.setLooping(true);
-      _controller!.initialize().then((_) => setState(() {}));
 
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: widget.nftMarket.startTime ?? 0,
+        value: widget.nftMarket.startTime ?? 0,
         // value: 1642637464000,
-        value: 1642471860000,
+        // value: 1642471860000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
-        // value: (widget.nftMarket.endTime == 0) ? 0 : 0,
+        value: widget.nftMarket.endTime ?? 0,
         // value: 1642637464000,
-        value: 1642558260000,
+        // value: 1642558260000,
       );
-      //todo đang hardcode startTime
-      // timeStartStamp = 1642637464000;
       countdownController = CountdownTimerController(
         endTime: endTimeAuction!.millisecondsSinceEpoch,
       );
@@ -87,9 +78,6 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   void dispose() {
-    if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-      _controller!.dispose();
-    }
     if (timer != null) {
       timer?.cancel();
     }
@@ -100,9 +88,6 @@ class _NFTItemState extends State<NFTItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-          _controller!.pause();
-        }
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -140,25 +125,19 @@ class _NFTItemState extends State<NFTItemWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (widget.nftMarket.typeImage == TypeImage.VIDEO) {
-                        _controller!.value.isPlaying
-                            ? _controller!.pause()
-                            : _controller!.play();
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NFTDetailScreen(
-                              typeMarket: widget.nftMarket.marketType ??
-                                  MarketType.SALE,
-                              marketId: widget.nftMarket.marketId,
-                              typeNft: widget.nftMarket.typeNFT,
-                              nftId: widget.nftMarket.nftId,
-                              pawnId: widget.nftMarket.pawnId,
-                            ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NFTDetailScreen(
+                            typeMarket:
+                                widget.nftMarket.marketType ?? MarketType.SALE,
+                            marketId: widget.nftMarket.marketId,
+                            typeNft: widget.nftMarket.typeNFT,
+                            nftId: widget.nftMarket.nftId,
+                            pawnId: widget.nftMarket.pawnId,
                           ),
-                        );
-                      }
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
@@ -169,11 +148,20 @@ class _NFTItemState extends State<NFTItemWidget> {
                             borderRadius: BorderRadius.circular(10.r),
                             child:
                                 (widget.nftMarket.typeImage != TypeImage.VIDEO)
-                                    ? Image.network(
-                                        widget.nftMarket.image ?? '',
+                                    ? FadeInImage.assetNetwork(
+                                        placeholder: ImageAssets.image_loading,
+                                        image: widget.nftMarket.image ?? '',
+                                        imageCacheHeight: 200,
+                                        placeholderCacheHeight: 50,
                                         fit: BoxFit.cover,
                                       )
-                                    : VideoPlayer(_controller!),
+                                    : FadeInImage.assetNetwork(
+                                        placeholder: ImageAssets.image_loading,
+                                        image: widget.nftMarket.cover ?? '',
+                                        imageCacheHeight: 200,
+                                        placeholderCacheHeight: 50,
+                                        fit: BoxFit.cover,
+                                      ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),
@@ -231,7 +219,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                 child: Text(
                                   formatValue.format(widget.nftMarket.price),
                                   style: textNormalCustom(
-                                    Colors.yellow,
+                                    AppTheme.getInstance().yellowColor(),
                                     13,
                                     FontWeight.w600,
                                   ),
@@ -246,7 +234,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                           '${S.current.of_all} '
                           '${widget.nftMarket.totalCopies}',
                           style: textNormalCustom(
-                            Colors.white,
+                            AppTheme.getInstance().whiteColor(),
                             13,
                             FontWeight.w600,
                           ),
@@ -302,7 +290,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                 const AssetImage(
                   ImageAssets.ic_clock2,
                 ),
-                color: Colors.white,
+                color: AppTheme.getInstance().whiteColor(),
                 size: 13.sp,
               ),
               SizedBox(
@@ -396,8 +384,7 @@ class _NFTItemState extends State<NFTItemWidget> {
     );
   }
 
-  Widget
-  playVideo(TypeImage? type) {
+  Widget playVideo(TypeImage? type) {
     if (type == TypeImage.VIDEO) {
       return Align(
         alignment: Alignment.bottomRight,
@@ -407,9 +394,7 @@ class _NFTItemState extends State<NFTItemWidget> {
             right: 6.w,
           ),
           child: Icon(
-            _controller!.value.isPlaying
-                ? Icons.pause_circle_outline_sharp
-                : Icons.play_circle_outline_sharp,
+            Icons.play_circle_outline_sharp,
             size: 24.sp,
             color: Colors.white,
           ),

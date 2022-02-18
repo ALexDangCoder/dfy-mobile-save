@@ -173,6 +173,15 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           } else {
             res.isOwner = false;
           }
+          for (final value in listTokenSupport) {
+            final symbolToken = res.symbolToken ?? '';
+            final symbol = value.symbol ?? '';
+            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+            }
+          }
           showContent();
           emit(NftNotOnMarketSuccess(res));
           getHistory(
@@ -183,15 +192,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(res.evaluationId ?? '');
           }
-          for (final value in listTokenSupport) {
-            final symbolToken = res.symbolToken ?? '';
-            final symbol = value.symbol ?? '';
-            if (symbolToken.toLowerCase() == symbol.toLowerCase()) {
-              res.urlToken = value.iconUrl;
-              res.symbolToken = value.symbol;
-              res.usdExchange = value.usdExchange;
-            }
-          }
         },
         error: (error) {
           showError();
@@ -201,13 +201,37 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.SALE) {
       showLoading();
       final Result<NftMarket> result;
-      if (typeNFT == TypeNFT.SOFT_NFT) {
-        result = await _nftRepo.getDetailNftOnSale(marketId);
-      } else {
-        result = await _nftRepo.getDetailHardNftOnSale(nftId);
-      }
+
+      result = await _nftRepo.getDetailNftOnSale(marketId).then((value) async {
+        if (typeNFT == TypeNFT.HARD_NFT) {
+          final Result<NftMarket> result2 =
+              await _nftRepo.getDetailHardNftOnSale(nftId);
+          result2.when(
+            success: (res) {
+              getEvaluation(res.evaluationId ?? '');
+            },
+            error: (error) {
+              showError();
+            },
+          );
+          return value;
+        } else {
+          return value;
+        }
+      });
       result.when(
         success: (res) {
+          final tokenBuyOut =
+              res.tokenBuyOut == '' ? res.tokenBuyOut : res.token;
+          for (final value in listTokenSupport) {
+            if (tokenBuyOut?.toLowerCase() == value.address?.toLowerCase() ||
+                tokenBuyOut?.toLowerCase() == value.symbol?.toLowerCase()) {
+              res.urlToken = value.iconUrl;
+              res.symbolToken = value.symbol;
+              res.usdExchange = value.usdExchange;
+              break;
+            }
+          }
           showContent();
           emit(NftOnSaleSuccess(res));
           getHistory(
@@ -215,18 +239,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
             nftTokenId: res.nftTokenId ?? '',
           );
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.evaluationId ?? '');
-          }
-          for (final value in listTokenSupport) {
-            final tokenBuyOut = res.tokenBuyOut ?? '';
-            final address = value.address ?? '';
-            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
-              res.urlToken = value.iconUrl;
-              res.symbolToken = value.symbol;
-              res.usdExchange = value.usdExchange;
-            }
-          }
         },
         error: (error) {
           showError();
@@ -236,35 +248,44 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.AUCTION) {
       showLoading();
       final Result<NFTOnAuction> result;
-      if (typeNFT == TypeNFT.SOFT_NFT) {
-        result = await _nftRepo.getDetailNFTAuction(marketId);
-      } else {
-        result = await _nftRepo.getDetailHardNftOnAuction(nftId);
-      }
+      result = await _nftRepo.getDetailNFTAuction(marketId).then((value) async {
+        if (typeNFT == TypeNFT.HARD_NFT) {
+          final Result<NFTOnAuction> result2 =
+              await _nftRepo.getDetailHardNftOnAuction(nftId);
+          result2.when(
+            success: (res) {
+              getEvaluation(res.evaluationId ?? '');
+            },
+            error: (error) {
+              showError();
+            },
+          );
+          return value;
+        } else {
+          return value;
+        }
+      });
       result.when(
         success: (res) {
           showContent();
-          nftOnAuction = res;
-          emit(NftOnAuctionSuccess(res));
-          if (typeNFT == TypeNFT.HARD_NFT) {
-            getEvaluation(res.evaluationId ?? '');
-          }
-          getHistory(
-            collectionAddress: res.collectionAddress ?? '',
-            nftTokenId: res.nftTokenId ?? '',
-          );
-          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
-          getBidding(res.id.toString());
+          final tokenBuyOut = res.token ?? '';
           for (final value in listTokenSupport) {
-            final tokenBuyOut = res.token ?? '';
-            final address = value.address ?? '';
-            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
+            if (tokenBuyOut.toLowerCase() == value.address?.toLowerCase() ||
+                tokenBuyOut.toLowerCase() == value.symbol?.toLowerCase()) {
               res.urlToken = value.iconUrl;
               res.tokenSymbol = value.symbol;
               res.usdExchange = value.usdExchange;
               symbolToken = value.symbol ?? '';
             }
           }
+          nftOnAuction = res;
+          emit(NftOnAuctionSuccess(res));
+          getHistory(
+            collectionAddress: res.collectionAddress ?? '',
+            nftTokenId: res.nftTokenId ?? '',
+          );
+          getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
+          getBidding(res.id.toString());
         },
         error: (error) {
           showError();
@@ -283,7 +304,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           } else {
             res.isYou = false;
           }
-          getOffer(pawnId.toString());
           for (final value in listTokenSupport) {
             final tokenBuyOut = res.expectedCollateralSymbol ?? '';
             final symbol = value.symbol ?? '';
@@ -293,6 +313,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               res.repaymentAsset = value.address;
             }
           }
+          getOffer(pawnId.toString());
           emit(NftOnPawnSuccess(res));
           if (typeNFT == TypeNFT.HARD_NFT) {
             getEvaluation(
@@ -519,7 +540,14 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
     result.when(
       success: (res) {},
-      error: (err) {},
+      error: (err) {
+        if (err.code == CODE_ERROR_AUTH) {
+          confirmCancelSaleWithBE(
+            txnHash: txnHash,
+            marketId: marketId,
+          );
+        }
+      },
     );
   }
 
@@ -533,13 +561,25 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
     result.when(
       success: (res) {},
-      error: (err) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          confirmCancelAuctionWithBE(marketId: marketId, txnHash: txnHash);
+        }
+      },
     );
   }
 
   Future<void> confirmCancelPawnWithBE({
     required int id,
   }) async {
-    await _nftRepo.cancelPawn(id);
+    final result = await _nftRepo.cancelPawn(id);
+    result.when(
+      success: (res) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          confirmCancelPawnWithBE(id: id);
+        }
+      },
+    );
   }
 }

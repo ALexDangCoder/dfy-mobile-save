@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -14,7 +16,7 @@ import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/button/button_custom.dart';
 import 'package:Dfy/widgets/button/button_transparent.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +84,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                             ),
                           ),
                           spaceH8,
-                          _rowStar(offer?.point?.toInt() ?? 0),
+                          _rowStar(Random().nextInt(100)),
                           spaceH18,
                           _textButton(),
                           Divider(
@@ -489,7 +491,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                   builder: (context) => Approve(
                     title: S.current.accept_offer,
                     spender: nft_pawn_dev2,
-                    textActiveButton: S.current.accept,
+                    textActiveButton: S.current.accept_offer,
                     hexString: value,
                     header: Column(
                       children: [

@@ -6,7 +6,6 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/bloc/collettion_bloc.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

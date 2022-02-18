@@ -39,6 +39,9 @@ class ApiConstants {
 
   static const String GET_LIST_NFT_COLLECTION =
       '/inventory-svc/public-api/collections/list-nft/';
+
+  static const String GET_LIST_NFT_COLLECTION_MY_ACC =
+      '/inventory-svc/api/v1.0.0/list-nft/';
   static const String COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/';
   static const String COLLECTION_ACTIVITY_LIST =
@@ -51,7 +54,7 @@ class ApiConstants {
   static const String GET_DETAIL_NFT_NOT_ON_MARKET =
       '/inventory-svc/public-api/nfts/';
   static const String GET_DETAIL_HARD_NFT =
-      '/nft-market-svc/public-api/hard-nft/';
+      '/hard-nft-svc/public-api/hard-nft/';
   static const String GET_HISTORY = 'inventory-svc/public-api/v1.0.0/histories';
   static const String GET_OWNER = 'inventory-svc/public-api/v1.0.0/owners';
   static const String GET_BIDDING =
@@ -77,6 +80,7 @@ class ApiConstants {
   //cancel sale
   static const String CANCEL_SALE = '/nft-market-svc/api/market/cancel';
   static const String BID_NFT = '/nft-market-svc/api/auction/bid';
+  static const String BUY_OUT = '/nft-market-svc/api/auction/buy-out';
 
   ///MyAcc
   static const String GET_LIST_NFT_MY_ACC = '/inventory-svc/api/v1.0.0/nfts';
@@ -135,6 +139,7 @@ class ApiConstants {
 
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
+  static const String GET_ALL_COLLECTION = '/nft-market-svc/api/collection/self';
 
   //Liên kết email:
   static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';

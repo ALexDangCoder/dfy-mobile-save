@@ -262,6 +262,9 @@ class ImageAssets {
   static const String img_collection = '$baseImg/img_collection.png';
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
+  static const String image_loading = '$baseImg/img_loading.gif';
+  static const String img_loading_transparent = '$baseImg/img_loading_transparent.gif';
+  static const String image_loading_collection = '$baseImg/loading_collection.png';
 
   //img activity collection detail
 
@@ -371,6 +374,8 @@ class ImageAssets {
   static const String icon_twitter = '$baseImg/icon_twitter.png';
 
   static const String more_circle_white = '$baseImg/more_circle_white.png';
+
+  static const String categories_create_collection = '$baseImg/categories_svg.svg';
 
   static SvgPicture svgAssets(
     String name, {

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Dfy/data/web3/abi/nft.g.dart';
@@ -613,7 +614,7 @@ class Web3Utils {
       function: function,
       parameters: [
         BigInt.from(num.parse(auctionId)),
-        BigInt.from(num.parse(bidValue)),
+        BigInt.from(num.parse(_handleAmount(18, bidValue))),
       ],
     );
     return hex.encode(bid.data ?? []);
@@ -676,9 +677,9 @@ class Web3Utils {
       parameters: [
         BigInt.from(num.parse(tokenId)),
         EthereumAddress.fromHex(collectionAddress),
-        BigInt.from(num.parse(startingPrice)),
-        BigInt.from(num.parse(buyOutPrice)),
-        BigInt.from(num.parse(priceStep)),
+        BigInt.from(num.parse(_handleAmount(18, startingPrice))),
+        BigInt.from(num.parse(_handleAmount(18, buyOutPrice))),
+        BigInt.from(num.parse(_handleAmount(18, priceStep))),
         EthereumAddress.fromHex(currencyAddress),
         BigInt.from(num.parse(startTime)),
         BigInt.from(num.parse(endTime)),

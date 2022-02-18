@@ -30,6 +30,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       BehaviorSubject.seeded(false);
 
   CollectionFilterRepository get _collectionRepo => Get.find();
+
   WalletAddressRepository get _walletAddressRepository => Get.find();
 
   NftMarketRepository get _nftRepo => Get.find();
@@ -54,7 +55,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       title.add(getTitleStream(selectStatus.first));
     }
   }
-
 
   String getTitleStream(int num) {
     if (num == 2) {
@@ -155,7 +155,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   bool canLoadMoreListNft = true;
   bool refresh = false;
 
-  void loadMorePosts(PageRouter pageRouter,String name) {
+  void loadMorePosts(PageRouter pageRouter, String name) {
     checkStatus();
     if (pageRouter == PageRouter.MARKET) {
       if (!loadMore) {
@@ -176,7 +176,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         canLoadMoreListNft = true;
         loadMore = true;
         getListNft(
-          name:name,
+          name: name,
           status: getParam(selectStatus),
           nftType: getParam(selectTypeNft),
           collectionId: getParam(selectCollection),
@@ -188,6 +188,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   }
 
   void refreshPosts(PageRouter pageRouter) {
+    emit(ListNftLoading());
     checkStatus();
     canLoadMoreListNft = true;
     page = 1;
@@ -223,7 +224,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   Future<void> getListWallet() async {
     final Result<List<WalletAddressModel>> result =
-    await _walletAddressRepository.getListWalletAddress();
+        await _walletAddressRepository.getListWalletAddress();
     result.when(
       success: (res) {
         if (res.isEmpty) {
@@ -276,7 +277,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
             ? ''
             : nftType?[0],
-        walletAddress: walletAddress == 'All' ? '' : walletAddress,
+        walletAddress: walletAddress == 'All'
+            ? getParam(walletAddressFilter)
+            : walletAddress,
         collectionId: '',
         page: page.toString(),
       );
@@ -286,8 +289,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
           for (final value in listTokenSupport) {
-            final address = value.address ?? '';
-            if (tokenBuyOut.toLowerCase() == address.toLowerCase()) {
+            final symbol = value.symbol ?? '';
+            if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               item.urlToken = value.iconUrl;
               item.symbolToken = value.symbol;
               item.usdExchange = value.usdExchange;
@@ -307,10 +310,20 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         emit(ListNftSuccess());
       },
       error: (error) {
-        updateStateError();
-        emit(ListNftError());
-        loadMore = false;
-        refresh = false;
+        if (error.code == CODE_ERROR_AUTH) {
+          getListNft(
+              status: status,
+              nftType: nftType,
+              name: name,
+              collectionId: collectionId,
+              walletAddress: walletAddress,
+              pageRouter: pageRouter);
+        } else {
+          updateStateError();
+          emit(ListNftError());
+          loadMore = false;
+          refresh = false;
+        }
       },
     );
   }
@@ -501,11 +514,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else if (type == MarketType.SALE) {
       return S.current.nft_on_sell;
     } else if (type == MarketType.AUCTION) {
-      return S.current.on_auction;
+      return S.current.nft_on_auction;
     } else if (type == MarketType.NOT_ON_MARKET) {
       return S.current.not_on_market;
     } else {
-      return S.current.on_pawn;
+      return S.current.nft_on_pawn;
     }
   }
 

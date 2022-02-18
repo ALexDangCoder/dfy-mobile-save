@@ -129,8 +129,8 @@
   "put_on_market": "Đưa lên chợ",
   "contract_interaction": "Hơp đồng tương tác",
   "create_collateral": "Tạo tài sản thế chấp",
-  "view_more": "Xem thêm",
-  "view_less": "Thu gọn",
+  "see_more": "Xem thêm",
+  "see_less": "Thu gọn",
   "name_not_null": "Tên ví là bắt buộc",
   "copy": "Copy thành công",
   "token_successfully": "Nhập Token thành công ",
@@ -379,7 +379,6 @@
   "create_now": "Bạn không có ví nào. Hãy tạo ngay",
   "email_too_long": "Email có tối đa 50 ký tự",
   "email_invalid": "Email không hợp lệ",
-  "see_more": "Xem thêm",
   "activity_bid": "bid",
   "activity_bought": "bought",
   "activity_bought_out": "bought out",
@@ -499,6 +498,7 @@
   "you_enter_balance": "Bạn nhập lớn số dư trong ví",
   "you_must_bid": "Bạn phải nhập giá bạn muốn đấu giá",
   "you_must_bid_greater": "Bạn phải nhập giá cao hơn giá hiện tại",
+  "you_must_bid_equal": "Bạn phải nhập giá bằng bước giá tiếp theo",
   "address": "Địa chỉ",
   "item_price": "Giá",
   "start_in": "Bắt đầu trong",
@@ -706,7 +706,8 @@
   "fri": "THỨ SÁU",
   "sat": "THỨ BẢY",
   "sun": "CHỦ NHẬT",
-  "submit": "Gửi",
-  "phone": "SĐT"
-
+  "collections": "Bộ sưu tập",
+  "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại",
+  "transaction_failed": "Giao dịch thất bại ",
+  "warning_send_offer": "Bạn đang gửi một đề nghị đến một NFT chưa được DeFi For You đánh giá. Giá trị của NFT này có thể không được đảm bảo. Vui lòng xem xét các rủi ro một cách cẩn thận khi gửi một đề nghị."
 }

@@ -308,7 +308,7 @@ class _NFTDetailState extends State<NFTDetail> {
                                       width: 13.15.w,
                                     ),
                                     Text(
-                                      S.current.view_more,
+                                      S.current.see_more,
                                       style: textNormalCustom(
                                         AppTheme.getInstance().fillColor(),
                                         16,

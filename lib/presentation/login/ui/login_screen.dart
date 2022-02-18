@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 nav.pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
-                      index: tabPawnIndex,
+                      index: walletInfoIndex,
                     ),
                   ),
                   (route) => route.isFirst,
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const MainScreen(
-                  index: tabPawnIndex,
+                  index: walletInfoIndex,
                 ),
               ),
               (route) => route.isFirst,
@@ -153,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
           },
           child: Container(
             width: 375.sw,
@@ -298,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           nav.pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const MainScreen(
-                                index: tabPawnIndex,
+                                index: walletInfoIndex,
                               ),
                             ),
                             (route) => route.isFirst,
@@ -362,10 +363,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           bloc: _cubit,
                           listener: (context, state) {
                             if (state is LoginSuccess) {
-                              SystemChrome.setEnabledSystemUIMode(
-                                SystemUiMode.manual,
-                                overlays: [SystemUiOverlay.top],
-                              );
                               PrefsService.saveCurrentWalletCore(
                                 _cubit.walletAddress,
                               );
@@ -375,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (context) => const MainScreen(
-                                      index: 1,
+                                      index: walletInfoIndex,
                                     ),
                                   ),
                                   (route) => route.isFirst,

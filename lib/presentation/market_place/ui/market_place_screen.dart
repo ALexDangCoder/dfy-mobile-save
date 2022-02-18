@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/bloc/marketplace_cubit.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -20,7 +21,6 @@ import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -50,8 +50,6 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual, overlays: [SystemUiOverlay.top],);
     super.build(context);
     return BlocBuilder<MarketplaceCubit, MarketplaceState>(
       bloc: cubit,
@@ -180,6 +178,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       showDialog(
                         context: context,
                         builder: (_) => ConnectWalletDialog(
+                          settings: const RouteSettings(
+                            name: AppRouter.create_collection,
+                          ),
                           navigationTo: CreateCollectionScreen(
                             bloc: CreateCollectionCubit(),
                           ),
@@ -191,6 +192,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                       showDialog(
                         context: context,
                         builder: (_) => ConnectWalletDialog(
+                          settings: const RouteSettings(
+                            name: AppRouter.create_nft,
+                          ),
                           navigationTo: CreateNFTScreen(
                             cubit: CreateNftCubit(),
                           ),
