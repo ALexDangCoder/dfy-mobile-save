@@ -789,16 +789,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.see_less
@@ -809,6 +799,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
@@ -962,16 +962,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.see_less
@@ -982,6 +972,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
