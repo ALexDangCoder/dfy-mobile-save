@@ -103,7 +103,7 @@ class _SendOfferState extends State<SendOffer> {
                     buildRowCustom(
                       title: S.current.loan_amount,
                       child: Text(
-                        '$loanAmount $shortName',
+                        '$loanAmount ${widget.nftOnPawn.expectedCollateralSymbol}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -296,7 +296,8 @@ class _SendOfferState extends State<SendOffer> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.nftOnPawn.nftCollateralDetailDTO?.typeNFT == TypeNFT.SOFT_NFT) ...[
+            if (widget.nftOnPawn.nftCollateralDetailDTO?.typeNFT ==
+                TypeNFT.SOFT_NFT) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: Text(
