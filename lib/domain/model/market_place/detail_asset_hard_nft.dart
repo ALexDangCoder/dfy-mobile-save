@@ -1,4 +1,6 @@
 import 'package:Dfy/data/response/create_hard_nft/detail_asset_hard_nft_response.dart';
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
+import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 
 class DetailAssetHardNft {
   String? id;
@@ -8,7 +10,7 @@ class DetailAssetHardNft {
   double? expectingPrice;
   String? name;
   String? expectingPriceSymbol;
-  String? additionalInformation;
+  List<AdditionalInfoResponse>? additionalInformation;
   String? contactName;
   String? contactEmail;
   String? contactAddress;
@@ -20,18 +22,21 @@ class DetailAssetHardNft {
   int? displayStatus;
   CollectionResponse? collection;
   ContactCountryResponse? condition;
-  List<MediaListResponse>? mediaList;
+  List<MediaFeatDocumentListResponse>? mediaList;
+  List<MediaFeatDocumentListResponse>? documentList;
   String? bcTxnHash;
   String? assetCid;
-  NFTResponse? nftAssetHard;
-
   int? ipfsStatus;
   int? bcAssetId;
+  NFTResponse? nftAssetHard;
+
 
   DetailAssetHardNft({
     this.id,
     this.status,
     this.assetType,
+    this.ipfsStatus,
+    this.bcAssetId,
     this.walletAddress,
     this.expectingPrice,
     this.name,
@@ -51,8 +56,6 @@ class DetailAssetHardNft {
     this.mediaList,
     this.bcTxnHash,
     this.assetCid,
-    this.ipfsStatus,
-    this.bcAssetId,
     this.nftAssetHard,
   });
 }
@@ -173,12 +176,12 @@ class ContactCityAssetHardNft {
   });
 }
 
-class MediaListAssetHardNft {
+class MediaFeatDocumentAssetHardNft {
   String? name;
   String? type;
   String? cid;
 
-  MediaListAssetHardNft({
+  MediaFeatDocumentAssetHardNft({
     this.name,
     this.type,
     this.cid,

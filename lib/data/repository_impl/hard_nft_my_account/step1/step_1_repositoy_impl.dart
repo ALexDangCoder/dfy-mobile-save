@@ -4,16 +4,21 @@ import 'package:Dfy/data/response/hard_nft_my_account/step1/asset_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/data_after_put_response.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/hard_nft_type_select.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/put_hard_nft_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/hard_nft_my_account/step1/step_1_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/asset_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 
 class Step1RepositoryImpl implements Step1Repository {
@@ -67,6 +72,25 @@ class Step1RepositoryImpl implements Step1Repository {
     return runCatchingAsync<AssetResponse, AssetModel>(
       () => _step1client.createHardNFTAssets(request),
       (response) => response.toModel(),
+    );
+  }
+
+  @override
+  Future<Result<ItemDataAfterPutModel>> getDetailAssetHardNFT(String assetId) {
+    return runCatchingAsync<DataAfterPutResponse, ItemDataAfterPutModel>(
+      () => _step1client.getDetailAssetHardNFT(assetId),
+      (response) => response.toDomain() ?? ItemDataAfterPutModel(),
+    );
+  }
+
+  @override
+  Future<Result<PutHardNftModel>> getResponseAfterPut(
+    String id,
+    BcTxnHashModel bcTxnHash,
+  ) {
+    return runCatchingAsync<PutHardNftResponse, PutHardNftModel>(
+      () => _step1client.putHardNftBeforeConfirm(id, bcTxnHash),
+      (response) => response.toModel() ?? PutHardNftModel(),
     );
   }
 }

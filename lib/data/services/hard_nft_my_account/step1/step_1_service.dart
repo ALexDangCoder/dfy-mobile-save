@@ -4,9 +4,11 @@ import 'package:Dfy/data/response/hard_nft_my_account/step1/asset_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/data_after_put_response.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/hard_nft_type_select.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/put_hard_nft_response.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
@@ -44,5 +46,11 @@ abstract class Step1Client {
       '${ApiConstants.PUT_HARD_NFT_PREFIX}{id}${ApiConstants.PUT_HARD_NFT_SUFFIX}')
   Future<PutHardNftResponse> putHardNftBeforeConfirm(
     @Path('id') String id,
+    @Body() BcTxnHashModel bcTxnHash,
+  );
+
+  @GET('${ApiConstants.GET_DETAIL_ASSETS_HARD_NFT}{asset_id}')
+  Future<DataAfterPutResponse> getDetailAssetHardNFT(
+    @Path('asset_id') String assetId,
   );
 }

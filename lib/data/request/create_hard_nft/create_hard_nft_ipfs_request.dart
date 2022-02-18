@@ -50,6 +50,7 @@ class CreateHardNftIpfsRequest {
   Map<String, dynamic> toJson() => _$CreateHardNftIpfsRequestToJson(this);
 }
 
+
 @JsonSerializable()
 class AdditionalInfoListRequest {
   final String trait_type;

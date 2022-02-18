@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,6 +35,8 @@ class DetailAssetHardNftResponse extends Equatable {
   List<Object?> get props => [];
 }
 
+
+
 @JsonSerializable()
 class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'id')
@@ -46,6 +49,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? walletAddress;
   @JsonKey(name: 'expecting_price')
   double? expectingPrice;
+  @JsonKey(name: 'additional_info_list')
+  List<AdditionalInfoResponse>? additionInfoList;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'expecting_price_symbol')
@@ -77,7 +82,9 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'condition')
   ContactCountryResponse? condition;
   @JsonKey(name: 'media_list')
-  List<MediaListResponse>? mediaList;
+  List<MediaFeatDocumentListResponse>? mediaList;
+  @JsonKey(name: 'document_list')
+  List<MediaFeatDocumentListResponse>? documentList;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
   @JsonKey(name: 'asset_cid')
@@ -98,6 +105,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.additionalInformation,
     this.contactName,
     this.contactEmail,
+    this.additionInfoList,
     this.contactAddress,
     this.contactPhoneCode,
     this.contactPhone,
@@ -127,7 +135,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         contactName: contactName,
         assetType: assetType,
         expectingPrice: expectingPrice,
-        additionalInformation: additionalInformation,
+        additionalInformation: additionInfoList,
         assetCid: assetCid,
         bcAssetId: bcAssetId,
         collection: collection,
@@ -325,6 +333,7 @@ class CollectionResponse extends Equatable {
         avatarCid: avatarCid,
         collectionCid: collectionCid,
         coverCid: coverCid,
+        collectionAddress: collectionAddress,
         customUrl: customUrl,
         description: description,
         featureCid: featureCid,
@@ -414,7 +423,7 @@ class ContactCityResponse extends Equatable {
 }
 
 @JsonSerializable()
-class MediaListResponse extends Equatable {
+class MediaFeatDocumentListResponse extends Equatable {
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'type')
@@ -422,16 +431,16 @@ class MediaListResponse extends Equatable {
   @JsonKey(name: 'cid')
   String? cid;
 
-  MediaListResponse(
+  MediaFeatDocumentListResponse(
     this.name,
     this.type,
     this.cid,
   );
 
-  factory MediaListResponse.fromJson(Map<String, dynamic> json) =>
-      _$MediaListResponseFromJson(json);
+  factory MediaFeatDocumentListResponse.fromJson(Map<String, dynamic> json) =>
+      _$MediaFeatDocumentListResponseFromJson(json);
 
-  MediaListAssetHardNft toDomain() => MediaListAssetHardNft(
+  MediaFeatDocumentAssetHardNft toDomain() => MediaFeatDocumentAssetHardNft(
         name: name,
         type: type,
         cid: cid,

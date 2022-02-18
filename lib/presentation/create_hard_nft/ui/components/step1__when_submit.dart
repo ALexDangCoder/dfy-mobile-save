@@ -1,4 +1,10 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:path/path.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -66,17 +72,61 @@ class Step1WhenSubmit extends StatelessWidget {
             const SizedBox(width: 23),
             Expanded(
               child: GestureDetector(
-                onTap: () {
-                  cubit.postFileMediaFeatDocumentApi();
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return const ListBookEvaluation(
-                  //           assetId: '620a34cf4aec3df7e3029fcb'); //todo data
-                  //     },
-                  //   ),
-                  // );
+                onTap: () async {
+                  await cubit.postFileMediaFeatDocumentApi();
+
+                  ///
+                  final NavigatorState navigator = Navigator.of(context);
+                  unawaited(
+                    navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          needApprove: true,
+                          hexString: cubit.hexStringWeb3,
+                          payValue: cubit.dataStep1.amountToken.toString(),
+                          tokenAddress: ADDRESS_DFY,
+                          //todo
+                          title: S.current.book_appointment,
+                          listDetail: [
+                            DetailItemApproveModel(
+                              title: '${S.current.name} :',
+                              value: cubit.dataStep1.hardNftName,
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.type} :',
+                              value: cubit.dataStep1.hardNftName,
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.collection} :',
+                              value: cubit.dataStep1.collection,
+                            ),
+                          ],
+                          onErrorSign: (context) {},
+                          onSuccessSign: (context, data) {
+                            cubit.bcTxnHashModel.bc_txn_hash = data;
+                            cubit.putHardNftBeforeConfirm(
+                              cubit.assetId,
+                              cubit.bcTxnHashModel,
+                            );
+                            showLoadSuccess(context).then((value) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ListBookEvaluation(
+                                      assetId: cubit.assetId,
+                                    ); //todo data
+                                  },
+                                ),
+                              );
+                            });
+                          },
+                          textActiveButton: S.current.request_evaluation,
+                          spender: eva_dev2,
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: ButtonGold(
                   radiusButton: 15,
