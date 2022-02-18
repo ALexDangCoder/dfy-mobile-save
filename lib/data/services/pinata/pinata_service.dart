@@ -1,5 +1,4 @@
-import 'package:Dfy/data/request/collection/create_hard_collection_ipfs_request.dart';
-import 'package:Dfy/data/request/collection/create_soft_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/create_collection_ipfs_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_ipfs_request.dart';
 import 'package:Dfy/data/response/pinata/pinata_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -28,4 +27,9 @@ abstract class PinataClient {
   Future<PinataResponse> createHardCollectionPinJsonToIpfs(
       @Body() CreateHardCollectionIpfsRequest request,
       );
+
+  @POST(ApiConstants.PIN_JSON_TO_IPFS)
+  Future<PinataResponse> createHardNFTPinFileToIPFS(
+    @Body() CreateHardNftIpfsRequest request,
+  );
 }

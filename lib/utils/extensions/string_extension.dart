@@ -35,6 +35,7 @@ extension FormatAddress on String {
   }
 }
 
+
 extension FormatAddressFire on String {
   String formatAddressActivityFire() {
     final String result = '${substring(0, 5)}...${substring(

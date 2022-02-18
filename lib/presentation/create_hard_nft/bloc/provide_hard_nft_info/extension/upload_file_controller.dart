@@ -47,6 +47,7 @@ extension FileController on ProvideHardNftCubit {
       // dataStep1.documents.add(value)
       listDocumentPathSubject.sink.add(listPathDocument);
     }
+    print(mediaMap.getStringValue(TYPE_OF_FILE));
     checkLentData(isMedia: false);
   }
 
