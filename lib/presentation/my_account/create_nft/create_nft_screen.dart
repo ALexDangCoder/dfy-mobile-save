@@ -61,20 +61,70 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(
-                      bottom: 16.h,
-                    ),
-                    child: Text(
-                      S.current.soft_nft,
-                      style: textLabelNFT,
+                    color: Colors.blue,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 16.h,
+                      ),
+                      child: Text(
+                        S.current.soft_nft,
+                        style: textLabelNFT,
+                      ),
                     ),
                   ),
-                  StreamBuilder<List<TypeNFTModel>>(
+                  Container(
+                    color: Colors.red,
+                    child: StreamBuilder<List<TypeNFTModel>>(
+                        stream: widget.cubit.listNftSubject,
+                        builder: (context, snapshot) {
+                          final List<TypeNFTModel> data = snapshot.data ?? [];
+                          final list =
+                              data.where((element) => element.type == 0).toList();
+                          if (list.isNotEmpty) {
+                            return GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                childAspectRatio: 3.w / 4.h,
+                              ),
+                              itemBuilder: (context, index) {
+                                return nftItem(
+                                  context: context,
+                                  typeNFTModel: list[index],
+                                );
+                              },
+                              itemCount: list.length,
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }),
+                  ),
+                  Container(
+                    color: Colors.purple,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 16.h,
+                      ),
+                      child: Text(
+                        S.current.hard_nft,
+                        style: textLabelNFT,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.yellowAccent,
+
+                    child: StreamBuilder<List<TypeNFTModel>>(
                       stream: widget.cubit.listNftSubject,
                       builder: (context, snapshot) {
                         final List<TypeNFTModel> data = snapshot.data ?? [];
                         final list =
-                            data.where((element) => element.type == 0).toList();
+                            data.where((element) => element.type == 1).toList();
                         if (list.isNotEmpty) {
                           return GridView.builder(
                             shrinkWrap: true,
@@ -97,55 +147,20 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         } else {
                           return const SizedBox.shrink();
                         }
-                      }),
-                  Container(
-                    margin: EdgeInsets.only(
-                      bottom: 16.h,
+                      },
                     ),
-                    child: Text(
-                      S.current.hard_nft,
-                      style: textLabelNFT,
-                    ),
-                  ),
-                  StreamBuilder<List<TypeNFTModel>>(
-                    stream: widget.cubit.listNftSubject,
-                    builder: (context, snapshot) {
-                      final List<TypeNFTModel> data = snapshot.data ?? [];
-                      final list =
-                          data.where((element) => element.type == 1).toList();
-                      if (list.isNotEmpty) {
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 16,
-                            childAspectRatio: 3.w / 4.h,
-                          ),
-                          itemBuilder: (context, index) {
-                            return nftItem(
-                              context: context,
-                              typeNFTModel: list[index],
-                            );
-                          },
-                          itemCount: list.length,
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
                   ),
                   spaceH24,
-                  Text(
-                    S.current.not_supported_standard,
-                    style: textCustom(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 14,
+                  Container(
+                    color: Colors.pink,
+                    child: Text(
+                      S.current.not_supported_standard,
+                      style: textCustom(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
-
                   ///Space bottom + space top + height of the button
                   SizedBox(
                     height: (64 + 38 + 24).h,
@@ -177,7 +192,12 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         ),
                       );
                     } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const OnBoardingScreen()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const OnBoardingScreen(),
+                        ),
+                      );
                     }
                   }
                 },
