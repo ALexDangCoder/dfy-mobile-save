@@ -85,11 +85,11 @@ class _WalletDialogWhenLoggedCoreState
           }
           if (!widget.isRequireLoginEmail) {
             //không yêu cầu login email:
-            nav.pop();
             final bool isNeedShowDialog =
                 PrefsService.getOptionShowDialogConnectEmail();
             if (isNeedShowDialog) {
               if (email.isEmpty) {
+                nav.pop();
                 unawaited(
                   showDialog(
                     context: context,

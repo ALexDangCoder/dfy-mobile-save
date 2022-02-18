@@ -239,3 +239,9 @@ TextStyle errorText({
     height: h,
   );
 }
+
+TextStyle uploadFileText = GoogleFonts.sen(
+  color: AppTheme.getInstance().whiteColor(),
+  fontWeight: FontWeight.w600,
+  fontSize: 16,
+);
