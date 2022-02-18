@@ -32,7 +32,6 @@ import 'package:Dfy/presentation/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
-import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -617,16 +616,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.view_less
@@ -637,6 +626,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
@@ -790,16 +790,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.view_less
@@ -810,6 +800,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
@@ -963,16 +963,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.view_less
@@ -983,6 +973,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
@@ -1166,16 +1166,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: !snapshot.data!
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               !snapshot.data!
                                   ? S.current.view_less
@@ -1186,6 +1176,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                 FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: !snapshot.data!
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
+                            ),
+
                           ],
                         ),
                       ),
