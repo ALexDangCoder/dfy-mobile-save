@@ -66,7 +66,7 @@ class _FormSearchBaseState extends State<FormSearchBase> {
                 16,
               ),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(bottom: 4.h),
+                contentPadding: EdgeInsets.only(bottom: 3.h),
                 counterText: '',
                 hintText: widget.hint,
                 hintStyle: textNormal(
