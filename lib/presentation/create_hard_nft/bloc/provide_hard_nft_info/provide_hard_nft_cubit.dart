@@ -140,9 +140,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
     resultAsset.when(
       success: (res) {
-        print('mother fuckerr');
-        print(res.id);
-        print(res..status);
+        //todo
+        // print(res.id);
+        // print(res.status);
       },
       error: (error) {},
     );
