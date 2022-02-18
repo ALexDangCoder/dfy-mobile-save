@@ -124,6 +124,8 @@ Widget buildRowCustom({
   required Widget child,
   bool isPadding = true,
   bool isSpace = true,
+  int flexRight = 3,
+  int flexLeft = 2,
 }) {
   return Padding(
     padding:
@@ -132,7 +134,7 @@ Widget buildRowCustom({
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          flex: 2,
+          flex: flexLeft,
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -145,7 +147,7 @@ Widget buildRowCustom({
             ),
           ),
         ),
-        Expanded(flex: 3, child: child)
+        Expanded(flex: flexRight, child: child)
       ],
     ),
   );
