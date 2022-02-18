@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import 'package:path/path.dart';
+
 enum NFT_TYPE {
   JEWELRY,
   ARTWORK,

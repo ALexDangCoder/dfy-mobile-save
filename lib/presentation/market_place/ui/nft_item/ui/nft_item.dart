@@ -146,22 +146,48 @@ class _NFTItemState extends State<NFTItemWidget> {
                           width: 140.w,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
-                            child:
-                                (widget.nftMarket.typeImage != TypeImage.VIDEO)
-                                    ? FadeInImage.assetNetwork(
-                                        placeholder: ImageAssets.image_loading,
-                                        image: widget.nftMarket.image ?? '',
-                                        imageCacheHeight: 200,
-                                        placeholderCacheHeight: 50,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : FadeInImage.assetNetwork(
-                                        placeholder: ImageAssets.image_loading,
-                                        image: widget.nftMarket.cover ?? '',
-                                        imageCacheHeight: 200,
-                                        placeholderCacheHeight: 50,
-                                        fit: BoxFit.cover,
-                                      ),
+                            child: (widget.nftMarket.typeImage !=
+                                    TypeImage.VIDEO)
+                                ? FadeInImage.assetNetwork(
+                                    placeholder: ImageAssets.image_loading,
+                                    image: widget.nftMarket.image ?? '',
+                                    imageCacheHeight: 200,
+                                    imageErrorBuilder: (context, url, error) {
+                                      return Center(
+                                        child: Text(
+                                          S.current.unload_image,
+                                          style: textNormalCustom(
+                                            Colors.white,
+                                            14,
+                                            FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
+                                    placeholderCacheHeight: 50,
+                                    fit: BoxFit.cover,
+                                  )
+                                : FadeInImage.assetNetwork(
+                                    placeholder: ImageAssets.image_loading,
+                                    image: widget.nftMarket.cover ?? '',
+                                    imageCacheHeight: 200,
+                                    placeholderCacheHeight: 50,
+                                    fit: BoxFit.cover,
+                                    imageErrorBuilder: (context, url, error) {
+                                      return Center(
+                                        child: Text(
+                                          S.current.unload_image,
+                                          style: textNormalCustom(
+                                            Colors.white,
+                                            14,
+                                            FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
+                                  ),
                           ),
                         ),
                         playVideo(widget.nftMarket.typeImage),

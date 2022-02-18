@@ -289,8 +289,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
           for (final value in listTokenSupport) {
-            final symbol = value.symbol ?? '';
-            if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
+            final address = value.address ?? '';
+            final symbol = value.address ?? '';
+            if (tokenBuyOut.toLowerCase() == address.toLowerCase() ||
+                tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               item.urlToken = value.iconUrl;
               item.symbolToken = value.symbol;
               item.usdExchange = value.usdExchange;
