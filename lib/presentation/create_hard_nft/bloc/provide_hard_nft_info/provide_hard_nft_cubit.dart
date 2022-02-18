@@ -18,9 +18,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
-import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
@@ -56,6 +54,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
+
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
@@ -145,8 +144,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
     resultAsset.when(
       success: (res) {
-        if(res == null) {
-
+        if (res == null) {
         } else {
           assetId = res.id ?? '';
           getDetailAssetHardNFT(assetId: assetId);
@@ -163,12 +161,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     required String assetId,
   }) async {
     final Result<DetailAssetHardNft> result =
-    await _createHardNFTRepository.getDetailAssetHardNFT(
+        await _createHardNFTRepository.getDetailAssetHardNFT(
       assetId,
     );
     result.when(
       success: (res) {
-        if(res == null) {
+        if (res == null) {
         } else {
           assetCid = res.assetCid ?? '';
           beAssetId = assetId;

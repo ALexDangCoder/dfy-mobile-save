@@ -116,7 +116,7 @@ class EvaluatorResponse extends Equatable {
         description: description,
         locationLat: locationLat,
         locationLong: locationLong,
-        acceptedAssetTypeList: acceptedAssetTypeList,
+        acceptedAssetTypeList: acceptedAssetTypeList?.map((e) => e.toDomain()).toList() ?? [],
         workingTimeFrom: workingTimeFrom,
         workingTimeTo: workingTimeTo,
         workingDays: workingDays,
@@ -127,7 +127,7 @@ class EvaluatorResponse extends Equatable {
         reviewsCount: reviewsCount,
         evaluatedCount: evaluatedCount,
         createdAt: createdAt,
-        phoneCode: phoneCode,
+        phoneCode: phoneCode?.toDomain(),
       );
 
   @override
