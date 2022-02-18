@@ -736,7 +736,6 @@
   "sun": "SUNDAY",
   "phone": "Phone",
   "collections": "Collections",
-  "login_expired": "Login session has expired. Please log in again",
   "you_have_try_more_than_5":"You have tried wrong more than 5 times. Please try again in 30 seconds.",
   "login_expired": "Login session has expired. Please log in again",
   "transaction_failed": "Transaction failed",
