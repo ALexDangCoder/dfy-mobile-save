@@ -21,6 +21,7 @@ class TextFieldValidator extends StatefulWidget {
   final Widget? suffixIcon;
   final int maxInputChar;
   final double? errorTextHeight;
+  final bool readOnly;
 
   const TextFieldValidator({
     Key? key,
@@ -31,6 +32,7 @@ class TextFieldValidator extends StatefulWidget {
     this.initialValue,
     this.maxLine = 1,
     this.textInputType,
+    this.readOnly = false,
     this.hint,
     this.suffixText,
     this.prefixText,
@@ -93,6 +95,7 @@ class _TextFormFieldWidgetState extends State<TextFieldValidator> {
           AppTheme.getInstance().whiteColor(),
           16,
         ),
+        readOnly: widget.readOnly,
         enabled: widget.isEnabled,
         decoration: InputDecoration(
           filled: true,

@@ -1,3 +1,6 @@
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
+import 'package:Dfy/data/response/hard_nft_my_account/step1/asset_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/condition_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/country_res.dart';
@@ -5,6 +8,7 @@ import 'package:Dfy/data/response/hard_nft_my_account/step1/hard_nft_type_select
 import 'package:Dfy/data/response/hard_nft_my_account/step1/phone_code_res.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/hard_nft_my_account/step1/step_1_service.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/asset_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
@@ -54,6 +58,15 @@ class Step1RepositoryImpl implements Step1Repository {
     return runCatchingAsync<ListHardNFTTypeResponse, List<HardNftTypeModel>>(
       () => _step1client.getNFTTypes(),
       (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<AssetModel>> getAssetAfterPost(
+      CreateHardNftAssetsRequest request) {
+    return runCatchingAsync<AssetResponse, AssetModel>(
+      () => _step1client.createHardNFTAssets(request),
+      (response) => response.toModel(),
     );
   }
 }

@@ -1,3 +1,6 @@
+
+import 'package:Dfy/data/request/collection/create_hard_collection_request.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/request/collection/create_hard_collection_ipfs_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_ipfs_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_ipfs_request.dart';
@@ -16,4 +19,8 @@ mixin PinataRepository {
   Future<Result<PinataModel>> createHardCollectionPinJsonToIpfs(
       CreateHardCollectionIpfsRequest request,
       );
+
+  Future<Result<PinataModel>> createHardNftPinJsonToIpfs(
+    CreateHardNftIpfsRequest request,
+  );
 }

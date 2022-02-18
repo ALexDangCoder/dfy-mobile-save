@@ -52,13 +52,13 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
               ),
             ),
             Align(
-              child: Icon(
-                _controller.value.isPlaying
-                    ? Icons.pause_circle_outline_sharp
-                    : Icons.play_circle_outline_sharp,
-                size: 36.sp,
-                color: Colors.white,
-              ),
+              child: _controller.value.isPlaying
+                  ? const SizedBox()
+                  : Icon(
+                      Icons.play_circle_outline_sharp,
+                      size: 36.sp,
+                      color: Colors.white,
+                    ),
             ),
           ],
         ),

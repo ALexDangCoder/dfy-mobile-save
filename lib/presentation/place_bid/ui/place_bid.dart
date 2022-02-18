@@ -54,11 +54,6 @@ class _PlaceBidState extends State<PlaceBid> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    cubit.dispose();
-  }
-
   Future<void> getBalance() async {
     await cubit.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
@@ -138,34 +133,46 @@ class _PlaceBidState extends State<PlaceBid> {
       );
     }
 
+    void handleValue(
+      String value,
+      double bid,
+      double balance,
+      double priceStep,
+    ) {
+      if (value.isNotEmpty) {
+        final yourBid = double.parse(value);
+        if (balance > bid) {
+          if (yourBid < bid) {
+            cubit.warnSink.add(S.current.you_must_bid_greater);
+            cubit.btnSink.add(false);
+          } else if (yourBid > bid && yourBid < bid + priceStep) {
+            cubit.warnSink.add(S.current.you_must_bid_equal);
+            cubit.btnSink.add(false);
+          } else {
+            cubit.warnSink.add('');
+            bidValue = value;
+            cubit.btnSink.add(true);
+          }
+        } else {
+          cubit.btnSink.add(false);
+          cubit.warnSink.add(S.current.you_enter_balance);
+        }
+      } else {
+        cubit.btnSink.add(false);
+        cubit.warnSink.add(S.current.you_must_bid);
+      }
+    }
+
     Widget _cardCurrentBid(String url, String nameToken, double bid) {
       if (widget.typeBid == TypeBid.PLACE_BID) {
         return CustomForm(
           textValue: (value) {
-            if (value.isNotEmpty) {
-              if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) > bid) {
-                cubit.warnSink.add('');
-                bidValue = value;
-                cubit.btnSink.add(true);
-              } else if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) < bid) {
-                cubit.warnSink.add(S.current.you_must_bid_greater);
-                cubit.btnSink.add(false);
-              } else if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) > bid &&
-                  double.parse(value) !=
-                      bid + (widget.nftOnAuction.priceStep ?? 0)) {
-                cubit.warnSink.add(S.current.you_must_bid_equal);
-                cubit.btnSink.add(false);
-              } else {
-                cubit.btnSink.add(false);
-                cubit.warnSink.add(S.current.you_enter_balance);
-              }
-            } else {
-              cubit.btnSink.add(false);
-              cubit.warnSink.add(S.current.you_must_bid);
-            }
+            handleValue(
+              value,
+              bid,
+              cubit.balanceValue,
+              widget.nftOnAuction.priceStep ?? 0,
+            );
           },
           hintText: S.current.your_bid,
           suffix: SizedBox(

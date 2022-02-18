@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,11 @@ class LoginCubit extends BaseCubit<LoginState> {
     final List<BiometricType> availableBiometrics =
         await auth.getAvailableBiometrics();
     if (canCheckBiometrics && isFaceIDStream.value) {
-      await authenticate();
+      try {
+        await authenticate();
+      } on PlatformException {
+        emit(LoginError(S.current.you_have_try_more_than_5));
+      }
     }
   }
 

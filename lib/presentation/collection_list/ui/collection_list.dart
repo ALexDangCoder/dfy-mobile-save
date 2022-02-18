@@ -81,8 +81,8 @@ class _CollectionListState extends State<CollectionList> {
     collectionBloc = CollectionBloc(widget.typeScreen);
 
     if (widget.addressWallet?.isNotEmpty ?? false) {
-      collectionBloc.addressWallet = widget.addressWallet;
-      collectionBloc.textAddressFilter.add(widget.addressWallet ?? '');
+      collectionBloc.addressWallet = widget.addressWallet?.toLowerCase();
+      collectionBloc.textAddressFilter.add((widget.addressWallet ?? '').toLowerCase());
     } else {
       if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
         collectionBloc.textAddressFilter
@@ -112,7 +112,7 @@ class _CollectionListState extends State<CollectionList> {
             context,
             MaterialPageRoute(
               settings: const RouteSettings(
-                name: AppRouter.collectionList,
+                name: AppRouter.create_collection,
               ),
               builder: (context) {
                 return CreateCollectionScreen(

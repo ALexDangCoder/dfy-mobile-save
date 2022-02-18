@@ -26,7 +26,7 @@ class BaseAppBar extends SliverAppBar {
             title: title,
             image: image,
             initHeight: initHeight,
-            placeholderImage:  placeholderImage,
+            placeholderImage: placeholderImage,
             fit: fit,
             typeImage: typeImage ?? TypeImage.IMAGE,
           ),
@@ -44,7 +44,8 @@ class BaseSpace extends StatefulWidget {
     required this.image,
     required this.initHeight,
     required this.typeImage,
-    this.fit, this.placeholderImage,
+    this.fit,
+    this.placeholderImage,
   }) : super(key: key);
   final String title;
   final String image;
@@ -171,13 +172,13 @@ class _BaseSpaceState extends State<BaseSpace> {
           padding: EdgeInsets.only(
             top: 35.h,
           ),
-          child: Icon(
-            _controller!.value.isPlaying
-                ? Icons.pause_circle_outline_sharp
-                : Icons.play_circle_outline_sharp,
-            size: 40.sp,
-            color: Colors.white,
-          ),
+          child: _controller!.value.isPlaying
+              ? const SizedBox()
+              : Icon(
+                  Icons.play_circle_outline_sharp,
+                  size: 40.sp,
+                  color: Colors.white,
+                ),
         ),
       );
     } else {

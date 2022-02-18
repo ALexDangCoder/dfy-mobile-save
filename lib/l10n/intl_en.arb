@@ -379,7 +379,7 @@
   "collection_name": "Collection name",
   "categories": "Categories",
   "royalties": "Royalties",
-  "social_links": "Social link",
+  "social_links": "Social links",
   "maximum_len": "Maximum length allowed is 255 characters",
   "only_digits": "Only accept digits",
   "max_royalty": "Maximum royalty allowed is 50%",
@@ -737,6 +737,9 @@
   "phone": "Phone",
   "collections": "Collections",
   "login_expired": "Login session has expired. Please log in again",
+  "you_have_try_more_than_5":"You have tried wrong more than 5 times. Please try again in 30 seconds.",
+  "login_expired": "Login session has expired. Please log in again",
   "transaction_failed": "Transaction failed",
+  "unload_image":"Unable show image",
   "warning_send_offer": "You are submitting an offer to a NFT that has not been evaluated by DeFi For You. The value of this NFT may not be guaranteed. Please consider the risks carefully when submitting an offer."
 }

@@ -1,5 +1,7 @@
+
 import 'package:Dfy/data/request/collection/create_hard_collection_ipfs_request.dart';
 import 'package:Dfy/data/request/collection/create_soft_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_ipfs_request.dart';
 import 'package:Dfy/data/response/pinata/pinata_response.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -41,6 +43,15 @@ class PinataRepositoryImpl implements PinataRepository {
     return runCatchingAsync<PinataResponse, PinataModel>(
           () => _client.createHardCollectionPinJsonToIpfs(request),
           (response) => response.toModel(),
+    );
+  }
+
+  @override
+  Future<Result<PinataModel>> createHardNftPinJsonToIpfs(
+      CreateHardNftIpfsRequest request) {
+    return runCatchingAsync<PinataResponse, PinataModel>(
+      () => _client.createHardNFTPinFileToIPFS(request),
+      (response) => response.toModel(),
     );
   }
 }

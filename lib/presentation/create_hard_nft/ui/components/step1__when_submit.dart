@@ -1,10 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
+import 'package:path/path.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_image_widget.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -13,6 +13,8 @@ import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+
+import 'package:path/path.dart';
 
 enum NFT_TYPE {
   JEWELRY,
@@ -34,6 +36,7 @@ class Step1WhenSubmit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cubit.dataStep1.wallet = cubit.getAddressWallet().formatAddressWallet();
     return BaseDesignScreen(
       title: S.current.provide_hard_nft_info,
       bottomBar: Container(
@@ -66,18 +69,16 @@ class Step1WhenSubmit extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const ListBookEvaluation(
-                            assetId: '620a34cf4aec3df7e3029fcb'); //todo data
-                      },
-                      settings: const RouteSettings(
-                        name: AppRouter.step2ListBook,
-                      ),
-                    ),
-                  );
+                  cubit.postFileMediaFeatDocumentApi();
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return const ListBookEvaluation(
+                  //           assetId: '620a34cf4aec3df7e3029fcb'); //todo data
+                  //     },
+                  //   ),
+                  // );
                 },
                 child: ButtonGold(
                   radiusButton: 15,
@@ -110,6 +111,10 @@ class Step1WhenSubmit extends StatelessWidget {
               ),
             ),
             //todo WIDGET ẢNH
+            UploadImageWidget(
+              cubit: cubit,
+              showAddMore: false,
+            ),
             spaceH32,
             textShowWithPadding(
               textShow: S.current.documents,
@@ -129,7 +134,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     textShowWithPadding(
-                      textShow: cubit.dataStep1.documents[index],
+                      textShow: basename(cubit.dataStep1.documents[index]),
                       txtStyle: textNormalCustom(
                         AppTheme.getInstance().whiteColor(),
                         16,
@@ -299,9 +304,8 @@ class Step1WhenSubmit extends StatelessWidget {
             ),
             spaceH15,
             informationContactWidget(
-              title:
-                  '${cubit.dataStep1.phoneCodeModel.code} '
-                      '${cubit.dataStep1.phoneContact}',
+              title: '${cubit.dataStep1.phoneCodeModel.code} '
+                  '${cubit.dataStep1.phoneContact}',
               image: ImageAssets.callStep1,
             ),
             spaceH15,

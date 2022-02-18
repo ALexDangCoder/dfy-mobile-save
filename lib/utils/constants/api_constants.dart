@@ -140,6 +140,8 @@ class ApiConstants {
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
   static const String GET_ALL_COLLECTION = '/nft-market-svc/api/collection/self';
+  static const String PUT_HARD_NFT_PREFIX = '/hard-nft-svc/api/assets/';
+  static const String PUT_HARD_NFT_SUFFIX = '/submit';
 
   //Liên kết email:
   static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';
@@ -162,6 +164,8 @@ class ApiConstants {
   static const String GET_EVALUATORS_DETAIL =
       '/hard-nft-svc/public-api/evaluators/';
 
+  static const String POST_ASSETS = '/hard-nft-svc/api/assets';
+
   static const String GET_EVALUATORS_DETAIL_END = '/customer-view-profile';
 
   static const String CREATE_EVALUATION = '/hard-nft-svc/api//appointments';
@@ -179,7 +183,8 @@ class ApiConstants {
   static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
 
   ///get_evaluation_result
-  static const String GET_LIST_EVALUATION_RESULT = '/hard-nft-svc/api/evaluations/';
+  static const String GET_LIST_EVALUATION_RESULT =
+      '/hard-nft-svc/api/evaluations/';
   static const String GET_DETAIL_ASSETS_HARD_NFT = '/hard-nft-svc/api/assets/';
   static const String ACCEPT = '/accept';
   static const String REJECT = '/reject';

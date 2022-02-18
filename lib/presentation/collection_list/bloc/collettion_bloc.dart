@@ -95,24 +95,18 @@ class CollectionBloc extends BaseCubit<CollectionState> {
 
     result.when(
       success: (res) {
-        final listWallet=[];
-        for (final element in res) {
-          if (element.walletAddress?.isNotEmpty ?? false) {
-            listWallet.add(element.walletAddress ?? '');
-          }
-        }
-        if (listWallet.isEmpty) {
+        if (res.isEmpty) {
           checkWalletAddress = false;
         } else {
-          if (listWallet.length < 2) {
-            for (final element in listWallet) {
+          if (res.length < 2) {
+            for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
             checkWalletAddress = false;
           } else {
-            for (final element in listWallet) {
+            for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
