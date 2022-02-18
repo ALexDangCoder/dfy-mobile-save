@@ -43,18 +43,13 @@ class _NFTItemState extends State<NFTItemWidget> {
   @override
   void initState() {
     super.initState();
-
     cubitNft = NftItemCubit();
     if (widget.nftMarket.marketType == MarketType.AUCTION) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
         value: widget.nftMarket.startTime ?? 0,
-        // value: 1642637464000,
-        // value: 1642471860000,
       );
       endTimeAuction = cubitNft.parseTimeServerToDateTime(
         value: widget.nftMarket.endTime ?? 0,
-        // value: 1642637464000,
-        // value: 1642558260000,
       );
       countdownController = CountdownTimerController(
         endTime: endTimeAuction?.millisecondsSinceEpoch ?? 0,
@@ -85,6 +80,22 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.nftMarket.marketType == MarketType.AUCTION) {
+      startTimeAuction = cubitNft.parseTimeServerToDateTime(
+        value: widget.nftMarket.startTime ?? 0,
+      );
+      endTimeAuction = cubitNft.parseTimeServerToDateTime(
+        value: widget.nftMarket.endTime ?? 0,
+      );
+      countdownController = CountdownTimerController(
+        endTime: endTimeAuction?.millisecondsSinceEpoch ?? 0,
+      );
+
+      coutdownStartTime = CountdownTimerController(
+        endTime: startTimeAuction?.millisecondsSinceEpoch ?? 0,
+      );
+
+    }
     return GestureDetector(
       onTap: () {
         Navigator.push(
