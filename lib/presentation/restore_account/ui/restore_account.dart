@@ -13,7 +13,7 @@ import 'package:Dfy/presentation/restore_account/ui/choice_dialog.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/form/item_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
@@ -17,7 +18,7 @@ import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -53,7 +54,6 @@ class _PlaceBidState extends State<PlaceBid> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     cubit.dispose();
@@ -87,18 +87,19 @@ class _PlaceBidState extends State<PlaceBid> {
 
     Widget balanceWidget() {
       return StreamBuilder<double>(
-          stream: cubit.balanceStream,
-          builder: (context, snapshot) {
-            return Text(
-              '${S.current.your_balance} ${snapshot.data} '
-              '${widget.nftOnAuction.tokenSymbol}',
-              style: textNormalCustom(
-                Colors.white.withOpacity(0.7),
-                14,
-                FontWeight.w400,
-              ),
-            );
-          });
+        stream: cubit.balanceStream,
+        builder: (context, snapshot) {
+          return Text(
+            '${S.current.your_balance} ${snapshot.data} '
+            '${widget.nftOnAuction.tokenSymbol}',
+            style: textNormalCustom(
+              Colors.white.withOpacity(0.7),
+              14,
+              FontWeight.w400,
+            ),
+          );
+        },
+      );
     }
 
     Widget _yourBid() => Align(
@@ -147,10 +148,15 @@ class _PlaceBidState extends State<PlaceBid> {
                 cubit.warnSink.add('');
                 bidValue = value;
                 cubit.btnSink.add(true);
-                //nftDetailBloc.bidValue = double.parse(value);
               } else if (cubit.balanceValue > double.parse(value) &&
                   double.parse(value) < bid) {
                 cubit.warnSink.add(S.current.you_must_bid_greater);
+                cubit.btnSink.add(false);
+              } else if (cubit.balanceValue > double.parse(value) &&
+                  double.parse(value) > bid &&
+                  double.parse(value) !=
+                      bid + (widget.nftOnAuction.priceStep ?? 0)) {
+                cubit.warnSink.add(S.current.you_must_bid_equal);
                 cubit.btnSink.add(false);
               } else {
                 cubit.btnSink.add(false);
@@ -306,7 +312,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    cubit.bidNftRequest(
+                                    cubit.bidRequest(
                                       BidNftRequest(
                                         widget.marketId,
                                         double.parse(bidValue),
@@ -411,7 +417,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   ),
                                   onSuccessSign: (context, data) {
                                     Navigator.pop(context);
-                                    cubit.buyOutRequest(
+                                    cubit.buyRequest(
                                       BuyOutRequest(
                                         widget.marketId,
                                         data,
@@ -541,7 +547,8 @@ class _PlaceBidState extends State<PlaceBid> {
         isImage: true,
         text: ImageAssets.ic_close,
         onRightClick: () {
-          Navigator.pop(context);
+          Navigator.popUntil(
+              context, (route) => route.settings.name == AppRouter.listNft);
         },
         child: Container(
           padding: EdgeInsets.only(

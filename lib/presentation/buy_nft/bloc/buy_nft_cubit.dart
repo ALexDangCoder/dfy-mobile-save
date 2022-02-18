@@ -6,6 +6,7 @@ import 'package:Dfy/data/request/buy_nft_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -168,8 +169,15 @@ class BuyNftCubit extends BaseCubit<BuyNftState> {
     }
   }
 
-  Future<void> buyNftRequest(BuyNftRequest buyNftRequest) async {
-    showLoading();
-    await nftRepo.buyNftRequest(buyNftRequest);
+  Future<void> buyNftReq(BuyNftRequest buyNftRequest) async {
+    final result = await nftRepo.buyNftRequest(buyNftRequest);
+    result.when(
+      success: (success) {},
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          buyNftReq(buyNftRequest);
+        }
+      },
+    );
   }
 }

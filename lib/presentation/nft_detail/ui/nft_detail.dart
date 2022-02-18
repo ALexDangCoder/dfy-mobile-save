@@ -163,12 +163,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context,
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
-                if(snapshot.hasData){
+                if (snapshot.hasData) {
                   return EvaluationTab(
                     evaluation: snapshot.data ?? Evaluation(),
                   );
-                }
-                else {
+                } else {
                   return SizedBox(
                     height: 100.h,
                     child: Center(
@@ -446,6 +445,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   void dispose() {
     bloc.close();
     _tabController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -618,8 +618,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           children: [
                             Text(
                               !snapshot.data!
-                                  ? S.current.view_less
-                                  : S.current.view_more,
+                                  ? S.current.see_less
+                                  : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,
@@ -636,7 +636,6 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                                   ? ImageAssets.ic_collapse_svg
                                   : ImageAssets.ic_expand_svg,
                             ),
-
                           ],
                         ),
                       ),
@@ -792,8 +791,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           children: [
                             Text(
                               !snapshot.data!
-                                  ? S.current.view_less
-                                  : S.current.view_more,
+                                  ? S.current.see_less
+                                  : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,
@@ -965,8 +964,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           children: [
                             Text(
                               !snapshot.data!
-                                  ? S.current.view_less
-                                  : S.current.view_more,
+                                  ? S.current.see_less
+                                  : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,
@@ -1168,8 +1167,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           children: [
                             Text(
                               !snapshot.data!
-                                  ? S.current.view_less
-                                  : S.current.view_more,
+                                  ? S.current.see_less
+                                  : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,
@@ -1178,14 +1177,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                             ),
                             SizedBox(
                               width: 13.15.w,
-                            ),sizedSvgImage(
+                            ),
+                            sizedSvgImage(
                               w: 14,
                               h: 14,
                               image: !snapshot.data!
                                   ? ImageAssets.ic_collapse_svg
                                   : ImageAssets.ic_expand_svg,
                             ),
-
                           ],
                         ),
                       ),

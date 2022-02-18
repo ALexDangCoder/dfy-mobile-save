@@ -61,7 +61,7 @@ class _CreateSuccessfullyState extends State<CreateSuccessfully> {
               context,
               MaterialPageRoute(
                 builder: (context) => MainScreen(
-                  index: 1,
+                  index: walletInfoIndex,
                   wallet: widget.wallet,
                 ),
               ),

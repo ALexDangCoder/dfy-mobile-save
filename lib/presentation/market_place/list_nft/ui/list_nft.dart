@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
@@ -13,7 +14,7 @@ import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +118,9 @@ class _ListNftState extends State<ListNft> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_collection,
+              ),
               builder: (context) {
                 return CreateCollectionScreen(
                   bloc: CreateCollectionCubit(),
@@ -129,6 +133,9 @@ class _ListNftState extends State<ListNft> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_nft,
+              ),
               builder: (context) {
                 return CreateNFTScreen(
                   cubit: CreateNftCubit(),

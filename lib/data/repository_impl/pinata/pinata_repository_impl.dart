@@ -1,4 +1,5 @@
-import 'package:Dfy/data/request/collection/create_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/create_hard_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/create_soft_collection_ipfs_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_ipfs_request.dart';
 import 'package:Dfy/data/response/pinata/pinata_response.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -15,7 +16,8 @@ class PinataRepositoryImpl implements PinataRepository {
 
   @override
   Future<Result<PinataModel>> createSoftNftPinJsonToIpfs(
-      CreateSoftNftIpfsRequest request) {
+    CreateSoftNftIpfsRequest request,
+  ) {
     return runCatchingAsync<PinataResponse, PinataModel>(
       () => _client.createSoftNftPinJsonToIpfs(request),
       (response) => response.toModel(),
@@ -23,11 +25,22 @@ class PinataRepositoryImpl implements PinataRepository {
   }
 
   @override
-  Future<Result<PinataModel>> createCollectionPinJsonToIpfs(
-      CreateCollectionIpfsRequest request) {
+  Future<Result<PinataModel>> createSoftCollectionPinJsonToIpfs(
+    CreateSoftCollectionIpfsRequest request,
+  ) {
     return runCatchingAsync<PinataResponse, PinataModel>(
-      () => _client.createCollectionPinJsonToIpfs(request),
+      () => _client.createSoftCollectionPinJsonToIpfs(request),
       (response) => response.toModel(),
+    );
+  }
+
+  @override
+  Future<Result<PinataModel>> createHardCollectionPinJsonToIpfs(
+    CreateHardCollectionIpfsRequest request,
+  ) {
+    return runCatchingAsync<PinataResponse, PinataModel>(
+          () => _client.createHardCollectionPinJsonToIpfs(request),
+          (response) => response.toModel(),
     );
   }
 }

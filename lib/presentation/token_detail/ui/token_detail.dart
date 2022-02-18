@@ -10,7 +10,7 @@ import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/blur_popup/blur_overlay.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/cupertino.dart';

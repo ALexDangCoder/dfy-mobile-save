@@ -100,7 +100,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MainScreen(
-                            index: 1,
+                            index: walletInfoIndex,
                             wallet: wallet,
                           ),
                         ),
@@ -110,7 +110,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MainScreen(
-                            index: 1,
+                            index: walletInfoIndex,
                             wallet: wallet,
                           ),
                         ),

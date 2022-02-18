@@ -3,9 +3,11 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/list_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
@@ -153,9 +155,19 @@ class _EvaluationResultState extends State<EvaluationResult> {
               stepCreate: '4',
             )
           else
-            const CircleStepCreateNft(
-              circleStatus: CircleStatus.IS_CREATING,
-              stepCreate: '4',
+            IconButton(
+              onPressed: () {
+                goTo(
+                  context,
+                  ReceiveHardNFTScreen(
+                    assetId: widget.assetID,
+                  ),
+                );
+              },
+              icon: const CircleStepCreateNft(
+                circleStatus: CircleStatus.IS_CREATING,
+                stepCreate: '4',
+              ),
             ),
         ],
       ),

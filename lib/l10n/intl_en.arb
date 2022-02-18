@@ -107,8 +107,8 @@
   "put_on_market": "Put on market",
   "contract_interaction": "Contract interaction",
   "create_collateral": "Create collateral",
-  "view_more": "See more",
-  "view_less": "See less",
+  "see_more": "See more",
+  "see_less": "See less",
   "show_qr_code": "Show QR code",
   "copy": "Copy Successfully",
   "token_successfully": "Import Token successfully",
@@ -383,7 +383,6 @@
   "maximum_len": "Maximum length allowed is 255 characters",
   "only_digits": "Only accept digits",
   "max_royalty": "Maximum royalty allowed is 50%",
-  "see_more": "See more",
   "activity_bid": "bid",
   "activity_bought": "bought",
   "activity_bought_out": "bought out",
@@ -504,6 +503,7 @@
   "you_enter_balance": "You enter greater than the total balance ",
   "you_must_bid": "You must be enter your bid",
   "you_must_bid_greater": "You must bid greater than current price",
+  "you_must_bid_equal": "You must bid equal price step",
   "item_price": "Item price",
   "address": "Address",
   "start_in": "Start In",
@@ -737,5 +737,8 @@
   "phone": "Phone",
   "collections": "Collections",
   "login_expired": "Login session has expired. Please log in again",
-  "you_have_try_more_than_5":"You have tried wrong more than 5 times. Please try again in 30 seconds."
+  "you_have_try_more_than_5":"You have tried wrong more than 5 times. Please try again in 30 seconds.",
+  "login_expired": "Login session has expired. Please log in again",
+  "transaction_failed": "Transaction failed",
+  "warning_send_offer": "You are submitting an offer to a NFT that has not been evaluated by DeFi For You. The value of this NFT may not be guaranteed. Please consider the risks carefully when submitting an offer."
 }

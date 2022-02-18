@@ -12,11 +12,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ConnectEmailDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
   final Widget? navigationTo;
+  final RouteSettings? settings;
 
-  const ConnectEmailDialog({
-    Key? key,
-    this.navigationTo,
-  }) : super(key: key);
+  const ConnectEmailDialog({Key? key, this.navigationTo, this.settings})
+      : super(key: key);
 
   @override
   State<ConnectEmailDialog> createState() => _ConnectEmailDialogState();
@@ -136,6 +135,7 @@ class _ConnectEmailDialogState extends State<ConnectEmailDialog> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
+                                    settings: widget.settings,
                                     builder: (context) => widget.navigationTo!,
                                   ),
                                 );

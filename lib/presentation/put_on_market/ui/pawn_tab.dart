@@ -145,8 +145,9 @@ class _PawnTabState extends State<PawnTab>
                     .map(
                       (e) => SizedBox(
                         height: 64,
-                        width: 70,
+                        width: 100,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Flexible(
                               child: Image.network(
@@ -218,7 +219,7 @@ class _PawnTabState extends State<PawnTab>
                 typeInput: [
                   SizedBox(
                     height: 40,
-                    width: 70,
+                    width: 100,
                     child: Center(
                       child: Text(
                         S.current.week,
@@ -232,7 +233,7 @@ class _PawnTabState extends State<PawnTab>
                   ),
                   SizedBox(
                     height: 40,
-                    width: 70,
+                    width: 100,
                     child: Center(
                       child: Text(
                         S.current.month,

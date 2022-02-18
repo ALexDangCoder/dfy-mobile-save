@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/generated/l10n.dart';
@@ -71,54 +72,73 @@ extension PickFileExtension on CreateNftCubit {
     validateCreate();
   }
 
-  Future<void> pickImageIos() async {
+  Future<void> pickImage({bool isMainMedia = false}) async {
     collectionMessSubject.sink.add('');
-    final String _path = await pickImageFunc(
+    final _fileMap = await pickImageFunc(
       imageType: FEATURE_PHOTO,
       tittle: 'Pick Image',
       needCrop: false,
     );
+    final _path = _fileMap.getStringValue(PATH_OF_FILE);
     if (_path.isNotEmpty) {
-      final _imageSize = File(_path).readAsBytesSync().lengthInBytes;
-      if (_imageSize / 1048576 < 50) {
-        mediaType = MEDIA_IMAGE_FILE;
-        mediaFileSubject.sink.add(mediaType);
-        mediaFileUploadTime = ipfsService.uploadTimeCalculate(_imageSize);
-        imageFileSubject.sink.add(_path);
-        createNftMapCheck[MEDIA_KEY] = true;
+      final _imageSize = _fileMap.intValue(SIZE_OF_FILE);
+      final _extension = _fileMap.getStringValue(EXTENSION_OF_FILE);
+      log('SIZE: $_imageSize - EXTENSION: $_extension - PATH: $_path');
+      if (isMainMedia) {
+        if(_imageSize / 1048576 < 50){
+          fileType = '$MEDIA_IMAGE_FILE/$_extension';
+          mediaFilePath = _path;
+          mediaType = MEDIA_IMAGE_FILE;
+          mediaFileSubject.sink.add(mediaType);
+          mediaFileUploadTime = ipfsService.uploadTimeCalculate(_imageSize);
+          imageFileSubject.sink.add(_path);
+          createNftMapCheck[MEDIA_KEY] = true;
+        }
+        else {
+          collectionMessSubject.sink.add(S.current.maximum_file_size);
+          createNftMapCheck[MEDIA_KEY] = false;
+        }
       } else {
-        collectionMessSubject.sink.add(S.current.maximum_file_size);
-        createNftMapCheck[MEDIA_KEY] = false;
+        if(_imageSize / 1048576 < 50){
+          coverPhotoPath = _path;
+          coverFileSize = _imageSize;
+          coverPhotoSubject.sink.add(_path);
+          createNftMapCheck[COVER_PHOTO_KEY] = true;
+        }
+        else {
+          createNftMapCheck[COVER_PHOTO_KEY] = false;
+          coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
+        }
       }
     }
     validateCreate();
   }
 
-  Future<void> pickCoverPhoto() async {
-    coverPhotoMessSubject.sink.add('');
-    final Map<String, dynamic> mediaFile = await pickMediaFile(
-      type: PickerType.IMAGE_FILE,
-    );
-    final _path = mediaFile.getStringValue(PATH_OF_FILE);
-    if (_path.isNotEmpty) {
-      final _isValidFormat = mediaFile.getBoolValue(VALID_FORMAT_OF_FILE);
-      coverFileSize = mediaFile.intValue(SIZE_OF_FILE);
-      if (coverFileSize / 1000000 > 50) {
-        createNftMapCheck[COVER_PHOTO_KEY] = false;
-        coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
-      } else if (!_isValidFormat) {
-        createNftMapCheck[COVER_PHOTO_KEY] = false;
-        coverPhotoMessSubject.sink.add(S.current.invalid_file_format);
-      } else {
-        createNftMapCheck[COVER_PHOTO_KEY] = true;
-        coverPhotoPath = _path;
-        coverPhotoSubject.sink.add(coverPhotoPath);
-      }
-    } else {
-      createNftMapCheck[COVER_PHOTO_KEY] = false;
-    }
-    validateCreate();
-  }
+  // Future<void> pickCoverPhoto() async {
+  //   coverPhotoMessSubject.sink.add('');
+  //   final Map<String, dynamic> mediaFile = await pickMediaFile(
+  //     type: PickerType.IMAGE_FILE,
+  //   );
+  //   final _path = mediaFile.getStringValue(PATH_OF_FILE);
+  //   if (_path.isNotEmpty) {
+  //     final _isValidFormat = mediaFile.getBoolValue(VALID_FORMAT_OF_FILE);
+  //     coverFileSize = mediaFile.intValue(SIZE_OF_FILE);
+  //     if (coverFileSize / 1000000 > 50) {
+  //       createNftMapCheck[COVER_PHOTO_KEY] = false;
+  //       coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
+  //     } else if (!_isValidFormat) {
+  //       createNftMapCheck[COVER_PHOTO_KEY] = false;
+  //       coverPhotoMessSubject.sink.add(S.current.invalid_file_format);
+  //     } else {
+  //       createNftMapCheck[COVER_PHOTO_KEY] = true;
+  //       coverPhotoPath = _path;
+  //       coverPhotoSubject.sink.add(coverPhotoPath);
+  //     }
+  //   } else {
+  //     createNftMapCheck[COVER_PHOTO_KEY] = false;
+  //   }
+  //   validateCreate();
+  // }
 
   Future<void> controlAudio({bool needStop = false}) async {
     if (needStop) {
@@ -139,8 +159,8 @@ extension PickFileExtension on CreateNftCubit {
     coverPhotoMessSubject.sink.add('');
     coverPhotoSubject.sink.add(coverPhotoPath);
     createNftMapCheck[COVER_PHOTO_KEY] = false;
-    validateCreate();
     coverFileSize = 0;
+    validateCreate();
   }
 
   void clearMediaFile() {

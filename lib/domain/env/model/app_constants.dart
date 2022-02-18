@@ -28,6 +28,24 @@ class AppConstants {
   @JsonKey(name: 'bsc_scan')
   String bscScan;
 
+  @JsonKey(name: 'nft_sales_address')
+  String nftSalesAddress;
+
+  @JsonKey(name: 'nft_factory')
+  String nftFactory;
+
+  @JsonKey(name: 'nft_auction')
+  String nftAuction;
+
+  @JsonKey(name: 'nft_pawn')
+  String nftPawn;
+
+  @JsonKey(name: 'hard_nft_factory')
+  String hardNftFactory;
+
+  @JsonKey(name: 'eva')
+  String eva;
+
   AppConstants(
     this.type,
     this.baseUrl,
@@ -37,6 +55,12 @@ class AppConstants {
     this.rpcUrl,
     this.chaninId,
     this.bscScan,
+    this.nftSalesAddress,
+    this.nftFactory,
+    this.nftAuction,
+    this.nftPawn,
+    this.hardNftFactory,
+    this.eva,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>

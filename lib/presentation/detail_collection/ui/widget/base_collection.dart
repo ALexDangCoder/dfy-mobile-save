@@ -1,3 +1,4 @@
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
@@ -56,6 +57,9 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_collection,
+              ),
               builder: (context) {
                 return CreateCollectionScreen(
                   bloc: CreateCollectionCubit(),
@@ -65,9 +69,13 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
           );
         },
         nftCallBack: () {
+
           Navigator.push(
             context,
             MaterialPageRoute(
+              settings: const RouteSettings(
+                name: AppRouter.create_nft,
+              ),
               builder: (context) {
                 return CreateNFTScreen(
                   cubit: CreateNftCubit(),

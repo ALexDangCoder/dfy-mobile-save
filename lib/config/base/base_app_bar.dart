@@ -13,6 +13,8 @@ class BaseAppBar extends SliverAppBar {
     Key? key,
     required String image,
     required String title,
+    BoxFit? fit,
+    String? placeholderImage,
     required double initHeight,
     required Widget leading,
     required List<Widget> actions,
@@ -24,6 +26,8 @@ class BaseAppBar extends SliverAppBar {
             title: title,
             image: image,
             initHeight: initHeight,
+            placeholderImage:  placeholderImage,
+            fit: fit,
             typeImage: typeImage ?? TypeImage.IMAGE,
           ),
           expandedHeight: initHeight,
@@ -40,9 +44,12 @@ class BaseSpace extends StatefulWidget {
     required this.image,
     required this.initHeight,
     required this.typeImage,
+    this.fit, this.placeholderImage,
   }) : super(key: key);
   final String title;
   final String image;
+  final String? placeholderImage;
+  final BoxFit? fit;
   final double initHeight;
   final TypeImage typeImage;
 
@@ -56,7 +63,7 @@ class _BaseSpaceState extends State<BaseSpace> {
   @override
   void initState() {
     super.initState();
-    if(widget.typeImage == TypeImage.VIDEO){
+    if (widget.typeImage == TypeImage.VIDEO) {
       _controller = VideoPlayerController.network(widget.image);
       _controller!.addListener(() {
         setState(() {});
@@ -69,7 +76,7 @@ class _BaseSpaceState extends State<BaseSpace> {
 
   @override
   void dispose() {
-    if(widget.typeImage == TypeImage.VIDEO){
+    if (widget.typeImage == TypeImage.VIDEO) {
       _controller!.dispose();
     }
     super.dispose();
@@ -134,6 +141,8 @@ class _BaseSpaceState extends State<BaseSpace> {
             child: (widget.typeImage == TypeImage.IMAGE)
                 ? CustomImageNetwork(
                     image: widget.image,
+                    fit: widget.fit,
+                    placeholderImage: widget.placeholderImage,
                   )
                 : VideoPlayer(_controller!),
           ),

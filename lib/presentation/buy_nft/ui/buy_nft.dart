@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
@@ -12,13 +13,12 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/widgets/approve/bloc/approve_cubit.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
 import 'package:Dfy/widgets/base_items/base_success.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
-import 'package:Dfy/widgets/common_bts/base_bottom_sheet.dart';
+import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/form/form_without_prefix.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -336,7 +336,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.buyNftRequest(
+                    cubit.buyNftReq(
                       BuyNftRequest(
                         widget.marketId,
                         widget.nftMarket.nftStandard == ERC_721
@@ -454,6 +454,9 @@ class _BuyNFTState extends State<BuyNFT> {
           textEmpty: '',
           child: BaseDesignScreen(
             isImage: true,
+            onRightClick: () {
+              Navigator.popUntil(context, (route) => route.settings.name == AppRouter.listNft);
+            },
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',
             child: Column(

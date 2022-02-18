@@ -129,14 +129,15 @@ class DetailHardNftResponse {
       return TypeImage.VIDEO;
     }
   }
-
   MarketType getTypeMarket(int type) {
     if (type == 2) {
       return MarketType.AUCTION;
     } else if (type == 3) {
       return MarketType.PAWN;
-    } else {
+    } else if(type == 1){
       return MarketType.SALE;
+    } else {
+      return MarketType.NOT_ON_MARKET;
     }
   }
 
