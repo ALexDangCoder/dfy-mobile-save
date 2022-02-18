@@ -18,9 +18,7 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
-import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/bloc/bloc_create_book_evaluation.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
@@ -172,7 +170,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         } else {
           assetCid = res.assetCid ?? '';
           beAssetId = assetId;
-          expectingPrice = res.expectingPrice.toString() ?? '';
+          expectingPrice = res.expectingPrice.toString();
           expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
           collectionStandard = res.collection?.collectionType?.standard ?? 0;
           collectionAsset = res.collection?.walletAddress ?? '';
