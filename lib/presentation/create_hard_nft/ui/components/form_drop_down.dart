@@ -63,6 +63,7 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
+                      value as Map<String, dynamic>;
                       cubit.dataStep1.conditionNft.id =
                           int.tryParse(value['value']);
                       cubit.dataStep1.conditionNft.name = value['label'];
@@ -153,14 +154,13 @@ class FormDropDown extends StatelessWidget {
                   resultMainAxis: MainAxisAlignment.start,
                   dropdownList: snapshot.data ?? [],
                   onChange: (value) {
-                    if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
-                      cubit.getCitiesApi(value['value']);
-                      // cubit.dataStep1.country.id = value['value'];
-                      cubit.dataStep1.country.name = value['label'];
-                      cubit.mapValidate['country'] = true;
-                      cubit.mapValidate['city'] = false;
-                      cubit.validateAll();
-                    } else {}
+                    value as Map<String, dynamic>;
+                    cubit.mapValidate['country'] = true;
+                    cubit.mapValidate['city'] = false;
+                    cubit.getCitiesApi(value['value']);
+                    cubit.dataStep1.country.id = value['value'];
+                    cubit.dataStep1.country.name = value['label'];
+                    cubit.validateAll();
                   },
                   dropdownItemHeight: 54.h,
                   dropdownHeight: cubit.countries.isEmpty ? 54.h : 232.h,
@@ -241,6 +241,7 @@ class FormDropDown extends StatelessWidget {
             );
           } else if (cubit.checkMapListContainsObj(
               mapList: snapshot.data ?? [], valueNeedCheck: 'none')) {
+            cubit.mapValidate['city'] = true;
             return Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -478,15 +479,16 @@ class FormDropDown extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         onChange: (value) {
-                          // cubit.dataStep1.phoneCodeModel.id =
-                          //     int.tryParse(value['value']);
-                          cubit.dataStep1.phoneCodeModel.code = value['label'];
+                          value as Map<String, dynamic>;
                           cubit.mapValidate['phone'] = true;
+                          cubit.dataStep1.phoneCodeModel.id =
+                              value['id'];
+                          cubit.dataStep1.phoneCodeModel.code = value['code'];
                         },
                       ),
                       Positioned(
                         top: 0.h,
-                        left: 60.w,
+                        left: 70.w,
                         child: SizedBox(
                           height: 60.h,
                           child: sizedSvgImage(

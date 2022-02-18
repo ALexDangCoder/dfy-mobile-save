@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -45,6 +46,7 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
     }
     _filePath = result.files.single.path ?? '';
     _fileSize = result.files.single.size;
+    log ('------------ ${result.files.single.identifier} -----------');
   } else {
     // User canceled the picker
   }
