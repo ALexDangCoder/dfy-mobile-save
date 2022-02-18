@@ -81,7 +81,7 @@ class _CollectionListState extends State<CollectionList> {
     collectionBloc = CollectionBloc(widget.typeScreen);
 
     if (widget.addressWallet?.isNotEmpty ?? false) {
-      collectionBloc.addressWallet = widget.addressWallet.toLowerCase();
+      collectionBloc.addressWallet = widget.addressWallet?.toLowerCase();
       collectionBloc.textAddressFilter.add((widget.addressWallet ?? '').toLowerCase());
     } else {
       if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
