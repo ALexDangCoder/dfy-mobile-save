@@ -1,9 +1,9 @@
-import 'package:Dfy/data/response/create_hard_nft/create_evaluation_response.dart';
+
 
 class CreateEvaluationModel {
   int? status;
   String? id;
-  AssetResponse? asset;
+  AssetCreateModel? asset;
   String? evaluatorId;
   int? appointmentTime;
   int? acceptedTime;
@@ -43,7 +43,7 @@ class CreateEvaluationModel {
 class AssetCreateModel {
   String? id;
   int? status;
-  AssetTypeRespone? assetType;
+  AssetTypeCreateModel? assetType;
   String? contactName;
 
   AssetCreateModel({

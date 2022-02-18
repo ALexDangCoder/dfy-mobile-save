@@ -29,7 +29,7 @@ class CollectionMarketModel {
     this.collectionId,
   });
 
-  Map<String, dynamic> toDropDownMap(){
+  Map<String, dynamic> toDropDownMap() {
     return {
       'label': name,
       'value': addressCollection,
@@ -41,7 +41,7 @@ class CollectionMarketModel {
         height: 28.h,
         width: 28.h,
         child: CachedNetworkImage(
-          imageUrl: ApiConstants.BASE_URL_IMAGE+(avatarCid??''),
+          imageUrl: ApiConstants.BASE_URL_IMAGE + (avatarCid ?? ''),
           placeholder: (context, url) => const CircularProgressIndicator(),
         ),
       ),

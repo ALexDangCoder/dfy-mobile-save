@@ -15,7 +15,6 @@ import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:video_player/video_player.dart';
 
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
@@ -58,11 +57,11 @@ class _NFTItemState extends State<NFTItemWidget> {
         // value: 1642558260000,
       );
       countdownController = CountdownTimerController(
-        endTime: endTimeAuction!.millisecondsSinceEpoch,
+        endTime: endTimeAuction?.millisecondsSinceEpoch ?? 0,
       );
 
       coutdownStartTime = CountdownTimerController(
-        endTime: startTimeAuction!.millisecondsSinceEpoch,
+        endTime: startTimeAuction?.millisecondsSinceEpoch ?? 0,
       );
 
       ///set time show text start in when auction not start yet
@@ -174,19 +173,6 @@ class _NFTItemState extends State<NFTItemWidget> {
                                     imageCacheHeight: 200,
                                     placeholderCacheHeight: 50,
                                     fit: BoxFit.cover,
-                                    imageErrorBuilder: (context, url, error) {
-                                      return Center(
-                                        child: Text(
-                                          S.current.unload_image,
-                                          style: textNormalCustom(
-                                            Colors.white,
-                                            14,
-                                            FontWeight.w400,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      );
-                                    },
                                   ),
                           ),
                         ),

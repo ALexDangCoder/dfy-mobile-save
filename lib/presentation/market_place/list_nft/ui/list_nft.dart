@@ -396,6 +396,8 @@ class _ListNftState extends State<ListNft> {
                     ),
                     maxLength: 255,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      isCollapsed: true,
                       counterText: '',
                       hintText: S.current.name_of_nft,
                       hintStyle: textNormal(

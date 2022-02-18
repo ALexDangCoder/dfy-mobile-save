@@ -1,5 +1,3 @@
-
-
 class CollectionDetailModel {
   String? id;
   String? name;
