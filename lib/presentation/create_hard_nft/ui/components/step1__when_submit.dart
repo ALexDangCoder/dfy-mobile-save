@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -15,6 +14,8 @@ import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+
+import 'package:path/path.dart';
 
 enum NFT_TYPE {
   JEWELRY,
@@ -111,7 +112,10 @@ class Step1WhenSubmit extends StatelessWidget {
               ),
             ),
             //todo WIDGET ẢNH
-            UploadImageWidget(cubit: cubit,showAddMore: false,),
+            UploadImageWidget(
+              cubit: cubit,
+              showAddMore: false,
+            ),
             spaceH32,
             textShowWithPadding(
               textShow: S.current.documents,
@@ -301,9 +305,8 @@ class Step1WhenSubmit extends StatelessWidget {
             ),
             spaceH15,
             informationContactWidget(
-              title:
-                  '${cubit.dataStep1.phoneCodeModel.code} '
-                      '${cubit.dataStep1.phoneContact}',
+              title: '${cubit.dataStep1.phoneCodeModel.code} '
+                  '${cubit.dataStep1.phoneContact}',
               image: ImageAssets.callStep1,
             ),
             spaceH15,
