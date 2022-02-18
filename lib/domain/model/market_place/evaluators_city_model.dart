@@ -1,5 +1,3 @@
-import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
-
 class EvaluatorsCityModel {
   String? id;
   String? name;
@@ -7,7 +5,7 @@ class EvaluatorsCityModel {
   int? starCount;
   int? reviewsCount;
   int? evaluatedCount;
-  List<AcceptedAssetTypeResponse>? listAcceptedAssetType;
+  List<AcceptedAssetType>? listAcceptedAssetType;
   String? description;
   double? locationLat;
   double? locationLong;

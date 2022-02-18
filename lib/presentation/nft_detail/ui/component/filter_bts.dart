@@ -381,6 +381,8 @@ class _FilterBtsState extends State<FilterBts> {
                     ),
                     maxLength: 255,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      isCollapsed: true,
                       counterText: '',
                       hintText: S.current.search,
                       hintStyle: textNormal(

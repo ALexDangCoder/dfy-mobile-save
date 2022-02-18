@@ -101,7 +101,7 @@ class CreateItemResponse extends Equatable {
         evaluationFee: evaluationFee,
         acceptedTime: acceptedTime,
         appointmentTime: appointmentTime,
-        asset: asset,
+        asset: asset?.toDomain(),
         bcAppointmentId: bcAppointmentId,
         bcTxnHash: bcTxnHash,
         collectionType: collectionType,
@@ -142,7 +142,7 @@ class AssetResponse extends Equatable {
 
   AssetCreateModel toDomain() => AssetCreateModel(
         id: id,
-        assetType: assetType,
+        assetType: assetType?.toDomain(),
         contactName: contactName,
         status: status,
       );
