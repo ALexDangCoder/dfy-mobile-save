@@ -182,7 +182,7 @@ class _PlaceBidState extends State<PlaceBid> {
           },
           formatter: [
             FilteringTextInputFormatter.allow(
-              fiveDecimal,
+              RegExp(r'^\d+\.?\d{0,5}'),
             ),
           ],
           hintText: S.current.your_bid,
