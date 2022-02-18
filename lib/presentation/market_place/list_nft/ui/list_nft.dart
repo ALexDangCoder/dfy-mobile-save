@@ -119,7 +119,7 @@ class _ListNftState extends State<ListNft> {
             context,
             MaterialPageRoute(
               settings: const RouteSettings(
-                name: AppRouter.collectionList,
+                name: AppRouter.create_collection,
               ),
               builder: (context) {
                 return CreateCollectionScreen(

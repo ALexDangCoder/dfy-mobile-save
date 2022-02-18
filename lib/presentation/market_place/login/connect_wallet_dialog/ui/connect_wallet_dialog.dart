@@ -300,6 +300,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
               );
             } else {
               return WalletDialogWhenLoggedCore(
+                settings: widget.settings,
                 cubit: cubit,
                 wallet: cubit.wallet ?? Wallet(),
                 navigationTo: widget.navigationTo,

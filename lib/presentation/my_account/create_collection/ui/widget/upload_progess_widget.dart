@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' hide log;
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
@@ -80,7 +81,7 @@ class _UploadProgressState extends State<UploadProgress>
                     .then(
                       (value) => navigator.popUntil(
                         (route) =>
-                            route.isFirst,
+                            route.settings.name == AppRouter.create_collection,
                       ),
                     )
                     .then(
@@ -90,6 +91,7 @@ class _UploadProgressState extends State<UploadProgress>
                             title: S.current.create_collection,
                             content: S.current.create_collection_successfully,
                             callback: () {
+                              navigator.pop();
                               navigator.pop();
                               navigator.push(
                                 MaterialPageRoute(
