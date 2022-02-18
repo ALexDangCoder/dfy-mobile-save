@@ -60,6 +60,7 @@ class CreateCollectionScreen extends StatelessWidget {
                       final list = snapshot.data ?? [];
                       if (list.isNotEmpty) {
                         return GridView.builder(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
@@ -96,6 +97,7 @@ class CreateCollectionScreen extends StatelessWidget {
                       final list = snapshot.data ?? [];
                       if (list.isNotEmpty) {
                         return GridView.builder(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
@@ -118,6 +120,11 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
+                  SizedBox(
+                    height:
+                    (64 + 38 + 24 + MediaQuery.of(context).padding.bottom)
+                        .h,
+                  )
                 ],
               ),
             ),
