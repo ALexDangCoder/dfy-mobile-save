@@ -27,8 +27,8 @@ abstract class CreateHardNFtService {
 
   @GET(ApiConstants.GET_LIST_EVALUATORS_CITY)
   Future<ListEvaluatorsCityResponse> getListEvaluatorsCity(
-      @Query('city_id') int cityId,
-      @Query('asset_type_id') int assetTypeId,
+    @Query('city_id') int cityId,
+    @Query('asset_type_id') int assetTypeId,
   );
 
   @GET(

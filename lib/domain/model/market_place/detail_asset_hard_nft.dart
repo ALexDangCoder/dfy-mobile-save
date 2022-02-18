@@ -119,6 +119,7 @@ class CollectionAssetHardNft {
   bool? isWhitelist;
   String? latitude;
   String? longitude;
+  String? collectionAddress;
 
   CollectionAssetHardNft({
     this.id,
@@ -135,6 +136,7 @@ class CollectionAssetHardNft {
     this.collectionType,
     this.isWhitelist,
     this.latitude,
+    this.collectionAddress,
     this.longitude,
   });
 }
