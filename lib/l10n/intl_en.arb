@@ -379,7 +379,7 @@
   "collection_name": "Collection name",
   "categories": "Categories",
   "royalties": "Royalties",
-  "social_links": "Social link",
+  "social_links": "Social links",
   "maximum_len": "Maximum length allowed is 255 characters",
   "only_digits": "Only accept digits",
   "max_royalty": "Maximum royalty allowed is 50%",
