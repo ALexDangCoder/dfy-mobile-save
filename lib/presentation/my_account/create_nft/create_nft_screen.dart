@@ -78,10 +78,12 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         stream: widget.cubit.listNftSubject,
                         builder: (context, snapshot) {
                           final List<TypeNFTModel> data = snapshot.data ?? [];
-                          final list =
-                              data.where((element) => element.type == 0).toList();
+                          final list = data
+                              .where((element) => element.type == 0)
+                              .toList();
                           if (list.isNotEmpty) {
                             return GridView.builder(
+                              padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
@@ -118,7 +120,6 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                   ),
                   Container(
                     color: Colors.yellowAccent,
-
                     child: StreamBuilder<List<TypeNFTModel>>(
                       stream: widget.cubit.listNftSubject,
                       builder: (context, snapshot) {
@@ -127,6 +128,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                             data.where((element) => element.type == 1).toList();
                         if (list.isNotEmpty) {
                           return GridView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
@@ -161,9 +163,12 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       ),
                     ),
                   ),
+
                   ///Space bottom + space top + height of the button
                   SizedBox(
-                    height: (64 + 38 + 24).h,
+                    height:
+                        (64 + 38 + 24 + MediaQuery.of(context).padding.bottom)
+                            .h,
                   )
                 ],
               ),
