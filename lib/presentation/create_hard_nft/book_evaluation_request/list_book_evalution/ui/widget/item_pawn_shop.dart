@@ -75,6 +75,12 @@ class ItemPawnShop extends StatelessWidget {
                               name: AppRouter.step2Create,
                             ),
                           ),
+                        ).whenComplete(
+                          () {
+                            bloc.getListPawnShop(
+                              assetId: bloc.assetId ?? '',
+                            );
+                          },
                         );
                       }
                     },
@@ -116,6 +122,12 @@ class ItemPawnShop extends StatelessWidget {
                               name: AppRouter.step2Create,
                             ),
                           ),
+                        ).whenComplete(
+                          () {
+                            bloc.getListPawnShop(
+                              assetId: bloc.assetId ?? '',
+                            );
+                          },
                         );
                       }
                     },
@@ -197,7 +209,8 @@ class ItemPawnShop extends StatelessWidget {
                   child: bloc.isDetail
                       ? InkWell(
                           onTap: () {
-                            Navigator.of(context).push(
+                            Navigator.of(context)
+                                .push(
                               HeroDialogRoute(
                                 builder: (context) {
                                   return DialogReasonDetail(
@@ -208,6 +221,13 @@ class ItemPawnShop extends StatelessWidget {
                                 },
                                 isNonBackground: false,
                               ),
+                            )
+                                .whenComplete(
+                              () {
+                                bloc.getListPawnShop(
+                                  assetId: bloc.assetId ?? '',
+                                );
+                              },
                             );
                           },
                           child: Text(
@@ -248,7 +268,14 @@ class ItemPawnShop extends StatelessWidget {
                               (value) => bloc.getListPawnShop(
                                 assetId: bloc.assetId ?? '',
                               ),
+                            )
+                            .whenComplete(
+                          () {
+                            bloc.getListPawnShop(
+                              assetId: bloc.assetId ?? '',
                             );
+                          },
+                        );
                       }
                     },
                     child: Container(
