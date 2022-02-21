@@ -1,3 +1,4 @@
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -56,24 +57,26 @@ class ItemPawnShop extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateBookEvaluation(
-                            isSuccess: bloc.isSuccess.value,
-                            appointmentList: bloc.appointmentList,
-                            idEvaluation: appointment.evaluator?.id ?? '',
-                            type: bloc.checkStatus(
-                              appointment.evaluator?.id ?? '',
+                      if (!isLoading) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateBookEvaluation(
+                              isSuccess: bloc.isSuccess.value,
+                              appointmentList: bloc.appointmentList,
+                              idEvaluation: appointment.evaluator?.id ?? '',
+                              type: bloc.checkStatus(
+                                appointment.evaluator?.id ?? '',
+                              ),
+                              date: appointment.appointmentTime,
+                              assetId: bloc.assetId ?? '',
                             ),
-                            date: appointment.appointmentTime,
-                            assetId: bloc.assetId ?? '',
+                            settings: const RouteSettings(
+                              name: AppRouter.step2Create,
+                            ),
                           ),
-                          settings: const RouteSettings(
-                            name: AppRouter.step2Create,
-                          ),
-                        ),
-                      );
+                        );
+                      }
                     },
                     child: Container(
                       height: 46.h,
@@ -95,24 +98,26 @@ class ItemPawnShop extends StatelessWidget {
                   spaceW8,
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateBookEvaluation(
-                            isSuccess: bloc.isSuccess.value,
-                            appointmentList: bloc.appointmentList,
-                            idEvaluation: appointment.evaluator?.id ?? '',
-                            type: bloc.checkStatus(
-                              appointment.evaluator?.id ?? '',
+                      if (!isLoading) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateBookEvaluation(
+                              isSuccess: bloc.isSuccess.value,
+                              appointmentList: bloc.appointmentList,
+                              idEvaluation: appointment.evaluator?.id ?? '',
+                              type: bloc.checkStatus(
+                                appointment.evaluator?.id ?? '',
+                              ),
+                              date: appointment.appointmentTime,
+                              assetId: bloc.assetId ?? '',
                             ),
-                            date: appointment.appointmentTime,
-                            assetId: bloc.assetId ?? '',
+                            settings: const RouteSettings(
+                              name: AppRouter.step2Create,
+                            ),
                           ),
-                          settings: const RouteSettings(
-                            name: AppRouter.step2Create,
-                          ),
-                        ),
-                      );
+                        );
+                      }
                     },
                     child: Text(
                       appointment.evaluator?.name ?? '',
@@ -165,11 +170,11 @@ class ItemPawnShop extends StatelessWidget {
                         alignment: PlaceholderAlignment.middle,
                         child: bloc.isLoadingText
                             ? Container(
-                                width: 18.w,
-                                height: 18.h,
+                                width: 14.w,
+                                height: 14.h,
                                 margin: EdgeInsets.only(right: 10.w),
                                 child: const CircularProgressIndicator(
-                                  color: Colors.white,
+                                  color: amountColor,
                                   strokeWidth: 2,
                                 ),
                               )

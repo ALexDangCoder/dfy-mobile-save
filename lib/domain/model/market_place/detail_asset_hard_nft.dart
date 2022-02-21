@@ -23,7 +23,6 @@ class DetailAssetHardNft {
   String? bcTxnHash;
   String? assetCid;
   NFTAssetHard? nftAssetHard;
-
   int? ipfsStatus;
   int? bcAssetId;
 

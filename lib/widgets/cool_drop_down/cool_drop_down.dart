@@ -114,7 +114,6 @@ class CoolDropdown extends StatefulWidget {
   }) :super(key: key){
     // 기본값 셋팅
     if (defaultValue != null) {
-      print('.. $defaultValue');
       this.defaultValue = defaultValue;
     } else {
       this.defaultValue = {};

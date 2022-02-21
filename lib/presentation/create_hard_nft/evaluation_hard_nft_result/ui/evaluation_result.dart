@@ -142,21 +142,21 @@ class _EvaluationResultState extends State<EvaluationResult> {
           const SuccessCkcCreateNft(),
           if (widget.isSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
           if (!widget.isSuccess)
-            const CircleStepCreateNft(
+            CircleStepCreateNft(
               circleStatus: CircleStatus.IS_CREATING,
-              stepCreate: '3',
+              stepCreate: S.current.step3,
             )
           else
             const SuccessCkcCreateNft(),
           dividerCreateNFT,
           if (!widget.isSuccess)
-            const CircleStepCreateNft(
+            CircleStepCreateNft(
               circleStatus: CircleStatus.IS_NOT_CREATE,
-              stepCreate: '4',
+              stepCreate: S.current.step4,
             )
           else
-            IconButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 goTo(
                   context,
                   ReceiveHardNFTScreen(
@@ -164,9 +164,9 @@ class _EvaluationResultState extends State<EvaluationResult> {
                   ),
                 );
               },
-              icon: const CircleStepCreateNft(
+              child: CircleStepCreateNft(
                 circleStatus: CircleStatus.IS_CREATING,
-                stepCreate: '4',
+                stepCreate: S.current.step4,
               ),
             ),
         ],
