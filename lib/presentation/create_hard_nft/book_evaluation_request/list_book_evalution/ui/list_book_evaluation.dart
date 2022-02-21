@@ -58,7 +58,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              //todo add event
+              Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.create_nft,
+              );
             },
             title: S.current.book_evaluation_request,
             child: RefreshIndicator(
