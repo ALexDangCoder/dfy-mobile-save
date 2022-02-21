@@ -47,8 +47,8 @@ class PutHardNftItemResponse extends Equatable {
   Map<String, dynamic> toJson() => _$PutHardNftItemResponseToJson(this);
 
   PutHardNftModel toModel() => PutHardNftModel(
-        id,
-        status,
+        id: id,
+        status: status,
       );
 
   @override
