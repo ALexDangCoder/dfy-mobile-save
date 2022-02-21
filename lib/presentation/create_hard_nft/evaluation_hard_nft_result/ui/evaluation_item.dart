@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -35,8 +36,13 @@ class EvaluationItem extends StatelessWidget {
               bcEvaluationId: evaluationResult.bcEvaluationID ?? '0',
               assetID: assetID,
             ),
+            settings: const RouteSettings(
+              name: AppRouter.step3ListEvaluation,
+            ),
           ),
-        );
+        ).whenComplete(() {
+          cubit.getListEvaluationResult(assetID);
+        });
       },
       child: Container(
         width: 343.w,
@@ -156,23 +162,26 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.you_have,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.ACCEPTED,
-                style: textNormal(
+                style: textNormalCustom(
                   successTransactionColor,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.a_hard_nft_evaluation,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
@@ -185,9 +194,10 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.your_hard_NFT_has_been,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
@@ -199,23 +209,26 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.you_have,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.REJECTED,
-                style: textNormal(
+                style: textNormalCustom(
                   failTransactionColor,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.a_hard_nft_evaluation,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
