@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomForm extends StatelessWidget {
@@ -12,6 +13,7 @@ class CustomForm extends StatelessWidget {
     this.suffix,
     this.isSelectNumPrefix,
     required this.inputType,
+    this.formatter,
   }) : super(key: key);
   final Function(String value) textValue;
   final String hintText;
@@ -19,6 +21,7 @@ class CustomForm extends StatelessWidget {
   final Widget? suffix;
   final TextInputType? inputType;
   final bool? isSelectNumPrefix;
+  final List<TextInputFormatter>? formatter;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,7 @@ class CustomForm extends StatelessWidget {
         onChanged: (value) {
           textValue(value);
         },
+        inputFormatters: formatter,
         keyboardType: inputType,
         textAlignVertical: TextAlignVertical.center,
         cursorColor: AppTheme.getInstance().textThemeColor(),

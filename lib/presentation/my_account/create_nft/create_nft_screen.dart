@@ -70,34 +70,36 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                     ),
                   ),
                   StreamBuilder<List<TypeNFTModel>>(
-                      stream: widget.cubit.listNftSubject,
-                      builder: (context, snapshot) {
-                        final List<TypeNFTModel> data = snapshot.data ?? [];
-                        final list =
-                            data.where((element) => element.type == 0).toList();
-                        if (list.isNotEmpty) {
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 16,
-                              crossAxisSpacing: 16,
-                              childAspectRatio: 3.w / 4.h,
-                            ),
-                            itemBuilder: (context, index) {
-                              return nftItem(
-                                context: context,
-                                typeNFTModel: list[index],
-                              );
-                            },
-                            itemCount: list.length,
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      }),
+                    stream: widget.cubit.listNftSubject,
+                    builder: (context, snapshot) {
+                      final List<TypeNFTModel> data = snapshot.data ?? [];
+                      final list =
+                          data.where((element) => element.type == 0).toList();
+                      if (list.isNotEmpty) {
+                        return GridView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 3.w / 4.h,
+                          ),
+                          itemBuilder: (context, index) {
+                            return nftItem(
+                              context: context,
+                              typeNFTModel: list[index],
+                            );
+                          },
+                          itemCount: list.length,
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
                   Container(
                     margin: EdgeInsets.only(
                       bottom: 16.h,
@@ -115,6 +117,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                           data.where((element) => element.type == 1).toList();
                       if (list.isNotEmpty) {
                         return GridView.builder(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
@@ -145,10 +148,11 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       fontSize: 14,
                     ),
                   ),
-
                   ///Space bottom + space top + height of the button
                   SizedBox(
-                    height: (64 + 38 + 24).h,
+                    height:
+                        (64 + 38 + 24 + MediaQuery.of(context).padding.bottom)
+                            .h,
                   )
                 ],
               ),
@@ -177,7 +181,12 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         ),
                       );
                     } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const OnBoardingScreen()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const OnBoardingScreen(),
+                        ),
+                      );
                     }
                   }
                 },

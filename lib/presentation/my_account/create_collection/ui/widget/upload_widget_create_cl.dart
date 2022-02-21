@@ -24,7 +24,7 @@ class UploadCreateCollection extends StatelessWidget {
       children: [
         spaceH22,
         Text(
-          S.current.upload_cover_photo,
+          S.current.upload_cover_photo.toUpperCase(),
           style: uploadText,
         ),
         spaceH22,

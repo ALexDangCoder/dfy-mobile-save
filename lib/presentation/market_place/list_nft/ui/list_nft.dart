@@ -9,12 +9,13 @@ import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart'
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
-import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/filter_bts.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/error_nft_collection_explore/error_load_nft.dart';
 import 'package:Dfy/widgets/floating_button/ui/float_btn_add.dart';
 import 'package:Dfy/widgets/skeleton/skeleton_nft.dart';
 import 'package:flutter/material.dart';
@@ -206,8 +207,7 @@ class _ListNftState extends State<ListNft> {
                                   child: RefreshIndicator(
                                     onRefresh: () async {
                                       FocusScope.of(context).unfocus();
-                                      if(controller.text.isEmpty){
-
+                                      if (controller.text.isEmpty) {
                                         _cubit.refreshPosts(
                                           widget.pageRouter,
                                         );
@@ -240,7 +240,7 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(top: 555.h),
+                                                EdgeInsets.only(top: 595.h),
                                             child: Center(
                                               child: SizedBox(
                                                 height: 16.h,
@@ -287,14 +287,43 @@ class _ListNftState extends State<ListNft> {
                                 );
                               }
                             } else if (state is ListNftError) {
-                              return Container();
+                              return Expanded(
+                                child: StaggeredGridView.countBuilder(
+                                  shrinkWrap: true,
+                                  mainAxisSpacing: 20.h,
+                                  itemCount: 6,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisCount: 2,
+                                  itemBuilder: (
+                                    BuildContext context,
+                                    int index,
+                                  ) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 16.w,
+                                      ),
+                                      child: ErrorLoadNft(
+                                        callback: () {
+                                          _cubit.refreshPosts(
+                                            widget.pageRouter,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  staggeredTileBuilder: (int index) {
+                                    return const StaggeredTile.fit(1);
+                                  },
+                                ),
+                              );
                             } else if (state is ListNftLoading) {
                               return Expanded(
                                 child: StaggeredGridView.countBuilder(
                                   shrinkWrap: true,
                                   mainAxisSpacing: 20.h,
                                   itemCount: 6,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   crossAxisCount: 2,
                                   itemBuilder: (
                                     BuildContext context,
@@ -367,6 +396,8 @@ class _ListNftState extends State<ListNft> {
                     ),
                     maxLength: 255,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      isCollapsed: true,
                       counterText: '',
                       hintText: S.current.name_of_nft,
                       hintStyle: textNormal(

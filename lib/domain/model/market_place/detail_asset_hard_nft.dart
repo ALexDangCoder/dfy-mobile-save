@@ -1,42 +1,36 @@
-import 'package:Dfy/data/response/create_hard_nft/detail_asset_hard_nft_response.dart';
-import 'package:Dfy/data/response/nft/evaluation_response.dart';
-import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 
 class DetailAssetHardNft {
   String? id;
   int? status;
-  ContactCountryResponse? assetType;
+  ContactCountryAssetHardNft? assetType;
   String? walletAddress;
   double? expectingPrice;
   String? name;
   String? expectingPriceSymbol;
-  List<AdditionalInfoResponse>? additionalInformation;
+  String? additionalInformation;
   String? contactName;
   String? contactEmail;
   String? contactAddress;
-  ContactPhoneCodeResponse? contactPhoneCode;
+  ContactPhoneCodeAssetHardNft? contactPhoneCode;
   String? contactPhone;
-  ContactCountryResponse? contactCountry;
-  ContactCityResponse? contactCity;
+  ContactCountryAssetHardNft? contactCountry;
+  ContactCityAssetHardNft? contactCity;
   String? requestId;
   int? displayStatus;
-  CollectionResponse? collection;
-  ContactCountryResponse? condition;
-  List<MediaFeatDocumentListResponse>? mediaList;
-  List<MediaFeatDocumentListResponse>? documentList;
+  CollectionAssetHardNft? collection;
+  ContactCountryAssetHardNft? condition;
+  List<MediaListAssetHardNft>? mediaList;
   String? bcTxnHash;
   String? assetCid;
+  NFTAssetHard? nftAssetHard;
+
   int? ipfsStatus;
   int? bcAssetId;
-  NFTResponse? nftAssetHard;
-
 
   DetailAssetHardNft({
     this.id,
     this.status,
     this.assetType,
-    this.ipfsStatus,
-    this.bcAssetId,
     this.walletAddress,
     this.expectingPrice,
     this.name,
@@ -56,6 +50,8 @@ class DetailAssetHardNft {
     this.mediaList,
     this.bcTxnHash,
     this.assetCid,
+    this.ipfsStatus,
+    this.bcAssetId,
     this.nftAssetHard,
   });
 }
@@ -118,7 +114,7 @@ class CollectionAssetHardNft {
   String? bcTxnHash;
   String? collectionCid;
   String? walletAddress;
-  CollectionTypeRespone? collectionType;
+  CollectionTypeAssetHardNft? collectionType;
   bool? isWhitelist;
   String? latitude;
   String? longitude;
@@ -176,12 +172,12 @@ class ContactCityAssetHardNft {
   });
 }
 
-class MediaFeatDocumentAssetHardNft {
+class MediaListAssetHardNft {
   String? name;
   String? type;
   String? cid;
 
-  MediaFeatDocumentAssetHardNft({
+  MediaListAssetHardNft({
     this.name,
     this.type,
     this.cid,

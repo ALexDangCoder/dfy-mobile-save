@@ -201,7 +201,8 @@ class _SearchNFTState extends State<SearchNFT> {
                         16.sp,
                       ),
                       decoration: InputDecoration(
-                        contentPadding:  const EdgeInsets.only(bottom: 8.0),
+                        isCollapsed: true,
+                        contentPadding:   EdgeInsets.zero,
                         hintText: S.current.search,
                         hintStyle: textNormal(
                           Colors.white54,
