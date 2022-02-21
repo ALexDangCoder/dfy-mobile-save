@@ -46,7 +46,7 @@ abstract class Step1Client {
       '${ApiConstants.PUT_HARD_NFT_PREFIX}{id}${ApiConstants.PUT_HARD_NFT_SUFFIX}')
   Future<PutHardNftResponse> putHardNftBeforeConfirm(
     @Path('id') String id,
-    @Body() BcTxnHashModel bcTxnHash,
+    @Body() Map<String, dynamic> bcTxnHashJson,
   );
 
   @GET('${ApiConstants.GET_DETAIL_ASSETS_HARD_NFT}{asset_id}')

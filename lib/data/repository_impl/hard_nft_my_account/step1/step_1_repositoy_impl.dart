@@ -86,10 +86,10 @@ class Step1RepositoryImpl implements Step1Repository {
   @override
   Future<Result<PutHardNftModel>> getResponseAfterPut(
     String id,
-    BcTxnHashModel bcTxnHash,
+    Map<String, dynamic> bcTxnHashJson,
   ) {
     return runCatchingAsync<PutHardNftResponse, PutHardNftModel>(
-      () => _step1client.putHardNftBeforeConfirm(id, bcTxnHash),
+      () => _step1client.putHardNftBeforeConfirm(id, bcTxnHashJson),
       (response) => response.toModel() ?? PutHardNftModel(),
     );
   }

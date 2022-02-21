@@ -30,6 +30,6 @@ mixin Step1Repository {
 
   Future<Result<PutHardNftModel>> getResponseAfterPut(
     String id,
-    BcTxnHashModel bcTxnHash,
+    Map<String, dynamic> bcTxnHashJson,
   );
 }

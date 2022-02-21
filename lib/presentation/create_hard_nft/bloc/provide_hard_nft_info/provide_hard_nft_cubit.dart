@@ -162,11 +162,15 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   String assetId = '';
   PutHardNftModel resultAfterPut = PutHardNftModel();
   BcTxnHashModel bcTxnHashModel = BcTxnHashModel(bc_txn_hash: '');
-  Future<void> putHardNftBeforeConfirm(String id, BcTxnHashModel bcTxnHash) async {
-    final result = await _step1Repository.getResponseAfterPut(id, bcTxnHash);
+
+  Future<void> putHardNftBeforeConfirm(
+      String id, BcTxnHashModel bcTxnHash) async {
+    final result = await _step1Repository.getResponseAfterPut(
+      id,
+      bcTxnHash.toJson(),
+    );
     result.when(
-      success: (response) {
-      },
+      success: (response) {},
       error: (err) {},
     );
   }
@@ -646,7 +650,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
-    print('validateeee ${mapValidate}');
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
