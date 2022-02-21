@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -35,8 +36,13 @@ class EvaluationItem extends StatelessWidget {
               bcEvaluationId: evaluationResult.bcEvaluationID ?? '0',
               assetID: assetID,
             ),
+            settings: const RouteSettings(
+              name: AppRouter.step3ListEvaluation,
+            ),
           ),
-        );
+        ).whenComplete(() {
+          cubit.getListEvaluationResult(assetID);
+        });
       },
       child: Container(
         width: 343.w,

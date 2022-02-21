@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
@@ -212,12 +213,11 @@ Widget _buildButtonReject(
             await cubit.rejectEvaluationToBE(
                 bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
             showLoadSuccess(context).then(
-              (value) => goTo(
-                context,
-                EvaluationResult(
-                  assetID: assetID,
-                ),
-              ),
+              (value) => Navigator.of(context)
+                  .popUntil((route) {
+                return route.settings.name ==
+                    AppRouter.step3ListEvaluation;
+                }),
             );
           },
           onErrorSign: (context) {
@@ -276,13 +276,11 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
             await cubit.acceptEvaluationToBE(
                 bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
             showLoadSuccess(context).then(
-              (value) => goTo(
-                context,
-                EvaluationResult(
-                  assetID: assetID,
-                  isSuccess: true,
-                ),
-              ),
+              (value) => Navigator.of(context)
+                  .popUntil((route) {
+                return route.settings.name ==
+                    AppRouter.step3ListEvaluation;
+              }),
             );
           },
           onErrorSign: (context) {

@@ -20,6 +20,7 @@ class AppRouter {
   static const putOnSale = '/put_on_market';
   static const step2Book = '/book_evaluation';
   static const step2ListBook = '/book_evaluation';
+  static const step3ListEvaluation = '/list_evaluation';
   static const step2Create = '/book_evaluation';
   static const listNft = '/listNft';
   static const create_collection = '/create_collection';
