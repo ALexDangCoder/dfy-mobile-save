@@ -134,8 +134,14 @@ class _PlaceBidState extends State<PlaceBid> {
       );
     }
 
-    void handleValue(String value, double bid, double balance, double priceStep,
-        double buyOut, String shortName) {
+    void handleValue(
+      String value,
+      double bid,
+      double balance,
+      double priceStep,
+      double buyOut,
+      String shortName,
+    ) {
       if (value.isNotEmpty) {
         final yourBid = double.parse(value);
         if (balance > bid) {
@@ -147,11 +153,13 @@ class _PlaceBidState extends State<PlaceBid> {
             cubit.btnSink.add(false);
           } else if (yourBid == buyOut) {
             cubit.warnSink.add(S.current.you_bid_equal);
+            bidValue = value;
             cubit.btnSink.add(true);
           } else if (yourBid > buyOut) {
             cubit.warnSink.add(
-                '${S.current.your_bid_is}${ yourBid - buyOut} $shortName${S.current.higher_than}');
+                '${S.current.your_bid_is}${yourBid - buyOut} $shortName${S.current.higher_than}');
             cubit.btnSink.add(true);
+            bidValue = value;
           } else {
             cubit.warnSink.add('');
             bidValue = value;
