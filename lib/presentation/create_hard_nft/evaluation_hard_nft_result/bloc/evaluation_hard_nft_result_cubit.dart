@@ -33,8 +33,10 @@ class EvaluationHardNftResultCubit
   static const oneSec = Duration(seconds: 30);
   bool cancelTimer = false;
 
+  late Timer timerReload;
+
   void reloadAPI(String assetID) {
-    Timer.periodic(
+    timerReload = Timer.periodic(
       oneSec,
       (Timer timer) {
         getListEvaluationResult(assetID);

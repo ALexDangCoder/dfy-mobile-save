@@ -41,8 +41,8 @@ class _EvaluationResultState extends State<EvaluationResult> {
 
   @override
   void dispose() {
-    cubit.cancelTimer = true;
     cubit.close();
+    cubit.timerReload.cancel();
     super.dispose();
   }
 
