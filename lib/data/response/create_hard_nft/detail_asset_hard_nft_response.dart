@@ -343,7 +343,7 @@ class CollectionTypeResponse {
   );
 
   factory CollectionTypeResponse.fromJson(Map<String, dynamic> json) =>
-      _$CollectionTypeResponeFromJson(json);
+      _$CollectionTypeResponseFromJson(json);
 
   CollectionTypeAssetHardNft toDomain() => CollectionTypeAssetHardNft(
         id: id,
