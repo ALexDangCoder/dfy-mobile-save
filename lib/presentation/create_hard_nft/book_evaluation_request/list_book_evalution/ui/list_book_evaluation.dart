@@ -178,8 +178,14 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                       ),
                     ),
                   ).then(
-                    (value) => _bloc.appointmentList.clear(),
-                  );
+                    (value) {
+                      _bloc.appointmentList.clear();
+                    },
+                  ).whenComplete(() {
+                    _bloc.getListPawnShop(
+                      assetId: widget.assetId,
+                    );
+                  });
                 }
               },
               child: Container(
