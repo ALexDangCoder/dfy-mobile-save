@@ -20,6 +20,7 @@ class BlocListBookEvaluation {
   static const int ACCEPTED = 7;
   static const int SUCCESS = 9;
   static const int CANCELLED = 5;
+  late Timer timeReload;
 
   List<AppointmentModel> appointmentList = [];
 
@@ -64,12 +65,16 @@ class BlocListBookEvaluation {
 
   void reloadAPI() {
     const oneSec = Duration(seconds: 30);
-    Timer.periodic(
+    timeReload = Timer.periodic(
       oneSec,
       (Timer timer) {
         getListPawnShop(assetId: assetId ?? '');
       },
     );
+  }
+
+  void closeReload(){
+    timeReload.cancel();
   }
 
   Future<void> getDetailAssetHardNFT({
@@ -142,8 +147,8 @@ class BlocListBookEvaluation {
 
   bool checkStatusList() {
     for (final AppointmentModel value in listPawnShop.value) {
-        if (checkIsLoading(value.status ?? 0)) {
-          return false;
+      if (checkIsLoading(value.status ?? 0)) {
+        return false;
       }
     }
     return true;

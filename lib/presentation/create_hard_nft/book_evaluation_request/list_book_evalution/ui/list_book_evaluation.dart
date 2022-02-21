@@ -39,6 +39,12 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _bloc.closeReload();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
