@@ -42,12 +42,12 @@ class _EvaluationDetailState extends State<EvaluationDetail>
     scrollController = ItemScrollController();
     bloc.getListImage(widget.evaluation);
     bloc.changeImage('');
-    ;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final String time = formatDateTime.format(
       DateTime.fromMillisecondsSinceEpoch(
         widget.evaluation.evaluatedTime ?? 0,
@@ -132,7 +132,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                     child: media?.type == TypeImage.IMAGE
                                         ? PhotoView(
                                             imageProvider: NetworkImage(
-                                                media?.urlImage ?? ''),
+                                                media?.urlImage ?? '',),
                                             minScale: PhotoViewComputedScale
                                                     .contained *
                                                 0.8,
@@ -146,7 +146,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                           ),
                                   ),
                                 );
-                              }));
+                              },),);
                             },
                           ),
                         ),
@@ -206,7 +206,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                 ),
                               ),
                             );
-                          }),
+                          },),
                     ],
                   ),
                   spaceH12,
@@ -255,7 +255,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                     child: GestureDetector(
                       onTap: () {
                         launch(widget.evaluation.document![index].urlDocument ??
-                            '');
+                            '',);
                       },
                       child: Text(
                         widget.evaluation.document![index].name ?? '',
@@ -404,7 +404,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
               sizedSvgImage(w: 16.w, h: 16.h, image: ImageAssets.ic_verify_svg)
             ] else ...[
               sizedSvgImage(
-                  w: 16.w, h: 16.h, image: ImageAssets.ic_transaction_fail_svg)
+                  w: 16.w, h: 16.h, image: ImageAssets.ic_transaction_fail_svg,)
             ],
             spaceW5,
             if (widget.evaluation.authenticityType == 1)
@@ -505,7 +505,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   }
 
   Widget smallImage(
-      {required Media img, required bool isCurrentImg, required int index}) {
+      {required Media img, required bool isCurrentImg, required int index,}) {
     return InkWell(
       onTap: () {
         bloc.changeImage(img.urlImage!);
