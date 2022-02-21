@@ -85,7 +85,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
   late String titleBts;
   late InformationWallet _informationWallet;
   final FormFieldBlockchainCubit cubitFormCustomizeGasFee =
-  FormFieldBlockchainCubit();
+      FormFieldBlockchainCubit();
   late int nonce;
   late double balanceWallet;
   final appConstants = Get.find<AppConstants>();
@@ -159,13 +159,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitSuccess(),
               ),
             ).then(
-                  (value) => Navigator.of(context).pushAndRemoveUntil(
+              (value) => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => const MainScreen(
                     index: walletInfoIndex,
                   ),
                 ),
-                    (route) => route.isFirst,
+                (route) => route.isFirst,
               ),
             );
           } else if (state is FormBlockchainSendNftLoading) {
@@ -184,14 +184,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitFail(),
               ),
-            ).then((value) => Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(
-                  index: walletInfoIndex,
+            ).then(
+              (value) => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(
+                    index: walletInfoIndex,
+                  ),
                 ),
+                (route) => route.isFirst,
               ),
-                  (route) => route.isFirst,
-            ));
+            );
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               barrierDismissible: false,
@@ -261,7 +263,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                           child: Column(
                             children: [
                               if (widget.typeConfirm ==
-                                  TYPE_CONFIRM.SEND_TOKEN ||
+                                      TYPE_CONFIRM.SEND_TOKEN ||
                                   widget.typeConfirm ==
                                       TYPE_CONFIRM.PLACE_BID) ...[
                                 FormAddFtAmount(
@@ -369,13 +371,13 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         .toString(),
                                     amount: (widget.amount).toString(),
                                     tokenAddress:
-                                    widget.modelToken!.tokenAddress,
+                                        widget.modelToken!.tokenAddress,
                                     walletAddress: widget.addressFrom,
                                     chainId: appConstants.chaninId,
                                     symbol:
-                                    widget.modelToken?.nameShortToken ?? '',
+                                        widget.modelToken?.nameShortToken ?? '',
                                     gasFee:
-                                    '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
+                                        '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_NFT:
@@ -387,7 +389,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     fromAddress: widget.addressFrom,
                                     toAddress: widget.addressTo,
                                     contractNft:
-                                    widget.nftInfo?.contract ?? 'contract',
+                                        widget.nftInfo?.contract ?? 'contract',
                                     nonce: nonce.toString(),
                                     gasLimit: double.parse(_txtGasLimit.text)
                                         .toInt()
@@ -398,11 +400,11 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     nftID: widget.nftInfo?.id ?? 'id',
                                     chainId: appConstants.chaninId,
                                     gasFee:
-                                    '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
+                                        '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                     //todo hardcode amount 1
                                     amount: widget.quantity.toString(),
                                     symbol:
-                                    widget.nftInfo?.collectionSymbol ?? '',
+                                        widget.nftInfo?.collectionSymbol ?? '',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_OFFER:

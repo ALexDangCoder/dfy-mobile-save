@@ -70,6 +70,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<CollectionMarketModel> listHardCl = [];
 
   Future<void> postFileMediaFeatDocumentApi() async {
+    emit(CreateStep1Submitting());
     final listCidMedia = [];
     final listCidDocument = [];
     for (final e in listPathImage) {
@@ -152,6 +153,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           assetId = res.id ?? '';
           await getDetailAssetHardNFT(assetId: assetId);
           hexStringWeb3 = await getHexStringFromWeb3();
+          emit(CreateStep1SubmittingSuccess());
         }
       },
       error: (error) {},
@@ -188,7 +190,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         assetCid = res.assetCid ?? '';
         beAssetId = assetId;
         expectingPrice = res.expectingPrice.toString();
-        expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+        expectingPriceAddress = ADDRESS_DFY;
         collectionStandard = res.collection?.collectionType?.standard ?? 0;
         collectionAsset = res.collection?.collectionAddress ?? '';
       },
@@ -520,7 +522,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   Future<void> getListCollection() async {
     final Result<List<CollectionMarketModel>> result =
         await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet(),
+      addressWallet: getAddressWallet().toLowerCase(),
     );
     result.when(
       success: (res) {
@@ -650,6 +652,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
