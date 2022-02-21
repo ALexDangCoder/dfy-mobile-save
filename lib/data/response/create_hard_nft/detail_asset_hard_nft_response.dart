@@ -82,9 +82,9 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'condition')
   ContactCountryResponse? condition;
   @JsonKey(name: 'media_list')
-  List<MediaFeatDocumentListResponse>? mediaList;
+  List<MediaListResponse>? mediaList;
   @JsonKey(name: 'document_list')
-  List<MediaFeatDocumentListResponse>? documentList;
+  List<MediaListResponse>? documentList;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
   @JsonKey(name: 'asset_cid')
@@ -135,7 +135,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         contactName: contactName,
         assetType: assetType?.toDomain(),
         expectingPrice: expectingPrice,
-        additionalInformation: additionInfoList,
+        additionalInformation: additionalInformation,
         assetCid: assetCid,
         bcAssetId: bcAssetId,
         collection: collection?.toDomain(),
@@ -423,7 +423,7 @@ class ContactCityResponse extends Equatable {
 }
 
 @JsonSerializable()
-class MediaFeatDocumentListResponse extends Equatable {
+class MediaListResponse extends Equatable {
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'type')
@@ -431,16 +431,16 @@ class MediaFeatDocumentListResponse extends Equatable {
   @JsonKey(name: 'cid')
   String? cid;
 
-  MediaFeatDocumentListResponse(
+  MediaListResponse(
     this.name,
     this.type,
     this.cid,
   );
 
-  factory MediaFeatDocumentListResponse.fromJson(Map<String, dynamic> json) =>
-      _$MediaFeatDocumentListResponseFromJson(json);
+  factory MediaListResponse.fromJson(Map<String, dynamic> json) =>
+      _$MediaListResponseFromJson(json);
 
-  MediaFeatDocumentAssetHardNft toDomain() => MediaFeatDocumentAssetHardNft(
+  MediaListAssetHardNft toDomain() => MediaListAssetHardNft(
         name: name,
         type: type,
         cid: cid,
