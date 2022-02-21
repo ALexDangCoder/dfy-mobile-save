@@ -73,7 +73,7 @@ class BlocListBookEvaluation {
     );
   }
 
-  void closeReload(){
+  void closeReload() {
     timeReload.cancel();
   }
 
@@ -219,7 +219,7 @@ class BlocListBookEvaluation {
 
   bool checkIsSuccess(List<AppointmentModel> list) {
     for (final AppointmentModel value in list) {
-      if (value.status == ACCEPTED) {
+      if (value.status == ACCEPTED || value.status == SUCCESS) {
         return true;
       }
     }
