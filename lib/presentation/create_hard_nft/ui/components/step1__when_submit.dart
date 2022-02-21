@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import 'package:path/path.dart';
 
 enum NFT_TYPE {
   JEWELRY,
@@ -117,8 +117,11 @@ class Step1WhenSubmit extends StatelessWidget {
                                   builder: (context) {
                                     return ListBookEvaluation(
                                       assetId: cubit.assetId,
-                                    ); //todo data
+                                    );
                                   },
+                                  settings: const RouteSettings(
+                                    name: AppRouter.step2ListBook,
+                                  ),
                                 ),
                               );
                             });

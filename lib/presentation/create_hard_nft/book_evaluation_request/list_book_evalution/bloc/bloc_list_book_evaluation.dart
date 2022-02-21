@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -57,7 +58,7 @@ class BlocListBookEvaluation {
     } else if (S.current.you_have_rejected == status) {
       return AppTheme.getInstance().redMarketColors();
     } else {
-      return AppTheme.getInstance().whiteColor();
+      return amountColor;
     }
   }
 

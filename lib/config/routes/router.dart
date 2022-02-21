@@ -18,6 +18,9 @@ class AppRouter {
   static const scanQR = '/scanQR';
   static const collectionList = '/collection_list';
   static const putOnSale = '/put_on_market';
+  static const step2Book = '/step2_book';
+  static const step2ListBook = '/step2_list_book';
+  static const step2Create = '/step2_create';
   static const step2Book = '/book_evaluation';
   static const step2ListBook = '/book_evaluation';
   static const step3ListEvaluation = '/list_evaluation';
@@ -25,7 +28,6 @@ class AppRouter {
   static const listNft = '/listNft';
   static const create_collection = '/create_collection';
   static const create_nft = '/create_nft';
-
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

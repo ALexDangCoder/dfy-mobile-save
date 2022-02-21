@@ -30,7 +30,7 @@ class ReceiveHardNFTScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReceiveHardNFTCubit cubit = ReceiveHardNFTCubit();
+    final ReceiveHardNFTCubit cubit = ReceiveHardNFTCubit(assetId);
     return BlocBuilder<ReceiveHardNFTCubit, ReceiveHardNFTState>(
       bloc: cubit,
       builder: (BuildContext context, state) {
@@ -66,7 +66,8 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                           typeMarket: status,
                           typeNft: TypeNFT.HARD_NFT,
                           nftId: state.data.nftAssetHard?.nftId,
-                          nftTokenId: state.data.nftAssetHard?.bcTokenId.toString(),
+                          nftTokenId:
+                              state.data.nftAssetHard?.bcTokenId.toString(),
                         ),
                       );
                     },
@@ -162,12 +163,12 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                           width: 20,
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.yellow
-                          ),
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.yellow,),
                           child: Center(
                             child: Text(
-                              (state.data.collection?.name?? '').substring(0, 1),
+                              (state.data.collection?.name ?? '')
+                                  .substring(0, 1),
                               style: textNormalCustom(
                                 Colors.black,
                                 16,
@@ -189,7 +190,8 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                                   ),
                                 ),
                                 WidgetSpan(
-                                  child: (state.data.collection?.isWhitelist ?? false)
+                                  child: (state.data.collection?.isWhitelist ??
+                                          false)
                                       ? Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
@@ -229,13 +231,14 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                           height: 28,
                           width: 28,
                           child: Image.asset(ImageAssets.getSymbolAsset(
-                              state.data.expectingPriceSymbol ?? 'DFY')),
+                              state.data.expectingPriceSymbol ?? 'DFY',),),
                         ),
                         const SizedBox(
                           width: 8,
                         ),
                         Text(
-                          '${formatValue.format(state.data.expectingPrice)} ${state.data.expectingPriceSymbol}',
+                          '${formatValue.format(state.data.expectingPrice)} '
+                              '${state.data.expectingPriceSymbol}',
                           style: style.textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             20,
@@ -406,7 +409,7 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         cubit.getAssetHardNFT(
-                            assetId: '620384b24aec3de4976bbbb5');
+                            assetId: cubit.assetId,);
                       },
                       child: SizedBox(
                         height: 36,
