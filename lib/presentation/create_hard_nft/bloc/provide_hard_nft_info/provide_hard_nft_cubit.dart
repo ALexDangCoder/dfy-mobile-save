@@ -520,7 +520,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   Future<void> getListCollection() async {
     final Result<List<CollectionMarketModel>> result =
         await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet(),
+      addressWallet: getAddressWallet().toLowerCase(),
     );
     result.when(
       success: (res) {
