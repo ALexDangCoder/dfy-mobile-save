@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,6 +35,8 @@ class DetailAssetHardNftResponse extends Equatable {
   List<Object?> get props => [];
 }
 
+
+
 @JsonSerializable()
 class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'id')
@@ -46,6 +49,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? walletAddress;
   @JsonKey(name: 'expecting_price')
   double? expectingPrice;
+  @JsonKey(name: 'additional_info_list')
+  List<AdditionalInfoResponse>? additionInfoList;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'expecting_price_symbol')
@@ -78,6 +83,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   ContactCountryResponse? condition;
   @JsonKey(name: 'media_list')
   List<MediaListResponse>? mediaList;
+  @JsonKey(name: 'document_list')
+  List<MediaListResponse>? documentList;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
   @JsonKey(name: 'asset_cid')
@@ -98,6 +105,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.additionalInformation,
     this.contactName,
     this.contactEmail,
+    this.additionInfoList,
     this.contactAddress,
     this.contactPhoneCode,
     this.contactPhone,
@@ -325,6 +333,7 @@ class CollectionResponse extends Equatable {
         avatarCid: avatarCid,
         collectionCid: collectionCid,
         coverCid: coverCid,
+        collectionAddress: collectionAddress,
         customUrl: customUrl,
         description: description,
         featureCid: featureCid,

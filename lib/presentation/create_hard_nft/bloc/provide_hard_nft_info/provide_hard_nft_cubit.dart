@@ -7,11 +7,14 @@ import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.da
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -142,39 +145,52 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       collection_id: dataStep1.collectionID,
     );
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
-    resultAsset.when(
-      success: (res) {
+    await resultAsset.when(
+      success: (res) async {
         if (res == null) {
         } else {
           assetId = res.id ?? '';
-          getDetailAssetHardNFT(assetId: assetId);
+          await getDetailAssetHardNFT(assetId: assetId);
+          hexStringWeb3 = await getHexStringFromWeb3();
         }
       },
       error: (error) {},
     );
   }
 
+  String hexStringWeb3 = '';
   String assetId = '';
+  PutHardNftModel resultAfterPut = PutHardNftModel();
+  BcTxnHashModel bcTxnHashModel = BcTxnHashModel(bc_txn_hash: '');
+
+  Future<void> putHardNftBeforeConfirm(
+      String id, BcTxnHashModel bcTxnHash) async {
+    final result = await _step1Repository.getResponseAfterPut(
+      id,
+      bcTxnHash.toJson(),
+    );
+    result.when(
+      success: (response) {},
+      error: (err) {},
+    );
+  }
 
   ///
   Future<void> getDetailAssetHardNFT({
     required String assetId,
   }) async {
-    final Result<DetailAssetHardNft> result =
-        await _createHardNFTRepository.getDetailAssetHardNFT(
+    final Result<ItemDataAfterPutModel> result =
+        await _step1Repository.getDetailAssetHardNFT(
       assetId,
     );
     result.when(
       success: (res) {
-        if (res == null) {
-        } else {
-          assetCid = res.assetCid ?? '';
-          beAssetId = assetId;
-          expectingPrice = res.expectingPrice.toString();
-          expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
-          collectionStandard = res.collection?.collectionType?.standard ?? 0;
-          collectionAsset = res.collection?.walletAddress ?? '';
-        }
+        assetCid = res.assetCid ?? '';
+        beAssetId = assetId;
+        expectingPrice = res.expectingPrice.toString();
+        expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+        collectionStandard = res.collection?.collectionType?.standard ?? 0;
+        collectionAsset = res.collection?.collectionAddress ?? '';
       },
       error: (error) {},
     );
@@ -634,7 +650,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
-    print('validateeee ${mapValidate}');
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
