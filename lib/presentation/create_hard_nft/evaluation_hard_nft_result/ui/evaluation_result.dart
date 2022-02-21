@@ -75,7 +75,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
         title: S.current.evaluation_results,
         onRightClick: () {
           Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRouter.create_nft,
+            (route) => route.settings.name == AppRouter.create_nft,
           );
         },
         child: Column(
@@ -139,53 +139,52 @@ class _EvaluationResultState extends State<EvaluationResult> {
       height: 30.h,
       width: 318.w,
       child: StreamBuilder<bool>(
-          stream: cubit.checkAcceptStream,
-          builder: (context, AsyncSnapshot<bool> snapshot) {
-            final isCheckSuccess = snapshot.data ?? false;
-            return Row(
-              children: [
+        stream: cubit.checkAcceptStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          final isCheckSuccess = snapshot.data ?? false;
+          return Row(
+            children: [
+              const SuccessCkcCreateNft(),
+              dividerSuccessCreateNFT,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const SuccessCkcCreateNft(),
+              ),
+              if (isCheckSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
+              if (!isCheckSuccess)
+                const CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_CREATING,
+                  stepCreate: '3',
+                )
+              else
                 const SuccessCkcCreateNft(),
-                dividerSuccessCreateNFT,
-                GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const SuccessCkcCreateNft()),
-                if (isCheckSuccess)
-                  dividerSuccessCreateNFT
-                else
-                  dividerCreateNFT,
-                if (!isCheckSuccess)
-                  const CircleStepCreateNft(
+              dividerCreateNFT,
+              if (!isCheckSuccess)
+                const CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_NOT_CREATE,
+                  stepCreate: '4',
+                )
+              else
+                IconButton(
+                  onPressed: () {
+                    goTo(
+                      context,
+                      ReceiveHardNFTScreen(
+                        assetId: widget.assetID,
+                      ),
+                    );
+                  },
+                  icon: const CircleStepCreateNft(
                     circleStatus: CircleStatus.IS_CREATING,
-                    stepCreate: '3',
-                  )
-                else
-                  const SuccessCkcCreateNft(),
-                dividerCreateNFT,
-                if (!isCheckSuccess)
-                  const CircleStepCreateNft(
-                    circleStatus: CircleStatus.IS_NOT_CREATE,
                     stepCreate: '4',
-                  )
-                else
-                  IconButton(
-                    onPressed: () {
-                      goTo(
-                        context,
-                        ReceiveHardNFTScreen(
-                          assetId: widget.assetID,
-                        ),
-                      );
-                    },
-                    icon: const CircleStepCreateNft(
-                      circleStatus: CircleStatus.IS_CREATING,
-                      stepCreate: '4',
-                    ),
                   ),
-              ],
-            );
-          }),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

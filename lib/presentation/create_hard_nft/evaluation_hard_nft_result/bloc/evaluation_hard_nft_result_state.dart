@@ -22,5 +22,3 @@ class EvaluationResultSuccess extends EvaluationHardNftResultState {
   // TODO: implement props
   List<Object?> get props => [list];
 }
-
-

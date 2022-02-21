@@ -162,23 +162,26 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.you_have,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.ACCEPTED,
-                style: textNormal(
+                style: textNormalCustom(
                   successTransactionColor,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.a_hard_nft_evaluation,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
@@ -191,9 +194,10 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.your_hard_NFT_has_been,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
@@ -205,23 +209,26 @@ class EvaluationItem extends StatelessWidget {
             children: [
               TextSpan(
                 text: S.current.you_have,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.REJECTED,
-                style: textNormal(
+                style: textNormalCustom(
                   failTransactionColor,
                   16,
+                  FontWeight.w600,
                 ),
               ),
               TextSpan(
                 text: S.current.a_hard_nft_evaluation,
-                style: textNormal(
+                style: textNormalCustom(
                   textHistory,
                   16,
+                  FontWeight.w600,
                 ),
               ),
             ],
