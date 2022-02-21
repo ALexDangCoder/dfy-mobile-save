@@ -113,7 +113,6 @@ class _PickTimeState extends State<PickTime> {
                       ),
                       onChanged: (text) {
                         final int hour = int.parse(text) % 100;
-                        print (hour);
                         editHourController
                           ..text = editHourController.text = hour < 10 || hour >= 24
                               ? '0${(int.parse(text) % 10).toString()}'
