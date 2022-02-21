@@ -78,7 +78,11 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
         text: ImageAssets.ic_close,
         isImage: true,
         title: S.current.evaluation_results,
-        onRightClick: () {},
+        onRightClick: () {
+          Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.create_nft,
+          );
+        },
         child: Stack(
           children: [
             Column(

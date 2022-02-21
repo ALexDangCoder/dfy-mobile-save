@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
@@ -72,7 +73,11 @@ class _EvaluationResultState extends State<EvaluationResult> {
         text: ImageAssets.ic_close,
         isImage: true,
         title: S.current.evaluation_results,
-        onRightClick: () {},
+        onRightClick: () {
+          Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.create_nft,
+          );
+        },
         child: Column(
           children: [
             spaceH24,
