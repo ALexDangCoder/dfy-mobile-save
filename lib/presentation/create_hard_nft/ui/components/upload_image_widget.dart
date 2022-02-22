@@ -109,6 +109,7 @@ class UploadImageWidget extends StatelessWidget {
                                   final _controller = snapshot.data;
                                   if (_controller != null) {
                                     return Stack(
+                                      alignment: Alignment.bottomCenter,
                                       children: [
                                         StreamBuilder<bool>(
                                           stream: cubit.playVideoButtonSubject,
