@@ -42,7 +42,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
   // tab pawn
 
   TokenInf? tokenPawn;
-  int? valueTokenInputPawn;
+  double? valueTokenInputPawn;
   int? typeDuration;
   int? valueDuration;
   int quantityPawn = 1;
@@ -151,7 +151,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
     }
   }
 
-  void changeTokenPawn({int? indexToken, int? value}) {
+  void changeTokenPawn({int? indexToken, double? value}) {
     if (indexToken != null) {
       tokenPawn = listToken[indexToken];
     }
@@ -253,15 +253,15 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
     final bool havePriceStep =
         putOnMarketModel.priceStep != null && putOnMarketModel.priceStep != '';
     final Map<String, dynamic> mapRawData = {
-      'buy_out_price': int.parse(putOnMarketModel.buyOutPrice ?? '0'),
+      'buy_out_price': double.parse(putOnMarketModel.buyOutPrice ?? '0'),
       'enable_buy_out_price': haveBuyOutPrice,
       'enable_price_step': havePriceStep,
       'end_time': int.parse(putOnMarketModel.endTime ?? '0'),
       'get_email': true,
       'nft_id': putOnMarketModel.nftId,
       'nft_type': putOnMarketModel.nftType ?? 0,
-      'price_step': int.parse(putOnMarketModel.priceStep ?? '0'),
-      'reserve_price': int.parse(putOnMarketModel.price ?? '0'),
+      'price_step': double.parse(putOnMarketModel.priceStep ?? '0'),
+      'reserve_price': double.parse(putOnMarketModel.price ?? '0'),
       'start_time': int.parse(putOnMarketModel.startTime ?? '0'),
       'token': putOnMarketModel.tokenAddress,
       'txn_hash': txHash,
@@ -290,7 +290,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       'txn_hash': txHash,
       'nft_type': putOnMarketModel.nftType ?? 0,
       'number_of_copies': putOnMarketModel.numberOfCopies ?? 1,
-      'price': int.parse(putOnMarketModel.price ?? ''),
+      'price': double.parse(putOnMarketModel.price ?? ''),
     };
     final PutOnSaleRequest data = PutOnSaleRequest.fromJson(mapRawData);
     final result = await confirmRepository.putOnSale(data: data);
