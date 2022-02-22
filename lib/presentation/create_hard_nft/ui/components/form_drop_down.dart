@@ -331,7 +331,7 @@ class FormDropDown extends StatelessWidget {
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PRICE) {
       return SizedBox(
-        width: 90.w,
+        width: 100.w,
         child: Center(
           child: Stack(
             children: [
@@ -389,7 +389,7 @@ class FormDropDown extends StatelessWidget {
                 ),
               ),
               Positioned(
-                right: 6.w,
+                right: 13.w,
                 child: SizedBox(
                   height: 60.h,
                   child: sizedSvgImage(
@@ -480,10 +480,11 @@ class FormDropDown extends StatelessWidget {
                         ),
                         onChange: (value) {
                           value as Map<String, dynamic>;
-                          cubit.mapValidate['phone'] = true;
                           cubit.dataStep1.phoneCodeModel.id =
                               value['id'];
                           cubit.dataStep1.phoneCodeModel.code = value['code'];
+                          cubit.mapValidate['phone'] = true;
+                          cubit.validateAll();
                         },
                       ),
                       Positioned(

@@ -70,6 +70,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   List<CollectionMarketModel> listHardCl = [];
 
   Future<void> postFileMediaFeatDocumentApi() async {
+    emit(CreateStep1Submitting());
     final listCidMedia = [];
     final listCidDocument = [];
     for (final e in listPathImage) {
@@ -152,6 +153,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           assetId = res.id ?? '';
           await getDetailAssetHardNFT(assetId: assetId);
           hexStringWeb3 = await getHexStringFromWeb3();
+          emit(CreateStep1SubmittingSuccess());
         }
       },
       error: (error) {},
@@ -188,7 +190,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         assetCid = res.assetCid ?? '';
         beAssetId = assetId;
         expectingPrice = res.expectingPrice.toString();
-        expectingPriceAddress = '0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14';
+        expectingPriceAddress = ADDRESS_DFY;
         collectionStandard = res.collection?.collectionType?.standard ?? 0;
         collectionAsset = res.collection?.collectionAddress ?? '';
       },
@@ -317,7 +319,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAddress(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.address_required;
     } else {
       return null;
@@ -325,7 +327,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateHardNftName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.name_required;
     } else if (value.length > 255) {
       return S.current.maximum_255;
@@ -335,7 +337,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAmountToken(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
@@ -408,7 +410,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
-        // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
         phonesCodeBHVSJ.sink.add([]);
@@ -520,7 +521,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   Future<void> getListCollection() async {
     final Result<List<CollectionMarketModel>> result =
         await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet(),
+      addressWallet: getAddressWallet().toLowerCase(),
     );
     result.when(
       success: (res) {
@@ -647,6 +648,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     'country': false,
     'city': false,
     'phone': false,
+    'collection': false,
   };
 
   void validateAll() {

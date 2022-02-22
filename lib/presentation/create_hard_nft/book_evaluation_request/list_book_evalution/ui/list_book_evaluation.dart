@@ -39,6 +39,12 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _bloc.closeReload();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -52,7 +58,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              //todo add event
+              Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.create_nft,
+              );
             },
             title: S.current.book_evaluation_request,
             child: RefreshIndicator(
@@ -178,8 +186,14 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                       ),
                     ),
                   ).then(
-                    (value) => _bloc.appointmentList.clear(),
-                  );
+                    (value) {
+                      _bloc.appointmentList.clear();
+                    },
+                  ).whenComplete(() {
+                    _bloc.getListPawnShop(
+                      assetId: widget.assetId,
+                    );
+                  });
                 }
               },
               child: Container(
