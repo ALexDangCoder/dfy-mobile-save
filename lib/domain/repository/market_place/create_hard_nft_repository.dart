@@ -1,4 +1,5 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/hard_nft_mint_request.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/market_place/evaluation_result.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
@@ -14,8 +15,8 @@ mixin CreateHardNFTRepository {
   );
 
   Future<Result<List<EvaluatorsCityModel>>> getListAppointmentWithCity(
-      int cityId,
-      int assetTypeId,
+    int cityId,
+    int assetTypeId,
   );
 
   Future<Result<EvaluatorsDetailModel>> getEvaluatorsDetail(
@@ -54,5 +55,13 @@ mixin CreateHardNFTRepository {
 
   Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(
     String assetId,
+  );
+
+  Future<Result<List<MintRequestModel>>> getListMintRequestHardNFT(
+    String name,
+    String status,
+    String assetTypeId,
+    String page,
+    String limit,
   );
 }

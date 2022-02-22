@@ -184,6 +184,7 @@ class _ListNftState extends State<ListNft> {
                         ),
                         child: searchBar(),
                       ),
+                      spaceH16,
                       NotificationListener<ScrollNotification>(
                         onNotification: (ScrollNotification scrollInfo) {
                           if (_cubit.canLoadMoreListNft &&

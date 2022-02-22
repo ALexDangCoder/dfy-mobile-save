@@ -7,8 +7,10 @@ import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/list_mint_request_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/market_place/create_hard_nft_service.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/hard_nft_mint_request.dart';
 import 'package:Dfy/domain/model/market_place/cancel_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
@@ -149,6 +151,26 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
     return runCatchingAsync<DetailAssetHardNftResponse, DetailAssetHardNft>(
       () => _client.getDetailAssetHardNFT(assetId),
       (response) => response.item?.toDomain() ?? DetailAssetHardNft(),
+    );
+  }
+
+  @override
+  Future<Result<List<MintRequestModel>>> getListMintRequestHardNFT(
+    String name,
+    String status,
+    String assetTypeId,
+    String page,
+    String limit,
+  ) {
+    return runCatchingAsync<ListMintRequestResponse, List<MintRequestModel>>(
+      () => _client.getMintRequestHardNFT(
+        name,
+        assetTypeId,
+        status,
+        page,
+        ApiConstants.DEFAULT_NFT_SIZE,
+      ),
+      (response) => response.toDomain() ?? [],
     );
   }
 }
