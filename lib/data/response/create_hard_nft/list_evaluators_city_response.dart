@@ -83,7 +83,7 @@ class EvaluatorsResponse extends Equatable {
         name: name,
         description: description,
         evaluatedCount: evaluatedCount,
-        listAcceptedAssetType: acceptedAssetTypeList,
+        listAcceptedAssetType: acceptedAssetTypeList?.map((e) => e.toDomain()).toList() ?? [],
         reviewsCount: reviewsCount,
         starCount: starCount,
         locationLat: locationLat,

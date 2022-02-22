@@ -1,11 +1,11 @@
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'detail_asset_hard_nft_response.g.dart';
 
 @JsonSerializable()
-class DetailAssetHardNftResponse extends Equatable {
+class DetailAssetHardNftResponse {
   @JsonKey(name: 'rd')
   String? rd;
 
@@ -29,13 +29,10 @@ class DetailAssetHardNftResponse extends Equatable {
       _$DetailAssetHardNftResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$DetailAssetHardNftResponseToJson(this);
-
-  @override
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class ItemDetailAssetHardNftResponse extends Equatable {
+class ItemDetailAssetHardNftResponse {
   @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'status')
@@ -46,6 +43,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? walletAddress;
   @JsonKey(name: 'expecting_price')
   double? expectingPrice;
+  @JsonKey(name: 'additional_info_list')
+  List<AdditionalInfoResponse>? additionInfoList;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'expecting_price_symbol')
@@ -61,7 +60,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'contact_phone_code')
   ContactPhoneCodeResponse? contactPhoneCode;
   @JsonKey(name: 'nft')
-  NFTResponse nftResponse;
+  NFTResponse? nftResponse;
   @JsonKey(name: 'contact_phone')
   String? contactPhone;
   @JsonKey(name: 'contact_country')
@@ -78,6 +77,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   ContactCountryResponse? condition;
   @JsonKey(name: 'media_list')
   List<MediaListResponse>? mediaList;
+  @JsonKey(name: 'document_list')
+  List<MediaListResponse>? documentList;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
   @JsonKey(name: 'asset_cid')
@@ -98,6 +99,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.additionalInformation,
     this.contactName,
     this.contactEmail,
+    this.additionInfoList,
     this.contactAddress,
     this.contactPhoneCode,
     this.contactPhone,
@@ -125,34 +127,30 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         id: id,
         name: name,
         contactName: contactName,
-        assetType: assetType,
+        assetType: assetType?.toDomain(),
         expectingPrice: expectingPrice,
         additionalInformation: additionalInformation,
         assetCid: assetCid,
         bcAssetId: bcAssetId,
-        collection: collection,
-        condition: condition,
+        collection: collection?.toDomain(),
+        condition: condition?.toDomain(),
         contactAddress: contactAddress,
-        contactCity: contactCity,
-        contactCountry: contactCountry,
+        contactCity: contactCity?.toDomain(),
+        contactCountry: contactCountry?.toDomain(),
         contactEmail: contactEmail,
         contactPhone: contactPhone,
-        contactPhoneCode: contactPhoneCode,
+        contactPhoneCode: contactPhoneCode?.toDomain(),
         displayStatus: displayStatus,
         expectingPriceSymbol: expectingPriceSymbol,
         ipfsStatus: ipfsStatus,
-        mediaList: mediaList,
+        mediaList: mediaList?.map((e) => e.toDomain()).toList() ?? [],
         walletAddress: walletAddress,
-        nftAssetHard: nftResponse,
+        nftAssetHard: nftResponse?.toDomain(),
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class ContactPhoneCodeResponse extends Equatable {
+class ContactPhoneCodeResponse {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'name')
@@ -174,15 +172,10 @@ class ContactPhoneCodeResponse extends Equatable {
         name: name,
         code: code,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
-
 @JsonSerializable()
-class NFTResponse extends Equatable {
+class NFTResponse {
   @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'name')
@@ -228,14 +221,10 @@ class NFTResponse extends Equatable {
         nftId: nftId,
         assetId: assetId,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class ContactCountryResponse extends Equatable {
+class ContactCountryResponse {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'name')
@@ -253,14 +242,10 @@ class ContactCountryResponse extends Equatable {
         id: id,
         name: name,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class CollectionResponse extends Equatable {
+class CollectionResponse {
   @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'name')
@@ -284,13 +269,15 @@ class CollectionResponse extends Equatable {
   @JsonKey(name: 'wallet_address')
   String? walletAddress;
   @JsonKey(name: 'collection_type')
-  CollectionTypeRespone? collectionType;
+  CollectionTypeResponse? collectionType;
   @JsonKey(name: 'is_whitelist')
-  bool? isWhitelist;
+  bool? isWhiteList;
   @JsonKey(name: 'latitude')
   String? latitude;
   @JsonKey(name: 'longitude')
   String? longitude;
+  @JsonKey(name: 'collection_address')
+  String? collectionAddress;
 
   CollectionResponse(
     this.id,
@@ -305,8 +292,9 @@ class CollectionResponse extends Equatable {
     this.collectionCid,
     this.walletAddress,
     this.collectionType,
-    this.isWhitelist,
+    this.isWhiteList,
     this.latitude,
+    this.collectionAddress,
     this.longitude,
   );
 
@@ -318,26 +306,23 @@ class CollectionResponse extends Equatable {
         name: name,
         walletAddress: walletAddress,
         bcTxnHash: bcTxnHash,
-        collectionType: collectionType,
+        collectionType: collectionType?.toDomain(),
         avatarCid: avatarCid,
         collectionCid: collectionCid,
         coverCid: coverCid,
+        collectionAddress: collectionAddress,
         customUrl: customUrl,
         description: description,
         featureCid: featureCid,
-        isWhitelist: isWhitelist,
+        isWhitelist: isWhiteList,
         latitude: latitude,
         longitude: longitude,
         royaltyRate: royaltyRate,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class CollectionTypeRespone extends Equatable {
+class CollectionTypeResponse {
   @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'standard')
@@ -349,7 +334,7 @@ class CollectionTypeRespone extends Equatable {
   @JsonKey(name: 'type')
   int? type;
 
-  CollectionTypeRespone(
+  CollectionTypeResponse(
     this.id,
     this.standard,
     this.name,
@@ -357,8 +342,8 @@ class CollectionTypeRespone extends Equatable {
     this.type,
   );
 
-  factory CollectionTypeRespone.fromJson(Map<String, dynamic> json) =>
-      _$CollectionTypeResponeFromJson(json);
+  factory CollectionTypeResponse.fromJson(Map<String, dynamic> json) =>
+      _$CollectionTypeResponseFromJson(json);
 
   CollectionTypeAssetHardNft toDomain() => CollectionTypeAssetHardNft(
         id: id,
@@ -367,14 +352,10 @@ class CollectionTypeRespone extends Equatable {
         standard: standard,
         type: type,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class ContactCityResponse extends Equatable {
+class ContactCityResponse {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'name')
@@ -404,14 +385,10 @@ class ContactCityResponse extends Equatable {
         latitude: latitude,
         countryId: countryId,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }
 
 @JsonSerializable()
-class MediaListResponse extends Equatable {
+class MediaListResponse {
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'type')
@@ -433,8 +410,4 @@ class MediaListResponse extends Equatable {
         type: type,
         cid: cid,
       );
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
 }

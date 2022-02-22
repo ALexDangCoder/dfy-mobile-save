@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:video_player/video_player.dart';
 
 class EvaluationTab extends StatefulWidget {
   final Evaluation evaluation;
@@ -79,11 +78,13 @@ class _EvaluationTabState extends State<EvaluationTab>
                   token: widget.evaluation.urlToken,
                 ),
                 textRow(
-                    name: S.current.depreciation,
-                    value: '${widget.evaluation.depreciationPercent}%'),
+                  name: S.current.depreciation,
+                  value: '${widget.evaluation.depreciationPercent}%',
+                ),
                 textRow(
-                    name: S.current.addition_info,
-                    value: widget.evaluation.additionalInformation ?? ''),
+                  name: S.current.addition_info,
+                  value: widget.evaluation.additionalInformation ?? '',
+                ),
                 Text(
                   S.current.images_videos,
                   style: textNormalCustom(
@@ -124,9 +125,9 @@ class _EvaluationTabState extends State<EvaluationTab>
                                                         TypeImage.IMAGE
                                                     ? PhotoView(
                                                         imageProvider:
-                                                            NetworkImage(media
-                                                                    ?.urlImage ??
-                                                                ''),
+                                                            NetworkImage(
+                                                          media?.urlImage ?? '',
+                                                        ),
                                                         minScale:
                                                             PhotoViewComputedScale
                                                                     .contained *
@@ -181,32 +182,34 @@ class _EvaluationTabState extends State<EvaluationTab>
                                 },
                               ),
                               StreamBuilder<bool>(
-                                  stream: bloc.showNextStream,
-                                  initialData: true,
-                                  builder: (context, snapNext) {
-                                    return Visibility(
-                                      visible: snapNext.data ?? true,
-                                      child: Positioned(
-                                        top: (290.h - 32.h) / 2,
-                                        right: 16.w,
-                                        child: InkWell(
-                                          onTap: () {
-                                            bloc.nextImage();
-                                            scrollController.scrollTo(
-                                              index: bloc.currentIndexImage > 2
-                                                  ? bloc.currentIndexImage - 1
-                                                  : 0,
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                            );
-                                          },
-                                          child: roundButton(
-                                            image: ImageAssets.ic_btn_next_svg,
-                                          ),
+                                stream: bloc.showNextStream,
+                                initialData: true,
+                                builder: (context, snapNext) {
+                                  return Visibility(
+                                    visible: snapNext.data ?? true,
+                                    child: Positioned(
+                                      top: (290.h - 32.h) / 2,
+                                      right: 16.w,
+                                      child: InkWell(
+                                        onTap: () {
+                                          bloc.nextImage();
+                                          scrollController.scrollTo(
+                                            index: bloc.currentIndexImage > 2
+                                                ? bloc.currentIndexImage - 1
+                                                : 0,
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                          );
+                                        },
+                                        child: roundButton(
+                                          image: ImageAssets.ic_btn_next_svg,
                                         ),
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                           spaceH12,
@@ -299,16 +302,6 @@ class _EvaluationTabState extends State<EvaluationTab>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            sizedSvgImage(
-                              w: 14,
-                              h: 14,
-                              image: isShow
-                                  ? ImageAssets.ic_collapse_svg
-                                  : ImageAssets.ic_expand_svg,
-                            ),
-                            SizedBox(
-                              width: 13.15.w,
-                            ),
                             Text(
                               isShow
                                   ? S.current.see_less
@@ -318,6 +311,16 @@ class _EvaluationTabState extends State<EvaluationTab>
                                 16,
                                 FontWeight.w400,
                               ),
+                            ),
+                            SizedBox(
+                              width: 13.15.w,
+                            ),
+                            sizedSvgImage(
+                              w: 14,
+                              h: 14,
+                              image: isShow
+                                  ? ImageAssets.ic_collapse_svg
+                                  : ImageAssets.ic_expand_svg,
                             ),
                           ],
                         ),
@@ -335,8 +338,11 @@ class _EvaluationTabState extends State<EvaluationTab>
     );
   }
 
-  Widget smallImage(
-      {required Media img, required bool isCurrentImg, required int index}) {
+  Widget smallImage({
+    required Media img,
+    required bool isCurrentImg,
+    required int index,
+  }) {
     return InkWell(
       onTap: () {
         bloc.changeImage(img.urlImage!);
@@ -354,19 +360,19 @@ class _EvaluationTabState extends State<EvaluationTab>
         ),
         child: img.type == TypeImage.IMAGE
             ? ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          child: Image.network(
-            img.urlImage!,
-            fit: BoxFit.cover,
-          ),
-        )
+                borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                child: Image.network(
+                  img.urlImage!,
+                  fit: BoxFit.cover,
+                ),
+              )
             : Center(
-          child: Icon(
-            Icons.play_circle_outline_sharp,
-            size: 24.sp,
-            color: Colors.white,
-          ),
-        ),
+                child: Icon(
+                  Icons.play_circle_outline_sharp,
+                  size: 24.sp,
+                  color: Colors.white,
+                ),
+              ),
       ),
     );
   }

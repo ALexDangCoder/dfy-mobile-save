@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -63,8 +64,19 @@ class CategoriesDropDown extends StatelessWidget {
               onChange: (selected) {
                 selected as Map<String, dynamic>;
                 cubit.dataStep1.collection = selected.getStringValue('label');
-                // cubit.voidCheckCollectionId(selected.getStringValue('value'));
-                // cubit.collectionName = selected.getStringValue('label');
+                cubit.dataStep1.addressCollection =
+                    selected.getStringValue('value');
+                if (selected['value'] == ADDRESS_COLLECTION_721) {
+                  cubit.dataStep1.collectionID = selected.getStringValue('id');
+                } else if (selected['value'] == ADDRESS_COLLECTION_1155) {
+                  cubit.dataStep1.collectionID = selected.getStringValue('id');
+                } else {
+                  cubit.dataStep1.collectionID = cubit.getCollectionID(
+                    selected.getStringValue('value'),
+                  );
+                }
+                cubit.mapValidate['collection'] = true;
+                cubit.validateAll();
               },
               resultIcon: Container(
                 margin: EdgeInsets.symmetric(horizontal: 16.w),

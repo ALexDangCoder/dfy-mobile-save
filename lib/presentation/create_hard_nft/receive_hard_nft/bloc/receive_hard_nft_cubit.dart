@@ -9,8 +9,9 @@ import 'package:get/get_instance/src/extension_instance.dart';
 
 class ReceiveHardNFTCubit
     extends BaseCubit<ReceiveHardNFTState> {
-  ReceiveHardNFTCubit() : super(ReceiveHardNFTLoading()){
-    getAssetHardNFT(assetId: '620384b24aec3de4976bbbb5');
+  final String assetId;
+  ReceiveHardNFTCubit(this.assetId) : super(ReceiveHardNFTLoading()){
+    getAssetHardNFT(assetId:assetId);
   }
 
   Future<void> getAssetHardNFT ({

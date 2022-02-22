@@ -23,13 +23,12 @@ class _PickTimeState extends State<PickTime> {
   String checkMiu(String miu) {
     String myMiu = '';
     if (miu.isEmpty) {
-      myMiu =  DateTime.now().minute < 10
+      myMiu = DateTime.now().minute < 10
           ? '0${DateTime.now().minute}'
           : DateTime.now().minute.toString();
     } else {
-      myMiu =  int.parse(miu) < 10
-          ? '0${int.parse(miu)}'
-          : miu.replaceAll(' ', '');
+      myMiu =
+          int.parse(miu) < 10 ? '0${int.parse(miu)}' : miu.replaceAll(' ', '');
     }
     return myMiu;
   }
@@ -37,11 +36,11 @@ class _PickTimeState extends State<PickTime> {
   String checkHour(String hour) {
     String myHour = '';
     if (hour.isEmpty) {
-      myHour =  DateTime.now().hour < 10
-      ? '0${DateTime.now().hour}'
-      : DateTime.now().hour.toString();
+      myHour = DateTime.now().hour < 10
+          ? '0${DateTime.now().hour}'
+          : DateTime.now().hour.toString();
     } else {
-      myHour =  int.parse(hour) < 10
+      myHour = int.parse(hour) < 10
           ? '0${int.parse(hour)}'
           : hour.replaceAll(' ', '');
     }
@@ -53,7 +52,7 @@ class _PickTimeState extends State<PickTime> {
     final TextEditingController editHourController = TextEditingController();
     final TextEditingController editMinuteController = TextEditingController();
     editMinuteController.text = checkMiu(widget.miu ?? '');
-    editHourController.text =checkHour(widget.hour ?? '');
+    editHourController.text = checkHour(widget.hour ?? '');
     return Container(
       constraints: const BoxConstraints(maxWidth: 430),
       width: MediaQuery.of(context).size.width - 64,
@@ -93,18 +92,26 @@ class _PickTimeState extends State<PickTime> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
+                    flex: 15,
                     child: TextField(
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       textAlign: TextAlign.end,
-                      decoration: const InputDecoration(
-                        counter: SizedBox(height: 0),
+                      decoration: InputDecoration(
+                        counterText: '',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: 5),
+                        contentPadding: const EdgeInsets.only(bottom: 4),
+                        suffix: Text(
+                          ':',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().fillColor(),
+                            28,
+                            FontWeight.w600,
+                          ),
+                        ),
                       ),
                       style: textNormalCustom(
                         AppTheme.getInstance().fillColor(),
@@ -113,11 +120,11 @@ class _PickTimeState extends State<PickTime> {
                       ),
                       onChanged: (text) {
                         final int hour = int.parse(text) % 100;
-                        print (hour);
                         editHourController
-                          ..text = editHourController.text = hour < 10 || hour >= 24
-                              ? '0${(int.parse(text) % 10).toString()}'
-                              : hour.toString()
+                          ..text = editHourController.text =
+                              hour < 10 || hour >= 24
+                                  ? '0${(int.parse(text) % 10).toString()}'
+                                  : hour.toString()
                           ..selection = TextSelection.collapsed(
                             offset: editHourController.text.length,
                           );
@@ -125,38 +132,33 @@ class _PickTimeState extends State<PickTime> {
                       controller: editHourController,
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                    child: Text(
-                      ':',
-                      style: textNormalCustom(
-                        fillYellowColor,
-                        28,
-                        FontWeight.w600,
-                      ),
-                    ),
-                  ),
                   Expanded(
+                    flex: 14,
                     child: TextField(
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        counter: SizedBox(height: 0),
+                        counterText: '',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: 5),
+                        contentPadding: EdgeInsets.only(bottom: 4),
+                        prefix: Padding(
+                          padding: EdgeInsets.only(left: 3),
+                        )
                       ),
                       style: textNormalCustom(
                         fillYellowColor,
                         28,
                         FontWeight.w600,
                       ),
+
                       controller: editMinuteController,
                       onChanged: (text) {
                         final int minute = int.parse(text) % 100;
                         editMinuteController
-                          ..text = editMinuteController.text = minute < 10 || minute >= 60
-                              ? '0${(int.parse(text) % 10).toString()}'
-                              : minute.toString()
+                          ..text = editMinuteController.text =
+                              minute < 10 || minute >= 60
+                                  ? '0${(int.parse(text) % 10).toString()}'
+                                  : minute.toString()
                           ..selection = TextSelection.collapsed(
                             offset: editMinuteController.text.length,
                           );

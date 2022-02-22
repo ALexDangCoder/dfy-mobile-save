@@ -24,11 +24,13 @@ class WalletDialogWhenLoggedCore extends StatefulWidget {
     required this.wallet,
     required this.isRequireLoginEmail,
     this.navigationTo,
+    this.settings,
   }) : super(key: key);
   final ConnectWalletDialogCubit cubit;
   final Wallet wallet;
   final Widget? navigationTo;
   final bool isRequireLoginEmail;
+  final RouteSettings? settings;
 
   @override
   State<WalletDialogWhenLoggedCore> createState() =>
@@ -69,7 +71,10 @@ class _WalletDialogWhenLoggedCoreState
             if (widget.navigationTo != null) {
               unawaited(
                 nav.pushReplacement(
-                  MaterialPageRoute(builder: (context) => widget.navigationTo!),
+                  MaterialPageRoute(
+                    settings: widget.settings,
+                    builder: (context) => widget.navigationTo!,
+                  ),
                 ),
               );
               return;
@@ -80,15 +85,16 @@ class _WalletDialogWhenLoggedCoreState
           }
           if (!widget.isRequireLoginEmail) {
             //không yêu cầu login email:
-            nav.pop();
             final bool isNeedShowDialog =
                 PrefsService.getOptionShowDialogConnectEmail();
             if (isNeedShowDialog) {
               if (email.isEmpty) {
+                nav.pop();
                 unawaited(
                   showDialog(
                     context: context,
                     builder: (context) => ConnectEmailDialog(
+                      settings: widget.settings,
                       navigationTo: widget.navigationTo,
                     ),
                   ),
@@ -99,6 +105,7 @@ class _WalletDialogWhenLoggedCoreState
                 unawaited(
                   nav.pushReplacement(
                     MaterialPageRoute(
+                      settings: widget.settings,
                       builder: (context) => widget.navigationTo!,
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -64,8 +65,8 @@ class DetailNftMyAccResponse {
   int? timeDurationType;
   @JsonKey(name: 'time_duration')
   int? timeDuration;
-  @JsonKey(name: 'detail')
-  String? detail;
+  @JsonKey(name: 'description')
+  String? description;
   @JsonKey(name: 'be_id')
   int? beId;
   @JsonKey(name: 'nft_token_id')
@@ -86,6 +87,8 @@ class DetailNftMyAccResponse {
   String? fileType;
   @JsonKey(name: 'process_status')
   int? processStatus;
+  @JsonKey(name: 'properties')
+  List<PropertiesResponse>? properties;
 
   DetailNftMyAccResponse(
     this.id,
@@ -106,7 +109,7 @@ class DetailNftMyAccResponse {
     this.priceSymbol,
     this.timeDurationType,
     this.timeDuration,
-    this.detail,
+    this.description,
     this.beId,
     this.nftTokenId,
     this.marketId,
@@ -164,7 +167,8 @@ class DetailNftMyAccResponse {
         marketId: marketId,
         processStatus: processStatus,
         name: name ?? '',
-        description: detail,
+        description: description,
+        properties: properties?.map((e) => e.toDomain()).toList(),
         owner: walletAddress,
         typeNFT: getTypeNft(typeNft ?? 0),
         txnHash: txnHash,
@@ -183,4 +187,21 @@ class DetailNftMyAccResponse {
         isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
+}
+
+@JsonSerializable()
+class PropertiesResponse {
+  @JsonKey(name: 'key')
+  String key;
+  @JsonKey(name: 'value')
+  String value;
+
+  PropertiesResponse(this.key, this.value);
+
+  factory PropertiesResponse.fromJson(Map<String, dynamic> json) =>
+      _$PropertiesResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PropertiesResponseToJson(this);
+
+  Properties toDomain() => Properties(key, value);
 }

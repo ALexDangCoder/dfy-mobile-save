@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
+import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/core_bc.dart';
@@ -97,7 +98,9 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                 );
                 await showLoadSuccess(context)
                     .then(
-                      (value) => navigator.popUntil((route) => route.isFirst),
+                      (value) => navigator.popUntil(
+                        (route) => route.settings.name == AppRouter.create_nft,
+                      ),
                     )
                     .then(
                       (value) => navigator.push(
@@ -107,12 +110,17 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
                             content: S.current.create_nft_successfully,
                             callback: () {
                               navigator.pop();
+                              navigator.pop();
                               navigator.push(
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      CollectionList(
-                                    typeScreen: PageRouter.MY_ACC,
-                                    addressWallet: widget.cubit.walletAddress,
+                                  settings: const RouteSettings(
+                                    name: AppRouter.listNft,
+                                  ),
+                                  builder: (BuildContext context) => ListNft(
+                                    marketType: MarketType.NOT_ON_MARKET,
+                                    pageRouter: PageRouter.MY_ACC,
+                                    walletAddress: widget.cubit.walletAddress
+                                        .toLowerCase(),
                                   ),
                                 ),
                               );
@@ -145,9 +153,9 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
           ),
         );
       }
-      if (value == 0){
+      if (value == 0) {
         showErrDialog(
-          onCloseDialog: (){
+          onCloseDialog: () {
             Navigator.pop(context);
           },
           context: context,

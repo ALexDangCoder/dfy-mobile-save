@@ -70,7 +70,7 @@ Widget _nameNFT({
           ],
         ),
         Text(
-          '1 of $quantity available',
+          '1 of $quantity ${S.current.available}',
           textAlign: TextAlign.left,
           style: tokenDetailAmount(
             fontSize: 16,

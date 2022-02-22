@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:Dfy/data/request/collection/create_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/create_hard_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/collection/create_soft_collection_ipfs_request.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/request/nft/create_soft_nft_ipfs_request.dart';
 import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -44,7 +46,9 @@ class PinToIPFS {
   Future<String> pinJsonToIPFS({
     required PinJsonType type,
     CreateSoftNftIpfsRequest? softNftRequest,
-    CreateCollectionIpfsRequest? collectionRequest,
+    CreateSoftCollectionIpfsRequest? softCollectionRequest,
+    CreateHardCollectionIpfsRequest? hardCollectionRequest,
+    CreateHardNftIpfsRequest? hardNftRequest,
   }) async {
     switch (type) {
       case PinJsonType.SOFT_NFT:
@@ -59,9 +63,33 @@ class PinToIPFS {
             return '';
           },
         );
-      case PinJsonType.COLLECTION:
-        final result = await _pinataRepo.createCollectionPinJsonToIpfs(
-          collectionRequest ?? CreateCollectionIpfsRequest.init(),
+      case PinJsonType.SOFT_COLLECTION:
+        final result = await _pinataRepo.createSoftCollectionPinJsonToIpfs(
+          softCollectionRequest ?? CreateSoftCollectionIpfsRequest.init(),
+        );
+        return result.when(
+          success: (res) {
+            return res.ipfsHash;
+          },
+          error: (error) {
+            return '';
+          },
+        );
+      case PinJsonType.HARD_COLLECTION:
+        final result = await _pinataRepo.createHardCollectionPinJsonToIpfs(
+          hardCollectionRequest ?? CreateHardCollectionIpfsRequest.init(),
+        );
+        return result.when(
+          success: (res) {
+            return res.ipfsHash;
+          },
+          error: (error) {
+            return '';
+          },
+        );
+      default:
+        final result = await _pinataRepo.createHardNftPinJsonToIpfs(
+          hardNftRequest ?? CreateHardNftIpfsRequest(),
         );
         return result.when(
           success: (res) {
@@ -82,7 +110,4 @@ class PinToIPFS {
   }
 }
 
-enum PinJsonType {
-  SOFT_NFT,
-  COLLECTION,
-}
+enum PinJsonType { SOFT_NFT, SOFT_COLLECTION, HARD_NFT, HARD_COLLECTION }

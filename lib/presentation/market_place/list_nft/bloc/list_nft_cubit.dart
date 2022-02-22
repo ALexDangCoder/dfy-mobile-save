@@ -218,7 +218,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
 
   ///My account
 
-  List<String> walletAddressFilter = ['All'];
+  List<String> walletAddressFilter = [S.current.all];
   String walletAddress = '';
   bool showDropdownAddress = true;
 
@@ -229,6 +229,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       success: (res) {
         if (res.isEmpty) {
         } else {
+          res = res.where((element) => element.walletAddress != null).toList();
           if (res.length < 2) {
             for (final element in res) {
               walletAddressFilter.add(element.walletAddress ?? '');
@@ -277,7 +278,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         nftType: (nftType?.length == 4 || (nftType?.isEmpty ?? true))
             ? ''
             : nftType?[0],
-        walletAddress: walletAddress == 'All'
+        walletAddress: walletAddress == S.current.all
             ? getParam(walletAddressFilter)
             : walletAddress,
         collectionId: '',
@@ -289,8 +290,10 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
           for (final value in listTokenSupport) {
-            final symbol = value.symbol ?? '';
-            if (tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
+            final address = value.address ?? '';
+            final symbol = value.address ?? '';
+            if (tokenBuyOut.toLowerCase() == address.toLowerCase() ||
+                tokenBuyOut.toLowerCase() == symbol.toLowerCase()) {
               item.urlToken = value.iconUrl;
               item.symbolToken = value.symbol;
               item.usdExchange = value.usdExchange;

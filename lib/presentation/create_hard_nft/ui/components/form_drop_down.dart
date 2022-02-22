@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
@@ -63,6 +64,7 @@ class FormDropDown extends StatelessWidget {
                     resultMainAxis: MainAxisAlignment.start,
                     dropdownList: cubit.conditions,
                     onChange: (value) {
+                      value as Map<String, dynamic>;
                       cubit.dataStep1.conditionNft.id =
                           int.tryParse(value['value']);
                       cubit.dataStep1.conditionNft.name = value['label'];
@@ -153,14 +155,13 @@ class FormDropDown extends StatelessWidget {
                   resultMainAxis: MainAxisAlignment.start,
                   dropdownList: snapshot.data ?? [],
                   onChange: (value) {
-                    if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
-                      cubit.getCitiesApi(value['value']);
-                      // cubit.dataStep1.country.id = value['value'];
-                      cubit.dataStep1.country.name = value['label'];
-                      cubit.mapValidate['country'] = true;
-                      cubit.mapValidate['city'] = false;
-                      cubit.validateAll();
-                    } else {}
+                    value as Map<String, dynamic>;
+                    cubit.mapValidate['country'] = true;
+                    cubit.mapValidate['city'] = false;
+                    cubit.getCitiesApi(value['value']);
+                    cubit.dataStep1.country.id = value['value'];
+                    cubit.dataStep1.country.name = value['label'];
+                    cubit.validateAll();
                   },
                   dropdownItemHeight: 54.h,
                   dropdownHeight: cubit.countries.isEmpty ? 54.h : 232.h,
@@ -241,6 +242,7 @@ class FormDropDown extends StatelessWidget {
             );
           } else if (cubit.checkMapListContainsObj(
               mapList: snapshot.data ?? [], valueNeedCheck: 'none')) {
+            cubit.mapValidate['city'] = true;
             return Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -330,7 +332,7 @@ class FormDropDown extends StatelessWidget {
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PRICE) {
       return SizedBox(
-        width: 90.w,
+        width: 100.w,
         child: Center(
           child: Stack(
             children: [
@@ -374,23 +376,24 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     cubit.dataStep1.tokenInfo.name = value['label'];
                     cubit.dataStep1.tokenInfo.id = value['value'];
-                    if (value['label'] == 'DFY') {
-                      cubit.dataStep1.tokenInfo.symbol = 'DFY';
+                    if (value['label'] == DFY) {
+                      cubit.dataStep1.tokenInfo.symbol = DFY;
                       cubit.dataStep1.tokenInfo.id = 1;
-                    } else if (value['label'] == 'USDT') {
-                      cubit.dataStep1.tokenInfo.symbol = 'USDT';
+                    } else if (value['label'] == USDT) {
+                      cubit.dataStep1.tokenInfo.symbol = USDT;
                       cubit.dataStep1.tokenInfo.id = 5;
                     } else {
-                      cubit.dataStep1.tokenInfo.symbol = 'BNB';
+                      cubit.dataStep1.tokenInfo.symbol = BNB;
                       cubit.dataStep1.tokenInfo.id = 38;
                     }
                   },
                 ),
               ),
               Positioned(
-                right: 6.w,
+                right: 19.15.w,
+                top: -7.h,
                 child: SizedBox(
-                  height: 60.h,
+                  height: 70.h,
                   child: sizedSvgImage(
                     w: 13,
                     h: 13,
@@ -478,15 +481,17 @@ class FormDropDown extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         onChange: (value) {
-                          // cubit.dataStep1.phoneCodeModel.id =
-                          //     int.tryParse(value['value']);
-                          cubit.dataStep1.phoneCodeModel.code = value['label'];
+                          value as Map<String, dynamic>;
+                          cubit.dataStep1.phoneCodeModel.id =
+                              value['id'];
+                          cubit.dataStep1.phoneCodeModel.code = value['code'];
                           cubit.mapValidate['phone'] = true;
+                          cubit.validateAll();
                         },
                       ),
                       Positioned(
                         top: 0.h,
-                        left: 60.w,
+                        left: 70.w,
                         child: SizedBox(
                           height: 60.h,
                           child: sizedSvgImage(

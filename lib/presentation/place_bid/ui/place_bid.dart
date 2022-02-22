@@ -23,6 +23,7 @@ import 'package:Dfy/widgets/form/custom_form.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum TypeBid { BUY_OUT, PLACE_BID }
@@ -52,11 +53,6 @@ class _PlaceBidState extends State<PlaceBid> {
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     getBalance();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    cubit.dispose();
   }
 
   Future<void> getBalance() async {
@@ -138,35 +134,65 @@ class _PlaceBidState extends State<PlaceBid> {
       );
     }
 
+    void handleValue(
+      String value,
+      double bid,
+      double balance,
+      double priceStep,
+      double buyOut,
+      String shortName,
+    ) {
+      if (value.isNotEmpty) {
+        final yourBid = double.parse(value);
+        if (balance > bid) {
+          if (yourBid <= bid) {
+            cubit.warnSink.add(S.current.you_must_bid_greater);
+            cubit.btnSink.add(false);
+          } else if (yourBid > bid && yourBid < bid + priceStep) {
+            cubit.warnSink.add(S.current.you_must_bid_equal);
+            cubit.btnSink.add(false);
+          } else if (yourBid == buyOut) {
+            cubit.warnSink.add(S.current.you_bid_equal);
+            bidValue = value;
+            cubit.btnSink.add(true);
+          } else if (yourBid > buyOut) {
+            cubit.warnSink.add(
+                '${S.current.your_bid_is}${yourBid - buyOut} $shortName${S.current.higher_than}');
+            cubit.btnSink.add(true);
+            bidValue = value;
+          } else {
+            cubit.warnSink.add('');
+            bidValue = value;
+            cubit.btnSink.add(true);
+          }
+        } else {
+          cubit.btnSink.add(false);
+          cubit.warnSink.add(S.current.you_enter_balance);
+        }
+      } else {
+        cubit.btnSink.add(false);
+        cubit.warnSink.add(S.current.you_must_bid);
+      }
+    }
+
     Widget _cardCurrentBid(String url, String nameToken, double bid) {
       if (widget.typeBid == TypeBid.PLACE_BID) {
         return CustomForm(
           textValue: (value) {
-            if (value.isNotEmpty) {
-              if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) > bid) {
-                cubit.warnSink.add('');
-                bidValue = value;
-                cubit.btnSink.add(true);
-              } else if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) < bid) {
-                cubit.warnSink.add(S.current.you_must_bid_greater);
-                cubit.btnSink.add(false);
-              } else if (cubit.balanceValue > double.parse(value) &&
-                  double.parse(value) > bid &&
-                  double.parse(value) !=
-                      bid + (widget.nftOnAuction.priceStep ?? 0)) {
-                cubit.warnSink.add(S.current.you_must_bid_equal);
-                cubit.btnSink.add(false);
-              } else {
-                cubit.btnSink.add(false);
-                cubit.warnSink.add(S.current.you_enter_balance);
-              }
-            } else {
-              cubit.btnSink.add(false);
-              cubit.warnSink.add(S.current.you_must_bid);
-            }
+            handleValue(
+              value,
+              bid,
+              cubit.balanceValue,
+              widget.nftOnAuction.priceStep ?? 0,
+              widget.nftOnAuction.buyOutPrice ?? 0,
+              widget.nftOnAuction.tokenSymbol ?? '',
+            );
           },
+          formatter: [
+            FilteringTextInputFormatter.allow(
+              RegExp(r'^\d+\.?\d{0,5}'),
+            ),
+          ],
           hintText: S.current.your_bid,
           suffix: SizedBox(
             width: 50.w,
@@ -567,11 +593,19 @@ class _PlaceBidState extends State<PlaceBid> {
                       ? widget.nftOnAuction.reservePrice ?? 0
                       : widget.nftOnAuction.currentPrice ?? 0),
               spaceH8,
-              _buildRow(
-                  S.current.buy_out, widget.nftOnAuction.buyOutPrice ?? 0),
+              if (widget.nftOnAuction.buyOutPrice != null &&
+                  widget.nftOnAuction.buyOutPrice != 0) ...[
+                _buildRow(
+                    S.current.buy_out, widget.nftOnAuction.buyOutPrice ?? 0),
+              ],
               spaceH8,
-              _buildRow(
-                  S.current.price_step, widget.nftOnAuction.priceStep ?? 0),
+              if (widget.nftOnAuction.priceStep != null &&
+                  widget.nftOnAuction.priceStep != 0) ...[
+                _buildRow(
+                  S.current.price_step,
+                  widget.nftOnAuction.priceStep ?? 0,
+                ),
+              ],
               spaceH16,
               _yourBid(),
               spaceH5,

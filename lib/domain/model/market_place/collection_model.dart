@@ -1,5 +1,4 @@
 class CollectionModel {
-
   String? id;
   String? txnHash;
   String? coverCid;

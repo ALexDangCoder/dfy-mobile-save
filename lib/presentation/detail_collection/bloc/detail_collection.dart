@@ -172,13 +172,13 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String funGetMarket(int marketStatus) {
     String market = '';
     if (marketStatus == SALE) {
-      market = S.current.sell;
+      market = S.current.activity_sale;
     } else if (marketStatus == AUCTION) {
-      market = S.current.auction;
+      market = S.current.activity_auction;
     } else if (marketStatus == PAWN) {
-      market = S.current.pawn;
+      market = S.current.activity_pawn;
     } else {
-      market = S.current.not_on_market;
+      market = S.current.activity_not_on_market;
     }
     return market;
   }

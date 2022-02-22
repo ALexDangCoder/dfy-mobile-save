@@ -114,6 +114,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
             checkWalletAddress = true;
           }
         }
+
       },
       error: (error) {
         if(error.code==CODE_ERROR_AUTH){

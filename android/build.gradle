@@ -20,7 +20,7 @@ allprojects {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
                 username = "hoangdinh"
-                password = "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"
+                password = "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"
             }
         }
     }

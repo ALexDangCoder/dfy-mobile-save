@@ -2,24 +2,32 @@ import 'dart:core';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.dart';
+import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
+import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'provide_hard_nft_state.dart';
@@ -50,7 +58,182 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ///Di
   Step1Repository get _step1Repository => Get.find();
 
+  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
+
+  final PinToIPFS _pinToIPFS = PinToIPFS();
+
+  final List<DocumentFeatMediaListRequest> documentsRequest = [];
+  final List<DocumentFeatMediaListRequest> mediasRequest = [];
+
+  List<CollectionMarketModel> listHardCl = [];
+
+  Future<void> postFileMediaFeatDocumentApi() async {
+    emit(CreateStep1Submitting());
+    final listCidMedia = [];
+    final listCidDocument = [];
+    for (final e in listPathImage) {
+      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+      if (cid.isNotEmpty) {
+        mediasRequest.add(
+          DocumentFeatMediaListRequest(
+            name: 'fakeImage',
+            type: 'image/jpeg',
+            cid: cid,
+          ),
+        );
+        listCidMedia.add(cid);
+      }
+    }
+    for (final e in listPathDocument) {
+      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+      if (cid.isNotEmpty) {
+        documentsRequest.add(
+          DocumentFeatMediaListRequest(
+            name: 'fakeDoc',
+            type: 'application/pdf',
+            cid: cid,
+          ),
+        );
+        listCidDocument.add(cid);
+      }
+    }
+    convertPropertiesToAdditionalInfo();
+    final hardNftIpfs = CreateHardNftIpfsRequest(
+      name: dataStep1.hardNftName,
+      additional_info_list: listAddtional,
+      additional_information: dataStep1.additionalInfo,
+      contact_email: dataStep1.emailContact,
+      contact_address: dataStep1.addressContact,
+      contact_name: dataStep1.nameContact,
+      expecting_price: dataStep1.amountToken,
+      expecting_price_symbol: dataStep1.tokenInfo.symbol,
+      contact_phone: dataStep1.phoneContact.trim().substring(1),
+      document_list: documentsRequest,
+      collection_address: dataStep1.addressCollection,
+      asset_type_id: dataStep1.hardNftType.id,
+      bc_txn_hash: '',
+      condition_id: dataStep1.conditionNft.id,
+      contact_city_id: dataStep1.city.id,
+      contact_country_id: dataStep1.city.countryID.toString(),
+      contact_phone_code_id: dataStep1.phoneCodeModel.id.toString(),
+      media_list: mediasRequest,
+    );
+    final ipfsHash = await _pinToIPFS.pinJsonToIPFS(
+      type: PinJsonType.HARD_NFT,
+      hardNftRequest: hardNftIpfs,
+    );
+    final requestAsset = CreateHardNftAssetsRequest(
+      additional_info_list: listAddtional,
+      additional_information: dataStep1.additionalInfo,
+      name: dataStep1.hardNftName,
+      asset_type_id: dataStep1.hardNftType.id,
+      condition_id: dataStep1.conditionNft.id,
+      contact_address: dataStep1.addressContact,
+      contact_city_id: dataStep1.city.id,
+      contact_country_id: dataStep1.city.countryID.toString(),
+      contact_email: dataStep1.emailContact,
+      contact_name: dataStep1.nameContact,
+      contact_phone: dataStep1.phoneContact.trim().substring(1),
+      contact_phone_code_id: dataStep1.phoneCodeModel.id.toString(),
+      document_list: documentsRequest,
+      expecting_price: dataStep1.amountToken,
+      expecting_price_symbol: dataStep1.tokenInfo.symbol,
+      media_list: mediasRequest,
+      bc_txn_hash: '',
+      asset_cid: ipfsHash,
+      collection_id: dataStep1.collectionID,
+    );
+    final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
+    await resultAsset.when(
+      success: (res) async {
+        if (res == null) {
+        } else {
+          assetId = res.id ?? '';
+          await getDetailAssetHardNFT(assetId: assetId);
+          hexStringWeb3 = await getHexStringFromWeb3();
+          emit(CreateStep1SubmittingSuccess());
+        }
+      },
+      error: (error) {
+        emit(CreateStep1SubmittingFail());
+      },
+    );
+  }
+
+  String hexStringWeb3 = '';
+  String assetId = '';
+  PutHardNftModel resultAfterPut = PutHardNftModel();
+  BcTxnHashModel bcTxnHashModel = BcTxnHashModel(bc_txn_hash: '');
+
+  Future<void> putHardNftBeforeConfirm(
+      String id, BcTxnHashModel bcTxnHash) async {
+    final result = await _step1Repository.getResponseAfterPut(
+      id,
+      bcTxnHash.toJson(),
+    );
+    result.when(
+      success: (response) {},
+      error: (err) {},
+    );
+  }
+
+  ///
+  Future<void> getDetailAssetHardNFT({
+    required String assetId,
+  }) async {
+    final Result<ItemDataAfterPutModel> result =
+        await _step1Repository.getDetailAssetHardNFT(
+      assetId,
+    );
+    result.when(
+      success: (res) {
+        assetCid = res.assetCid ?? '';
+        beAssetId = assetId;
+        expectingPrice = res.expectingPrice.toString();
+        expectingPriceAddress = ADDRESS_DFY;
+        collectionStandard = res.collection?.collectionType?.standard ?? 0;
+        collectionAsset = res.collection?.collectionAddress ?? '';
+      },
+      error: (error) {},
+    );
+  }
+
+  String assetCid = '';
+  String collectionAsset = '';
+  String expectingPrice = '';
+  String expectingPriceAddress = '';
+  int? collectionStandard;
+  String beAssetId = '';
+
+  Future<String> getHexStringFromWeb3() async {
+    final result = await Web3Utils().getCreateAssetRequestData(
+      assetCID: assetCid,
+      collectionAsset: collectionAsset,
+      expectingPrice: dataStep1.amountToken.toString(),
+      expectingPriceAddress: expectingPriceAddress,
+      collectionStandard: collectionStandard ?? 0,
+      beAssetId: beAssetId,
+    );
+    return result;
+  }
+
+  //todo phân loại file type khi upload
+  void categoryDocumentsFtMediaByType() {}
+
+  final List<AdditionalInfoListRequest> listAddtional = [];
+
+  void convertPropertiesToAdditionalInfo() {
+    for (final element in dataStep1.properties) {
+      listAddtional.add(
+        AdditionalInfoListRequest(
+          trait_type: element.property,
+          value: element.value,
+        ),
+      );
+    }
+  }
 
   bool inputFormValidate = false;
 
@@ -138,7 +321,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAddress(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.address_required;
     } else {
       return null;
@@ -146,7 +329,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateHardNftName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.name_required;
     } else if (value.length > 255) {
       return S.current.maximum_255;
@@ -156,7 +339,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAmountToken(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
@@ -215,20 +398,20 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        final temp = res.map((e) => e.code.toString()).toList().toSet();
-        final listCode = temp.toList();
-        final listId = listCode
-            .map((e) => res.where((element) => element.code == e))
-            .toList();
-        for (final e in listCode) {
+        // final temp = res.map((e) => e.code.toString()).toList().toSet().toList();
+        // final listId = temp
+        //     .map((e) => res.where((element) => element.code == e))
+        //     .toList();
+        for (final e in res) {
           phonesCode.add({
-            'value': listId[listCode.indexOf(e)],
-            'label': e,
+            // 'value': listId[temp.indexOf(e)],
+            'code': e.code,
+            'id': e.id,
+            'label': e.name,
           });
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
-        // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
         phonesCodeBHVSJ.sink.add([]);
@@ -258,9 +441,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     for (final element in listTokenSupport) {
-      if (element.symbol == 'USDT' ||
-          element.symbol == 'BNB' ||
-          element.symbol == 'DFY') {
+      if (element.symbol == USDT ||
+          element.symbol == BNB ||
+          element.symbol == DFY) {
         tokensMap.add(
           {
             'value': element.id,
@@ -322,7 +505,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         for (final element in res) {
           conditions.add({
             'value': element.id.toString(),
-            'label': element.name ?? '',
+            'label': convertConditionLanguage(element.name ?? ''),
           });
         }
         conditionBHVSJ.sink.add(conditions);
@@ -333,16 +516,29 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  String convertConditionLanguage(String value) {
+    switch (value) {
+      case 'New':
+        return S.current.new_condition;
+      case 'Like new':
+        return S.current.like_new;
+      case 'Fair':
+        return S.current.fair;
+      case 'Poor':
+        return S.current.poor;
+      default:
+        return S.current.broken;
+    }
+  }
+
   String getAddressWallet() {
     return PrefsService.getCurrentBEWallet();
   }
 
   Future<void> getListCollection() async {
-    List<CollectionMarketModel> listHardCl = [];
-
     final Result<List<CollectionMarketModel>> result =
         await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet(),
+      addressWallet: getAddressWallet().toLowerCase(),
     );
     result.when(
       success: (res) {
@@ -354,10 +550,35 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             )
             .toList();
         final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
+        listDropDown.add(
+          {
+            'label': 'COLLECTION 721',
+            'value': ADDRESS_COLLECTION_721,
+            'id': ID_COLLECTION_721,
+          },
+        );
+        listDropDown.add(
+          {
+            'label': 'COLLECTION 1155',
+            'value': ADDRESS_COLLECTION_1155,
+            'id': ID_COLLECTION_1155,
+          },
+        );
         collectionsBHVSJ.sink.add(listDropDown);
       },
       error: (_) {},
     );
+  }
+
+  String getCollectionID(String value) {
+    final _collectionAddress = value;
+    final collectionId = listHardCl
+            .where((element) => element.addressCollection == _collectionAddress)
+            .toList()
+            .first
+            .collectionId ??
+        '';
+    return collectionId;
   }
 
   void navigatorToConfirmInfo() {}
@@ -438,13 +659,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Map<String, bool> mapValidate = {
-    'connectWallet': true,
     'mediaFiles': true,
     'inputForm': false,
     'condition': false,
     'country': false,
     'city': false,
     'phone': false,
+    'collection': false,
   };
 
   void validateAll() {
@@ -497,11 +718,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     dataStep1.documents = listPathDocument;
   }
 
-  List<DocumentModel> documents = [
-    DocumentModel('Giay phep kinh doanh', 'pdf'),
-    DocumentModel('Giay phep Su dung', 'doc'),
-  ];
-
   Step1PassingModel dataStep1 = Step1PassingModel(
     hardNftName: '',
     tokenInfo: TokenInf(id: 1, symbol: 'DFY'),
@@ -525,6 +741,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       name: S.current.jewelry,
     ),
     mediaFiles: [],
+    addressCollection: '',
+    collectionID: '',
   );
 }
 
@@ -536,7 +754,9 @@ class DocumentModel {
 }
 
 class Step1PassingModel {
+  String addressCollection;
   String hardNftName;
+  String collectionID;
   String nameContact;
   String emailContact;
   CountryModel country;
@@ -561,6 +781,8 @@ class Step1PassingModel {
     required this.mediaFiles,
     required this.phoneCodeModel,
     required this.hardNftType,
+    required this.collectionID,
+    required this.addressCollection,
     required this.city,
     required this.nameContact,
     required this.country,
