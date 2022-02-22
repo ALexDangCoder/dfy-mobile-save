@@ -447,7 +447,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     cubit: cubit,
                   ),
                   SizedBox(
-                    height: 48.h,
+                    height: 150.h,
                   ),
                 ],
               ),
