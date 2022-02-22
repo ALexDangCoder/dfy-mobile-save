@@ -19,7 +19,6 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
-import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -427,17 +426,29 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
+        // print('full ${(res ?? []).length}');
         // final temp = res.map((e) => e.code.toString()).toList().toSet().toList();
+        // print('temp ${temp.length}');
         // final listId = temp
         //     .map((e) => res.where((element) => element.code == e))
         //     .toList();
+        // print('listId ${listId.length}');
+        final listCodeInPhoneCodeSet = res.map((e) => e.code.toString()).toList().toSet().toList();
+        print('here1 $listCodeInPhoneCodeSet');
+        int i = 0;
         for (final e in res) {
-          phonesCode.add({
-            // 'value': listId[temp.indexOf(e)],
-            'code': e.code,
-            'id': e.id,
-            'label': e.name,
-          });
+          print('here ${e.code}');
+          if(e.code == listCodeInPhoneCodeSet[i]){
+            phonesCode.add({
+              // 'value': listId[temp.indexOf(e)],
+              'code': e.code,
+              'id': e.id,
+              'label': e.code,
+            });
+            i++;
+          } else {
+            i++;
+          }
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
@@ -675,15 +686,19 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   void checkPropertiesWhenSave() {
-    for (final _ in propertiesData) {
-      propertiesData.removeWhere(
-        (element) => element.property.isEmpty || element.value.isEmpty,
-      );
-    }
-    if (propertiesData.isEmpty) {
-      showItemProperties.sink.add([]);
+    if(propertiesData.isNotEmpty) {
+      for (final _ in propertiesData) {
+        propertiesData.removeWhere(
+              (element) => element.property.isEmpty || element.value.isEmpty,
+        );
+      }
+      if (propertiesData.isEmpty) {
+        showItemProperties.sink.add([]);
+      } else {
+        showItemProperties.sink.add(propertiesData);
+      }
     } else {
-      showItemProperties.sink.add(propertiesData);
+
     }
   }
 
