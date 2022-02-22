@@ -352,21 +352,34 @@ class _PawnTabState extends State<PawnTab>
                             title: S.current.put_on_pawn,
                             onSuccessSign: (context, data) async {
                               final nav = Navigator.of(context);
-                              final result = await widget.cubit.putOnPawn(
-                                txHash: data,
-                                putOnMarketModel: _putOnMarketModel,
-                              );
-                              nav.pop();
-                              if (result) {
-                                await showLoadSuccess(context);
+
+                              //todo
+                              //not confirm BE
+                              await showLoadSuccess(context).then((value)  {
                                 nav.popUntil((route) {
                                   return route.settings.name ==
                                       AppRouter.putOnSale;
                                 });
                                 nav.pop(true);
-                              } else {
-                                await showLoadFail(context);
-                              }
+                              });
+
+                              //confirm BE error code 500
+                              // final result = await widget.cubit.putOnPawn(
+                              //   txHash: data,
+                              //   putOnMarketModel: _putOnMarketModel,
+                              // );
+                              // nav.pop();
+                              // if (result) {
+                              //   await showLoadSuccess(context).then((value)  {
+                              //     nav.popUntil((route) {
+                              //       return route.settings.name ==
+                              //           AppRouter.putOnSale;
+                              //     });
+                              //     nav.pop(true);
+                              //   });
+                              // } else {
+                              //   await showLoadFail(context);
+                              // }
                             },
                             onErrorSign: (context) async {
                               final nav = Navigator.of(context);
