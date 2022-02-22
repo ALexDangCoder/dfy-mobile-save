@@ -30,4 +30,13 @@ abstract class NftMarketClient {
     @Query('page') String? page,
     @Query('size') String? size,
   );
+
+  @GET(ApiConstants.GET_HARD_LIST_NFT)
+  Future<ListNftMyAccResponseFromApi> getListHardNft(
+    @Query('status') String? status,
+    @Query('name') String? name,
+    @Query('page') String? page,
+    @Query('size') String? size,
+    @Query('limit') String? limit,
+  );
 }

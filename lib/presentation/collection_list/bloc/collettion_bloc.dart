@@ -92,7 +92,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   Future<void> getListWallet() async {
     final Result<List<WalletAddressModel>> result =
         await _walletAddressRepository.getListWalletAddress();
-
     result.when(
       success: (res) {
         if (res.isEmpty) {
@@ -271,7 +270,6 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         page: nextPage,
       );
     }
-
     result.when(
       success: (res) {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];

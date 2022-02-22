@@ -8,8 +8,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
-import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
+import 'package:Dfy/presentation/market_place/list_hard_nft/ui/list_hard_nft.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
@@ -19,7 +19,6 @@ import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -234,6 +233,26 @@ class _MenuAccountState extends State<MenuAccount> {
           );
         }
         break;
+      case 'list_hard_nft':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: ListHardNFt(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ListHardNFt(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
     }
   }
 
@@ -273,7 +292,7 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_graph,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'about_us',
+          routeName: 'list_hard_nft',
           title: S.current.hard_nft_list,
         ),
         ItemMenuModel.createChild(
@@ -687,23 +706,24 @@ class _MenuAccountState extends State<MenuAccount> {
                         if (state is NoLoginState) {
                           return InkWell(
                             onTap: () {
-                              if (cubit.checkLoginCore() ) {
+                              if (cubit.checkLoginCore()) {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => const ConnectWalletDialog(
+                                  builder: (context) =>
+                                      const ConnectWalletDialog(
                                     isRequireLoginEmail: false,
                                   ),
                                 ).then((_) => cubit.getLoginState());
-                              }else {
+                              } else {
                                 Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MainScreen(
-                                    index: cubit.getIndexLogin(),
-                                    isFormConnectWlDialog: true,
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainScreen(
+                                      index: cubit.getIndexLogin(),
+                                      isFormConnectWlDialog: true,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
                               }
                             },
                             child: SizedBox(

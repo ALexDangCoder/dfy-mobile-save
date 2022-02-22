@@ -31,10 +31,14 @@ enum PageTransitionType {
 //   IS_NOT_CREATE,
 // }
 
-
 const int CODE_ERROR_AUTH = 401;
 const int CODE_ERROR_MAINTAIN = 503;
 const int CODE_ERROR_NETWORK = 0;
+//filter
+const int NOT_ON_MARKET = 0;
+const int SALE = 1;
+const int AUCTION = 2;
+const int PAWN = 3;
 
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
