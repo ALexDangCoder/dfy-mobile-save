@@ -9,7 +9,7 @@ class PutOnSaleRequest {
   final String txn_hash;
   final int nft_type;
   final int number_of_copies;
-  final int price;
+  final double price;
 
   PutOnSaleRequest({
     required this.nft_id,
