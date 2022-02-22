@@ -34,8 +34,6 @@ class BaseActivity extends StatefulWidget {
 }
 
 class _BaseActivityState extends State<BaseActivity> {
-
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -46,14 +44,11 @@ class _BaseActivityState extends State<BaseActivity> {
           onTap: () {
             final list = widget.bloc.listActivity.value;
             late final MarketType type;
-            if (list[widget.index].marketStatus ==
-                DetailCollectionBloc.NOT_ON_MARKET) {
+            if (list[widget.index].marketStatus == NOT_ON_MARKET) {
               type = MarketType.NOT_ON_MARKET;
-            } else if (list[widget.index].marketStatus ==
-                DetailCollectionBloc.SALE) {
+            } else if (list[widget.index].marketStatus == SALE) {
               type = MarketType.SALE;
-            } else if (list[widget.index].marketStatus ==
-                DetailCollectionBloc.AUCTION) {
+            } else if (list[widget.index].marketStatus == AUCTION) {
               type = MarketType.AUCTION;
             } else {
               type = MarketType.PAWN;
@@ -84,7 +79,7 @@ class _BaseActivityState extends State<BaseActivity> {
                   ),
                 ),
                 clipBehavior: Clip.hardEdge,
-                child:Image.network(
+                child: Image.network(
                   '${ApiConstants.BASE_URL_IMAGE}${widget.urlAvatar}',
                   width: 66.w,
                   height: 66.w,
@@ -143,14 +138,11 @@ class _BaseActivityState extends State<BaseActivity> {
                 onTap: () {
                   final list = widget.bloc.listActivity.value;
                   late final MarketType type;
-                  if (list[widget.index].marketStatus ==
-                      DetailCollectionBloc.NOT_ON_MARKET) {
+                  if (list[widget.index].marketStatus == NOT_ON_MARKET) {
                     type = MarketType.NOT_ON_MARKET;
-                  } else if (list[widget.index].marketStatus ==
-                      DetailCollectionBloc.SALE) {
+                  } else if (list[widget.index].marketStatus == SALE) {
                     type = MarketType.SALE;
-                  } else if (list[widget.index].marketStatus ==
-                      DetailCollectionBloc.AUCTION) {
+                  } else if (list[widget.index].marketStatus == AUCTION) {
                     type = MarketType.AUCTION;
                   } else {
                     type = MarketType.PAWN;

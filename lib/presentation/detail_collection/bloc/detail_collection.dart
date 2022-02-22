@@ -36,10 +36,6 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   static const int FAILED = 3;
   static const int ERROR = 2;
   static const int LOADING = 0;
-  static const int NOT_ON_MARKET = 0;
-  static const int SALE = 1;
-  static const int AUCTION = 2;
-  static const int PAWN = 3;
   static const int TYPE721 = 0;
   static const String FACEBOOK = 'FACEBOOK';
   static const String INSTAGRAM = 'INSTAGRAM';

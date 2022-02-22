@@ -19,4 +19,12 @@ mixin NftMarketRepository {
     String? walletAddress,
   });
 
+  Future<Result<List<NftMarket>>> getListHardNft({
+    String? name,
+    String? status,
+    String? page,
+    String? limit,
+    String? size,
+  });
+
 }

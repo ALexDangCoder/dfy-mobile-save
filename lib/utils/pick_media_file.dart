@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -46,7 +45,6 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
     }
     _filePath = result.files.single.path ?? '';
     _fileSize = result.files.single.size;
-    log ('------------ ${result.files.single.identifier} -----------');
   } else {
     // User canceled the picker
   }
@@ -60,7 +58,7 @@ Future<Map<String, dynamic>> pickMediaFile({required PickerType type}) async {
 }
 
 Future<Map<String, dynamic>> pickImageFunc({
-  required String imageType,
+  String imageType= '',
   required String tittle,
   bool needCrop = true,
 }) async {
@@ -70,6 +68,7 @@ Future<Map<String, dynamic>> pickImageFunc({
     SIZE_OF_FILE: 0,
     EXTENSION_OF_FILE: '',
     VALID_FORMAT_OF_FILE: '',
+    TYPE_OF_FILE: MEDIA_IMAGE_FILE,
   };
   try {
     final newImage = await ImagePicker().pickImage(source: ImageSource.gallery);
