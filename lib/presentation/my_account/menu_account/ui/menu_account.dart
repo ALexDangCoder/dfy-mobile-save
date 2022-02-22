@@ -8,6 +8,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
+import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/list_hard_nft_mint_request.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -228,9 +229,8 @@ class _MenuAccountState extends State<MenuAccount> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => EvaluationResult(
-                      assetID: '6209d62e4aec3d07dc5587d6',
-                    )),
+              builder: (context) => const ListHardNftMintRequest(),
+            ),
           );
         }
         break;
@@ -687,23 +687,24 @@ class _MenuAccountState extends State<MenuAccount> {
                         if (state is NoLoginState) {
                           return InkWell(
                             onTap: () {
-                              if (cubit.checkLoginCore() ) {
+                              if (cubit.checkLoginCore()) {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => const ConnectWalletDialog(
+                                  builder: (context) =>
+                                      const ConnectWalletDialog(
                                     isRequireLoginEmail: false,
                                   ),
                                 ).then((_) => cubit.getLoginState());
-                              }else {
+                              } else {
                                 Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MainScreen(
-                                    index: cubit.getIndexLogin(),
-                                    isFormConnectWlDialog: true,
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainScreen(
+                                      index: cubit.getIndexLogin(),
+                                      isFormConnectWlDialog: true,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
                               }
                             },
                             child: SizedBox(

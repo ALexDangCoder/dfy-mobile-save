@@ -8,6 +8,7 @@ class MintRequestModel {
   String? name;
   String? expectingPriceSymbol;
   int? createAt;
+  String? urlToken;
 
   MintRequestModel({
     this.id,
@@ -17,5 +18,6 @@ class MintRequestModel {
     this.name,
     this.expectingPriceSymbol,
     this.createAt,
+    this.urlToken
   });
 }

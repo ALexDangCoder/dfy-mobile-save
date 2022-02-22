@@ -62,6 +62,5 @@ mixin CreateHardNFTRepository {
     String status,
     String assetTypeId,
     String page,
-    String limit,
   );
 }

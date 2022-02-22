@@ -40,6 +40,16 @@ class ImageAssets {
   static const String others = '$baseImg/other.png';
   static const String addFormProperties = '$baseImg/add_form_pro.png';
 
+  /// mint request
+
+  static const String diamond44 = '$baseImg/Jewelry44.png';
+  static const String artwork44 = '$baseImg/Artwork44.png';
+  static const String car44 = '$baseImg/Car44.png';
+  static const String watch44 = '$baseImg/Watch44.png';
+  static const String house44 = '$baseImg/House44.png';
+  static const String other44 = '$baseImg/Other44.png';
+
+
   static const String closeProperties = '$baseImg/close_pro.png';
   static const String deleteMediaFile = '$baseImg/delete_media.png';
   static const String leftArrowMediaFile = '$baseImg/left_arrow.png';

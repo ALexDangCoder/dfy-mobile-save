@@ -750,5 +750,9 @@
   "like_new": "Like new",
   "fair": "Fair",
   "poor": "Poor",
-  "broken": "Broken"
+  "broken": "Broken",
+  "expect_for":"Expect for",
+  "nft_created":"NFT created",
+  "un_evaluated":"Un-evaluated",
+  "evaluated":"Evaluated"
 }

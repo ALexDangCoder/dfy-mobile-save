@@ -160,7 +160,6 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
     String status,
     String assetTypeId,
     String page,
-    String limit,
   ) {
     return runCatchingAsync<ListMintRequestResponse, List<MintRequestModel>>(
       () => _client.getMintRequestHardNFT(
