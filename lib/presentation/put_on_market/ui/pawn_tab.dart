@@ -182,7 +182,7 @@ class _PawnTabState extends State<PawnTab>
                 },
                 onchangeText: (value) {
                   widget.cubit.changeTokenPawn(
-                    value: value != '' ? int.parse(value) : 0,
+                    value: value != '' ? double.parse(value) : 0,
                   );
                   _putOnMarketModel.price = value;
                 },
@@ -358,12 +358,13 @@ class _PawnTabState extends State<PawnTab>
                               );
                               nav.pop();
                               if (result) {
-                                await showLoadSuccess(context);
-                                nav.popUntil((route) {
-                                  return route.settings.name ==
-                                      AppRouter.putOnSale;
+                                await showLoadSuccess(context).then((value)  {
+                                  nav.popUntil((route) {
+                                    return route.settings.name ==
+                                        AppRouter.putOnSale;
+                                  });
+                                  nav.pop(true);
                                 });
-                                nav.pop(true);
                               } else {
                                 await showLoadFail(context);
                               }

@@ -241,12 +241,13 @@ class _SaleTabState extends State<SaleTab>
                               );
                               nav.pop();
                               if (result) {
-                                await showLoadSuccess(context);
-                                nav.popUntil((route) {
-                                  return route.settings.name ==
-                                      AppRouter.putOnSale;
+                                await showLoadSuccess(context).then((value) {
+                                  nav.popUntil((route) {
+                                    return route.settings.name ==
+                                        AppRouter.putOnSale;
+                                  });
+                                  nav.pop(true);
                                 });
-                                nav.pop(true);
                               } else {
                                 await showLoadFail(context);
                               }
