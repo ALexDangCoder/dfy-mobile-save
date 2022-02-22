@@ -182,7 +182,7 @@ class _PawnTabState extends State<PawnTab>
                 },
                 onchangeText: (value) {
                   widget.cubit.changeTokenPawn(
-                    value: value != '' ? int.parse(value) : 0,
+                    value: value != '' ? double.parse(value) : 0,
                   );
                   _putOnMarketModel.price = value;
                 },
