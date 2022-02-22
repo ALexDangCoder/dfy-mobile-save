@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,7 +25,7 @@ class FormWithOutPrefix extends StatelessWidget {
     this.imageAsset,
     this.quantityOfAll,
     required this.isTokenOrQuantity,
-    this.nameToken, required this.textValue,
+    this.nameToken, required this.textValue, this.formatters,
   }) : super(key: key);
   final String hintText;
   final TypeFormWithoutPrefix typeForm;
@@ -35,6 +36,7 @@ class FormWithOutPrefix extends StatelessWidget {
   final String? nameToken;
   final bool isTokenOrQuantity;
   final Function(String value) textValue;
+  final List<TextInputFormatter>? formatters;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class FormWithOutPrefix extends StatelessWidget {
             onChanged: (value){
               textValue(value);
             },
+            inputFormatters: formatters,
             keyboardType: TextInputType.number,
             textAlignVertical: TextAlignVertical.center,
             cursorColor: AppTheme.getInstance().textThemeColor(),
