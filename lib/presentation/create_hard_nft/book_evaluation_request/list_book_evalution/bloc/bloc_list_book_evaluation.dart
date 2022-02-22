@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
@@ -19,6 +20,7 @@ class BlocListBookEvaluation {
   static const int ACCEPTED = 7;
   static const int SUCCESS = 9;
   static const int CANCELLED = 5;
+  late Timer timeReload;
 
   List<AppointmentModel> appointmentList = [];
 
@@ -57,18 +59,22 @@ class BlocListBookEvaluation {
     } else if (S.current.you_have_rejected == status) {
       return AppTheme.getInstance().redMarketColors();
     } else {
-      return AppTheme.getInstance().whiteColor();
+      return amountColor;
     }
   }
 
   void reloadAPI() {
     const oneSec = Duration(seconds: 30);
-    Timer.periodic(
+    timeReload = Timer.periodic(
       oneSec,
       (Timer timer) {
         getListPawnShop(assetId: assetId ?? '');
       },
     );
+  }
+
+  void closeReload() {
+    timeReload.cancel();
   }
 
   Future<void> getDetailAssetHardNFT({
@@ -141,8 +147,8 @@ class BlocListBookEvaluation {
 
   bool checkStatusList() {
     for (final AppointmentModel value in listPawnShop.value) {
-        if (checkIsLoading(value.status ?? 0)) {
-          return false;
+      if (checkIsLoading(value.status ?? 0)) {
+        return false;
       }
     }
     return true;
@@ -213,7 +219,7 @@ class BlocListBookEvaluation {
 
   bool checkIsSuccess(List<AppointmentModel> list) {
     for (final AppointmentModel value in list) {
-      if (value.status == ACCEPTED) {
+      if (value.status == ACCEPTED || value.status == SUCCESS) {
         return true;
       }
     }

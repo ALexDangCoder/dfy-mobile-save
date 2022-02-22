@@ -77,6 +77,9 @@ class _ItemListMap extends State<ItemListMap> {
                         type: TypeEvaluation.CREATE,
                         assetId: widget.bloc.assetId ?? '',
                       ),
+                      settings: const RouteSettings(
+                        name: AppRouter.step2Create,
+                      ),
                     ),
                   );
                 } else {

@@ -42,7 +42,7 @@ class FormProperties extends StatelessWidget {
             initialValue: propertyForm,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (value!.length > 30) {
+              if ((value ?? '').length > 30) {
                 data.property = '';
                 cubit.checkPropertiesWhenSave();
                 return S.current.maximum_30;
@@ -82,7 +82,7 @@ class FormProperties extends StatelessWidget {
             initialValue: valueForm,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (value!.length > 30) {
+              if ((value ?? '').length > 30) {
                 data.value = '';
                 cubit.checkPropertiesWhenSave();
                 return S.current.maximum_30;

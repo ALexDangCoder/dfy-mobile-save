@@ -266,7 +266,6 @@ class _PopUpApproveState extends State<PopUpApprove> {
                                 final canAction = snapshot.data ?? false;
                                 return GestureDetector(
                                   onTap: () {
-                                    print(canAction);
                                     if (canAction) {
                                       widget.approve();
                                     }

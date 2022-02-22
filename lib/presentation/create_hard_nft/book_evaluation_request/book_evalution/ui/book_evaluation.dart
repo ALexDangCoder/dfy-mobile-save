@@ -42,7 +42,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
     bloc.assetId = widget.assetId;
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.appointmentList = widget.appointmentList;
-    bloc.isSuccess=widget.isSuccess;
+    bloc.isSuccess = widget.isSuccess;
   }
 
   @override
@@ -51,7 +51,9 @@ class _BookEvaluationState extends State<BookEvaluation> {
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
-        //todo add event
+        Navigator.of(context).popUntil(
+          (route) => route.settings.name == AppRouter.create_nft,
+        );
       },
       title: S.current.book_evaluation_request,
       child: Column(
@@ -135,7 +137,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
-                                            appointmentList: widget.appointmentList,
+                                        appointmentList: widget.appointmentList,
                                         isSuccess: widget.isSuccess,
                                         date: bloc.getDate(
                                           list[index].id ?? '',
@@ -155,7 +157,7 @@ class _BookEvaluationState extends State<BookEvaluation> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           CreateBookEvaluation(
-                                            isSuccess: widget.isSuccess,
+                                        isSuccess: widget.isSuccess,
                                         appointmentList: widget.appointmentList,
                                         assetId: bloc.assetId ?? '',
                                         idEvaluation: list[index].id ?? '',
