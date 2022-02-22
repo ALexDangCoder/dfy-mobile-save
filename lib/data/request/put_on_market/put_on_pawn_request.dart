@@ -4,6 +4,9 @@ part 'put_on_pawn_request.g.dart';
 
 @JsonSerializable()
 class PutOnPawnRequest {
+  // final String collectionId;
+  final int id;
+  final String walletAddress;
   final int durationType;
   final int nftStandard;
   final int numberOfCopies;
@@ -22,8 +25,10 @@ class PutOnPawnRequest {
   final String txnHash;
   final String userId;
   final bool collectionIsWhitelist;
-
   PutOnPawnRequest({
+    // required this.collectionId,
+    required this.id,
+    required this.walletAddress,
     required this.nftType,
     required this.durationType,
     required this.numberOfCopies,

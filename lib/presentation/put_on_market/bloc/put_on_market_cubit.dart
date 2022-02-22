@@ -335,6 +335,8 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       'totalOfCopies': putOnMarketModel.totalOfCopies ?? 1,
       'txnHash': txHash,
       'userId': userId,
+      // 'collectionId' : putOnMarketModelfsd,
+      'id' :putOnMarketModel.nftTokenId ?? 0,
       'walletAddress': PrefsService.getCurrentBEWallet(),
     };
     final PutOnPawnRequest data = PutOnPawnRequest.fromJson(mapRawData);
