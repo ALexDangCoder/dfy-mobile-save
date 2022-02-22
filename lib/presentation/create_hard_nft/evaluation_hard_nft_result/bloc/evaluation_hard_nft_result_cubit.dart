@@ -10,6 +10,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'evaluation_hard_nft_result_state.dart';
 
@@ -18,6 +19,9 @@ class EvaluationHardNftResultCubit
   EvaluationHardNftResultCubit() : super(EvaluationHardNftResultInitial());
 
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+
+
+  final BehaviorSubject<bool> checkAcceptStream = BehaviorSubject.seeded(false);
 
   List<TokenInf> listTokenSupport = [];
 
@@ -29,8 +33,10 @@ class EvaluationHardNftResultCubit
   static const oneSec = Duration(seconds: 30);
   bool cancelTimer = false;
 
+  late Timer timerReload;
+
   void reloadAPI(String assetID) {
-    Timer.periodic(
+    timerReload = Timer.periodic(
       oneSec,
       (Timer timer) {
         getListEvaluationResult(assetID);
@@ -59,6 +65,9 @@ class EvaluationHardNftResultCubit
               res[i].status == 5 ||
               res[i].status == 6) {
             listCheck.add(res[i]);
+            if(res[i].status == 4){
+              checkAcceptStream.add(true);
+            }
           }
         }
         if (listCheck.isNotEmpty) {

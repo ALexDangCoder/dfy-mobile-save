@@ -180,7 +180,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           emit(CreateStep1SubmittingSuccess());
         }
       },
-      error: (error) {},
+      error: (error) {
+        emit(CreateStep1SubmittingFail());
+      },
     );
   }
 
@@ -329,6 +331,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  final regexPhoneVietNam = RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
+  
   void getAllApiExceptCity() {
     getTokenInf();
     getCountriesApi();
@@ -346,7 +350,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAddress(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.address_required;
     } else {
       return null;
@@ -354,7 +358,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateHardNftName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.name_required;
     } else if (value.length > 255) {
       return S.current.maximum_255;
@@ -364,7 +368,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAmountToken(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
@@ -386,7 +390,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final RegExp regExp = RegExp(pattern);
     if (value.isEmpty) {
       return S.current.phone_required;
-    } else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value) || !regexPhoneVietNam.hasMatch(value)) {
       return S.current.invalid_phone;
     }
     return null;
@@ -437,7 +441,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
-        // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
         phonesCodeBHVSJ.sink.add([]);
@@ -467,9 +470,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     for (final element in listTokenSupport) {
-      if (element.symbol == 'USDT' ||
-          element.symbol == 'BNB' ||
-          element.symbol == 'DFY') {
+      if (element.symbol == USDT ||
+          element.symbol == BNB ||
+          element.symbol == DFY) {
         tokensMap.add(
           {
             'value': element.id,
@@ -531,7 +534,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         for (final element in res) {
           conditions.add({
             'value': element.id.toString(),
-            'label': element.name ?? '',
+            'label': convertConditionLanguage(element.name ?? ''),
           });
         }
         conditionBHVSJ.sink.add(conditions);
@@ -540,6 +543,21 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         conditionBHVSJ.sink.add([]);
       },
     );
+  }
+
+  String convertConditionLanguage(String value) {
+    switch (value) {
+      case 'New':
+        return S.current.new_condition;
+      case 'Like new':
+        return S.current.like_new;
+      case 'Fair':
+        return S.current.fair;
+      case 'Poor':
+        return S.current.poor;
+      default:
+        return S.current.broken;
+    }
   }
 
   String getAddressWallet() {
@@ -676,10 +694,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     'country': false,
     'city': false,
     'phone': false,
+    'collection': false,
   };
 
   void validateAll() {
-    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
@@ -728,11 +746,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     dataStep1.mediaFiles = listPathImage;
     dataStep1.documents = listPathDocument;
   }
-
-  List<DocumentModel> documents = [
-    DocumentModel('Giay phep kinh doanh', 'pdf'),
-    DocumentModel('Giay phep Su dung', 'doc'),
-  ];
 
   Step1PassingModel dataStep1 = Step1PassingModel(
     hardNftName: '',
