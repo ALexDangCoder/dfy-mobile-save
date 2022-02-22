@@ -91,7 +91,7 @@ class _AuctionTabState extends State<AuctionTab>
           (endTime.millisecondsSinceEpoch ~/ 1000).toString();
       final difference = endTime.difference(startTime).inHours;
       durationTime = endTime.difference(startTime).inMinutes;
-      if (startTime.difference(DateTime.now()).inHours < 48) {
+      if (startTime.difference(DateTime.now()).inMinutes < 2880) {
         setState(() {
           errorTextStartTime = S.current.start_time_auction;
         });
