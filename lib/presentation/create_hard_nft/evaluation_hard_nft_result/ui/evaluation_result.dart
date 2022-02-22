@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
@@ -18,12 +19,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EvaluationResult extends StatefulWidget {
-  const EvaluationResult(
-      {Key? key, required this.assetID, this.isSuccess = false})
-      : super(key: key);
+  const EvaluationResult({
+    Key? key,
+    required this.assetID,
+  }) : super(key: key);
 
   final String assetID;
-  final bool isSuccess;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -41,8 +42,8 @@ class _EvaluationResultState extends State<EvaluationResult> {
 
   @override
   void dispose() {
-    cubit.cancelTimer = true;
     cubit.close();
+    cubit.timerReload.cancel();
     super.dispose();
   }
 
@@ -70,11 +71,13 @@ class _EvaluationResultState extends State<EvaluationResult> {
       final listEvaluation = state.list;
       return BaseDesignScreen(
         text: ImageAssets.ic_close,
-        isCustomLeftClick: true,
-        onLeftClick: () {},
         isImage: true,
         title: S.current.evaluation_results,
-        onRightClick: () {},
+        onRightClick: () {
+          Navigator.of(context).popUntil(
+            (route) => route.settings.name == AppRouter.create_nft,
+          );
+        },
         child: Column(
           children: [
             spaceH24,
@@ -135,41 +138,52 @@ class _EvaluationResultState extends State<EvaluationResult> {
     return SizedBox(
       height: 30.h,
       width: 318.w,
-      child: Row(
-        children: [
-          const SuccessCkcCreateNft(),
-          dividerSuccessCreateNFT,
-          const SuccessCkcCreateNft(),
-          if (widget.isSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
-          if (!widget.isSuccess)
-            CircleStepCreateNft(
-              circleStatus: CircleStatus.IS_CREATING,
-              stepCreate: S.current.step3,
-            )
-          else
-            const SuccessCkcCreateNft(),
-          dividerCreateNFT,
-          if (!widget.isSuccess)
-            CircleStepCreateNft(
-              circleStatus: CircleStatus.IS_NOT_CREATE,
-              stepCreate: S.current.step4,
-            )
-          else
-            GestureDetector(
-              onTap: () {
-                goTo(
-                  context,
-                  ReceiveHardNFTScreen(
-                    assetId: widget.assetID,
-                  ),
-                );
-              },
-              child: CircleStepCreateNft(
-                circleStatus: CircleStatus.IS_CREATING,
-                stepCreate: S.current.step4,
+      child: StreamBuilder<bool>(
+        stream: cubit.checkAcceptStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          final isCheckSuccess = snapshot.data ?? false;
+          return Row(
+            children: [
+              const SuccessCkcCreateNft(),
+              dividerSuccessCreateNFT,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const SuccessCkcCreateNft(),
               ),
-            ),
-        ],
+              if (isCheckSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
+              if (!isCheckSuccess)
+                const CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_CREATING,
+                  stepCreate: '3',
+                )
+              else
+                const SuccessCkcCreateNft(),
+              dividerCreateNFT,
+              if (!isCheckSuccess)
+                const CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_NOT_CREATE,
+                  stepCreate: '4',
+                )
+              else
+                IconButton(
+                  onPressed: () {
+                    goTo(
+                      context,
+                      ReceiveHardNFTScreen(
+                        assetId: widget.assetID,
+                      ),
+                    );
+                  },
+                  icon: const CircleStepCreateNft(
+                    circleStatus: CircleStatus.IS_CREATING,
+                    stepCreate: '4',
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
