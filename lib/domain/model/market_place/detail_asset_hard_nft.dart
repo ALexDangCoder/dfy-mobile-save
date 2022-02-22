@@ -1,9 +1,8 @@
-import 'package:Dfy/data/response/create_hard_nft/detail_asset_hard_nft_response.dart';
 
 class DetailAssetHardNft {
   String? id;
   int? status;
-  ContactCountryResponse? assetType;
+  ContactCountryAssetHardNft? assetType;
   String? walletAddress;
   double? expectingPrice;
   String? name;
@@ -12,18 +11,18 @@ class DetailAssetHardNft {
   String? contactName;
   String? contactEmail;
   String? contactAddress;
-  ContactPhoneCodeResponse? contactPhoneCode;
+  ContactPhoneCodeAssetHardNft? contactPhoneCode;
   String? contactPhone;
-  ContactCountryResponse? contactCountry;
-  ContactCityResponse? contactCity;
+  ContactCountryAssetHardNft? contactCountry;
+  ContactCityAssetHardNft? contactCity;
   String? requestId;
   int? displayStatus;
-  CollectionResponse? collection;
-  ContactCountryResponse? condition;
-  List<MediaListResponse>? mediaList;
+  CollectionAssetHardNft? collection;
+  ContactCountryAssetHardNft? condition;
+  List<MediaListAssetHardNft>? mediaList;
   String? bcTxnHash;
   String? assetCid;
-  NFTResponse? nftAssetHard;
+  NFTAssetHard? nftAssetHard;
 
   int? ipfsStatus;
   int? bcAssetId;
@@ -115,7 +114,7 @@ class CollectionAssetHardNft {
   String? bcTxnHash;
   String? collectionCid;
   String? walletAddress;
-  CollectionTypeRespone? collectionType;
+  CollectionTypeAssetHardNft? collectionType;
   bool? isWhitelist;
   String? latitude;
   String? longitude;

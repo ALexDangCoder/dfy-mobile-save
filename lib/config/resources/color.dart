@@ -20,6 +20,7 @@ const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
 const dateColor = Color(0xffD4D5D7);
 const amountColor = Color(0xffDBA83D);
+const shadowColorBottomBar =Color(0xff3C3888);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
@@ -261,6 +262,8 @@ abstract class AppColor {
   Color logoColor();
 
   Color getAmountColor();
+
+  Color getShadowBottomBar();
 }
 
 class LightApp extends AppColor {
@@ -660,6 +663,11 @@ class LightApp extends AppColor {
   @override
   Color textGrayColor() {
     return disableText;
+  }
+
+  @override
+  Color getShadowBottomBar() {
+   return shadowColorBottomBar.withOpacity(0.7);
   }
 }
 
@@ -1120,6 +1128,12 @@ class DarkApp extends AppColor {
   @override
   Color textGrayColor() {
     // TODO: implement textGrayColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color getShadowBottomBar() {
+    // TODO: implement getShadowBottomBar
     throw UnimplementedError();
   }
 }

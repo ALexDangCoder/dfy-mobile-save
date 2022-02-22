@@ -53,7 +53,7 @@ class _SendOfferState extends State<SendOffer> {
 
   Future<void> getHexStringThenNav() async {
     await _cubit
-        .getPawnHexString(
+        . getPawnHexString(
           nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
           repaymentAsset: repaymentAsset,
           loanAmount: loanAmount,
@@ -102,8 +102,10 @@ class _SendOfferState extends State<SendOffer> {
                     spaceH20,
                     buildRowCustom(
                       title: S.current.loan_amount,
+                      flexLeft: 3,
+                      flexRight: 2,
                       child: Text(
-                        '$loanAmount $shortName',
+                        '$loanAmount ${widget.nftOnPawn.expectedCollateralSymbol}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -113,6 +115,8 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     buildRowCustom(
                       title: S.current.interest_rate,
+                      flexLeft: 3,
+                      flexRight: 2,
                       child: Text(
                         '$interest%',
                         style: textNormalCustom(
@@ -124,6 +128,8 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     buildRowCustom(
                       title: S.current.duration,
+                      flexLeft: 3,
+                      flexRight: 2,
                       child: Text(
                         '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
                         style: textNormalCustom(
@@ -135,6 +141,8 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     buildRowCustom(
                       title: S.current.repayment_curr,
+                      flexLeft: 3,
+                      flexRight: 2,
                       child: Text(
                         shortName,
                         style: textNormalCustom(
@@ -146,6 +154,8 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     buildRowCustom(
                       title: S.current.recurring_interest,
+                      flexLeft: 3,
+                      flexRight: 2,
                       child: Text(
                         repaymentCycleType == 0
                             ? S.current.month
@@ -296,7 +306,8 @@ class _SendOfferState extends State<SendOffer> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.nftOnPawn.nftCollateralDetailDTO?.typeNFT == TypeNFT.SOFT_NFT) ...[
+            if (widget.nftOnPawn.nftCollateralDetailDTO?.typeNFT ==
+                TypeNFT.SOFT_NFT) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: Text(

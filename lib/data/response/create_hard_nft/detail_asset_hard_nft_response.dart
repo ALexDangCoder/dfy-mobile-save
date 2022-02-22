@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/nft/evaluation_response.dart';
 import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -34,6 +35,8 @@ class DetailAssetHardNftResponse extends Equatable {
   List<Object?> get props => [];
 }
 
+
+
 @JsonSerializable()
 class ItemDetailAssetHardNftResponse extends Equatable {
   @JsonKey(name: 'id')
@@ -46,6 +49,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   String? walletAddress;
   @JsonKey(name: 'expecting_price')
   double? expectingPrice;
+  @JsonKey(name: 'additional_info_list')
+  List<AdditionalInfoResponse>? additionInfoList;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'expecting_price_symbol')
@@ -78,6 +83,8 @@ class ItemDetailAssetHardNftResponse extends Equatable {
   ContactCountryResponse? condition;
   @JsonKey(name: 'media_list')
   List<MediaListResponse>? mediaList;
+  @JsonKey(name: 'document_list')
+  List<MediaListResponse>? documentList;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
   @JsonKey(name: 'asset_cid')
@@ -98,6 +105,7 @@ class ItemDetailAssetHardNftResponse extends Equatable {
     this.additionalInformation,
     this.contactName,
     this.contactEmail,
+    this.additionInfoList,
     this.contactAddress,
     this.contactPhoneCode,
     this.contactPhone,
@@ -125,25 +133,25 @@ class ItemDetailAssetHardNftResponse extends Equatable {
         id: id,
         name: name,
         contactName: contactName,
-        assetType: assetType,
+        assetType: assetType?.toDomain(),
         expectingPrice: expectingPrice,
         additionalInformation: additionalInformation,
         assetCid: assetCid,
         bcAssetId: bcAssetId,
-        collection: collection,
-        condition: condition,
+        collection: collection?.toDomain(),
+        condition: condition?.toDomain(),
         contactAddress: contactAddress,
-        contactCity: contactCity,
-        contactCountry: contactCountry,
+        contactCity: contactCity?.toDomain(),
+        contactCountry: contactCountry?.toDomain(),
         contactEmail: contactEmail,
         contactPhone: contactPhone,
-        contactPhoneCode: contactPhoneCode,
+        contactPhoneCode: contactPhoneCode?.toDomain(),
         displayStatus: displayStatus,
         expectingPriceSymbol: expectingPriceSymbol,
         ipfsStatus: ipfsStatus,
-        mediaList: mediaList,
+        mediaList: mediaList?.map((e) => e.toDomain()).toList() ?? [],
         walletAddress: walletAddress,
-        nftAssetHard: nftResponse,
+        nftAssetHard: nftResponse.toDomain(),
       );
 
   @override
@@ -321,10 +329,11 @@ class CollectionResponse extends Equatable {
         name: name,
         walletAddress: walletAddress,
         bcTxnHash: bcTxnHash,
-        collectionType: collectionType,
+        collectionType: collectionType?.toDomain(),
         avatarCid: avatarCid,
         collectionCid: collectionCid,
         coverCid: coverCid,
+        collectionAddress: collectionAddress,
         customUrl: customUrl,
         description: description,
         featureCid: featureCid,
