@@ -7,11 +7,11 @@ class PutOnAuctionRequest {
   final String nft_id;
   final String token;
   final String txn_hash;
-  final int buy_out_price;
+  final double buy_out_price;
   final int end_time;
   final int nft_type;
-  final int price_step;
-  final int reserve_price;
+  final double price_step;
+  final double reserve_price;
   final int start_time;
   final bool enable_buy_out_price;
   final bool enable_price_step;

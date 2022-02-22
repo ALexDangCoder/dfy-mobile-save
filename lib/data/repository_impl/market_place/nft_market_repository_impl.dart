@@ -42,7 +42,7 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
     String? walletAddress,
   }) {
     return runCatchingAsync<ListNftMyAccResponseFromApi, List<NftMarket>>(
-          () => _client.getListNftMyAcc(
+      () => _client.getListNftMyAcc(
         status,
         nftType,
         name,
@@ -51,7 +51,27 @@ class NftMarketRepositoryImpl implements NftMarketRepository {
         page,
         ApiConstants.DEFAULT_NFT_SIZE,
       ),
-          (response) => response.toDomain() ?? [],
+      (response) => response.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<NftMarket>>> getListHardNft({
+    String? name,
+    String? status,
+    String? page,
+    String? limit,
+    String? size,
+  }) {
+    return runCatchingAsync<ListNftMyAccResponseFromApi, List<NftMarket>>(
+      () => _client.getListHardNft(
+        status,
+        name,
+        page,
+        size,
+        limit,
+      ),
+      (response) => response.toDomain() ?? [],
     );
   }
 }

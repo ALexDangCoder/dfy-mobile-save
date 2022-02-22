@@ -16,19 +16,24 @@ import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_m
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
-import 'package:Dfy/domain/model/market_place/detail_asset_hard_nft.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:video_player/video_player.dart';
+import 'package:path/path.dart';
 
 part 'provide_hard_nft_state.dart';
 
@@ -58,7 +63,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ///Di
   Step1Repository get _step1Repository => Get.find();
 
-  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+  // CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -69,30 +74,49 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   List<CollectionMarketModel> listHardCl = [];
 
+  //Video - Audio control
+  VideoPlayerController? videoController;
+  AudioPlayer audioPlayer = AudioPlayer();
+  final BehaviorSubject<VideoPlayerController> videoFileSubject =
+      BehaviorSubject();
+  final BehaviorSubject<bool> playVideoButtonSubject = BehaviorSubject();
+  final BehaviorSubject<bool> isPlayingAudioSubject = BehaviorSubject();
+  String currentVideo = '';
+
   Future<void> postFileMediaFeatDocumentApi() async {
     emit(CreateStep1Submitting());
     final listCidMedia = [];
     final listCidDocument = [];
-    for (final e in listPathImage) {
-      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+    for (final e in listFile) {
+      final cid = await _pinToIPFS.pinFileToIPFS(
+        pathFile: e.getStringValue(PATH_OF_FILE),
+      );
       if (cid.isNotEmpty) {
         mediasRequest.add(
           DocumentFeatMediaListRequest(
-            name: 'fakeImage',
-            type: 'image/jpeg',
+            name: basename(e.getStringValue(PATH_OF_FILE)),
+            type: getTypeUploadFile(
+              type: e.getStringValue(TYPE_OF_FILE),
+              extension: e.getStringValue(EXTENSION_OF_FILE),
+            ),
             cid: cid,
           ),
         );
         listCidMedia.add(cid);
       }
     }
-    for (final e in listPathDocument) {
-      final cid = await _pinToIPFS.pinFileToIPFS(pathFile: e);
+    for (final e in listDocumentFile) {
+      final cid = await _pinToIPFS.pinFileToIPFS(
+        pathFile: e.getStringValue(e.getStringValue(PATH_OF_FILE)),
+      );
       if (cid.isNotEmpty) {
         documentsRequest.add(
           DocumentFeatMediaListRequest(
-            name: 'fakeDoc',
-            type: 'application/pdf',
+            name: basename(e.getStringValue(PATH_OF_FILE)),
+            type: getTypeUploadFile(
+              type: e.getStringValue(TYPE_OF_FILE),
+              extension: e.getStringValue(EXTENSION_OF_FILE),
+            ),
             cid: cid,
           ),
         );
@@ -247,9 +271,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   ///List path image
   List<String> listPathImage = [];
+  List<Map<String, String>> listFile = [];
+  List<Map<String, String>> listDocumentFile = [];
   List<String> listPathDocument = [];
-  String currentImagePath = '';
-  int currentIndexImage = 0;
+  Map<String, String> currentFile = {};
+  int currentIndexFile = 0;
   List<HardNftTypeModel> listHardNftType = [];
 
   List<bool> listChangeColorFtChoose = [
@@ -293,8 +319,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ///value get by user submmit
 
   ///Control upload Image, Document
-  BehaviorSubject<List<String>> listImagePathSubject = BehaviorSubject();
-  BehaviorSubject<String> currentImagePathSubject = BehaviorSubject();
+  BehaviorSubject<List<Map<String, String>>> listImagePathSubject =
+      BehaviorSubject();
+  BehaviorSubject<Map<String, String>> currentFileSubject = BehaviorSubject();
   BehaviorSubject<List<String>> listDocumentPathSubject = BehaviorSubject();
 
   ///add Button subject
@@ -304,6 +331,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  final regexPhoneVietNam = RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
+  
   void getAllApiExceptCity() {
     getTokenInf();
     getCountriesApi();
@@ -361,7 +390,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final RegExp regExp = RegExp(pattern);
     if (value.isEmpty) {
       return S.current.phone_required;
-    } else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value) || !regexPhoneVietNam.hasMatch(value)) {
       return S.current.invalid_phone;
     }
     return null;
@@ -659,7 +688,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Map<String, bool> mapValidate = {
-    'mediaFiles': true,
+    'mediaFiles': false,
     'inputForm': false,
     'condition': false,
     'country': false,

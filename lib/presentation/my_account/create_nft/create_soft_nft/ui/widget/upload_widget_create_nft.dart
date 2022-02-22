@@ -464,7 +464,6 @@ Widget uploadWidgetCreateNft(CreateNftCubit cubit) {
                       );
                     } else {
                       cubit.pickFile();
-                      // cubit.pickImage(isMainMedia: true);
                     }
                   },
                   child: DottedBorder(

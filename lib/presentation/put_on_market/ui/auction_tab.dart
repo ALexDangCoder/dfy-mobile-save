@@ -91,7 +91,7 @@ class _AuctionTabState extends State<AuctionTab>
           (endTime.millisecondsSinceEpoch ~/ 1000).toString();
       final difference = endTime.difference(startTime).inHours;
       durationTime = endTime.difference(startTime).inMinutes;
-      if (startTime.difference(DateTime.now()).inHours < 48) {
+      if (startTime.difference(DateTime.now()).inMinutes < 2880) {
         setState(() {
           errorTextStartTime = S.current.start_time_auction;
         });
@@ -749,12 +749,13 @@ class _AuctionTabState extends State<AuctionTab>
                                     putOnMarketModel: _putOnMarketModel);
                                 nav.pop();
                                 if (result) {
-                                  await showLoadSuccess(context);
-                                  nav.popUntil((route) {
-                                    return route.settings.name ==
-                                        AppRouter.putOnSale;
+                                  await showLoadSuccess(context).then((value) {
+                                    nav.popUntil((route) {
+                                      return route.settings.name ==
+                                          AppRouter.putOnSale;
+                                    });
+                                    nav.pop(true);
                                   });
-                                  nav.pop(true);
                                 } else {
                                   await showLoadFail(context);
                                 }
