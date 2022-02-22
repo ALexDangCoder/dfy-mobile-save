@@ -75,6 +75,8 @@ class CategoriesDropDown extends StatelessWidget {
                     selected.getStringValue('value'),
                   );
                 }
+                cubit.mapValidate['collection'] = true;
+                cubit.validateAll();
               },
               resultIcon: Container(
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
