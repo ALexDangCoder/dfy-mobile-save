@@ -319,7 +319,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAddress(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.address_required;
     } else {
       return null;
@@ -327,7 +327,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateHardNftName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.name_required;
     } else if (value.length > 255) {
       return S.current.maximum_255;
@@ -337,7 +337,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateAmountToken(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
       return S.current.invalid_amount;
@@ -410,7 +410,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
-        // phonesCodeBHVSJ.sink.add([]);
       },
       error: (error) {
         phonesCodeBHVSJ.sink.add([]);
@@ -649,10 +648,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     'country': false,
     'city': false,
     'phone': false,
+    'collection': false,
   };
 
   void validateAll() {
-    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
