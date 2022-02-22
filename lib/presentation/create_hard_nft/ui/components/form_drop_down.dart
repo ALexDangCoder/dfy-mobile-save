@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
@@ -375,23 +376,24 @@ class FormDropDown extends StatelessWidget {
                   onChange: (value) {
                     cubit.dataStep1.tokenInfo.name = value['label'];
                     cubit.dataStep1.tokenInfo.id = value['value'];
-                    if (value['label'] == 'DFY') {
-                      cubit.dataStep1.tokenInfo.symbol = 'DFY';
+                    if (value['label'] == DFY) {
+                      cubit.dataStep1.tokenInfo.symbol = DFY;
                       cubit.dataStep1.tokenInfo.id = 1;
-                    } else if (value['label'] == 'USDT') {
-                      cubit.dataStep1.tokenInfo.symbol = 'USDT';
+                    } else if (value['label'] == USDT) {
+                      cubit.dataStep1.tokenInfo.symbol = USDT;
                       cubit.dataStep1.tokenInfo.id = 5;
                     } else {
-                      cubit.dataStep1.tokenInfo.symbol = 'BNB';
+                      cubit.dataStep1.tokenInfo.symbol = BNB;
                       cubit.dataStep1.tokenInfo.id = 38;
                     }
                   },
                 ),
               ),
               Positioned(
-                right: 13.w,
+                right: 19.15.w,
+                top: -7.h,
                 child: SizedBox(
-                  height: 60.h,
+                  height: 70.h,
                   child: sizedSvgImage(
                     w: 13,
                     h: 13,

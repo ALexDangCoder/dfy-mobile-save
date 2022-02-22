@@ -689,6 +689,7 @@
   "country_required": "Quốc gia là bắt buộc",
   "city_required": "Thành phố là bắt buộc",
   "phone_num": "Số đt",
+  "phone": "SĐT",
   "will_receive_nft": "sẽ nhận được NFT sau khi được đánh giá bởi Người đánh giá",
   "hard_nft_will_be_create": "HARD NFT sẽ được tạo trong bộ sưu tập",
   "invalid_file_format": "Định dạng tệp tin không hợp lệ",
@@ -715,5 +716,10 @@
   "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại",
   "you_have_try_more_than_5":"Bạn đã thử sai quá 5 lần. Vui lòng thử lại sau 30 giây.",
   "transaction_failed": "Giao dịch thất bại ",
-  "warning_send_offer": "Bạn đang gửi một đề nghị đến một NFT chưa được DeFi For You đánh giá. Giá trị của NFT này có thể không được đảm bảo. Vui lòng xem xét các rủi ro một cách cẩn thận khi gửi một đề nghị."
+  "warning_send_offer": "Bạn đang gửi một đề nghị đến một NFT chưa được DeFi For You đánh giá. Giá trị của NFT này có thể không được đảm bảo. Vui lòng xem xét các rủi ro một cách cẩn thận khi gửi một đề nghị.",
+  "new_condition": "Hàng Mới",
+  "like_new": "Hàng Lướt",
+  "fair": "Khá tốt",
+  "poor": "Hàng xấu",
+  "broken": "Hàng Nứt Vỡ"
 }
