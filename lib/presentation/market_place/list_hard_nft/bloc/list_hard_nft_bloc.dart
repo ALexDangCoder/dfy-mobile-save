@@ -107,7 +107,6 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
     String? limit = '12',
     String? name = '',
     String? size = '12',
-    String? page = '0',
     String? status = '',
     bool isLoad = true,
   }) async {
@@ -118,7 +117,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
       name: textSearch.value,
       limit: limit,
       size: size,
-      page: page,
+      page: nextPage.toString(),
       status: checkStatusFilter(),
     );
     emit(LoadingData());
@@ -150,7 +149,6 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
     String? limit = '12',
     String? name = '',
     String? size = '12',
-    String? page = '0',
     bool isLoad = true,
   }) async {
     if (nextPage == 1) {
@@ -160,7 +158,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
       name: textSearch.value,
       limit: limit,
       size: size,
-      page: page,
+      page: nextPage.toString(),
       status: checkStatusFilter(),
     );
     result.when(
