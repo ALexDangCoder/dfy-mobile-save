@@ -13,7 +13,6 @@ import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_w
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_image_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/base_items/custom_hide_keyboard.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -337,7 +336,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   spaceH4,
 
                   ///FORM NUMBER
-
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
@@ -358,7 +356,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       },
                     ),
                   ),
-
                   spaceH16,
                   textShowWithPadding(
                     textShow: S.current.country,
@@ -507,7 +504,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 child: Wrap(
                   runSpacing: 10.h,
                   children: cubit.propertiesData.map(
-                        (e) {
+                    (e) {
                       final int index = cubit.propertiesData.indexOf(e);
                       return itemProperty(
                         property: e.property,
@@ -538,13 +535,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (_) =>
-                          Dialog(
-                            backgroundColor: Colors.transparent,
-                            child: FormAddProperties(
-                              cubit: cubit,
-                            ),
-                          ),
+                      builder: (_) => Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: FormAddProperties(
+                          cubit: cubit,
+                        ),
+                      ),
                     );
                   },
                   child: Text(

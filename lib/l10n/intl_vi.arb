@@ -689,6 +689,7 @@
   "country_required": "Quốc gia là bắt buộc",
   "city_required": "Thành phố là bắt buộc",
   "phone_num": "Số đt",
+  "phone": "SĐT",
   "will_receive_nft": "sẽ nhận được NFT sau khi được đánh giá bởi Người đánh giá",
   "hard_nft_will_be_create": "HARD NFT sẽ được tạo trong bộ sưu tập",
   "invalid_file_format": "Định dạng tệp tin không hợp lệ",

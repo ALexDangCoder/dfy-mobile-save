@@ -78,6 +78,7 @@ dependencies:
   video_player: ^2.2.10
   audioplayers: ^0.20.1
   flutter_countdown_timer: ^4.1.0
+  intl_phone_number_input: ^0.7.0+2
   #svg
   flutter_svg: ^0.22.0
   formz: ^0.4.1

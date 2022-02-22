@@ -18,10 +18,6 @@ enum TYPE_FORM_DROPDOWN {
   NONE_DATA,
 }
 
-List<Map<String, dynamic>> firstPhone = [
-  {'label': '+84'},
-];
-
 class FormDropDown extends StatelessWidget {
   const FormDropDown({
     Key? key,
@@ -389,7 +385,8 @@ class FormDropDown extends StatelessWidget {
                 ),
               ),
               Positioned(
-                right: 13.w,
+                right: 19.w,
+                top: -1.h,
                 child: SizedBox(
                   height: 60.h,
                   child: sizedSvgImage(
@@ -480,8 +477,7 @@ class FormDropDown extends StatelessWidget {
                         ),
                         onChange: (value) {
                           value as Map<String, dynamic>;
-                          cubit.dataStep1.phoneCodeModel.id =
-                              value['id'];
+                          cubit.dataStep1.phoneCodeModel.id = value['id'];
                           cubit.dataStep1.phoneCodeModel.code = value['code'];
                           cubit.mapValidate['phone'] = true;
                           cubit.validateAll();
