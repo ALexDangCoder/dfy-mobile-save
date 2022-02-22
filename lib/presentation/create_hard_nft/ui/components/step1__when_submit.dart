@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -22,7 +23,6 @@ import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-
 
 enum NFT_TYPE {
   JEWELRY,
@@ -76,7 +76,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           ),
                           DetailItemApproveModel(
                             title: '${S.current.type} :',
-                            value: cubit.dataStep1.hardNftName,
+                            value: cubit.dataStep1.hardNftType.name ?? '',
                           ),
                           DetailItemApproveModel(
                             title: '${S.current.collection} :',
@@ -115,6 +115,18 @@ class Step1WhenSubmit extends StatelessWidget {
                     (value) => Navigator.pop(context),
                   ),
             );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitFail(),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+            });
           }
         },
         bloc: cubit,
@@ -219,7 +231,7 @@ class Step1WhenSubmit extends StatelessWidget {
                               FontWeight.w400,
                             ),
                           ),
-                          if (index == cubit.documents.length)
+                          if (index == cubit.dataStep1.documents.length)
                             spaceH32
                           else
                             spaceH16,
