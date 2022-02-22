@@ -22,7 +22,8 @@ mixin Step1Repository {
   Future<Result<List<HardNftTypeModel>>> getHardNftTypes();
 
   Future<Result<AssetModel>> getAssetAfterPost(
-      CreateHardNftAssetsRequest request);
+    CreateHardNftAssetsRequest request,
+  );
 
   Future<Result<ItemDataAfterPutModel>> getDetailAssetHardNFT(
     String assetId,

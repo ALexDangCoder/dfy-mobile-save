@@ -90,51 +90,55 @@ class _EstimateGasFeeState extends State<EstimateGasFee> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  StreamBuilder<double>(
-                    stream: widget.cubit.gasPriceFirstSubject,
-                    builder: (context, snapshot) {
-                      final gasFee = (gasPrice ?? 0) * gasLimit / 1000000000;
-                      if (gasFee < (widget.cubit.balanceWallet ?? 0) &&
-                          gasFee >=
-                              ((widget.cubit.gasLimitFirst ?? 0) *
-                                  (widget.cubit.gasPriceFirst ?? 0) /
-                                  1e18) &&
-                          gasFee > 0) {
-                        widget.cubit.canActionSubject.sink.add(true);
-                      } else {
-                        widget.cubit.canActionSubject.sink.add(false);
-                      }
-                      return Column(
-                        children: [
-                          Text(
-                            '$gasFee BNB',
-                            style: textNormal(
-                              gasFee <= (widget.cubit.balanceWallet ?? 0) &&
-                                      gasFee > 0
-                                  ? AppTheme.getInstance().whiteColor()
-                                  : AppTheme.getInstance().redColor(),
-                              16,
-                            ).copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          if (gasFee > (widget.cubit.balanceWallet ?? 0))
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                S.current.insufficient_balance,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().redColor(),
-                                  12,
-                                  FontWeight.w400,
-                                ),
+                  const SizedBox (width: 24,),
+                  Expanded(
+                    child: StreamBuilder<double>(
+                      stream: widget.cubit.gasPriceFirstSubject,
+                      builder: (context, snapshot) {
+                        final gasFee = (gasPrice ?? 0) * gasLimit / 1000000000;
+                        if (gasFee < (widget.cubit.balanceWallet ?? 0) &&
+                            gasFee >=
+                                ((widget.cubit.gasLimitFirst ?? 0) *
+                                    (widget.cubit.gasPriceFirst ?? 0) /
+                                    1e18) &&
+                            gasFee > 0) {
+                          widget.cubit.canActionSubject.sink.add(true);
+                        } else {
+                          widget.cubit.canActionSubject.sink.add(false);
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '$gasFee BNB',
+                              style: textNormal(
+                                gasFee <= (widget.cubit.balanceWallet ?? 0) &&
+                                        gasFee > 0
+                                    ? AppTheme.getInstance().whiteColor()
+                                    : AppTheme.getInstance().redColor(),
+                                16,
+                              ).copyWith(
+                                fontWeight: FontWeight.w600,
                               ),
-                            )
-                          else
-                            const SizedBox(height: 0),
-                        ],
-                      );
-                    },
+                            ),
+                            if (gasFee > (widget.cubit.balanceWallet ?? 0))
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  S.current.insufficient_balance,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().redColor(),
+                                    12,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              )
+                            else
+                              const SizedBox(height: 0),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

@@ -168,6 +168,9 @@ class DateTimeFormat {
   static const CREATE_STRING_TO_DATE = _dtFormat15;
 }
 
+
+const USDT = 'USDT';
+const BNB = 'BNB';
 const PERCENT = '%';
 const DFY = 'DFY';
 const PROCESSING_CREATE = 1;

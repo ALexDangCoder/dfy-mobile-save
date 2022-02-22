@@ -23,6 +23,7 @@ import 'package:Dfy/widgets/form/form_without_prefix.dart';
 import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuyNFT extends StatefulWidget {
@@ -415,7 +416,7 @@ class _BuyNFTState extends State<BuyNFT> {
                     ),
                   ),
                   Text(
-                    '${widget.nftMarket.totalCopies} ${S.current.of_all}'
+                    '${S.current.of_all}'
                     ' ${widget.nftMarket.totalCopies}',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
@@ -430,6 +431,11 @@ class _BuyNFTState extends State<BuyNFT> {
               textValue: (value) {
                 emitValue(value);
               },
+              formatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^\d+\.?\d{0,5}'),
+                ),
+              ],
               hintText: S.current.enter_quantity,
               typeForm: TypeFormWithoutPrefix.IMAGE_FT_TEXT,
               cubit: BuyNftCubit,
@@ -455,7 +461,8 @@ class _BuyNFTState extends State<BuyNFT> {
           child: BaseDesignScreen(
             isImage: true,
             onRightClick: () {
-              Navigator.popUntil(context, (route) => route.settings.name == AppRouter.listNft);
+              Navigator.popUntil(
+                  context, (route) => route.settings.name == AppRouter.listNft);
             },
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',
