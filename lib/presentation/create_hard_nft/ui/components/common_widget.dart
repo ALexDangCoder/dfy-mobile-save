@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 Widget btnAdd({
   required Function() onTap,
@@ -78,6 +80,7 @@ Positioned positionedBtn({
 Widget smallImageWidget(
   String _path, {
   int imgCount = 0,
+  required String type,
 }) {
   return imgCount > 0
       ? Container(
@@ -92,10 +95,12 @@ Widget smallImageWidget(
               SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                child: Image.file(
-                  File(_path),
-                  fit: BoxFit.cover,
-                ),
+                child: (type == MEDIA_IMAGE_FILE)
+                    ? Image.file(
+                        File(_path),
+                        fit: BoxFit.cover,
+                      )
+                    : SvgPicture.asset(ImageAssets.play_btn_svg),
               ),
               Container(
                 width: double.infinity,
@@ -115,9 +120,11 @@ Widget smallImageWidget(
           ),
           height: 83.h,
           width: 105.w,
-          child: Image.file(
-            File(_path),
-            fit: BoxFit.cover,
-          ),
+          child: (type == MEDIA_IMAGE_FILE)
+              ? Image.file(
+                  File(_path),
+                  fit: BoxFit.cover,
+                )
+              : SvgPicture.asset(ImageAssets.play_btn_svg),
         );
 }
