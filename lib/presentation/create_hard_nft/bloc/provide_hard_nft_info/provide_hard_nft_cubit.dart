@@ -304,6 +304,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
+  final regexPhoneVietNam = RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
+  
   void getAllApiExceptCity() {
     getTokenInf();
     getCountriesApi();
@@ -361,7 +363,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final RegExp regExp = RegExp(pattern);
     if (value.isEmpty) {
       return S.current.phone_required;
-    } else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value) || !regexPhoneVietNam.hasMatch(value)) {
       return S.current.invalid_phone;
     }
     return null;
