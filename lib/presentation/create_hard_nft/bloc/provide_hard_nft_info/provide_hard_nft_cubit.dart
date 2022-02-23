@@ -330,8 +330,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-  final regexPhoneVietNam = RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
-  
+  final regexPhoneVietNam =
+      RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
+
   void getAllApiExceptCity() {
     getTokenInf();
     getCountriesApi();
@@ -426,29 +427,18 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        // print('full ${(res ?? []).length}');
-        // final temp = res.map((e) => e.code.toString()).toList().toSet().toList();
-        // print('temp ${temp.length}');
-        // final listId = temp
-        //     .map((e) => res.where((element) => element.code == e))
-        //     .toList();
-        // print('listId ${listId.length}');
-        final listCodeInPhoneCodeSet = res.map((e) => e.code.toString()).toList().toSet().toList();
-        print('here1 $listCodeInPhoneCodeSet');
-        int i = 0;
+        final Map<String, PhoneCodeModel> phoneCodeMap = {};
+        for (final element in res) {
+          phoneCodeMap[element.code ?? ''] = element;
+        }
+        res = phoneCodeMap.values.toList();
+
         for (final e in res) {
-          print('here ${e.code}');
-          if(e.code == listCodeInPhoneCodeSet[i]){
-            phonesCode.add({
-              // 'value': listId[temp.indexOf(e)],
-              'code': e.code,
-              'id': e.id,
-              'label': e.code,
-            });
-            i++;
-          } else {
-            i++;
-          }
+          phonesCode.add({
+            'code': e.code,
+            'id': e.id,
+            'label': e.code,
+          });
         }
 
         phonesCodeBHVSJ.sink.add(phonesCode);
@@ -686,10 +676,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   void checkPropertiesWhenSave() {
-    if(propertiesData.isNotEmpty) {
+    if (propertiesData.isNotEmpty) {
       for (final _ in propertiesData) {
         propertiesData.removeWhere(
-              (element) => element.property.isEmpty || element.value.isEmpty,
+          (element) => element.property.isEmpty || element.value.isEmpty,
         );
       }
       if (propertiesData.isEmpty) {
@@ -697,9 +687,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       } else {
         showItemProperties.sink.add(propertiesData);
       }
-    } else {
-
-    }
+    } else {}
   }
 
   Map<String, bool> mapValidate = {
@@ -713,6 +701,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
