@@ -684,12 +684,12 @@
   "collection_required": "Collection is required",
   "invalid_email": "Invalid email",
   "expect_price_required": "Expecting price is required",
-  "picture": "picture",
+  "picture": "PICTURE",
   "add": "Add",
   "add_more": "Add more",
-  "documents": "Documents",
-  "hard_nft_info": "Hard NFT information",
-  "select_nft_type": "Select NFT name",
+  "documents": "DOCUMENTS",
+  "hard_nft_info": "HARD NFT INFORMATION",
+  "select_nft_type": "Select NFT type",
   "condition": "Condition",
   "hard_nft_name": "Hard NFT name",
   "expecting_price": "Expecting price",
@@ -750,5 +750,7 @@
   "like_new": "Like new",
   "fair": "Fair",
   "poor": "Poor",
-  "broken": "Broken"
+  "broken": "Broken",
+  "format": "Format",
+  "expecting_for": "Expecting for"
 }

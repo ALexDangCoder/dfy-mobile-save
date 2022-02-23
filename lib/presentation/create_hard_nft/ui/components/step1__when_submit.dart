@@ -192,7 +192,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   const Center(child: CircleStatusProvideHardNft()),
                   spaceH32,
                   textShowWithPadding(
-                    textShow: 'Hard NFT ${S.current.picture}/ video',
+                    textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
                     txtStyle: textNormalCustom(
                       AppTheme.getInstance().unselectedTabLabelColor(),
                       14,
@@ -316,7 +316,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           ),
                           spaceW5,
                           Text(
-                            S.current.expecting_price,
+                            S.current.expecting_for,
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
@@ -335,7 +335,8 @@ class Step1WhenSubmit extends StatelessWidget {
                           ),
                           spaceW4,
                           Text(
-                            formatValue.format(cubit.dataStep1.amountToken),
+                            '${formatValue.format(cubit.dataStep1.amountToken)}'
+                            ' ${cubit.dataStep1.tokenInfo.symbol}',
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,

@@ -78,7 +78,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   const CircleStatusProvideHardNft(),
                   spaceH32,
                   textShowWithPadding(
-                    textShow: 'Hard NFT ${S.current.picture}/ video',
+                    textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
                     txtStyle: textNormalCustom(
                       AppTheme.getInstance().unselectedTabLabelColor(),
                       14,

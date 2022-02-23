@@ -22,6 +22,7 @@
   "price_step_content": "Đây là khoảng giá mà người trả giá sau phải đặt cao hơn người đặt giá trước",
   "buy_out_price_content": "Phiên đấu giá sẽ kết thúc ngay lập tức nếu có người mua với giá này",
   "search": "Tìm kiếm...",
+  "format": "Định dạng",
   "enter": "Nhập",
   "start_date": "Ngày bắt đầu",
   "end_date": "Ngày kết thúc",
@@ -655,12 +656,12 @@
   "collection_required": "Bộ sưu tập là bắt buộc",
   "invalid_email": "Email không hợp lệ",
   "expect_price_required": "Giá dự kiến \u200B\u200Blà bắt buộc",
-  "picture": "ảnh",
+  "picture": "ẢNH",
   "add": "Thêm",
   "add_more": "Thêm nữa",
-  "documents": "Tài liệu",
-  "hard_nft_info": "Thông tin Hard NFT",
-  "select_nft_type": "Chọn tên NFT",
+  "documents": "TÀI LIỆU",
+  "hard_nft_info": "THÔNG TIN HARD NFT",
+  "select_nft_type": "Chọn loại NFT",
   "condition": "Điều kiện",
   "hard_nft_name": "Tên HARD NFT",
   "expecting_price": "Dự kiến giá",
@@ -721,5 +722,6 @@
   "like_new": "Hàng Lướt",
   "fair": "Khá tốt",
   "poor": "Hàng xấu",
-  "broken": "Hàng Nứt Vỡ"
+  "broken": "Hàng Nứt Vỡ",
+  "expecting_for": "Gía dự kiến"
 }
