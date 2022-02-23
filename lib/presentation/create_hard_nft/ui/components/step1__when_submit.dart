@@ -267,7 +267,7 @@ class Step1WhenSubmit extends StatelessWidget {
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               24,
-                              FontWeight.w700,
+                              FontWeight.w600,
                             ),
                           )
                         ],
@@ -290,7 +290,7 @@ class Step1WhenSubmit extends StatelessWidget {
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
-                              FontWeight.w700,
+                              FontWeight.w400,
                             ),
                           ),
                           spaceW4,
@@ -305,7 +305,7 @@ class Step1WhenSubmit extends StatelessWidget {
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
-                              FontWeight.w700,
+                              FontWeight.w400,
                             ),
                           ),
                           spaceW4,
@@ -320,7 +320,7 @@ class Step1WhenSubmit extends StatelessWidget {
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
-                              FontWeight.w700,
+                              FontWeight.w400,
                             ),
                           ),
                           spaceW4,

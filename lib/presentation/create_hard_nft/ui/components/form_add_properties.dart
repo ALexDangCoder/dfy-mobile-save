@@ -112,7 +112,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                       InkWell(
                         onTap: _addFormWidget,
                         child: Text(
-                          S.current.add_more,
+                          S.current.add,
                           style: textNormalCustom(
                             AppTheme.getInstance().fillColor(),
                             16,
