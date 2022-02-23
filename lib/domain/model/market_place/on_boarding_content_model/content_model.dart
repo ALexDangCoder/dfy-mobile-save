@@ -33,8 +33,8 @@ List<OnBoardingContent> contents = [
   OnBoardingContent(
     title: '${S.current.step} 3',
     image: ImageAssets.content3,
-    descriptionNormal: S.current.receive_accept_result_blockchain,
-    descriptionYellow: S.current.on_blockchain,
+    descriptionYellow: S.current.receive_accept_result_blockchain,
+    descriptionNormal: S.current.on_blockchain,
   ),
   OnBoardingContent(
     title: '${S.current.step} 4',

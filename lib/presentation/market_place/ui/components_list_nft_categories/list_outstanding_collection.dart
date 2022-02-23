@@ -32,7 +32,7 @@ class ListOutstandingCollection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isLoading
+                (isLoading && !isLoadFail)
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text

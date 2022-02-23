@@ -103,7 +103,7 @@ class Step1WhenSubmit extends StatelessWidget {
                                   name: AppRouter.step2ListBook,
                                 ),
                               ),
-                            );
+                            ).then((value) => Navigator.pop(context));
                           });
                         },
                         textActiveButton: S.current.request_evaluation,
