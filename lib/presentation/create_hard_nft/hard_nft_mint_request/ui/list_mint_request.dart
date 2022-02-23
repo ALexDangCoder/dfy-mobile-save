@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/hard_nft_mint_request.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/bloc/hard_nft_mint_request_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/widget/mint_request_item.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -63,7 +65,30 @@ class _ListMintRequestState extends State<ListMintRequest> {
         ),
       );
     } else {
-      return const SizedBox.shrink();
+      return Padding(
+        padding: EdgeInsets.only(top: 150.h),
+        child: Column(
+          children: [
+            Image(
+              image: const AssetImage(
+                ImageAssets.img_search_empty,
+              ),
+              height: 120.h,
+              width: 120.w,
+            ),
+            SizedBox(
+              height: 17.7.h,
+            ),
+            Text(
+              S.current.no_result_found,
+              style: textNormal(
+                Colors.white54,
+                20.sp,
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 }

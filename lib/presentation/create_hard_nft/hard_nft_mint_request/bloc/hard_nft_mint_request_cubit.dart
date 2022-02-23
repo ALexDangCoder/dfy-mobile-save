@@ -140,6 +140,7 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
     if (!refresh) {
       refresh = true;
       getListMintRequest(
+        name: query,
         assetTypeId: assetType(getAssetTypeID()),
         status: status(getStatus()),
       );
