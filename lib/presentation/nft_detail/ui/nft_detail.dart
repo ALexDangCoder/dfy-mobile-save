@@ -7,6 +7,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
@@ -32,6 +33,7 @@ import 'package:Dfy/presentation/place_bid/ui/place_bid.dart';
 import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/presentation/put_on_market/ui/put_on_market_screen.dart';
 import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
+import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -74,6 +76,7 @@ class NFTDetailScreen extends StatefulWidget {
     this.pawnId,
     this.nftTokenId,
     this.collectionAddress,
+    this.pageRouter,
   }) : super(key: key);
   final MarketType typeMarket;
   final TypeNFT? typeNft;
@@ -82,6 +85,7 @@ class NFTDetailScreen extends StatefulWidget {
   final String? collectionAddress;
   final String? nftId;
   final int? pawnId;
+  final PageRouter? pageRouter;
 
   @override
   NFTDetailScreenState createState() => NFTDetailScreenState();
@@ -482,13 +486,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             );
           },
           textEmpty: '',
-          child: _content(widget.typeMarket, state),
+          child: content(widget.typeMarket, state),
         );
       },
     );
   }
 
-  Widget _content(MarketType type, NFTDetailState state) {
+  Widget content(MarketType type, NFTDetailState state) {
     switch (type) {
       case MarketType.NOT_ON_MARKET:
         if (state is NftNotOnMarketSuccess) {
@@ -498,6 +502,15 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             image: objSale.image ?? '',
             initHeight: 360.h,
             leading: _leading(context),
+            actions: [
+              if (widget.pageRouter == PageRouter.MY_ACC)
+                action(
+                  context,
+                  objSale.collectionAddress ?? '',
+                  objSale.nftTokenId ?? '',
+                  objSale.walletAddress ?? '',
+                ),
+            ],
             title: objSale.name ?? '',
             tabBarView: ExpandedPageViewWidget(
               pageController: pageController,
@@ -1093,6 +1106,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 bloc.getTimeCountDown(nftOnAuction.startTime ?? 0),
                 bloc.isStartAuction(nftOnAuction.endTime ?? 0),
                 bloc.getTimeCountDown(nftOnAuction.endTime ?? 0),
+                onRefresh,
               ),
               if (nftOnAuction.marketStatus == 9) waitingAcceptAuction(),
               divide,

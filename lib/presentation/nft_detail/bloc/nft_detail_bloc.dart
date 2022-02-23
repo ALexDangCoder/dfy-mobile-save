@@ -247,23 +247,25 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.AUCTION) {
       showLoading();
       final Result<NFTOnAuction> result;
-      result = await _nftRepo.getDetailNFTAuction(marketId).then((value) async {
-        if (typeNFT == TypeNFT.HARD_NFT) {
-          final Result<NFTOnAuction> result2 =
-              await _nftRepo.getDetailHardNftOnAuction(nftId);
-          result2.when(
-            success: (res) {
-              getEvaluation(res.evaluationId ?? '');
-            },
-            error: (error) {
-              showError();
-            },
-          );
-          return value;
-        } else {
-          return value;
-        }
-      });
+      result = await _nftRepo.getDetailNFTAuction(marketId).then(
+        (value) async {
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            final Result<NFTOnAuction> result2 =
+                await _nftRepo.getDetailHardNftOnAuction(nftId);
+            result2.when(
+              success: (res) {
+                getEvaluation(res.evaluationId ?? '');
+              },
+              error: (error) {
+                showError();
+              },
+            );
+            return value;
+          } else {
+            return value;
+          }
+        },
+      );
       result.when(
         success: (res) {
           showContent();

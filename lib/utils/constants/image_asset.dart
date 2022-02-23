@@ -328,6 +328,7 @@ class ImageAssets {
   static const String ic_token_bnb_svg = '$baseImg/ic_token_bnb_svg.svg';
   static const String ic_filter_svg = '$baseImg/ic_filter_svg.svg';
   static const String ic_btn_back_svg = '$baseImg/ic_btn_back_svg.svg';
+  static const String ic_transfer_svf = '$baseImg/ic_transfer_svf.svg';
   static const String ic_btn_next_svg = '$baseImg/ic_btn_next_svg.svg';
   static const String ic_flag_svg = '$baseImg/ic_flag_svg.svg';
   static const String ic_share_svg = '$baseImg/Share.svg';

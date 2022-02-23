@@ -243,6 +243,7 @@ class _ListNftState extends State<ListNft> {
                                                 child: NFTItemWidget(
                                                   nftMarket:
                                                       _cubit.listData[index],
+                                                  pageRouter: widget.pageRouter,
                                                 ),
                                               ),
                                             );
