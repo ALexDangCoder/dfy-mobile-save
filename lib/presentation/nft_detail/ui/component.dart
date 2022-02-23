@@ -97,92 +97,81 @@ Widget _description(String des) {
       ),
     );
   } else {
-    return Text(
-      S.current.no_des,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        14,
-        FontWeight.w400,
-      ),
-    );
+    return const SizedBox.shrink();
   }
 }
 
 Widget additionalColumn(List<Properties> properties) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        S.current.additional,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w600,
+  if(properties.isNotEmpty){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.current.additional,
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+            FontWeight.w600,
+          ),
         ),
-      ),
-      spaceH14,
-      Align(
-        alignment: Alignment.centerLeft,
-        child: properties.isEmpty
-            ? Text(
-                S.current.no_more_info,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  14,
-                  FontWeight.w400,
-                ),
-              )
-            : Wrap(
-                spacing: 12.w,
-                runSpacing: 8.h,
-                children: properties
-                    .map(
-                      (e) => SizedBox(
-                        height: 50.h,
-                        child: Chip(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: AppTheme.getInstance()
-                                  .divideColor()
-                                  .withOpacity(0.1),
-                            ),
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          backgroundColor: AppTheme.getInstance().bgBtsColor(),
-                          label: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                e.key ?? '',
-                                textAlign: TextAlign.left,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance()
-                                      .textThemeColor()
-                                      .withOpacity(0.7),
-                                  12,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                              spaceH4,
-                              Text(
-                                e.value ?? '',
-                                textAlign: TextAlign.left,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  14,
-                                  FontWeight.w400,
-                                ),
-                              )
-                            ],
-                          ),
+        spaceH14,
+        Align(
+          alignment: Alignment.centerLeft,
+          child:Wrap(
+            spacing: 12.w,
+            runSpacing: 8.h,
+            children: properties
+                .map(
+                  (e) => SizedBox(
+                height: 50.h,
+                child: Chip(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: AppTheme.getInstance()
+                          .divideColor()
+                          .withOpacity(0.1),
+                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  backgroundColor: AppTheme.getInstance().bgBtsColor(),
+                  label: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        e.key ?? '',
+                        textAlign: TextAlign.left,
+                        style: textNormalCustom(
+                          AppTheme.getInstance()
+                              .textThemeColor()
+                              .withOpacity(0.7),
+                          12,
+                          FontWeight.w400,
                         ),
                       ),
-                    )
-                    .toList(),
+                      spaceH4,
+                      Text(
+                        e.value ?? '',
+                        textAlign: TextAlign.left,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().textThemeColor(),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-      )
-    ],
-  );
+            )
+                .toList(),
+          ),
+        )
+      ],
+    );
+  }
+  else {
+    return const SizedBox.shrink();
+  }
 }
 
 Widget _rowCollection(String symbol, String collectionName, bool verify) {

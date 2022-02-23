@@ -59,16 +59,26 @@ Row buildRow({
             width: 225.w,
             child: Row(
               children: [
-                RichText(
-                  maxLines: 1,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text:
-                            detail.length > 10 ? detail.handleString() : detail,
-                        style: richTextBlue,
-                      ),
-                    ],
+                InkWell(
+                  onTap: (){
+                    FlutterClipboard.copy(detail);
+                    Fluttertoast.showToast(
+                      msg: S.current.copy,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                    );
+                  },
+                  child: RichText(
+                    maxLines: 1,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              detail.length > 10 ? detail.handleString() : detail,
+                          style: richTextBlue,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 spaceW4,
