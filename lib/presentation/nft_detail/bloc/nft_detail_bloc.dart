@@ -159,9 +159,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       if (typeNFT == TypeNFT.SOFT_NFT) {
         result = await _nftRepo.getDetailNftMyAccNotOnMarket(nftId, '0');
       } else {
-        result = await _nftRepo.getDetailHardNftNotOnMarket(
-          collectionAddress,
-          nftTokenId,
+        result = await _nftRepo.getDetailHardNftOnSale(
+          nftId,
         );
       }
       result.when(

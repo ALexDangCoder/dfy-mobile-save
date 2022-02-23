@@ -7,6 +7,7 @@ import 'package:Dfy/data/response/create_hard_nft/evaluation_fee_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_appointment_response.dart';
 import 'package:Dfy/data/response/create_hard_nft/list_evaluators_city_response.dart';
+import 'package:Dfy/data/response/create_hard_nft/list_mint_request_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -80,4 +81,12 @@ abstract class CreateHardNFtService {
   Future<DetailAssetHardNftResponse> getDetailAssetHardNFT(
     @Path('asset_id') String assetId,
   );
+  @GET(ApiConstants.GET_MINT_REQUEST_HARD_NFT)
+  Future<ListMintRequestResponse> getMintRequestHardNFT(
+      @Query('name') String name,
+      @Query('asset_type_id') String assetTypeId,
+      @Query('status') String status,
+      @Query('page') String page,
+      @Query('size') String size,
+      );
 }

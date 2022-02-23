@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -483,7 +482,7 @@ class FormDropDown extends StatelessWidget {
                         onChange: (value) {
                           value as Map<String, dynamic>;
                           cubit.dataStep1.phoneCodeModel.id =
-                              value['id'];
+                              value['id'] as int;
                           cubit.dataStep1.phoneCodeModel.code = value['code'];
                           cubit.mapValidate['phone'] = true;
                           cubit.validateAll();

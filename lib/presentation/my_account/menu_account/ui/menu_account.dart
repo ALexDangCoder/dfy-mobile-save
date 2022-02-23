@@ -7,7 +7,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/about_us/ui/about_us.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
-import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
+import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/list_hard_nft_mint_request.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/market_place/list_hard_nft/ui/list_hard_nft.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -224,13 +224,22 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'hard_nft_mint':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EvaluationResult(
-                      assetID: '6209d62e4aec3d07dc5587d6',
-                    )),
-          );
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: ListHardNftMintRequest(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ListHardNftMintRequest(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'list_hard_nft':

@@ -1,13 +1,17 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/base_items/base_item.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OwnerTab extends StatefulWidget {
   const OwnerTab({Key? key, required this.listOwner}) : super(key: key);
@@ -85,16 +89,25 @@ class _OwnerTabState extends State<OwnerTab>
                   width: 24.w,
                 ),
               spaceW10,
-              Text(
-                walletAddress.formatAddress(
-                  index: walletAddress.isNotEmpty ? 10 : 0,
+              InkWell(
+                onTap: (){
+                  launch(
+                    Get.find<AppConstants>().bscScan +
+                        ApiConstants.BSC_SCAN_ADDRESS +
+                        walletAddress,
+                  );
+                },
+                child: Text(
+                  walletAddress.formatAddress(
+                    index: walletAddress.isNotEmpty ? 10 : 0,
+                  ),
+                  style: richTextWhite
+                      .copyWith(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      )
+                      .copyWith(fontSize: 14.sp),
                 ),
-                style: richTextWhite
-                    .copyWith(
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.bold,
-                    )
-                    .copyWith(fontSize: 14.sp),
               ),
             ],
           ),

@@ -13,7 +13,6 @@ import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_w
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_image_widget.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/base_items/custom_hide_keyboard.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -78,7 +77,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   const CircleStatusProvideHardNft(),
                   spaceH32,
                   textShowWithPadding(
-                    textShow: 'Hard NFT ${S.current.picture}/ video',
+                    textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
                     txtStyle: textNormalCustom(
                       AppTheme.getInstance().unselectedTabLabelColor(),
                       14,
@@ -496,7 +495,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (snapshot.data!.isEmpty)
+            if ((snapshot.data ?? []).isEmpty)
               Container()
             else
               Container(
@@ -699,7 +698,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             child: InkWell(
               onTap: () {
                 cubit.propertiesData.removeAt(index);
-                cubit.checkPropertiesWhenSave();
+                cubit.checkPropertiesWhenSave(property: '', value: '');
               },
               child: Image.asset(
                 ImageAssets.closeProperties,

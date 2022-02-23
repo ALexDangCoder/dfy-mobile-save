@@ -195,6 +195,8 @@ enum StatusOffer {
 }
 
 //file type
+const String DAPP = 'Dapp';
+const String EMPTYSPACESTEP3 = '                     ';
 const String MP4 = 'video/mp4';
 const String WEBM = 'video/webm';
 const String MP3 = 'audio/mpeg';

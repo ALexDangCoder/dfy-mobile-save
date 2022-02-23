@@ -27,8 +27,8 @@ class ButtonDashedAddImageFtVid extends StatelessWidget {
             ),
             spaceH12,
             Text(
-              'Format: mp4, WEBM, mp3, WAV,\n' +
-                  '       OGG, png, jpg, jpeg, GIF',
+              'Format: MP4, WEBM, MP3, WAV,\n' +
+                  '       OGG, PNG, JPG, JPEG, GIF',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 14,

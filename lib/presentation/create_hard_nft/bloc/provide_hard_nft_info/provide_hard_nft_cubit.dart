@@ -19,7 +19,6 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
-import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -331,8 +330,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final regexEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-  final regexPhoneVietNam = RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
-  
+  final regexPhoneVietNam =
+      RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
+
   void getAllApiExceptCity() {
     getTokenInf();
     getCountriesApi();
@@ -427,16 +427,17 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getPhoneCode();
     resultPhone.when(
       success: (res) {
-        // final temp = res.map((e) => e.code.toString()).toList().toSet().toList();
-        // final listId = temp
-        //     .map((e) => res.where((element) => element.code == e))
-        //     .toList();
+        final Map<String, PhoneCodeModel> phoneCodeMap = {};
+        for (final element in res) {
+          phoneCodeMap[element.code ?? ''] = element;
+        }
+        res = phoneCodeMap.values.toList();
+
         for (final e in res) {
           phonesCode.add({
-            // 'value': listId[temp.indexOf(e)],
             'code': e.code,
             'id': e.id,
-            'label': e.name,
+            'label': e.code,
           });
         }
 
@@ -674,17 +675,24 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  void checkPropertiesWhenSave() {
-    for (final _ in propertiesData) {
-      propertiesData.removeWhere(
-        (element) => element.property.isEmpty || element.value.isEmpty,
-      );
+  void checkPropertiesWhenSave({
+    required String property,
+    required String value,
+  }) {
+    if (property.isEmpty ||
+        value.isEmpty ||
+        property.length >= 30 ||
+        value.length >= 30) {
+      //khoong add vao
+    } else {
+      propertiesData.add(PropertyModel(value: value, property: property));
     }
     if (propertiesData.isEmpty) {
       showItemProperties.sink.add([]);
     } else {
       showItemProperties.sink.add(propertiesData);
     }
+    dataStep1.properties = propertiesData;
   }
 
   Map<String, bool> mapValidate = {

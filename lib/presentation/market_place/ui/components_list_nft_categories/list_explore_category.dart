@@ -29,7 +29,7 @@ class ListExploreCategory extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 16.w),
             child: Text(
-              isLoading
+              isLoading && !isLoadFail
                   ? S.current.loading_text
                   : (isLoadFail
                       ? S.current.error_text

@@ -129,12 +129,13 @@ class DetailHardNftResponse {
       return TypeImage.VIDEO;
     }
   }
+
   MarketType getTypeMarket(int type) {
     if (type == 2) {
       return MarketType.AUCTION;
     } else if (type == 3) {
       return MarketType.PAWN;
-    } else if(type == 1){
+    } else if (type == 1) {
       return MarketType.SALE;
     } else {
       return MarketType.NOT_ON_MARKET;
@@ -142,10 +143,58 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
+        price: 0,
+        marketId: marketId,
+        name: name ?? '',
+        description: description,
+        royalties: royalties,
+        properties: properties?.map((e) => e.toDomain()).toList(),
+        owner: owner,
+        typeNFT: TypeNFT.HARD_NFT,
+        txnHash: txnHash,
+        image: getPath(fileCid ?? ''),
+        collectionID: collectionId,
+        collectionName: collectionName,
+        countProperties: countProperties,
+        numberOfCopies: numberOfCopies,
+        mintingFeeNumber: mintingFeeNumber,
+        mintingFeeToken: mintingFeeToken,
+        marketType: getTypeMarket(marketType ?? 0),
+        createAt: createAt,
+        updateAt: updateAt,
+        collectionAddress: collectionAddress,
+        nftTokenId: nftTokenId.toString(),
+        nftStandard: nftStandard,
+        blockchainNetwork: blockChainNetwork.toString(),
+        typeImage: getTypeImage(fileType ?? ''),
+        isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
 
   NFTOnAuction toAuction() => NFTOnAuction(
+        marketId: marketId,
+        name: name ?? '',
+        description: description,
+        royalties: royalties,
+        properties: properties?.map((e) => e.toDomain()).toList(),
+        owner: owner,
+        txnHash: txnHash,
+        fileCid: getPath(fileCid ?? ''),
+        collectionId: collectionId,
+        collectionName: collectionName,
+        countProperties: countProperties,
+        numberOfCopies: numberOfCopies,
+        mintingFeeNumber: mintingFeeNumber,
+        mintingFeeToken: mintingFeeToken,
+        marketType: getTypeMarket(marketType ?? 0),
+        createAt: createAt,
+        updateAt: updateAt,
+        collectionAddress: collectionAddress,
+        nftTokenId: nftTokenId.toString(),
+        nftStandard: nftStandard,
+        blockchainNetwork: blockChainNetwork.toString(),
+        typeImage: getTypeImage(fileType ?? ''),
+        isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
 }
