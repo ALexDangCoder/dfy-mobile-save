@@ -14,12 +14,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum PageRouterHardNFT { CREATE_HARD_NFT, LIST_HARD }
+
 class ListBookEvaluation extends StatefulWidget {
   final String assetId;
+  final PageRouterHardNFT pageRouter;
 
   const ListBookEvaluation({
     Key? key,
     required this.assetId,
+    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
 
   @override
@@ -58,9 +62,15 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRouter.create_nft,
-              );
+              if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.create_nft,
+                );
+              } else {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.hard_nft_mint,
+                );
+              }
             },
             title: S.current.book_evaluation_request,
             child: RefreshIndicator(

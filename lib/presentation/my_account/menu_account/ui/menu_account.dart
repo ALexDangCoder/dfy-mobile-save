@@ -231,12 +231,18 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: ListHardNftMintRequest(),
                 isRequireLoginEmail: false,
               ),
+              routeSettings: const RouteSettings(
+                name: AppRouter.hard_nft_mint,
+              ),
             ).then((_) => cubit.getLoginState());
           } else {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const ListHardNftMintRequest(),
+                settings: const RouteSettings(
+                  name: AppRouter.hard_nft_mint,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           }

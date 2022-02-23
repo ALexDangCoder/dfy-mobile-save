@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/list_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
@@ -22,11 +23,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class EvaluationResult extends StatefulWidget {
   const EvaluationResult({
     Key? key,
-    required this.assetID, this.pageRouter = PageRouter.MARKET,
+    required this.assetID,
+    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
 
   final String assetID;
-  final PageRouter pageRouter;
+  final PageRouterHardNFT pageRouter;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -76,13 +78,14 @@ class _EvaluationResultState extends State<EvaluationResult> {
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {
-          if (widget.pageRouter == PageRouter.MARKET) {
+          if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
             Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRouter.create_nft,
+              (route) => route.settings.name == AppRouter.create_nft,
             );
-          }
-          else {
-            Navigator.pop(context);
+          } else {
+            Navigator.of(context).popUntil(
+              (route) => route.settings.name == AppRouter.hard_nft_mint,
+            );
           }
         },
         child: Column(
@@ -132,70 +135,68 @@ class _EvaluationResultState extends State<EvaluationResult> {
           ],
         ),
       );
+    } else {
+      return const ModalProgressHUD(
+        inAsyncCall: true,
+        progressIndicator: CupertinoLoading(),
+        child: SizedBox(),
+      );
     }
-
-  else {
-  return const ModalProgressHUD(
-  inAsyncCall: true,
-  progressIndicator: CupertinoLoading(),
-  child: SizedBox(),
-  );
   }
-}
 
-Widget step() {
-  return SizedBox(
-    height: 30.h,
-    width: 318.w,
-    child: StreamBuilder<bool>(
-      stream: cubit.checkAcceptStream,
-      builder: (context, AsyncSnapshot<bool> snapshot) {
-        final isCheckSuccess = snapshot.data ?? false;
-        return Row(
-          children: [
-            const SuccessCkcCreateNft(),
-            dividerSuccessCreateNFT,
-            GestureDetector(
-              onTap: () {
-                if(widget.pageRouter == PageRouter.MARKET) {
-                  Navigator.pop(context);
-                }
-              },
-              child: const SuccessCkcCreateNft(),
-            ),
-            if (isCheckSuccess) dividerSuccessCreateNFT else
-              dividerCreateNFT,
-            if (!isCheckSuccess)
-              CircleStepCreateNft(
-                circleStatus: CircleStatus.IS_CREATING,
-                stepCreate: S.current.step3,
-              )
-            else
+  Widget step() {
+    return SizedBox(
+      height: 30.h,
+      width: 318.w,
+      child: StreamBuilder<bool>(
+        stream: cubit.checkAcceptStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          final isCheckSuccess = snapshot.data ?? false;
+          return Row(
+            children: [
               const SuccessCkcCreateNft(),
-            dividerCreateNFT,
-            if (!isCheckSuccess)
-              CircleStepCreateNft(
-                circleStatus: CircleStatus.IS_NOT_CREATE,
-                stepCreate: S.current.step4,
-              )
-            else
+              dividerSuccessCreateNFT,
               GestureDetector(
                 onTap: () {
-                  goTo(
-                    context,
-                    ReceiveHardNFTScreen(
-                      assetId: widget.assetID,
-                    ),
-                  );
+                  if (widget.pageRouter == PageRouter.MARKET) {
+                    Navigator.pop(context);
+                  }
                 },
-                child: CircleStepCreateNft(
-                  circleStatus: CircleStatus.IS_CREATING,
-                  stepCreate: S.current.step4,
-                ),
+                child: const SuccessCkcCreateNft(),
               ),
-          ],
-        );
-      },
-    ),
-  );
-}}
+              if (isCheckSuccess) dividerSuccessCreateNFT else dividerCreateNFT,
+              if (!isCheckSuccess)
+                CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_CREATING,
+                  stepCreate: S.current.step3,
+                )
+              else
+                const SuccessCkcCreateNft(),
+              dividerCreateNFT,
+              if (!isCheckSuccess)
+                CircleStepCreateNft(
+                  circleStatus: CircleStatus.IS_NOT_CREATE,
+                  stepCreate: S.current.step4,
+                )
+              else
+                GestureDetector(
+                  onTap: () {
+                    goTo(
+                      context,
+                      ReceiveHardNFTScreen(
+                        assetId: widget.assetID,
+                      ),
+                    );
+                  },
+                  child: CircleStepCreateNft(
+                    circleStatus: CircleStatus.IS_CREATING,
+                    stepCreate: S.current.step4,
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
