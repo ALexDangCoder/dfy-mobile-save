@@ -675,19 +675,24 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  void checkPropertiesWhenSave() {
-    if (propertiesData.isNotEmpty) {
-      for (final _ in propertiesData) {
-        propertiesData.removeWhere(
-          (element) => element.property.isEmpty || element.value.isEmpty,
-        );
-      }
-      if (propertiesData.isEmpty) {
-        showItemProperties.sink.add([]);
-      } else {
-        showItemProperties.sink.add(propertiesData);
-      }
-    } else {}
+  void checkPropertiesWhenSave({
+    required String property,
+    required String value,
+  }) {
+    if (property.isEmpty ||
+        value.isEmpty ||
+        property.length >= 30 ||
+        value.length >= 30) {
+      //khoong add vao
+    } else {
+      propertiesData.add(PropertyModel(value: value, property: property));
+    }
+    if (propertiesData.isEmpty) {
+      showItemProperties.sink.add([]);
+    } else {
+      showItemProperties.sink.add(propertiesData);
+    }
+    dataStep1.properties = propertiesData;
   }
 
   Map<String, bool> mapValidate = {
@@ -701,7 +706,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
-    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {

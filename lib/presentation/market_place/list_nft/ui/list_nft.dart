@@ -6,6 +6,7 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/list_nft/bloc/list_nft_cubit.dart';
+import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/ui/create_collection_screen.dart';
@@ -131,19 +132,33 @@ class _ListNftState extends State<ListNft> {
           );
         },
         nftCallBack: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
+
+          showDialog(
+            context: context,
+            builder: (_) => ConnectWalletDialog(
               settings: const RouteSettings(
                 name: AppRouter.create_nft,
               ),
-              builder: (context) {
-                return CreateNFTScreen(
-                  cubit: CreateNftCubit(),
-                );
-              },
+              navigationTo: CreateNFTScreen(
+                cubit: CreateNftCubit(),
+              ),
+              isRequireLoginEmail: false,
             ),
           );
+
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     settings: const RouteSettings(
+          //       name: AppRouter.create_nft,
+          //     ),
+          //     builder: (context) {
+          //       return CreateNFTScreen(
+          //         cubit: CreateNftCubit(),
+          //       );
+          //     },
+          //   ),
+          // );
         },
       ),
       body: GestureDetector(
