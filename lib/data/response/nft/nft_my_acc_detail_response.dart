@@ -73,7 +73,7 @@ class DetailNftMyAccResponse {
   int? nftTokenId;
   @JsonKey(name: 'market_id')
   String? marketId;
-  @JsonKey(name: 'type_nft')
+  @JsonKey(name: 'type')
   int? typeNft;
   @JsonKey(name: 'file_cid')
   String? fileCid;
@@ -183,7 +183,7 @@ class DetailNftMyAccResponse {
         nftTokenId: nftTokenId.toString(),
         nftStandard: (nftStandard == 0) ? '0' : '1',
         typeImage:
-            getTypeImage(((fileType != '') ? fileType : 'video') ?? 'video'),
+        getTypeImage(((fileType != '') ? fileType : 'video') ?? 'video'),
         isWhitelist: isWhiteList,
         evaluationId: evaluationId,
       );
