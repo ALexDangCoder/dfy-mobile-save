@@ -53,11 +53,11 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       MarketType status = MarketType.NOT_ON_MARKET;
-                      if (state.data.status == 2) {
+                      if (state.data.displayStatus == 2) {
                         status = MarketType.AUCTION;
-                      } else if (state.data.status == 3) {
+                      } else if (state.data.displayStatus == 3) {
                         status = MarketType.PAWN;
-                      } else if (state.data.status == 1) {
+                      } else if (state.data.displayStatus == 1) {
                         status = MarketType.SALE;
                       }
                       goTo(
@@ -65,7 +65,7 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                         NFTDetailScreen(
                           typeMarket: status,
                           typeNft: TypeNFT.HARD_NFT,
-                          nftId: state.data.nftAssetHard?.nftId,
+                          nftId: state.data.nftAssetHard?.id,
                           nftTokenId:
                               state.data.nftAssetHard?.bcTokenId.toString(),
                         ),
