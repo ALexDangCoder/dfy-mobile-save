@@ -177,7 +177,7 @@ class BlocListBookEvaluation {
         }
       case SUCCESS:
         isDetail = false;
-        isCancel = true;
+        isCancel = false;
         isLoadingText = false;
         if (time != 0) {
           return S.current.evaluator_has_suggested;
@@ -219,7 +219,7 @@ class BlocListBookEvaluation {
 
   bool checkIsSuccess(List<AppointmentModel> list) {
     for (final AppointmentModel value in list) {
-      if (value.status == ACCEPTED || value.status == SUCCESS) {
+      if (value.status == SUCCESS) {
         return true;
       }
     }

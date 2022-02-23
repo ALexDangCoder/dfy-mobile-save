@@ -83,7 +83,9 @@ class _EvaluationResultState extends State<EvaluationResult> {
               (route) => route.settings.name == AppRouter.create_nft,
             );
           } else {
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil(
+              (route) => route.settings.name == AppRouter.list_hard_mint,
+            );
           }
         },
         child: Column(
@@ -102,6 +104,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
                     listEvaluation: listEvaluation,
                     cubit: cubit,
                     assetID: widget.assetID,
+                    pageRouterHardNFT: widget.pageRouter,
                   ),
                 ),
               )
