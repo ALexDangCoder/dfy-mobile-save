@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/market_place/on_boarding_content_model/content_model.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: PageView.builder(
@@ -161,17 +161,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     else
                       RichText(
                         text: TextSpan(
-                          text: '${contents[index].descriptionNormal} ',
+                          text: index != 2
+                              ? '${contents[index].descriptionYellow} '
+                              : '${contents[index].descriptionYellow}\n$EMPTYSPACESTEP3'
+                              ,
                           style: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
+                            AppTheme.getInstance().fillColor(),
                             16,
                             FontWeight.w600,
                           ),
                           children: [
                             TextSpan(
-                              text: contents[index].descriptionYellow,
+                              text: contents[index].descriptionNormal,
                               style: textNormalCustom(
-                                AppTheme.getInstance().fillColor(),
+                                AppTheme.getInstance().whiteColor(),
                                 16,
                                 FontWeight.w600,
                               ),
@@ -203,9 +206,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Container(
       height: 12.h,
       width: currentIndex == index ? 43.w : 12.w,
-      margin: EdgeInsets.only(
-        right: 16.w,
-      ),
+      margin: index != 3
+          ? EdgeInsets.only(
+              right: 16.w,
+            )
+          : null,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().colorTextReset(),
         gradient: RadialGradient(
