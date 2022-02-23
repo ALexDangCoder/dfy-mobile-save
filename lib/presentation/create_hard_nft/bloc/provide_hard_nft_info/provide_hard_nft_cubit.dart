@@ -693,14 +693,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       showItemProperties.sink.add(propertiesData);
     }
     dataStep1.properties = propertiesData;
-    // print(propertiesData);
-
-    // for (final _ in propertiesData) {
-    //   propertiesData.removeWhere(
-    //     (element) => element.property.isEmpty || element.value.isEmpty,
-    //   );
-    // }
-
   }
 
   Map<String, bool> mapValidate = {

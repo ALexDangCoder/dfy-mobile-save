@@ -73,11 +73,7 @@ class _FormAddPropertiesState extends State<FormAddProperties> {
                   ),
                 ),
                 spaceH20,
-                // FormProperties(
-                //   cubit: widget.cubit,
-                // ),
                 Container(
-                  // height: 116.h,
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: BorderRadius.all(
