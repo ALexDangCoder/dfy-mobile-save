@@ -536,7 +536,7 @@ class Step1WhenSubmit extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 cubit.propertiesData.removeAt(index);
-                cubit.checkPropertiesWhenSave();
+                cubit.checkPropertiesWhenSave(property: '', value: '');
               },
               child: Image.asset(
                 ImageAssets.closeProperties,

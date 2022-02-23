@@ -560,6 +560,7 @@
   "weekly": "weekly",
   "upload_file": "Upload file",
   "format_media_file": "Format: MP4, WEBM, MP3, WAV,\n OGG, PNG, JPG, JPEG, GIF",
+  "add_properties": "Add properties",
   "add_more_trait_to_properties": "Properties (add more trait for your NFT)",
   "properties": "Properties",
   "listing_is_free": "Listing is free. The the time of the sale,",
