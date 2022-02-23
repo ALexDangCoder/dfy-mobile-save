@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,8 +27,10 @@ class MintRequestItem extends StatelessWidget {
           case 4:
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) =>
-                    EvaluationResult(assetID: mintRequestModel.id ?? ''),
+                builder: (context) => EvaluationResult(
+                  assetID: mintRequestModel.id ?? '',
+                  pageRouter: PageRouter.MY_ACC,
+                ),
                 settings: const RouteSettings(
                   name: AppRouter.step3ListEvaluation,
                 ),
@@ -36,22 +39,20 @@ class MintRequestItem extends StatelessWidget {
             break;
           case 5:
           case 6:
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  ReceiveHardNFTScreen(
-                    assetId: mintRequestModel.id ?? '',
-                  ),
-            ),
-          );
-          break;
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ReceiveHardNFTScreen(
+                  assetId: mintRequestModel.id ?? '',
+                ),
+              ),
+            );
+            break;
           default:
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) =>
-                    ListBookEvaluation(
-                      assetId: mintRequestModel.id ?? '',
-                    ),
+                builder: (context) => ListBookEvaluation(
+                  assetId: mintRequestModel.id ?? '',
+                ),
                 settings: const RouteSettings(
                   name: AppRouter.step2ListBook,
                 ),
