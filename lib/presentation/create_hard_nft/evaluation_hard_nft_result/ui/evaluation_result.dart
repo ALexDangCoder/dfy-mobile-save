@@ -83,9 +83,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
               (route) => route.settings.name == AppRouter.create_nft,
             );
           } else {
-            Navigator.of(context).popUntil(
-              (route) => route.settings.name == AppRouter.hard_nft_mint,
-            );
+            Navigator.of(context).pop();
           }
         },
         child: Column(

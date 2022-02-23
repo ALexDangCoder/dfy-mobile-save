@@ -67,9 +67,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   (route) => route.settings.name == AppRouter.create_nft,
                 );
               } else {
-                Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRouter.hard_nft_mint,
-                );
+                Navigator.of(context).pop();
               }
             },
             title: S.current.book_evaluation_request,
