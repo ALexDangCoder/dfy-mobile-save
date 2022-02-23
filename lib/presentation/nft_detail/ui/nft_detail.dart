@@ -801,14 +801,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                             ),
                             SizedBox(
                               width: 13.15.w,
-                            ),sizedSvgImage(
+                            ),
+                            sizedSvgImage(
                               w: 14,
                               h: 14,
                               image: !snapshot.data!
                                   ? ImageAssets.ic_collapse_svg
                                   : ImageAssets.ic_expand_svg,
                             ),
-
                           ],
                         ),
                       ),
@@ -924,12 +924,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                         spaceH12,
                         buildRow(
                           title: S.current.nft_standard,
-                          detail:
-                              (nftOnPawn.nftCollateralDetailDTO?.nftStandard ??
-                                          '0') ==
-                                      '0'
-                                  ? 'ERC - 721'
-                                  : 'ERC - 1155',
+                          detail: (nftOnPawn.nftCollateralDetailDTO?.nftStandard
+                                          .toString() ??
+                                      '0') ==
+                                  '0'
+                              ? 'ERC - 721'
+                              : 'ERC - 1155',
                           type: TextType.NORMAL,
                         ),
                         spaceH12,
@@ -974,14 +974,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                             ),
                             SizedBox(
                               width: 13.15.w,
-                            ),sizedSvgImage(
+                            ),
+                            sizedSvgImage(
                               w: 14,
                               h: 14,
                               image: !snapshot.data!
                                   ? ImageAssets.ic_collapse_svg
                                   : ImageAssets.ic_expand_svg,
                             ),
-
                           ],
                         ),
                       ),

@@ -288,6 +288,7 @@
   "asset_type": "Hard NFT type:",
   "authenticity_check": "Authenticity check:",
   "carat": "Carat:",
+  "asset_type_filter": "Asset type",
   "clarity": "Clarity:",
   "shape": "Shape:",
   "cut_grade": "Cut grade:",
@@ -750,5 +751,9 @@
   "like_new": "Like new",
   "fair": "Fair",
   "poor": "Poor",
-  "broken": "Broken"
+  "broken": "Broken",
+  "expect_for":"Expect for",
+  "nft_created":"NFT created",
+  "un_evaluated":"Un-evaluated",
+  "evaluated":"Evaluated"
 }

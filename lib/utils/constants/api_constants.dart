@@ -190,6 +190,7 @@ class ApiConstants {
   static const String GET_LIST_EVALUATION_RESULT =
       '/hard-nft-svc/api/evaluations/';
   static const String GET_DETAIL_ASSETS_HARD_NFT = '/hard-nft-svc/api/assets/';
+  static const String GET_MINT_REQUEST_HARD_NFT = '/hard-nft-svc/api/assets';
   static const String ACCEPT = '/accept';
   static const String REJECT = '/reject';
   static const String GET_EVALUATION_FEE =
