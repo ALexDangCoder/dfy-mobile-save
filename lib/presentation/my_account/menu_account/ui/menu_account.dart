@@ -224,12 +224,22 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'hard_nft_mint':
         {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ListHardNftMintRequest(),
-            ),
-          );
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: ListHardNftMintRequest(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ListHardNftMintRequest(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'list_hard_nft':

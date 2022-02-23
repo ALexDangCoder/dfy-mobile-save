@@ -10,12 +10,12 @@ import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/bloc/hard
 import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/list_mint_request.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
-import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
-import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'filter_mint_request.dart';
 
 class ListHardNftMintRequest extends StatefulWidget {
   const ListHardNftMintRequest({Key? key}) : super(key: key);
@@ -35,6 +35,7 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
     super.initState();
     cubit = HardNftMintRequestCubit();
     _debounce = Timer(const Duration(milliseconds: 500), () {});
+    cubit.getTokenInf();
     cubit.getListMintRequest();
   }
 
@@ -47,28 +48,50 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HardNftMintRequestCubit, HardNftMintRequestState>(
+    List<MintRequestModel> list = [];
+    return BlocConsumer<HardNftMintRequestCubit, HardNftMintRequestState>(
       bloc: cubit,
+      listener: (context,state) {
+        if(state is ListMintRequestSuccess){
+          list = state.list;
+        }
+        if(state is ListMintRequestLoadMoreSuccess){
+          list = list + state.list;
+        }
+        if(state is ListMintRequestRefreshSuccess){
+          list.clear();
+          list = state.list;
+        }
+      },
       builder: (BuildContext context, state) {
         return StateStreamLayout(
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {},
           textEmpty: '',
-          child: content(state),
+          child: content(list,state),
         );
       },
     );
   }
 
-  Widget content(HardNftMintRequestState state) {
-    if (state is ListMintRequestSuccess) {
-      final List<MintRequestModel> list = state.list;
+  Widget content(List<MintRequestModel> list,HardNftMintRequestState state) {
       return BaseDesignScreen(
-        title: 'Hard NFT mint request',
+        title: S.current.hard_nft_mint_request,
         isImage: true,
         text: ImageAssets.ic_filter,
-        onRightClick: () {},
+        onRightClick: () {
+          showModalBottomSheet(
+            backgroundColor: Colors.black,
+            isScrollControlled: true,
+            context: context,
+            builder: (_) {
+              return FilterMintRequest(
+                cubit: cubit,
+              );
+            },
+          );
+        },
         child: Column(
           children: [
             spaceH12,
@@ -85,18 +108,12 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
               child: ListMintRequest(
                 cubit: cubit,
                 listMintRequest: list,
+                checkRefresh: controller.value.text != '',
               ),
             ),
           ],
         ),
       );
-    } else {
-      return const ModalProgressHUD(
-        inAsyncCall: true,
-        progressIndicator: CupertinoLoading(),
-        child: SizedBox(),
-      );
-    }
   }
 
   Widget searchBar() {
@@ -159,6 +176,12 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
                           setState(() {
                             controller.text = '';
                             cubit.hide();
+                            cubit.query = '';
+                            cubit.page = 1;
+                            cubit.loadMore = false;
+                            cubit.canLoadMoreList = true;
+                            cubit.refresh = false;
+                            cubit.getListMintRequest();
                           });
                           FocusScope.of(context).unfocus();
                         },
@@ -188,6 +211,9 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
 
   void _onSearchChanged(String query) {
     if (_debounce.isActive) _debounce.cancel();
-    _debounce = Timer(const Duration(milliseconds: 900), () {});
+    _debounce = Timer(const Duration(milliseconds: 900), () {
+      cubit.query = query;
+      cubit.searchName(query);
+    });
   }
 }

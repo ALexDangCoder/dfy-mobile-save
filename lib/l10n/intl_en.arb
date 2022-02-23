@@ -288,6 +288,7 @@
   "asset_type": "Hard NFT type:",
   "authenticity_check": "Authenticity check:",
   "carat": "Carat:",
+  "asset_type_filter": "Asset type",
   "clarity": "Clarity:",
   "shape": "Shape:",
   "cut_grade": "Cut grade:",

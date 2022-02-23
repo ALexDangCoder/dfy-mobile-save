@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/hard_nft_mint_request.dart';
 import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/bloc/hard_nft_mint_request_cubit.dart';
-import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/mint_request_item.dart';
+import 'package:Dfy/presentation/create_hard_nft/hard_nft_mint_request/ui/widget/mint_request_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,11 +9,12 @@ class ListMintRequest extends StatefulWidget {
   const ListMintRequest({
     Key? key,
     required this.listMintRequest,
-    required this.cubit,
+    required this.cubit, required this.checkRefresh,
   }) : super(key: key);
 
   final List<MintRequestModel> listMintRequest;
   final HardNftMintRequestCubit cubit;
+  final bool checkRefresh;
 
   @override
   _ListMintRequestState createState() => _ListMintRequestState();
@@ -25,11 +26,17 @@ class _ListMintRequestState extends State<ListMintRequest> {
     if (widget.listMintRequest.isNotEmpty) {
       return NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          /// loadMore
+          if (widget.cubit.canLoadMoreList &&
+              (scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent)) {
+            widget.cubit.loadMoreMintRequest();
+          }
           return true;
         },
         child: RefreshIndicator(
-          onRefresh: () async {},
+          onRefresh: () async {
+            widget.cubit.refreshMintRequest();
+          },
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: widget.listMintRequest.length,

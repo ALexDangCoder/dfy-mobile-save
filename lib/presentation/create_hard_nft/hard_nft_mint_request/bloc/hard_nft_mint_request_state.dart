@@ -19,3 +19,24 @@ class ListMintRequestSuccess extends HardNftMintRequestState {
   List<Object?> get props => [list];
 
 }
+
+class ListMintRequestLoadMoreSuccess extends HardNftMintRequestState {
+
+  final List<MintRequestModel> list;
+
+  ListMintRequestLoadMoreSuccess(this.list);
+
+  @override
+  List<Object?> get props => [list];
+
+}
+
+class ListMintRequestRefreshSuccess extends HardNftMintRequestState {
+
+  final List<MintRequestModel> list;
+
+  ListMintRequestRefreshSuccess(this.list);
+
+  @override
+  List<Object?> get props => [list];
+}
