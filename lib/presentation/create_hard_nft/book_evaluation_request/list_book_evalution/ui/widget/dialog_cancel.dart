@@ -203,13 +203,13 @@ class DialogCancel extends StatelessWidget {
                                           title: S.current.cancel_appointment,
                                           listDetail: [
                                             DetailItemApproveModel(
-                                              title: '${S.current.evaluator} :',
+                                              title: '${S.current.evaluator} ',
                                               value:
                                                   appointment.evaluator?.name ??
                                                       '',
                                             ),
                                             DetailItemApproveModel(
-                                              title: '${S.current.date_time} :',
+                                              title: '${S.current.date_time} ',
                                               value: 0.formatDateTimeMy(
                                                 appointment.appointmentTime ??
                                                     0,

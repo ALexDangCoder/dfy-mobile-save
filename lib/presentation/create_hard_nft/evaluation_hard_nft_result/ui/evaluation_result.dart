@@ -3,6 +3,7 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/bloc/evaluation_hard_nft_result_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/list_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
@@ -25,11 +26,11 @@ class EvaluationResult extends StatefulWidget {
   const EvaluationResult({
     Key? key,
     required this.assetID,
-    this.pageRouter = PageRouter.MARKET,
+    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
 
   final String assetID;
-  final PageRouter pageRouter;
+  final PageRouterHardNFT pageRouter;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -79,12 +80,14 @@ class _EvaluationResultState extends State<EvaluationResult> {
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {
-          if (widget.pageRouter == PageRouter.MARKET) {
+          if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
             Navigator.of(context).popUntil(
               (route) => route.settings.name == AppRouter.create_nft,
             );
           } else {
-            Navigator.pop(context);
+            Navigator.of(context).popUntil(
+              (route) => route.settings.name == AppRouter.list_hard_mint,
+            );
           }
         },
         bottomBar: StreamBuilder<bool>(
@@ -148,6 +151,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
                     listEvaluation: listEvaluation,
                     cubit: cubit,
                     assetID: widget.assetID,
+                    pageRouterHardNFT: widget.pageRouter,
                   ),
                 ),
               )
