@@ -253,7 +253,8 @@ Container _priceContainerOnAuction({
                 ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? nftOnAuction.reservePrice : nftOnAuction.currentPrice} '
+                  '${!isBidding ? formatPrice.format(nftOnAuction.reservePrice)
+                      : formatPrice.format(nftOnAuction.currentPrice)} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
@@ -286,7 +287,13 @@ Container _priceContainerOnAuction({
   );
 }
 
-SizedBox _timeContainer(bool start, int startTime, bool end, int endTime) =>
+SizedBox _timeContainer(
+  bool start,
+  int startTime,
+  bool end,
+  int endTime,
+  Function onRefresh,
+) =>
     SizedBox(
       width: 343.w,
       child: Column(
@@ -313,9 +320,15 @@ SizedBox _timeContainer(bool start, int startTime, bool end, int endTime) =>
             ),
           spaceH16,
           if (start)
-            CountDownView(timeInMilliSecond: startTime)
+            CountDownView(
+              timeInMilliSecond: startTime,
+              onRefresh: onRefresh,
+            )
           else
-            CountDownView(timeInMilliSecond: endTime),
+            CountDownView(
+              timeInMilliSecond: endTime,
+              onRefresh: onRefresh,
+            ),
           spaceH24,
         ],
       ),

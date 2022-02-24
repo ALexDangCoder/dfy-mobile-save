@@ -19,10 +19,11 @@ import 'package:intl/intl.dart';
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
     Key? key,
-    required this.nftMarket,
+    required this.nftMarket, this.pageRouter,
   }) : super(key: key);
 
   final NftMarket nftMarket;
+  final PageRouter? pageRouter;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -110,6 +111,7 @@ class _NFTItemState extends State<NFTItemWidget> {
               pawnId: widget.nftMarket.pawnId,
               collectionAddress: widget.nftMarket.collectionAddress,
               nftTokenId: widget.nftMarket.nftTokenId,
+              pageRouter: widget.pageRouter,
             ),
           ),
         );
