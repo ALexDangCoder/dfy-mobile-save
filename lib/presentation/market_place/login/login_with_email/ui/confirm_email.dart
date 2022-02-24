@@ -102,6 +102,7 @@ class _ConfirmEmailState extends State<ConfirmEmail> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: PinCodeTextField(
+                  keyboardType: TextInputType.number,
                   obscureText: false,
                   animationType: AnimationType.fade,
                   pinTheme: PinTheme(
