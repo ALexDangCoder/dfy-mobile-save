@@ -73,8 +73,10 @@ class _EvaluationTabState extends State<EvaluationTab>
                 ),
                 textRow(
                   name: S.current.maximum_amount,
-                  value: '${widget.evaluation.evaluatedPrice ?? 0} '
-                      '${widget.evaluation.evaluatedSymbol}',
+                  value: '${formatPrice.format(
+                    widget.evaluation.evaluatedPrice ?? 0,
+                  )}'
+                      ' ${widget.evaluation.evaluatedSymbol}',
                   token: widget.evaluation.urlToken,
                 ),
                 textRow(
@@ -303,9 +305,7 @@ class _EvaluationTabState extends State<EvaluationTab>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              isShow
-                                  ? S.current.see_less
-                                  : S.current.see_more,
+                              isShow ? S.current.see_less : S.current.see_more,
                               style: textNormalCustom(
                                 AppTheme.getInstance().fillColor(),
                                 16,

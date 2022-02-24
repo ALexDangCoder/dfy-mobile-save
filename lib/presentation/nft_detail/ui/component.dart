@@ -12,6 +12,34 @@ Widget _leading(BuildContext context) => InkWell(
       ),
     );
 
+Widget action(
+  BuildContext context,
+  String collectionAddress,
+  String nftTokenId,
+  String walletAddress,
+) {
+  final NftInfo nftInfo = NftInfo(contract: collectionAddress, id: nftTokenId);
+  return InkWell(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SendNft(
+            nftInfo: nftInfo,
+            addressFrom: walletAddress,
+            imageWallet: '',
+            nameWallet: '',
+          ),
+        ),
+      );
+    },
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+      child: roundButton(image: ImageAssets.ic_transfer_svf),
+    ),
+  );
+}
+
 Widget _nameNFT({
   required String title,
   int quantity = 1,
@@ -102,7 +130,7 @@ Widget _description(String des) {
 }
 
 Widget additionalColumn(List<Properties> properties) {
-  if(properties.isNotEmpty){
+  if (properties.isNotEmpty) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -117,59 +145,58 @@ Widget additionalColumn(List<Properties> properties) {
         spaceH14,
         Align(
           alignment: Alignment.centerLeft,
-          child:Wrap(
+          child: Wrap(
             spacing: 12.w,
             runSpacing: 8.h,
             children: properties
                 .map(
                   (e) => SizedBox(
-                height: 50.h,
-                child: Chip(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: AppTheme.getInstance()
-                          .divideColor()
-                          .withOpacity(0.1),
-                    ),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  backgroundColor: AppTheme.getInstance().bgBtsColor(),
-                  label: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        e.key ?? '',
-                        textAlign: TextAlign.left,
-                        style: textNormalCustom(
-                          AppTheme.getInstance()
-                              .textThemeColor()
-                              .withOpacity(0.7),
-                          12,
-                          FontWeight.w400,
+                    height: 50.h,
+                    child: Chip(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: AppTheme.getInstance()
+                              .divideColor()
+                              .withOpacity(0.1),
                         ),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
-                      spaceH4,
-                      Text(
-                        e.value ?? '',
-                        textAlign: TextAlign.left,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          14,
-                          FontWeight.w400,
-                        ),
-                      )
-                    ],
+                      backgroundColor: AppTheme.getInstance().bgBtsColor(),
+                      label: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.key ?? '',
+                            textAlign: TextAlign.left,
+                            style: textNormalCustom(
+                              AppTheme.getInstance()
+                                  .textThemeColor()
+                                  .withOpacity(0.7),
+                              12,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          spaceH4,
+                          Text(
+                            e.value ?? '',
+                            textAlign: TextAlign.left,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().textThemeColor(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            )
+                )
                 .toList(),
           ),
         )
       ],
     );
-  }
-  else {
+  } else {
     return const SizedBox.shrink();
   }
 }

@@ -83,7 +83,7 @@ Container _priceContainerOnSale({
                   ),
                   spaceW4,
                   Text(
-                    '$price $shortName',
+                    '${formatPrice.format(price)} $shortName',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
                       20,

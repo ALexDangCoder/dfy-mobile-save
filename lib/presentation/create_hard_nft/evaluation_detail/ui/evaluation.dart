@@ -107,8 +107,8 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
               ],
             ),
             if (widget.isAccept)
-              Padding(
-                padding: EdgeInsets.only(top: 595.h),
+              Align(
+                alignment: Alignment.bottomCenter,
                 child: Container(
                   padding: EdgeInsets.only(
                     left: 16.w,
