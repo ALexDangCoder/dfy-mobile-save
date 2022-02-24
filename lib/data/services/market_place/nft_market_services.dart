@@ -15,7 +15,7 @@ abstract class NftMarketClient {
     @Query('status') String? status,
     @Query('nft_type') String? nftType,
     @Query('name') String? name,
-    @Query('collection_id') String? collectionId,
+    @Query('collection_address') String? collectionId,
     @Query('page') String? page,
     @Query('size') String? size,
   );
