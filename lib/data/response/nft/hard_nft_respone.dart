@@ -142,6 +142,14 @@ class DetailHardNftResponse {
     }
   }
 
+  String getNftStandard(dynamic nftStandard){
+    if(nftStandard == 'ERC_1155'){
+      return '1';
+    } else {
+      return '0';
+    }
+  }
+
   NftMarket toOnSale() => NftMarket(
         price: 0,
         marketId: marketId,
@@ -164,7 +172,7 @@ class DetailHardNftResponse {
         updateAt: updateAt,
         collectionAddress: collectionAddress,
         nftTokenId: nftTokenId.toString(),
-        nftStandard: nftStandard,
+        nftStandard: getNftStandard(nftStandard),
         blockchainNetwork: blockChainNetwork.toString(),
         typeImage: getTypeImage(fileType ?? ''),
         isWhitelist: isWhiteList,
