@@ -1,4 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_nft_screen.dart';
+import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/wallet/bloc/wallet_cubit.dart';
 import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,9 @@ class CreateNFT extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const ComingSoon();
+              return CreateNFTScreen(
+                cubit: CreateNftCubit(),
+              );
             },
           ),
         );
