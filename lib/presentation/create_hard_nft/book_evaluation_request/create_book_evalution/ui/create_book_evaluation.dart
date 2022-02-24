@@ -845,22 +845,22 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         title: S.current.book_appointment,
                                         listDetail: [
                                           DetailItemApproveModel(
-                                            title: '${S.current.evaluator} :',
+                                            title: '${S.current.evaluator} ',
                                             value: pawn.name ?? '',
                                           ),
                                           DetailItemApproveModel(
-                                            title: '${S.current.date_time} :',
+                                            title: '${S.current.date_time} ',
                                             value: '${bloc.timeStream.value} '
                                                 '- ${bloc.dateMy}'
                                                 ', ${bloc.dateStream.value}',
                                           ),
                                           DetailItemApproveModel(
-                                            title: '${S.current.nft} :',
+                                            title: '${S.current.nft}: ',
                                             value: bloc.typeNFT ?? '',
                                           ),
                                           DetailItemApproveModel(
                                             title:
-                                                '${S.current.evaluation_fee} :',
+                                                '${S.current.evaluation_fee} ',
                                             value:
                                                 '${bloc.evaluationFee?.amount ?? 0} '
                                                 '${bloc.evaluationFee?.symbol ?? ''}',

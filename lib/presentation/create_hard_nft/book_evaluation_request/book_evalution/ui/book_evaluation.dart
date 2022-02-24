@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_ev
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_list_map.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/widget/item_pawn_shop_star.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -20,12 +21,14 @@ class BookEvaluation extends StatefulWidget {
   final List<AppointmentModel> appointmentList;
   final bool isSuccess;
   final String assetId;
+  final PageRouterHardNFT pageRouter;
 
   const BookEvaluation({
     Key? key,
     required this.appointmentList,
     required this.isSuccess,
     required this.assetId,
+    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
 
   @override
@@ -51,16 +54,21 @@ class _BookEvaluationState extends State<BookEvaluation> {
       isImage: true,
       text: ImageAssets.ic_close,
       onRightClick: () {
-        Navigator.of(context).popUntil(
-          (route) => route.settings.name == AppRouter.create_nft,
-        );
+        if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
+          Navigator.of(context).popUntil(
+            (route) => route.settings.name == AppRouter.create_nft,
+          );
+        } else {
+          Navigator.of(context).popUntil(
+            (route) => route.settings.name == AppRouter.list_hard_mint,
+          );
+        }
       },
       title: S.current.book_evaluation_request,
       child: Column(
         children: [
           spaceH24,
           StepAppBar(
-            assetId: widget.assetId,
             isSuccess: widget.isSuccess,
           ),
           spaceH16,

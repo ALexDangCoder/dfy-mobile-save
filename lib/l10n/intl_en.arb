@@ -761,5 +761,6 @@
   "expect_for":"Expect for",
   "nft_created":"NFT created",
   "un_evaluated":"Un-evaluated",
-  "evaluated":"Evaluated"
+  "evaluated":"Evaluated",
+  "view_evaluation": "View evaluation"
 }

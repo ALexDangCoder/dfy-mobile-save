@@ -230,6 +230,9 @@ class _MenuAccountState extends State<MenuAccount> {
               builder: (context) => const ConnectWalletDialog(
                 navigationTo: ListHardNftMintRequest(),
                 isRequireLoginEmail: false,
+                settings: RouteSettings(
+                  name: AppRouter.list_hard_mint,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           } else {
@@ -237,6 +240,9 @@ class _MenuAccountState extends State<MenuAccount> {
               context,
               MaterialPageRoute(
                 builder: (context) => const ListHardNftMintRequest(),
+                settings: const RouteSettings(
+                  name: AppRouter.list_hard_mint,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           }
