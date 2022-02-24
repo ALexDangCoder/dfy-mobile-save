@@ -535,15 +535,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: objSale.isOwner == true
-                ? _buildButtonPutOnMarket(
+            bottomBar:_buildButtonPutOnMarket(
                     context,
                     bloc,
                     objSale,
                     widget.nftId,
                     onRefresh,
-                  )
-                : const SizedBox(),
+                  ),
             content: [
               _nameNFT(
                 context: context,
