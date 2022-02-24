@@ -7,7 +7,7 @@ part 'collection_filter_response.g.dart';
 
 @JsonSerializable()
 class CollectionFilterResponse extends Equatable {
-  @JsonKey(name: 'id')
+  @JsonKey(name: 'collection_address')
   String? id;
   @JsonKey(name: 'name')
   String? name;
