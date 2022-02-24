@@ -163,15 +163,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         txHashToken = result['txHash'];
         if (isSuccess) {
           if (result['isSuccess']) {
-            final transactionStatus =
-                await Web3Utils().getTransactionStatus(txh: txHashToken);
-            if (transactionStatus) {
-              status = STATUS_TRANSACTION_SUCCESS;
-              emit(FormBlockchainSendTokenSuccess());
-            } else {
-              status = STATUS_TRANSACTION_FAIL;
-              emit(FormBlockchainSendTokenFail());
-            }
+            status = STATUS_TRANSACTION_SUCCESS;
+            emit(FormBlockchainSendTokenSuccess());
           } else {
             status = STATUS_TRANSACTION_FAIL;
             emit(FormBlockchainSendTokenFail());
