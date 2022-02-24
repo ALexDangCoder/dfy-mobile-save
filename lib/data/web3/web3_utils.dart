@@ -387,6 +387,14 @@ class Web3Utils {
     }
   }
 
+  Future<bool> getTransactionStatus({required String txh}) async {
+    TransactionReceipt? receipt;
+    do {
+      receipt = await client.getTransactionReceipt(txh);
+    } while (receipt == null);
+    return receipt.status ?? false;
+  }
+
   //NFT detail
   Future<NftInfo> getNftDetail({
     required String contractAddress,

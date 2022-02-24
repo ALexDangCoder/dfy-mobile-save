@@ -121,7 +121,7 @@ dependencies:
 
   url_launcher: ^6.0.17
   #web3
-  web3dart: ^2.3.3
+  web3dart: ^2.3.5
   http: ^0.13.4
   keyboard_dismisser: ^2.0.0
   dotted_border: ^2.0.0+1
