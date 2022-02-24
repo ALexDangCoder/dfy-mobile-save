@@ -455,14 +455,6 @@ void showAlert(
               height: 4.h,
             ),
             Text(
-              S.current.purchase_being_processed,
-              style: textNormalCustom(
-                Colors.white,
-                12,
-                FontWeight.w400,
-              ),
-            ),
-            Text(
               S.current.warning_connect_address,
               style: textNormalCustom(
                 Colors.white,
@@ -487,17 +479,20 @@ void showAlert(
             height: 1.h,
             color: AppTheme.getInstance().divideColor(),
           ),
-          Center(
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                S.current.ok,
-                style: textNormalCustom(
-                  fillYellowColor,
-                  20,
-                  FontWeight.w700,
+          SizedBox(
+            height: 50.h,
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    fillYellowColor,
+                    20,
+                    FontWeight.w700,
+                  ),
                 ),
               ),
             ),
@@ -558,7 +553,7 @@ Widget _buildButtonPutOnMarket(
           }
         }
       } else {
-        showAlert(context,nftMarket.walletAddress ?? '');
+        showAlert(context,nftMarket.owner ?? '');
       }
     },
     gradient: RadialGradient(

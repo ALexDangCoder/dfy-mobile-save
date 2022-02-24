@@ -41,7 +41,7 @@ class EvaluationItem extends StatelessWidget {
               assetID: assetID,
             ),
             settings: const RouteSettings(
-              name: AppRouter.step3ListEvaluation,
+              name: AppRouter.step3ListEvaluationDetail,
             ),
           ),
         ).whenComplete(() {
