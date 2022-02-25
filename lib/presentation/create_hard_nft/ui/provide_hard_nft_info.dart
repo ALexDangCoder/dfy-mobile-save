@@ -375,6 +375,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         text: (currentInfo ?? UserInfoCreateHardNft())
                             .phoneContact,
                       ),
+                      textInputType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       prefixIcon: FormDropDown(
                         defaultValue: currentInfo != null
                             ? {

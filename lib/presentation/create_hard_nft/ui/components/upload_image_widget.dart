@@ -370,7 +370,7 @@ class UploadImageWidget extends StatelessWidget {
                             onTap: () {
                               cubit.pickMedia();
                             },
-                            content: 'Add more images',
+                            content: S.current.add_more,
                           ),
                         );
                       }),
