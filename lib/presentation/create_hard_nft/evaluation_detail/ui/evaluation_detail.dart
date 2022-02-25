@@ -378,7 +378,6 @@ class _EvaluationDetailState extends State<EvaluationDetail>
               child: Container(
                 height: 32.h,
                 width: 32.h,
-                clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(getImage()),
@@ -490,17 +489,17 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   String getImage() {
     switch (widget.evaluation.assetType?.id ?? 0) {
       case 1:
-        return ImageAssets.diamond;
+        return ImageAssets.img_diamond;
       case 2:
-        return ImageAssets.artWork;
+        return ImageAssets.img_artwork;
       case 3:
-        return ImageAssets.car;
+        return ImageAssets.img_car;
       case 4:
-        return ImageAssets.watch;
+        return ImageAssets.img_watch;
       case 5:
-        return ImageAssets.house;
+        return ImageAssets.img_house;
       default:
-        return ImageAssets.others;
+        return ImageAssets.img_other;
     }
   }
 
