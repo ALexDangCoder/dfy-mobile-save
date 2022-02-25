@@ -306,7 +306,7 @@ class BlocCreateBookEvaluation {
     final dt = DateTime.fromMillisecondsSinceEpoch(dateCreateAt);
     final String mm = DateFormat(DateTimeFormat.BOOK_MONTH).format(dt);
     final String yyyy = DateFormat(DateTimeFormat.BOOK_YEAR).format(dt);
-    textDate = '${S.current.joined_in}${getMonth(mm)}$yyyy';
+    textDate = '${S.current.joined_in}${getMonth(mm)} $yyyy';
     return textDate;
   }
 
