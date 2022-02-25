@@ -122,7 +122,7 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
   String query = '';
 
   void loadMoreMintRequest() {
-    if (!loadMore) {
+    if (!loadMore && !refresh) {
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
