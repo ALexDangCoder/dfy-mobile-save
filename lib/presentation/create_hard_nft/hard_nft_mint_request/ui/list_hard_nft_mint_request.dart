@@ -67,7 +67,9 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
         return StateStreamLayout(
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
-          retry: () async {},
+          retry: () async {
+            await cubit.getListMintRequest();
+          },
           textEmpty: '',
           child: content(context, list, state),
         );

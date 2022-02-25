@@ -92,6 +92,7 @@ class _BuyNFTState extends State<BuyNFT> {
   @override
   void dispose() {
     cubit.dispose();
+    super.dispose();
   }
 
   @override

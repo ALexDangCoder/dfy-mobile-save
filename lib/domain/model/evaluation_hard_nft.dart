@@ -4,6 +4,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 
 class Evaluation {
   String? id;
+  NameNft? nameNft;
   Evaluator? evaluator;
   int? evaluatedTime;
   AssetType? assetType;
@@ -33,6 +34,7 @@ class Evaluation {
     this.additionalInformation,
     this.bcTxnHash,
     this.urlToken,
+    this.nameNft,
   });
 }
 
@@ -64,6 +66,10 @@ class Media {
   String? urlImage;
 
   Media(this.name, this.type, this.urlImage);
+}
+class NameNft {
+  String? name;
+  NameNft(this.name);
 }
 
 class Document {
