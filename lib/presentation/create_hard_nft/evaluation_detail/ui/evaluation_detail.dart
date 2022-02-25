@@ -389,7 +389,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             ),
             spaceW6,
             Text(
-              widget.evaluation.assetType?.name ?? '',
+              widget.evaluation.nameNft?.name ?? '',
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 28,
@@ -489,15 +489,15 @@ class _EvaluationDetailState extends State<EvaluationDetail>
 
   String getImage() {
     switch (widget.evaluation.assetType?.id ?? 0) {
-      case 0:
+      case 1:
         return ImageAssets.diamond;
       case 2:
         return ImageAssets.artWork;
-      case 4:
-        return ImageAssets.car;
-      case 1:
-        return ImageAssets.watch;
       case 3:
+        return ImageAssets.car;
+      case 4:
+        return ImageAssets.watch;
+      case 5:
         return ImageAssets.house;
       default:
         return ImageAssets.others;

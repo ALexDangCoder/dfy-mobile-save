@@ -186,8 +186,8 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
       }
       return index;
     } else {
-      for(int i = 0;i<cachedAssetType.length;i++){
-        if(cachedAssetType[i] == true){
+      for(int i = 0;i<listCheckAssetType.length;i++){
+        if(listCheckAssetType[i] == true){
           index = i;
           break;
         }
@@ -228,11 +228,11 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
     } else {
       for(int i = 0;i<listCheckStatus.length;i++){
         if(listCheckStatus[i] == true){
-         return index = i;
-         break;
+          index = i;
+          break;
         }
         else {
-         return index = 0;
+          index = 0;
         }
       }
       return index;

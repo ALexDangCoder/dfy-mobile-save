@@ -53,6 +53,7 @@
             android:value="AIzaSyB0wre3T3qXDikdk7oGm8WN1pS60ucGl_E" />
 
         <activity
+            android:exported="true"
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
