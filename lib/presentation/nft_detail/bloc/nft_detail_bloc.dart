@@ -193,7 +193,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          if (error.code == 400) {
+          if (error.code == CODE_ERROR_NOT_FOUND) {
             showEmpty();
           } else {
             showError();
