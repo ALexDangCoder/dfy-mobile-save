@@ -132,7 +132,6 @@ class _ListNftState extends State<ListNft> {
           );
         },
         nftCallBack: () {
-
           showDialog(
             context: context,
             builder: (_) => ConnectWalletDialog(
@@ -223,7 +222,8 @@ class _ListNftState extends State<ListNft> {
                                   child: RefreshIndicator(
                                     onRefresh: () async {
                                       FocusScope.of(context).unfocus();
-                                      if (controller.text.isEmpty) {
+                                      if (controller.text.isEmpty &&
+                                          !_cubit.refresh) {
                                         _cubit.refreshPosts(
                                           widget.pageRouter,
                                         );

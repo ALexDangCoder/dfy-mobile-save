@@ -51,69 +51,77 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
     List<MintRequestModel> list = [];
     return BlocConsumer<HardNftMintRequestCubit, HardNftMintRequestState>(
       bloc: cubit,
-      listener: (context,state) {
-        if(state is ListMintRequestSuccess){
+      listener: (context, state) {
+        if (state is ListMintRequestSuccess) {
           list = state.list;
         }
-        if(state is ListMintRequestLoadMoreSuccess){
+        if (state is ListMintRequestLoadMoreSuccess) {
           list = list + state.list;
         }
-        if(state is ListMintRequestRefreshSuccess){
+        if (state is ListMintRequestRefreshSuccess) {
           list.clear();
           list = state.list;
         }
       },
-      builder: (BuildContext context, state) {
+      builder: (context, state) {
         return StateStreamLayout(
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {},
           textEmpty: '',
-          child: content(list,state),
+          child: content(context, list, state),
         );
       },
     );
   }
 
-  Widget content(List<MintRequestModel> list,HardNftMintRequestState state) {
-      return BaseDesignScreen(
-        title: S.current.hard_nft_mint_request,
-        isImage: true,
-        text: ImageAssets.ic_filter,
-        onRightClick: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.black,
-            isScrollControlled: true,
-            context: context,
-            builder: (_) {
-              return FilterMintRequest(
-                cubit: cubit,
-              );
-            },
-          );
-        },
-        child: Column(
-          children: [
-            spaceH12,
-            Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
-              ),
-              child: searchBar(),
+  Widget content(
+    BuildContext context,
+    List<MintRequestModel> list,
+    HardNftMintRequestState state,
+  ) {
+    return BaseDesignScreen(
+      title: S.current.hard_nft_mint_request,
+      isCustomLeftClick: true,
+      onLeftClick: () {
+        Navigator.pop(context);
+      },
+      isImage: true,
+      text: ImageAssets.ic_filter,
+      onRightClick: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.black,
+          isScrollControlled: true,
+          context: context,
+          builder: (_) {
+            return FilterMintRequest(
+              cubit: cubit,
+            );
+          },
+        );
+      },
+      child: Column(
+        children: [
+          spaceH12,
+          Padding(
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
             ),
-            spaceH16,
-            SizedBox(
-              height: 621.h,
-              child: ListMintRequest(
-                cubit: cubit,
-                listMintRequest: list,
-                checkRefresh: controller.value.text != '',
-              ),
+            child: searchBar(),
+          ),
+          spaceH16,
+          SizedBox(
+            height: 621.h,
+            child: ListMintRequest(
+              cubit: cubit,
+              listMintRequest: list,
+              checkRefresh: controller.value.text != '',
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 
   Widget searchBar() {
