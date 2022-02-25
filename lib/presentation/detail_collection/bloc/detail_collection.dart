@@ -100,7 +100,79 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String typeActivity = '';
   bool owner = false;
 
+  //status filter
+  List<bool>? statusListViewTypeFilterNft = [false, false];
+  bool? statusSale;
+  bool? statusPawn;
+  bool? statusAuction;
+  bool? statusNotOnMarket;
+  String? checkStatus;
+
+  bool? statusTransfer;
+  bool? statusPutOnMarket;
+  bool? statusCancelMarket;
+  bool? statusBurn;
+  bool? statusLike;
+  bool? statusReport;
+  bool? statusBuy;
+  bool? statusBid;
+  bool? statusReceiveOffer;
+  bool? statusSignContract;
+  String? checkStatusActivity;
+
+  void checkStatusFirstActivity() {
+    if (checkStatusActivity == null) {
+      checkStatusActivity = 'have';
+      statusTransfer = false;
+      statusPutOnMarket = false;
+      statusCancelMarket = false;
+      statusBurn = false;
+      statusLike = false;
+      statusReport = false;
+      statusBuy = false;
+      statusBid = false;
+      statusReceiveOffer = false;
+      statusSignContract = false;
+    } else {
+      isTransfer.add(statusTransfer ?? false);
+      isPutOnMarket.add(statusPutOnMarket ?? false);
+      isCancelMarket.add(statusCancelMarket ?? false);
+      isBuy.add(statusBuy ?? false);
+      isBid.add(statusBid ?? false);
+      isReceiveOffer.add(statusReceiveOffer ?? false);
+      isSignContract.add(statusSignContract ?? false);
+      isBurn.add(statusBurn ?? false);
+      isLike.add(statusLike ?? false);
+      isReport.add(statusReport ?? false);
+    }
+  }
+
+  void checkStatusFirst() {
+    if (checkStatus == null) {
+      checkStatus = 'have';
+      statusSale = false;
+      statusPawn = false;
+      statusAuction = false;
+      statusNotOnMarket = false;
+    } else {
+      listViewTypeFilterNft.clear();
+      listViewTypeFilterNft.addAll(statusListViewTypeFilterNft ?? []);
+      listViewTypeFilterNftStream.add(listViewTypeFilterNft);
+      isOnSale.add(statusSale ?? false);
+      isOnPawn.add(statusPawn ?? false);
+      isOnAuction.add(statusAuction ?? false);
+      isNotOnMarket.add(statusNotOnMarket ?? false);
+    }
+  }
+
   void funFilterNft() {
+    statusListViewTypeFilterNft?.clear();
+    statusListViewTypeFilterNft?.addAll(listViewTypeFilterNftStream.value);
+    statusSale = isOnSale.value;
+    statusPawn = isOnPawn.value;
+    statusAuction = isOnAuction.value;
+    statusNotOnMarket = isNotOnMarket.value;
+
     if (isOnSale.value) {
       listFilter.add(SALE);
     }
@@ -215,6 +287,17 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   }
 
   void funFilterActivity() {
+    statusTransfer = isTransfer.value;
+    statusPutOnMarket = isPutOnMarket.value;
+    statusCancelMarket = isCancelMarket.value;
+    statusBurn = isBurn.value;
+    statusLike = isLike.value;
+    statusReport = isReport.value;
+    statusBuy = isBuy.value;
+    statusBid = isBid.value;
+    statusReceiveOffer = isReceiveOffer.value;
+    statusSignContract = isSignContract.value;
+
     if (isTransfer.value) {
       typeActivity = '$typeActivity,$TRANSFER_ACTIVITY';
     }

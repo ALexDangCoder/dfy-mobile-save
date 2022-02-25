@@ -30,6 +30,26 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   static const int SOFT_COLLECTION = 0;
   static const int HARD_COLLECTION = 1;
 
+  //status filter
+  String? statusAddress;
+  bool? isStatusHardNFT;
+  bool? isStatusSoftNft;
+
+  //status filter market
+  int? statusFilterMarket;
+
+  void checkStatus() {
+    textAddressFilter.add(statusAddress ?? '');
+    isSoftCollection.add(isStatusSoftNft ?? false);
+    isHardCollection.add(isStatusHardNFT ?? false);
+  }
+
+  void checkStatusFirst() {
+    statusAddress = textAddressFilter.value;
+    isStatusSoftNft = isSoftCollection.value;
+    isStatusHardNFT = isHardCollection.value;
+  }
+
   BehaviorSubject<List<CollectionMarketModel>> list =
       BehaviorSubject.seeded([]);
 
@@ -45,7 +65,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
       BehaviorSubject.seeded([]);
   int nextPage = 1;
   bool checkWalletAddress = false;
-  List<CollectionMarketModel> resList =[];
+  List<CollectionMarketModel> resList = [];
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -83,6 +103,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
   String? addressWallet;
 
   void funFilter() {
+    statusFilterMarket = sortFilter;
     getCollection(
       sortFilter: sortFilter,
       name: textSearch.value.trim(),
@@ -113,10 +134,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
             checkWalletAddress = true;
           }
         }
-
       },
       error: (error) {
-        if(error.code==CODE_ERROR_AUTH){
+        if (error.code == CODE_ERROR_AUTH) {
           getListWallet();
         }
       },
@@ -177,6 +197,9 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     } else {
       addressWallet = textAddressFilter.value;
     }
+    statusAddress = addressWallet;
+    isStatusHardNFT = isHardCollection.value;
+    isStatusSoftNft = isSoftCollection.value;
     getCollection();
   }
 
@@ -187,6 +210,34 @@ class CollectionBloc extends BaseCubit<CollectionState> {
     listCheckBoxFilter[index] = true;
     listCheckBoxFilterStream.add(listCheckBoxFilter);
     sortFilter = index + 1;
+  }
+
+  void checkStatusFilterMarket() {
+    if (statusFilterMarket == null) {
+      final List<bool> listFilter = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ];
+      listCheckBoxFilter.clear();
+      listCheckBoxFilter.addAll(listFilter);
+      listCheckBoxFilterStream.add(listFilter);
+    } else {
+      listCheckBoxFilter.clear();
+      for (int i = 0; i < 8; i++) {
+        if (((statusFilterMarket ?? 0) - 1) == i) {
+          listCheckBoxFilter.add(true);
+        } else {
+          listCheckBoxFilter.add(false);
+        }
+      }
+      listCheckBoxFilterStream.add(listCheckBoxFilter);
+    }
   }
 
   void searchCollection(String value) {
@@ -275,7 +326,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
         final List<CollectionMarketModel> currentList = list.valueOrNull ?? [];
         if (res.isNotEmpty) {
           resList.clear();
-          resList=res;
+          resList = res;
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {
             if (value.addressCollection?.isNotEmpty ?? false) {
@@ -340,7 +391,7 @@ class CollectionBloc extends BaseCubit<CollectionState> {
           emit(LoadingDataErorr());
         } else {
           resList.clear();
-          resList=res;
+          resList = res;
           emit(LoadingDataSuccess());
           final List<CollectionMarketModel> listCollection = [];
           for (final CollectionMarketModel value in res) {

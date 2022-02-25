@@ -255,6 +255,9 @@ class DialogCancel extends StatelessWidget {
                                 child: Container(
                                   color: Colors.transparent,
                                   height: 64.h,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w,
+                                  ),
                                   child: Center(
                                     child: Text(
                                       S.current.cancel_appointment,
