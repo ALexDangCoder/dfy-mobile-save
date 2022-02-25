@@ -1,5 +1,9 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
@@ -41,6 +45,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   late String cityFirstValue;
   late ProvideHardNftCubit cubit;
   late bool isShowOrHideItemProperties;
+  late UserInfoCreateHardNft? currentInfo;
   String hardNftName = '';
   String additionalInfo = '';
 
@@ -54,6 +59,23 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
     cubit.getListCollection();
+    final data = cubit.getInfoUserIsCreatedNft();
+    if (data != null) {
+      currentInfo = data;
+      cubit.mapValidate['country'] = true;
+      cubit.mapValidate['city'] = true;
+      cubit.mapValidate['phone'] = true;
+      cubit.dataStep1.city = currentInfo?.city ?? CityModel();
+      cubit.dataStep1.country = currentInfo?.country ?? CountryModel();
+      cubit.dataStep1.phoneCodeModel =
+          currentInfo?.phoneCode ?? PhoneCodeModel();
+      cubit.dataStep1.nameContact = currentInfo?.name ?? '';
+      cubit.dataStep1.phoneContact = currentInfo?.phoneContact ?? '';
+      cubit.dataStep1.emailContact = currentInfo?.email ?? '';
+      cubit.dataStep1.addressContact = currentInfo?.address ?? '';
+    } else {
+      currentInfo = null;
+    }
     if (cubit.propertiesData.isEmpty) {
       isShowOrHideItemProperties = false;
     } else {
@@ -283,6 +305,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       horizontal: 16.w,
                     ),
                     child: TextFieldValidator(
+                      controller: TextEditingController(
+                        text: (currentInfo ?? UserInfoCreateHardNft()).name,
+                      ),
                       onChange: (value) {
                         cubit.dataStep1.nameContact = value;
                         cubit.mapValidate['inputForm'] =
@@ -312,6 +337,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       horizontal: 16.w,
                     ),
                     child: TextFieldValidator(
+                      controller: TextEditingController(
+                          text:
+                              (currentInfo ?? UserInfoCreateHardNft()).email ??
+                                  ''),
                       onChange: (value) {
                         cubit.dataStep1.emailContact = value;
                         cubit.mapValidate['inputForm'] =
@@ -342,7 +371,18 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       horizontal: 16.w,
                     ),
                     child: TextFieldValidator(
+                      controller: TextEditingController(
+                        text: (currentInfo ?? UserInfoCreateHardNft())
+                            .phoneContact,
+                      ),
                       prefixIcon: FormDropDown(
+                        defaultValue: currentInfo != null
+                            ? {
+                                'label': currentInfo?.phoneCode?.code ?? '',
+                                'id': currentInfo?.phoneCode?.id,
+                                'label': currentInfo?.phoneCode?.code ?? '',
+                              }
+                            : null,
                         typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                         cubit: cubit,
                       ),
@@ -371,6 +411,12 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   FormDropDown(
                     typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                     cubit: cubit,
+                    defaultValue: currentInfo != null
+                        ? {
+                            'value': currentInfo?.country?.id ?? '',
+                            'label': currentInfo?.country?.name ?? '',
+                          }
+                        : null,
                   ),
                   spaceH16,
                   textShowWithPadding(
@@ -385,6 +431,13 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   FormDropDown(
                     typeDrop: TYPE_FORM_DROPDOWN.CITY,
                     cubit: cubit,
+                    defaultValue: currentInfo != null
+                        ? {
+                            'value': currentInfo?.city?.id,
+                            'label': currentInfo?.city?.name,
+                            'countryID': currentInfo?.city?.countryID
+                          }
+                        : null,
                   ),
                   spaceH16,
                   textShowWithPadding(
@@ -401,6 +454,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       horizontal: 16.w,
                     ),
                     child: TextFieldValidator(
+                      controller: TextEditingController(
+                        text:
+                            (currentInfo ?? UserInfoCreateHardNft()).address ??
+                                '',
+                      ),
                       onChange: (value) {
                         cubit.dataStep1.addressContact = value;
                         cubit.mapValidate['inputForm'] =
@@ -571,19 +629,19 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         image = ImageAssets.diamond;
         break;
       case 1:
-        image = ImageAssets.watch;
+        image = ImageAssets.img_watch;
         break;
       case 2:
         image = ImageAssets.artWork;
         break;
       case 3:
-        image = ImageAssets.house;
+        image = ImageAssets.img_house;
         break;
       case 4:
-        image = ImageAssets.car;
+        image = ImageAssets.img_car;
         break;
       default:
-        image = ImageAssets.others;
+        image = ImageAssets.img_other;
         break;
     }
     return Container(

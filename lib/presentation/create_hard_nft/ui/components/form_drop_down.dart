@@ -27,9 +27,11 @@ class FormDropDown extends StatelessWidget {
     Key? key,
     required this.typeDrop,
     required this.cubit,
+    this.defaultValue,
   }) : super(key: key);
   final TYPE_FORM_DROPDOWN typeDrop;
   final ProvideHardNftCubit cubit;
+  final Map<String, dynamic>? defaultValue;
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +151,7 @@ class FormDropDown extends StatelessWidget {
             return Stack(
               children: [
                 CoolDropdown(
-                  // gap: 8.h,
+                  defaultValue: defaultValue,
                   dropdownItemMainAxis: MainAxisAlignment.start,
                   resultMainAxis: MainAxisAlignment.start,
                   dropdownList: snapshot.data ?? [],
@@ -262,7 +264,7 @@ class FormDropDown extends StatelessWidget {
             return Stack(
               children: [
                 CoolDropdown(
-                  // gap: 8.h,
+                  defaultValue: defaultValue,
                   dropdownItemMainAxis: MainAxisAlignment.start,
                   resultMainAxis: MainAxisAlignment.start,
                   dropdownList: snapshot.data ?? [],
@@ -331,9 +333,10 @@ class FormDropDown extends StatelessWidget {
       );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.PRICE) {
       return SizedBox(
-        width: 100.w,
+        width: 120.w,
         child: Center(
           child: Stack(
+            alignment: Alignment.centerRight,
             children: [
               Positioned(
                 child: CoolDropdown(
@@ -390,7 +393,7 @@ class FormDropDown extends StatelessWidget {
               ),
               Positioned(
                 right: 19.15.w,
-                top: -7.h,
+                // top: -7.h,
                 child: SizedBox(
                   height: 70.h,
                   child: sizedSvgImage(
@@ -438,8 +441,10 @@ class FormDropDown extends StatelessWidget {
                 height: 64.h,
                 child: Center(
                   child: Stack(
+                    alignment: Alignment.centerLeft,
                     children: [
                       CoolDropdown(
+                        defaultValue: defaultValue,
                         dropdownItemGap: 8.h,
                         dropdownItemMainAxis: MainAxisAlignment.start,
                         resultMainAxis: MainAxisAlignment.spaceAround,
@@ -489,7 +494,6 @@ class FormDropDown extends StatelessWidget {
                         },
                       ),
                       Positioned(
-                        top: 0.h,
                         left: 70.w,
                         child: SizedBox(
                           height: 60.h,
