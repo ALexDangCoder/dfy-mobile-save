@@ -44,7 +44,8 @@ class Step1WhenSubmit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    cubit.dataStep1.wallet = cubit.getAddressWallet().formatAddressWallet();
+    cubit.dataStep1.wallet = cubit.getAddressWallet();
+    final walletFormat =  cubit.getAddressWallet().formatAddressWallet();
     return BlocConsumer(
         listener: (context, state) {
           if (state is CreateStep1Submitting) {
@@ -67,7 +68,6 @@ class Step1WhenSubmit extends StatelessWidget {
                         hexString: cubit.hexStringWeb3,
                         payValue: cubit.dataStep1.amountToken.toString(),
                         tokenAddress: ADDRESS_DFY,
-                        //todo
                         title: S.current.create_hard_nft,
                         listDetail: [
                           DetailItemApproveModel(
@@ -126,7 +126,7 @@ class Step1WhenSubmit extends StatelessWidget {
             );
             Future.delayed(const Duration(seconds: 2), () {
               Navigator.pop(context);
-            });
+            }).then((value) => Navigator.pop(context));
           }
         },
         bloc: cubit,
@@ -167,6 +167,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
+                        await cubit.getDataFromStep1ToModelToSave();
                         await cubit.postFileMediaFeatDocumentApi();
                       },
                       child: ButtonGold(
@@ -420,7 +421,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   spaceH16,
                   widgetShowCollectionFtWallet(
                     isWallet: true,
-                    walletAddress: cubit.dataStep1.wallet.formatAddressWallet(),
+                    walletAddress: walletFormat,
                   ),
                   spaceH18,
                   widgetShowCollectionFtWallet(

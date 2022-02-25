@@ -193,7 +193,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         },
         error: (error) {
-          showError();
+          if (error.code == CODE_ERROR_NOT_FOUND) {
+            showEmpty();
+          } else {
+            showError();
+          }
         },
       );
     }
@@ -240,7 +244,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
         },
         error: (error) {
-          showError();
+          if (error.code == CODE_ERROR_NOT_FOUND) {
+            showEmpty();
+          } else {
+            showError();
+          }
         },
       );
     }
@@ -249,18 +257,22 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       final Result<NFTOnAuction> result;
       result = await _nftRepo.getDetailNFTAuction(marketId).then(
         (value) async {
-          if (typeNFT == TypeNFT.HARD_NFT) {
-            final Result<NFTOnAuction> result2 =
-                await _nftRepo.getDetailHardNftOnAuction(nftId);
-            result2.when(
-              success: (res) {
-                getEvaluation(res.evaluationId ?? '');
-              },
-              error: (error) {
-                showError();
-              },
-            );
-            return value;
+          if (value is Success) {
+            if (typeNFT == TypeNFT.HARD_NFT) {
+              final Result<NFTOnAuction> result2 =
+                  await _nftRepo.getDetailHardNftOnAuction(nftId);
+              result2.when(
+                success: (res) {
+                  getEvaluation(res.evaluationId ?? '');
+                },
+                error: (error) {
+                  showError();
+                },
+              );
+              return value;
+            } else {
+              return value;
+            }
           } else {
             return value;
           }
@@ -289,7 +301,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getBidding(res.id.toString());
         },
         error: (error) {
-          showError();
+          if (error.code == CODE_ERROR_NOT_FOUND) {
+            showEmpty();
+          } else {
+            showError();
+          }
         },
       );
     }
@@ -333,7 +349,11 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           showContent();
         },
         error: (error) {
-          showError();
+          if (error.code == CODE_ERROR_NOT_FOUND) {
+            showEmpty();
+          } else {
+            showError();
+          }
         },
       );
     }

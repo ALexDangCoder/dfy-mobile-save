@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 
 import 'package:Dfy/config/base/base_cubit.dart';
@@ -30,9 +31,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
-import 'package:path/path.dart';
 
 part 'provide_hard_nft_state.dart';
 
@@ -56,13 +57,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   BehaviorSubject<bool> visibleDropDownCountry = BehaviorSubject();
 
-  // BehaviorSubject<bool> showItemProperties = BehaviorSubject();
   BehaviorSubject<List<PropertyModel>> showItemProperties = BehaviorSubject();
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
-
-  // CreateHardNFTRepository get _createHardNFTRepository => Get.find();
 
   CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
@@ -171,13 +169,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     final resultAsset = await _step1Repository.getAssetAfterPost(requestAsset);
     await resultAsset.when(
       success: (res) async {
-        if (res == null) {
-        } else {
-          assetId = res.id ?? '';
-          await getDetailAssetHardNFT(assetId: assetId);
-          hexStringWeb3 = await getHexStringFromWeb3();
-          emit(CreateStep1SubmittingSuccess());
-        }
+        assetId = res.id ?? '';
+        await getDetailAssetHardNFT(assetId: assetId);
+        hexStringWeb3 = await getHexStringFromWeb3();
+        emit(CreateStep1SubmittingSuccess());
       },
       error: (error) {
         emit(CreateStep1SubmittingFail());
@@ -191,7 +186,9 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BcTxnHashModel bcTxnHashModel = BcTxnHashModel(bc_txn_hash: '');
 
   Future<void> putHardNftBeforeConfirm(
-      String id, BcTxnHashModel bcTxnHash) async {
+    String id,
+    BcTxnHashModel bcTxnHash,
+  ) async {
     final result = await _step1Repository.getResponseAfterPut(
       id,
       bcTxnHash.toJson(),
@@ -202,7 +199,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  ///
   Future<void> getDetailAssetHardNFT({
     required String assetId,
   }) async {
@@ -241,9 +237,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
     return result;
   }
-
-  //todo phân loại file type khi upload
-  void categoryDocumentsFtMediaByType() {}
 
   final List<AdditionalInfoListRequest> listAddtional = [];
 
@@ -328,7 +321,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<bool> enableButtonUploadDocumentSubject = BehaviorSubject();
 
   final regexEmail = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  );
 
   final regexPhoneVietNam =
       RegExp(r'([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b');
@@ -561,6 +555,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
+  UserInfoCreateHardNft? getInfoUserIsCreatedNft() {
+    final data = PrefsService.getUserInfoCreateHardNft();
+    final result = userInfoCreateHardNftFromJson(data);
+    if ((result.walletAddress ?? '') ==
+        getAddressWallet()) {
+      return result;
+    }
+    return null;
+  }
+
   String getAddressWallet() {
     return PrefsService.getCurrentBEWallet();
   }
@@ -681,8 +685,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }) {
     if (property.isEmpty ||
         value.isEmpty ||
-        property.length >= 30 ||
-        value.length >= 30) {
+        property.length > 30 ||
+        value.length > 30) {
       //khoong add vao
     } else {
       propertiesData.add(PropertyModel(value: value, property: property));
@@ -755,6 +759,22 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     dataStep1.documents = listPathDocument;
   }
 
+  Future<void> getDataFromStep1ToModelToSave() async {
+    final UserInfoCreateHardNft userInfo = UserInfoCreateHardNft(
+      phoneContact: dataStep1.phoneContact,
+      phoneCode: dataStep1.phoneCodeModel,
+      email: dataStep1.emailContact,
+      country: dataStep1.country,
+      city: dataStep1.city,
+      address: dataStep1.addressContact,
+      name: dataStep1.nameContact,
+      walletAddress: dataStep1.wallet,
+    );
+    await PrefsService.saveUserInfoCreateHardNft(
+      userInfoCreateHardNftToJson(userInfo),
+    );
+  }
+
   Step1PassingModel dataStep1 = Step1PassingModel(
     hardNftName: '',
     tokenInfo: TokenInf(id: 1, symbol: 'DFY'),
@@ -789,6 +809,56 @@ class DocumentModel {
 
   DocumentModel(this.title, this.typeFile);
 }
+
+class UserInfoCreateHardNft {
+  String? name;
+  String? email;
+  String? address;
+  String? phoneContact;
+  PhoneCodeModel? phoneCode;
+  CityModel? city;
+  CountryModel? country;
+  String? walletAddress;
+
+  UserInfoCreateHardNft({
+    this.name,
+    this.email,
+    this.address,
+    this.phoneContact,
+    this.phoneCode,
+    this.city,
+    this.country,
+    this.walletAddress,
+  });
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'email': email,
+        'address': address,
+        'phoneContact': phoneContact,
+        'phoneCode': phoneCode,
+        'city': city,
+        'country': country,
+        'walletAddress': walletAddress,
+      };
+
+  UserInfoCreateHardNft.fromJson(Map<String, dynamic> json)
+      : name = json.stringValueOrEmpty('name'),
+        email = json.stringValueOrEmpty('email'),
+        address = json.stringValueOrEmpty('address'),
+        phoneContact = json.stringValueOrEmpty('phoneContact'),
+        city = CityModel.fromJson(json['city']),
+        country = CountryModel.fromJson(json['country']),
+        phoneCode = PhoneCodeModel.fromJson(json['phoneCode']),
+        walletAddress = json['walletAddress'];
+}
+
+UserInfoCreateHardNft userInfoCreateHardNftFromJson(String str) {
+  return UserInfoCreateHardNft.fromJson(json.decode(str));
+}
+
+String userInfoCreateHardNftToJson(UserInfoCreateHardNft data) =>
+    json.encode(data.toJson());
 
 class Step1PassingModel {
   String addressCollection;
