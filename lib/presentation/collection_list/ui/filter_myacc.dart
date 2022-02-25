@@ -27,8 +27,12 @@ class _FilterMyAccState extends State<FilterMyAcc> {
   @override
   void initState() {
     super.initState();
+    if (widget.collectionBloc.statusAddress?.isNotEmpty ?? false) {
+      widget.collectionBloc.checkStatus();
+    }else{
+      widget.collectionBloc.checkStatusFirst();
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     final bloc = widget.collectionBloc;

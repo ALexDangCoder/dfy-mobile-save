@@ -28,6 +28,7 @@ class _FilterState extends State<Filter> {
   @override
   void initState() {
     super.initState();
+    widget.collectionBloc.checkStatusFilterMarket();
   }
 
   @override
