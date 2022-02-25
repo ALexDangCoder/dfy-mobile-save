@@ -27,6 +27,7 @@ class _FilterActivityState extends State<FilterActivity> {
   @override
   void initState() {
     super.initState();
+    widget.collectionBloc.checkStatusFirstActivity();
   }
 
   @override
