@@ -244,7 +244,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getOwner(res.collectionAddress ?? '', res.nftTokenId ?? '');
         },
         error: (error) {
-          if (error.code == 400) {
+          if (error.code == CODE_ERROR_NOT_FOUND) {
             showEmpty();
           } else {
             showError();
@@ -301,7 +301,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           getBidding(res.id.toString());
         },
         error: (error) {
-          if (error.code == 400) {
+          if (error.code == CODE_ERROR_NOT_FOUND) {
             showEmpty();
           } else {
             showError();
