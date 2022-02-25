@@ -32,6 +32,7 @@ class _FilterNFTMyAccState extends State<FilterNFTMyAcc> {
   @override
   void initState() {
     super.initState();
+    widget.collectionBloc.checkStatusFirst();
   }
 
   @override

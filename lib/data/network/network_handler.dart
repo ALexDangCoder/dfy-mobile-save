@@ -52,6 +52,10 @@ class NetworkHandler {
     if (error.response?.data is! Map<String, dynamic>) {
       return AppException(S.current.error, S.current.something_went_wrong);
     }
-    return AppException(S.current.error, S.current.something_went_wrong);
+    return AppException(
+      S.current.error,
+      error.response?.data['rd'],
+      code: error.response?.statusCode,
+    );
   }
 }
