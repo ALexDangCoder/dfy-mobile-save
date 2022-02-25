@@ -79,7 +79,7 @@ class _CreateNftUploadProgressState extends State<CreateNftUploadProgress>
           MaterialPageRoute(
             builder: (_) => Approve(
               hexString: widget.cubit.transactionData,
-              title: S.current.create_collection,
+              title: S.current.create_nft,
               textActiveButton: S.current.create,
               payValue: 10.toString(),
               tokenAddress: widget.cubit.tokenAddress,
