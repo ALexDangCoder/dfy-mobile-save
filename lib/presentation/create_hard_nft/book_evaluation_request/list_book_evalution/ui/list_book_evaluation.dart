@@ -7,6 +7,7 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_ev
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/bloc/bloc_list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/item_pawn_shop.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -14,12 +15,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum PageRouterHardNFT { CREATE_HARD_NFT, LIST_HARD }
+
 class ListBookEvaluation extends StatefulWidget {
   final String assetId;
+  final PageRouterHardNFT pageRouter;
 
   const ListBookEvaluation({
     Key? key,
     required this.assetId,
+    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
 
   @override
@@ -48,6 +53,7 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        alignment: Alignment.center,
         children: [
           BaseDesignScreen(
             isCustomLeftClick: true,
@@ -58,9 +64,15 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRouter.create_nft,
-              );
+              if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.create_nft,
+                );
+              } else {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.list_hard_mint,
+                );
+              }
             },
             title: S.current.book_evaluation_request,
             child: RefreshIndicator(
@@ -75,7 +87,6 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                   StreamBuilder<bool>(
                     stream: _bloc.isSuccess,
                     builder: (context, snapshot) => StepAppBar(
-                      assetId: widget.assetId,
                       isSuccess: snapshot.data ?? false,
                     ),
                   ),
@@ -170,41 +181,82 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
           ),
           Positioned(
             bottom: 0,
-            child: GestureDetector(
-              onTap: () {
-                if (_bloc.checkStatusList()) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookEvaluation(
-                        isSuccess: _bloc.isSuccess.value,
-                        appointmentList: _bloc.appointmentList,
-                        assetId: _bloc.assetId ?? '',
-                      ),
-                      settings: const RouteSettings(
-                        name: AppRouter.step2Book,
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: 38.h,
+              ),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (_bloc.checkStatusList()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookEvaluation(
+                              isSuccess: _bloc.isSuccess.value,
+                              appointmentList: _bloc.appointmentList,
+                              assetId: _bloc.assetId ?? '',
+                              pageRouter: widget.pageRouter,
+                            ),
+                            settings: const RouteSettings(
+                              name: AppRouter.step2Book,
+                            ),
+                          ),
+                        ).then(
+                          (value) {
+                            _bloc.appointmentList.clear();
+                          },
+                        ).whenComplete(() {
+                          _bloc.getListPawnShop(
+                            assetId: widget.assetId,
+                          );
+                        });
+                      }
+                    },
+                    child: SizedBox(
+                      width: 160.w,
+                      child: ButtonGold(
+                        haveMargin: false,
+                        fixSize: false,
+                        isEnable: true,
+                        title: S.current.book_evaluation,
                       ),
                     ),
-                  ).then(
-                    (value) {
-                      _bloc.appointmentList.clear();
+                  ),
+                  spaceW16,
+                  StreamBuilder<bool>(
+                    stream: _bloc.isSuccess,
+                    builder: (context, snapshot) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (snapshot.data ?? false) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EvaluationResult(
+                                  assetID: widget.assetId,
+                                  pageRouter: widget.pageRouter,
+                                ),
+                                settings: const RouteSettings(
+                                  name: AppRouter.step3ListEvaluation,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: SizedBox(
+                          width: 160.w,
+                          child: ButtonGold(
+                            haveMargin: false,
+                            fixSize: false,
+                            isEnable: snapshot.data ?? false,
+                            title: S.current.view_evaluation,
+                          ),
+                        ),
+                      );
                     },
-                  ).whenComplete(() {
-                    _bloc.getListPawnShop(
-                      assetId: widget.assetId,
-                    );
-                  });
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.only(
-                  bottom: 38.h,
-                ),
-                color: AppTheme.getInstance().bgBtsColor(),
-                child: ButtonGold(
-                  isEnable: true,
-                  title: S.current.book_evaluation,
-                ),
+                  ),
+                ],
               ),
             ),
           ),

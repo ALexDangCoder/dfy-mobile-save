@@ -1,6 +1,9 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_gifs/loading_gifs.dart';
 import 'package:video_player/video_player.dart';
 
 class PhotoHero extends StatefulWidget {
@@ -50,9 +53,15 @@ class _PhotoHeroState extends State<PhotoHero> {
           child: InkWell(
             onTap: widget.onTap,
             child: widget.typeImage == TypeImage.IMAGE
-                ? Image.network(
-                    widget.photo,
+                ? FadeInImage.assetNetwork(
+                    placeholder: ImageAssets.image_loading,
+                    image: widget.photo,
+                    imageCacheHeight: 2000,
                     fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) =>
+                        Container(
+                      color: AppTheme.getInstance().backgroundBTSColor(),
+                    ),
                   )
                 : Container(
                     color: Colors.black,

@@ -369,15 +369,20 @@ class Web3Utils {
     return '$valueHundredMore';
   }
 
-  Future<Map<String, dynamic>> sendRawTransaction(
-      {required String transaction}) async {
+  Future<Map<String, dynamic>> sendRawTransaction({
+    required String transaction,
+  }) async {
     final List<int> listInt = hex.decode(transaction);
     final Uint8List signedTransaction = Uint8List.fromList(listInt);
+    TransactionReceipt? receipt;
     try {
-      final raw = await client.sendRawTransaction(signedTransaction);
+      final txh = await client.sendRawTransaction(signedTransaction);
+      do {
+        receipt = await client.getTransactionReceipt(txh);
+      } while (receipt == null);
       return {
-        'isSuccess': true,
-        'txHash': raw,
+        'isSuccess': receipt.status ?? false,
+        'txHash': txh,
       };
     } catch (error) {
       return {
@@ -385,6 +390,14 @@ class Web3Utils {
         'txHash': '',
       };
     }
+  }
+
+  Future<bool> getTransactionStatus({required String txh}) async {
+    TransactionReceipt? receipt;
+    do {
+      receipt = await client.getTransactionReceipt(txh);
+    } while (receipt == null);
+    return receipt.status ?? false;
   }
 
   //NFT detail

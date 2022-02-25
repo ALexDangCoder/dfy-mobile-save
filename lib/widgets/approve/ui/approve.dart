@@ -552,7 +552,7 @@ class _ApproveState extends State<Approve> {
                   builder: (context, snapshot) {
                     final double data = snapshot.data ?? 0;
                     return Text(
-                      '${S.current.balance}: $data',
+                      '${S.current.balance}: $data ${S.current.bnb}',
                       style: textNormal(
                         AppTheme.getInstance().whiteColor(),
                         16,

@@ -72,7 +72,7 @@ Container _priceContainerOnSale({
                     height: 20.w,
                     width: 20.w,
                     child: Image.network(
-                      urlToken ,
+                      urlToken,
                       errorBuilder: (context, url, error) {
                         return const Icon(
                           Icons.error,
@@ -83,7 +83,7 @@ Container _priceContainerOnSale({
                   ),
                   spaceW4,
                   Text(
-                    '$price $shortName',
+                    '${formatPrice.format(price)} $shortName',
                     style: textNormalCustom(
                       AppTheme.getInstance().textThemeColor(),
                       20,
@@ -413,6 +413,96 @@ void _showDialog(BuildContext context, NftMarket nftMarket, String marketId) {
   );
 }
 
+void showAlert(
+  BuildContext context,
+  String walletAddress,
+) {
+  showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      // return object of type Dialog
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              36.0.r,
+            ),
+          ),
+        ),
+        backgroundColor: AppTheme.getInstance().selectDialogColor(),
+        title: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: const AssetImage(ImageAssets.img_warning),
+                  width: 24.h,
+                  height: 28.h,
+                ),
+                spaceW12,
+                Text(
+                  S.current.warning,
+                  style: textNormalCustom(
+                    Colors.white,
+                    20,
+                    FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 4.h,
+            ),
+            Text(
+              S.current.warning_connect_address,
+              style: textNormalCustom(
+                Colors.white,
+                12,
+                FontWeight.w400,
+              ),
+            ),
+            Text(
+              S.current.warning_connect_address_2 +
+                  walletAddress.formatAddressWallet() +
+                  S.current.to_perform_this_action,
+              style: textNormalCustom(
+                Colors.white,
+                12,
+                FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          Divider(
+            height: 1.h,
+            color: AppTheme.getInstance().divideColor(),
+          ),
+          SizedBox(
+            height: 50.h,
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  S.current.ok,
+                  style: textNormalCustom(
+                    fillYellowColor,
+                    20,
+                    FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    },
+  );
+}
+
 Widget _buildButtonPutOnMarket(
   BuildContext context,
   NFTDetailBloc bloc,
@@ -422,43 +512,48 @@ Widget _buildButtonPutOnMarket(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      if (nftMarket.processStatus != 5 &&
-          nftMarket.processStatus != 6 &&
-          nftMarket.processStatus != 3) {
-        final navigator = Navigator.of(context);
-        List<dynamic>? splitImageLink = nftMarket.image?.split('/');
-        String imageId = '';
-        if ((splitImageLink ?? []).isNotEmpty) {
-          imageId = (splitImageLink ?? []).last.toString();
-        }
-        final result = await navigator.push(
-          MaterialPageRoute(
-            builder: (context) => PutOnMarketScreen(
-              putOnMarketModel: PutOnMarketModel.putOnSale(
-                nftTokenId: int.parse(nftMarket.nftTokenId ?? '0'),
-                nftId: nftId ?? '',
-                nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
-                collectionAddress: nftMarket.collectionAddress ?? '',
-                nftMediaType:
-                    nftMarket.typeImage == TypeImage.IMAGE ? 'image' : 'video',
-                totalOfCopies: nftMarket.totalCopies ?? 1,
-                nftName: nftMarket.name ?? '',
-                nftMediaCid: imageId,
-                // lấy id
-                collectionName: nftMarket.collectionName ?? '',
-                collectionIsWhitelist: nftMarket.isWhitelist ?? false,
-                nftStandard: int.parse(nftMarket.nftStandard ?? '0'),
+      if (nftMarket.isOwner ?? false) {
+        if (nftMarket.processStatus != 5 &&
+            nftMarket.processStatus != 6 &&
+            nftMarket.processStatus != 3) {
+          final navigator = Navigator.of(context);
+          List<dynamic>? splitImageLink = nftMarket.image?.split('/');
+          String imageId = '';
+          if ((splitImageLink ?? []).isNotEmpty) {
+            imageId = (splitImageLink ?? []).last.toString();
+          }
+          final result = await navigator.push(
+            MaterialPageRoute(
+              builder: (context) => PutOnMarketScreen(
+                putOnMarketModel: PutOnMarketModel.putOnSale(
+                  nftTokenId: int.parse(nftMarket.nftTokenId ?? '0'),
+                  nftId: nftId ?? '',
+                  nftType: nftMarket.typeNFT == TypeNFT.HARD_NFT ? 1 : 0,
+                  collectionAddress: nftMarket.collectionAddress ?? '',
+                  nftMediaType: nftMarket.typeImage == TypeImage.IMAGE
+                      ? 'image'
+                      : 'video',
+                  totalOfCopies: nftMarket.totalCopies ?? 1,
+                  nftName: nftMarket.name ?? '',
+                  nftMediaCid: imageId,
+                  // lấy id
+                  collectionName: nftMarket.collectionName ?? '',
+                  collectionIsWhitelist: nftMarket.isWhitelist ?? false,
+                  nftStandard: int.parse(nftMarket.nftStandard ?? '0'),
+                ),
+              ),
+              settings: const RouteSettings(
+                name: AppRouter.putOnSale,
               ),
             ),
-            settings: const RouteSettings(
-              name: AppRouter.putOnSale,
-            ),
-          ),
-        );
-        if (result != null) {
-          nftMarket.processStatus = 3;
-          bloc.emit(NftNotOnMarketSuccess(nftMarket));
+          );
+          if (result != null) {
+            nftMarket.processStatus = 3;
+            bloc.emit(NftNotOnMarketSuccess(nftMarket));
+          }
         }
+      } else {
+        showAlert(context,nftMarket.owner ?? '');
       }
     },
     gradient: RadialGradient(

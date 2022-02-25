@@ -170,6 +170,7 @@ class DetailNftMyAccResponse {
         description: description,
         properties: properties?.map((e) => e.toDomain()).toList(),
         owner: walletAddress,
+        walletAddress: walletAddress,
         typeNFT: getTypeNft(typeNft ?? 0),
         txnHash: txnHash,
         image: getPath(avatarCid ?? ''),

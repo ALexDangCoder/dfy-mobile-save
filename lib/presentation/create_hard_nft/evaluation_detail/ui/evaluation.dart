@@ -5,6 +5,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/cubit/evaluation_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -33,11 +34,13 @@ class EvaluationScreen extends StatefulWidget {
     required this.isAccept,
     required this.bcEvaluationId,
     required this.assetID,
+    this.pageRouterHardNFT = PageRouterHardNFT.CREATE_HARD_NFT,
   }) : super(key: key);
   final String evaluationId;
   final String bcEvaluationId;
   final bool isAccept;
   final String assetID;
+  final PageRouterHardNFT pageRouterHardNFT;
 
   @override
   _EvaluationScreenState createState() => _EvaluationScreenState();
@@ -78,9 +81,15 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {
-          Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRouter.create_nft,
-          );
+          if (widget.pageRouterHardNFT == PageRouterHardNFT.CREATE_HARD_NFT) {
+            Navigator.of(context).popUntil(
+              (route) => route.settings.name == AppRouter.create_nft,
+            );
+          } else {
+            Navigator.of(context).popUntil(
+              (route) => route.settings.name == AppRouter.list_hard_mint,
+            );
+          }
         },
         child: Stack(
           children: [
@@ -107,8 +116,8 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
               ],
             ),
             if (widget.isAccept)
-              Padding(
-                padding: EdgeInsets.only(top: 595.h),
+              Align(
+                alignment: Alignment.bottomCenter,
                 child: Container(
                   padding: EdgeInsets.only(
                     left: 16.w,
