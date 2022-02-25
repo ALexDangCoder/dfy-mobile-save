@@ -681,8 +681,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }) {
     if (property.isEmpty ||
         value.isEmpty ||
-        property.length >= 30 ||
-        value.length >= 30) {
+        property.length > 30 ||
+        value.length > 30) {
       //khoong add vao
     } else {
       propertiesData.add(PropertyModel(value: value, property: property));

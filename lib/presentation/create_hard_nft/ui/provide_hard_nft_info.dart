@@ -462,12 +462,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 return GestureDetector(
                   onTap: () {
                     if (snapshot.data ?? false) {
-                      // cubit.createModel();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => Step1WhenSubmit(cubit: cubit),
-                          // builder: (ctx) => ComingSoon(),
                         ),
                       );
                     } else {
@@ -506,7 +504,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                 child: Wrap(
                   runSpacing: 10.h,
                   children: cubit.propertiesData.map(
-                        (e) {
+                    (e) {
                       final int index = cubit.propertiesData.indexOf(e);
                       return itemProperty(
                         property: e.property,
@@ -521,32 +519,29 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             spaceH10,
             divider,
             spaceH20,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 20.w,
-                  height: 20.h,
-                  child: Image.asset(
-                    ImageAssets.addPropertiesNft,
+            InkWell(
+              onTap: () => showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => Dialog(
+                  backgroundColor: Colors.transparent,
+                  child: FormAddProperties(
+                    cubit: cubit,
                   ),
                 ),
-                spaceW8,
-                InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) =>
-                          Dialog(
-                            backgroundColor: Colors.transparent,
-                            child: FormAddProperties(
-                              cubit: cubit,
-                            ),
-                          ),
-                    );
-                  },
-                  child: Text(
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 20.w,
+                    height: 20.h,
+                    child: Image.asset(
+                      ImageAssets.addPropertiesNft,
+                    ),
+                  ),
+                  spaceW8,
+                  Text(
                     (snapshot.data ?? []).isEmpty
                         ? S.current.add
                         : S.current.add_more,
@@ -555,9 +550,9 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       16,
                       FontWeight.w400,
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             spaceH20,
             divider,
