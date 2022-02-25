@@ -25,7 +25,11 @@ class ReceiveHardNFTCubit
     );
     result.when(
       success: (res) {
-        emit(ReceiveHardNFTLoaded(res));
+        if(res.nftAssetHard == null){
+          emit(ReceiveHardNFTLoadFail());
+        } else {
+          emit(ReceiveHardNFTLoaded(res));
+        }
       },
       error: (error) {
         emit(ReceiveHardNFTLoadFail());

@@ -163,8 +163,9 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                           width: 20,
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.yellow,),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.yellow,
+                          ),
                           child: Center(
                             child: Text(
                               (state.data.collection?.name ?? '')
@@ -230,15 +231,18 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                         SizedBox(
                           height: 28,
                           width: 28,
-                          child: Image.asset(ImageAssets.getSymbolAsset(
-                              state.data.expectingPriceSymbol ?? 'DFY',),),
+                          child: Image.asset(
+                            ImageAssets.getSymbolAsset(
+                              state.data.expectingPriceSymbol ?? 'DFY',
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           width: 8,
                         ),
                         Text(
                           '${formatValue.format(state.data.expectingPrice)} '
-                              '${state.data.expectingPriceSymbol}',
+                          '${state.data.expectingPriceSymbol}',
                           style: style.textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             20,
@@ -382,43 +386,40 @@ class ReceiveHardNFTScreen extends StatelessWidget {
             ),
           );
         } else {
-          return Material(
-            child: Container(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 54,
-                      width: 54,
-                      child: Image.asset(ImageAssets.err_load_category),
+          return BaseDesignScreen(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            onRightClick: () {
+              Navigator.pop(context);
+            },
+            title: S.current.receive_hard_nft,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  style.spaceH24,
+                  const StepFourAppBar(),
+                  style.spaceH32,
+                  SizedBox(
+                    height: 33.h,
+                  ),
+                  Image(
+                    image: const AssetImage(ImageAssets.image_coming),
+                    height: 300.h,
+                    width: 200.w,
+                  ),
+                  SizedBox(
+                    height: 39.h,
+                  ),
+                  Text(
+                    S.current.your_hard_nft_is_creating,
+                    style: textNormalCustom(
+                      Colors.white,
+                      25,
+                      FontWeight.w600,
                     ),
-                    const SizedBox(height: 24),
-                    Flexible(
-                      child: Text(
-                        S.current.could_not_load_data,
-                        style: style.textNormalCustom(
-                          textErrorLoad,
-                          13.sp,
-                          FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    InkWell(
-                      onTap: () {
-                        cubit.getAssetHardNFT(
-                            assetId: cubit.assetId,);
-                      },
-                      child: SizedBox(
-                        height: 36,
-                        width: 36,
-                        child: Image.asset(ImageAssets.reload_category),
-                      ),
-                    ),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           );

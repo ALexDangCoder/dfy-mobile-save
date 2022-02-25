@@ -237,16 +237,16 @@ Widget _buildButtonReject(
           },
           listDetail: [
             DetailItemApproveModel(
-              title: '${S.current.hard_nft_type}:',
+              title: '${S.current.hard_nft_type}',
               value: getNFTType(evaluation.assetType?.id ?? 7),
             ),
             DetailItemApproveModel(
-              title: '${S.current.evaluation_}:',
+              title: '${S.current.evaluation_}',
               value: evaluation.evaluator?.name ?? '',
             ),
             DetailItemApproveModel(
-              title: '${S.current.nft_name}:',
-              value: evaluation.evaluator?.name ?? '',
+              title: '${S.current.nft_name}',
+              value: evaluation.evaluator?.avatarImage ?? '',
             ),
           ],
           title: S.current.book_appointment,
@@ -300,19 +300,19 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
           },
           listDetail: [
             DetailItemApproveModel(
-              title: '${S.current.hard_nft_type}:',
+              title: '${S.current.hard_nft_type}',
               value: getNFTType(evaluation.assetType?.id ?? 7),
             ),
             DetailItemApproveModel(
-              title: '${S.current.evaluation_}:',
+              title: '${S.current.evaluation_}',
               value: evaluation.evaluator?.name ?? '',
             ),
             DetailItemApproveModel(
-              title: '${S.current.nft_name}:',
+              title: '${S.current.nft_name}',
               value: evaluation.evaluator?.name ?? '',
             ),
             DetailItemApproveModel(
-              title: '${S.current.evaluation_fee}:',
+              title: '${S.current.evaluation_fee}',
               value: '${cubit.evaluationFee.amount} '
                   '${cubit.evaluationFee.symbol ?? ''}',
             ),

@@ -158,7 +158,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
   void loadMorePosts(PageRouter pageRouter, String name) {
     checkStatus();
     if (pageRouter == PageRouter.MARKET) {
-      if (!loadMore) {
+      if (!loadMore && !refresh) {
         page += 1;
         canLoadMoreListNft = true;
         loadMore = true;
@@ -171,7 +171,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         );
       }
     } else {
-      if (!loadMore) {
+      if (!loadMore && !refresh) {
         page += 1;
         canLoadMoreListNft = true;
         loadMore = true;
