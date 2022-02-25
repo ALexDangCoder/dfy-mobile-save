@@ -51,6 +51,8 @@ class EvaluationDetailResponse {
   List<MediaResponse>? media;
   @JsonKey(name: 'document_list')
   List<DocumentResponse>? document;
+  @JsonKey(name: 'asset')
+  AssetResponse? assetResponse;
   @JsonKey(name: 'additional_information')
   String? additionalInformation;
   @JsonKey(name: 'bc_txn_hash')
@@ -70,6 +72,7 @@ class EvaluationDetailResponse {
     this.document,
     this.additionalInformation,
     this.bcTxnHash,
+    this.assetResponse,
   );
 
   factory EvaluationDetailResponse.fromJson(Map<String, dynamic> json) =>
@@ -91,6 +94,7 @@ class EvaluationDetailResponse {
         document: document?.map((e) => e.toDomain()).toList(),
         additionalInformation: additionalInformation,
         bcTxnHash: bcTxnHash,
+        nameNft: assetResponse?.toDomain(),
       );
 }
 
@@ -219,4 +223,18 @@ class DocumentResponse {
   String getPath(String avatarCid) {
     return ApiConstants.BASE_URL_IMAGE + avatarCid;
   }
+}
+
+@JsonSerializable()
+class AssetResponse {
+  @JsonKey(name: 'name')
+  String? name;
+
+  AssetResponse(this.name);
+
+  factory AssetResponse.fromJson(Map<String, dynamic> json) =>
+      _$AssetResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetResponseToJson(this);
+  NameNft toDomain() => NameNft(name);
 }

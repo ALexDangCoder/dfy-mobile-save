@@ -18,6 +18,6 @@ class MintRequestModel {
     this.name,
     this.expectingPriceSymbol,
     this.createAt,
-    this.urlToken
+    this.urlToken,
   });
 }

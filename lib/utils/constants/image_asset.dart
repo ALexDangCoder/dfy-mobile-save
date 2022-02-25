@@ -257,7 +257,6 @@ class ImageAssets {
   static const String ic_selected = '$baseImg/Selected.png';
   static const String ic_plus = '$baseImg/Plus.png';
   static const String ic_symbol = 'assets/images/symbol.png';
-  static const String image_example_pop_up = '$baseImg/pop_image.png';
   static const String ic_book_mark = '$baseImg/Report.png';
   static const String ic_share_nft_detail = '$baseImg/Share.png';
   static const String img_place = '$baseImg/placeholder.jpg';
@@ -266,9 +265,6 @@ class ImageAssets {
   static const String ic_clock2 = '$baseImg/ic_clock.png';
   static const String ic_profile = '$baseImg/ic_profile.png';
   static const String img_push = '$baseImg/img_push.png';
-  static const String img_categories = '$baseImg/category.png';
-  static const String img_nature = '$baseImg/img_nature.png';
-  static const String img_art = '$baseImg/img_nature.png';
   static const String img_collection = '$baseImg/img_collection.png';
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
