@@ -1,5 +1,9 @@
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
+import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +20,8 @@ class PrefsService {
   static const _PREF_CURRENT_WALLET_CORE = 'pref_is_wallet_core_logged';
   static const _PREF_OWNER_PAWN = 'pref_owner_pawn';
   static const _PREF_IS_SHOW_CONNECT_MAIL_DIALOG = 'pref_is_show_connect_mail';
+  static const _PREF_CREATE_HARD_NFT_USER_INFO =
+      'pref_create_hard_nft_user_info';
 
   static SharedPreferences? _prefsInstance;
 
@@ -144,9 +150,35 @@ class PrefsService {
     return prefs.setString(_PREF_USER_PROFILE, data);
   }
 
+  static Future<bool> saveUserInfoCreateHardNft(String data) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_CREATE_HARD_NFT_USER_INFO, data);
+  }
+
+  static String getUserInfoCreateHardNft() {
+    return _prefsInstance?.getString(_PREF_CREATE_HARD_NFT_USER_INFO) ??
+        userProfileCreateHardNftEmpty();
+  }
+
+  static String userProfileCreateHardNftEmpty() {
+    return userInfoCreateHardNftToJson(
+      UserInfoCreateHardNft(
+        name: '',
+        address: '',
+        city: CityModel(),
+        country: CountryModel(),
+        email: '',
+        phoneCode: PhoneCodeModel(),
+        phoneContact: '',
+      ),
+    );
+  }
+
   static String getUserProfile() {
     return _prefsInstance?.getString(_PREF_USER_PROFILE) ?? userProfileEmpty();
   }
+
+
 
   static String userProfileEmpty() {
     return userProfileToJson(
@@ -193,5 +225,4 @@ class PrefsService {
   static bool getOptionShowDialogConnectEmail() {
     return _prefsInstance?.getBool(_PREF_IS_SHOW_CONNECT_MAIL_DIALOG) ?? true;
   }
-
 }
