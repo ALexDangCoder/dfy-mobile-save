@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -8,7 +9,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PawnItem extends StatelessWidget {
-  const PawnItem({Key? key}) : super(key: key);
+  final String imageAvatar;
+  final String imageCover;
+  final String nameShop;
+  final bool isShop;
+  final String rate;
+  final List<TokenModelPawn> collateral;
+  final List<TokenModelPawn> loadToken;
+  final String interestRate;
+  final String availableLoan;
+  final String total;
+
+  const PawnItem({
+    Key? key,
+    required this.imageAvatar,
+    required this.imageCover,
+    required this.nameShop,
+    required this.isShop,
+    required this.rate,
+    required this.collateral,
+    required this.loadToken,
+    required this.interestRate,
+    required this.availableLoan,
+    required this.total,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +44,9 @@ class PawnItem extends StatelessWidget {
           bottom: 24.h,
           right: 16.w,
           top: 16.h,
+        ),
+        margin: EdgeInsets.only(
+          bottom: 20.h,
         ),
         decoration: BoxDecoration(
           color: AppTheme.getInstance().borderItemColor(),
@@ -49,10 +76,14 @@ class PawnItem extends StatelessWidget {
                           ),
                         ),
                         child: Image.network(
-                          'https://ecdn.game4v.com/g4v-content/uploads/2022/01/01103009/OP-2021-02-game4v-1641007807-80.png',
+                          imageCover,
                           width: 99.w,
                           height: 99.w,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: AppTheme.getInstance().bgBtsColor(),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -64,10 +95,16 @@ class PawnItem extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Image.network(
-                            'https://sportshub.cbsistatic.com/i/2021/03/18/6eab5e5f-ca8c-42d1-862d-2df903b5309c/one-piece-wano-luffy-cosplay-1252700.jpg',
+                            imageAvatar,
                             width: 20.w,
                             height: 20.w,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                              color: AppTheme.getInstance().bgBtsColor(),
+                              width: 20.w,
+                              height: 20.w,
+                            ),
                           ),
                         ),
                       ),
@@ -82,7 +119,7 @@ class PawnItem extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: 'QQ’s Pawn sdfgdfsgdfs gfdsgdshop',
+                          text: nameShop,
                           style: textNormalCustom(
                             null,
                             16,
@@ -96,7 +133,9 @@ class PawnItem extends StatelessWidget {
                             ),
                             WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
-                              child: Image.asset(ImageAssets.ic_selected),
+                              child: isShop
+                                  ? Image.asset(ImageAssets.ic_selected)
+                                  : const SizedBox.shrink(),
                             ),
                           ],
                         ),
@@ -121,7 +160,7 @@ class PawnItem extends StatelessWidget {
                               alignment: PlaceholderAlignment.middle,
                               child: spaceW6,
                             ),
-                            TextSpan(text: '1000'),
+                            TextSpan(text: rate),
                           ],
                         ),
                       )
@@ -155,45 +194,86 @@ class PawnItem extends StatelessWidget {
                       children: [
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: collateral.isNotEmpty
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    collateral[0].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: collateral.length >= 2
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    collateral[1].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: collateral.length >= 3
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    collateral[2].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: collateral.length >= 4
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    collateral[3].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: collateral.length >= 5
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    collateral[4].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
                         ),
-                        TextSpan(text: '& 20 more'),
+                        WidgetSpan(
+                          child: spaceW2,
+                        ),
+                        TextSpan(
+                          text: collateral.length > 5
+                              ? '& ${collateral.length - 5} '
+                                      '${S.current.more}'
+                                  .toLowerCase()
+                              : '',
+                        ),
                       ],
                     ),
                   ),
@@ -225,43 +305,85 @@ class PawnItem extends StatelessWidget {
                       children: [
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: loadToken.isNotEmpty
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    loadToken[0].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: loadToken.length > 1
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    loadToken[1].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: loadToken.length > 2
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    loadToken[2].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: loadToken.length > 3
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    loadToken[3].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
                         ),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            ImageAssets.ic_selected,
-                            height: 16.w,
-                            width: 16.w,
-                          ),
+                          child: loadToken.length > 4
+                              ? Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    loadToken[4].symbol?.toUpperCase() ?? '',
+                                  ),
+                                  height: 16.w,
+                                  width: 16.w,
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        WidgetSpan(
+                          child: spaceW2,
+                        ),
+                        TextSpan(
+                          text: loadToken.length > 5
+                              ? '& ${loadToken.length - 5} '
+                                      '${S.current.more}'
+                                  .toLowerCase()
+                              : '',
                         ),
                       ],
                     ),
@@ -284,7 +406,7 @@ class PawnItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '12',
+                    availableLoan,
                     style: textNormalCustom(
                       null,
                       14,
@@ -309,7 +431,7 @@ class PawnItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '${S.current.interest_rate_from}:',
+                    interestRate,
                     style: textNormalCustom(
                       null,
                       14,
@@ -326,7 +448,7 @@ class PawnItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '135.478  ',
+                  text: '\$ $total  ',
                   style: textNormalCustom(
                     null,
                     24,

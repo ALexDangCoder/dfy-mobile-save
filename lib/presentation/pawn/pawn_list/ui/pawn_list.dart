@@ -1,12 +1,12 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class PawnList extends StatefulWidget {
   const PawnList({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class PawnList extends StatefulWidget {
 class _PawnListState extends State<PawnList> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       body: Align(
@@ -86,9 +86,36 @@ class _PawnListState extends State<PawnList> {
                 spaceH20,
                 line,
                 spaceH12,
-                //todo
+                Row(
+                  children: [
+
+                  ],
+                ),
                 spaceH24,
-                PawnItem(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(
+                        bottom: 20.h,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 10,
+                      itemBuilder: (context, index) => PawnItem(
+                        rate: '',
+                        total: '',
+                        imageAvatar: '',
+                        interestRate: '',
+                        imageCover: '',
+                        nameShop: '',
+                        loadToken: [],
+                        availableLoan: '',
+                        collateral: [],
+                        isShop: true,
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
