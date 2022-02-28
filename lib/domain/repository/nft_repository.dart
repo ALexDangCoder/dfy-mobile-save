@@ -31,7 +31,7 @@ mixin NFTRepository {
 
   Future<Result<NftMarket>> getDetailHardNftOnSale(String nftId);
 
-  Future<Result<NftMarket>> getDetailHardNftNotOnMarket(
+  Future<Result<NftMarket>> getDetailNft(
     String collectionAddress,
     String nftTokenId,
   );

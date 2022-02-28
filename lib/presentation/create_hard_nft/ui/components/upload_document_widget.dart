@@ -10,8 +10,13 @@ import 'package:path/path.dart';
 
 class UploadDocumentWidget extends StatelessWidget {
   final ProvideHardNftCubit cubit;
+  final isVisibleDoc;
 
-  const UploadDocumentWidget({Key? key, required this.cubit}) : super(key: key);
+  const UploadDocumentWidget({
+    Key? key,
+    required this.cubit,
+    this.isVisibleDoc = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +49,18 @@ class UploadDocumentWidget extends StatelessWidget {
                       ),
                     ),
                     spaceW10,
-                    GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        cubit.removeDocument(index);
-                      },
-                      child: sizedSvgImage(
-                        w: 16,
-                        h: 16,
-                        image: ImageAssets.ic_delete_x_svg,
+                    Visibility(
+                      visible: isVisibleDoc,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          cubit.removeDocument(index);
+                        },
+                        child: sizedSvgImage(
+                          w: 16,
+                          h: 16,
+                          image: ImageAssets.ic_delete_x_svg,
+                        ),
                       ),
                     ),
                   ],

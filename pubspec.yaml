@@ -48,7 +48,6 @@ dependencies:
   webview_flutter: ^2.0.10
   shared_preferences: ^2.0.5
   flutter_secure_storage: ^4.2.1
-  font_awesome_flutter: ^9.0.0
   lint: ^1.6.0
   table_calendar: ^3.0.2
   image_picker: ^0.8.4+3

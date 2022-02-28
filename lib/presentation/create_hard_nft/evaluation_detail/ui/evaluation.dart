@@ -246,7 +246,7 @@ Widget _buildButtonReject(
             ),
             DetailItemApproveModel(
               title: '${S.current.nft_name}',
-              value: evaluation.evaluator?.avatarImage ?? '',
+              value: evaluation.nameNft?.name ?? '',
             ),
           ],
           title: S.current.book_appointment,
@@ -309,7 +309,7 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
             ),
             DetailItemApproveModel(
               title: '${S.current.nft_name}',
-              value: evaluation.evaluator?.name ?? '',
+              value: evaluation.nameNft?.name ?? '',
             ),
             DetailItemApproveModel(
               title: '${S.current.evaluation_fee}',

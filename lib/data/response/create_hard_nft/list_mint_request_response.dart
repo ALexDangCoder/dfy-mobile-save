@@ -1,4 +1,3 @@
-
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/hard_nft_mint_request.dart';
 import 'package:equatable/equatable.dart';
@@ -18,10 +17,10 @@ class ListMintRequestResponse extends Equatable {
   List<MintRequestResponse>? item;
 
   ListMintRequestResponse(
-      this.rd,
-      this.rc,
-      this.item,
-      );
+    this.rd,
+    this.rc,
+    this.item,
+  );
 
   factory ListMintRequestResponse.fromJson(Map<String, dynamic> json) =>
       _$ListMintRequestResponseFromJson(json);
@@ -32,11 +31,10 @@ class ListMintRequestResponse extends Equatable {
   List<Object?> get props => [];
 
   List<MintRequestModel>? toDomain() => item?.map((e) => e.toDomain()).toList();
-
 }
+
 @JsonSerializable()
 class MintRequestResponse extends Equatable {
-
   @JsonKey(name: 'id')
   String? id;
   @JsonKey(name: 'status')
@@ -52,8 +50,15 @@ class MintRequestResponse extends Equatable {
   @JsonKey(name: 'create_at')
   int? createAt;
 
-  MintRequestResponse(this.id, this.status, this.assetType, this.expectingPrice,
-      this.name, this.expectingPriceSymbol, this.createAt);
+  MintRequestResponse(
+    this.id,
+    this.status,
+    this.assetType,
+    this.expectingPrice,
+    this.name,
+    this.expectingPriceSymbol,
+    this.createAt,
+  );
 
   factory MintRequestResponse.fromJson(Map<String, dynamic> json) =>
       _$MintRequestResponseFromJson(json);
@@ -64,14 +69,14 @@ class MintRequestResponse extends Equatable {
   List<Object?> get props => [];
 
   MintRequestModel toDomain() => MintRequestModel(
-    id: id,
-    status: status,
-    assetType: assetType?.toDomain(),
-    expectingPrice: expectingPrice,
-    name: name,
-    expectingPriceSymbol: expectingPriceSymbol,
-    createAt: createAt,
-  );
+        id: id,
+        status: status,
+        assetType: assetType?.toDomain(),
+        expectingPrice: expectingPrice,
+        name: name,
+        expectingPriceSymbol: expectingPriceSymbol,
+        createAt: createAt,
+      );
 }
 
 @JsonSerializable()
@@ -90,4 +95,5 @@ class AssetTypeResponse {
 
   AssetType toDomain() => AssetType(id, name);
 }
+
 

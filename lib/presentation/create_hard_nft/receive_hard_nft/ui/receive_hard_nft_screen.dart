@@ -1,4 +1,3 @@
-import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart' as style;
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -51,23 +50,18 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      MarketType status = MarketType.NOT_ON_MARKET;
-                      if (state.data.displayStatus == 2) {
-                        status = MarketType.AUCTION;
-                      } else if (state.data.displayStatus == 3) {
-                        status = MarketType.PAWN;
-                      } else if (state.data.displayStatus == 1) {
-                        status = MarketType.SALE;
-                      }
+                    onTap: () async {
                       goTo(
                         context,
                         NFTDetailScreen(
-                          typeMarket: status,
+                          typeMarket: state.nftMarket?.marketType ??
+                              MarketType.NOT_ON_MARKET,
                           typeNft: TypeNFT.HARD_NFT,
                           nftId: state.data.nftAssetHard?.id,
                           nftTokenId:
                               state.data.nftAssetHard?.bcTokenId.toString(),
+                          collectionAddress:
+                              state.data.collection?.collectionAddress,
                         ),
                       );
                     },
@@ -166,17 +160,22 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.yellow,
                           ),
-                          child: Center(
-                            child: Text(
-                              (state.data.collection?.name ?? '')
-                                  .substring(0, 1),
-                              style: textNormalCustom(
-                                Colors.black,
-                                16,
-                                FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                          child: state.data.collection?.avatarCid != ''
+                              ? Image.network(
+                                  ApiConstants.BASE_URL_IMAGE +
+                                      (state.data.collection?.avatarCid ?? ''),
+                                )
+                              : Center(
+                                  child: Text(
+                                    (state.data.collection?.name ?? '')
+                                        .substring(0, 1),
+                                    style: textNormalCustom(
+                                      Colors.black,
+                                      16,
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
                         ),
                         Expanded(
                           child: RichText(

@@ -30,6 +30,8 @@ class HardNftResponse extends Equatable {
 @JsonSerializable()
 class DetailHardNftResponse {
   @JsonKey(name: 'id')
+  String? id;
+  @JsonKey(name: 'market_id')
   String? marketId;
   @JsonKey(name: 'status')
   int? nftType;
@@ -43,6 +45,8 @@ class DetailHardNftResponse {
   String? description;
   @JsonKey(name: 'file_cid')
   String? fileCid;
+  @JsonKey(name: 'market_status')
+  int? marketStatus;
   @JsonKey(name: 'market_type')
   int? marketType;
   @JsonKey(name: 'collection_id')
@@ -142,8 +146,8 @@ class DetailHardNftResponse {
     }
   }
 
-  String getNftStandard(dynamic nftStandard){
-    if(nftStandard == 'ERC_1155'){
+  String getNftStandard(dynamic nftStandard) {
+    if (nftStandard == 'ERC_1155') {
       return '1';
     } else {
       return '0';
@@ -167,7 +171,8 @@ class DetailHardNftResponse {
         numberOfCopies: numberOfCopies,
         mintingFeeNumber: mintingFeeNumber,
         mintingFeeToken: mintingFeeToken,
-        marketType: getTypeMarket(marketType ?? 0),
+        marketType:
+            getTypeMarket((marketType ?? marketStatus) ?? 0),
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,
