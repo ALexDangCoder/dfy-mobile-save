@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -153,7 +154,7 @@ class Step1WhenSubmit extends StatelessWidget {
                         border: Border.all(
                           color: AppTheme.getInstance().yellowColor(),
                         ),
-                        radiusButton: 15,
+                        radiusButton: 22,
                         textSize: 16,
                         title: S.current.edit_info,
                         isEnable: true,
@@ -171,7 +172,7 @@ class Step1WhenSubmit extends StatelessWidget {
                         await cubit.postFileMediaFeatDocumentApi();
                       },
                       child: ButtonGold(
-                        radiusButton: 15,
+                        radiusButton: 22,
                         textSize: 16,
                         title: S.current.submit,
                         isEnable: true,
@@ -215,6 +216,7 @@ class Step1WhenSubmit extends StatelessWidget {
                     ),
                   ),
                   // spaceH20,
+                  UploadDocumentWidget(cubit: cubit, isVisibleDoc: false,),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

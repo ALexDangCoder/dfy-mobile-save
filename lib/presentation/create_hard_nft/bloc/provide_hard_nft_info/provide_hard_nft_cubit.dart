@@ -102,11 +102,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         listCidMedia.add(cid);
       }
     }
+
     for (final e in listDocumentFile) {
-      final cid = await _pinToIPFS.pinFileToIPFS(
-        pathFile: e.getStringValue(e.getStringValue(PATH_OF_FILE)),
+      final cidDoc = await _pinToIPFS.pinFileToIPFS(
+        pathFile: e.getStringValue(PATH_OF_FILE),
       );
-      if (cid.isNotEmpty) {
+      if (cidDoc.isNotEmpty) {
         documentsRequest.add(
           DocumentFeatMediaListRequest(
             name: basename(e.getStringValue(PATH_OF_FILE)),
@@ -114,10 +115,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
               type: e.getStringValue(TYPE_OF_FILE),
               extension: e.getStringValue(EXTENSION_OF_FILE),
             ),
-            cid: cid,
+            cid: cidDoc,
           ),
         );
-        listCidDocument.add(cid);
+        listCidDocument.add(cidDoc);
       }
     }
     convertPropertiesToAdditionalInfo();
@@ -558,8 +559,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   UserInfoCreateHardNft? getInfoUserIsCreatedNft() {
     final data = PrefsService.getUserInfoCreateHardNft();
     final result = userInfoCreateHardNftFromJson(data);
-    if ((result.walletAddress ?? '') ==
-        getAddressWallet()) {
+    if ((result.walletAddress ?? '') == getAddressWallet()) {
       return result;
     }
     return null;
@@ -735,29 +735,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
-  void showHideDropDownBtn({
-    DropDownBtnType? typeDropDown,
-    bool? value,
-  }) {
-    if (typeDropDown != null) {
-      switch (typeDropDown) {
-        case DropDownBtnType.CITY:
-          break;
-        case DropDownBtnType.COUNTRY:
-          visibleDropDownCountry.sink.add(value ?? true);
-          break;
-        default:
-          break;
-      }
-    } else {
-      visibleDropDownCountry.sink.add(false);
-    }
-  }
-
-  void createModel() {
-    dataStep1.mediaFiles = listPathImage;
-    dataStep1.documents = listPathDocument;
-  }
 
   Future<void> getDataFromStep1ToModelToSave() async {
     final UserInfoCreateHardNft userInfo = UserInfoCreateHardNft(
