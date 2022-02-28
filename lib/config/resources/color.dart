@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -20,16 +19,19 @@ const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
 const dateColor = Color(0xffD4D5D7);
 const amountColor = Color(0xffDBA83D);
-const shadowColorBottomBar =Color(0xff3C3888);
+const shadowColorBottomBar = Color(0xff3C3888);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
   Color.fromRGBO(23, 21, 39, 1)
 ];
 const purple = Color(0xff9997FF);
+const itemPawnBank = Color(0xff576C96);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 const textHistory = Color(0xFFE4E4E4);
+const textPawnGray = Color(0xffD1D1D3);
+const textPawnItemGray = Color(0xffA2A3A7);
 
 //skeleton
 const colorSkeletonLight = Color(0xFF605F83);
@@ -109,8 +111,13 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
-
   Color bgDropdownBtn();
+
+  Color pawnGray();
+
+  Color pawnItemColor();
+
+  Color pawnItemGray();
 
   Color whiteDot2();
 
@@ -201,6 +208,7 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+
   Color textGrayColor();
 
   Color getGrayColor();
@@ -627,7 +635,7 @@ class LightApp extends AppColor {
 
   @override
   Color redMarketColors() {
-   return redMarketColor;
+    return redMarketColor;
   }
 
   @override
@@ -667,12 +675,26 @@ class LightApp extends AppColor {
 
   @override
   Color getShadowBottomBar() {
-   return shadowColorBottomBar.withOpacity(0.7);
+    return shadowColorBottomBar.withOpacity(0.7);
+  }
+
+  @override
+  Color pawnGray() {
+    return textPawnGray;
+  }
+
+  @override
+  Color pawnItemGray() {
+    return textPawnItemGray;
+  }
+
+  @override
+  Color pawnItemColor() {
+   return itemPawnBank;
   }
 }
 
 class DarkApp extends AppColor {
-
   @override
   Color bgDropdownBtn() {
     return bgDropdown;
@@ -1134,6 +1156,24 @@ class DarkApp extends AppColor {
   @override
   Color getShadowBottomBar() {
     // TODO: implement getShadowBottomBar
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnGray() {
+    // TODO: implement pawnGray
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnItemGray() {
+    // TODO: implement pawnItemGray
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnItemColor() {
+    // TODO: implement pawnItemColor
     throw UnimplementedError();
   }
 }
