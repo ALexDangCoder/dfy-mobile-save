@@ -764,5 +764,21 @@
   "nft_created":"NFT created",
   "un_evaluated":"Un-evaluated",
   "evaluated":"Evaluated",
-  "view_evaluation": "View evaluation"
+  "view_evaluation": "View evaluation",
+  "header_title_pawn": "Official pawnshop with new token",
+  "top_rated_lenders": "Top rated lenders",
+  "what_you_can_pawn": "What you can borrow/lend?",
+  "top_sale_pawn": "Top sale pawnshop package",
+  "become_pawnshop": "Become pawnshop with exclusive membership program",
+  "review_partner_in_your_contract" : "Review partner in your contract\n to get",
+  "as_a_reward": "as a reward",
+  "review_now": "Review now",
+  "explore_now": "Explore now",
+  "name_of_token": "Name of token: ",
+  "symbol_of_token": "Symbol of token: ",
+  "get_an_instant": "Get an instant loan with\nthe best interest",
+  "earn_periodic": "Earn periodic interest\non your asset",
+  "start_borrow": "Start borrowing ",
+  "start_lending": "Start lending "
+
 }

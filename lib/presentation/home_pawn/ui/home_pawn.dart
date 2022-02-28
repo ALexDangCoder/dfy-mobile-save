@@ -1,0 +1,508 @@
+import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/text/text_gradient.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'components/banner_slide.dart';
+import 'components/list_item_horizontal.dart';
+
+class HomePawn extends StatefulWidget {
+  const HomePawn({Key? key}) : super(key: key);
+
+  @override
+  _HomePawnState createState() => _HomePawnState();
+}
+
+class _HomePawnState extends State<HomePawn> {
+  late HomePawnCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = HomePawnCubit();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: AppTheme.getInstance().bgColorHomePawn(),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeaderWidget(),
+            Container(
+              height: 1.h,
+              color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 699.h,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      spaceH24,
+                      Container(
+                        margin: EdgeInsets.only(left: 16.w),
+                        child: Text(
+                          S.current.header_title_pawn,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            20,
+                            FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      spaceH16,
+                      const BannerPawnSlide(),
+                      _buildBanner(),
+                      spaceH32,
+                      ListItemHorizontal(
+                        title: S.current.top_rated_lenders,
+                        listItemWidget: SizedBox(
+                          height: 165.h,
+                          child: ListView.builder(
+                            itemCount: cubit.fakeTopRate.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (ctx, index) {
+                              return Row(
+                                children: [
+                                  _itemTopRate(
+                                    title: cubit.fakeTopRate[index].title,
+                                    img: cubit.fakeTopRate[index].img,
+                                  ),
+                                  spaceW20,
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      spaceH32,
+                      ListItemHorizontal(
+                        title: S.current.what_you_can_pawn,
+                        isHaveArrow: false,
+                        listItemWidget: SizedBox(
+                          height: 161.h,
+                          child: ListView.builder(
+                            itemCount: cubit.borrowFeatLend.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) {
+                              return Row(
+                                children: [
+                                  _itemBorrowFtLend(
+                                    title: cubit.borrowFeatLend[index].title,
+                                    imageBg: cubit
+                                        .borrowFeatLend[index].imgBackGround,
+                                    suffixTitle:
+                                        cubit.borrowFeatLend[index].sufTitle,
+                                    type: cubit.borrowFeatLend[index].type,
+                                  ),
+                                  spaceW20,
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      spaceH32,
+                      ListItemHorizontal(
+                        title: S.current.top_sale_pawn,
+                        listItemWidget: SizedBox(
+                          height: 267.h,
+                          child: ListView.builder(
+                            itemCount: 6,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) {
+                              return _itemPawnShopPackage();
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 200.h,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _itemPawnShopPackage() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 262.w,
+          height: 267.h,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 222.h,
+                  width: 262.w,
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                    top: 48.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.r),
+                    color: AppTheme.getInstance().bgProgressingColors(),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Tima - Online pawnshop',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().getAmountColor(),
+                          16,
+                          FontWeight.w600,
+                        ),
+                      ),
+                      spaceH8,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 16.h,
+                            width: 16.w,
+                            child: Image.asset(ImageAssets.img_star),
+                          ),
+                          spaceW4,
+                          Text(
+                            '1000',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      spaceH24,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Loan',
+                            style: textNormalCustom(
+                              AppTheme.getInstance()
+                                  .whiteWithOpacitySevenZero(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 20.h,
+                                width: 20.w,
+                                child: Image.asset(ImageAssets.ic_dfy),
+                              ),
+                              spaceW8,
+                              Text(
+                                '100,323,549.6',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().whiteColor(),
+                                  14,
+                                  FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      spaceH13,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Interest rate',
+                            style: textNormalCustom(
+                              AppTheme.getInstance()
+                                  .whiteWithOpacitySevenZero(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            '15% APR',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              14,
+                              FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
+                      spaceH13,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Signed contracts',
+                            style: textNormalCustom(
+                              AppTheme.getInstance()
+                                  .whiteWithOpacitySevenZero(),
+                              14,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            '150 contracts',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              14,
+                              FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 84,
+                child: Container(
+                  height: 94.h,
+                  width: 94.w,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: AppTheme.getInstance().bgColorHomePawn(),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 84.h,
+                    width: 84.w,
+                    child: Image.asset(ImageAssets.ic_dfy, fit: BoxFit.fill,),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        spaceW20,
+      ],
+    );
+  }
+
+  ClipRRect _itemBorrowFtLend({
+    required String title,
+    required String suffixTitle,
+    required TYPE_BORROW_OR_LEND type,
+    required String imageBg,
+  }) {
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(20.r),
+      ),
+      child: Stack(
+        children: [
+          SizedBox(
+            height: 161.h,
+            width: 235.w,
+            child: Image.asset(imageBg),
+          ),
+          Positioned(
+            top: 12.h,
+            left: 12.w,
+            child: Text(
+              title,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                16,
+                FontWeight.w700,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 15.h,
+            left: 12.w,
+            child: InkWell(
+              onTap: () {},
+              child: Row(
+                children: [
+                  Text(
+                    suffixTitle,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().blueColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                    width: 12,
+                    child: Image.asset(ImageAssets.blueArrow),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ClipRRect _itemTopRate({required String title, required String img}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(16.r),
+      ),
+      child: Stack(
+        children: [
+          SizedBox(
+            height: 165.h,
+            width: 133.w,
+            child: Image.network(
+              img,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            top: 8.h,
+            left: 8.w,
+            child: Text(
+              title,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                14,
+                FontWeight.w600,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  SizedBox _buildBanner() {
+    return SizedBox(
+      height: 85.h,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: 375.w,
+            child: Image.asset(
+              ImageAssets.banner_pawn,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            top: 8.h,
+            child: RichText(
+              text: TextSpan(
+                text: S.current.review_partner_in_your_contract,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  12,
+                  FontWeight.w700,
+                ),
+                children: [
+                  TextSpan(
+                    text: '10 DFY',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().fillColor(),
+                      12,
+                      FontWeight.w700,
+                    ),
+                  ),
+                  TextSpan(
+                    text: S.current.as_a_reward,
+                  )
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 51.h,
+            child: Container(
+              height: 24.h,
+              width: 84.w,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: AppTheme.getInstance().btnGold4(),
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30.r),
+                ),
+              ),
+              child: Center(
+                child: GradientText(
+                  S.current.review_now,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.sp,
+                  ),
+                  gradient: LinearGradient(
+                    colors: AppTheme.getInstance().linearTxt(),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _buildHeaderWidget() {
+    return Container(
+      margin: EdgeInsets.only(
+        left: 24.w,
+        right: 28.w,
+        bottom: 14.h,
+      ),
+      height: 54.h,
+      width: 323.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 139.w,
+            height: 38.h,
+            child: Image.asset(
+              ImageAssets.logo_pawn,
+            ),
+          ),
+          SizedBox(
+            height: 24.h,
+            width: 24.w,
+            child: Image.asset(
+              ImageAssets.alarm,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
