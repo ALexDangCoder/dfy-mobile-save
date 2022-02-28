@@ -135,6 +135,7 @@ class ImageAssets {
 
 //pawn
   static const String img_nft = '$baseImg/nft_img.png';
+  static const String img_waning = '$baseImg/pawn_about.png';
   static const String img_crypto = '$baseImg/money_5_img.png';
   static const String img_money_increase = '$baseImg/frame_img.png';
 
