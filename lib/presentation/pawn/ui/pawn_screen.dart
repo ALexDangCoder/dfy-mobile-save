@@ -1,3 +1,4 @@
+import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
 import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,15 @@ class _PawnState extends State<PawnScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const ComingScreen();
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return BorrowLendScreen();
+          },
+        ));
+      },
+      child: const ComingScreen(),
+    );
   }
 }

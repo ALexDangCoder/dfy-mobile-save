@@ -49,7 +49,6 @@ class ImageAssets {
   static const String house44 = '$baseImg/House44.png';
   static const String other44 = '$baseImg/Other44.png';
 
-
   static const String closeProperties = '$baseImg/close_pro.png';
   static const String deleteMediaFile = '$baseImg/delete_media.png';
   static const String leftArrowMediaFile = '$baseImg/left_arrow.png';
@@ -133,6 +132,11 @@ class ImageAssets {
   static const String ic_time = '$baseImg/time.png';
   static const String ic_global_market = '$baseImg/ic_global_market.png';
   static const String ic_phone = '$baseImg/phone.png';
+
+//pawn
+  static const String img_nft = '$baseImg/nft_img.png';
+  static const String img_crypto = '$baseImg/money_5_img.png';
+  static const String img_money_increase = '$baseImg/frame_img.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -269,8 +273,10 @@ class ImageAssets {
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
   static const String image_loading = '$baseImg/img_loading.gif';
-  static const String img_loading_transparent = '$baseImg/img_loading_transparent.gif';
-  static const String image_loading_collection = '$baseImg/loading_collection.png';
+  static const String img_loading_transparent =
+      '$baseImg/img_loading_transparent.gif';
+  static const String image_loading_collection =
+      '$baseImg/loading_collection.png';
 
   //img activity collection detail
 
@@ -382,7 +388,8 @@ class ImageAssets {
 
   static const String more_circle_white = '$baseImg/more_circle_white.png';
 
-  static const String categories_create_collection = '$baseImg/categories_svg.svg';
+  static const String categories_create_collection =
+      '$baseImg/categories_svg.svg';
 
   static SvgPicture svgAssets(
     String name, {
