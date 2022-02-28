@@ -142,6 +142,35 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   ///GetInfoNft
+  ///
+  Future<void> getDetailNft({
+    required String marketId,
+    required MarketType type,
+    required TypeNFT typeNFT,
+    required String nftId,
+    required int pawnId,
+    required String collectionAddress,
+    required String nftTokenId,
+  }) async {
+    final Result<NftMarket> result = await _nftRepo.getDetailNft(
+      collectionAddress,
+      nftTokenId,
+    );
+    result.when(
+      success: (res) {
+        getInForNFT(
+          marketId: res.marketId ?? marketId,
+          type: res.marketType ?? type,
+          typeNFT: typeNFT,
+          nftId: nftId,
+          pawnId: res.pawnId ?? pawnId,
+          collectionAddress: collectionAddress,
+          nftTokenId: nftTokenId,
+        );
+      },
+      error: (error) {},
+    );
+  }
 
   Future<void> getInForNFT({
     required String marketId,
@@ -204,7 +233,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.SALE) {
       showLoading();
       final Result<NftMarket> result;
-
       result = await _nftRepo.getDetailNftOnSale(marketId).then((value) async {
         if (typeNFT == TypeNFT.HARD_NFT) {
           final Result<NftMarket> result2 =
