@@ -4,18 +4,34 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/ui/widget_filter.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
+import 'package:Dfy/widgets/form/from_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FilterPawn extends StatelessWidget {
+class FilterPawn extends StatefulWidget {
   final PawnListBloc bloc;
 
   const FilterPawn({
     Key? key,
     required this.bloc,
   }) : super(key: key);
+
+  @override
+  State<FilterPawn> createState() => _FilterPawnState();
+}
+
+class _FilterPawnState extends State<FilterPawn> {
+  late TextEditingController textSearch;
+
+  @override
+  void initState() {
+    super.initState();
+    textSearch = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +46,7 @@ class FilterPawn extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
@@ -73,7 +90,7 @@ class FilterPawn extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-//todo reset
+                      //todo reset
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -100,8 +117,65 @@ class FilterPawn extends StatelessWidget {
               ),
             ),
             spaceH24,
+            FormSearchBase(
+              onChangedFunction: () {},
+              onTapFunction: () {},
+              urlIcon: ImageAssets.ic_search,
+              hint: S.current.pawn,
+              textSearchStream: widget.bloc.textSearch,
+              textSearch: textSearch,
+            ),
+            spaceH16,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Text(
+                S.current.interest_range,
+                style: textNormalCustom(
+                  null,
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+            ),
+            spaceH16,
             //todo body
-            spaceH24,
+            spaceH16,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Text(
+                S.current.collateral_accepted,
+                style: textNormalCustom(
+                  null,
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+            ),
+            spaceH16,
+            //todo body
+            ItemWidgetFilter(),
+            spaceH16,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ),
+              child: Text(
+                S.current.loan_currency,
+                style: textNormalCustom(
+                  null,
+                  16,
+                  FontWeight.w600,
+                ),
+              ),
+            ),
+            spaceH16,
+            ItemWidgetFilter(),
+            //todo body
+            spaceH40,
             GestureDetector(
               onTap: () {
                 //todo filter

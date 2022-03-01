@@ -761,5 +761,9 @@
   "more": "More",
   "interest_rate_pawn": "Lãi suất",
   "high_to_low": "Cao đến thấp",
-  "low_to_high": "Thấp đến cao"
+  "low_to_high": "Thấp đến cao",
+  "zero_to_ten": "0-10%",
+  "ten_twenty": "10-25%",
+  "twenty_five": "25-50%",
+  "more_than_fifty": ">50%"
 }

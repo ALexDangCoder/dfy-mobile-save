@@ -800,5 +800,9 @@
   "more": "More",
   "interest_rate_pawn": "Interest rate",
   "high_to_low": "High to low",
-  "low_to_high": "Low to high"
+  "low_to_high": "Low to high",
+  "zero_to_ten": "0-10%",
+  "ten_twenty": "10-25%",
+  "twenty_five": "25-50%",
+  "more_than_fifty": ">50%"
 }

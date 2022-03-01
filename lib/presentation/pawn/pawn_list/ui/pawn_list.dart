@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/filter_pawn.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +28,7 @@ class _PawnListState extends State<PawnList> {
   void initState() {
     super.initState();
     _bloc = PawnListBloc();
+    _bloc.getListPawn();
   }
 
   @override
@@ -184,32 +187,39 @@ class _PawnListState extends State<PawnList> {
                   ),
                 ),
                 spaceH20,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        bottom: 20.h,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 10,
-                      itemBuilder: (context, index) => PawnItem(
-                        rate: '',
-                        total: '',
-                        imageAvatar:
-                            'https://cf.shopee.vn/file/a2e038a25c554273a38b0d9b1a337440',
-                        interestRate: '',
-                        imageCover:
-                            'https://cf.shopee.vn/file/a2e038a25c554273a38b0d9b1a337440',
-                        nameShop: '',
-                        loadToken: [],
-                        availableLoan: '',
-                        collateral: [],
-                        isShop: true,
-                      ),
-                    ),
-                  ),
-                )
+                StreamBuilder<List<PawnShopModel>>(
+                    stream: _bloc.list,
+                    builder: (context, snapshot) {
+                      final list = snapshot.data ?? [];
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(
+                              bottom: 20.h,
+                            ),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: list.length,
+                            itemBuilder: (context, index) => PawnItem(
+                              //todo list
+                              rate: list[index].userId.toString(),
+                              total: list[index].totalValue.toString(),
+                              imageAvatar: ApiConstants.BASE_URL_IMAGE +
+                                  list[index].avatar.toString(),
+                              interestRate: list[index].totalValue.toString(),
+                              imageCover: ApiConstants.BASE_URL_IMAGE +
+                                  list[index].avatar.toString(),
+                              nameShop: list[index].name.toString(),
+                              loadToken: list[index].loanToken ?? [],
+                              availableLoan:
+                                  list[index].availableLoanPackage.toString(),
+                              collateral: list[index].collateralAccepted ?? [],
+                              isShop: list[index].isKYC ?? false,
+                            ),
+                          ),
+                        ),
+                      );
+                    })
               ],
             ),
           ),
