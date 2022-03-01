@@ -171,6 +171,7 @@ class PawnItem extends StatelessWidget {
             ),
             spaceH12,
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
@@ -282,6 +283,7 @@ class PawnItem extends StatelessWidget {
             ),
             spaceH12,
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(

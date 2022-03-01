@@ -201,12 +201,12 @@ class _PawnListState extends State<PawnList> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: list.length,
                             itemBuilder: (context, index) => PawnItem(
-                              //todo list
-                              rate: list[index].userId.toString(),
+                              rate: list[index].reputation.toString(),
                               total: list[index].totalValue.toString(),
                               imageAvatar: ApiConstants.BASE_URL_IMAGE +
                                   list[index].avatar.toString(),
-                              interestRate: list[index].totalValue.toString(),
+                              //todo avatar
+                              interestRate: '${list[index].interest}%',
                               imageCover: ApiConstants.BASE_URL_IMAGE +
                                   list[index].avatar.toString(),
                               nameShop: list[index].name.toString(),
