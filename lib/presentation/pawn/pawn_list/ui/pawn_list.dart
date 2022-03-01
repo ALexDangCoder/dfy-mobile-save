@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/ui/filter_pawn.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,16 @@ class _PawnListState extends State<PawnList> {
                       maxLines: 1,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterPawn(
+                            bloc: _bloc,
+                          ),
+                        );
+                      },
                       child: Container(
                         margin: EdgeInsets.only(right: 16.w),
                         width: 24.w,
