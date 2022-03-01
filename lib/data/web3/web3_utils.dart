@@ -1084,7 +1084,7 @@ class Web3Utils {
     BuildContext context,
   ) async {
     final abiCode =
-        await rootBundle.loadString('assets/abi/SellNFT_ABI_DEV2.json');
+        await rootBundle.loadString('assets/abi/SellNFT_ABI_prelive.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Sell NFT'),
       EthereumAddress.fromHex(contract),
