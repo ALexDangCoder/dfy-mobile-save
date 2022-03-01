@@ -1,12 +1,15 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'dialog_filter.dart';
+import 'item_header_filter.dart';
 
 class PawnList extends StatefulWidget {
   const PawnList({Key? key}) : super(key: key);
@@ -16,6 +19,14 @@ class PawnList extends StatefulWidget {
 }
 
 class _PawnListState extends State<PawnList> {
+  late PawnListBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = PawnListBloc();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,13 +96,84 @@ class _PawnListState extends State<PawnList> {
                 ),
                 spaceH20,
                 line,
-                spaceH12,
-                Row(
-                  children: [
-
-                  ],
-                ),
                 spaceH24,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return DialogFilter(
+                                  title: S.current.rating,
+                                  type: _bloc.typeRating ??
+                                      TypeFilter.HIGH_TO_LOW,
+                                );
+                              },
+                            ),
+                          );
+                          if (res != null) {
+                            _bloc.typeRating = res;
+                            //todo filter
+                          }
+                        },
+                        child: ItemHeaderFilter(
+                          title: S.current.rating,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return DialogFilter(
+                                  title: S.current.interest_rate_pawn,
+                                  type: _bloc.typeInterest ??
+                                      TypeFilter.HIGH_TO_LOW,
+                                );
+                              },
+                            ),
+                          );
+                          if (res != null) {
+                            _bloc.typeInterest = res;
+                            //todo filter
+                          }
+                        },
+                        child: ItemHeaderFilter(
+                          title: S.current.interest_rate_pawn,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          final res = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return DialogFilter(
+                                  title: S.current.signed_contracts,
+                                  type: _bloc.typeSigned ??
+                                      TypeFilter.HIGH_TO_LOW,
+                                );
+                              },
+                            ),
+                          );
+                          if (res != null) {
+                            _bloc.typeSigned = res;
+                            //todo filter
+                          }
+                        },
+                        child: ItemHeaderFilter(
+                          title: S.current.signed_contracts,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                spaceH20,
                 Expanded(
                   child: SingleChildScrollView(
                     child: ListView.builder(
@@ -104,9 +186,11 @@ class _PawnListState extends State<PawnList> {
                       itemBuilder: (context, index) => PawnItem(
                         rate: '',
                         total: '',
-                        imageAvatar: '',
+                        imageAvatar:
+                            'https://cf.shopee.vn/file/a2e038a25c554273a38b0d9b1a337440',
                         interestRate: '',
-                        imageCover: '',
+                        imageCover:
+                            'https://cf.shopee.vn/file/a2e038a25c554273a38b0d9b1a337440',
                         nameShop: '',
                         loadToken: [],
                         availableLoan: '',
