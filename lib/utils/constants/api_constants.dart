@@ -143,7 +143,8 @@ class ApiConstants {
 
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
-  static const String GET_ALL_COLLECTION = '/nft-market-svc/api/collection/self';
+  static const String GET_ALL_COLLECTION =
+      '/nft-market-svc/api/collection/self';
   static const String PUT_HARD_NFT_PREFIX = '/hard-nft-svc/api/assets/';
   static const String PUT_HARD_NFT_SUFFIX = '/submit';
 
@@ -201,4 +202,9 @@ class ApiConstants {
       'hard-nft-svc/public-api/assets/conditions';
 
   static const String GET_HARD_NFT_TYPE = 'hard-nft-svc/public-api/asset/types';
+
+  ///PAWN
+  static const String GET_OFFICIAL_PAWNSHOP_WITH_TOKEN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-official-pawnshop';
+  static const String GET_TOP_RATED_LENDERS = '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-rated-lender';
 }

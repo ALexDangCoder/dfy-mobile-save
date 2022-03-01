@@ -1,5 +1,6 @@
 import 'package:Dfy/domain/model/home_pawn/crypto_asset_model.dart';
-import 'package:Dfy/domain/model/home_pawn/officialPawnItemModel.dart';
+import 'package:Dfy/domain/model/home_pawn/official_pawn_item_model.dart';
+import 'package:Dfy/domain/model/home_pawn/official_pawn_with_token_model.dart';
 import 'package:Dfy/domain/model/home_pawn/pawn_shop_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -20,7 +21,12 @@ class OfficialPawnWithNewTokenResponse extends Equatable {
   OfficialPawnWithNewTokenResponse(
       this.error, this.code, this.traceId, this.data);
 
+  OfficialPawnWithTokenModel toModel() => OfficialPawnWithTokenModel(
+      listOfficialPawnItem: data?.map((e) => e.toModel()).toList());
 
+  factory OfficialPawnWithNewTokenResponse.fromJson(
+          Map<String, dynamic> json) =>
+      _$OfficialPawnWithNewTokenResponseFromJson(json);
 
   @override
   List<Object?> get props => [];
@@ -176,6 +182,11 @@ class PawnShopResponse extends Equatable {
         name: name,
         reputation: reputation,
         userId: userId,
+        address: address,
+        walletAddress: walletAddress,
+        email: email,
+        description: description,
+        phoneNumber: phoneNumber,
       );
 
   @override

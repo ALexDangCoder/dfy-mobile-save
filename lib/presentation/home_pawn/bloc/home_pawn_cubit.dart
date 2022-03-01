@@ -1,7 +1,12 @@
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
+import 'package:Dfy/domain/model/home_pawn/official_pawn_item_model.dart';
+import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
 part 'home_pawn_state.dart';
 
@@ -12,6 +17,14 @@ enum TYPE_BORROW_OR_LEND {
 
 class HomePawnCubit extends Cubit<HomePawnState> {
   HomePawnCubit() : super(HomePawnInitial());
+
+  HomePawnRepository get _homePawnRepo => Get.find();
+
+  Future<void> getOfficialPawnShopWithToken() async {
+    final Result<List<OfficialPawnItemModel>> result =
+        await _homePawnRepo.getOfficialPawnShopWithNewToken();
+    result.when(success: (success) {}, error: (error) {});
+  }
 
   List<TopRate> fakeTopRate = [
     TopRate(
