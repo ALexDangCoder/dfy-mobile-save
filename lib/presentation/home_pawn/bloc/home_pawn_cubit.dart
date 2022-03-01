@@ -1,6 +1,8 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
 import 'package:Dfy/domain/model/home_pawn/official_pawn_item_model.dart';
+import 'package:Dfy/domain/model/home_pawn/top_rate_model.dart';
+import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -25,6 +27,20 @@ class HomePawnCubit extends Cubit<HomePawnState> {
         await _homePawnRepo.getOfficialPawnShopWithNewToken();
     result.when(success: (success) {}, error: (error) {});
   }
+
+  Future<void> getTopRatedLenders() async {
+    final Result<List<TopRateLenderModel>> result =
+    await _homePawnRepo.getTopRateLenders();
+    result.when(success: (success) {}, error: (error) {});
+  }
+
+  Future<void> getTopSalePawnPackageShop() async {
+    final Result<List<TopSalePawnShopItemModel>> result =
+    await _homePawnRepo.getTopSalePawnShopPackage();
+    result.when(success: (success) {}, error: (error) {});
+  }
+
+
 
   List<TopRate> fakeTopRate = [
     TopRate(

@@ -1,5 +1,6 @@
 import 'package:Dfy/data/response/home_pawn/official_pawn_with_token_res.dart';
 import 'package:Dfy/data/response/home_pawn/top_rate_lenders_res.dart';
+import 'package:Dfy/data/response/home_pawn/top_sale_pawnshop_res.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -17,4 +18,7 @@ abstract class HomePawnService {
 
   @GET(ApiConstants.GET_TOP_RATED_LENDERS)
   Future<TopRateLendersResponse> getTopRatedLenders();
+
+  @GET(ApiConstants.GET_TOP_SALE_PACKAGE_MODEL)
+  Future<TopSalePawnShopPackageResponse> getTopSalePackage();
 }

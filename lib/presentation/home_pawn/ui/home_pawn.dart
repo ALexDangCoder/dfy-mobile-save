@@ -25,6 +25,8 @@ class _HomePawnState extends State<HomePawn> {
     super.initState();
     cubit = HomePawnCubit();
     cubit.getOfficialPawnShopWithToken();
+    cubit.getTopRatedLenders();
+    cubit.getTopSalePawnPackageShop();
   }
 
   @override

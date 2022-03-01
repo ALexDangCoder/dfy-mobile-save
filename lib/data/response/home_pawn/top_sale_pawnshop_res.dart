@@ -1,4 +1,7 @@
 import 'package:Dfy/data/response/home_pawn/official_pawn_with_token_res.dart';
+import 'package:Dfy/domain/model/home_pawn/loan_token_model.dart';
+import 'package:Dfy/domain/model/home_pawn/pawn_shop_package_model.dart';
+import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -46,6 +49,14 @@ class TopSalePawnShopItemResponse extends Equatable {
     this.pawnShopPackage,
   );
 
+  TopSalePawnShopItemModel toModel() => TopSalePawnShopItemModel(
+        id: id,
+        positionItem: positionItem,
+        updatedAt: updatedAt,
+        pawnShopPackage: pawnShopPackage?.toModel(),
+        signedContract: signedContract,
+      );
+
   factory TopSalePawnShopItemResponse.fromJson(Map<String, dynamic> json) =>
       _$TopSalePawnShopItemResponseFromJson(json);
 
@@ -64,7 +75,7 @@ class PawnShopPackageResponse extends Equatable {
   @JsonKey(name: 'allowedLoanMax')
   int? allowedLoanMax;
   @JsonKey(name: 'allowedLoanMin')
-  int? allowedLoanMin;
+  double? allowedLoanMin;
   @JsonKey(name: 'interest')
   dynamic interest;
   @JsonKey(name: 'interestMin')
@@ -77,6 +88,36 @@ class PawnShopPackageResponse extends Equatable {
   int? type;
   @JsonKey(name: 'status')
   int? status;
+
+
+  PawnShopPackageResponse(
+      this.id,
+      this.name,
+      this.pawnShop,
+      this.allowedLoanMax,
+      this.allowedLoanMin,
+      this.interest,
+      this.interestMin,
+      this.interestMax,
+      this.loanToken,
+      this.type,
+      this.status);
+
+  factory PawnShopPackageResponse.fromJson(Map<String, dynamic> json) =>
+      _$PawnShopPackageResponseFromJson(json);
+
+  PawnShopPackageModel toModel() => PawnShopPackageModel(
+        name: name,
+        id: id,
+        pawnShop: pawnShop?.toModel(),
+        type: type,
+        allowedLoanMax: allowedLoanMax,
+        allowedLoanMin: allowedLoanMin,
+        interestMax: interestMax,
+        interestMin: interestMin,
+        loanToken: loanToken?.toModel(),
+        status: status,
+      );
 
   @override
   List<Object?> get props => [];
@@ -97,9 +138,9 @@ class LoanTokenResponse extends Equatable {
   @JsonKey(name: 'address')
   String? address;
   @JsonKey(name: 'isWhitelistCollateral')
-  bool? interestMin;
+  bool? isWhitelistCollateral;
   @JsonKey(name: 'isWhitelistSupply')
-  bool? interestMax;
+  bool? isWhitelistSupply;
   @JsonKey(name: 'coinGeckoId')
   String? coinGeckoId;
   @JsonKey(name: 'whitelistAsset')
@@ -114,20 +155,38 @@ class LoanTokenResponse extends Equatable {
   bool? isExchangeMiles;
 
   LoanTokenResponse(
-      this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.isDeleted,
-      this.symbol,
-      this.address,
-      this.interestMin,
-      this.interestMax,
-      this.coinGeckoId,
-      this.whitelistAsset,
-      this.isApplyVesting,
-      this.name,
-      this.iconUrl,
-      this.isExchangeMiles);
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.isDeleted,
+    this.symbol,
+    this.address,
+    this.isWhitelistCollateral,
+    this.isWhitelistSupply,
+    this.coinGeckoId,
+    this.whitelistAsset,
+    this.isApplyVesting,
+    this.name,
+    this.iconUrl,
+    this.isExchangeMiles,
+  );
+
+  factory LoanTokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoanTokenResponseFromJson(json);
+
+  LoanTokenModel toModel() => LoanTokenModel(
+        id: id,
+        address: address,
+        isWhitelistSupply: isWhitelistSupply,
+        isWhitelistCollateral: isWhitelistCollateral,
+        symbol: symbol,
+        name: name,
+        coinGeckoId: coinGeckoId,
+        iconUrl: iconUrl,
+        isApplyVesting: isApplyVesting,
+        isExchangeMiles: isExchangeMiles,
+        whitelistAsset: whitelistAsset,
+      );
 
   @override
   List<Object?> get props => [];

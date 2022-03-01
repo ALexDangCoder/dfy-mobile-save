@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/home_pawn/loan_token_model.dart';
 import 'package:Dfy/domain/model/home_pawn/pawn_shop_model.dart';
 
 class PawnShopPackageModel {
@@ -5,9 +6,22 @@ class PawnShopPackageModel {
   String? name;
   PawnShopModel? pawnShop;
   int? allowedLoanMax;
-  int? allowedLoanMin;
+  double? allowedLoanMin;
   int? interestMin;
   int? interestMax;
   int? type;
   int? status;
+  LoanTokenModel? loanToken;
+
+  PawnShopPackageModel(
+      {this.id,
+      this.name,
+      this.pawnShop,
+      this.allowedLoanMax,
+      this.allowedLoanMin,
+      this.interestMin,
+      this.interestMax,
+      this.type,
+      this.status,
+      this.loanToken});
 }
