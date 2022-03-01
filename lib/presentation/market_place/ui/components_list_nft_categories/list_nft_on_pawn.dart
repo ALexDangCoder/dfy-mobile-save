@@ -40,7 +40,7 @@ class ListNftOnPawn extends StatelessWidget {
                     ? S.current.loading_text
                     : (isLoadFail
                         ? S.current.error_text
-                        : S.current.nft_on_pawn),
+                        : S.current.nfts_collateral),
                 style: textNormalCustom(
                   Colors.white,
                   20.sp,
