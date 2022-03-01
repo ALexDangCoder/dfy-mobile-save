@@ -740,5 +740,9 @@
   "start_borrow": "Bắt đầu vay ",
   "start_lending": "Bắt đầu cho vay ",
   "get_an_instant": "Nhận một khoản vay ngay với\nsự quan tâm tốt nhát",
-  "earn_periodic": "Kiếm tiền lãi định kỳ\ndựa theo tài sản"
+  "earn_periodic": "Kiếm tiền lãi định kỳ\ndựa theo tài sản",
+  "nft_collateral": "NFTs thế chấp",
+  "des_become_pawnshop": "Mở pawnshop của riêng bạn và\nkhám phá cơ hội kinh doanh\nmới chưa từng có với\nROI. Trởi thành một phần của\ncách mạng tài chính thế giới."
+  .
+  "only_become_pawnshop": "Trở thành pawnshop"
 }

@@ -2,14 +2,13 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
+import 'package:Dfy/presentation/home_pawn/ui/components/banner_slide.dart';
+import 'package:Dfy/presentation/home_pawn/ui/components/list_item_horizontal.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/text/text_gradient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'components/banner_slide.dart';
-import 'components/list_item_horizontal.dart';
 
 class HomePawn extends StatefulWidget {
   const HomePawn({Key? key}) : super(key: key);
@@ -134,6 +133,23 @@ class _HomePawnState extends State<HomePawn> {
                           ),
                         ),
                       ),
+                      spaceH32,
+                      // ListItemHorizontal(
+                      //   title: S.current.nft_collateral,
+                      //   listItemWidget: SizedBox(
+                      //     height: 231.h,
+                      //     child: ListView.builder(itemBuilder: (_, index) {
+                      //       return Row(
+                      //         children: [
+                      //           NFTItemWidget(nftMarket: nftMarket),
+                      //           spaceW12,
+                      //         ],
+                      //       );
+                      //     },),
+                      //   ),
+                      // ),
+                      spaceH32,
+                      _buildBecomePawnShop(),
                       SizedBox(
                         height: 200.h,
                       )
@@ -144,6 +160,79 @@ class _HomePawnState extends State<HomePawn> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Padding _buildBecomePawnShop() {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16.w,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.current.become_pawnshop,
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              20,
+              FontWeight.w700,
+            ),
+          ),
+          spaceH24,
+          Stack(
+            children: [
+              SizedBox(
+                height: 168.h,
+                width: 343.w,
+                child: Image.asset(
+                  ImageAssets.bgBecomePawnShop,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned(
+                top: 31.h,
+                left: 13.w,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.current.des_become_pawnshop,
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        12,
+                        FontWeight.w400,
+                      ),
+                    ),
+                    spaceH18,
+                    Row(
+                      children: [
+                        Text(
+                          S.current.only_become_pawnshop,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().blueColor(),
+                            12,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 12,
+                          width: 12,
+                          child: Image.asset(
+                            ImageAssets.blueArrow,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
@@ -288,19 +377,20 @@ class _HomePawnState extends State<HomePawn> {
                 child: Container(
                   height: 94.h,
                   width: 94.w,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
                       colors: AppTheme.getInstance().bgColorHomePawn(),
                     ),
                   ),
                   child: SizedBox(
                     height: 84.h,
                     width: 84.w,
-                    child: Image.asset(ImageAssets.ic_dfy, fit: BoxFit.fill,),
+                    child: Image.asset(
+                      ImageAssets.ic_dfy,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               )

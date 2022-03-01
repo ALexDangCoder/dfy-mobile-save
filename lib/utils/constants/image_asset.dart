@@ -75,6 +75,7 @@ class ImageAssets {
   static const String bgBorrowPawn = '$baseImg/borrw_pawn.png';
   static const String bgLendingPawn = '$baseImg/lending_pawn.png';
   static const String blueArrow = '$baseImg/arrow_blue.png';
+  static const String bgBecomePawnShop = '$baseImg/bg_become_pawnshop.png';
   // menu icon
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
