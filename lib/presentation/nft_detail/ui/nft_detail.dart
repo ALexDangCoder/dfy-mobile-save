@@ -454,7 +454,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   }
 
   Future<void> onRefresh() async {
-    await bloc.getDetailNft(
+    await bloc.getInForNFT(
       marketId: widget.marketId ?? '',
       nftId: widget.nftId ?? '',
       pawnId: widget.pawnId ?? 0,
@@ -475,7 +475,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           stream: bloc.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await bloc.getDetailNft(
+            await bloc.getInForNFT(
               marketId: widget.marketId ?? '',
               nftId: widget.nftId ?? '',
               type: widget.typeMarket,
