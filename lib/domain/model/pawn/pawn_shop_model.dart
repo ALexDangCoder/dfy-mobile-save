@@ -4,7 +4,7 @@ class PawnShopModel {
   int? id;
   String? name;
   int? availableLoanPackage;
-  int? interest;
+  double? interest;
   int? reputation;
   String? avatar;
   double? totalValue;

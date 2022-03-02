@@ -39,6 +39,22 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
           .toString()
           .toUpperCase();
     }
+    void check() {
+      late bool value;
+      if (isCheck) {
+        value = false;
+      } else {
+        value = true;
+      }
+      isCheck = value;
+      if (widget.typeCheckBox == TypeCheckBox.LOAN) {
+        widget.bloc.listLoanTokenFilter[widget.index].isCheck = value;
+      } else {
+        widget.bloc.listCollateralTokenFilter[widget.index].isCheck = value;
+      }
+      setState(() {});
+    }
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -60,35 +76,37 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
               ),
               value: isCheck,
               onChanged: (value) {
-                isCheck = value ?? false;
-                if (widget.typeCheckBox == TypeCheckBox.LOAN) {
-                  widget.bloc.listLoanTokenFilter[widget.index].isCheck =
-                      value ?? false;
-                } else {
-                  widget.bloc.listCollateralTokenFilter[widget.index].isCheck =
-                      value ?? false;
-                }
-                setState(() {});
+                check();
               },
             ),
           ),
         ),
         spaceW4,
-        Image.asset(
-          ImageAssets.getSymbolAsset(
-            name,
+        GestureDetector(
+          onTap: () {
+            check();
+          },
+          child: Image.asset(
+            ImageAssets.getSymbolAsset(
+              name,
+            ),
+            width: 20.w,
+            height: 20.w,
+            fit: BoxFit.fill,
           ),
-          width: 20.w,
-          height: 20.w,
-          fit: BoxFit.fill,
         ),
         spaceW4,
-        Text(
-          name,
-          style: textNormalCustom(
-            null,
-            16,
-            FontWeight.w400,
+        GestureDetector(
+          onTap: () {
+            check();
+          },
+          child: Text(
+            name,
+            style: textNormalCustom(
+              null,
+              16,
+              FontWeight.w400,
+            ),
           ),
         )
       ],

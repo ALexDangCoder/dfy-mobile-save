@@ -54,7 +54,7 @@ class ContentResponse {
   @JsonKey(name: 'availableLoanPackage')
   int? availableLoanPackage;
   @JsonKey(name: 'interest')
-  int? interest;
+  double? interest;
   @JsonKey(name: 'reputation')
   int? reputation;
   @JsonKey(name: 'avatar')
