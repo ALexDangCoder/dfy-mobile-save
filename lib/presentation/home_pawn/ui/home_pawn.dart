@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/home_pawn/ui/components/banner_slide.dart';
 import 'package:Dfy/presentation/home_pawn/ui/components/list_item_horizontal.dart';
+import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
@@ -464,7 +465,13 @@ class _HomePawnState extends State<HomePawn> {
             bottom: 15.h,
             left: 12.w,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const BorrowLendScreen();
+                  },
+                ));
+              },
               child: Row(
                 children: [
                   Text(

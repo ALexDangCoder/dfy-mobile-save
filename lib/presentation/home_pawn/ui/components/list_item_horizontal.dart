@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,15 +42,25 @@ class ListItemHorizontal extends StatelessWidget {
                 ),
               ),
               if (isHaveArrow ?? true)
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: 16.w,
-                  ),
-                  child: Image(
-                    height: 32.h,
-                    width: 32.w,
-                    image: const AssetImage(
-                      ImageAssets.img_push,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PawnList(),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 16.w,
+                    ),
+                    child: Image(
+                      height: 32.h,
+                      width: 32.w,
+                      image: const AssetImage(
+                        ImageAssets.img_push,
+                      ),
                     ),
                   ),
                 )
