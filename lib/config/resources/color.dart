@@ -22,8 +22,26 @@ const amountColor = Color(0xffDBA83D);
 const shadowColorBottomBar = Color(0xff3C3888);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
-  Color.fromRGBO(23, 21, 39, 1)
+  Color.fromRGBO(23, 21, 39, 1),
 ];
+
+const txtLinear = [
+  Color(0xff444B8C),
+  Color(0xff26264F),
+];
+
+const bgHomePawn = [
+  Color(0xff3C3B54),
+  Color(0xff171527),
+];
+
+const btnGold4Colors = [
+  Color(0xffBD8727),
+  Color(0xffFFD574),
+  Color(0xffFECA50),
+  Color(0xffBD8727),
+];
+
 const purple = Color(0xff9997FF);
 const itemPawnBank = Color(0xff576C96);
 const successTransactionColor = Color(0xFF61C777);
@@ -119,6 +137,10 @@ abstract class AppColor {
 
   Color pawnItemGray();
 
+  List<Color> linearTxt();
+
+  List<Color> btnGold4();
+
   Color whiteDot2();
 
   Color dashedColorContainer();
@@ -140,6 +162,8 @@ abstract class AppColor {
   Color orangeMarketColors();
 
   List<Color> colorFab();
+
+  List<Color> bgColorHomePawn();
 
   Color bgErrorLoad();
 
@@ -679,6 +703,21 @@ class LightApp extends AppColor {
   }
 
   @override
+  List<Color> bgColorHomePawn() {
+    return bgHomePawn;
+  }
+
+  @override
+  List<Color> btnGold4() {
+    return btnGold4Colors;
+  }
+
+  @override
+  List<Color> linearTxt() {
+    return txtLinear;
+  }
+
+  @override
   Color pawnGray() {
     return textPawnGray;
   }
@@ -695,6 +734,21 @@ class LightApp extends AppColor {
 }
 
 class DarkApp extends AppColor {
+  @override
+  List<Color> linearTxt() {
+    return txtLinear;
+  }
+
+  @override
+  List<Color> btnGold4() {
+    return btnGold4Colors;
+  }
+
+  @override
+  List<Color> bgColorHomePawn() {
+    return bgHomePawn;
+  }
+
   @override
   Color bgDropdownBtn() {
     return bgDropdown;

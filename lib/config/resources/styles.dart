@@ -17,6 +17,7 @@ final spaceH7 = SizedBox(height: 7.h);
 final spaceH8 = SizedBox(height: 8.h);
 final spaceH10 = SizedBox(height: 10.h);
 final spaceH12 = SizedBox(height: 12.h);
+final spaceH13 = SizedBox(height: 13.h);
 final spaceH15 = SizedBox(height: 15.h);
 final spaceH32 = SizedBox(
   height: 32.h,

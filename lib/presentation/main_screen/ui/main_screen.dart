@@ -2,6 +2,7 @@ import 'package:Dfy/config/base/base_screen.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home/ui/home_screen.dart';
+import 'package:Dfy/presentation/home_pawn/ui/home_pawn.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/market_place/ui/market_place_screen.dart';
 import 'package:Dfy/presentation/pawn/ui/pawn_screen.dart';
@@ -86,7 +87,7 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
       ),
       const MarketPlaceScreen(),
       const HomeScreen(),
-      const PawnScreen(),
+      const HomePawn(),
       const StakingScreen(),
     ];
 

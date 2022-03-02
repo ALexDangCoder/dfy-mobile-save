@@ -206,4 +206,14 @@ class ApiConstants {
 //pawn
   static const String GET_LIST_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-pawnshop';
+
+  ///PAWN
+  static const String GET_OFFICIAL_PAWNSHOP_WITH_TOKEN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-official-pawnshop';
+  static const String GET_TOP_RATED_LENDERS =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-rated-lender';
+  static const String GET_TOP_SALE_PACKAGE_MODEL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-sale-package';
+  static const String GET_NFTS_COLLATERAL_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-nft-collateral';
 }

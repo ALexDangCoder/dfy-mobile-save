@@ -64,6 +64,17 @@ class ImageAssets {
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken
 
+  ///Pawn
+
+  static const String logo_pawn = '$baseImg/logo_pawn.png';
+  static const String alarm = '$baseImg/alarm.png';
+  static const String banner_pawn = '$baseImg/banner.png';
+  static const String bgPawnShopToken = '$baseImg/bg_pawnshop_token.png';
+  static const String bgAvatarPawn = '$baseImg/bg_avt_pawn.png';
+  static const String bgBorrowPawn = '$baseImg/borrw_pawn.png';
+  static const String bgLendingPawn = '$baseImg/lending_pawn.png';
+  static const String blueArrow = '$baseImg/arrow_blue.png';
+  static const String bgBecomePawnShop = '$baseImg/bg_become_pawnshop.png';
   // menu icon
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
