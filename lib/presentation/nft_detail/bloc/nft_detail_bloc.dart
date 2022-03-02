@@ -2,6 +2,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
@@ -532,7 +533,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     try {
       showLoading();
       hexString = await web3Client.getCancelListingData(
-        contractAddress: nft_sales_address_dev2,
+        contractAddress: Get.find<AppConstants>().nftSalesAddress,
         orderId: orderId,
         context: context,
       );

@@ -5,6 +5,7 @@ import 'package:Dfy/data/request/put_on_market/put_on_auction_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_pawn_request.dart';
 import 'package:Dfy/data/request/put_on_market/put_on_sale_request.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
@@ -23,9 +24,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
 
   // common
 
-
   ConfirmRepository get confirmRepository => Get.find();
-
 
   late List<TokenInf> listToken;
 
@@ -207,7 +206,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
                 putOnMarketModel.buyOutPrice == '')
             ? putOnMarketModel.buyOutPrice ?? '0'
             : '0',
-        contractAddress: nft_sales_address_dev2,
+        contractAddress: Get.find<AppConstants>().nftSalesAddress,
         collectionAddress: putOnMarketModel.collectionAddress ?? '',
         currencyAddress: putOnMarketModel.tokenAddress ?? '',
         endTime: putOnMarketModel.endTime ?? '',
@@ -336,7 +335,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
       'txnHash': txHash,
       'userId': userId,
       // 'collectionId' : putOnMarketModelfsd,
-      'id' :putOnMarketModel.nftTokenId ?? 0,
+      'id': putOnMarketModel.nftTokenId ?? 0,
       'walletAddress': PrefsService.getCurrentBEWallet(),
     };
     final PutOnPawnRequest data = PutOnPawnRequest.fromJson(mapRawData);

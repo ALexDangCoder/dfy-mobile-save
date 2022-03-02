@@ -1,6 +1,7 @@
 import 'package:Dfy/data/di/flutter_transformer.dart';
 import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/hard_nft_my_account/step1/step_1_repositoy_impl.dart';
+import 'package:Dfy/data/repository_impl/home_pawn/home_pawn_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/confirm_impl.dart';
@@ -15,6 +16,7 @@ import 'package:Dfy/data/repository_impl/pinata/pinata_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/hard_nft_my_account/step1/step_1_service.dart';
+import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
 import 'package:Dfy/data/services/market_place/category_service.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
@@ -33,6 +35,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
+import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
@@ -106,6 +109,10 @@ void configureDependencies() {
   //pinata
   Get.put(PinataClient(provideDioPinata()));
   Get.put<PinataRepository>(PinataRepositoryImpl(Get.find()));
+
+  //pawn
+  Get.put(HomePawnService(provideDioDFY()));
+  Get.put<HomePawnRepository>(HomePawnRepositoryImpl(Get.find()));
 }
 
 Dio provideDioDFY({int connectionTimeOut = 60000}) {

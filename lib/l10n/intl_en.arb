@@ -26,6 +26,7 @@
   "withdraw_nft": "Withdraw NFT",
   "import_token": "Import Token",
   "import_nft": "Import NFT",
+  "nfts_collateral": "NFTs collateral",
   "create_nft": "Create NFT",
   "create_new_wallet": "Create new wallet",
   "name_wallet": "Name Wallet",
@@ -764,5 +765,24 @@
   "nft_created":"NFT created",
   "un_evaluated":"Un-evaluated",
   "evaluated":"Evaluated",
-  "view_evaluation": "View evaluation"
+  "view_evaluation": "View evaluation",
+  "header_title_pawn": "Official pawnshop with new token",
+  "top_rated_lenders": "Top rated lenders",
+  "what_you_can_pawn": "What you can borrow/lend?",
+  "top_sale_pawn": "Top sale pawnshop package",
+  "become_pawnshop": "Become pawnshop with exclusive membership program",
+  "review_partner_in_your_contract" : "Review partner in your contract\n to get",
+  "as_a_reward": "as a reward",
+  "review_now": "Review now",
+  "explore_now": "Explore now",
+  "name_of_token": "Name of token: ",
+  "symbol_of_token": "Symbol of token: ",
+  "get_an_instant": "Get an instant loan with\nthe best interest",
+  "earn_periodic": "Earn periodic interest\non your asset",
+  "start_borrow": "Start borrowing ",
+  "start_lending": "Start lending ",
+  "nft_collateral": "NFTs collateral",
+  "des_become_pawnshop": "Open your own pawn shop and\ndiscover a new business\nopportunity with an unmatched\nROI. Be a part of the world's\nfinancial revolution.",
+  "only_become_pawnshop": "Become a pawnshop"
+
 }

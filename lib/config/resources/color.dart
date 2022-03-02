@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 ///=========== Colors for default when didn't setup app theme ===============
@@ -20,11 +19,29 @@ const listBackgroundColor = [Color(0xFF3C3B54), Color(0xFF171527)];
 const backgroundMarketColor = [Color(0xFF3C3B54), Color(0xFF24203A)];
 const dateColor = Color(0xffD4D5D7);
 const amountColor = Color(0xffDBA83D);
-const shadowColorBottomBar =Color(0xff3C3888);
+const shadowColorBottomBar = Color(0xff3C3888);
 const listAddWalletColor = [
   Color.fromRGBO(60, 59, 84, 1),
-  Color.fromRGBO(23, 21, 39, 1)
+  Color.fromRGBO(23, 21, 39, 1),
 ];
+
+const txtLinear = [
+  Color(0xff444B8C),
+  Color(0xff26264F),
+];
+
+const bgHomePawn = [
+  Color(0xff3C3B54),
+  Color(0xff171527),
+];
+
+const btnGold4Colors = [
+  Color(0xffBD8727),
+  Color(0xffFFD574),
+  Color(0xffFECA50),
+  Color(0xffBD8727),
+];
+
 const purple = Color(0xff9997FF);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
@@ -109,8 +126,11 @@ const bgTranSubmitColor = Color(0xff585782);
 
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
-
   Color bgDropdownBtn();
+
+  List<Color> linearTxt();
+
+  List<Color> btnGold4();
 
   Color whiteDot2();
 
@@ -133,6 +153,8 @@ abstract class AppColor {
   Color orangeMarketColors();
 
   List<Color> colorFab();
+
+  List<Color> bgColorHomePawn();
 
   Color bgErrorLoad();
 
@@ -201,6 +223,7 @@ abstract class AppColor {
   Color whiteWithOpacitySevenZero();
 
   Color textThemeColor();
+
   Color textGrayColor();
 
   Color getGrayColor();
@@ -627,7 +650,7 @@ class LightApp extends AppColor {
 
   @override
   Color redMarketColors() {
-   return redMarketColor;
+    return redMarketColor;
   }
 
   @override
@@ -667,11 +690,40 @@ class LightApp extends AppColor {
 
   @override
   Color getShadowBottomBar() {
-   return shadowColorBottomBar.withOpacity(0.7);
+    return shadowColorBottomBar.withOpacity(0.7);
+  }
+
+  @override
+  List<Color> bgColorHomePawn() {
+    return bgHomePawn;
+  }
+
+  @override
+  List<Color> btnGold4() {
+    return btnGold4Colors;
+  }
+
+  @override
+  List<Color> linearTxt() {
+    return txtLinear;
   }
 }
 
 class DarkApp extends AppColor {
+  @override
+  List<Color> linearTxt() {
+    return txtLinear;
+  }
+
+  @override
+  List<Color> btnGold4() {
+    return btnGold4Colors;
+  }
+
+  @override
+  List<Color> bgColorHomePawn() {
+    return bgHomePawn;
+  }
 
   @override
   Color bgDropdownBtn() {

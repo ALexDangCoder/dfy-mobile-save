@@ -716,7 +716,7 @@
   "sun": "CHỦ NHẬT",
   "collections": "Bộ sưu tập",
   "login_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại",
-  "you_have_try_more_than_5":"Bạn đã thử sai quá 5 lần. Vui lòng thử lại sau 30 giây.",
+  "you_have_try_more_than_5": "Bạn đã thử sai quá 5 lần. Vui lòng thử lại sau 30 giây.",
   "transaction_failed": "Giao dịch thất bại ",
   "warning_send_offer": "Bạn đang gửi một đề nghị đến một NFT chưa được DeFi For You đánh giá. Giá trị của NFT này có thể không được đảm bảo. Vui lòng xem xét các rủi ro một cách cẩn thận khi gửi một đề nghị.",
   "new_condition": "Hàng Mới",
@@ -725,6 +725,24 @@
   "poor": "Hàng xấu",
   "broken": "Hàng Nứt Vỡ",
   "expecting_for": "Gía dự kiến",
-  "view_evaluation": "Xem đánh giá"
-
+  "view_evaluation": "Xem đánh giá",
+  "header_title_pawn": "PawnShop chính thức với token mới",
+  "top_rated_lenders": "Top người cho vay uy tín",
+  "what_you_can_pawn": "Bạn có thể vay/cho vay gì?",
+  "top_sale_pawn": "Top pawnshop chạy nhất",
+  "become_pawnshop": "Trở thành pawnshop với chương trình thành viên độc quyền",
+  "review_partner_in_your_contract": "Đánh giá đối tác trong hợp đồng\n để nhận",
+  "as_a_reward": "như là phần quà",
+  "review_now": "Đánh giá ngay",
+  "explore_now": "Khám phá ngay",
+  "name_of_token": "Tên token: ",
+  "symbol_of_token": "Kí hiệu token: ",
+  "start_borrow": "Bắt đầu vay ",
+  "start_lending": "Bắt đầu cho vay ",
+  "get_an_instant": "Nhận một khoản vay ngay với\nsự quan tâm tốt nhát",
+  "earn_periodic": "Kiếm tiền lãi định kỳ\ndựa theo tài sản",
+  "nft_collateral": "NFTs thế chấp",
+  "des_become_pawnshop": "Mở pawnshop của riêng bạn và\nkhám phá cơ hội kinh doanh\nmới chưa từng có với\nROI. Trởi thành một phần của\ncách mạng tài chính thế giới."
+  .
+  "only_become_pawnshop": "Trở thành pawnshop"
 }
