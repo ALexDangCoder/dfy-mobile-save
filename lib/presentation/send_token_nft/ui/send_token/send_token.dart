@@ -74,10 +74,12 @@ class _SendTokenState extends State<SendToken> {
               context: context,
               builder: (_) => const AlertDialog(
                 backgroundColor: Colors.transparent,
-                content: TransactionSubmit(justLoading: true,),
+                content: TransactionSubmit(
+                  justLoading: true,
+                ),
               ),
             );
-          } else if(state is LoadSuccessBeforeConfirm){
+          } else if (state is LoadSuccessBeforeConfirm) {
             if (tokenCubit.checkAddressFtAmount()) {
               Navigator.push(
                 context,
@@ -97,7 +99,7 @@ class _SendTokenState extends State<SendToken> {
                       cubitCategory: tokenCubit,
                       gasPriceFirstFetch: tokenCubit.gasPrice / 1000000000,
                       gasFeeFirstFetch: ((tokenCubit.gasPrice / 1000000000) *
-                          tokenCubit.estimateGasFee) /
+                              tokenCubit.estimateGasFee) /
                           1000000000,
                       gasLimitFirstFetch: tokenCubit.estimateGasFee,
                     );
@@ -138,7 +140,7 @@ class _SendTokenState extends State<SendToken> {
                           formShowFtAddress(
                             // hintText: snapshot.data ?? '',
                             hintText:
-                            widget.walletAddress.formatAddressWallet(),
+                                widget.walletAddress.formatAddressWallet(),
                             readOnly: true,
                             prefixImg: ImageAssets.ic_from,
                             suffixImg: '',
@@ -154,22 +156,20 @@ class _SendTokenState extends State<SendToken> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (ctx) =>
-                                      QRViewExample(
-                                        controller: txtToAddressToken,
-                                      ),
+                                  builder: (ctx) => QRViewExample(
+                                    controller: txtToAddressToken,
+                                  ),
                                 ),
-                              ).then((_) =>
-                              {
-                                txtToAddressToken.text =
-                                    tokenCubit.handleValueFromQR(
-                                        value: txtToAddressToken.text),
-                                tokenCubit.checkHaveVlAddressFormToken(
-                                  tokenCubit.handleValueFromQR(
-                                      value: txtToAddressToken.text),
-                                  type: typeSend.SEND_TOKEN,
-                                ),
-                              });
+                              ).then((_) => {
+                                    txtToAddressToken.text =
+                                        tokenCubit.handleValueFromQR(
+                                            value: txtToAddressToken.text),
+                                    tokenCubit.checkHaveVlAddressFormToken(
+                                      tokenCubit.handleValueFromQR(
+                                          value: txtToAddressToken.text),
+                                      type: typeSend.SEND_TOKEN,
+                                    ),
+                                  });
                             },
                           ),
                           txtWaringAddress(),
@@ -266,24 +266,24 @@ class _SendTokenState extends State<SendToken> {
             hintText: hintText,
             hintStyle: readOnly
                 ? textNormalCustom(
-              AppTheme.getInstance().textThemeColor(),
-              16,
-              FontWeight.w400,
-            )
+                    AppTheme.getInstance().textThemeColor(),
+                    16,
+                    FontWeight.w400,
+                  )
                 : textNormal(
-              AppTheme.getInstance().disableColor(),
-              14,
-            ),
+                    AppTheme.getInstance().disableColor(),
+                    14,
+                  ),
             suffixIcon: InkWell(
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+                      AssetImage(suffixImg),
+                      color: AppTheme.getInstance().textThemeColor(),
+                    ),
             ),
             prefixIcon: GestureDetector(
               onTap: callBack,
@@ -345,60 +345,61 @@ class _SendTokenState extends State<SendToken> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? InkWell(
-                onTap: () {
-                  txtAmount.text = modelToken!.balanceToken
-                      .truncateToDecimalPlaces(4)
-                      .toString();
-                  tokenCubit.checkHaveVLAmountFormToken(
-                    txtAmount.text,
-                    amountBalance: widget.modelToken.balanceToken,
-                  );
-                },
-                child: Padding(
-                    padding: EdgeInsets.only(
-                      // top: 15.h,
-                      right: 15.w,
-                    ),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minWidth: 55.w,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            S.current.max,
-                            style: textNormal(
-                              const Color.fromRGBO(228, 172, 26, 1),
-                              16,
-                            ).copyWith(fontWeight: FontWeight.w600),
+                      onTap: () {
+                        txtAmount.text = modelToken!.balanceToken
+                            .truncateToDecimalPlaces(4)
+                            .toString();
+                        tokenCubit.checkHaveVLAmountFormToken(
+                          txtAmount.text,
+                          amountBalance: widget.modelToken.balanceToken,
+                        );
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                            // top: 15.h,
+                            right: 15.w,
                           ),
-                          spaceW4,
-                          SizedBox(
-                            height: 20.h,
-                            width: 20.h,
-                            child: CircleAvatar(
-                              radius: 30.0.r,
-                              backgroundImage: NetworkImage(
-                                  widget.modelToken.iconToken),
-                              backgroundColor: Colors.transparent,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              minWidth: 55.w,
                             ),
-                          ),
-                        ],
-                      ),
-                    )),
-              )
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  S.current.max,
+                                  style: textNormal(
+                                    const Color.fromRGBO(228, 172, 26, 1),
+                                    16,
+                                  ).copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                spaceW4,
+                                SizedBox(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  child: CircleAvatar(
+                                    radius: 30.0.r,
+                                    backgroundImage: NetworkImage(
+                                      widget.modelToken.iconToken,
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(top: 15.h, right: 20.w),
-                child: Text(
-                  '${S.current.of_all} 10',
-                  style: textNormal(
-                    const Color.fromRGBO(255, 255, 255, 1),
-                    16,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(top: 15.h, right: 20.w),
+                      child: Text(
+                        '${S.current.of_all} 10',
+                        style: textNormal(
+                          const Color.fromRGBO(255, 255, 255, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
