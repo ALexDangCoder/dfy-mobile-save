@@ -87,7 +87,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     // showLoading();
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
-    await getTopSalePawnPackageShop();
+    // await getTopSalePawnPackageShop();
     await getNftsCollateralPawn();
     if (_flagGetDataSuccess) {
       emit(
