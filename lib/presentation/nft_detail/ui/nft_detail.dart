@@ -8,6 +8,7 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
@@ -54,6 +55,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:share/share.dart';
 
 part 'auction.dart';
@@ -454,7 +456,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   }
 
   Future<void> onRefresh() async {
-    await bloc.getDetailNft(
+    await bloc.getInForNFT(
       marketId: widget.marketId ?? '',
       nftId: widget.nftId ?? '',
       pawnId: widget.pawnId ?? 0,
@@ -475,7 +477,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           stream: bloc.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await bloc.getDetailNft(
+            await bloc.getInForNFT(
               marketId: widget.marketId ?? '',
               nftId: widget.nftId ?? '',
               type: widget.typeMarket,
@@ -535,13 +537,13 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar:_buildButtonPutOnMarket(
-                    context,
-                    bloc,
-                    objSale,
-                    widget.nftId,
-                    onRefresh,
-                  ),
+            bottomBar: _buildButtonPutOnMarket(
+              context,
+              bloc,
+              objSale,
+              widget.nftId,
+              onRefresh,
+            ),
             content: [
               _nameNFT(
                 context: context,
