@@ -50,8 +50,7 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
           child: Container(
             margin: EdgeInsets.only(left: 28.w),
             height: 135.h,
-            child:
-            Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(

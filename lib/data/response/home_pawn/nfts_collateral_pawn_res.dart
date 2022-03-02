@@ -28,7 +28,6 @@ class NftsCollateralPawnResponse extends Equatable {
 
 @JsonSerializable()
 class NftsCollateralPawnItemResponse extends Equatable {
-
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'positionItem')
@@ -37,7 +36,6 @@ class NftsCollateralPawnItemResponse extends Equatable {
   String? updatedAt;
   @JsonKey(name: 'nftCollateral')
   NftCollateralPawnResponse? nftCollateral;
-
 
   NftsCollateralPawnItemResponse(
       this.id, this.positionItem, this.updatedAt, this.nftCollateral);
@@ -51,7 +49,6 @@ class NftsCollateralPawnItemResponse extends Equatable {
 
 @JsonSerializable()
 class NftCollateralPawnResponse extends Equatable {
-
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'nftId')
@@ -66,6 +63,8 @@ class NftCollateralPawnResponse extends Equatable {
   int? bcCollateralId;
   @JsonKey(name: 'nftName')
   String? nftName;
+  @JsonKey(name: 'mediaType')
+  String? mediaType;
   @JsonKey(name: 'borrowerWalletAddress')
   String? borrowerWalletAddress;
   @JsonKey(name: 'reputation')
@@ -106,42 +105,57 @@ class NftCollateralPawnResponse extends Equatable {
   String getPath(String avatarCid) {
     return ApiConstants.BASE_URL_IMAGE + avatarCid;
   }
+
+  TypeImage getTypeImage(String type) {
+    if (type.toLowerCase().contains('image')) {
+      return TypeImage.IMAGE;
+    } else {
+      return TypeImage.VIDEO;
+    }
+  }
+
   //todo khi nào checkout check lại các fill này để còn làm nft widget
 
   NftMarket toDomain() => NftMarket(
-    marketType: MarketType.PAWN,
-    name: nftName,
-    image: getPath(nftAvatarCid ?? ''),
-    nftId: nftId,
-    typeNFT: getTypeNft(nftType ?? 0),
-    totalCopies: totalOfCopies,
-    numberOfCopies: numberOfCopies,
-    marketId: id.toString(),
-  );
-
+        marketType: MarketType.PAWN,
+        name: nftName,
+        idInt: id,
+        image: getPath(nftAvatarCid ?? ''),
+        nftId: nftId,
+        typeNFT: getTypeNft(nftType ?? 0),
+        totalCopies: totalOfCopies,
+        typeImage: getTypeImage(mediaType ?? ''),
+        numberOfCopies: numberOfCopies,
+        marketId: id.toString(),
+        price: double.parse(expectedLoanAmount.toString()),
+        symbolToken: expectedLoanSymbol,
+        borrowerWalletAddress: borrowerWalletAddress,
+      );
 
   NftCollateralPawnResponse(
-      this.id,
-      this.nftId,
-      this.nftStatus,
-      this.nftType,
-      this.bcNftId,
-      this.bcCollateralId,
-      this.nftName,
-      this.borrowerWalletAddress,
-      this.reputation,
-      this.durationTime,
-      this.durationType,
-      this.nftAssetLocation,
-      this.nftEvaluatedPrice,
-      this.nftEvaluatedSymbol,
-      this.expectedLoanAmount,
-      this.expectedLoanSymbol,
-      this.nftAssetTypeId,
-      this.nftAvatarCid,
-      this.nftMediaCid,
-      this.numberOfCopies,
-      this.totalOfCopies);
+    this.id,
+    this.nftId,
+    this.nftStatus,
+    this.nftType,
+    this.bcNftId,
+    this.bcCollateralId,
+    this.nftName,
+    this.borrowerWalletAddress,
+    this.reputation,
+    this.durationTime,
+    this.durationType,
+    this.nftAssetLocation,
+    this.nftEvaluatedPrice,
+    this.nftEvaluatedSymbol,
+    this.expectedLoanAmount,
+    this.expectedLoanSymbol,
+    this.nftAssetTypeId,
+    this.nftAvatarCid,
+    this.nftMediaCid,
+    this.numberOfCopies,
+    this.totalOfCopies,
+    this.mediaType,
+  );
 
   factory NftCollateralPawnResponse.fromJson(Map<String, dynamic> json) =>
       _$NftCollateralPawnResponseFromJson(json);

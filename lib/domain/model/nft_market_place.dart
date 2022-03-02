@@ -53,9 +53,19 @@ class NftMarket {
   int? processStatus;
   int? marketStatus;
 
+  ///properties for pawn
+  int? bcCollateralId;
+  int? idInt; //define this id cause id pawn int and id marketplace is String
+  int? bcNftId;
+  String? borrowerWalletAddress;
+
   NftMarket.init();
 
   NftMarket({
+    this.bcCollateralId,
+    this.idInt,
+    this.bcNftId,
+    this.borrowerWalletAddress,
     this.cover,
     this.id,
     this.token,
