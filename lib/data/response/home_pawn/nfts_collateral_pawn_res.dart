@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/home_pawn/nfts_collateral_pawn_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -36,6 +37,9 @@ class NftsCollateralPawnItemResponse extends Equatable {
   String? updatedAt;
   @JsonKey(name: 'nftCollateral')
   NftCollateralPawnResponse? nftCollateral;
+
+  NftsCollateralPawnModel toModel() => NftsCollateralPawnModel(
+      id, positionItem, updatedAt, nftCollateral?.toModel());
 
   NftsCollateralPawnItemResponse(
       this.id, this.positionItem, this.updatedAt, this.nftCollateral);
@@ -116,10 +120,10 @@ class NftCollateralPawnResponse extends Equatable {
 
   //todo khi nào checkout check lại các fill này để còn làm nft widget
 
-  NftMarket toDomain() => NftMarket(
+  NftMarket toModel() => NftMarket(
         marketType: MarketType.PAWN,
         name: nftName,
-        idInt: id,
+        id: id.toString(),
         image: getPath(nftAvatarCid ?? ''),
         nftId: nftId,
         typeNFT: getTypeNft(nftType ?? 0),

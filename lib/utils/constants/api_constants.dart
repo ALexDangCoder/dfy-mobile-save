@@ -210,4 +210,6 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-rated-lender';
   static const String GET_TOP_SALE_PACKAGE_MODEL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-sale-package';
+  static const String GET_NFTS_COLLATERAL_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-nft-collateral';
 }

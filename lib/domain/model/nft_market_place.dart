@@ -55,7 +55,6 @@ class NftMarket {
 
   ///properties for pawn
   int? bcCollateralId;
-  int? idInt; //define this id cause id pawn int and id marketplace is String
   int? bcNftId;
   String? borrowerWalletAddress;
 
@@ -63,7 +62,6 @@ class NftMarket {
 
   NftMarket({
     this.bcCollateralId,
-    this.idInt,
     this.bcNftId,
     this.borrowerWalletAddress,
     this.cover,

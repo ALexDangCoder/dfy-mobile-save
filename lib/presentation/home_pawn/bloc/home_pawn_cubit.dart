@@ -1,6 +1,9 @@
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
+import 'package:Dfy/domain/model/home_pawn/nfts_collateral_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/official_pawn_item_model.dart';
+import 'package:Dfy/domain/model/home_pawn/official_pawn_with_token_model.dart';
 import 'package:Dfy/domain/model/home_pawn/top_rate_model.dart';
 import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
@@ -17,7 +20,7 @@ enum TYPE_BORROW_OR_LEND {
   LEND,
 }
 
-class HomePawnCubit extends Cubit<HomePawnState> {
+class HomePawnCubit extends BaseCubit<HomePawnState> {
   HomePawnCubit() : super(HomePawnInitial());
 
   HomePawnRepository get _homePawnRepo => Get.find();
@@ -25,22 +28,43 @@ class HomePawnCubit extends Cubit<HomePawnState> {
   Future<void> getOfficialPawnShopWithToken() async {
     final Result<List<OfficialPawnItemModel>> result =
         await _homePawnRepo.getOfficialPawnShopWithNewToken();
-    result.when(success: (success) {}, error: (error) {});
+    result.when(success: (success) {}, error: (error) {
+      showError();
+    });
   }
 
   Future<void> getTopRatedLenders() async {
     final Result<List<TopRateLenderModel>> result =
-    await _homePawnRepo.getTopRateLenders();
-    result.when(success: (success) {}, error: (error) {});
+        await _homePawnRepo.getTopRateLenders();
+    result.when(success: (success) {}, error: (error) {
+      showError();
+    });
   }
 
   Future<void> getTopSalePawnPackageShop() async {
     final Result<List<TopSalePawnShopItemModel>> result =
-    await _homePawnRepo.getTopSalePawnShopPackage();
-    result.when(success: (success) {}, error: (error) {});
+        await _homePawnRepo.getTopSalePawnShopPackage();
+    result.when(success: (success) {}, error: (error) {
+      showError();
+    });
   }
 
+  Future<void> getNftsCollateralPawn() async {
+    final Result<List<NftsCollateralPawnModel>> result =
+        await _homePawnRepo.getNftsCollateralPawn();
+    result.when(success: (success) {}, error: (error) {
+      showError();
+    });
+  }
 
+  Future<void> callAllApi() async {
+    showLoading();
+    await getOfficialPawnShopWithToken();
+    await getTopRatedLenders();
+    await getTopSalePawnPackageShop();
+    await getNftsCollateralPawn();
+
+  }
 
   List<TopRate> fakeTopRate = [
     TopRate(

@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/home_pawn/nfts_collateral_pawn_res.dart';
 import 'package:Dfy/data/response/home_pawn/official_pawn_with_token_res.dart';
 import 'package:Dfy/data/response/home_pawn/top_rate_lenders_res.dart';
 import 'package:Dfy/data/response/home_pawn/top_sale_pawnshop_res.dart';
@@ -21,4 +22,7 @@ abstract class HomePawnService {
 
   @GET(ApiConstants.GET_TOP_SALE_PACKAGE_MODEL)
   Future<TopSalePawnShopPackageResponse> getTopSalePackage();
+
+  @GET(ApiConstants.GET_NFTS_COLLATERAL_PAWN)
+  Future<NftsCollateralPawnResponse> getNftsCollateralPawn();
 }
