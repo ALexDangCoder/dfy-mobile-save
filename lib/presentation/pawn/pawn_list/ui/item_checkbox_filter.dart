@@ -1,21 +1,44 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum TypeCheckBox { LOAN, COLLATERAL }
+
 class ItemCheckBoxFilter extends StatefulWidget {
-  const ItemCheckBoxFilter({Key? key}) : super(key: key);
+  final int index;
+  final PawnListBloc bloc;
+  final TypeCheckBox typeCheckBox;
+
+  const ItemCheckBoxFilter({
+    Key? key,
+    required this.index,
+    required this.bloc,
+    required this.typeCheckBox,
+  }) : super(key: key);
 
   @override
   State<ItemCheckBoxFilter> createState() => _ItemCheckBoxFilterState();
 }
 
 class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
-  bool isCheck = false;
-
   @override
   Widget build(BuildContext context) {
+    late bool isCheck;
+    late String name;
+    if (widget.typeCheckBox == TypeCheckBox.LOAN) {
+      isCheck = widget.bloc.listLoanTokenFilter[widget.index].isCheck;
+      name = widget.bloc.listLoanTokenFilter[widget.index].symbol
+          .toString()
+          .toUpperCase();
+    } else {
+      isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
+      name = widget.bloc.listCollateralTokenFilter[widget.index].symbol
+          .toString()
+          .toUpperCase();
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -38,6 +61,13 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
               value: isCheck,
               onChanged: (value) {
                 isCheck = value ?? false;
+                if (widget.typeCheckBox == TypeCheckBox.LOAN) {
+                  widget.bloc.listLoanTokenFilter[widget.index].isCheck =
+                      value ?? false;
+                } else {
+                  widget.bloc.listCollateralTokenFilter[widget.index].isCheck =
+                      value ?? false;
+                }
                 setState(() {});
               },
             ),
@@ -45,14 +75,16 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
         ),
         spaceW4,
         Image.asset(
-          ImageAssets.ic_dfy,
+          ImageAssets.getSymbolAsset(
+            name,
+          ),
           width: 20.w,
           height: 20.w,
           fit: BoxFit.fill,
         ),
         spaceW4,
         Text(
-          'DFY',
+          name,
           style: textNormalCustom(
             null,
             16,

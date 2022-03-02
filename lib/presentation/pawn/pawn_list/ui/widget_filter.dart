@@ -1,10 +1,21 @@
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/item_checkbox_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemWidgetFilter extends StatefulWidget {
-  const ItemWidgetFilter({Key? key}) : super(key: key);
+  final List<TokenModelPawn> list;
+  final PawnListBloc bloc;
+  final TypeCheckBox type;
+
+  const ItemWidgetFilter({
+    Key? key,
+    required this.list,
+    required this.bloc,
+    required this.type,
+  }) : super(key: key);
 
   @override
   _ItemWidgetFilterState createState() => _ItemWidgetFilterState();
@@ -41,9 +52,13 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
             left: 15.w,
             right: 15.w,
           ),
-          itemCount: 9,
+          itemCount: widget.list.length,
           itemBuilder: (context, index) {
-            return ItemCheckBoxFilter();
+            return ItemCheckBoxFilter(
+              index: index,
+              typeCheckBox: widget.type,
+              bloc: widget.bloc,
+            );
           },
         ),
       ),

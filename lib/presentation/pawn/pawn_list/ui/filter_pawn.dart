@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/ui/item_checkbox_filter.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/widget_filter.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -33,6 +34,8 @@ class _FilterPawnState extends State<FilterPawn> {
   void initState() {
     super.initState();
     textSearch = TextEditingController();
+    widget.bloc.statusFilterFirst();
+    textSearch.text = widget.bloc.searchStatus ?? '';
   }
 
   @override
@@ -102,10 +105,12 @@ class _FilterPawnState extends State<FilterPawn> {
                         onTap: () {
                           textSearch.text = '';
                           widget.bloc.funReset();
-                          final FocusScopeNode currentFocus = FocusScope.of(context);
+                          final FocusScopeNode currentFocus =
+                              FocusScope.of(context);
                           if (!currentFocus.hasPrimaryFocus) {
                             currentFocus.unfocus();
                           }
+                          setState(() {});
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -258,7 +263,11 @@ class _FilterPawnState extends State<FilterPawn> {
                   ),
                 ),
                 spaceH16,
-                ItemWidgetFilter(),
+                ItemWidgetFilter(
+                  bloc: widget.bloc,
+                  list: widget.bloc.listLoanTokenFilter,
+                  type: TypeCheckBox.LOAN,
+                ),
                 spaceH16,
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -274,11 +283,15 @@ class _FilterPawnState extends State<FilterPawn> {
                   ),
                 ),
                 spaceH16,
-                ItemWidgetFilter(),
+                ItemWidgetFilter(
+                  bloc: widget.bloc,
+                  list: widget.bloc.listCollateralTokenFilter,
+                  type: TypeCheckBox.COLLATERAL,
+                ),
                 spaceH40,
                 GestureDetector(
                   onTap: () {
-                    //todo filter
+                    widget.bloc.funFilter();
                     Navigator.pop(context);
                   },
                   child: ButtonLuxury(
