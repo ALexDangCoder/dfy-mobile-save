@@ -187,6 +187,7 @@ class PawnShopResponse extends Equatable {
         email: email,
         description: description,
         phoneNumber: phoneNumber,
+        avatar: avatar as String,
       );
 
   @override

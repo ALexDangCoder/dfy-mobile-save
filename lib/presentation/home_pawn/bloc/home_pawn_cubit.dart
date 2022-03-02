@@ -25,12 +25,17 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
   HomePawnRepository get _homePawnRepo => Get.find();
 
   bool _flagGetDataSuccess = false;
+  List<OfficialPawnItemModel> listOfficialPawnShopWithToken = [];
+  List<TopRateLenderModel> topRatedLenders = [];
+  List<TopSalePawnShopItemModel> topSalePawnShop = [];
+  List<NftsCollateralPawnModel> nftsCollateralsPawn = [];
 
   Future<void> getOfficialPawnShopWithToken() async {
     final Result<List<OfficialPawnItemModel>> result =
         await _homePawnRepo.getOfficialPawnShopWithNewToken();
-    result.when(success: (success) {
+    result.when(success: (res) {
       _flagGetDataSuccess = true;
+      listOfficialPawnShopWithToken = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
       showError();
@@ -41,8 +46,9 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     final Result<List<TopRateLenderModel>> result =
         await _homePawnRepo.getTopRateLenders();
     result.when(
-      success: (success) {
+      success: (res) {
         _flagGetDataSuccess = true;
+        topRatedLenders = res;
       },
       error: (error) {
         _flagGetDataSuccess = false;
@@ -54,8 +60,9 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
   Future<void> getTopSalePawnPackageShop() async {
     final Result<List<TopSalePawnShopItemModel>> result =
         await _homePawnRepo.getTopSalePawnShopPackage();
-    result.when(success: (success) {
+    result.when(success: (res) {
       _flagGetDataSuccess = true;
+      topSalePawnShop = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
       showError();

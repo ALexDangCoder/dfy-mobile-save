@@ -89,7 +89,9 @@ class _HomePawnState extends State<HomePawn> {
                       ),
                     ),
                     spaceH16,
-                    const BannerPawnSlide(),
+                    BannerPawnSlide(
+                      cubit: cubit,
+                    ),
                     _buildBanner(),
                     spaceH32,
                     ListItemHorizontal(
@@ -97,15 +99,19 @@ class _HomePawnState extends State<HomePawn> {
                       listItemWidget: SizedBox(
                         height: 165.h,
                         child: ListView.builder(
-                          itemCount: cubit.fakeTopRate.length,
+                          itemCount: cubit.topRatedLenders.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (ctx, index) {
                             return Row(
                               children: [
                                 _itemTopRate(
-                                  title: cubit.fakeTopRate[index].title,
-                                  img: cubit.fakeTopRate[index].img,
+                                  title: cubit.topRatedLenders[index].pawnShop
+                                          ?.name ??
+                                      '',
+                                  img: cubit.topRatedLenders[index].pawnShop
+                                          ?.avatar ??
+                                      '',
                                 ),
                                 spaceW20,
                               ],
@@ -499,9 +505,12 @@ class _HomePawnState extends State<HomePawn> {
           SizedBox(
             height: 165.h,
             width: 133.w,
-            child: Image.network(
-              img,
-              fit: BoxFit.fill,
+            child: FadeInImage.assetNetwork(
+              placeholder: ImageAssets.image_loading,
+              image: img,
+              imageCacheHeight: 165,
+              placeholderCacheHeight: 100,
+              fit: BoxFit.cover,
             ),
           ),
           Positioned(
@@ -546,7 +555,7 @@ class _HomePawnState extends State<HomePawn> {
                 ),
                 children: [
                   TextSpan(
-                    text: '10 DFY',
+                    text: ' 10 DFY ',
                     style: textNormalCustom(
                       AppTheme.getInstance().fillColor(),
                       12,
