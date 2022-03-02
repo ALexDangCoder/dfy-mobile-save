@@ -102,6 +102,11 @@ android {
             applicationIdSuffix ".develop"
             resValue "string", "app_name", "[Dev]Defi For You"
         }
+        prelive {
+            dimension "default"
+            applicationIdSuffix ".prelive"
+            resValue "string", "app_name", "[Live]Defi For You"
+        }
         product {
             dimension "default"
             resValue "string", "app_name", "Defi For You"
