@@ -9,7 +9,6 @@ import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 
@@ -25,10 +24,15 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
 
   HomePawnRepository get _homePawnRepo => Get.find();
 
+  bool _flagGetDataSuccess = false;
+
   Future<void> getOfficialPawnShopWithToken() async {
     final Result<List<OfficialPawnItemModel>> result =
         await _homePawnRepo.getOfficialPawnShopWithNewToken();
-    result.when(success: (success) {}, error: (error) {
+    result.when(success: (success) {
+      _flagGetDataSuccess = true;
+    }, error: (error) {
+      _flagGetDataSuccess = false;
       showError();
     });
   }
@@ -36,15 +40,24 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
   Future<void> getTopRatedLenders() async {
     final Result<List<TopRateLenderModel>> result =
         await _homePawnRepo.getTopRateLenders();
-    result.when(success: (success) {}, error: (error) {
-      showError();
-    });
+    result.when(
+      success: (success) {
+        _flagGetDataSuccess = true;
+      },
+      error: (error) {
+        _flagGetDataSuccess = false;
+        showError();
+      },
+    );
   }
 
   Future<void> getTopSalePawnPackageShop() async {
     final Result<List<TopSalePawnShopItemModel>> result =
         await _homePawnRepo.getTopSalePawnShopPackage();
-    result.when(success: (success) {}, error: (error) {
+    result.when(success: (success) {
+      _flagGetDataSuccess = true;
+    }, error: (error) {
+      _flagGetDataSuccess = false;
       showError();
     });
   }
@@ -52,18 +65,33 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
   Future<void> getNftsCollateralPawn() async {
     final Result<List<NftsCollateralPawnModel>> result =
         await _homePawnRepo.getNftsCollateralPawn();
-    result.when(success: (success) {}, error: (error) {
-      showError();
-    });
+    result.when(
+      success: (success) {
+        _flagGetDataSuccess = true;
+      },
+      error: (error) {
+        _flagGetDataSuccess = false;
+        showError();
+      },
+    );
   }
 
   Future<void> callAllApi() async {
-    showLoading();
+    // showLoading();
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
     await getTopSalePawnPackageShop();
     await getNftsCollateralPawn();
-
+    if (_flagGetDataSuccess) {
+      emit(
+        HomePawnLoadSuccess(
+          [],
+          [],
+          [],
+          [],
+        ),
+      );
+    } else {}
   }
 
   List<TopRate> fakeTopRate = [

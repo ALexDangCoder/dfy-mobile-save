@@ -42,7 +42,18 @@ class _HomePawnState extends State<HomePawn> {
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () {},
           textEmpty: '',
-          child: _content(state),
+          child: Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: AppTheme.getInstance().bgColorHomePawn(),
+                ),
+              ),
+              child: _content(state),
+            ),
+          ),
         );
       },
     );
@@ -50,139 +61,128 @@ class _HomePawnState extends State<HomePawn> {
 
   Widget _content(HomePawnState state) {
     if (state is HomePawnLoadSuccess) {
-      return Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: AppTheme.getInstance().bgColorHomePawn(),
-            ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeaderWidget(),
+          Container(
+            height: 1.h,
+            color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeaderWidget(),
-              Container(
-                height: 1.h,
-                color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 699.h,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        spaceH24,
-                        Container(
-                          margin: EdgeInsets.only(left: 16.w),
-                          child: Text(
-                            S.current.header_title_pawn,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              20,
-                              FontWeight.w700,
-                            ),
-                          ),
+          Expanded(
+            child: SizedBox(
+              height: 699.h,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    spaceH24,
+                    Container(
+                      margin: EdgeInsets.only(left: 16.w),
+                      child: Text(
+                        S.current.header_title_pawn,
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          20,
+                          FontWeight.w700,
                         ),
-                        spaceH16,
-                        const BannerPawnSlide(),
-                        _buildBanner(),
-                        spaceH32,
-                        ListItemHorizontal(
-                          title: S.current.top_rated_lenders,
-                          listItemWidget: SizedBox(
-                            height: 165.h,
-                            child: ListView.builder(
-                              itemCount: cubit.fakeTopRate.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) {
-                                return Row(
-                                  children: [
-                                    _itemTopRate(
-                                      title: cubit.fakeTopRate[index].title,
-                                      img: cubit.fakeTopRate[index].img,
-                                    ),
-                                    spaceW20,
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        spaceH32,
-                        ListItemHorizontal(
-                          title: S.current.what_you_can_pawn,
-                          isHaveArrow: false,
-                          listItemWidget: SizedBox(
-                            height: 161.h,
-                            child: ListView.builder(
-                              itemCount: cubit.borrowFeatLend.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (_, index) {
-                                return Row(
-                                  children: [
-                                    _itemBorrowFtLend(
-                                      title: cubit.borrowFeatLend[index].title,
-                                      imageBg: cubit
-                                          .borrowFeatLend[index].imgBackGround,
-                                      suffixTitle:
-                                          cubit.borrowFeatLend[index].sufTitle,
-                                      type: cubit.borrowFeatLend[index].type,
-                                    ),
-                                    spaceW20,
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        spaceH32,
-                        ListItemHorizontal(
-                          title: S.current.top_sale_pawn,
-                          listItemWidget: SizedBox(
-                            height: 267.h,
-                            child: ListView.builder(
-                              itemCount: 6,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (_, index) {
-                                return _itemPawnShopPackage();
-                              },
-                            ),
-                          ),
-                        ),
-                        spaceH32,
-                        // ListItemHorizontal(
-                        //   title: S.current.nft_collateral,
-                        //   listItemWidget: SizedBox(
-                        //     height: 231.h,
-                        //     child: ListView.builder(itemBuilder: (_, index) {
-                        //       return Row(
-                        //         children: [
-                        //           NFTItemWidget(nftMarket: nftMarket),
-                        //           spaceW12,
-                        //         ],
-                        //       );
-                        //     },),
-                        //   ),
-                        // ),
-                        spaceH32,
-                        _buildBecomePawnShop(),
-                        SizedBox(
-                          height: 200.h,
-                        )
-                      ],
+                      ),
                     ),
-                  ),
+                    spaceH16,
+                    const BannerPawnSlide(),
+                    _buildBanner(),
+                    spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.top_rated_lenders,
+                      listItemWidget: SizedBox(
+                        height: 165.h,
+                        child: ListView.builder(
+                          itemCount: cubit.fakeTopRate.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (ctx, index) {
+                            return Row(
+                              children: [
+                                _itemTopRate(
+                                  title: cubit.fakeTopRate[index].title,
+                                  img: cubit.fakeTopRate[index].img,
+                                ),
+                                spaceW20,
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.what_you_can_pawn,
+                      isHaveArrow: false,
+                      listItemWidget: SizedBox(
+                        height: 161.h,
+                        child: ListView.builder(
+                          itemCount: cubit.borrowFeatLend.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return Row(
+                              children: [
+                                _itemBorrowFtLend(
+                                  title: cubit.borrowFeatLend[index].title,
+                                  imageBg:
+                                      cubit.borrowFeatLend[index].imgBackGround,
+                                  suffixTitle:
+                                      cubit.borrowFeatLend[index].sufTitle,
+                                  type: cubit.borrowFeatLend[index].type,
+                                ),
+                                spaceW20,
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.top_sale_pawn,
+                      listItemWidget: SizedBox(
+                        height: 267.h,
+                        child: ListView.builder(
+                          itemCount: 6,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return _itemPawnShopPackage();
+                          },
+                        ),
+                      ),
+                    ),
+                    spaceH32,
+                    // ListItemHorizontal(
+                    //   title: S.current.nft_collateral,
+                    //   listItemWidget: SizedBox(
+                    //     height: 231.h,
+                    //     child: ListView.builder(itemBuilder: (_, index) {
+                    //       return Row(
+                    //         children: [
+                    //           NFTItemWidget(nftMarket: nftMarket),
+                    //           spaceW12,
+                    //         ],
+                    //       );
+                    //     },),
+                    //   ),
+                    // ),
+                    spaceH32,
+                    _buildBecomePawnShop(),
+                    SizedBox(
+                      height: 200.h,
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+            ),
+          )
+        ],
       );
     } else {
       return const ModalProgressHUD(
