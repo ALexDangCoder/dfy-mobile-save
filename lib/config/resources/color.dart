@@ -108,6 +108,7 @@ const orangeMarketColor = Color(0xffFE951A);
 const redMarketColor = Color(0xffFF6C6C);
 const greenMarketColor = Color(0xff61c777);
 const blueMarketColor = Color(0xff46BCFF);
+const orangeColor = Color(0xffF2994A);
 const bgDropdown = Color(0xff585782);
 final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 

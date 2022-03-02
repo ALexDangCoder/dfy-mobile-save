@@ -10,4 +10,27 @@ part 'borrow_result_state.dart';
 
 class BorrowResultCubit extends BaseCubit<BorrowResultState> {
   BorrowResultCubit() : super(BorrowResultInitial());
+
+  Future<void> getPersonLendingResult({
+    String? collateralAmount,
+    String? collateralSymbols,
+    String? name,
+    String? interestRanges,
+    String? loanToValueRanges,
+    String? loanSymbols,
+    String? loanType,
+    String? page,
+  }) async {}
+
+  Future<void> getPawnshopPackageResult({
+    String? collateralAmount,
+    String? collateralSymbols,
+    String? name,
+    String? interestRanges,
+    String? loanToValueRanges,
+    String? loanSymbols,
+    String? loanType,
+    String? page,
+  }) async {}
+
 }
