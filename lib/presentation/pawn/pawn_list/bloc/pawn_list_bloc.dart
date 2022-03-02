@@ -1,18 +1,37 @@
+import 'dart:math';
+
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/repository/pawn/pawn_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PawnListBloc {
+class PawnListBloc extends BaseCubit<PawnListState> {
+  PawnListBloc() : super(PawnListInitial());
+
+  //load more
+  final bool _canLoadMore = true;
+  bool _isRefresh = true;
+  bool _isLoading = false;
+  int page = 1;
+
+  bool get canLoadMore => _canLoadMore;
+
+  bool get isRefresh => _isRefresh;
+
+  //
+  String mess = '';
   TypeFilter? typeRating = TypeFilter.HIGH_TO_LOW;
   TypeFilter? typeInterest = TypeFilter.LOW_TO_HIGH;
   TypeFilter? typeSigned = TypeFilter.HIGH_TO_LOW;
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  BehaviorSubject<List<PawnShopModel>> list = BehaviorSubject.seeded([]);
+  List<PawnShopModel> list = [];
   List<bool> listFilter = [
     false,
     false,
@@ -25,6 +44,7 @@ class PawnListBloc {
     false,
     false,
   ]);
+
   List<TokenModelPawn> listLoanTokenFilter = [
     //1
     TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
@@ -56,6 +76,24 @@ class PawnListBloc {
   List<bool>? statusFilterNumber;
   List<int> statusListLoan = [];
   List<int> statusListCollateral = [];
+
+  Future<void> refreshPosts() async {
+    if (!_isLoading) {
+      page = 1;
+      _isRefresh = true;
+      _isLoading = true;
+      await getListPawn();
+    }
+  }
+
+  void loadMorePosts() {
+    if (!_isLoading) {
+      page += 1;
+      _isRefresh = false;
+      _isLoading = true;
+      getListPawn();
+    }
+  }
 
   void statusFilterFirst() {
     if (checkStatus == null) {
@@ -130,6 +168,7 @@ class PawnListBloc {
   }
 
   void funFilter() {
+    page = 1;
     searchStatus = textSearch.value;
     statusFilterNumber = listFilterStream.value;
     statusListCollateral = [];
@@ -151,15 +190,34 @@ class PawnListBloc {
   }
 
   Future<void> getListPawn() async {
-    final Result<List<PawnShopModel>> res =
+    emit(PawnListLoading());
+    final Result<List<PawnShopModel>> response =
         await _pawnService.getListPawnShop();
-    res.when(
+    response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          list.add(response);
-        } else {}
+          canLoadMore = true;
+
+          emit(
+            PawnListSuccess(
+              CompleteType.SUCCESS,
+              listPawn: response,
+            ),
+          );
+          _isLoading = false;
+        } else {
+          canLoadMore = false;
+        }
       },
-      error: (error) {},
+      error: (error) {
+        emit(
+          PawnListSuccess(
+            CompleteType.ERROR,
+            message: e.toString(),
+          ),
+        );
+        _isLoading = false;
+      },
     );
   }
 
