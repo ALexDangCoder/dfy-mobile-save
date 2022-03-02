@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_out_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -25,6 +26,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 enum TypeBid { BUY_OUT, PLACE_BID }
 
@@ -281,7 +283,8 @@ class _PlaceBidState extends State<PlaceBid> {
                     if (widget.typeBid == TypeBid.PLACE_BID) {
                       await cubit
                           .getBidData(
-                            contractAddress: nft_auction_dev2,
+                            contractAddress:
+                                Get.find<AppConstants>().nftAuction,
                             auctionId: widget.nftOnAuction.auctionId.toString(),
                             bidValue: bidValue,
                             context: context,
@@ -379,7 +382,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   },
                                   textActiveButton: S.current.place_a_bid,
                                   hexString: value,
-                                  spender: nft_auction_dev2,
+                                  spender: Get.find<AppConstants>().nftAuction,
                                 ),
                               ),
                             ),
@@ -387,7 +390,8 @@ class _PlaceBidState extends State<PlaceBid> {
                     } else {
                       await cubit
                           .getBuyOutData(
-                            contractAddress: nft_auction_dev2,
+                            contractAddress:
+                                Get.find<AppConstants>().nftAuction,
                             auctionId: widget.nftOnAuction.auctionId.toString(),
                             context: context,
                           )
@@ -491,7 +495,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   },
                                   textActiveButton: S.current.buy_out,
                                   hexString: value,
-                                  spender: nft_auction_dev2,
+                                  spender: Get.find<AppConstants>().nftAuction,
                                 ),
                               ),
                             ),

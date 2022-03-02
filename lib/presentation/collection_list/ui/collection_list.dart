@@ -82,7 +82,8 @@ class _CollectionListState extends State<CollectionList> {
 
     if (widget.addressWallet?.isNotEmpty ?? false) {
       collectionBloc.addressWallet = widget.addressWallet?.toLowerCase();
-      collectionBloc.textAddressFilter.add((widget.addressWallet ?? '').toLowerCase());
+      collectionBloc.textAddressFilter
+          .add((widget.addressWallet ?? '').toLowerCase());
     } else {
       if (collectionBloc.typeScreen == PageRouter.MY_ACC) {
         collectionBloc.textAddressFilter
@@ -300,7 +301,7 @@ class _CollectionListState extends State<CollectionList> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20.h,
                                         crossAxisSpacing: 26.w,
-                                        childAspectRatio: 4 / 5,
+                                        childAspectRatio: 2 / 3,
                                       ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length

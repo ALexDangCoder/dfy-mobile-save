@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -18,6 +19,7 @@ import 'package:Dfy/widgets/form/input_with_select_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class PawnTab extends StatefulWidget {
   final bool? canEdit;
@@ -358,7 +360,7 @@ class _PawnTabState extends State<PawnTab>
                               );
                               nav.pop();
                               if (result) {
-                                await showLoadSuccess(context).then((value)  {
+                                await showLoadSuccess(context).then((value) {
                                   nav.popUntil((route) {
                                     return route.settings.name ==
                                         AppRouter.putOnSale;
@@ -394,7 +396,7 @@ class _PawnTabState extends State<PawnTab>
                               )
                             ],
                             textActiveButton: S.current.put_on_pawn,
-                            spender: nft_pawn_dev2,
+                            spender: Get.find<AppConstants>().nftPawn,
                             isPutOnMarket: true,
                           ),
                           isRequireLoginEmail: true,

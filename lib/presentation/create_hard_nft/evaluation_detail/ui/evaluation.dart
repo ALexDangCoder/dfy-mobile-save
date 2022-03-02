@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -24,6 +25,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'evaluation_detail.dart';
 
@@ -225,11 +227,9 @@ Widget _buildButtonReject(
             await cubit.rejectEvaluationToBE(
                 bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
             showLoadSuccess(context).then(
-              (value) => Navigator.of(context)
-                  .popUntil((route) {
-                return route.settings.name ==
-                    AppRouter.step3ListEvaluation;
-                }),
+              (value) => Navigator.of(context).popUntil((route) {
+                return route.settings.name == AppRouter.step3ListEvaluation;
+              }),
             );
           },
           onErrorSign: (context) {
@@ -251,7 +251,7 @@ Widget _buildButtonReject(
           ],
           title: S.current.book_appointment,
           textActiveButton: S.current.reject,
-          spender: eva_dev2,
+          spender: Get.find<AppConstants>().eva,
         ),
       );
     },
@@ -288,10 +288,8 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
             await cubit.acceptEvaluationToBE(
                 bcTxnHash: hexString, evaluationID: evaluation.id ?? '');
             showLoadSuccess(context).then(
-              (value) => Navigator.of(context)
-                  .popUntil((route) {
-                return route.settings.name ==
-                    AppRouter.step3ListEvaluation;
+              (value) => Navigator.of(context).popUntil((route) {
+                return route.settings.name == AppRouter.step3ListEvaluation;
               }),
             );
           },
@@ -322,7 +320,7 @@ Widget _buildButtonAccept(BuildContext context, Evaluation evaluation,
           needApprove: true,
           payValue: '${cubit.evaluationFee.amount}',
           tokenAddress: '${cubit.evaluationFee.address}',
-          spender: eva_dev2,
+          spender: Get.find<AppConstants>().eva,
         ),
       );
     },

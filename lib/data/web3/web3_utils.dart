@@ -757,7 +757,8 @@ class Web3Utils {
     required String beNFTId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('putOnPawn');
     final putOnPawn = Transaction.callContract(
       contract: deployContract,
@@ -781,7 +782,8 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('acceptOffer');
     final acceptOffer = Transaction.callContract(
       contract: deployContract,
@@ -799,7 +801,8 @@ class Web3Utils {
     required String offerId,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('cancelOffer');
     final cancelOffer = Transaction.callContract(
       contract: deployContract,
@@ -822,7 +825,8 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('createOffer');
     final createOffer = Transaction.callContract(
       contract: deployContract,
@@ -843,7 +847,8 @@ class Web3Utils {
   Future<String> getWithdrawCollateralData({
     required String nftCollateralId,
   }) async {
-    final deployContract = await deployedNFTPawnContract(nft_pawn_dev2);
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('withdrawCollateral');
     final withdrawCollateral = Transaction.callContract(
       contract: deployContract,
@@ -874,8 +879,8 @@ class Web3Utils {
     required String collectionCID,
     required BuildContext context,
   }) async {
-    final deployContract =
-        await deployedHardNftCollectionAddress(hard_nft_factory_address_dev2);
+    final deployContract = await deployedHardNftCollectionAddress(
+        Get.find<AppConstants>().hardNftFactory);
     final function = deployContract.function('createCollection');
     final createCollection = Transaction.callContract(
       contract: deployContract,
@@ -918,7 +923,8 @@ class Web3Utils {
     required int collectionStandard,
     required String beAssetId,
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('createAssetRequest');
     final createAssetRequest = Transaction.callContract(
       contract: deployContract,
@@ -941,7 +947,8 @@ class Web3Utils {
     required String evaluationFeeAddress,
     required String appointmentTime,
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('createAppointment');
     final createAppointment = Transaction.callContract(
       contract: deployContract,
@@ -960,7 +967,8 @@ class Web3Utils {
     required String appointmentId, //int dang string
     required String reason,
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('cancelAppointment');
     final cancelAppointment = Transaction.callContract(
       contract: deployContract,
@@ -977,7 +985,8 @@ class Web3Utils {
     required String appointmentId, //int dang string
     required String appointmentTime, // int dang string
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('acceptAppointment');
     final acceptAppointment = Transaction.callContract(
       contract: deployContract,
@@ -993,7 +1002,8 @@ class Web3Utils {
   Future<String> getAcceptEvaluationData({
     required String evaluationId, //int dang string
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('acceptEvaluation');
     final acceptEvaluation = Transaction.callContract(
       contract: deployContract,
@@ -1008,7 +1018,8 @@ class Web3Utils {
   Future<String> getAcceptEvaluatorData({
     required String evaluationId, //int dang string
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('acceptEvaluator');
     final acceptEvaluator = Transaction.callContract(
       contract: deployContract,
@@ -1029,7 +1040,8 @@ class Web3Utils {
     required String mintingFeeAddress,
     required String beEvaluationId,
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('evaluateAsset');
     final evaluateAsset = Transaction.callContract(
       contract: deployContract,
@@ -1051,7 +1063,8 @@ class Web3Utils {
     required String appointmentId, //int dang string
     required String reason,
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('rejectAppointment');
     final rejectAppointment = Transaction.callContract(
       contract: deployContract,
@@ -1067,7 +1080,8 @@ class Web3Utils {
   Future<String> getRejectEvaluationData({
     required String evaluationId, //int dang string
   }) async {
-    final deployContract = await deployedEvaluationContract(eva_dev2);
+    final deployContract =
+        await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('rejectEvaluation');
     final rejectEvaluation = Transaction.callContract(
       contract: deployContract,
@@ -1083,8 +1097,8 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode =
-        await rootBundle.loadString('assets/abi/SellNFT_ABI_prelive.json');
+    final abiCode = await rootBundle
+        .loadString('assets/abi/${Get.find<AppConstants>().sell_abi}');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Sell NFT'),
       EthereumAddress.fromHex(contract),
@@ -1097,8 +1111,8 @@ class Web3Utils {
     String contract,
     BuildContext context,
   ) async {
-    final abiCode =
-        await rootBundle.loadString('assets/abi/AuctionNFT_ABI.json');
+    final abiCode = await rootBundle
+        .loadString('assets/abi/${Get.find<AppConstants>().auction_abi}');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'Aunction NFT'),
       EthereumAddress.fromHex(contract),
@@ -1122,8 +1136,8 @@ class Web3Utils {
   Future<DeployedContract> deployedNFTCollectionContract(
     String contract,
   ) async {
-    final abiCode = await rootBundle
-        .loadString('assets/abi/DefiForYouNFTFactory_ABI_DEV2.json');
+    final abiCode = await rootBundle.loadString(
+        'assets/abi/${Get.find<AppConstants>().default_collection_abi}');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'nftFactory'),
       EthereumAddress.fromHex(contract),
@@ -1146,7 +1160,8 @@ class Web3Utils {
   Future<DeployedContract> deployedErc721Contract(
     String contract,
   ) async {
-    final abiCode = await rootBundle.loadString('assets/abi/erc721_abi.json');
+    final abiCode = await rootBundle
+        .loadString('assets/abi/${Get.find<AppConstants>().erc721_abi}');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'erc721'),
       EthereumAddress.fromHex(contract),

@@ -5,6 +5,7 @@ import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
@@ -26,6 +27,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 enum TypeEvaluation { NEW_CREATE, CREATE }
@@ -888,7 +890,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                         },
                                         textActiveButton:
                                             S.current.request_evaluation,
-                                        spender: eva_dev2,
+                                        spender: Get.find<AppConstants>().eva,
                                       ),
                                     ),
                                   ),

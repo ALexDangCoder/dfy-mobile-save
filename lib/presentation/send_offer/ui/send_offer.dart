@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -23,6 +24,7 @@ import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SendOffer extends StatefulWidget {
   const SendOffer({Key? key, required this.nftOnPawn}) : super(key: key);
@@ -41,7 +43,7 @@ class _SendOfferState extends State<SendOffer> {
   int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
-  String repaymentAsset = contract_defy;
+  String repaymentAsset = Get.find<AppConstants>().contract_defy;
 
   String message = '';
 
@@ -53,7 +55,7 @@ class _SendOfferState extends State<SendOffer> {
 
   Future<void> getHexStringThenNav() async {
     await _cubit
-        . getPawnHexString(
+        .getPawnHexString(
           nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
           repaymentAsset: repaymentAsset,
           loanAmount: loanAmount,
@@ -225,7 +227,7 @@ class _SendOfferState extends State<SendOffer> {
                 textActiveButton: S.current.send_offer,
                 tokenAddress: repaymentAsset,
                 hexString: value,
-                spender: nft_pawn_dev2,
+                spender: Get.find<AppConstants>().nftPawn,
               ),
             ),
           ),
@@ -264,7 +266,7 @@ class _SendOfferState extends State<SendOffer> {
                     height: 20.h,
                     child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
                   ),
-                  'contract': contract_defy
+                  'contract': Get.find<AppConstants>().contract_defy
                 },
               ]
             : [
@@ -275,7 +277,7 @@ class _SendOfferState extends State<SendOffer> {
                     height: 20.h,
                     child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
                   ),
-                  'contract': contract_defy
+                  'contract': Get.find<AppConstants>().contract_defy
                 },
                 {
                   'value': ID_WEEK.toString(),

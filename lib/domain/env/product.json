@@ -1,7 +1,7 @@
 {
   "type": "product",
   "base_url": "https://apigw.prelive.defiforyou.uk/",
-  "base_image_url": "https://gwapi.defiforyou.uk/nft-market-svc/public-api/",
+  "base_image_url": "https://apigw.preliv.defiforyou.uk/nft-market-svc/public-api/",
   "rpc_url": "https://bsc-dataseed1.binance.org:443",
   "chain_id": "56",
   "bsc_scan": "https://bscscan.com/",
@@ -12,5 +12,10 @@
   "nft_auction": "0x1888893F3370af06b413D6259D0e420971d07CA0",
   "nft_pawn": "0x6cA1dc9B29b4Ec704f74F8114CdF9ea59642be2E",
   "hard_nft_factory": "0x5b10b008c0d7b51307410f5296f7770b988f50e0",
-  "eva": "0x9a698C7c01fE931290fb8ad89689832833264398"
+  "eva": "0x9a698C7c01fE931290fb8ad89689832833264398",
+  "sell_abi": "SellNFT_ABI_prelive.json",
+  "auction_abi": "AuctionNFT_ABI_prelive.json",
+  "default_collection_abi": "DefiForYouNFTDefault_ABI_prelive.json",
+  "erc721_abi": "erc721_abi_prelive.json",
+  "contract_defy": "0xd98560689c6e748dc37bc410b4d3096b1aa3d8c2"
 }
