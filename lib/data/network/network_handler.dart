@@ -1,6 +1,7 @@
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/listener/event_bus.dart';
 import 'package:dio/dio.dart';
 
@@ -54,7 +55,7 @@ class NetworkHandler {
     }
     return AppException(
       S.current.error,
-      error.response?.data['rd'],
+      (error.response?.data as Map<String, dynamic>).stringValueOrEmpty('rd'),
       code: error.response?.statusCode,
     );
   }
