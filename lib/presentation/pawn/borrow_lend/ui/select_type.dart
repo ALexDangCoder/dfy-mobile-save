@@ -64,18 +64,22 @@ class _SelectTypeState extends State<SelectType> {
                 SizedBox(
                   width: 24.w,
                   height: 24.h,
-                  child: Radio<TypeLend>(
-                    value: TypeLend.CRYPTO,
-                    fillColor: MaterialStateProperty.all(
-                      AppTheme.getInstance().fillColor(),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      unselectedWidgetColor:
+                          AppTheme.getInstance().whiteColor(),
                     ),
-                    groupValue: _type,
-                    onChanged: (TypeLend? value) {
-                      setState(() {
-                        _type = value ?? TypeLend.CRYPTO;
-                        widget.bloc.typeScreen = _type;
-                      });
-                    },
+                    child: Radio<TypeLend>(
+                      value: TypeLend.CRYPTO,
+                      activeColor: AppTheme.getInstance().fillColor(),
+                      groupValue: _type,
+                      onChanged: (TypeLend? value) {
+                        setState(() {
+                          _type = value ?? TypeLend.CRYPTO;
+                          widget.bloc.typeScreen = _type;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 spaceW4,
@@ -124,19 +128,22 @@ class _SelectTypeState extends State<SelectType> {
                 SizedBox(
                   width: 24.w,
                   height: 24.h,
-                  child: Radio<TypeLend>(
-                    fillColor: MaterialStateProperty.all(
-                      AppTheme.getInstance().fillColor(),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      unselectedWidgetColor:
+                          AppTheme.getInstance().whiteColor(),
                     ),
-                    value: TypeLend.NFT,
-                    focusColor: Colors.red,
-                    groupValue: _type,
-                    onChanged: (TypeLend? value) {
-                      setState(() {
-                        _type = value ?? TypeLend.CRYPTO;
-                        widget.bloc.typeScreen = _type;
-                      });
-                    },
+                    child: Radio<TypeLend>(
+                      activeColor: AppTheme.getInstance().fillColor(),
+                      value: TypeLend.NFT,
+                      groupValue: _type,
+                      onChanged: (TypeLend? value) {
+                        setState(() {
+                          _type = value ?? TypeLend.CRYPTO;
+                          widget.bloc.typeScreen = _type;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 spaceW4,

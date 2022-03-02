@@ -92,18 +92,22 @@ class _DialogFilterState extends State<DialogFilter> {
                     SizedBox(
                       width: 24.w,
                       height: 24.h,
-                      child: Radio<TypeFilter>(
-                        value: TypeFilter.LOW_TO_HIGH,
-                        fillColor: MaterialStateProperty.all(
-                          AppTheme.getInstance().fillColor(),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          unselectedWidgetColor:
+                              AppTheme.getInstance().whiteColor(),
                         ),
-                        groupValue: _type,
-                        onChanged: (TypeFilter? value) {
-                          setState(() {
-                            _type = value ?? TypeFilter.LOW_TO_HIGH;
-                            Navigator.pop(context, _type);
-                          });
-                        },
+                        child: Radio<TypeFilter>(
+                          value: TypeFilter.LOW_TO_HIGH,
+                          activeColor: AppTheme.getInstance().fillColor(),
+                          groupValue: _type,
+                          onChanged: (TypeFilter? value) {
+                            setState(() {
+                              _type = value ?? TypeFilter.LOW_TO_HIGH;
+                              Navigator.pop(context, _type);
+                            });
+                          },
+                        ),
                       ),
                     ),
                     spaceW4,
@@ -134,18 +138,22 @@ class _DialogFilterState extends State<DialogFilter> {
                     SizedBox(
                       width: 24.w,
                       height: 24.h,
-                      child: Radio<TypeFilter>(
-                        value: TypeFilter.HIGH_TO_LOW,
-                        fillColor: MaterialStateProperty.all(
-                          AppTheme.getInstance().fillColor(),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          unselectedWidgetColor:
+                              AppTheme.getInstance().whiteColor(),
                         ),
-                        groupValue: _type,
-                        onChanged: (TypeFilter? value) {
-                          setState(() {
-                            _type = value ?? TypeFilter.HIGH_TO_LOW;
-                            Navigator.pop(context, _type);
-                          });
-                        },
+                        child: Radio<TypeFilter>(
+                          value: TypeFilter.HIGH_TO_LOW,
+                          activeColor: AppTheme.getInstance().fillColor(),
+                          groupValue: _type,
+                          onChanged: (TypeFilter? value) {
+                            setState(() {
+                              _type = value ?? TypeFilter.HIGH_TO_LOW;
+                              Navigator.pop(context, _type);
+                            });
+                          },
+                        ),
                       ),
                     ),
                     spaceW4,
