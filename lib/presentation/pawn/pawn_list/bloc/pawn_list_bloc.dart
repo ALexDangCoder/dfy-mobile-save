@@ -39,6 +39,9 @@ class PawnListBloc {
     TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
     TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
     TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
+    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
+    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
+    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
   ];
 
   PawnRepository get _pawnService => Get.find();
@@ -51,29 +54,42 @@ class PawnListBloc {
   String? checkStatus;
   String? searchStatus;
   List<bool>? statusFilterNumber;
-  List<TokenModelPawn> statusListLoan=[];
-  List<TokenModelPawn> statusListCollateral=[];
+  List<int> statusListLoan = [];
+  List<int> statusListCollateral = [];
 
   void statusFilterFirst() {
     if (checkStatus == null) {
       checkStatus = 'have';
       searchStatus = '';
       statusFilterNumber = [false, false, false, false];
-      statusListLoan=listLoanTokenFilter;
-      statusListCollateral=listCollateralTokenFilter;
     } else {
       textSearch.sink.add(searchStatus ?? '');
-      listLoanTokenFilter = statusListLoan;
-      listCollateralTokenFilter = statusListCollateral ;
       listFilter = statusFilterNumber ?? [];
       listFilterStream.add(listFilter);
-      print('--------------checAk${statusListCollateral.length }');
-      for (final TokenModelPawn value in statusListLoan) {
-        if (value.isCheck) {
-          print('--------------checAk${value.symbol}');
+      for (int i = 0; i < listLoanTokenFilter.length; i++) {
+        if (checkStatusFirstFilter(i, statusListLoan)) {
+          listLoanTokenFilter[i].isCheck = true;
+        } else {
+          listLoanTokenFilter[i].isCheck = false;
+        }
+      }
+      for (int i = 0; i < listCollateralTokenFilter.length; i++) {
+        if (checkStatusFirstFilter(i, statusListCollateral)) {
+          listCollateralTokenFilter[i].isCheck = true;
+        } else {
+          listCollateralTokenFilter[i].isCheck = false;
         }
       }
     }
+  }
+
+  bool checkStatusFirstFilter(int i, List<int> list) {
+    for (final int value in list) {
+      if (i == value) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void funOnSearch(String value) {
@@ -116,32 +132,18 @@ class PawnListBloc {
   void funFilter() {
     searchStatus = textSearch.value;
     statusFilterNumber = listFilterStream.value;
-    statusListLoan = listLoanTokenFilter;
-    statusListCollateral = listCollateralTokenFilter;
-    print('--------------check${statusListLoan.length}');
-    for (final TokenModelPawn value in statusListLoan) {
-      if (value.isCheck) {
-        print('--------------check${value.symbol}');
+    statusListCollateral = [];
+    statusListLoan = [];
+    for (int i = 0; i < listLoanTokenFilter.length; i++) {
+      if (listLoanTokenFilter[i].isCheck) {
+        statusListLoan.add(i);
       }
-    } //todo
-    for (final TokenModelPawn value in statusListCollateral) {
-      if (value.isCheck) {
-        print('--------------${value.symbol}');
+    }
+    for (int i = 0; i < listCollateralTokenFilter.length; i++) {
+      if (listCollateralTokenFilter[i].isCheck) {
+        statusListCollateral.add(i);
       }
-    } //todo
-
-    print('-------------${textSearch.value}');
-    print('--------------${checkStatusFilter()}');
-    for (final TokenModelPawn value in listLoanTokenFilter) {
-      if (value.isCheck) {
-        print('--------------loan${value.symbol}');
-      }
-    } //todo
-    for (final TokenModelPawn value in listCollateralTokenFilter) {
-      if (value.isCheck) {
-        print('--------------${value.symbol}');
-      }
-    } //todo
+    }
   }
 
   void funOnTapSearch() {
