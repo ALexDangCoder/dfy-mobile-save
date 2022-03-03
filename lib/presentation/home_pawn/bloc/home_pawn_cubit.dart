@@ -73,8 +73,9 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     final Result<List<NftsCollateralPawnModel>> result =
         await _homePawnRepo.getNftsCollateralPawn();
     result.when(
-      success: (success) {
+      success: (res) {
         _flagGetDataSuccess = true;
+        nftsCollateralsPawn = res;
       },
       error: (error) {
         _flagGetDataSuccess = false;
@@ -87,7 +88,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     // showLoading();
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
-    // await getTopSalePawnPackageShop();
+    await getTopSalePawnPackageShop();
     await getNftsCollateralPawn();
     if (_flagGetDataSuccess) {
       emit(

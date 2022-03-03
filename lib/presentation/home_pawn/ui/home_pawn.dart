@@ -1,10 +1,12 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/home_pawn/ui/components/banner_slide.dart';
 import 'package:Dfy/presentation/home_pawn/ui/components/list_item_horizontal.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
@@ -14,6 +16,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+
+final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class HomePawn extends StatefulWidget {
   const HomePawn({Key? key}) : super(key: key);
@@ -154,30 +159,61 @@ class _HomePawnState extends State<HomePawn> {
                       listItemWidget: SizedBox(
                         height: 267.h,
                         child: ListView.builder(
-                          itemCount: 6,
+                          itemCount: cubit.topSalePawnShop.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (_, index) {
-                            return _itemPawnShopPackage();
+                            return _itemPawnShopPackage(
+                              imgShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.avatar ??
+                                  '',
+                              iconTokenUrl: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.loanToken?.iconUrl ??
+                                  '',
+                              signedContracts: cubit
+                                  .topSalePawnShop[index].signedContract
+                                  .toString(),
+                              nameShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.name ??
+                                  '',
+                              reputation: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.reputation ??
+                                  0,
+                              loan: cubit.topSalePawnShop[index].pawnShopPackage
+                                      ?.allowedLoanMax ??
+                                  0,
+                              interestRate: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.interestRate ??
+                                  0,
+                            );
                           },
                         ),
                       ),
                     ),
                     spaceH32,
-                    // ListItemHorizontal(
-                    //   title: S.current.nft_collateral,
-                    //   listItemWidget: SizedBox(
-                    //     height: 231.h,
-                    //     child: ListView.builder(itemBuilder: (_, index) {
-                    //       return Row(
-                    //         children: [
-                    //           NFTItemWidget(nftMarket: nftMarket),
-                    //           spaceW12,
-                    //         ],
-                    //       );
-                    //     },),
-                    //   ),
-                    // ),
+                    ListItemHorizontal(
+                      title: S.current.nft_collateral,
+                      listItemWidget: SizedBox(
+                        height: 231.h,
+                        child: ListView.builder(
+                          itemCount: cubit.nftsCollateralsPawn.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return Row(
+                              children: [
+                                NFTItemWidget(
+                                  nftMarket: cubit.nftsCollateralsPawn[index]
+                                          .nftModel ??
+                                      NftMarket(),
+                                ),
+                                spaceW12,
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                     spaceH32,
                     _buildBecomePawnShop(),
                     SizedBox(
@@ -272,7 +308,15 @@ class _HomePawnState extends State<HomePawn> {
     );
   }
 
-  Row _itemPawnShopPackage() {
+  Row _itemPawnShopPackage({
+    required String imgShop,
+    required String signedContracts,
+    required String nameShop,
+    required String iconTokenUrl,
+    required int reputation,
+    required double loan,
+    required int interestRate,
+  }) {
     return Row(
       children: [
         SizedBox(
@@ -297,7 +341,7 @@ class _HomePawnState extends State<HomePawn> {
                   child: Column(
                     children: [
                       Text(
-                        'Tima - Online pawnshop',
+                        nameShop,
                         style: textNormalCustom(
                           AppTheme.getInstance().getAmountColor(),
                           16,
@@ -315,7 +359,8 @@ class _HomePawnState extends State<HomePawn> {
                           ),
                           spaceW4,
                           Text(
-                            '1000',
+                            '$reputation',
+                            //todo fix cứng do chưa biết be trả ra cái gì
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
@@ -342,11 +387,20 @@ class _HomePawnState extends State<HomePawn> {
                               SizedBox(
                                 height: 20.h,
                                 width: 20.w,
-                                child: Image.asset(ImageAssets.ic_dfy),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.r),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: ImageAssets.image_loading,
+                                    image: iconTokenUrl,
+                                    imageCacheHeight: 20,
+                                    placeholderCacheHeight: 15,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
                               ),
                               spaceW8,
                               Text(
-                                '100,323,549.6',
+                                formatValue.format(loan), //todo fix cứng
                                 style: textNormalCustom(
                                   AppTheme.getInstance().whiteColor(),
                                   14,
@@ -371,7 +425,7 @@ class _HomePawnState extends State<HomePawn> {
                             ),
                           ),
                           Text(
-                            '15% APR',
+                            '$interestRate APR',
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               14,
@@ -394,7 +448,7 @@ class _HomePawnState extends State<HomePawn> {
                             ),
                           ),
                           Text(
-                            '150 contracts',
+                            '$signedContracts contracts',
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               14,
@@ -422,9 +476,15 @@ class _HomePawnState extends State<HomePawn> {
                   child: SizedBox(
                     height: 84.h,
                     width: 84.w,
-                    child: Image.asset(
-                      ImageAssets.ic_dfy,
-                      fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.r),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: ImageAssets.image_loading,
+                        image: imgShop,
+                        imageCacheHeight: 84,
+                        placeholderCacheHeight: 70,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),

@@ -73,7 +73,7 @@ class PawnShopPackageResponse extends Equatable {
   @JsonKey(name: 'pawnShop')
   PawnShopResponse? pawnShop;
   @JsonKey(name: 'allowedLoanMax')
-  int? allowedLoanMax;
+  double? allowedLoanMax;
   @JsonKey(name: 'allowedLoanMin')
   double? allowedLoanMin;
   @JsonKey(name: 'interest')
@@ -106,6 +106,14 @@ class PawnShopPackageResponse extends Equatable {
   factory PawnShopPackageResponse.fromJson(Map<String, dynamic> json) =>
       _$PawnShopPackageResponseFromJson(json);
 
+  int? getInterestRate(int type) {
+    if(type == 2 || type == 3) {
+      return interestMin;
+    } else {
+      return interest as int;
+    }
+  }
+
   PawnShopPackageModel toModel() => PawnShopPackageModel(
         name: name,
         id: id,
@@ -115,6 +123,7 @@ class PawnShopPackageResponse extends Equatable {
         allowedLoanMin: allowedLoanMin,
         interestMax: interestMax,
         interestMin: interestMin,
+        interestRate: getInterestRate(type ?? 0),
         loanToken: loanToken?.toModel(),
         status: status,
       );
