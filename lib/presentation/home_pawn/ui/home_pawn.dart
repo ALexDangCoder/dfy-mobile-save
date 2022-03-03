@@ -19,6 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+//todo chờ be thêm icon url token trong nfts collateral
+
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class HomePawn extends StatefulWidget {
