@@ -3,6 +3,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/bloc/borrow_lend_bloc.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/select_type.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/ui/collateral_result.dart';
+import 'package:Dfy/presentation/pawn/personal_lending/ui/personal_lending_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -145,6 +146,12 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
               onTap: () {
                 if (_tabController.index == 0) {
                   if (_bloc.typeScreen == TypeLend.CRYPTO) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalLendingScreen(),
+                      ),
+                    );
                     print('lend and crypto');
                   } else {
                     print('lend and nft');

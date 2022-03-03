@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -213,7 +212,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
         emit(
           PawnListSuccess(
             CompleteType.ERROR,
-            message: e.toString(),
+            message: error.message,
           ),
         );
         _isLoading = false;

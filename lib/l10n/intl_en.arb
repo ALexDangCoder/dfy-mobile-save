@@ -824,5 +824,7 @@
   "nft_collateral": "NFTs collateral",
   "des_become_pawnshop": "Open your own pawn shop and\ndiscover a new business\nopportunity with an unmatched\nROI. Be a part of the world's\nfinancial revolution.",
   "only_become_pawnshop": "Become a pawnshop",
-  "personal_lending": "Personal lending"
+  "personal_lending": "Personal lending",
+  "request_loan": "Request loan",
+  "sign_contract_pawn": "Sign contract"
 }

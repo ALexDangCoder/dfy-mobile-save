@@ -34,6 +34,61 @@ class PawnItem extends StatelessWidget {
     required this.total,
   }) : super(key: key);
 
+  WidgetSpan widgetSpanBase({
+    required int listLength,
+    required int maxLength,
+    required String symbol,
+  }) {
+    return WidgetSpan(
+      alignment: PlaceholderAlignment.middle,
+      child: listLength >= maxLength
+          ? Image.asset(
+              ImageAssets.getSymbolAsset(
+                symbol,
+              ),
+              height: 16.w,
+              width: 16.w,
+              errorBuilder: (context, error, stackTrace) => Container(
+                height: 16.w,
+                width: 16.w,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    symbol,
+                    style: textNormalCustom(
+                      null,
+                      12,
+                      FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
+    );
+  }
+
+  WidgetSpan widgetSpanSpaceW2() {
+    return WidgetSpan(
+      child: spaceW2,
+    );
+  }
+
+  TextSpan widgetTextSpan({
+    required int listLength,
+  }) {
+    return TextSpan(
+      text: listLength > 5
+          ? '& ${listLength - 5} '
+                  '${S.current.more}'
+              .toLowerCase()
+          : '',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -193,87 +248,48 @@ class PawnItem extends StatelessWidget {
                         FontWeight.w400,
                       ),
                       children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: collateral.isNotEmpty
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    collateral[0].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: collateral.length >= 2
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    collateral[1].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: collateral.length >= 3
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    collateral[2].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: collateral.length >= 4
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    collateral[3].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: collateral.length >= 5
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    collateral[4].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        TextSpan(
-                          text: collateral.length > 5
-                              ? '& ${collateral.length - 5} '
-                                      '${S.current.more}'
-                                  .toLowerCase()
+                        widgetSpanBase(
+                          listLength: collateral.length,
+                          maxLength: 1,
+                          symbol: collateral.isNotEmpty
+                              ? collateral[0].symbol?.toUpperCase() ?? ''
                               : '',
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: collateral.length >= 2
+                              ? collateral[1].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: collateral.length,
+                          maxLength: 2,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: collateral.length >= 3
+                              ? collateral[2].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: collateral.length,
+                          maxLength: 3,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: collateral.length >= 4
+                              ? collateral[3].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: collateral.length,
+                          maxLength: 4,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: collateral.length >= 5
+                              ? collateral[4].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: collateral.length,
+                          maxLength: 5,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetTextSpan(
+                          listLength: collateral.length,
                         ),
                       ],
                     ),
@@ -305,87 +321,48 @@ class PawnItem extends StatelessWidget {
                         FontWeight.w400,
                       ),
                       children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: loadToken.isNotEmpty
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    loadToken[0].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: loadToken.length > 1
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    loadToken[1].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: loadToken.length > 2
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    loadToken[2].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: loadToken.length > 3
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    loadToken[3].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: loadToken.length > 4
-                              ? Image.asset(
-                                  ImageAssets.getSymbolAsset(
-                                    loadToken[4].symbol?.toUpperCase() ?? '',
-                                  ),
-                                  height: 16.w,
-                                  width: 16.w,
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        WidgetSpan(
-                          child: spaceW2,
-                        ),
-                        TextSpan(
-                          text: loadToken.length > 5
-                              ? '& ${loadToken.length - 5} '
-                                      '${S.current.more}'
-                                  .toLowerCase()
+                        widgetSpanBase(
+                          listLength: loadToken.length,
+                          maxLength: 1,
+                          symbol: loadToken.isNotEmpty
+                              ? loadToken[0].symbol?.toUpperCase() ?? ''
                               : '',
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: loadToken.length >= 2
+                              ? loadToken[1].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: loadToken.length,
+                          maxLength: 2,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: loadToken.length >= 3
+                              ? loadToken[2].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: loadToken.length,
+                          maxLength: 3,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: loadToken.length >= 4
+                              ? loadToken[3].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: loadToken.length,
+                          maxLength: 4,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetSpanBase(
+                          symbol: loadToken.length >= 5
+                              ? loadToken[4].symbol?.toUpperCase() ?? ''
+                              : '',
+                          listLength: loadToken.length,
+                          maxLength: 5,
+                        ),
+                        widgetSpanSpaceW2(),
+                        widgetTextSpan(
+                          listLength: loadToken.length,
                         ),
                       ],
                     ),
