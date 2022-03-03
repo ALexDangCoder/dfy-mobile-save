@@ -29,13 +29,16 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
     super.initState();
     _bloc = BorrowLendBloc();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       text: ImageAssets.ic_close,
-      title: S.current.lend,
+      title: _tabController.index == 0 ? S.current.borrow : S.current.lend,
       onRightClick: () {},
       isImage: true,
       child: Stack(
@@ -118,26 +121,26 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
             child: GestureDetector(
               onTap: () {
                 if (_tabController.index == 0) {
-                 if(_bloc.isAmount.value){
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                       builder: (context) =>  BorrowResult(
-                         nameToken: _bloc.tokenSymbol.value,
-                       ),
-                     ),
-                   );
-                 }else{
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                       builder: (context) =>  BorrowResult(
-                         nameToken: _bloc.tokenSymbol.value,
-                         amount: _bloc.textAmount.value,
-                       ),
-                     ),
-                   );
-                 }
+                  if (_bloc.isAmount.value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BorrowResult(
+                          nameToken: _bloc.tokenSymbol.value,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BorrowResult(
+                          nameToken: _bloc.tokenSymbol.value,
+                          amount: _bloc.textAmount.value,
+                        ),
+                      ),
+                    );
+                  }
                 } else {
                   if (_bloc.typeScreen == TypeLend.CRYPTO) {
                     Navigator.push(
