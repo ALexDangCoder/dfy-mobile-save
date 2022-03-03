@@ -4,7 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/presentation/detail_collection/bloc/detail_collection.dart';
 import 'package:flutter/material.dart';
 import 'content.dart';
-import 'launchUrl.dart';
+import 'launch_url.dart';
 import 'nav.dart';
 
 class BodyDetailCollection extends StatelessWidget {
