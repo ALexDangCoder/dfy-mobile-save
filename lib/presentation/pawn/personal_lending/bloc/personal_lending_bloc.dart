@@ -19,7 +19,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
   final bool _canLoadMore = true;
   bool _isRefresh = true;
   bool _isLoading = false;
-  int page = 1;
+  int page = 0;
   static const int ZERO_TO_TEN = 0;
   static const int TEN_TO_TWENTY_FIVE = 1;
   static const int TWENTY_FIVE_TO_FIVETY = 2;
@@ -28,6 +28,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
   String? name;
   String? loanToValueRanges;
   String? collateralSymbols;
+
   bool get canLoadMore => _canLoadMore;
 
   bool get isRefresh => _isRefresh;
@@ -108,7 +109,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
 
   Future<void> refreshPosts() async {
     if (!_isLoading) {
-      page = 1;
+      page = 0;
       _isRefresh = true;
       _isLoading = true;
       await getPersonLendingResult();
@@ -159,9 +160,12 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       }
     }
     String? interestRanges;
-    name=textSearch.value;
+    name = textSearch.value;
     String? loanToValueRanges;
     String? collateralSymbols;
+    getPersonLendingResult(
+      name: name,
+    );
   }
 
   void funOnTapSearch() {
@@ -181,8 +185,6 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     }
   }
 
-
-
   //
   Future<void> getPersonLendingResult({
     String? collateralAmount,
@@ -192,8 +194,8 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     String? loanToValueRanges,
     String? loanSymbols,
     String? loanType,
-    String? page,
   }) async {
+    emit(PersonalLendingLoading());
     final Result<List<PersonalLending>> result =
         await _repo.getListPersonalLending(
       collateralAmount: collateralAmount,
@@ -203,17 +205,22 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       loanToValueRanges: loanToValueRanges,
       loanSymbols: loanSymbols,
       loanType: loanType,
-      page: page,
+      page: page.toString(),
     );
     result.when(
       success: (res) {
-        showContent();
-        emit(
-          PersonalLendingSuccess(
-            CompleteType.SUCCESS,
-            listPersonal: res,
-          ),
-        );
+        if (res.isNotEmpty) {
+          canLoadMore = true;
+          emit(
+            PersonalLendingSuccess(
+              CompleteType.SUCCESS,
+              listPersonal: res,
+            ),
+          );
+          _isLoading = false;
+        } else {
+          canLoadMore = false;
+        }
       },
       error: (error) {
         emit(
@@ -222,6 +229,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
             message: error.message,
           ),
         );
+        _isLoading = false;
       },
     );
   }
