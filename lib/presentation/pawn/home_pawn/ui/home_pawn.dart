@@ -61,19 +61,19 @@ class _HomePawnState extends State<HomePawn> {
             onRefresh: () async {
               await cubit.callAllApi(isRefresh: true);
             },
-            child: SafeArea(
-              child: Scaffold(
-                backgroundColor: AppTheme.getInstance().blackColor(),
-                body: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: AppTheme.getInstance().bgColorHomePawn(),
-                    ),
+            child: Scaffold(
+              backgroundColor: AppTheme.getInstance().bgBtsColor(),
+              body: Container(
+                padding:
+                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: AppTheme.getInstance().bgColorHomePawn(),
                   ),
-                  child: _content(state),
                 ),
+                child: _content(state),
               ),
             ),
           ),
