@@ -1,7 +1,7 @@
 class ApiConstants {
   static const LOGIN = '/example_view';
 
-  static const int DEFAULT_PAGE_SIZE = 45;
+  static const int DEFAULT_PAGE_SIZE = 12;
   static const int PAGE_BEGIN = 1;
   static const int NOT_SAVED_ID = -1;
   static const int TIME_OUT = 30;
@@ -216,4 +216,10 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-top-sale-package';
   static const String GET_NFTS_COLLATERAL_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-nft-collateral';
+  static const String GET_PERSONAL_LENDING =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-p2p-lenders';
+  static const String GET_PAWNSHOP_PACKAGE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/search';
+
+
 }

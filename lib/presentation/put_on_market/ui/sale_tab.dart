@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class SaleTab extends StatefulWidget {
   final PutOnMarketCubit cubit;
@@ -52,8 +54,7 @@ class _SaleTabState extends State<SaleTab>
     widget.cubit.changeTokenSale(
       indexToken: 0,
     );
-    _putOnMarketModel.tokenAddress =
-        widget.cubit.listToken[0].address ?? '';
+    _putOnMarketModel.tokenAddress = widget.cubit.listToken[0].address ?? '';
     super.initState();
   }
 
@@ -122,31 +123,31 @@ class _SaleTabState extends State<SaleTab>
                       typeInput: widget.cubit.listToken
                           .map(
                             (e) => SizedBox(
-                          height: 64,
-                          width: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                child: Image.network(
-                                  e.iconUrl ?? '',
-                                  height: 20,
-                                  width: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Flexible(
-                                child: Text(
-                                  e.symbol ?? '',
-                                  style: textValueNFT.copyWith(
-                                    decoration: TextDecoration.none,
+                              height: 64,
+                              width: 100,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    child: Image.network(
+                                      e.iconUrl ?? '',
+                                      height: 20,
+                                      width: 20,
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                                  const SizedBox(width: 5),
+                                  Flexible(
+                                    child: Text(
+                                      e.symbol ?? '',
+                                      style: textValueNFT.copyWith(
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
                           .toList(),
                       hintText: S.current.enter_price,
                       onChangeType: (index) {
@@ -318,7 +319,7 @@ class _SaleTabState extends State<SaleTab>
                               )
                             ],
                             textActiveButton: S.current.put_on_sale,
-                            spender: nft_sales_address_dev2,
+                            spender: Get.find<AppConstants>().nftSalesAddress,
                             isPutOnMarket: true,
                           ),
                         ),
