@@ -7,6 +7,8 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/bloc/borrow_result_cubit.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/pawnshop_package_item.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/personal_lending_item.dart';
+import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -24,10 +26,6 @@ class BorrowResult extends StatefulWidget {
 
 class _BorrowResultState extends State<BorrowResult> {
   late BorrowResultCubit cubit;
-
-  String message = '';
-  final List<PawnshopPackage> pawnshopPackage = [];
-  final List<PersonalLending> personalLending = [];
 
   @override
   void initState() {
@@ -48,28 +46,53 @@ class _BorrowResultState extends State<BorrowResult> {
     return BlocConsumer<BorrowResultCubit, BorrowResultState>(
       bloc: cubit,
       listener: (context, state) {
-        if (state is BorrowResultLoading) {}
-
         if (state is BorrowPersonSuccess) {
-          //refresh => clear list
-          personalLending.addAll(state.personalLending ?? []);
-          if (state.completeType == CompleteType.ERROR) {
-            message = state.message ?? '';
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (cubit.loadMoreRefresh) {
+              cubit.personalLending.clear();
+            }
+            if ((state.personalLending ?? []).isEmpty) {
+              cubit.showEmpty();
+            } else {
+              cubit.showContent();
+            }
+          } else {
+            cubit.message = state.message ?? '';
+            cubit.personalLending.clear();
+            cubit.showError();
           }
+          cubit.personalLending.addAll(state.personalLending ?? []);
+          cubit.canLoadMore =
+              cubit.personalLending.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          cubit.loadMoreLoading = false;
         }
         if (state is BorrowPawnshopSuccess) {
-          //refresh => clear list
-          pawnshopPackage.addAll(state.pawnshopPackage ?? []);
-          if (state.completeType == CompleteType.ERROR) {
-            message = state.message ?? '';
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (cubit.loadMoreRefresh) {
+              cubit.pawnshopPackage.clear();
+            }
+            if ((state.pawnshopPackage ?? []).isEmpty) {
+              cubit.showEmpty();
+            } else {
+              cubit.showContent();
+            }
+          } else {
+            cubit.message = state.message ?? '';
+            cubit.pawnshopPackage.clear();
+            cubit.showError();
           }
+          cubit.pawnshopPackage =
+              cubit.pawnshopPackage + (state.pawnshopPackage ?? []);
+          cubit.canLoadMore =
+              cubit.pawnshopPackage.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          cubit.loadMoreLoading = false;
         }
       },
       builder: (context, state) {
         return StateStreamLayout(
           retry: () {},
-          textEmpty: message,
-          error: AppException(S.current.error, message),
+          textEmpty: cubit.message,
+          error: AppException(S.current.error, cubit.message),
           stream: cubit.stateStream,
           child: BaseDesignScreen(
             onRightClick: () {
@@ -87,99 +110,116 @@ class _BorrowResultState extends State<BorrowResult> {
             title: 'Borrow result',
             text: ImageAssets.ic_filter,
             child: SizedBox(
-              height: 710.h,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    spaceH24,
-                    Padding(
-                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'PERSONAL LENDING',
+              height: 699.h,
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (cubit.canLoadMore &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    cubit.loadMorePosts();
+                  }
+                  return true;
+                },
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await cubit.refreshPosts();
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        spaceH24,
+                        Padding(
+                          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'PERSONAL LENDING',
+                                style: textNormalCustom(
+                                  purple,
+                                  20,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  height: 32.h,
+                                  decoration: const BoxDecoration(
+                                    color: borderItemColors,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image(
+                                    height: 32.h,
+                                    width: 32.w,
+                                    image: const AssetImage(
+                                      ImageAssets.img_push,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        spaceH16,
+                        SizedBox(
+                          height: 246.h,
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(left: 16.w),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cubit.personalLending.length > 6
+                                ? 6
+                                : cubit.personalLending.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  PersonalLendingItem(
+                                    personalLending:
+                                        cubit.personalLending[index],
+                                  ),
+                                  spaceW20,
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        spaceH32,
+                        Padding(
+                          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                          child: Text(
+                            'PAWNSHOP PACKAGE',
                             style: textNormalCustom(
                               purple,
                               20,
                               FontWeight.w400,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 32.h,
-                              decoration: const BoxDecoration(
-                                color: borderItemColors,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image(
-                                height: 32.h,
-                                width: 32.w,
-                                image: const AssetImage(
-                                  ImageAssets.img_push,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    spaceH16,
-                    SizedBox(
-                      height: 246.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(left: 16.w),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: personalLending.length > 6
-                            ? 6
-                            : personalLending.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            children: [
-                              PersonalLendingItem(
-                                personalLending: personalLending[index],
-                              ),
-                              spaceW20,
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    spaceH32,
-                    Padding(
-                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
-                      child: Text(
-                        'PAWNSHOP PACKAGE',
-                        style: textNormalCustom(
-                          purple,
-                          20,
-                          FontWeight.w400,
                         ),
-                      ),
+                        spaceH16,
+                        SizedBox(
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                            shrinkWrap: true,
+                            itemCount: cubit.pawnshopPackage.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  PawnshopPackageItem(
+                                    pawnshopPackage:
+                                        cubit.pawnshopPackage[index],
+                                  ),
+                                  spaceH20,
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    spaceH16,
-                    SizedBox(
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(left: 16.w,right: 16.w),
-                        shrinkWrap: true,
-                        itemCount: pawnshopPackage.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              PawnshopPackageItem(
-                                pawnshopPackage: pawnshopPackage[index],
-                              ),
-                              spaceH20,
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

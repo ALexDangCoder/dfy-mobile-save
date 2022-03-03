@@ -16,6 +16,10 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
 
   BorrowRepository get _repo => Get.find();
 
+  String message = '';
+   List<PawnshopPackage> pawnshopPackage = [];
+   List<PersonalLending> personalLending = [];
+
   void callApi({
     String? collateralAmount,
     String? collateralSymbols,
@@ -46,6 +50,31 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
     );
   }
 
+  int page = 0;
+
+  Future<void> refreshPosts() async {
+    if (!loadMoreLoading) {
+      showLoading();
+      emit(BorrowResultLoading());
+      page = 0;
+      loadMoreRefresh = true;
+      loadMoreLoading = true;
+      callApi();
+    }
+  }
+
+  Future<void> loadMorePosts() async {
+    if (!loadMoreLoading) {
+      emit(BorrowResultLoading());
+      showLoading();
+      page += 1;
+      loadMoreRefresh = false;
+      loadMoreLoading = true;
+       await getPawnshopPackageResult();
+    }
+  }
+
+
   Future<void> getPersonLendingResult({
     String? collateralAmount,
     String? collateralSymbols,
@@ -54,7 +83,6 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
     String? loanToValueRanges,
     String? loanSymbols,
     String? loanType,
-    String? page,
   }) async {
     final Result<List<PersonalLending>> result =
         await _repo.getListPersonalLending(
@@ -65,11 +93,10 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       loanToValueRanges: loanToValueRanges,
       loanSymbols: loanSymbols,
       loanType: loanType,
-      page: '0',
+      page: page.toString(),
     );
     result.when(
       success: (res) {
-        showContent();
         emit(BorrowPersonSuccess(CompleteType.SUCCESS, personalLending: res));
       },
       error: (error) {
@@ -86,7 +113,6 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
     String? loanToValueRanges,
     String? loanSymbols,
     String? loanType,
-    String? page,
   }) async {
     final Result<List<PawnshopPackage>> result = await _repo.getListPawnshop(
       collateralAmount: collateralAmount,
@@ -96,11 +122,10 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       loanToValueRanges: loanToValueRanges,
       loanSymbols: loanSymbols,
       loanType: loanType,
-      page: '0',
+      page: page.toString(),
     );
     result.when(
       success: (res) {
-        showContent();
         emit(
           BorrowPawnshopSuccess(
             CompleteType.SUCCESS,
