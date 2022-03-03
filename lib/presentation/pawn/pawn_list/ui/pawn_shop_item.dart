@@ -137,6 +137,8 @@ class PawnItem extends StatelessWidget {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
+                            width: 99.w,
+                            height: 99.w,
                             color: AppTheme.getInstance().bgBtsColor(),
                           ),
                         ),
@@ -156,9 +158,9 @@ class PawnItem extends StatelessWidget {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 Container(
-                              color: AppTheme.getInstance().bgBtsColor(),
-                              width: 20.w,
-                              height: 20.w,
+                              color: AppTheme.getInstance().selectDialogColor(),
+                              width: 20,
+                              height: 20,
                             ),
                           ),
                         ),
