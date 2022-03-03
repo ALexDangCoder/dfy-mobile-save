@@ -206,7 +206,7 @@ Widget _buildButtonCancelOnSale(
               nftMarket: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              spender: nft_sales_address_dev2,
+              spender: Get.find<AppConstants>().nftSalesAddress,
               cancelInfo: S.current.cancel_sale_info,
               cancelWarning: S.current.customer_cannot,
               title: S.current.cancel_sale,
@@ -553,7 +553,7 @@ Widget _buildButtonPutOnMarket(
           }
         }
       } else {
-        showAlert(context,nftMarket.owner ?? '');
+        showAlert(context, nftMarket.owner ?? '');
       }
     },
     gradient: RadialGradient(

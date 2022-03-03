@@ -56,7 +56,7 @@ abstract class CreateHardNFtService {
       '${ApiConstants.GET_LIST_EVALUATION_RESULT}{evaluator_id}${ApiConstants.REJECT}')
   Future<ConfirmEvaluationResponse> confirmRejectEvaluation(
     @Path('evaluator_id') String evaluatorId,
-    @Query('bc_txn_hash_accept') String bcTxnHash,
+    @Query('bc_txn_hash_reject') String bcTxnHash,
   );
 
   @GET(ApiConstants.GET_EVALUATION_FEE)
