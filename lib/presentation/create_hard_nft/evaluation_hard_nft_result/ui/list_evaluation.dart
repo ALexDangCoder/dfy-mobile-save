@@ -39,6 +39,7 @@ class ListEvaluation extends StatelessWidget {
         spaceH20,
         SizedBox(
           child: ListView.builder(
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: listEvaluation.length,

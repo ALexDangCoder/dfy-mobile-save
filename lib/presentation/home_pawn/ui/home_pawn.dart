@@ -556,11 +556,16 @@ class _HomePawnState extends State<HomePawn> {
             left: 12.w,
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const BorrowLendScreen();
-                  },
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return BorrowLendScreen(
+                        type: type,
+                      );
+                    },
+                  ),
+                );
               },
               child: Row(
                 children: [
