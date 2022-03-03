@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/item_header_filter.dart';
@@ -15,6 +14,8 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'filter_personal.dart';
 
 class PersonalLendingScreen extends StatefulWidget {
   const PersonalLendingScreen({Key? key}) : super(key: key);
@@ -127,14 +128,14 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // showModalBottomSheet(
-                              //   isScrollControlled: true,
-                              //   backgroundColor: Colors.transparent,
-                              //   context: context,
-                              //   builder: (context) => FilterPawn(
-                              //     bloc: _bloc,
-                              //   ),
-                              // );//todo filter
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) => PersonalFilter(
+                                  bloc: _bloc,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: EdgeInsets.only(right: 16.w),
@@ -251,7 +252,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                   nameShop: list[index].name.toString(),
                                   interestRate:
                                       '${list[index].minInterestRate}%'
-                                          '-${list[index].maxInterestRate}%',
+                                      '-${list[index].maxInterestRate}%',
                                   collateral: list[index]
                                           .p2PLenderPackages?[0]
                                           .acceptableAssetsAsCollateral ??

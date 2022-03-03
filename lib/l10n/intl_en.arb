@@ -826,5 +826,6 @@
   "only_become_pawnshop": "Become a pawnshop",
   "personal_lending": "Personal lending",
   "request_loan": "Request loan",
-  "sign_contract_pawn": "Sign contract"
+  "sign_contract_pawn": "Sign contract",
+  "search_personal_lender": "Search personal lender"
 }
