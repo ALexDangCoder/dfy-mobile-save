@@ -25,6 +25,8 @@ const listAddWalletColor = [
   Color.fromRGBO(23, 21, 39, 1),
 ];
 
+const blackColor = Colors.black;
+
 const txtLinear = [
   Color(0xff444B8C),
   Color(0xff26264F),

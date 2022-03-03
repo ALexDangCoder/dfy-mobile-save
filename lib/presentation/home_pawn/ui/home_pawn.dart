@@ -42,30 +42,36 @@ class _HomePawnState extends State<HomePawn> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomePawnCubit, HomePawnState>(
+    return BlocConsumer<HomePawnCubit, HomePawnState>(
+      listener: (ctx, state) {
+        _content(state);
+      },
       bloc: cubit,
       builder: (context, state) {
         return StateStreamLayout(
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {
-            await cubit.callAllApi();
+            await cubit.callAllApi(isRefresh: true);
           },
           textEmpty: '',
           child: RefreshIndicator(
             onRefresh: () async {
-              await cubit.callAllApi();
+              await cubit.callAllApi(isRefresh: true);
             },
-            child: Scaffold(
-              body: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: AppTheme.getInstance().bgColorHomePawn(),
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: AppTheme.getInstance().whiteColor(),
+                body: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: AppTheme.getInstance().bgColorHomePawn(),
+                    ),
                   ),
+                  child: _content(state),
                 ),
-                child: _content(state),
               ),
             ),
           ),
@@ -236,13 +242,12 @@ class _HomePawnState extends State<HomePawn> {
           )
         ],
       );
-    } else {
-      return const ModalProgressHUD(
-        inAsyncCall: true,
-        progressIndicator: CupertinoLoading(),
-        child: SizedBox(),
-      );
     }
+    return const ModalProgressHUD(
+      inAsyncCall: true,
+      progressIndicator: CupertinoLoading(),
+      child: SizedBox(),
+    );
   }
 
   Padding _buildBecomePawnShop() {

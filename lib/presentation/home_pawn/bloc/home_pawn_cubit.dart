@@ -33,6 +33,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
         await _homePawnRepo.getOfficialPawnShopWithNewToken();
     result.when(success: (res) {
       _flagGetDataSuccess = true;
+      listOfficialPawnShopWithToken.clear();
       listOfficialPawnShopWithToken = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
@@ -46,6 +47,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     result.when(
       success: (res) {
         _flagGetDataSuccess = true;
+        topRatedLenders.clear();
         topRatedLenders = res;
       },
       error: (error) {
@@ -60,6 +62,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
         await _homePawnRepo.getTopSalePawnShopPackage();
     result.when(success: (res) {
       _flagGetDataSuccess = true;
+      topSalePawnShop.clear();
       topSalePawnShop = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
@@ -73,6 +76,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     result.when(
       success: (res) {
         _flagGetDataSuccess = true;
+        nftsCollateralsPawn.clear();
         nftsCollateralsPawn = res;
       },
       error: (error) {
@@ -82,17 +86,9 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     );
   }
 
-  Future<void> callAllApi() async {
-    if (listOfficialPawnShopWithToken.isNotEmpty ||
-        topRatedLenders.isNotEmpty ||
-        nftsCollateralsPawn.isNotEmpty ||
-        topSalePawnShop.isNotEmpty) {
-      listOfficialPawnShopWithToken.clear();
-      topRatedLenders.clear();
-      nftsCollateralsPawn.clear();
-      topSalePawnShop.clear();
-    } else {
-
+  Future<void> callAllApi({bool isRefresh = false}) async {
+    if (isRefresh) {
+      showLoading();
     }
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
@@ -102,38 +98,9 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
       emit(
         HomePawnLoadSuccess(),
       );
+      showContent();
     } else {}
   }
-
-  List<TopRate> fakeTopRate = [
-    TopRate(
-      'London Pawnshop',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    ),
-    TopRate(
-      'London Pawnshop',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    ),
-    TopRate(
-      'London Pawnshop',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    ),
-    TopRate(
-      'London Pawnshop',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    ),
-    TopRate(
-      'London Pawnshop',
-      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    ),
-  ];
-
-  List<PawnToken> pawnsBannerSlide = [
-    PawnToken(ImageAssets.ic_dfy, 'Defi for you (DFY)', ImageAssets.ic_dfy),
-    PawnToken(ImageAssets.ic_dfy, 'alpha be (DFY)', ImageAssets.ic_dfy),
-    PawnToken(ImageAssets.ic_dfy, 'dep zai (DFY)', ImageAssets.ic_dfy),
-    PawnToken(ImageAssets.ic_dfy, 'corona (DFY)', ImageAssets.ic_dfy),
-  ];
 
   List<BorrowOrLend> borrowFeatLend = [
     BorrowOrLend(
@@ -163,19 +130,4 @@ class BorrowOrLend {
     this.type,
     this.imgBackGround,
   );
-}
-
-class TopRate {
-  String title;
-  String img;
-
-  TopRate(this.title, this.img);
-}
-
-class PawnToken {
-  String avatar;
-  String nameOfToken;
-  String iconSymbol;
-
-  PawnToken(this.avatar, this.nameOfToken, this.iconSymbol);
 }

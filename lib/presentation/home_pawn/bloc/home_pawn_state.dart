@@ -9,6 +9,11 @@ class HomePawnInitial extends HomePawnState {
   List<Object> get props => [];
 }
 
+class HomePawnLoading extends HomePawnState {
+  @override
+  List<Object> get props => [];
+}
+
 class HomePawnLoadSuccess extends HomePawnState {
   final List<OfficialPawnItemModel>? listOfficialPawnItemModel;
   final List<TopRateLenderModel>? topRatedLenders;
