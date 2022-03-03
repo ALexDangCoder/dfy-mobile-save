@@ -827,5 +827,9 @@
   "personal_lending": "Personal lending",
   "request_loan": "Request loan",
   "sign_contract_pawn": "Sign contract",
-  "search_personal_lender": "Search personal lender"
+  "search_personal_lender": "Search personal lender",
+  "what_you_can_borrow": "What you can borrow?",
+  "how_much": "How much?",
+  "enter_amount": "Enter amount",
+  "which_token": "Which token?"
 }
