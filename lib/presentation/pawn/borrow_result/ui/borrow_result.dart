@@ -18,7 +18,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BorrowResult extends StatefulWidget {
-  const BorrowResult({Key? key}) : super(key: key);
+  final String? nameToken;
+  final String? amount;
+
+  const BorrowResult({
+    Key? key,
+    this.nameToken,
+    this.amount,
+  }) : super(key: key);
 
   @override
   _BorrowResultState createState() => _BorrowResultState();

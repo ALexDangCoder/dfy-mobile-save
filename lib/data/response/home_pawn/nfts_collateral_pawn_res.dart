@@ -99,10 +99,10 @@ class NftCollateralPawnResponse extends Equatable {
   int? totalOfCopies;
 
   TypeNFT getTypeNft(int type) {
-    if (type == 0) {
-      return TypeNFT.SOFT_NFT;
-    } else {
+    if (type == 1) {
       return TypeNFT.HARD_NFT;
+    } else {
+      return TypeNFT.SOFT_NFT;
     }
   }
 
@@ -128,11 +128,12 @@ class NftCollateralPawnResponse extends Equatable {
         nftId: nftId,
         typeNFT: getTypeNft(nftType ?? 0),
         totalCopies: totalOfCopies,
+        tokenBuyOut: expectedLoanSymbol,
         typeImage: getTypeImage(mediaType ?? ''),
+        cover: getPath(nftMediaCid ?? ''),
         numberOfCopies: numberOfCopies,
         marketId: id.toString(),
         price: double.parse(expectedLoanAmount.toString()),
-        symbolToken: expectedLoanSymbol,
         borrowerWalletAddress: borrowerWalletAddress,
       );
 

@@ -8,7 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BannerPawnSlide extends StatefulWidget {
-  const BannerPawnSlide({Key? key}) : super(key: key);
+  const BannerPawnSlide({
+    Key? key,
+    required this.cubit,
+  }) : super(key: key);
+  final HomePawnCubit cubit;
 
   @override
   _BannerPawnSlideState createState() => _BannerPawnSlideState();
@@ -17,12 +21,10 @@ class BannerPawnSlide extends StatefulWidget {
 class _BannerPawnSlideState extends State<BannerPawnSlide> {
   int currentIndex = 0;
   late PageController _pageController;
-  late HomePawnCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    cubit = HomePawnCubit();
     _pageController = PageController();
   }
 
@@ -56,7 +58,8 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: cubit.pawnsBannerSlide.length,
+                    itemCount:
+                        widget.cubit.listOfficialPawnShopWithToken.length,
                     onPageChanged: (int index) {
                       setState(() {
                         currentIndex = index;
@@ -66,7 +69,11 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
                       return Row(
                         children: [
                           _buildAvatarPawn(
-                            imgAvatar: cubit.pawnsBannerSlide[index].avatar,
+                            imgAvatar: widget
+                                    .cubit
+                                    .listOfficialPawnShopWithToken[index]
+                                    .imageCryptoAsset ??
+                                '',
                           ),
                           spaceW30,
                           Column(
@@ -74,23 +81,29 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
                             children: [
                               RichText(
                                 text: TextSpan(
-                                    text: S.current.name_of_token,
-                                    style: textNormalCustom(
-                                      AppTheme.getInstance().whiteColor(),
-                                      14,
-                                      FontWeight.w400,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: cubit.pawnsBannerSlide[index]
-                                            .nameOfToken,
-                                        style: textNormalCustom(
-                                          AppTheme.getInstance().whiteColor(),
-                                          14,
-                                          FontWeight.w600,
-                                        ),
-                                      )
-                                    ]),
+                                  text: S.current.name_of_token,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().whiteColor(),
+                                    14,
+                                    FontWeight.w400,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: widget
+                                              .cubit
+                                              .listOfficialPawnShopWithToken[
+                                                  index]
+                                              .cryptoAsset
+                                              ?.symbol ??
+                                          '',
+                                      style: textNormalCustom(
+                                        AppTheme.getInstance().whiteColor(),
+                                        14,
+                                        FontWeight.w600,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                               spaceH15,
                               Row(
@@ -107,9 +120,13 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
                                     height: 20.h,
                                     width: 20.w,
                                     child: CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                        cubit
-                                            .pawnsBannerSlide[index].iconSymbol,
+                                      backgroundImage: NetworkImage(
+                                        widget
+                                                .cubit
+                                                .listOfficialPawnShopWithToken[
+                                                    index]
+                                                .imageCryptoAsset ??
+                                            '',
                                       ),
                                     ),
                                   )
@@ -138,7 +155,7 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    cubit.pawnsBannerSlide.length,
+                    widget.cubit.listOfficialPawnShopWithToken.length,
                     (index) => buildDot(index, context),
                   ),
                 ),
@@ -154,7 +171,7 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
     return Container(
       height: 6.h,
       width: currentIndex == index ? 32.25.w : 6.w,
-      margin: index != 3
+      margin: index != 2
           ? EdgeInsets.only(
               right: 8.w,
             )
@@ -190,8 +207,15 @@ class _BannerPawnSlideState extends State<BannerPawnSlide> {
           child: SizedBox(
             height: 60.h,
             width: 60.w,
-            child: CircleAvatar(
-              backgroundImage: AssetImage(imgAvatar),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50.r),
+              child: FadeInImage.assetNetwork(
+                placeholder: ImageAssets.image_loading,
+                image: imgAvatar,
+                imageCacheHeight: 60,
+                placeholderCacheHeight: 50,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

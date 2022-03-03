@@ -203,6 +203,10 @@ class ApiConstants {
 
   static const String GET_HARD_NFT_TYPE = 'hard-nft-svc/public-api/asset/types';
 
+//pawn
+  static const String GET_LIST_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-pawnshop';
+
   ///PAWN
   static const String GET_OFFICIAL_PAWNSHOP_WITH_TOKEN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/homepage/list-official-pawnshop';
