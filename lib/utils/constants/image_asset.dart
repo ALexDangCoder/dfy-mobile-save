@@ -67,6 +67,7 @@ class ImageAssets {
   ///Pawn
 
   static const String logo_pawn = '$baseImg/logo_pawn.png';
+  static const String ic_hard = '$baseImg/icon_hard.png';
   static const String alarm = '$baseImg/alarm.png';
   static const String banner_pawn = '$baseImg/banner.png';
   static const String bgPawnShopToken = '$baseImg/bg_pawnshop_token.png';

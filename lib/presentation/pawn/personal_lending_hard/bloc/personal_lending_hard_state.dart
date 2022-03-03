@@ -2,25 +2,25 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class PersonalLendingState extends Equatable {}
+abstract class PersonalLendingHardState extends Equatable {}
 
-class PersonalLendingInitial extends PersonalLendingState {
+class PersonalLendingHardInitial extends PersonalLendingHardState {
   @override
   List<Object?> get props => [];
 }
 
-class PersonalLendingLoading extends PersonalLendingState {
+class PersonalLendingHardLoading extends PersonalLendingHardState {
   @override
   List<Object?> get props => [];
 }
 
-class PersonalLendingSuccess extends PersonalLendingState {
+class PersonalLendingHardSuccess extends PersonalLendingHardState {
   final int id = DateTime.now().millisecond;
   final CompleteType completeType;
   final List<PersonalLending>? listPersonal;
   final String? message;
 
-  PersonalLendingSuccess(
+  PersonalLendingHardSuccess(
     this.completeType, {
     this.listPersonal,
     this.message,
