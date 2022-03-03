@@ -43,6 +43,7 @@ const btnGold4Colors = [
 ];
 
 const purple = Color(0xff9997FF);
+const grey3 = Color(0xffA2A3A7);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
@@ -108,6 +109,7 @@ const orangeMarketColor = Color(0xffFE951A);
 const redMarketColor = Color(0xffFF6C6C);
 const greenMarketColor = Color(0xff61c777);
 const blueMarketColor = Color(0xff46BCFF);
+const orangeColor = Color(0xffF2994A);
 const bgDropdown = Color(0xff585782);
 final colorWhiteDot2 = const Color(0xFFFFFFFF).withOpacity(0.2);
 

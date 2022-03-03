@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ButtonRadial extends StatelessWidget {
   final Widget child;
+  final double? height;
+  final double? width;
 
   const ButtonRadial({
     Key? key,
     required this.child,
+    this.height, this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64.h,
-     // width: 298.w,
+      height: height ?? 64.h,
+      width: width,
       decoration: BoxDecoration(
         gradient:  RadialGradient(
           center: const Alignment(0.5, -0.5),

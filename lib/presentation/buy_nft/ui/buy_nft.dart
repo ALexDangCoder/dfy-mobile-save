@@ -4,6 +4,7 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/buy_nft_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -25,6 +26,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class BuyNFT extends StatefulWidget {
   const BuyNFT({
@@ -267,7 +269,7 @@ class _BuyNFTState extends State<BuyNFT> {
             context: context,
             orderId: widget.nftMarket.orderId.toString(),
             numberOfCopies: cubit.amountValue.toString(),
-            contractAddress: nft_sales_address_dev2,
+            contractAddress: Get.find<AppConstants>().nftSalesAddress,
           )
           .then(
             (hexString) => Navigator.pushReplacement(
@@ -389,7 +391,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   },
                   textActiveButton: S.current.buy_nft,
                   hexString: hexString,
-                  spender: nft_sales_address_dev2,
+                  spender: Get.find<AppConstants>().nftSalesAddress,
                 ),
               ),
             ),

@@ -184,6 +184,19 @@ class _NFTItemState extends State<NFTItemWidget> {
                                     placeholder: ImageAssets.image_loading,
                                     image: widget.nftMarket.cover ?? '',
                                     imageCacheHeight: 200,
+                                    imageErrorBuilder: (context, url, error) {
+                                      return Center(
+                                        child: Text(
+                                          S.current.unload_image,
+                                          style: textNormalCustom(
+                                            Colors.white,
+                                            14,
+                                            FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
                                     placeholderCacheHeight: 50,
                                     fit: BoxFit.cover,
                                   ),

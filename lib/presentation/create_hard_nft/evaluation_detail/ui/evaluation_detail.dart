@@ -400,10 +400,10 @@ class _EvaluationDetailState extends State<EvaluationDetail>
         Row(
           children: [
             if (widget.evaluation.authenticityType == 1) ...[
-              sizedSvgImage(w: 16.w, h: 16.h, image: ImageAssets.ic_verify_svg)
+              sizedSvgImage(w: 16, h: 16, image: ImageAssets.ic_verify_svg)
             ] else ...[
               sizedSvgImage(
-                  w: 16.w, h: 16.h, image: ImageAssets.ic_transaction_fail_svg,)
+                  w: 16, h: 16, image: ImageAssets.ic_transaction_fail_svg,)
             ],
             spaceW5,
             if (widget.evaluation.authenticityType == 1)
