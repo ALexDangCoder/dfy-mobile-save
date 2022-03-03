@@ -145,7 +145,7 @@ Widget buttonCancelAuction({
               nftOnAuction: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              spender: nft_auction_dev2,
+              spender: Get.find<AppConstants>().nftAuction,
               cancelInfo: S.current.auction_cancel_info,
               cancelWarning: S.current.cancel_auction_warning,
               title: S.current.cancel_aution,
@@ -253,8 +253,7 @@ Container _priceContainerOnAuction({
                 ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? formatPrice.format(nftOnAuction.reservePrice)
-                      : formatPrice.format(nftOnAuction.currentPrice)} '
+                  '${!isBidding ? formatPrice.format(nftOnAuction.reservePrice) : formatPrice.format(nftOnAuction.currentPrice)} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -46,7 +48,7 @@ class Step1WhenSubmit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     cubit.dataStep1.wallet = cubit.getAddressWallet();
-    final walletFormat =  cubit.getAddressWallet().formatAddressWallet();
+    final walletFormat = cubit.getAddressWallet().formatAddressWallet();
     return BlocConsumer(
         listener: (context, state) {
           if (state is CreateStep1Submitting) {
@@ -108,7 +110,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           });
                         },
                         textActiveButton: S.current.request_evaluation,
-                        spender: eva_dev2,
+                        spender: Get.find<AppConstants>().eva,
                       ),
                     ),
                   )
@@ -216,7 +218,10 @@ class Step1WhenSubmit extends StatelessWidget {
                     ),
                   ),
                   // spaceH20,
-                  UploadDocumentWidget(cubit: cubit, isVisibleDoc: false,),
+                  UploadDocumentWidget(
+                    cubit: cubit,
+                    isVisibleDoc: false,
+                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

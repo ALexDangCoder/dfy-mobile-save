@@ -552,7 +552,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     try {
       showLoading();
       hexString = await web3Client.getCancelAuctionData(
-        contractAddress: nft_auction_dev2,
+        contractAddress: Get.find<AppConstants>().nftAuction,
         context: context,
         auctionId: auctionId,
       );

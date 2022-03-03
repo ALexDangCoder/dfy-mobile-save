@@ -185,7 +185,7 @@ Widget _buildButtonCancelOnPawn(
               nftOnPawn: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              spender: nft_pawn_dev2,
+              spender: Get.find<AppConstants>().nftPawn,
               cancelInfo: S.current.pawn_cancel_info,
               cancelWarning: S.current.pawn_cancel_warning,
               title: S.current.cancel_pawn,

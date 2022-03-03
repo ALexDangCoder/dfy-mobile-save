@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -18,6 +19,7 @@ import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'item_icon_text.dart';
 
@@ -246,7 +248,7 @@ class DialogCancel extends StatelessWidget {
                                           },
                                           textActiveButton:
                                               S.current.cancel_appointment,
-                                          spender: eva_dev2,
+                                          spender: Get.find<AppConstants>().eva,
                                         ),
                                       ),
                                     ),

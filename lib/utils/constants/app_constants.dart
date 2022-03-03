@@ -170,7 +170,6 @@ class DateTimeFormat {
   static const CREATE_STRING_TO_DATE = _dtFormat15;
 }
 
-
 const USDT = 'USDT';
 const BNB = 'BNB';
 const PERCENT = '%';
@@ -215,7 +214,8 @@ const String DOCX =
 const String DOC = 'application/msword';
 const String PDF = 'application/pdf';
 const String XLS = 'application/vnd.ms-excel';
-const String XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const String XLSX =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const String POWER_POINT = 'application/vnd.ms-powerpoint';
 const String POWER_POINT_XML =
     'application/vnd.openxmlformats-officedocument.presentationml.presentation';

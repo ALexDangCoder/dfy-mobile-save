@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -22,6 +23,7 @@ import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class OfferDetailScreen extends StatefulWidget {
   const OfferDetailScreen({
@@ -394,7 +396,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 MaterialPageRoute(
                   builder: (context) => Approve(
                     title: S.current.reject_offer,
-                    spender: nft_pawn_dev2,
+                    spender: Get.find<AppConstants>().nftPawn,
                     textActiveButton: S.current.reject_offer,
                     hexString: value,
                     header: Column(
@@ -493,7 +495,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 MaterialPageRoute(
                   builder: (context) => Approve(
                     title: S.current.accept_offer,
-                    spender: nft_pawn_dev2,
+                    spender: Get.find<AppConstants>().nftPawn,
                     textActiveButton: S.current.accept_offer,
                     hexString: value,
                     header: Column(
