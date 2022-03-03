@@ -159,15 +159,14 @@ class _PawnListState extends State<PawnList> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return DialogFilter(
-                                        title: S.current.rating,
-                                        type: _bloc.typeRating ??
-                                            TypeFilter.HIGH_TO_LOW,
-                                      );
-                                    },
+                                final res = await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => DialogFilter(
+                                    title: S.current.rating,
+                                    type: _bloc.typeRating ??
+                                        TypeFilter.HIGH_TO_LOW,
                                   ),
                                 );
                                 if (res != null) {
@@ -181,15 +180,14 @@ class _PawnListState extends State<PawnList> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return DialogFilter(
-                                        title: S.current.interest_rate_pawn,
-                                        type: _bloc.typeInterest ??
-                                            TypeFilter.HIGH_TO_LOW,
-                                      );
-                                    },
+                                final res = await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => DialogFilter(
+                                    title: S.current.rating,
+                                    type: _bloc.typeInterest ??
+                                        TypeFilter.HIGH_TO_LOW,
                                   ),
                                 );
                                 if (res != null) {
@@ -203,15 +201,14 @@ class _PawnListState extends State<PawnList> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                final res = await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return DialogFilter(
-                                        title: S.current.signed_contracts,
-                                        type: _bloc.typeSigned ??
-                                            TypeFilter.HIGH_TO_LOW,
-                                      );
-                                    },
+                                final res = await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => DialogFilter(
+                                    title: S.current.rating,
+                                    type: _bloc.typeSigned ??
+                                        TypeFilter.HIGH_TO_LOW,
                                   ),
                                 );
                                 if (res != null) {

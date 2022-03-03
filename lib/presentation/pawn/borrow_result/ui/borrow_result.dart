@@ -16,7 +16,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BorrowResult extends StatefulWidget {
-  const BorrowResult({Key? key}) : super(key: key);
+  final String? nameToken;
+  final String? amount;
+
+  const BorrowResult({
+    Key? key,
+    this.nameToken,
+    this.amount,
+  }) : super(key: key);
 
   @override
   _BorrowResultState createState() => _BorrowResultState();
@@ -94,7 +101,7 @@ class _BorrowResultState extends State<BorrowResult> {
                   children: [
                     spaceH24,
                     Padding(
-                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -150,7 +157,7 @@ class _BorrowResultState extends State<BorrowResult> {
                     ),
                     spaceH32,
                     Padding(
-                      padding:  EdgeInsets.only(left: 16.w,right: 16.w),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
                       child: Text(
                         'PAWNSHOP PACKAGE',
                         style: textNormalCustom(
@@ -164,7 +171,7 @@ class _BorrowResultState extends State<BorrowResult> {
                     SizedBox(
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(left: 16.w,right: 16.w),
+                        padding: EdgeInsets.only(left: 16.w, right: 16.w),
                         shrinkWrap: true,
                         itemCount: pawnshopPackage.length,
                         itemBuilder: (BuildContext context, int index) {
