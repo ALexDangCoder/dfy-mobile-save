@@ -45,11 +45,14 @@ const btnGold4Colors = [
 ];
 
 const purple = Color(0xff9997FF);
+const itemPawnBank = Color(0xff576C96);
 const grey3 = Color(0xffA2A3A7);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
 const textHistory = Color(0xFFE4E4E4);
+const textPawnGray = Color(0xffD1D1D3);
+const textPawnItemGray = Color(0xffA2A3A7);
 
 //skeleton
 const colorSkeletonLight = Color(0xFF605F83);
@@ -131,6 +134,12 @@ const bgTranSubmitColor = Color(0xff585782);
 ///=========== Using to make change app theme ================================
 abstract class AppColor {
   Color bgDropdownBtn();
+
+  Color pawnGray();
+
+  Color pawnItemColor();
+
+  Color pawnItemGray();
 
   List<Color> linearTxt();
 
@@ -715,6 +724,21 @@ class LightApp extends AppColor {
   }
 
   @override
+  Color pawnGray() {
+    return textPawnGray;
+  }
+
+  @override
+  Color pawnItemGray() {
+    return textPawnItemGray;
+  }
+
+  @override
+  Color pawnItemColor() {
+   return itemPawnBank;
+  }
+
+  @override
   Color blackColor() {
     return Colors.black;
   }
@@ -1203,6 +1227,24 @@ class DarkApp extends AppColor {
   @override
   Color getShadowBottomBar() {
     // TODO: implement getShadowBottomBar
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnGray() {
+    // TODO: implement pawnGray
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnItemGray() {
+    // TODO: implement pawnItemGray
+    throw UnimplementedError();
+  }
+
+  @override
+  Color pawnItemColor() {
+    // TODO: implement pawnItemColor
     throw UnimplementedError();
   }
 }
