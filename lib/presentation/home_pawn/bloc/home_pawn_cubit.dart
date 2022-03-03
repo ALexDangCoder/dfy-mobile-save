@@ -1,9 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
 import 'package:Dfy/domain/model/home_pawn/nfts_collateral_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/official_pawn_item_model.dart';
-import 'package:Dfy/domain/model/home_pawn/official_pawn_with_token_model.dart';
 import 'package:Dfy/domain/model/home_pawn/top_rate_model.dart';
 import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
@@ -85,19 +83,24 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
   }
 
   Future<void> callAllApi() async {
-    // showLoading();
+    if (listOfficialPawnShopWithToken.isNotEmpty ||
+        topRatedLenders.isNotEmpty ||
+        nftsCollateralsPawn.isNotEmpty ||
+        topSalePawnShop.isNotEmpty) {
+      listOfficialPawnShopWithToken.clear();
+      topRatedLenders.clear();
+      nftsCollateralsPawn.clear();
+      topSalePawnShop.clear();
+    } else {
+
+    }
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
     await getTopSalePawnPackageShop();
     await getNftsCollateralPawn();
     if (_flagGetDataSuccess) {
       emit(
-        HomePawnLoadSuccess(
-          [],
-          [],
-          [],
-          [],
-        ),
+        HomePawnLoadSuccess(),
       );
     } else {}
   }

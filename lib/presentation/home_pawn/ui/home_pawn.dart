@@ -46,18 +46,25 @@ class _HomePawnState extends State<HomePawn> {
         return StateStreamLayout(
           stream: cubit.stateStream,
           error: AppException(S.current.error, S.current.something_went_wrong),
-          retry: () {},
+          retry: () async {
+            await cubit.callAllApi();
+          },
           textEmpty: '',
-          child: Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: AppTheme.getInstance().bgColorHomePawn(),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await cubit.callAllApi();
+            },
+            child: Scaffold(
+              body: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: AppTheme.getInstance().bgColorHomePawn(),
+                  ),
                 ),
+                child: _content(state),
               ),
-              child: _content(state),
             ),
           ),
         );
