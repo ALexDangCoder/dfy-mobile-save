@@ -1,6 +1,7 @@
-import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/personal_lending_hard.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -65,15 +66,21 @@ class ButtonGold extends StatelessWidget {
       width: fixSize == true ? 343.w : null,
       child: SizedBox(
         child: Align(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: textNormal(
-              textColor ?? AppTheme.getInstance().textThemeColor(),
-              textSize ?? 20,
-            ).copyWith(fontWeight: FontWeight.bold),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          child: GestureDetector(
+            onTap: () {
+              //todo test ke
+              goTo(context, PersonalLendingHardScreen());
+            },
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: textNormal(
+                textColor ?? AppTheme.getInstance().textThemeColor(),
+                textSize ?? 20,
+              ).copyWith(fontWeight: FontWeight.bold),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
