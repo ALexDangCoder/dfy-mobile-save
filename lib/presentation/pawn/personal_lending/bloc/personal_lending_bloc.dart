@@ -24,7 +24,10 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
   static const int TEN_TO_TWENTY_FIVE = 1;
   static const int TWENTY_FIVE_TO_FIVETY = 2;
   static const int MORE_THAN_FIVETY = 3;
-
+  String? interestRanges;
+  String? name;
+  String? loanToValueRanges;
+  String? collateralSymbols;
   bool get canLoadMore => _canLoadMore;
 
   bool get isRefresh => _isRefresh;
@@ -155,6 +158,10 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
         statusListCollateral.add(i);
       }
     }
+    String? interestRanges;
+    name=textSearch.value;
+    String? loanToValueRanges;
+    String? collateralSymbols;
   }
 
   void funOnTapSearch() {
@@ -173,6 +180,8 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       getPersonLendingResult();
     }
   }
+
+
 
   //
   Future<void> getPersonLendingResult({
