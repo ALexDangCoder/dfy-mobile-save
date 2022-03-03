@@ -9,6 +9,7 @@ class PawnShopModel {
   String? address;
   String? description;
   String? walletAddress;
+  String? avatar;
 
   PawnShopModel(
       {this.id,
@@ -20,5 +21,6 @@ class PawnShopModel {
       this.phoneNumber,
       this.address,
       this.description,
+      this.avatar,
       this.walletAddress});
 }

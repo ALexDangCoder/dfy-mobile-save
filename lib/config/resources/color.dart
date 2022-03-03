@@ -25,6 +25,8 @@ const listAddWalletColor = [
   Color.fromRGBO(23, 21, 39, 1),
 ];
 
+const blackColor = Colors.black;
+
 const txtLinear = [
   Color(0xff444B8C),
   Color(0xff26264F),
@@ -131,6 +133,8 @@ abstract class AppColor {
   Color bgDropdownBtn();
 
   List<Color> linearTxt();
+
+  Color blackColor();
 
   List<Color> btnGold4();
 
@@ -709,9 +713,20 @@ class LightApp extends AppColor {
   List<Color> linearTxt() {
     return txtLinear;
   }
+
+  @override
+  Color blackColor() {
+    return Colors.black;
+  }
 }
 
 class DarkApp extends AppColor {
+
+  @override
+  Color blackColor() {
+    return Colors.black;
+  }
+
   @override
   List<Color> linearTxt() {
     return txtLinear;

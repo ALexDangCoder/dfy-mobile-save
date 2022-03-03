@@ -9,18 +9,23 @@ class HomePawnInitial extends HomePawnState {
   List<Object> get props => [];
 }
 
-class HomePawnLoadSuccess extends HomePawnState {
-  final List<OfficialPawnItemModel> listOfficialPawnItemModel;
-  final List<TopRateLenderModel> topRatedLenders;
-  final List<TopSalePawnShopItemModel> topSalePawnShopPackage;
-  final List<NftsCollateralPawnModel> nftsCollateralPawn;
+class HomePawnLoading extends HomePawnState {
+  @override
+  List<Object> get props => [];
+}
 
-  const HomePawnLoadSuccess(
+class HomePawnLoadSuccess extends HomePawnState {
+  final List<OfficialPawnItemModel>? listOfficialPawnItemModel;
+  final List<TopRateLenderModel>? topRatedLenders;
+  final List<TopSalePawnShopItemModel>? topSalePawnShopPackage;
+  final List<NftsCollateralPawnModel>? nftsCollateralPawn;
+
+   HomePawnLoadSuccess({
     this.listOfficialPawnItemModel,
     this.topRatedLenders,
     this.topSalePawnShopPackage,
     this.nftsCollateralPawn,
-  );
+  });
 
   @override
   List<Object?> get props => [

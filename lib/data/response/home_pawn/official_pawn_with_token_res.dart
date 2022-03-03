@@ -129,7 +129,7 @@ class PawnShopResponse extends Equatable {
   @JsonKey(name: 'description')
   String? description;
   @JsonKey(name: 'avatar')
-  dynamic avatar;
+  String? avatar;
   @JsonKey(name: 'reputation')
   int? reputation;
   @JsonKey(name: 'isFeaturedPawnshop')
@@ -187,6 +187,7 @@ class PawnShopResponse extends Equatable {
         email: email,
         description: description,
         phoneNumber: phoneNumber,
+        avatar: avatar,
       );
 
   @override
