@@ -134,6 +134,8 @@ abstract class AppColor {
 
   List<Color> linearTxt();
 
+  Color blackColor();
+
   List<Color> btnGold4();
 
   Color whiteDot2();
@@ -711,9 +713,20 @@ class LightApp extends AppColor {
   List<Color> linearTxt() {
     return txtLinear;
   }
+
+  @override
+  Color blackColor() {
+    return Colors.black;
+  }
 }
 
 class DarkApp extends AppColor {
+
+  @override
+  Color blackColor() {
+    return Colors.black;
+  }
+
   @override
   List<Color> linearTxt() {
     return txtLinear;

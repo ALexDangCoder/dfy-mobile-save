@@ -61,7 +61,7 @@ class _HomePawnState extends State<HomePawn> {
             },
             child: SafeArea(
               child: Scaffold(
-                backgroundColor: AppTheme.getInstance().whiteColor(),
+                backgroundColor: AppTheme.getInstance().blackColor(),
                 body: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
