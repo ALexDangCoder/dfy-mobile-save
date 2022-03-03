@@ -15,6 +15,7 @@ class PawnshopPackageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 343.w,
       clipBehavior: Clip.hardEdge,
       padding: EdgeInsets.only(
         left: 16.w,
@@ -35,6 +36,7 @@ class PawnshopPackageItem extends StatelessWidget {
             children: [
               Container(
                 height: 48.h,
+                clipBehavior: Clip.hardEdge,
                 width: 48.w,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
@@ -73,7 +75,7 @@ class PawnshopPackageItem extends StatelessWidget {
                         style: textNormalCustom(
                           Colors.white,
                           14,
-                          FontWeight.w600,
+                          FontWeight.w400,
                         ),
                       ),
                     ],
@@ -89,13 +91,14 @@ class PawnshopPackageItem extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Interest rate',
                       style: textNormalCustom(
-                        Colors.white,
+                        grey3,
                         14,
-                        FontWeight.w600,
+                        FontWeight.w400,
                       ),
                     ),
                     spaceH3,
@@ -112,13 +115,14 @@ class PawnshopPackageItem extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Loan type',
                       style: textNormalCustom(
-                        Colors.white,
+                        grey3,
                         14,
-                        FontWeight.w600,
+                        FontWeight.w400,
                       ),
                     ),
                     spaceH3,
@@ -132,77 +136,97 @@ class PawnshopPackageItem extends StatelessWidget {
           Text(
             'Collateral accepted',
             style: textNormalCustom(
-              Colors.white,
+              grey3,
               14,
-              FontWeight.w600,
+              FontWeight.w400,
             ),
           ),
           spaceH5,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if ((pawnshopPackage
-                      .acceptableAssetsAsCollateral?.length ??
-                      0) <
-                      5)
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: pawnshopPackage
-                          .acceptableAssetsAsCollateral?.length ??
-                          0,
-                      itemBuilder: (context, int index) {
-                        return Image.asset(
-                          ImageAssets.getSymbolAsset(
-                            pawnshopPackage
-                                .acceptableAssetsAsCollateral?[index].symbol ??
-                                '',
-                          ),
-                        );
-                      },
-                    )
-                  else
-                    ListView.builder(
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, int index) {
-                        return Image.asset(
-                          ImageAssets.getSymbolAsset(
-                            pawnshopPackage
-                                .acceptableAssetsAsCollateral?[index].symbol ??
-                                '',
-                          ),
-                        );
-                      },
-                    ),
-                  if ((pawnshopPackage
-                      .acceptableAssetsAsCollateral?.length ??
-                      0) >
-                      5)
-                    Text(
-                      '& ${pawnshopPackage.
-                      acceptableAssetsAsCollateral!.length - 5} more',
-                      style: textNormalCustom(
-                        Colors.white,
-                        14,
-                        FontWeight.w600,
+          SizedBox(
+            height: 30.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    if ((pawnshopPackage
+                        .acceptableAssetsAsCollateral?.length ??
+                        0) <
+                        5)
+                      ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: pawnshopPackage
+                            .acceptableAssetsAsCollateral?.length ??
+                            0,
+                        itemBuilder: (context, int index) {
+                          return Row(
+                            children: [
+                              SizedBox(
+                                width: 16.w,
+                                height: 16.h,
+                                child: Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    pawnshopPackage
+                                        .acceptableAssetsAsCollateral?[index].symbol ??
+                                        '',
+                                  ),
+
+                                ),
+                              ),
+                              spaceW8,
+                            ],
+                          );
+                        },
+                      )
+                    else
+                      ListView.builder(
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, int index) {
+                          return Row(
+                            children: [
+                              SizedBox(
+                                width: 16.w,
+                                height: 16.h,
+                                child: Image.asset(
+                                  ImageAssets.getSymbolAsset(
+                                    pawnshopPackage
+                                        .acceptableAssetsAsCollateral?[index].symbol ??
+                                        '',
+                                  ),
+                                ),
+                              ),
+                              spaceW8,
+                            ],
+                          );
+                        },
                       ),
-                    ),
-                ],
-              ),
-              sizedSvgImage(
-                w: 20,
-                h: 20,
-                image: ImageAssets.ic_bsc_svg,
-              ),
-            ],
+                    if ((pawnshopPackage
+                        .acceptableAssetsAsCollateral?.length ??
+                        0) >
+                        5)
+                      Text(
+                        '& ${pawnshopPackage.
+                        acceptableAssetsAsCollateral!.length - 5} more',
+                        style: textNormalCustom(
+                          Colors.white,
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                  ],
+                ),
+                sizedSvgImage(
+                  w: 20,
+                  h: 20,
+                  image: ImageAssets.ic_bsc_svg,
+                ),
+              ],
+            ),
           ),
         ],
       ),

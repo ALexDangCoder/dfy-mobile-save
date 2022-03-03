@@ -17,11 +17,12 @@ class PersonalLendingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 306.w,
       clipBehavior: Clip.hardEdge,
       padding: EdgeInsets.only(
         left: 16.w,
         top: 13.h,
-        bottom: 20.h,
+        right: 16.w,
       ),
       decoration: BoxDecoration(
         color: borderItemColors,
@@ -50,7 +51,6 @@ class PersonalLendingItem extends StatelessWidget {
           ),
           spaceH8,
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(ImageAssets.img_star),
               spaceW6,
@@ -59,7 +59,7 @@ class PersonalLendingItem extends StatelessWidget {
                 style: textNormalCustom(
                   Colors.white,
                   14,
-                  FontWeight.w600,
+                  FontWeight.w400,
                 ),
               ),
               spaceW8,
@@ -74,7 +74,7 @@ class PersonalLendingItem extends StatelessWidget {
                 style: textNormalCustom(
                   Colors.white,
                   14,
-                  FontWeight.w600,
+                  FontWeight.w400,
                 ),
               ),
             ],
@@ -84,91 +84,118 @@ class PersonalLendingItem extends StatelessWidget {
             '${personalLending.minInterestRate} - '
             '${personalLending.maxInterestRate}% Interest rate',
             style: textNormalCustom(
-              Colors.white,
+              Colors.green,
               14,
-              FontWeight.w600,
+              FontWeight.w400,
             ),
           ),
           spaceH6,
           Text(
             'Collateral accepted',
             style: textNormalCustom(
-              Colors.white,
+              grey3,
               14,
-              FontWeight.w600,
+              FontWeight.w400,
             ),
           ),
           spaceH8,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if ((personalLending.p2PLenderPackages?[0]
-                          .acceptableAssetsAsCollateral?.length ??
-                      0) <
-                  5)
-                ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: personalLending.p2PLenderPackages?[0]
-                          .acceptableAssetsAsCollateral?.length ??
-                      0,
-                  itemBuilder: (context, int index) {
-                    return Image.asset(
-                      ImageAssets.getSymbolAsset(
-                        personalLending.p2PLenderPackages?[0]
-                                .acceptableAssetsAsCollateral?[index].symbol ??
-                            '',
-                      ),
-                    );
-                  },
-                )
-              else
-                ListView.builder(
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, int index) {
-                    return Image.asset(
-                      ImageAssets.getSymbolAsset(
-                        personalLending.p2PLenderPackages?[0]
-                                .acceptableAssetsAsCollateral?[index].symbol ??
-                            '',
-                      ),
-                    );
-                  },
-                ),
-              if ((personalLending.p2PLenderPackages?[0]
-                          .acceptableAssetsAsCollateral?.length ??
-                      0) >
-                  5)
-                Text(
-                  '& ${personalLending.p2PLenderPackages![0].
-                  acceptableAssetsAsCollateral!.length - 5} more',
-                  style: textNormalCustom(
-                    Colors.white,
-                    14,
-                    FontWeight.w600,
+          SizedBox(
+            height: 30.h,
+            child: Row(
+              children: [
+                if ((personalLending.p2PLenderPackages?[0]
+                            .acceptableAssetsAsCollateral?.length ??
+                        0) <
+                    5)
+                  ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: personalLending.p2PLenderPackages?[0]
+                            .acceptableAssetsAsCollateral?.length ??
+                        0,
+                    itemBuilder: (context, int index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            width: 16.w,
+                            height: 16.h,
+                            child: Image.asset(
+                              ImageAssets.getSymbolAsset(
+                                personalLending
+                                        .p2PLenderPackages?[0]
+                                        .acceptableAssetsAsCollateral?[index]
+                                        .symbol ??
+                                    '',
+                              ),
+                            ),
+                          ),
+                          spaceW8,
+                        ],
+                      );
+                    },
+                  )
+                else
+                  ListView.builder(
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, int index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            width: 16.w,
+                            height: 16.h,
+                            child: Image.asset(
+                              ImageAssets.getSymbolAsset(
+                                personalLending
+                                        .p2PLenderPackages?[0]
+                                        .acceptableAssetsAsCollateral?[index]
+                                        .symbol ??
+                                    '',
+                              ),
+                            ),
+                          ),
+                          spaceW8,
+                        ],
+                      );
+                    },
                   ),
-                ),
-            ],
+                spaceH20,
+                if ((personalLending.p2PLenderPackages?[0]
+                            .acceptableAssetsAsCollateral?.length ??
+                        0) >
+                    5)
+                  Text(
+                    '& ${personalLending.p2PLenderPackages![0].acceptableAssetsAsCollateral!.length - 5} more',
+                    style: textNormalCustom(
+                      Colors.white,
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+              ],
+            ),
           ),
           spaceH20,
           InkWell(
-            onTap: (){
+            onTap: () {
               /// Request Loan
             },
-            child: ButtonRadial(
-              height: 40.h,
-              width: 122.w,
-              child: Center(
-                child: Text(
-                  'Request loan',
-                  style: textNormalCustom(
-                    Colors.white,
-                    16,
-                    FontWeight.w600,
+            child: Padding(
+              padding: EdgeInsets.only(left: 76.w),
+              child: ButtonRadial(
+                height: 40.h,
+                width: 122.w,
+                child: Center(
+                  child: Text(
+                    'Request loan',
+                    style: textNormalCustom(
+                      Colors.white,
+                      16,
+                      FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
