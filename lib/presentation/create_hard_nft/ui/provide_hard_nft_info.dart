@@ -552,6 +552,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       stream: cubit.showItemProperties,
       builder: (context, snapshot) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if ((snapshot.data ?? []).isEmpty)
@@ -709,7 +710,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     required int index,
   }) {
     return Container(
-      height: 44.h,
+      // height: 44.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10.r),
