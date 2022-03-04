@@ -54,11 +54,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     super.initState();
     cubit = ProvideHardNftCubit();
     cubit.getTokenInf();
+    cubit.getListCollection();
     cubit.getCountriesApi();
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
-    cubit.getListCollection();
     final data = cubit.getInfoUserIsCreatedNft();
     if (data != null) {
       currentInfo = data;

@@ -570,6 +570,21 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Future<void> getListCollection() async {
+    final listDropDown = [];
+    listDropDown.add(
+      {
+        'label': 'COLLECTION 721',
+        'value': ADDRESS_COLLECTION_721,
+        'id': ID_COLLECTION_721,
+      },
+    );
+    listDropDown.add(
+      {
+        'label': 'COLLECTION 1155',
+        'value': ADDRESS_COLLECTION_1155,
+        'id': ID_COLLECTION_1155,
+      },
+    );
     final Result<List<CollectionMarketModel>> result =
         await _collectionDetailRepository.getListCollection(
       addressWallet: getAddressWallet().toLowerCase(),
@@ -583,22 +598,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
                   ((element.addressCollection ?? '').isNotEmpty),
             )
             .toList();
-        final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
-        listDropDown.add(
-          {
-            'label': 'COLLECTION 721',
-            'value': ADDRESS_COLLECTION_721,
-            'id': ID_COLLECTION_721,
-          },
-        );
-        listDropDown.add(
-          {
-            'label': 'COLLECTION 1155',
-            'value': ADDRESS_COLLECTION_1155,
-            'id': ID_COLLECTION_1155,
-          },
-        );
-        collectionsBHVSJ.sink.add(listDropDown);
+        listDropDown.addAll(listHardCl.map((e) => e.toDropDownMap()).toList());
+        collectionsBHVSJ.sink.add(listDropDown as List<Map<String, dynamic>>);
       },
       error: (_) {},
     );
