@@ -32,12 +32,12 @@ class ImageAssets {
   static const String btnDownArrow = '$baseImg/line_arrow_down.png';
 
   ///create HARD NFT
-  static const String diamond = '$baseImg/diamond.png';
-  static const String artWork = '$baseImg/art.png';
-  static const String car = '$baseImg/car.png';
-  static const String watch = '$baseImg/watch.png';
-  static const String house = '$baseImg/house.png';
-  static const String others = '$baseImg/other.png';
+  static const String diamond = '$baseImg/ic_diamond.png';
+  static const String artWork = '$baseImg/ic_art.png';
+  static const String car = '$baseImg/ic_car.png';
+  static const String watch = '$baseImg/ic_watch.png';
+  static const String house = '$baseImg/ic_house.png';
+  static const String others = '$baseImg/ic_other.png';
   static const String addFormProperties = '$baseImg/add_form_pro.png';
 
   /// mint request
