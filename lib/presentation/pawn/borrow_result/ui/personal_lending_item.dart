@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -181,7 +182,12 @@ class PersonalLendingItem extends StatelessWidget {
           spaceH20,
           InkWell(
             onTap: () {
-              /// Request Loan
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                  const SendLoanRequest(),
+                ),
+              );
             },
             child: Padding(
               padding: EdgeInsets.only(left: 76.w),

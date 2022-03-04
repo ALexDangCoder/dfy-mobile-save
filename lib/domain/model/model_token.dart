@@ -1,10 +1,10 @@
 class ModelToken {
-  String tokenAddress = '';
-  String nameToken = '';
-  String nameShortToken = '';
-  String iconToken = '';
+  String tokenAddress = '0x';
+  String nameToken = 'DFY';
+  String nameShortToken = 'DFY';
+  String iconToken = 'null';
   double exchangeRate = 0;
-  String walletAddress = '';
+  String walletAddress = '0x';
   int decimal = 0;
 
   double balanceToken = 0.0;
