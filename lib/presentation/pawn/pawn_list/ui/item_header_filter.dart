@@ -19,7 +19,7 @@ class ItemHeaderFilter extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(
             left: 6.w,
-            right: 4.w,
+            right: 1.w,
             top: 5.h,
             bottom: 5.h,
           ),
