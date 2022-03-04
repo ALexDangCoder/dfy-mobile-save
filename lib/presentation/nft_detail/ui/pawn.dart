@@ -104,7 +104,6 @@ Widget _durationRowOnPawn({
 }
 
 Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
-  /// TODO: if un login => login => send offer
   return ButtonGradient(
     onPressed: () {
       showDialog(
@@ -142,6 +141,10 @@ Widget _buildButtonCancelOnPawn(
   return ButtonGradient(
     onPressed: () async {
       if (nftMarket.status == 7) {
+        return;
+      }
+      if(nftMarket.status == 0){
+        Navigator.pop(context);
         return;
       }
       final nav = Navigator.of(context);
@@ -226,6 +229,10 @@ Widget _buildButtonCancelOnPawn(
         );
         if (isSuccess) {
           await refresh();
+          Timer(const Duration(seconds: 15), () {
+            nftMarket.status = 0;
+            bloc.emit(NftOnPawnSuccess(nftMarket));
+          });
         }
       }
     },
@@ -237,7 +244,7 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
-            S.current.cancel_pawn,
+            nftMarket.status == 0 ? S.current.cancel_success : S.current.cancel_pawn,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,

@@ -112,6 +112,10 @@ Widget buttonCancelAuction({
         if (nftMarket.marketStatus == 8) {
           return;
         }
+        if(nftMarket.marketStatus == 0){
+          Navigator.pop(context);
+          return;
+        }
         final nav = Navigator.of(context);
         final String dataString = await bloc.getDataStringForCancelAuction(
           context: context,
@@ -187,6 +191,10 @@ Widget buttonCancelAuction({
         );
         if (isSuccess) {
           await refresh();
+          Timer(const Duration(seconds: 15), () {
+            nftMarket.marketStatus = 0;
+            bloc.emit(NftOnAuctionSuccess(nftMarket));
+          });
         }
       },
       gradient: RadialGradient(
@@ -197,7 +205,9 @@ Widget buttonCancelAuction({
       child: nftMarket.marketStatus == 8
           ? processing()
           : Text(
-              S.current.cancel_aution,
+              nftMarket.marketStatus == 0
+                  ? S.current.cancel_success
+                  : S.current.cancel_aution,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,

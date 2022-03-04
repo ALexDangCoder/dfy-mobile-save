@@ -765,5 +765,8 @@
   "nft_created":"NFT created",
   "un_evaluated":"Un-evaluated",
   "evaluated":"Evaluated",
-  "view_evaluation": "View evaluation"
+  "view_evaluation": "View evaluation",
+  "put_on_market_success":"Success",
+  "cancel_success":"Cancel Success"
+
 }
