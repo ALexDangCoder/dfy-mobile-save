@@ -149,77 +149,77 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                       spaceH20,
                       line,
                       spaceH24,
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                final res = await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => DialogFilter(
-                                    title: S.current.rating,
-                                    type: _bloc.typeRating ??
-                                        TypeFilter.HIGH_TO_LOW,
-                                  ),
-                                );
-                                if (res != null) {
-                                  _bloc.typeRating = res;
-                                  //todo filter
-                                }
-                              },
-                              child: ItemHeaderFilter(
-                                title: S.current.rating,
+                      Center(
+                        child: SizedBox(
+                          width: 343.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeRating ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeRating = res;
+                                    //todo filter
+                                  }
+                                },
+                                child: ItemHeaderFilter(
+                                  title: S.current.rating,
+                                ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final res = await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => DialogFilter(
-                                    title: S.current.rating,
-                                    type: _bloc.typeInterest ??
-                                        TypeFilter.HIGH_TO_LOW,
-                                  ),
-                                );
-                                if (res != null) {
-                                  _bloc.typeInterest = res;
-                                  //todo filter
-                                }
-                              },
-                              child: ItemHeaderFilter(
-                                title: S.current.interest_rate_pawn,
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeInterest ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeInterest = res;
+                                    //todo filter
+                                  }
+                                },
+                                child: ItemHeaderFilter(
+                                  title: S.current.interest_rate_pawn,
+                                ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final res = await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) => DialogFilter(
-                                    title: S.current.rating,
-                                    type: _bloc.typeSigned ??
-                                        TypeFilter.HIGH_TO_LOW,
-                                  ),
-                                );
-                                if (res != null) {
-                                  _bloc.typeSigned = res;
-                                  //todo filter
-                                }
-                              },
-                              child: ItemHeaderFilter(
-                                title: S.current.signed_contracts,
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeSigned ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeSigned = res;
+                                    //todo filter
+                                  }
+                                },
+                                child: ItemHeaderFilter(
+                                  title: S.current.signed_contracts,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       spaceH20,
