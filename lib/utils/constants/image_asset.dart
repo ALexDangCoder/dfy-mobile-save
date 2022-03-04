@@ -269,8 +269,10 @@ class ImageAssets {
   static const String image_avatar = '$baseImg/ava_0';
   static const String image_coming = '$baseImg/img_comming.png';
   static const String image_loading = '$baseImg/img_loading.gif';
-  static const String img_loading_transparent = '$baseImg/img_loading_transparent.gif';
-  static const String image_loading_collection = '$baseImg/loading_collection.png';
+  static const String img_loading_transparent =
+      '$baseImg/img_loading_transparent.gif';
+  static const String image_loading_collection =
+      '$baseImg/loading_collection.png';
 
   //img activity collection detail
 
@@ -299,13 +301,6 @@ class ImageAssets {
   static const String imgRectangle = '$baseImg/rectangle.png';
 
   static const String img_float_btn = '$baseImg/float_btn.png';
-
-  static const String img_diamond = '$baseImg/jewelry.png';
-  static const String img_artwork = '$baseImg/artwork.png';
-  static const String img_car = '$baseImg/car.png';
-  static const String img_watch = '$baseImg/watch.png';
-  static const String img_house = '$baseImg/house.png';
-  static const String img_other = '$baseImg/other.png';
 
   ///SvgImage
   static const String ic_btn_send_token_svg =
@@ -382,7 +377,8 @@ class ImageAssets {
 
   static const String more_circle_white = '$baseImg/more_circle_white.png';
 
-  static const String categories_create_collection = '$baseImg/categories_svg.svg';
+  static const String categories_create_collection =
+      '$baseImg/categories_svg.svg';
 
   static SvgPicture svgAssets(
     String name, {
