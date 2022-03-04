@@ -1,13 +1,11 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
-import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/bloc/borrow_result_cubit.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/pawnshop_package_item.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/personal_lending_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/presentation/pawn/personal_lending/ui/personal_lending_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -39,7 +37,11 @@ class _BorrowResultState extends State<BorrowResult> {
     // TODO: implement initState
     super.initState();
     cubit = BorrowResultCubit();
-    cubit.callApi();
+    cubit.callApi(
+      collateralSymbols:
+          widget.nameToken != S.current.all ? widget.nameToken : '',
+      collateralAmount: widget.amount,
+    );
   }
 
   @override
@@ -150,7 +152,14 @@ class _BorrowResultState extends State<BorrowResult> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PersonalLendingScreen(),
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   height: 32.h,
                                   decoration: const BoxDecoration(

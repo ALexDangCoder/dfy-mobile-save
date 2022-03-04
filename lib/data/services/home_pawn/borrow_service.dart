@@ -15,11 +15,11 @@ abstract class BorrowService {
   @GET(ApiConstants.GET_PAWNSHOP_PACKAGE)
   Future<PawnshopPackageResponse> getPawnshopPackage(
     @Query('collateralAmount') String? collateralAmount,
-    @Query('collection_address') String? collateralSymbols,
-    @Query('collateralSymbols') String? name,
+    @Query('collateralSymbols') String? collateralSymbols,
+    @Query('name') String? name,
     @Query('interestRanges') String? interestRanges,
-    @Query('collection_address') String? loanToValueRanges,
-    @Query('loanToValueRanges') String? loanSymbols,
+    @Query('loanToValueRanges') String? loanToValueRanges,
+    @Query('loanSymbols') String? loanSymbols,
     @Query('loanType') String? loanType,
     @Query('page') String? page,
     @Query('size') String? size,
@@ -29,11 +29,11 @@ abstract class BorrowService {
   @GET(ApiConstants.GET_PERSONAL_LENDING)
   Future<PersonalLendingResponse> getPersonalLending(
       @Query('collateralAmount') String? collateralAmount,
-      @Query('collection_address') String? collateralSymbols,
-      @Query('collateralSymbols') String? name,
+      @Query('collateralSymbols') String? collateralSymbols,
+      @Query('name') String? name,
       @Query('interestRanges') String? interestRanges,
-      @Query('collection_address') String? loanToValueRanges,
-      @Query('loanToValueRanges') String? loanSymbols,
+      @Query('loanToValueRanges') String? loanToValueRanges,
+      @Query('loanSymbols') String? loanSymbols,
       @Query('loanType') String? loanType,
       @Query('page') String? page,
       @Query('size') String? size,

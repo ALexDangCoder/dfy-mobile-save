@@ -831,5 +831,6 @@
   "what_you_can_borrow": "What you can borrow?",
   "how_much": "How much?",
   "enter_amount": "Enter amount",
-  "which_token": "Which token?"
+  "which_token": "Which token?",
+  "login_to_receive_email_notification":"Login to receive email notification"
 }
