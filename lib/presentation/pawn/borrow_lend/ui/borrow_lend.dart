@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
@@ -36,6 +35,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
     super.initState();
     _bloc = BorrowLendBloc();
     _tabController = TabController(length: 2, vsync: this);
+    _bloc.getTokenInf();
     if (widget.type == TYPE_BORROW_OR_LEND.LEND) {
       _tabController.index = 1;
     } else {
@@ -86,8 +86,48 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    BorrowItem(
-                      bloc: _bloc,
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 40.h,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            S.current.what_you_can_borrow,
+                            style: textNormalCustom(
+                              null,
+                              20,
+                              FontWeight.w700,
+                            ),
+                          ),
+                          spaceH20,
+                          Text(
+                            S.current.what_is_your_collateral,
+                            style: textNormalCustom(
+                              null,
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          spaceH16,
+                          SelectType(
+                            bloc: _bloc,
+                          ),
+                          StreamBuilder<TypeLend>(
+                              stream: _bloc.typeScreen,
+                              builder: (context, snapshot) {
+                                return SizedBox(
+                                  child: snapshot.data == TypeLend.CRYPTO
+                                      ? BorrowItem(
+                                          bloc: _bloc,
+                                        )
+                                      : const SizedBox.shrink(),
+                                );
+                              }),
+                        ],
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(
@@ -107,7 +147,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                           ),
                           spaceH20,
                           Text(
-                            S.current.how_to_create_hard_nft,
+                            S.current.what_is_your_collateral,
                             style: textNormalCustom(
                               null,
                               16,
@@ -133,26 +173,31 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
             child: GestureDetector(
               onTap: () {
                 if (_tabController.index == 0) {
-                  if (_bloc.isAmount.value) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BorrowResult(
-                          nameToken: _bloc.tokenSymbol.value,
+                  if (_bloc.typeScreen.value == TypeLend.CRYPTO) {
+                    if (_bloc.isAmount.value) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BorrowResult(
+                            nameToken: _bloc.tokenSymbol.value,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BorrowResult(
+                            nameToken: _bloc.tokenSymbol.value,
+                            amount: _bloc.textAmount.value,
+                          ),
+                        ),
+                      );
+                    }
                   } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BorrowResult(
-                          nameToken: _bloc.tokenSymbol.value,
-                          amount: _bloc.textAmount.value,
-                        ),
-                      ),
-                    );
+                    print('cho vay and nft');
                   }
+
                 } else {
                   if (_bloc.typeScreen == TypeLend.CRYPTO) {
                     Navigator.push(

@@ -791,5 +791,8 @@
   "what_you_can_borrow": "Bạn có thể mượn gì?",
   "how_much": "Bao nhiêu?",
   "enter_amount": "Nhập số tiền",
-  "which_token": "Chọn token nào?"
+  "which_token": "Chọn token nào?",
+  "what_is_your_collateral": "Tài sản thế chấp của bạn là gì?",
+  "select_loan_token": "Chọn token cho vay",
+  "how_much_is_your_desosystem_load": "Giá trị mong muốn của bạn là bao nhiêu?"
 }
