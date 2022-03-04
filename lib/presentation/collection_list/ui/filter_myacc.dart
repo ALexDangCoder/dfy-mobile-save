@@ -275,6 +275,7 @@ class _FilterMyAccState extends State<FilterMyAcc> {
                     width: 343.w,
                     height: 123.h,
                     child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: bloc.listAcc.length,
                       itemBuilder: (context, index) {
                         return InkWell(

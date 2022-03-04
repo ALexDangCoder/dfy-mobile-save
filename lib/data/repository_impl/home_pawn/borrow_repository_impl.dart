@@ -1,4 +1,5 @@
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
+import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
@@ -51,7 +52,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? page,
   }) {
     return runCatchingAsync<PersonalLendingResponse, List<PersonalLending>>(
-          () => _client.getPersonalLending(
+      () => _client.getPersonalLending(
         collateralAmount,
         collateralSymbols,
         name,
@@ -62,7 +63,34 @@ class BorrowRepositoryImpl implements BorrowRepository {
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       ),
-          (response) => response.data?.toDomain() ?? [],
+      (response) => response.data?.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
+    String? collateralAmount,
+    String? collateralSymbols,
+    String? name,
+    String? interestRanges,
+    String? loanToValueRanges,
+    String? loanSymbols,
+    String? loanType,
+    String? page,
+  }) {
+    return runCatchingAsync<PersonalLendingHardResponse, List<PersonalLending>>(
+      () => _client.getPersonalLendingHard(
+        collateralAmount,
+        collateralSymbols,
+        name,
+        interestRanges,
+        loanToValueRanges,
+        loanSymbols,
+        loanType,
+        page,
+        ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      ),
+      (response) => response.data?.toDomain() ?? [],
     );
   }
 }

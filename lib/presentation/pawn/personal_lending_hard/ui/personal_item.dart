@@ -1,8 +1,8 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class PersonalItem extends StatelessWidget {
   final String nameShop;
   final bool isShop;
   final String rate;
-  final List<AcceptableAssetsAsCollateral> collateral;
+  final int collateral;
   final String interestRate;
   final String signedContract;
   final String total;
@@ -27,61 +27,6 @@ class PersonalItem extends StatelessWidget {
     required this.signedContract,
     required this.total,
   }) : super(key: key);
-
-  WidgetSpan widgetSpanBase({
-    required int listLength,
-    required int maxLength,
-    required String symbol,
-  }) {
-    return WidgetSpan(
-      alignment: PlaceholderAlignment.middle,
-      child: listLength >= maxLength
-          ? Image.asset(
-              ImageAssets.getSymbolAsset(
-                symbol,
-              ),
-              height: 16.w,
-              width: 16.w,
-              errorBuilder: (context, error, stackTrace) => Container(
-                height: 16.w,
-                width: 16.w,
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    symbol.substring(0, 1),
-                    style: textNormalCustom(
-                      null,
-                      12,
-                      FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : const SizedBox.shrink(),
-    );
-  }
-
-  WidgetSpan widgetSpanSpaceW2() {
-    return WidgetSpan(
-      child: spaceW2,
-    );
-  }
-
-  TextSpan widgetTextSpan({
-    required int listLength,
-  }) {
-    return TextSpan(
-      text: listLength > 5
-          ? '& ${listLength - 5} '
-                  '${S.current.more}'
-              .toLowerCase()
-          : '',
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,48 +155,20 @@ class PersonalItem extends StatelessWidget {
                         FontWeight.w400,
                       ),
                       children: [
-                        widgetSpanBase(
-                          listLength: collateral.length,
-                          maxLength: 1,
-                          symbol: collateral.isNotEmpty
-                              ? collateral[0].symbol?.toUpperCase() ?? ''
-                              : '',
+                        WidgetSpan(
+                          child: Image.asset(
+                            ImageAssets.ic_hard,
+                            width: 16.w,
+                            height: 16.w,
+                          ),
                         ),
-                        widgetSpanSpaceW2(),
-                        widgetSpanBase(
-                          symbol: collateral.length >= 2
-                              ? collateral[1].symbol?.toUpperCase() ?? ''
-                              : '',
-                          listLength: collateral.length,
-                          maxLength: 2,
+                        WidgetSpan(
+                          child: spaceW4,
                         ),
-                        widgetSpanSpaceW2(),
-                        widgetSpanBase(
-                          symbol: collateral.length >= 3
-                              ? collateral[2].symbol?.toUpperCase() ?? ''
-                              : '',
-                          listLength: collateral.length,
-                          maxLength: 3,
-                        ),
-                        widgetSpanSpaceW2(),
-                        widgetSpanBase(
-                          symbol: collateral.length >= 4
-                              ? collateral[3].symbol?.toUpperCase() ?? ''
-                              : '',
-                          listLength: collateral.length,
-                          maxLength: 4,
-                        ),
-                        widgetSpanSpaceW2(),
-                        widgetSpanBase(
-                          symbol: collateral.length >= 5
-                              ? collateral[4].symbol?.toUpperCase() ?? ''
-                              : '',
-                          listLength: collateral.length,
-                          maxLength: 5,
-                        ),
-                        widgetSpanSpaceW2(),
-                        widgetTextSpan(
-                          listLength: collateral.length,
+                        TextSpan(
+                          text: collateral == HARD_COLLECTION
+                              ? S.current.hard_NFT
+                              : S.current.soft_nft,
                         ),
                       ],
                     ),
