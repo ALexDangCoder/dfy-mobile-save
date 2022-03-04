@@ -220,6 +220,6 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-p2p-lenders';
   static const String GET_PAWNSHOP_PACKAGE =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/search';
-
-
+  static const String GET_CRYPTO_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/submit';
 }

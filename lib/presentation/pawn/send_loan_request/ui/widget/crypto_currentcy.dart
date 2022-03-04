@@ -2,7 +2,9 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/select_crypto_collateral/ui/select_crypto.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -34,7 +36,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
     // TODO: implement initState
     super.initState();
     item = widget.cubit.listTokenFromWalletCore[0];
-    loanToken= widget.cubit.listTokenFromWalletCore[0];
+    loanToken = widget.cubit.checkShow[0];
     duration = S.current.week;
   }
 
@@ -263,7 +265,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                       contentPadding: EdgeInsets.zero,
                       isCollapsed: true,
                       counterText: '',
-                      hintText: S.current.enter_amount,
+                      hintText: 'Duration',
                       hintStyle: textNormal(
                         Colors.white.withOpacity(0.5),
                         16,
@@ -301,6 +303,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                         });
                       },
                       value: duration,
+                      icon: Image.asset(
+                        ImageAssets.ic_line_down,
+                        height: 24.h,
+                        width: 24.w,
+                      ),
                     ),
                   ),
                 ),
@@ -326,10 +333,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<ModelToken>(
+                menuMaxHeight: 100.h,
+                elevation: 3,
                 borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
-                items: widget.cubit.listTokenFromWalletCore
-                    .map((ModelToken model) {
+                items: widget.cubit.checkShow.map((ModelToken model) {
                   return DropdownMenuItem(
                     value: model,
                     child: Row(
@@ -360,6 +368,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                   });
                 },
                 value: loanToken,
+                icon: Image.asset(
+                  ImageAssets.ic_line_down,
+                  height: 24.h,
+                  width: 24.w,
+                ),
               ),
             ),
           ),
@@ -372,31 +385,78 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
             ),
           ),
           spaceH4,
-          InkWell(
-            onTap: () {
-              ///Select Crypto Offer
-            },
-            child: Container(
-              height: 48.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                border: Border.all(
-                  color: fillYellowColor,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'Choose existing collateral',
-                  style: textNormalCustom(
-                    fillYellowColor,
-                    16,
-                    FontWeight.w400,
+          StreamBuilder<bool>(
+              stream: widget.cubit.chooseExisting,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: () {
+                    if (snapshot.data == false) {
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                          builder: (context) => const SelectCryptoCollateral(
+                            walletAddress:
+                                '0xaB05Ab79C0F440ad982B1405536aBc8094C80AfB',
+                            packageId: '205',
+                          ),
+                        ),
+                      )
+                          .then((value) {
+                        widget.cubit.chooseExisting.add(true);
+                        final CryptoCollateralModel select =
+                            value as CryptoCollateralModel;
+                        collateralAmount.text =
+                            select.collateralAmount.toString();
+                        durationController.text = select.duration.toString();
+                        duration = select.durationType == 0
+                            ? S.current.week
+                            : S.current.month;
+                        item = widget.cubit.listTokenFromWalletCore.firstWhere(
+                          (element) =>
+                              element.nameShortToken == select.collateralSymbol,
+                        );
+                        loanToken = widget.cubit.checkShow.firstWhere(
+                          (element) =>
+                              element.nameShortToken == select.loanTokenSymbol,
+                        );
+                      });
+                    } else {
+                      collateralAmount.text = '';
+                      durationController.text = '';
+                      duration = S.current.week;
+                      item = widget.cubit.listTokenFromWalletCore[0];
+                      loanToken = widget.cubit.checkShow[0];
+                      widget.cubit.chooseExisting.add(false);
+                    }
+                  },
+                  child: Container(
+                    height: 48.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      border: Border.all(
+                        color: (snapshot.data == false)
+                            ? fillYellowColor
+                            : redMarketColor,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        (snapshot.data == false)
+                            ? 'Choose existing collateral'
+                            : 'Clear existing collateral',
+                        style: textNormalCustom(
+                          (snapshot.data == false)
+                              ? fillYellowColor
+                              : redMarketColor,
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                );
+              }),
           spaceH24,
           InkWell(
             onTap: () {
@@ -417,7 +477,6 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
           ButtonGradient(
             onPressed: () {
               /// TODO: Handle if un login => push to login => buy
-
             },
             gradient: RadialGradient(
               center: const Alignment(0.5, -0.5),
@@ -433,7 +492,6 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
               ),
             ),
           ),
-          spaceH35,
         ],
       ),
     );

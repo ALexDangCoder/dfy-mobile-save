@@ -1,7 +1,9 @@
+import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
+import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -51,7 +53,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? page,
   }) {
     return runCatchingAsync<PersonalLendingResponse, List<PersonalLending>>(
-          () => _client.getPersonalLending(
+      () => _client.getPersonalLending(
         collateralAmount,
         collateralSymbols,
         name,
@@ -62,7 +64,21 @@ class BorrowRepositoryImpl implements BorrowRepository {
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       ),
-          (response) => response.data?.toDomain() ?? [],
+      (response) => response.data?.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
+    String walletAddress,
+    String packageId,
+    String page,
+  ) {
+    return runCatchingAsync<CryptoCollateralResponse,
+        List<CryptoCollateralModel>>(
+      () => _client.getCryptoCollateral(walletAddress, packageId, 'true', page,
+          ApiConstants.DEFAULT_PAGE_SIZE.toString()),
+      (response) => response.data?.toDomain() ?? [],
     );
   }
 }

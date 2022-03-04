@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -38,4 +39,13 @@ abstract class BorrowService {
       @Query('page') String? page,
       @Query('size') String? size,
   );
+
+  @GET(ApiConstants.GET_CRYPTO_COLLATERAL)
+  Future<CryptoCollateralResponse> getCryptoCollateral(
+      @Query('walletAddress') String walletAddress,
+      @Query('packageId') String? packageId,
+      @Query('isRequestLoan') String? isRequestLoan,
+      @Query('page') String? page,
+      @Query('size') String? size,
+      );
 }

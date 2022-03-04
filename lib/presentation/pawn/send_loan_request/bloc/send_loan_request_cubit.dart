@@ -24,6 +24,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject.seeded('');
   BehaviorSubject<bool> emailNotification =
   BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> chooseExisting =
+  BehaviorSubject.seeded(false);
 
   String wallet = '';
 
@@ -38,12 +40,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   List<ModelToken> listTokenFromWalletCore = [
 
   ];
+  final List<ModelToken> checkShow = [];
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
     switch (methodCall.method) {
       case 'getTokensCallback':
         listTokenFromWalletCore.clear();
-        final List<ModelToken> checkShow = [];
         final List<dynamic> data = methodCall.arguments;
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
