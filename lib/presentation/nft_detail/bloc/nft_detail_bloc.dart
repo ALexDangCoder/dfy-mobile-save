@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -38,6 +40,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
+
+
 
   NFTRepository get _nftRepo => Get.find();
 

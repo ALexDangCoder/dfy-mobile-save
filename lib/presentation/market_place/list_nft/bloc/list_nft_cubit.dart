@@ -10,6 +10,7 @@ import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -287,6 +288,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
     result.when(
       success: (res) {
+        if(res.length <ApiConstants.DEFAULT_PAGE_SIZE){
+          canLoadMoreListNft = false;
+        }
         for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
           for (final value in listTokenSupport) {
