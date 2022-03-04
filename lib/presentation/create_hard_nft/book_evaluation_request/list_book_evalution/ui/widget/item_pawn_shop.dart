@@ -182,9 +182,9 @@ class ItemPawnShop extends StatelessWidget {
                         alignment: PlaceholderAlignment.middle,
                         child: bloc.isLoadingText
                             ? Container(
-                                width: 14.w,
-                                height: 14.h,
-                                margin: EdgeInsets.only(right: 10.w),
+                                height: 8.h,
+                                width: 8.w,
+                                margin: EdgeInsets.only(right: 5.w),
                                 child: const CircularProgressIndicator(
                                   color: amountColor,
                                   strokeWidth: 2,
