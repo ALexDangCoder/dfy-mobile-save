@@ -545,12 +545,18 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
               ),
             );
       },
-      child: Text(
-        status,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
+      child: SizedBox(
+        width: 100.w,
+        child: Text(
+          status,
+          maxLines: 1,
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+            FontWeight.w700,
+          ).copyWith(
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
