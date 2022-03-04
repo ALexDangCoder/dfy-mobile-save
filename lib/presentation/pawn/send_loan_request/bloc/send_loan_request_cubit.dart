@@ -26,6 +26,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject.seeded(true);
   BehaviorSubject<bool> chooseExisting =
   BehaviorSubject.seeded(false);
+  BehaviorSubject<int> tabIndex =
+  BehaviorSubject.seeded(0);
 
   String wallet = '';
 
