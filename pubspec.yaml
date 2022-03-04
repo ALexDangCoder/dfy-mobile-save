@@ -131,6 +131,7 @@ dependencies:
 
   html: ^0.15.0
   cool_dropdown: ^1.4.1
+  dropdown_button2: 1.2.0
   progress_indicators: ^1.0.0
   loading_gifs: ^0.3.0
   expandable_page_view: ^1.0.10

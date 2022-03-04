@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/pawn/select_crypto_collateral/ui/select_crypto.
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +23,8 @@ class CryptoCurrency extends StatefulWidget {
   _CryptoCurrencyState createState() => _CryptoCurrencyState();
 }
 
-class _CryptoCurrencyState extends State<CryptoCurrency> {
+class _CryptoCurrencyState extends State<CryptoCurrency>
+    with SingleTickerProviderStateMixin {
   TextEditingController collateralAmount = TextEditingController();
   TextEditingController message = TextEditingController();
   TextEditingController durationController = TextEditingController();
@@ -332,11 +334,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<ModelToken>(
-                menuMaxHeight: 100.h,
-                elevation: 3,
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
+              child: DropdownButton2<ModelToken>(
+               buttonDecoration: BoxDecoration(
+                 color:AppTheme.getInstance().backgroundBTSColor(),
+                 borderRadius: BorderRadius.all(Radius.circular(20.r)),
+               ),
                 items: widget.cubit.checkShow.map((ModelToken model) {
                   return DropdownMenuItem(
                     value: model,
@@ -367,6 +369,15 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                     loanToken = newValue!;
                   });
                 },
+                dropdownMaxHeight: 200,
+                dropdownWidth:MediaQuery.of(context).size.width - 32.w,
+                dropdownDecoration: BoxDecoration(
+                    color:AppTheme.getInstance().backgroundBTSColor(),
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                ),
+                scrollbarThickness: 0,
+                scrollbarAlwaysShow: false,
+                offset: const Offset(-20, 0),
                 value: loanToken,
                 icon: Image.asset(
                   ImageAssets.ic_line_down,
@@ -402,23 +413,25 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                         ),
                       )
                           .then((value) {
-                        widget.cubit.chooseExisting.add(true);
                         final CryptoCollateralModel select =
                             value as CryptoCollateralModel;
-                        collateralAmount.text =
-                            select.collateralAmount.toString();
-                        durationController.text = select.duration.toString();
-                        duration = select.durationType == 0
-                            ? S.current.week
-                            : S.current.month;
-                        item = widget.cubit.listTokenFromWalletCore.firstWhere(
-                          (element) =>
-                              element.nameShortToken == select.collateralSymbol,
-                        );
-                        loanToken = widget.cubit.checkShow.firstWhere(
-                          (element) =>
-                              element.nameShortToken == select.loanTokenSymbol,
-                        );
+                       if(select.loanTokenSymbol != ''){
+                         widget.cubit.chooseExisting.add(true);
+                         collateralAmount.text =
+                             select.collateralAmount.toString();
+                         durationController.text = select.duration.toString();
+                         duration = select.durationType == 0
+                             ? S.current.week
+                             : S.current.month;
+                         item = widget.cubit.listTokenFromWalletCore.firstWhere(
+                               (element) =>
+                           element.nameShortToken == select.collateralSymbol,
+                         );
+                         loanToken = widget.cubit.checkShow.firstWhere(
+                               (element) =>
+                           element.nameShortToken == select.loanTokenSymbol,
+                         );
+                       }
                       });
                     } else {
                       collateralAmount.text = '';
