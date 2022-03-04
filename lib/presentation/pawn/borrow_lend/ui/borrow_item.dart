@@ -30,209 +30,195 @@ class _BorrowItemState extends State<BorrowItem> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 40.h,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  S.current.what_you_can_borrow,
-                  style: textNormalCustom(
-                    null,
-                    20,
-                    FontWeight.w700,
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              spaceH20,
+              Text(
+                S.current.how_much_is_your_desired_load,
+                style: textNormalCustom(
+                  null,
+                  16,
+                  FontWeight.w400,
                 ),
-                spaceH20,
-                Text(
-                  S.current.how_much,
-                  style: textNormalCustom(
-                    null,
-                    16,
-                    FontWeight.w400,
-                  ),
+              ),
+              spaceH4,
+              Container(
+                width: 343.w,
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                spaceH4,
-                Container(
-                  width: 343.w,
-                  height: 64.h,
-                  padding: EdgeInsets.only(right: 15.w, left: 15.w),
-                  decoration: BoxDecoration(
-                    color: AppTheme.getInstance().backgroundBTSColor(),
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: textAmountController,
-                          maxLength: 50,
-                          onChanged: (value) {
-                            bloc.textAmount.add(value);
-                            bloc.funValidateAmount(value);
-                          },
-                          cursorColor: AppTheme.getInstance().whiteColor(),
-                          style: textNormal(
-                            AppTheme.getInstance().whiteColor(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: textAmountController,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          bloc.textAmount.add(value);
+                          bloc.funValidateAmount(value);
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: S.current.enter_amount,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
                             16,
                           ),
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.zero,
-                            isCollapsed: true,
-                            counterText: '',
-                            hintText: S.current.enter_amount,
-                            hintStyle: textNormal(
-                              Colors.white.withOpacity(0.5),
-                              16,
-                            ),
-                            border: InputBorder.none,
-                          ),
+                          border: InputBorder.none,
                         ),
                       ),
-                      StreamBuilder(
-                        stream: bloc.textAmount,
-                        builder: (context, AsyncSnapshot<String> snapshot) {
-                          return GestureDetector(
-                            onTap: () {
-                              bloc.textAmount.add('');
-                              textAmountController.text = '';
-                            },
-                            child: snapshot.data?.isNotEmpty ?? false
-                                ? Image.asset(
-                                    ImageAssets.ic_close,
-                                    width: 20.w,
-                                    height: 20.h,
-                                  )
-                                : SizedBox(
-                                    height: 20.h,
-                                    width: 20.w,
-                                  ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                    StreamBuilder(
+                      stream: bloc.textAmount,
+                      builder: (context, AsyncSnapshot<String> snapshot) {
+                        return GestureDetector(
+                          onTap: () {
+                            bloc.textAmount.add('');
+                            textAmountController.text = '';
+                          },
+                          child: snapshot.data?.isNotEmpty ?? false
+                              ? Image.asset(
+                                  ImageAssets.ic_close,
+                                  width: 20.w,
+                                  height: 20.h,
+                                )
+                              : SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                spaceH4,
-                StreamBuilder<bool>(
-                  stream: bloc.isAmount,
+              ),
+              spaceH4,
+              StreamBuilder<bool>(
+                stream: bloc.isAmount,
+                builder: (context, snapshot) {
+                  return snapshot.data ?? false
+                      ? SizedBox(
+                          width: 343.w,
+                          child: Text(
+                            S.current.invalid_amount,
+                            style: textNormal(
+                              Colors.red,
+                              14,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        )
+                      : const SizedBox.shrink();
+                },
+              ),
+              spaceH16,
+              Text(
+                S.current.select_loan_token,
+                style: textNormalCustom(
+                  null,
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH4,
+              InkWell(
+                onTap: () {
+                  bloc.isChooseToken.sink.add(true);
+                },
+                child: StreamBuilder<String>(
+                  stream: bloc.tokenSymbol,
                   builder: (context, snapshot) {
-                    return snapshot.data ?? false
-                        ? SizedBox(
-                            width: 343.w,
-                            child: Text(
-                              S.current.invalid_amount,
-                              style: textNormal(
-                                Colors.red,
-                                14,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
-                ),
-                spaceH16,
-                Text(
-                  S.current.which_token,
-                  style: textNormalCustom(
-                    null,
-                    16,
-                    FontWeight.w400,
-                  ),
-                ),
-                spaceH4,
-                InkWell(
-                  onTap: () {
-                    bloc.isChooseToken.sink.add(true);
-                  },
-                  child: StreamBuilder<String>(
-                    stream: bloc.tokenSymbol,
-                    builder: (context, snapshot) {
-                      final String tokenSymbol =
-                          (snapshot.data ?? '').toUpperCase();
-                      return Container(
-                        height: 64.h,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15.5.w,
+                    final String tokenSymbol =
+                        (snapshot.data ?? '').toUpperCase();
+                    return Container(
+                      height: 64.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15.5.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.getInstance().itemBtsColors(),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20.r),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.getInstance().itemBtsColors(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20.r),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  child: tokenSymbol ==
-                                          S.current.all.toUpperCase()
-                                      ? const SizedBox.shrink()
-                                      : Image.asset(
-                                          ImageAssets.getSymbolAsset(
-                                            tokenSymbol,
-                                          ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                child: tokenSymbol ==
+                                        S.current.all.toUpperCase()
+                                    ? const SizedBox.shrink()
+                                    : Image.asset(
+                                        ImageAssets.getSymbolAsset(
+                                          tokenSymbol,
+                                        ),
+                                        height: 24.w,
+                                        width: 24.w,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
                                           height: 24.w,
                                           width: 24.w,
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Container(
-                                            height: 24.w,
-                                            width: 24.w,
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.getInstance()
-                                                  .bgBtsColor(),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                tokenSymbol.substring(0, 1),
-                                                style: textNormalCustom(
-                                                  null,
-                                                  16,
-                                                  FontWeight.bold,
-                                                ),
+                                          decoration: BoxDecoration(
+                                            color: AppTheme.getInstance()
+                                                .bgBtsColor(),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              tokenSymbol.substring(0, 1),
+                                              style: textNormalCustom(
+                                                null,
+                                                16,
+                                                FontWeight.bold,
                                               ),
                                             ),
                                           ),
                                         ),
-                                ),
-                                spaceW4,
-                                SizedBox(
-                                  child: Text(
-                                    tokenSymbol,
-                                    style: textNormal(
-                                      null,
-                                      16,
-                                    ),
+                                      ),
+                              ),
+                              spaceW4,
+                              SizedBox(
+                                child: Text(
+                                  tokenSymbol,
+                                  style: textNormal(
+                                    null,
+                                    16,
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              child: Image.asset(
-                                ImageAssets.ic_line_down,
-                                height: 20.67.h,
-                                width: 20.14.w,
                               ),
+                            ],
+                          ),
+                          SizedBox(
+                            child: Image.asset(
+                              ImageAssets.ic_line_down,
+                              height: 20.67.h,
+                              width: 20.14.w,
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           StreamBuilder<bool>(
             initialData: false,
