@@ -5,9 +5,10 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/item_header_filter.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_state.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/ui/personal_item.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_state.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/filter_personal_hard.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/personal_item.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -15,33 +16,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'filter_personal.dart';
-
-class PersonalLendingScreen extends StatefulWidget {
-  const PersonalLendingScreen({Key? key}) : super(key: key);
+class PersonalLendingHardScreen extends StatefulWidget {
+  const PersonalLendingHardScreen({Key? key}) : super(key: key);
 
   @override
-  _PersonalLendingScreenState createState() => _PersonalLendingScreenState();
+  _PersonalLendingHardScreenState createState() =>
+      _PersonalLendingHardScreenState();
 }
 
-class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
-  late PersonalLendingBloc _bloc;
+class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
+  late PersonalLendingHardBloc _bloc;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _bloc = PersonalLendingBloc();
+    _bloc = PersonalLendingHardBloc();
     _bloc.refreshPosts();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PersonalLendingBloc, PersonalLendingState>(
+    return BlocConsumer<PersonalLendingHardBloc, PersonalLendingHardState>(
       bloc: _bloc,
       listener: (context, state) {
         ///Loading
-        if (state is PersonalLendingLoading && _bloc.isRefresh) {
+        if (state is PersonalLendingHardLoading && _bloc.isRefresh) {
           if (!_isLoading) {
             _isLoading = true;
             showLoading(
@@ -53,12 +53,12 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
           }
         }
 
-        if (_isLoading && state is! PersonalLendingLoading) {
+        if (_isLoading && state is! PersonalLendingHardLoading) {
           hideLoading(context);
         }
 
         ///Get Blog List Completed
-        if (state is PersonalLendingSuccess) {
+        if (state is PersonalLendingHardSuccess) {
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
@@ -132,7 +132,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,
-                                builder: (context) => PersonalFilter(
+                                builder: (context) => PersonalHardFilter(
                                   bloc: _bloc,
                                 ),
                               );
@@ -248,12 +248,9 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                   isShop: list[index].isKYC ?? false,
                                   nameShop: list[index].name.toString(),
                                   interestRate:
-                                      '${list[index].minInterestRate}%'
+                                      '${list[index].maxInterestRate}%'
                                       '-${list[index].maxInterestRate}%',
-                                  collateral: list[index]
-                                          .p2PLenderPackages?[0]
-                                          .acceptableAssetsAsCollateral ??
-                                      [],
+                                  collateral: list[index].type ?? 0,
                                   total: list[index].totalLoanValue.toString(),
                                   signedContract:
                                       list[index].completedContracts.toString(),

@@ -20,7 +20,11 @@ class PawnListSuccess extends PawnListState {
   final List<PawnShopModel>? listPawn;
   final String? message;
 
-  PawnListSuccess(this.completeType, {this.listPawn, this.message});
+  PawnListSuccess(
+    this.completeType, {
+    this.listPawn,
+    this.message,
+  });
 
   @override
   List<Object?> get props => [id, completeType, listPawn, message];

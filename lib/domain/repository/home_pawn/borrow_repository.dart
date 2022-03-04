@@ -31,4 +31,15 @@ mixin BorrowRepository {
     String packageId,
     String page,
   );
+  Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
+    String? collateralAmount,
+    String? collateralSymbols,
+    String? name,
+    String? interestRanges,
+    String? loanToValueRanges,
+    String? loanSymbols,
+    String? loanType,
+    String? page,
+  });
+
 }

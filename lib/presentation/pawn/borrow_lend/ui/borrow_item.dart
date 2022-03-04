@@ -253,6 +253,7 @@ class _BorrowItemState extends State<BorrowItem> {
                     width: 343.w,
                     height: 123.h,
                     child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: bloc.listToken.length,
                       itemBuilder: (context, index) {
                         return InkWell(

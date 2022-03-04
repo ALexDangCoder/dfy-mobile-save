@@ -1,5 +1,7 @@
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/bloc/borrow_lend_bloc.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/select_type.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/borrow_result.dart';
@@ -13,7 +15,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'borrow_item.dart';
 
 class BorrowLendScreen extends StatefulWidget {
-  const BorrowLendScreen({Key? key}) : super(key: key);
+  final TYPE_BORROW_OR_LEND type;
+
+  const BorrowLendScreen({
+    Key? key,
+    required this.type,
+  }) : super(key: key);
 
   @override
   _BorrowLendScreenState createState() => _BorrowLendScreenState();
@@ -29,6 +36,11 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
     super.initState();
     _bloc = BorrowLendBloc();
     _tabController = TabController(length: 2, vsync: this);
+    if (widget.type == TYPE_BORROW_OR_LEND.LEND) {
+      _tabController.index = 1;
+    } else {
+      _tabController.index = 0;
+    }
     _tabController.addListener(() {
       setState(() {});
     });
