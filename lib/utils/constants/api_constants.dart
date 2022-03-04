@@ -143,7 +143,8 @@ class ApiConstants {
 
   //CreateNFT
   static const String CREATE_SOFT_NFT = '/nft-svc/api/soft-nft/create-721';
-  static const String GET_ALL_COLLECTION = '/nft-market-svc/api/collection/self';
+  static const String GET_ALL_COLLECTION =
+      '/nft-market-svc/api/collection/self';
   static const String PUT_HARD_NFT_PREFIX = '/hard-nft-svc/api/assets/';
   static const String PUT_HARD_NFT_SUFFIX = '/submit';
 
@@ -201,4 +202,5 @@ class ApiConstants {
       'hard-nft-svc/public-api/assets/conditions';
 
   static const String GET_HARD_NFT_TYPE = 'hard-nft-svc/public-api/asset/types';
+  static const String GET_COLLECTION_HARD_NFT = 'hard-nft-svc/api/collections';
 }

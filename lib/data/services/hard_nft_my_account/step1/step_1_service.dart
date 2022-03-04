@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.dart';
+import 'package:Dfy/data/response/create_hard_nft/collection_create_hard_nft.dart';
 import 'package:Dfy/data/response/create_hard_nft/evaluators_response.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/asset_res.dart';
 import 'package:Dfy/data/response/hard_nft_my_account/step1/cities_res.dart';
@@ -53,4 +54,7 @@ abstract class Step1Client {
   Future<DataAfterPutResponse> getDetailAssetHardNFT(
     @Path('asset_id') String assetId,
   );
+
+  @GET(ApiConstants.GET_COLLECTION_HARD_NFT)
+  Future<CollectionCreateHardNftResponse> getCollectionHardNft();
 }

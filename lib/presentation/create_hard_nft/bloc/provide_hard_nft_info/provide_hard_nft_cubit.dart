@@ -10,6 +10,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
+import 'package:Dfy/domain/model/hard_nft_my_account/step1/collection_hard_nft.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/condition_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/hard_nft_type_model.dart';
@@ -570,38 +571,51 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Future<void> getListCollection() async {
-    final listDropDown = [];
-    listDropDown.add(
-      {
-        'label': 'COLLECTION 721',
-        'value': ADDRESS_COLLECTION_721,
-        'id': ID_COLLECTION_721,
-      },
-    );
-    listDropDown.add(
-      {
-        'label': 'COLLECTION 1155',
-        'value': ADDRESS_COLLECTION_1155,
-        'id': ID_COLLECTION_1155,
-      },
-    );
-    final Result<List<CollectionMarketModel>> result =
-        await _collectionDetailRepository.getListCollection(
-      addressWallet: getAddressWallet().toLowerCase(),
+    final List<Map<String, dynamic>> listDropDown = [];
+    final Result<List<CollectionHardNft>> result =
+        await _step1Repository.getCollectionHardNft(
     );
     result.when(
       success: (res) {
-        listHardCl = res
-            .where(
-              (element) =>
-                  (element.type == HARD_COLLECTION) &&
-                  ((element.addressCollection ?? '').isNotEmpty),
-            )
-            .toList();
-        listDropDown.addAll(listHardCl.map((e) => e.toDropDownMap()).toList());
-        collectionsBHVSJ.sink.add(listDropDown as List<Map<String, dynamic>>);
+        res.forEach((element) {
+          listDropDown.add({
+            'label': element.name,
+            'value': element.collectionAddress,
+            'id': element.id,
+          });
+        });
+        // listHardCl = res
+        //     .where(
+        //       (element) =>
+        //           (element.type == HARD_COLLECTION) &&
+        //           ((element.addressCollection ?? '').isNotEmpty),
+        //     )
+        //     .toList();
+        // final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
+        // listDropDown.add(
+        //   {
+        //     'label': 'COLLECTION 721',
+        //     'value': ADDRESS_COLLECTION_721,
+        //     'id': ID_COLLECTION_721,
+        //   },
+        // );
+        // listDropDown.add(
+        //   {
+        //     'label': 'COLLECTION 1155',
+        //     'value': ADDRESS_COLLECTION_1155,
+        //     'id': ID_COLLECTION_1155,
+        //   },
+        // );
+        collectionsBHVSJ.sink.add(listDropDown);
       },
-      error: (_) {},
+      error: (_) {
+        if(listDropDown.isEmpty) {
+          listDropDown.add({
+            'label': 'Empty data',
+          });
+        }
+        collectionsBHVSJ.sink.add(listDropDown);
+      },
     );
   }
 
