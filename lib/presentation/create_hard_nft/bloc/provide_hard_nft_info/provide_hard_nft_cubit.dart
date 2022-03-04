@@ -609,16 +609,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         collectionsBHVSJ.sink.add(listDropDown);
       },
       error: (_) {
-        if(listDropDown.isEmpty) {
-          listDropDown.add({
-            'label': 'Empty data',
-          });
-        }
         collectionsBHVSJ.sink.add(listDropDown);
       },
     );
   }
 
+  ///needed for get id
   String getCollectionID(String value) {
     final _collectionAddress = value;
     final collectionId = listHardCl
@@ -725,6 +721,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {

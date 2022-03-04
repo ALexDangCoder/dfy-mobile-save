@@ -66,17 +66,15 @@ class CategoriesDropDown extends StatelessWidget {
                 cubit.dataStep1.collection = selected.getStringValue('label');
                 cubit.dataStep1.addressCollection =
                     selected.getStringValue('value');
-                if (selected['value'] == ADDRESS_COLLECTION_721) {
-                  cubit.dataStep1.collectionID = selected.getStringValue('id');
-                } else if (selected['value'] == ADDRESS_COLLECTION_1155) {
-                  cubit.dataStep1.collectionID = selected.getStringValue('id');
-                } else {
-                  cubit.dataStep1.collectionID = cubit.getCollectionID(
-                    selected.getStringValue('value'),
-                  );
-                }
+
+                cubit.dataStep1.collectionID =
+                    selected.getStringValue('id');
                 cubit.mapValidate['collection'] = true;
-                cubit.validateAll();
+                cubit
+                    .
+                validateAll
+                  (
+                );
               },
               resultIcon: Container(
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -102,7 +100,7 @@ class CategoriesDropDown extends StatelessWidget {
           child: SizedBox(
             height: 64.h,
             child:
-                sizedSvgImage(w: 20, h: 20, image: ImageAssets.ic_folder_svg),
+            sizedSvgImage(w: 20, h: 20, image: ImageAssets.ic_folder_svg),
           ),
         ),
       ],
