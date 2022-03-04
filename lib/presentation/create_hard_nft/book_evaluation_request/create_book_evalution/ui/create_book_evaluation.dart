@@ -838,7 +838,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   navigator.push(
                                     MaterialPageRoute(
                                       builder: (context) => Approve(
-                                        needApprove: true,
+                                        // needApprove: false,
                                         hexString: bloc.hexString,
                                         payValue:
                                             '${bloc.evaluationFee?.amount ?? 0}',
