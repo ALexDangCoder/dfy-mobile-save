@@ -58,7 +58,6 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
           BaseDesignScreen(
             isCustomLeftClick: true,
             onLeftClick: () {
-              //todo
               Navigator.pop(context);
             },
             isImage: true,
