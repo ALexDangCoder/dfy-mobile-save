@@ -54,11 +54,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     super.initState();
     cubit = ProvideHardNftCubit();
     cubit.getTokenInf();
+    cubit.getListCollection();
     cubit.getCountriesApi();
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
-    cubit.getListCollection();
     final data = cubit.getInfoUserIsCreatedNft();
     if (data != null) {
       currentInfo = data;
@@ -632,19 +632,19 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         image = ImageAssets.diamond;
         break;
       case 1:
-        image = ImageAssets.img_watch;
+        image = ImageAssets.watch;
         break;
       case 2:
         image = ImageAssets.artWork;
         break;
       case 3:
-        image = ImageAssets.img_house;
+        image = ImageAssets.house;
         break;
       case 4:
-        image = ImageAssets.img_car;
+        image = ImageAssets.car;
         break;
       default:
-        image = ImageAssets.img_other;
+        image = ImageAssets.others;
         break;
     }
     return Container(
