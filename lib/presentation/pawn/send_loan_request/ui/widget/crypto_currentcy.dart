@@ -183,7 +183,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency> {
                   flex: 5,
                   child: TextFormField(
                     controller: message,
-                    maxLength: 50,
+                    maxLength: 100,
                     onChanged: (value) {
                       widget.cubit.focusTextField.add(value);
                     },

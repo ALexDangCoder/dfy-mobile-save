@@ -557,12 +557,12 @@ class _HomePawnState extends State<HomePawn> {
             left: 12.w,
             child: InkWell(
               onTap: () {
-
                 showDialog(
                   context: context,
-                  builder: (context) =>
-                  const ConnectWalletDialog(
-                    navigationTo: BorrowLendScreen(),
+                  builder: (context) => const ConnectWalletDialog(
+                    navigationTo: BorrowLendScreen(
+                      type: TYPE_BORROW_OR_LEND.BORROW,
+                    ),
                     isRequireLoginEmail: true,
                   ),
                 ).then((_) => null);
