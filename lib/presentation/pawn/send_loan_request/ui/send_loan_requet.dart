@@ -153,7 +153,8 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            minHeight: 700.h,
+                            maxHeight: 750.h,
+                            minHeight: 699.h
                           ),
                           child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
