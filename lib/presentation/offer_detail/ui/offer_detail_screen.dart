@@ -62,47 +62,48 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         stream: _cubit.offerStream,
         builder: (context, snapshot) {
           final offer = snapshot.data;
-          return snapshot.data != null
-              ? BaseDesignScreen(
-                  title: S.current.offer_detail,
-                  isImage: true,
-                  text: ImageAssets.ic_close,
-                  onRightClick: () {},
-                  bottomBar: (isShow(offer?.status ?? 0) &&
-                          PrefsService.getCurrentBEWallet().toLowerCase() ==
-                              PrefsService.getOwnerPawn().toLowerCase())
-                      ? rowButton(context, offer!)
-                      : null,
-                  child: RefreshIndicator(
-                    onRefresh: onRefresh,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        children: [
-                          spaceH20,
-                          Text(
-                            (offer?.walletAddress ?? '')
-                                .formatAddress(index: 4),
-                            style: richTextWhite.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                            ),
-                          ),
-                          spaceH8,
-                          _rowStar(Random().nextInt(100)),
-                          spaceH18,
-                          _textButton(),
-                          Divider(
-                            color: AppTheme.getInstance().divideColor(),
-                          ),
-                          spaceH20,
-                          ..._buildTable(offer),
-                        ],
+          if (snapshot.hasData) {
+            return BaseDesignScreen(
+              title: S.current.offer_detail,
+              isImage: true,
+              text: ImageAssets.ic_close,
+              onRightClick: () {},
+              bottomBar: (isShow(offer?.status ?? 0) &&
+                      PrefsService.getCurrentBEWallet().toLowerCase() ==
+                          PrefsService.getOwnerPawn().toLowerCase())
+                  ? rowButton(context, offer!)
+                  : null,
+              child: RefreshIndicator(
+                onRefresh: onRefresh,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      spaceH20,
+                      Text(
+                        (offer?.walletAddress ?? '').formatAddress(index: 4),
+                        style: richTextWhite.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
+                      spaceH8,
+                      _rowStar(Random().nextInt(100)),
+                      spaceH18,
+                      _textButton(),
+                      Divider(
+                        color: AppTheme.getInstance().divideColor(),
+                      ),
+                      spaceH20,
+                      ..._buildTable(offer),
+                    ],
                   ),
-                )
-              : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+                ),
+              ),
+            );
+          } else {
+            return ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+          }
         },
       ),
     );
@@ -386,8 +387,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       onPressed: () {
         _cubit
             .getCancelOfferData(
-              obj.collateralId?.toString() ?? '',
-              obj.id?.toString() ?? '',
+              obj.bcCollateralId?.toString() ?? '',
+              obj.bcOfferId?.toString() ?? '',
               context,
             )
             .then(
@@ -492,8 +493,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       onPressed: () {
         _cubit
             .getAcceptOfferData(
-              obj.collateralId?.toString() ?? '',
-              obj.id?.toString() ?? '',
+              obj.bcCollateralId?.toString() ?? '',
+              obj.bcOfferId?.toString() ?? '',
               context,
             )
             .then(

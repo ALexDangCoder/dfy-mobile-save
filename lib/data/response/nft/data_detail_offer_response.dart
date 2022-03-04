@@ -101,6 +101,7 @@ class OfferDetailResponse {
         walletAddress: walletAddress,
         collateralId: collateralId,
         bcCollateralId: bcCollateralId,
+        bcOfferId: bcOfferId,
         description: description,
         createdAt: createdAt,
         interestRate: interestRate,

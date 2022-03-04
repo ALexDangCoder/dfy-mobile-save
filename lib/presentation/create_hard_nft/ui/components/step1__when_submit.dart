@@ -67,7 +67,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   .push(
                     MaterialPageRoute(
                       builder: (context) => Approve(
-                        needApprove: true,
+                        // needApprove: true,
                         hexString: cubit.hexStringWeb3,
                         payValue: cubit.dataStep1.amountToken.toString(),
                         tokenAddress: ADDRESS_DFY,
