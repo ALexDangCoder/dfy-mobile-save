@@ -20,7 +20,7 @@ class CategoriesDropDown extends StatelessWidget {
     return Stack(
       children: [
         StreamBuilder<List<Map<String, dynamic>>>(
-          stream: cubit.collectionsBHVSJ,
+          stream:  cubit.collectionsBHVSJ,
           builder: (context, snapshot) {
             final List<Map<String, dynamic>> dropdownItemList =
                 snapshot.data ?? [];

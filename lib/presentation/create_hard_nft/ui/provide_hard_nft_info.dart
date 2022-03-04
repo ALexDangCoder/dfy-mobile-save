@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
@@ -11,6 +10,7 @@ import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/prov
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/common_widget.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/form_search_create_hard_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/select_collection_dropdown.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/step1__when_submit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
@@ -19,6 +19,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
@@ -378,14 +379,13 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       textInputType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
+                      // prefixIcon: _buildPhoneResult(
+                      //   currentInfo != null
+                      //       ? currentInfo?.phoneCode?.code ?? ''
+                      //       : null,
+                      // ),
                       prefixIcon: FormDropDown(
-                        defaultValue: currentInfo != null
-                            ? {
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                                'id': currentInfo?.phoneCode?.id,
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                              }
-                            : null,
+                        currentInfo: currentInfo,
                         typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                         cubit: cubit,
                       ),
@@ -400,7 +400,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       },
                     ),
                   ),
-
                   spaceH16,
                   textShowWithPadding(
                     textShow: S.current.country,
@@ -764,6 +763,57 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           ),
         ],
       ),
+    );
+  }
+
+  InkWell _buildPhoneResult(String? value) {
+    return InkWell(
+      onTap: () => {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => Dialog(
+            backgroundColor: Colors.transparent,
+            child: FormSearchCreateHardNft(
+              cubit: cubit,
+              hintSearch: S.current.search,
+            ),
+          ),
+        )
+      },
+      child: StreamBuilder<String>(
+          initialData: currentInfo != null
+              ? currentInfo?.phoneCode?.code ?? ''
+              : S.current.phone,
+          stream: cubit.resultPhoneChoose.stream,
+          builder: (context, snapshot) {
+            return Container(
+              padding: EdgeInsets.only(
+                left: 16.w,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    snapshot.data ?? S.current.phone,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceW20,
+                  SizedBox(
+                    height: 60.h,
+                    child: sizedSvgImage(
+                      w: 13,
+                      h: 13,
+                      image: ImageAssets.ic_expand_white_svg,
+                    ),
+                  )
+                ],
+              ),
+            );
+          }),
     );
   }
 

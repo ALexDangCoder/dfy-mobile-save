@@ -71,6 +71,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final List<DocumentFeatMediaListRequest> mediasRequest = [];
 
   List<CollectionMarketModel> listHardCl = [];
+  final BehaviorSubject<String> resultPhoneChoose =
+      BehaviorSubject();
+
+
 
   //Video - Audio control
   VideoPlayerController? videoController;
@@ -418,6 +422,22 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  void searchPhones(String value) {
+    print(value);
+    final List<Map<String, dynamic>> tmpPhones = phonesCode;
+    if (value.isEmpty) {
+      phonesCodeBHVSJ.sink.add(phonesCode);
+    } else {
+      final List<Map<String, dynamic>> result = [];
+      tmpPhones.forEach((element) {
+        if((element['label'] as String).contains(value)) {
+          result.add(element);
+        }
+      });
+      phonesCodeBHVSJ.sink.add(result);
+    }
+  }
+
   Future<void> getPhonesApi() async {
     final Result<List<PhoneCodeModel>> resultPhone =
         await _step1Repository.getPhoneCode();
@@ -573,8 +593,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   Future<void> getListCollection() async {
     final List<Map<String, dynamic>> listDropDown = [];
     final Result<List<CollectionHardNft>> result =
-        await _step1Repository.getCollectionHardNft(
-    );
+        await _step1Repository.getCollectionHardNft();
     result.when(
       success: (res) {
         res.forEach((element) {
@@ -609,7 +628,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         collectionsBHVSJ.sink.add(listDropDown);
       },
       error: (_) {
-        if(listDropDown.isEmpty) {
+        if (listDropDown.isEmpty) {
           listDropDown.add(
             {
               'label': 'COLLECTION 721',
@@ -754,7 +773,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       return false;
     }
   }
-
 
   Future<void> getDataFromStep1ToModelToSave() async {
     final UserInfoCreateHardNft userInfo = UserInfoCreateHardNft(

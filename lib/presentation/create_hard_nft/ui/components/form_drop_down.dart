@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/form_search_create_hard_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -28,10 +29,12 @@ class FormDropDown extends StatelessWidget {
     required this.typeDrop,
     required this.cubit,
     this.defaultValue,
+    this.currentInfo,
   }) : super(key: key);
   final TYPE_FORM_DROPDOWN typeDrop;
   final ProvideHardNftCubit cubit;
   final Map<String, dynamic>? defaultValue;
+  final UserInfoCreateHardNft? currentInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -429,84 +432,55 @@ class FormDropDown extends StatelessWidget {
                 ),
               );
             } else {
-              return Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().backgroundBTSColor(),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.r),
-                    bottomLeft: Radius.circular(20.r),
-                  ),
-                ),
-                width: 100.w,
-                height: 64.h,
-                child: Center(
-                  child: Stack(
-                    alignment: Alignment.centerLeft,
-                    children: [
-                      CoolDropdown(
-                        defaultValue: defaultValue,
-                        dropdownItemGap: 8.h,
-                        dropdownItemMainAxis: MainAxisAlignment.start,
-                        resultMainAxis: MainAxisAlignment.spaceAround,
-                        dropdownHeight: 324.h,
-                        dropdownWidth: 109.w,
-                        isTriangle: false,
-                        placeholder: S.current.phone,
-                        dropdownPadding: EdgeInsets.only(right: 11.w),
-                        dropdownList: cubit.phonesCode,
-                        placeholderTS: textNormal(
-                          Colors.white.withOpacity(0.5),
-                          16,
-                        ),
-                        resultIcon: const SizedBox.shrink(),
-                        dropdownBD: BoxDecoration(
-                          color: AppTheme.getInstance().selectDialogColor(),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        unselectedItemTS: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                        ),
-                        resultTS: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                        ),
-                        selectedItemBD: BoxDecoration(
-                          color: AppTheme.getInstance()
-                              .whiteColor()
-                              .withOpacity(0.1),
-                        ),
-                        selectedItemTS: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                        ),
-                        resultBD: BoxDecoration(
-                          color: AppTheme.getInstance().backgroundBTSColor(),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        onChange: (value) {
-                          value as Map<String, dynamic>;
-                          cubit.dataStep1.phoneCodeModel.id =
-                              value['id'] as int;
-                          cubit.dataStep1.phoneCodeModel.code = value['code'];
-                          cubit.mapValidate['phone'] = true;
-                          cubit.validateAll();
-                        },
+              return InkWell(
+                onTap: () => {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: FormSearchCreateHardNft(
+                        cubit: cubit,
+                        hintSearch: S.current.search,
                       ),
-                      Positioned(
-                        left: 70.w,
-                        child: SizedBox(
-                          height: 60.h,
-                          child: sizedSvgImage(
-                            w: 13,
-                            h: 13,
-                            image: ImageAssets.ic_expand_white_svg,
-                          ),
+                    ),
+                  )
+                },
+                child: StreamBuilder<String>(
+                    initialData: currentInfo != null
+                        ? currentInfo?.phoneCode?.code ?? ''
+                        : S.current.phone,
+                    stream: cubit.resultPhoneChoose.stream,
+                    builder: (context, snapshot) {
+                      return Container(
+                        margin: EdgeInsets.only(right: 16.w),
+                        padding: EdgeInsets.only(
+                          left: 16.w,
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              snapshot.data ?? S.current.phone,
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                            spaceW20,
+                            SizedBox(
+                              height: 60.h,
+                              child: sizedSvgImage(
+                                w: 13,
+                                h: 13,
+                                image: ImageAssets.ic_expand_white_svg,
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
               );
             }
           });
