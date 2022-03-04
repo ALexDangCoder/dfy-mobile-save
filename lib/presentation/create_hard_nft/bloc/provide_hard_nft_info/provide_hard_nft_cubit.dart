@@ -610,15 +610,20 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       },
       error: (_) {
         if(listDropDown.isEmpty) {
-          listDropDown.add({
-            'label': 'Empty data',
-          });
+          listDropDown.add(
+            {
+              'label': 'COLLECTION 721',
+              'value': ADDRESS_COLLECTION_721,
+              'id': ID_COLLECTION_721,
+            },
+          );
         }
         collectionsBHVSJ.sink.add(listDropDown);
       },
     );
   }
 
+  ///needed for get id
   String getCollectionID(String value) {
     final _collectionAddress = value;
     final collectionId = listHardCl
