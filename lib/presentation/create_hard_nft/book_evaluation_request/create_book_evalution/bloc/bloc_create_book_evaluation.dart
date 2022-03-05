@@ -435,17 +435,17 @@ class BlocCreateBookEvaluation {
   String linkImage(int assetType) {
     switch (assetType) {
       case JEWELRY:
-        return ImageAssets.img_diamond;
+        return ImageAssets.diamond;
       case ARTWORK:
-        return ImageAssets.img_artwork;
+        return ImageAssets.artWork;
       case CAR:
-        return ImageAssets.img_car;
+        return ImageAssets.car;
       case WATCH:
-        return ImageAssets.img_watch;
+        return ImageAssets.watch;
       case HOUSE:
-        return ImageAssets.img_house;
+        return ImageAssets.house;
       case OTHERS:
-        return ImageAssets.img_other;
+        return ImageAssets.others;
       default:
         return '';
     }

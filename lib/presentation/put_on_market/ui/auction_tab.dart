@@ -64,7 +64,6 @@ class _AuctionTabState extends State<AuctionTab>
 
   @override
   void initState() {
-    // TODO: implement initState
     final now = DateFormat('yyyy-MM-dd').format(DateTime.now());
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.numberOfCopies = 1;
@@ -97,28 +96,18 @@ class _AuctionTabState extends State<AuctionTab>
           errorTextStartTime = S.current.start_time_auction;
         });
         widget.cubit.timeValidate = false;
-      } else if ((durationTime ?? 0) > 10 || (durationTime ?? 0) < 0) {
+      } else if (difference < 12) {
         setState(() {
           errorTextStartTime = null;
           errorTextEndTime = S.current.min_duration_auction;
         });
-      }
-      // todo
-
-      // else if (difference < 12) {
-      //   setState(() {
-      //     errorTextStartTime = null;
-      //     errorTextEndTime = S.current.min_duration_auction;
-      //   });
-      //   widget.cubit.timeValidate = false;
-      // } else
-      // if (difference > 168) {
-      //   setState(() {
-      //     errorTextEndTime = S.current.max_duration_auction;
-      //   });
-      //   widget.cubit.timeValidate = false;
-      // }
-      else {
+        widget.cubit.timeValidate = false;
+      } else if (difference > 168) {
+        setState(() {
+          errorTextEndTime = S.current.max_duration_auction;
+        });
+        widget.cubit.timeValidate = false;
+      } else {
         setState(() {
           errorTextStartTime = null;
           errorTextEndTime = null;
