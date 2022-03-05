@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
@@ -379,13 +378,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         decimal: true,
                       ),
                       prefixIcon: FormDropDown(
-                        defaultValue: currentInfo != null
-                            ? {
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                                'id': currentInfo?.phoneCode?.id,
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                              }
-                            : null,
+                        currentInfo: currentInfo,
                         typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                         cubit: cubit,
                       ),
@@ -400,7 +393,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       },
                     ),
                   ),
-
                   spaceH16,
                   textShowWithPadding(
                     textShow: S.current.country,
@@ -414,12 +406,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   FormDropDown(
                     typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                     cubit: cubit,
-                    defaultValue: currentInfo != null
-                        ? {
-                            'value': currentInfo?.country?.id ?? '',
-                            'label': currentInfo?.country?.name ?? '',
-                          }
-                        : null,
+                    currentInfo: currentInfo,
                   ),
                   spaceH16,
                   textShowWithPadding(
@@ -766,6 +753,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       ),
     );
   }
+
+
 
   Container textShowWithPadding({
     required String textShow,
