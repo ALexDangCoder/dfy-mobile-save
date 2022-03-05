@@ -40,7 +40,11 @@ class FormSearchCreateHardNft extends StatelessWidget {
               16,
             ),
             onChanged: (value) {
-              cubit.searchPhones(value);
+              if (typeDrop == TYPE_FORM_DROPDOWN.PHONE) {
+                cubit.searchPhones(value);
+              } else {
+                cubit.searchCountries(value);
+              }
             },
             decoration: InputDecoration(
               filled: true,
@@ -115,17 +119,34 @@ class FormSearchCreateHardNft extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              cubit.dataStep1.phoneCodeModel.id =
-                                  snapshot.data?.elementAt(index)['id'] as int;
-                              cubit.dataStep1.phoneCodeModel.code =
-                                  snapshot.data?.elementAt(index)['code'];
-                              cubit.mapValidate['phone'] = true;
-                              cubit.validateAll();
-                              cubit.resultPhoneChoose.sink.add(
-                                cubit.dataStep1.phoneCodeModel.code ?? '',
-                              );
-                              cubit.searchPhones('');
-                              Navigator.pop(context);
+                              if (typeDrop == TYPE_FORM_DROPDOWN.PHONE) {
+                                cubit.dataStep1.phoneCodeModel.id =
+                                    snapshot.data?.elementAt(index)['id']
+                                        as int;
+                                cubit.dataStep1.phoneCodeModel.code =
+                                    snapshot.data?.elementAt(index)['code'];
+                                cubit.mapValidate['phone'] = true;
+                                cubit.validateAll();
+                                cubit.resultPhoneChoose.sink.add(
+                                  cubit.dataStep1.phoneCodeModel.code ?? '',
+                                );
+                                cubit.searchPhones('');
+                                Navigator.pop(context);
+                              } else {
+                                cubit.mapValidate['country'] = true;
+                                cubit.mapValidate['city'] = false;
+                                cubit.getCitiesApi(
+                                    snapshot.data?.elementAt(index)['value']);
+                                cubit.dataStep1.country.id =
+                                    snapshot.data?.elementAt(index)['value'];
+                                cubit.dataStep1.country.name =
+                                    snapshot.data?.elementAt(index)['label'];
+                                cubit.validateAll();
+                                cubit.resultCountryChoose.sink
+                                    .add(cubit.dataStep1.country.name ?? '');
+                                cubit.searchCountries('');
+                                Navigator.pop(context);
+                              }
                             },
                             child: Text(
                               '${snapshot.data?.elementAt(index)['label']}',

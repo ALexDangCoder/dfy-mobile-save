@@ -10,7 +10,6 @@ import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/prov
 import 'package:Dfy/presentation/create_hard_nft/ui/components/circle_status_provide_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/common_widget.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
-import 'package:Dfy/presentation/create_hard_nft/ui/components/form_search_create_hard_nft.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/select_collection_dropdown.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/step1__when_submit.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
@@ -19,7 +18,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
-import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
@@ -408,12 +406,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   FormDropDown(
                     typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                     cubit: cubit,
-                    defaultValue: currentInfo != null
-                        ? {
-                            'value': currentInfo?.country?.id ?? '',
-                            'label': currentInfo?.country?.name ?? '',
-                          }
-                        : null,
+                    currentInfo: currentInfo,
                   ),
                   spaceH16,
                   textShowWithPadding(

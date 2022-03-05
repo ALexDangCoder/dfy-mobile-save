@@ -23,6 +23,14 @@ extension StringMoneyFormat on String {
     String d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
+
+  String formatIfTooLong() {
+    if(length > 7) {
+      return substring(0, 5);
+    } else {
+      return this;
+    }
+  }
 }
 
 extension FormatAddress on String {

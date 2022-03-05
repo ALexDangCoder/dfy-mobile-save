@@ -151,72 +151,65 @@ class FormDropDown extends StatelessWidget {
               ),
             );
           } else {
-            return Stack(
-              children: [
-                CoolDropdown(
-                  defaultValue: defaultValue,
-                  dropdownItemMainAxis: MainAxisAlignment.start,
-                  resultMainAxis: MainAxisAlignment.start,
-                  dropdownList: snapshot.data ?? [],
-                  onChange: (value) {
-                    value as Map<String, dynamic>;
-                    cubit.mapValidate['country'] = true;
-                    cubit.mapValidate['city'] = false;
-                    cubit.getCitiesApi(value['value']);
-                    cubit.dataStep1.country.id = value['value'];
-                    cubit.dataStep1.country.name = value['label'];
-                    cubit.validateAll();
-                  },
-                  dropdownItemHeight: 54.h,
-                  dropdownHeight: cubit.countries.isEmpty ? 54.h : 232.h,
-                  dropdownWidth: 343.w,
-                  resultAlign: Alignment.centerRight,
-                  resultWidth: 343.w,
-                  resultHeight: 64.h,
-                  dropdownPadding: EdgeInsets.only(right: 11.w),
-                  dropdownBD: BoxDecoration(
-                    color: AppTheme.getInstance().selectDialogColor(),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  resultBD: BoxDecoration(
-                    color: AppTheme.getInstance().backgroundBTSColor(),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  resultTS: textNormal(
-                    AppTheme.getInstance().whiteColor(),
-                    16,
-                  ),
-                  placeholder: S.current.select_country,
-                  resultIcon: const SizedBox.shrink(),
-                  selectedItemTS: textNormal(
-                    AppTheme.getInstance().whiteColor(),
-                    16,
-                  ),
-                  unselectedItemTS: textNormal(
-                    AppTheme.getInstance().whiteColor(),
-                    16,
-                  ),
-                  placeholderTS: textNormal(
-                    Colors.white.withOpacity(0.5),
-                    16,
-                  ),
-                  isTriangle: false,
-                  selectedItemBD: BoxDecoration(
-                    color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
-                  ),
-                ),
-                Positioned(
-                  right: 19.w,
-                  child: SizedBox(
-                    height: 64.h,
-                    child: sizedSvgImage(
-                      w: 13,
-                      h: 13,
-                      image: ImageAssets.ic_expand_white_svg,
+            return InkWell(
+              onTap: () => {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: FormSearchCreateHardNft(
+                      cubit: cubit,
+                      hintSearch: S.current.select_country,
+                      initData: cubit.countries,
+                      streamController: cubit.countriesBHVSJ.stream,
+                      typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                     ),
                   ),
                 )
-              ],
+              },
+              child: StreamBuilder<String>(
+                  initialData: currentInfo != null
+                      ? currentInfo?.country?.name ?? ''
+                      : S.current.select_country,
+                  stream: cubit.resultCountryChoose.stream,
+                  builder: (context, snapshot) {
+                    return Container(
+                      width: 343.w,
+                      height: 64.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                        color: AppTheme.getInstance().itemBtsColors(),
+                      ),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            snapshot.data ?? S.current.select_country,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                          ),
+                          spaceW20,
+                          SizedBox(
+                            height: 60.h,
+                            child: sizedSvgImage(
+                              w: 13,
+                              h: 13,
+                              image: ImageAssets.ic_expand_white_svg,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
             );
           }
         },
