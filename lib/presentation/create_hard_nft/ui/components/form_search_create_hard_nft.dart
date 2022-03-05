@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/form_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,10 +11,15 @@ class FormSearchCreateHardNft extends StatelessWidget {
     Key? key,
     required this.cubit,
     required this.hintSearch,
+    required this.initData,
+    required this.streamController,
+    required this.typeDrop,
   }) : super(key: key);
   final String hintSearch;
-
+  final List<Map<String, dynamic>> initData;
+  final Stream<List<Map<String, dynamic>>> streamController;
   final ProvideHardNftCubit cubit;
+  final TYPE_FORM_DROPDOWN typeDrop;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +90,8 @@ class FormSearchCreateHardNft extends StatelessWidget {
             ),
           ),
           StreamBuilder<List<Map<String, dynamic>>>(
-            stream: cubit.phonesCodeBHVSJ.stream,
-            initialData: cubit.phonesCode,
+            stream: streamController,
+            initialData: initData,
             builder: (context, snapshot) {
               if ((snapshot.data ?? []).isEmpty) {
                 return Container(

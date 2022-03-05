@@ -442,6 +442,9 @@ class FormDropDown extends StatelessWidget {
                       child: FormSearchCreateHardNft(
                         cubit: cubit,
                         hintSearch: S.current.search,
+                        initData: cubit.phonesCode,
+                        streamController: cubit.phonesCodeBHVSJ.stream,
+                        typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                       ),
                     ),
                   )

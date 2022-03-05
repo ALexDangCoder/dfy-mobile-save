@@ -379,11 +379,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       textInputType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      // prefixIcon: _buildPhoneResult(
-                      //   currentInfo != null
-                      //       ? currentInfo?.phoneCode?.code ?? ''
-                      //       : null,
-                      // ),
                       prefixIcon: FormDropDown(
                         currentInfo: currentInfo,
                         typeDrop: TYPE_FORM_DROPDOWN.PHONE,
@@ -766,56 +761,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     );
   }
 
-  InkWell _buildPhoneResult(String? value) {
-    return InkWell(
-      onTap: () => {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) => Dialog(
-            backgroundColor: Colors.transparent,
-            child: FormSearchCreateHardNft(
-              cubit: cubit,
-              hintSearch: S.current.search,
-            ),
-          ),
-        )
-      },
-      child: StreamBuilder<String>(
-          initialData: currentInfo != null
-              ? currentInfo?.phoneCode?.code ?? ''
-              : S.current.phone,
-          stream: cubit.resultPhoneChoose.stream,
-          builder: (context, snapshot) {
-            return Container(
-              padding: EdgeInsets.only(
-                left: 16.w,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    snapshot.data ?? S.current.phone,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceW20,
-                  SizedBox(
-                    height: 60.h,
-                    child: sizedSvgImage(
-                      w: 13,
-                      h: 13,
-                      image: ImageAssets.ic_expand_white_svg,
-                    ),
-                  )
-                ],
-              ),
-            );
-          }),
-    );
-  }
+
 
   Container textShowWithPadding({
     required String textShow,
