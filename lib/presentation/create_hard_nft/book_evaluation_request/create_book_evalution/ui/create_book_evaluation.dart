@@ -829,7 +829,7 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 await bloc.getHexString(
                                   evaluator: pawn.walletAddress ?? '',
                                   evaluationFeeAddress:
-                                      BlocCreateBookEvaluation.DFY_ADDRESS,
+                                      Get.find<AppConstants>().contract_defy,
                                   appointmentTime: bloc.appointmentTime,
                                   assetId: bloc.bcAssetId ?? '',
                                 );
@@ -838,12 +838,12 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   navigator.push(
                                     MaterialPageRoute(
                                       builder: (context) => Approve(
-                                        needApprove: true,
+                                        // needApprove: true,
                                         hexString: bloc.hexString,
                                         payValue:
                                             '${bloc.evaluationFee?.amount ?? 0}',
-                                        tokenAddress: BlocCreateBookEvaluation
-                                            .DFY_ADDRESS,
+                                        tokenAddress: Get.find<AppConstants>()
+                                            .contract_defy,
                                         title: S.current.book_appointment,
                                         listDetail: [
                                           DetailItemApproveModel(
