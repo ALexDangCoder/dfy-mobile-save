@@ -34,7 +34,6 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
             color: AppTheme.getInstance().divideColor(),
           ),
         ),
-        width: 343.h,
         height: 138.w,
         child: GridView.builder(
           shrinkWrap: true,
