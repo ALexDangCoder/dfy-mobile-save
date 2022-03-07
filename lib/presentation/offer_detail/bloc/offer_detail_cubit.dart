@@ -124,13 +124,16 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
     );
   }
 
-  Future<void> rejectOffer(int idOffer) async {
-    final result = await _nftRepo.rejectOffer(idOffer);
+  Future<void> rejectOffer(
+      int idOffer, int idCollateral, String walletAddress) async {
+    print('Fuck offer $idOffer');
+    final result =
+        await _nftRepo.rejectOffer(walletAddress, idOffer, idCollateral);
     result.when(
       success: (success) {},
       error: (error) {
         if (error.code == CODE_ERROR_AUTH) {
-          rejectOffer(idOffer);
+          rejectOffer(idOffer, idCollateral, walletAddress);
         }
       },
     );
