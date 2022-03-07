@@ -119,7 +119,9 @@ class _SaleTabState extends State<SaleTab>
                         ),
                       ],
                       maxSize: 100,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       typeInput: widget.cubit.listToken
                           .map(
                             (e) => SizedBox(

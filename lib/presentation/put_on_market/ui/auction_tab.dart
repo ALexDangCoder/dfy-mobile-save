@@ -206,7 +206,9 @@ class _AuctionTabState extends State<AuctionTab>
                   ),
                 ],
                 maxSize: 100,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 typeInput: widget.cubit.listToken
                     .map(
                       (e) => SizedBox(
