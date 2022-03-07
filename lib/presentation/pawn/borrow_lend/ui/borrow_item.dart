@@ -118,7 +118,7 @@ class _BorrowItemState extends State<BorrowItem> {
                 : const SizedBox.shrink();
           },
         ),
-        spaceH16,
+        spaceH8,
         Text(
           S.current.select_loan_token,
           style: textNormalCustom(
