@@ -365,7 +365,7 @@ class _PawnTabState extends State<PawnTab>
                                     return route.settings.name ==
                                         AppRouter.putOnSale;
                                   });
-                                  nav.pop(true);
+                                  nav.pop(PUT_ON_PAWN);
                                 });
                               } else {
                                 await showLoadFail(context);

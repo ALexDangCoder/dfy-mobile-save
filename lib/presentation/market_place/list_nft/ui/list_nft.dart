@@ -255,19 +255,17 @@ class _ListNftState extends State<ListNft> {
                                           ),
                                         ),
                                         if (state is ListNftLoadMore)
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 595.h),
-                                            child: Center(
-                                              child: SizedBox(
-                                                height: 16.h,
-                                                width: 16.w,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth: 1.r,
-                                                  color: AppTheme.getInstance()
-                                                      .whiteColor(),
-                                                ),
+                                          Align(
+                                            alignment:
+                                                Alignment.bottomCenter,
+                                            child: SizedBox(
+                                              height: 16.h,
+                                              width: 16.w,
+                                              child:
+                                                  CircularProgressIndicator(
+                                                strokeWidth: 1.r,
+                                                color: AppTheme.getInstance()
+                                                    .whiteColor(),
                                               ),
                                             ),
                                           )

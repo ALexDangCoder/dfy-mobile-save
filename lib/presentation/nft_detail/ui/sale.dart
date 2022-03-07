@@ -563,7 +563,13 @@ Widget _buildButtonPutOnMarket(
             ),
           );
           if (result != null) {
-            reload();
+            final check = result.toString();
+            if(check == PUT_ON_PAWN) {
+              nftMarket.processStatus = 3;
+              bloc.emit(NftNotOnMarketSuccess(nftMarket));
+            } else {
+              reload();
+            }
             Timer(const Duration(seconds: 15), () {
               nftMarket.processStatus = 9;
               bloc.emit(NftNotOnMarketSuccess(nftMarket));
