@@ -202,7 +202,7 @@ class _SearchNFTState extends State<SearchNFT> {
                       ),
                       decoration: InputDecoration(
                         isCollapsed: true,
-                        contentPadding:   EdgeInsets.zero,
+                        contentPadding: EdgeInsets.zero,
                         hintText: S.current.search,
                         hintStyle: textNormal(
                           Colors.white54,
@@ -296,7 +296,8 @@ class _SearchNFTState extends State<SearchNFT> {
                             MaterialPageRoute(
                               builder: (ctx) => DetailCollection(
                                 collectionAddress: searchCubit
-                                    .collections[index].collectionAddress, typeScreen: PageRouter.MARKET,
+                                    .collections[index].collectionAddress,
+                                typeScreen: PageRouter.MARKET,
                               ),
                             ),
                           );
@@ -392,7 +393,8 @@ class _SearchNFTState extends State<SearchNFT> {
                                 builder: (context) => NFTDetailScreen(
                                   key: nftKey,
                                   typeMarket:
-                                      searchCubit.listNFT[index].marketType!,
+                                      searchCubit.listNFT[index].marketType ??
+                                          MarketType.NOT_ON_MARKET,
                                   marketId: searchCubit.listNFT[index].marketId,
                                   typeNft: searchCubit.listNFT[index].typeNFT,
                                   nftId: searchCubit.listNFT[index].nftId,
