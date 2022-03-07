@@ -568,13 +568,13 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
           status,
           maxLines: 1,
           style: textNormalCustom(
-            // AppTheme.getInstance().textThemeColor(),
-            Colors.blue,
+            AppTheme.getInstance().textThemeColor(),
             16,
             FontWeight.w700,
           ).copyWith(
             overflow: TextOverflow.ellipsis,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
