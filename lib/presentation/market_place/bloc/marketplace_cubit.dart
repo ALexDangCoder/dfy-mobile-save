@@ -180,6 +180,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsFeaturedSoft.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -213,6 +214,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsHotAution.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -301,6 +303,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsCollateral.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
