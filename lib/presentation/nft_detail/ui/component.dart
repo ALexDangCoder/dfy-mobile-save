@@ -15,23 +15,28 @@ Widget _leading(BuildContext context) => InkWell(
 Widget action(
   BuildContext context,
   String collectionAddress,
+  bool isOwner,
   String nftTokenId,
   String walletAddress,
 ) {
   final NftInfo nftInfo = NftInfo(contract: collectionAddress, id: nftTokenId);
   return InkWell(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SendNft(
-            nftInfo: nftInfo,
-            addressFrom: walletAddress,
-            imageWallet: '',
-            nameWallet: '',
+      if(isOwner){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SendNft(
+              nftInfo: nftInfo,
+              addressFrom: walletAddress,
+              imageWallet: '',
+              nameWallet: '',
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        showAlert(context, walletAddress);
+      }
     },
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),

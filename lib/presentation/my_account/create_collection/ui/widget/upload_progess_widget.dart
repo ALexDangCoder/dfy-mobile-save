@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/call_api_be.dart';
 import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -42,6 +43,7 @@ class _UploadProgressState extends State<UploadProgress>
   void initState() {
     // TODO: implement initState
     super.initState();
+    final appConstants = Get.find<AppConstants>();
     final int rdC = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
@@ -118,7 +120,7 @@ class _UploadProgressState extends State<UploadProgress>
                 ),
                 DetailItemApproveModel(
                   title: 'URL:',
-                  value: widget.bloc.customUrl,
+                  value: appConstants.baseCustomUrl + widget.bloc.customUrl,
                 ),
                 DetailItemApproveModel(
                   title: '${S.current.categories}:',
