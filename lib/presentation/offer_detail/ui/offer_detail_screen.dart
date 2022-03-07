@@ -385,88 +385,90 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       isEnable: isEnable,
       isProcess: isProcess,
       onPressed: () {
-        _cubit
-            .getCancelOfferData(
-              obj.bcCollateralId?.toString() ?? '',
-              obj.bcOfferId?.toString() ?? '',
-              context,
-            )
-            .then(
-              (value) => Navigator.push(
+        if (!isProcess && isEnable && (obj.status != 4)) {
+          _cubit
+              .getCancelOfferData(
+                obj.bcCollateralId?.toString() ?? '',
+                obj.bcOfferId?.toString() ?? '',
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    title: S.current.reject_offer,
-                    spender: Get.find<AppConstants>().nftPawn,
-                    textActiveButton: S.current.reject_offer,
-                    hexString: value,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.from}:',
-                          child: Text(
-                            obj.walletAddress?.formatAddressWalletConfirm() ??
-                                '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.loan_amount}',
-                          child: Text(
-                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        spaceH20,
-                        line,
-                      ],
-                    ),
-                    onSuccessSign: (context, data) async {
-                      Navigator.pop(context);
-                      await _cubit.rejectOffer(
-                        obj.id?.toInt() ?? 0,
-                        obj.collateralId?.toInt() ?? 0,
-                        PrefsService.getCurrentBEWallet(),
-                      );
-                      await showLoadSuccess(context).then(
-                        (value) {
-                          Navigator.pop(context, true);
-                        },
-                      );
-                      await onRefresh();
-                    },
-                    onErrorSign: (context) async {
-                      Navigator.pop(context);
-                      await showLoadFail(context)
-                          .then((_) => Navigator.pop(context))
-                          .then(
-                            (value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BaseFail(
-                                  title: S.current.reject_offer,
-                                  onTapBtn: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
+              )
+              .then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      title: S.current.reject_offer,
+                      spender: Get.find<AppConstants>().nftPawn,
+                      textActiveButton: S.current.reject_offer,
+                      hexString: value,
+                      header: Column(
+                        children: [
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.from}:',
+                            child: Text(
+                              obj.walletAddress?.formatAddressWalletConfirm() ??
+                                  '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
                               ),
                             ),
-                          );
-                    },
+                          ),
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.loan_amount}',
+                            child: Text(
+                              '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          spaceH20,
+                          line,
+                        ],
+                      ),
+                      onSuccessSign: (context, data) async {
+                        Navigator.pop(context);
+                        await _cubit.rejectOffer(
+                          obj.id?.toInt() ?? 0,
+                          obj.collateralId?.toInt() ?? 0,
+                          PrefsService.getCurrentBEWallet(),
+                        );
+                        await showLoadSuccess(context).then(
+                          (value) {
+                            Navigator.pop(context, true);
+                          },
+                        );
+                        await onRefresh();
+                      },
+                      onErrorSign: (context) async {
+                        Navigator.pop(context);
+                        await showLoadFail(context)
+                            .then((_) => Navigator.pop(context))
+                            .then(
+                              (value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BaseFail(
+                                    title: S.current.reject_offer,
+                                    onTapBtn: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+        }
       },
       child: SizedBox(
         width: 100.w,
@@ -499,68 +501,71 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       isEnable: isEnable,
       isProcess: isProcess,
       onPressed: () {
-        _cubit
-            .getAcceptOfferData(
-              obj.bcCollateralId?.toString() ?? '',
-              obj.bcOfferId?.toString() ?? '',
-              context,
-            )
-            .then(
-              (value) => Navigator.push(
+        if (isProcess || !isEnable) {
+        } else {
+          _cubit
+              .getAcceptOfferData(
+                obj.bcCollateralId?.toString() ?? '',
+                obj.bcOfferId?.toString() ?? '',
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    title: S.current.accept_offer,
-                    spender: Get.find<AppConstants>().nftPawn,
-                    textActiveButton: S.current.accept_offer,
-                    hexString: value,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.from}:',
-                          child: Text(
-                            obj.walletAddress?.formatAddressWalletConfirm() ??
-                                '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
+              )
+              .then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      title: S.current.accept_offer,
+                      spender: Get.find<AppConstants>().nftPawn,
+                      textActiveButton: S.current.accept_offer,
+                      hexString: value,
+                      header: Column(
+                        children: [
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.from}:',
+                            child: Text(
+                              obj.walletAddress?.formatAddressWalletConfirm() ??
+                                  '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.loan_amount}:',
-                          child: Text(
-                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.loan_amount}:',
+                            child: Text(
+                              '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        spaceH20,
-                        line,
-                      ],
+                          spaceH20,
+                          line,
+                        ],
+                      ),
+                      onSuccessSign: (context, data) async {
+                        Navigator.pop(context);
+                        await _cubit.acceptOffer(obj.id?.toInt() ?? 0);
+                        await showLoadSuccess(context)
+                            .then((value) => Navigator.pop(context));
+                        await onRefresh();
+                      },
+                      onErrorSign: (context) async {
+                        Navigator.pop(context);
+                        await showLoadFail(context)
+                            .then((_) => Navigator.pop(context));
+                      },
                     ),
-                    onSuccessSign: (context, data) async {
-                      Navigator.pop(context);
-                      await _cubit.acceptOffer(obj.id?.toInt() ?? 0);
-                      await showLoadSuccess(context)
-                          .then((value) => Navigator.pop(context));
-                      await onRefresh();
-                    },
-                    onErrorSign: (context) async {
-                      Navigator.pop(context);
-                      await showLoadFail(context)
-                          .then((_) => Navigator.pop(context));
-                    },
                   ),
                 ),
-              ),
-            );
+              );
+        }
       },
       child: SizedBox(
         width: 100.w,
