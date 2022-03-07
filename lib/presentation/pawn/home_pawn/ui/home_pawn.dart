@@ -3,9 +3,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
-import 'package:Dfy/presentation/home_pawn/ui/components/banner_slide.dart';
-import 'package:Dfy/presentation/home_pawn/ui/components/list_item_horizontal.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
