@@ -947,6 +947,7 @@ class Web3Utils {
     required String evaluationFeeAddress,
     required String appointmentTime,
   }) async {
+    print('fuck $assetId, $evaluator, $evaluationFeeAddress, $appointmentTime');
     final deployContract =
         await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('createAppointment');
