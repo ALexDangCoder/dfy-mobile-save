@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'check_box_item_hard.dart';
+import 'is_base_check_box_hard.dart';
 
 class PersonalHardFilter extends StatefulWidget {
   const PersonalHardFilter({Key? key, required this.bloc}) : super(key: key);
@@ -161,7 +161,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                   child: Row(
                     children: [
                       Expanded(
-                        flex: 15,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -178,7 +177,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                         ),
                       ),
                       Expanded(
-                        flex: 14,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -206,7 +204,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        flex: 15,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -224,7 +221,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                         ),
                       ),
                       Expanded(
-                        flex: 14,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -258,25 +254,32 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                   ),
                 ),
                 spaceH16,
-                Row(
-                  children: [
-                    Expanded(
-                      child: IsBaseCheckBox(
-                        title: S.current.hard_nft,
-                        stream: widget.bloc.isHardNFT,
-                        funText: () {},
-                        funCheckBox: () {},
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 7.w,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex:10,
+                        child: IsBaseCheckBoxHard(
+                          title: S.current.hard_nft,
+                          stream: widget.bloc.isHardNFT,
+                          funText: () {},
+                          funCheckBox: () {},
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: IsBaseCheckBox(
-                        title: S.current.soft_nft,
-                        stream: widget.bloc.isSoftNFT,
-                        funText: () {},
-                        funCheckBox: () {},
+                      Expanded(
+                        flex: 11,
+                        child: IsBaseCheckBoxHard(
+                          title: S.current.soft_nft,
+                          stream: widget.bloc.isSoftNFT,
+                          funText: () {},
+                          funCheckBox: () {},
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 spaceH40,
                 GestureDetector(
