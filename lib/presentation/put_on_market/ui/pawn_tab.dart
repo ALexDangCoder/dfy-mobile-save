@@ -1,11 +1,9 @@
-import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
-import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/put_on_market/bloc/put_on_market_cubit.dart';
@@ -392,7 +390,7 @@ class _PawnTabState extends State<PawnTab>
                                     '${widget.cubit.valueDuration ?? 0} ${(_putOnMarketModel.durationType ?? 0) == 0 ? S.current.week : S.current.month}',
                               ),
                               DetailItemApproveModel(
-                                title: '${S.current.price_per_1} :',
+                                title: '${S.current.quantity_of_collateral} :',
                                 value:
                                     '${widget.cubit.quantityPawn} of ${widget.quantity ?? 1}',
                               )
