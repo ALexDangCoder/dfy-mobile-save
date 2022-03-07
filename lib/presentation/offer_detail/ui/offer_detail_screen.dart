@@ -433,9 +433,17 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                     ),
                     onSuccessSign: (context, data) async {
                       Navigator.pop(context);
-                      _cubit.rejectOffer(obj.id?.toInt() ?? 0);
-                      await showLoadSuccess(context)
-                          .then((value) => Navigator.pop(context, true));
+                      await _cubit.rejectOffer(
+                        obj.id?.toInt() ?? 0,
+                        obj.collateralId?.toInt() ?? 0,
+                        PrefsService.getCurrentBEWallet(),
+                      );
+                      await showLoadSuccess(context).then(
+                        (value) {
+                          Navigator.pop(context, true);
+                        },
+                      );
+                      await onRefresh();
                     },
                     onErrorSign: (context) async {
                       Navigator.pop(context);
@@ -542,6 +550,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                       _cubit.acceptOffer(obj.id?.toInt() ?? 0);
                       await showLoadSuccess(context)
                           .then((value) => Navigator.pop(context));
+                      await onRefresh();
                     },
                     onErrorSign: (context) async {
                       Navigator.pop(context);
@@ -559,7 +568,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
           status,
           maxLines: 1,
           style: textNormalCustom(
-            AppTheme.getInstance().textThemeColor(),
+            // AppTheme.getInstance().textThemeColor(),
+            Colors.blue,
             16,
             FontWeight.w700,
           ).copyWith(
