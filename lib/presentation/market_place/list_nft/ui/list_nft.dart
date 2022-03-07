@@ -109,6 +109,7 @@ class _ListNftState extends State<ListNft> {
     _debounce.cancel();
     super.dispose();
   }
+
   void refresh() {
     _cubit.refreshPosts(widget.pageRouter);
   }
@@ -235,6 +236,10 @@ class _ListNftState extends State<ListNft> {
                                     child: Stack(
                                       children: [
                                         GridView.builder(
+                                          padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context)
+                                                  .padding
+                                                  .bottom),
                                           shrinkWrap: true,
                                           itemCount: _cubit.listData.length,
                                           itemBuilder: (context, index) {
@@ -260,13 +265,21 @@ class _ListNftState extends State<ListNft> {
                                         if (state is ListNftLoadMore)
                                           Align(
                                             alignment: Alignment.bottomCenter,
-                                            child: SizedBox(
-                                              height: 16.h,
-                                              width: 16.w,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 1.r,
-                                                color: AppTheme.getInstance()
-                                                    .whiteColor(),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .padding
+                                                    .bottom,
+                                              ),
+                                              child: SizedBox(
+                                                height: 16.h,
+                                                width: 16.w,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 1.r,
+                                                  color: AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                ),
                                               ),
                                             ),
                                           )
