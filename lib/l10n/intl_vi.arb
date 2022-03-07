@@ -726,6 +726,11 @@
   "broken": "Hàng Nứt Vỡ",
   "expecting_for": "Gía dự kiến",
   "view_evaluation": "Xem đánh giá",
-  "nfts_collateral": "NFTs thế chấp"
+  "nfts_collateral": "NFTs thế chấp",
+  "back_and_refresh_data":"NFT của bạn đã được chuyển về Not on market.",
+    "put_on_sale_success":"Đưa lên bán thành công.",
+    "put_on_auction_success":"Đưa lên đấu giá thành công",
+    "put_on_pawn_success":"Đưa lên thế chấp",
+    "check_data_on_market":"NFT của bạn đã được đưa lên "
 
 }

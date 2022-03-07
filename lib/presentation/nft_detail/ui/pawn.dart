@@ -144,7 +144,7 @@ Widget _buildButtonCancelOnPawn(
         return;
       }
       if(nftMarket.status == 0){
-        Navigator.pop(context);
+        Navigator.pop(context,true);
         return;
       }
       final nav = Navigator.of(context);
@@ -228,10 +228,11 @@ Widget _buildButtonCancelOnPawn(
           ),
         );
         if (isSuccess) {
-          await refresh();
-          Timer(const Duration(seconds: 15), () {
+          refresh();
+          Timer(const Duration(seconds: 30), () {
             nftMarket.status = 0;
             bloc.emit(NftOnPawnSuccess(nftMarket));
+            showDialogSuccess(context);
           });
         }
       }
@@ -251,5 +252,70 @@ Widget _buildButtonCancelOnPawn(
               FontWeight.w700,
             ),
           ),
+  );
+}
+void showDialogSuccess (BuildContext context ,{String? alert, String? text}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      // return object of type Dialog
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              36.0.r,
+            ),
+          ),
+        ),
+        backgroundColor: AppTheme.getInstance().selectDialogColor(),
+        title: Column(
+          children: [
+            Text(
+              alert ?? S.current.cancel_success,
+              style: textNormalCustom(
+                Colors.white,
+                20,
+                FontWeight.w700,
+              ),
+            ),
+            SizedBox(
+              height: 4.h,
+            ),
+            Text(
+              text ?? S.current.back_and_refresh_data,
+              style: textNormalCustom(
+                Colors.white,
+                12,
+                FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          Divider(
+            height: 1.h,
+            color: AppTheme.getInstance().divideColor(),
+          ),
+          Center(
+            child: TextButton(
+              child: Text(
+                S.current.ok,
+                style: textNormalCustom(
+                  AppTheme.getInstance().fillColor(),
+                  20,
+                  FontWeight.w700,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop(true);
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

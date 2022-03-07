@@ -743,7 +743,7 @@ class _AuctionTabState extends State<AuctionTab>
                                       return route.settings.name ==
                                           AppRouter.putOnSale;
                                     });
-                                    nav.pop(true);
+                                    nav.pop(PUT_ON_AUCTION);
                                   });
                                 } else {
                                   await showLoadFail(context);
