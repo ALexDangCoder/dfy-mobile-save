@@ -547,7 +547,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                     ),
                     onSuccessSign: (context, data) async {
                       Navigator.pop(context);
-                      _cubit.acceptOffer(obj.id?.toInt() ?? 0);
+                      await _cubit.acceptOffer(obj.id?.toInt() ?? 0);
                       await showLoadSuccess(context)
                           .then((value) => Navigator.pop(context));
                       await onRefresh();
