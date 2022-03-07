@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
         title: Strings.app_name,
         theme: ThemeData(
           splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
+          highlightColor: colorTextField,
           primaryColor: AppTheme.getInstance().primaryColor(),
           cardColor: Colors.white,
           textTheme: GoogleFonts.latoTextTheme(

@@ -509,6 +509,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 action(
                   context,
                   objSale.collectionAddress ?? '',
+                  objSale.isOwner ?? false,
                   objSale.nftTokenId ?? '',
                   objSale.walletAddress ?? '',
                 ),
