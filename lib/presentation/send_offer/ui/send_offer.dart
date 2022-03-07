@@ -298,8 +298,9 @@ class _SendOfferState extends State<SendOffer> {
       title: S.current.send_offer,
       isImage: true,
       onRightClick: () {
-        Navigator.popUntil(
-            context, (route) => route.settings.name == AppRouter.listNft);
+        Navigator.of(context)
+          ..pop()
+          ..pop();
       },
       text: ImageAssets.ic_close,
       bottomBar: Container(
