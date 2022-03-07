@@ -40,6 +40,9 @@ const int NOT_ON_MARKET = 0;
 const int SALE = 1;
 const int AUCTION = 2;
 const int PAWN = 3;
+const String PUT_ON_PAWN = 'list NFT on pawn';
+const String PUT_ON_SALE = 'list NFT on sale';
+const String PUT_ON_AUCTION = 'list NFT on auction';
 
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';

@@ -12,7 +12,6 @@ class ButtonCustom extends StatelessWidget {
   const ButtonCustom({
     Key? key,
     required this.child,
-
     required this.onPressed,
     this.isEnable = true,
     this.isProcess = false,
@@ -34,7 +33,10 @@ class ButtonCustom extends StatelessWidget {
               : RadialGradient(
                   center: const Alignment(0.5, -0.5),
                   radius: 4,
-                  colors: [AppTheme.getInstance().errorColorButton()],
+                  colors: [
+                    AppTheme.getInstance().errorColorButton(),
+                    AppTheme.getInstance().errorColorButton()
+                  ],
                 ),
           borderRadius: BorderRadius.all(Radius.circular(22.0.r)),
         ),

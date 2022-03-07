@@ -825,6 +825,8 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
+    print(
+        'Fuck: $nftCollateralId, $repaymentAsset, $loanAmount, $interest, $duration, $loanDurationType, $repaymentCycleType');
     final deployContract =
         await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('createOffer');
@@ -834,7 +836,7 @@ class Web3Utils {
       parameters: [
         BigInt.from(num.parse(nftCollateralId)),
         EthereumAddress.fromHex(repaymentAsset),
-        BigInt.from(num.parse(_handleAmount(18, loanAmount))),
+        BigInt.from(num.parse(_handleAmount(18, '5'))),
         BigInt.from(num.parse(_handleAmount(5, interest))),
         BigInt.from(num.parse(duration)),
         BigInt.from(loanDurationType),

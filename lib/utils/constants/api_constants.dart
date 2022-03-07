@@ -124,7 +124,7 @@ class ApiConstants {
   static const String ACCEPT_OFFER =
       'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/{id}/accept';
   static const String REJECT_OFFER =
-      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{id}/cancel';
+      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{collateralId}/rejectOffer/{id}?wallet-address={walletAddress}';
   static const String SEND_OFFER =
       'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
 

@@ -161,7 +161,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     if (pageRouter == PageRouter.MARKET) {
       if (!loadMore && !refresh) {
         page += 1;
-        canLoadMoreListNft = true;
+        canLoadMoreListNft = false;
         loadMore = true;
         getListNft(
           name: name,
@@ -174,7 +174,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else {
       if (!loadMore && !refresh) {
         page += 1;
-        canLoadMoreListNft = true;
+        canLoadMoreListNft = false;
         loadMore = true;
         getListNft(
           name: name,
@@ -288,9 +288,6 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     }
     result.when(
       success: (res) {
-        if(res.length <ApiConstants.DEFAULT_PAGE_SIZE){
-          canLoadMoreListNft = false;
-        }
         for (final item in res) {
           final tokenBuyOut = item.tokenBuyOut ?? '';
           for (final value in listTokenSupport) {
@@ -308,6 +305,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         }
         if (res.isEmpty && loadMore) {
           canLoadMoreListNft = false;
+        } else {
+          canLoadMoreListNft = true;
         }
         if (loadMore) {
           listData = listData + res;
@@ -332,6 +331,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           emit(ListNftError());
           loadMore = false;
           refresh = false;
+          canLoadMoreListNft = true;
         }
       },
     );
