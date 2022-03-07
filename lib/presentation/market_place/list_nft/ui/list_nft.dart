@@ -109,6 +109,9 @@ class _ListNftState extends State<ListNft> {
     _debounce.cancel();
     super.dispose();
   }
+  void refresh() {
+    _cubit.refreshPosts(widget.pageRouter);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -256,13 +259,11 @@ class _ListNftState extends State<ListNft> {
                                         ),
                                         if (state is ListNftLoadMore)
                                           Align(
-                                            alignment:
-                                                Alignment.bottomCenter,
+                                            alignment: Alignment.bottomCenter,
                                             child: SizedBox(
                                               height: 16.h,
                                               width: 16.w,
-                                              child:
-                                                  CircularProgressIndicator(
+                                              child: CircularProgressIndicator(
                                                 strokeWidth: 1.r,
                                                 color: AppTheme.getInstance()
                                                     .whiteColor(),

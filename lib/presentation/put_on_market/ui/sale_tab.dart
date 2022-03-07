@@ -247,7 +247,7 @@ class _SaleTabState extends State<SaleTab>
                                     return route.settings.name ==
                                         AppRouter.putOnSale;
                                   });
-                                  nav.pop(true);
+                                  nav.pop(PUT_ON_SALE);
                                 });
                               } else {
                                 await showLoadFail(context);

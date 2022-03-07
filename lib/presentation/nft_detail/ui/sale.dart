@@ -251,9 +251,10 @@ Widget _buildButtonCancelOnSale(
         );
         if (isSuccess) {
           reload();
-          Timer(const Duration(seconds: 15), () {
+          Timer(const Duration(seconds: 30), () {
             nftMarket.marketStatus = 0;
             bloc.emit(NftOnSaleSuccess(nftMarket));
+            showDialogSuccess(context);
           });
         }
       }
@@ -523,7 +524,7 @@ Widget _buildButtonPutOnMarket(
     onPressed: () async {
       if (nftMarket.isOwner ?? false) {
         if (nftMarket.processStatus == 9) {
-          Navigator.pop(context);
+          Navigator.pop(context, true);
           return;
         }
         if (nftMarket.processStatus != 5 &&
@@ -564,15 +565,41 @@ Widget _buildButtonPutOnMarket(
           );
           if (result != null) {
             final check = result.toString();
-            if(check == PUT_ON_PAWN) {
+            if (check == PUT_ON_PAWN) {
               nftMarket.processStatus = 3;
               bloc.emit(NftNotOnMarketSuccess(nftMarket));
             } else {
               reload();
             }
-            Timer(const Duration(seconds: 15), () {
-              nftMarket.processStatus = 9;
-              bloc.emit(NftNotOnMarketSuccess(nftMarket));
+            Timer(const Duration(seconds: 30), () {
+              if (check == PUT_ON_PAWN) {
+                bloc.emit(NFTDetailInitial());
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_pawn_success,
+                  text: S.current.check_data_on_market + PUT_ON_PAWN,
+                );
+              }
+              if (check == PUT_ON_AUCTION) {
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_auction_success,
+                  text: S.current.check_data_on_market + PUT_ON_AUCTION,
+                );
+              }
+              if (check == PUT_ON_SALE) {
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_sale_success,
+                  text: S.current.check_data_on_market + PUT_ON_SALE,
+                );
+              }
             });
           }
         }
