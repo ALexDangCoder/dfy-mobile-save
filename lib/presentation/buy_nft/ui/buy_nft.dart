@@ -464,8 +464,9 @@ class _BuyNFTState extends State<BuyNFT> {
           child: BaseDesignScreen(
             isImage: true,
             onRightClick: () {
-              Navigator.popUntil(
-                  context, (route) => route.settings.name == AppRouter.listNft);
+              Navigator.of(context)
+                ..pop()
+                ..pop();
             },
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',
