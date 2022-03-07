@@ -181,21 +181,26 @@ class FormDropDown extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(20.r)),
                         color: AppTheme.getInstance().itemBtsColors(),
                       ),
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                        right: 16.w
-                      ),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             snapshot.data ?? S.current.select_country,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
+                            style: ((snapshot.data ??
+                                        S.current.select_country) ==
+                                    S.current.select_country)
+                                ? textNormalCustom(
+                                    AppTheme.getInstance().whiteOpacityDot5(),
+                                    16,
+                                    FontWeight.w400,
+                                  )
+                                : textNormalCustom(
+                                    AppTheme.getInstance().whiteColor(),
+                                    16,
+                                    FontWeight.w400,
+                                  ),
                           ),
                           spaceW20,
                           SizedBox(
@@ -458,11 +463,18 @@ class FormDropDown extends StatelessWidget {
                           children: [
                             Text(
                               snapshot.data ?? S.current.phone,
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
-                              ),
+                              style: ((snapshot.data ?? S.current.phone) ==
+                                      S.current.phone)
+                                  ? textNormalCustom(
+                                      AppTheme.getInstance().whiteOpacityDot5(),
+                                      16,
+                                      FontWeight.w400,
+                                    )
+                                  : textNormalCustom(
+                                      AppTheme.getInstance().whiteColor(),
+                                      16,
+                                      FontWeight.w400,
+                                    ),
                             ),
                             spaceW20,
                             SizedBox(
