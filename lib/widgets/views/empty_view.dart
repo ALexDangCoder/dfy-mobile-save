@@ -36,7 +36,7 @@ class EmptyView extends StatelessWidget {
             ),
             spaceH15,
             Text(
-              S.of(context).nft_not_found,
+              _message ?? S.of(context).nft_not_found,
               style: textNormal(Colors.white, 25),
               textAlign: TextAlign.center,
             ),

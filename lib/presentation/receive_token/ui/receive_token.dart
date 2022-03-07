@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/receive_token/bloc/receive_cubit.dart';
 import 'package:Dfy/presentation/receive_token/ui/set_amount_pop_up.dart';
 import 'package:Dfy/utils/animate/custom_rect_tween.dart';
 import 'package:Dfy/utils/animate/hero_dialog_route.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/pull_to_refresh/custom_refresh_indicator.dart';
@@ -25,7 +26,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 final formatCoin = NumberFormat('#,##0.#####', 'en_US');
-final formatUSD = NumberFormat('########,##0.#####\$', 'en_US');
+
 enum TokenType { DFY, NFT, QR }
 
 class Receive extends StatefulWidget {

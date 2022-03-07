@@ -223,4 +223,6 @@ class ApiConstants {
   static const String GET_PERSONAL_LENDING_HARD =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/search-lending';
 
+  static const String GET_CRYPTO_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/submit';
 }

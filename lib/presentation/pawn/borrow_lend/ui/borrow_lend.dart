@@ -1,11 +1,12 @@
-
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/bloc/borrow_lend_bloc.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/select_type.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/borrow_result.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/ui/collateral_result.dart';
-import 'package:Dfy/presentation/pawn/home_pawn/bloc/home_pawn_cubit.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/personal_lending_hard.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -36,6 +37,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
     super.initState();
     _bloc = BorrowLendBloc();
     _tabController = TabController(length: 2, vsync: this);
+    _bloc.getTokenInf();
     if (widget.type == TYPE_BORROW_OR_LEND.LEND) {
       _tabController.index = 1;
     } else {
@@ -86,8 +88,183 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    BorrowItem(
-                      bloc: _bloc,
+                    GestureDetector(
+                      onTap: () {
+                        _bloc.isChooseToken.add(false);
+                      },
+                      child: SingleChildScrollView(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 40.h,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.current.what_you_can_borrow,
+                                    style: textNormalCustom(
+                                      null,
+                                      20,
+                                      FontWeight.w700,
+                                    ),
+                                  ),
+                                  spaceH20,
+                                  Text(
+                                    S.current.what_is_your_collateral,
+                                    style: textNormalCustom(
+                                      null,
+                                      16,
+                                      FontWeight.w400,
+                                    ),
+                                  ),
+                                  spaceH16,
+                                  SelectType(
+                                    bloc: _bloc,
+                                  ),
+                                  StreamBuilder<TypeLend>(
+                                      stream: _bloc.typeScreen,
+                                      builder: (context, snapshot) {
+                                        return SizedBox(
+                                          child:
+                                              snapshot.data == TypeLend.CRYPTO
+                                                  ? BorrowItem(
+                                                      bloc: _bloc,
+                                                    )
+                                                  : const SizedBox.shrink(),
+                                        );
+                                      }),
+                                ],
+                              ),
+                            ),
+                            StreamBuilder<bool>(
+                              initialData: false,
+                              stream: _bloc.isChooseToken,
+                              builder: (ctx, snapshot) {
+                                return Visibility(
+                                  visible: snapshot.data ?? false,
+                                  child: Positioned(
+                                    top: 430.h,
+                                    child: Container(
+                                      clipBehavior: Clip.hardEdge,
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.getInstance()
+                                            .colorTextReset(),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20.r),
+                                        ),
+                                      ),
+                                      width: 343.w,
+                                      height: 123.h,
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        itemCount: _bloc.listToken.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              _bloc.chooseAddressFilter(
+                                                _bloc.listToken[index],
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 54.h,
+                                              padding: EdgeInsets.only(
+                                                left: 24.w,
+                                                right: 24.w,
+                                              ),
+                                              color: _bloc.listToken[index] ==
+                                                      _bloc.tokenSymbol.value
+                                                  ? AppTheme.getInstance()
+                                                      .whiteColor()
+                                                      .withOpacity(0.3)
+                                                  : Colors.transparent,
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    child: _bloc.listToken[
+                                                                    index]
+                                                                .toUpperCase() ==
+                                                            S.current.all
+                                                                .toUpperCase()
+                                                        ? const SizedBox
+                                                            .shrink()
+                                                        : Image.asset(
+                                                            ImageAssets
+                                                                .getSymbolAsset(
+                                                              _bloc.listToken[
+                                                                      index]
+                                                                  .toUpperCase(),
+                                                            ),
+                                                            height: 24.w,
+                                                            width: 24.w,
+                                                            errorBuilder: (
+                                                              context,
+                                                              error,
+                                                              stackTrace,
+                                                            ) =>
+                                                                Container(
+                                                              height: 24.w,
+                                                              width: 24.w,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: AppTheme
+                                                                        .getInstance()
+                                                                    .bgBtsColor(),
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  _bloc
+                                                                      .listToken[
+                                                                          index]
+                                                                      .toUpperCase()
+                                                                      .substring(
+                                                                        0,
+                                                                        1,
+                                                                      ),
+                                                                  style:
+                                                                      textNormalCustom(
+                                                                    null,
+                                                                    16,
+                                                                    FontWeight
+                                                                        .bold,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                  spaceW4,
+                                                  Text(
+                                                    _bloc.listToken[index] ==
+                                                            S.current.all
+                                                        ? S.current.all
+                                                        : _bloc.listToken[index]
+                                                            .toUpperCase(),
+                                                    style: textNormalCustom(
+                                                      null,
+                                                      16,
+                                                      null,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(
@@ -107,7 +284,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                           ),
                           spaceH20,
                           Text(
-                            S.current.how_to_create_hard_nft,
+                            S.current.what_is_your_collateral,
                             style: textNormalCustom(
                               null,
                               16,
@@ -124,37 +301,48 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                   ],
                 ),
               ),
+              spaceH40,
             ],
           ),
           Container(
-            margin: EdgeInsets.only(
+            padding: EdgeInsets.only(
               bottom: 38.h,
             ),
+            color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
               onTap: () {
                 if (_tabController.index == 0) {
-                  if (_bloc.isAmount.value) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BorrowResult(
-                          nameToken: _bloc.tokenSymbol.value,
+                  if (_bloc.typeScreen.value == TypeLend.CRYPTO) {
+                    if (_bloc.isAmount.value) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BorrowResult(
+                            nameToken: _bloc.tokenSymbol.value,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BorrowResult(
+                            nameToken: _bloc.tokenSymbol.value,
+                            amount: _bloc.textAmount.value,
+                          ),
+                        ),
+                      );
+                    }
                   } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BorrowResult(
-                          nameToken: _bloc.tokenSymbol.value,
-                          amount: _bloc.textAmount.value,
-                        ),
+                        builder: (context) => const PersonalLendingHardScreen(),
                       ),
                     );
                   }
                 } else {
-                  if (_bloc.typeScreen == TypeLend.CRYPTO) {
+                  if (_bloc.typeScreen.value == TypeLend.CRYPTO) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -162,12 +350,18 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                       ),
                     );
                   } else {
-                    print('cho vay and nft');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalLendingHardScreen(),
+                      ),
+                    );
+                    //todo
                   }
                 }
               },
               child: ButtonGold(
-                title: S.current.view_result,
+                title: S.current.continue_s,
                 isEnable: true,
               ),
             ),

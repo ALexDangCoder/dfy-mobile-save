@@ -831,5 +831,9 @@
   "what_you_can_borrow": "What you can borrow?",
   "how_much": "How much?",
   "enter_amount": "Enter amount",
-  "which_token": "Which token?"
+  "which_token": "Which token?",
+  "login_to_receive_email_notification":"Login to receive email notification",
+  "what_is_your_collateral": "What is your collateral?",
+  "select_loan_token": "Select loan token",
+  "how_much_is_your_desired_load": "How much is your desired load?"
 }
