@@ -186,7 +186,8 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                                                   SizedBox(
                                                     child: _bloc.listToken[
                                                                     index]
-                                                                .toUpperCase() ==
+                                                                .toUpperCase()
+                                                        ==
                                                             S.current.all
                                                                 .toUpperCase()
                                                         ? const SizedBox
@@ -242,7 +243,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                                                   Text(
                                                     _bloc.listToken[index] ==
                                                             S.current.all
-                                                        ? S.current.all
+                                                        ? S.current.all.toUpperCase()
                                                         : _bloc.listToken[index]
                                                             .toUpperCase(),
                                                     style: textNormalCustom(
