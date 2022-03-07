@@ -1,25 +1,26 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/item_check_box_filter_hard.dart';
+import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemWidgetFilter extends StatefulWidget {
-  final List<TokenModelPawn> list;
-  final PersonalLendingHardBloc bloc;
+import 'item_text_filter.dart';
 
-  const ItemWidgetFilter({
+class ItemWidgetTextFilter extends StatefulWidget {
+  final List<TokenModelPawn> list;
+  final CollateralResultBloc bloc;
+
+  const ItemWidgetTextFilter({
     Key? key,
     required this.list,
     required this.bloc,
   }) : super(key: key);
 
   @override
-  _ItemWidgetFilterState createState() => _ItemWidgetFilterState();
+  _ItemWidgetTextFilterState createState() => _ItemWidgetTextFilterState();
 }
 
-class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
+class _ItemWidgetTextFilterState extends State<ItemWidgetTextFilter> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -51,7 +52,7 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
           ),
           itemCount: widget.list.length,
           itemBuilder: (context, index) {
-            return ItemCheckBoxFilterHard(
+            return ItemTextFilter(
               index: index,
               bloc: widget.bloc,
             );

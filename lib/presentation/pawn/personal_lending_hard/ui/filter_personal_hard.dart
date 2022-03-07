@@ -4,15 +4,14 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/check_box_item_hard.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/check_box_loan_item_hard.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'item_widget_filter_hard.dart';
+import 'check_box_item_hard.dart';
+import 'is_base_check_box_hard.dart';
 
 class PersonalHardFilter extends StatefulWidget {
   const PersonalHardFilter({Key? key, required this.bloc}) : super(key: key);
@@ -162,7 +161,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                   child: Row(
                     children: [
                       Expanded(
-                        flex: 15,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -179,7 +177,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                         ),
                       ),
                       Expanded(
-                        flex: 14,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -207,7 +204,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        flex: 15,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -225,7 +221,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                         ),
                       ),
                       Expanded(
-                        flex: 14,
                         child: StreamBuilder<List<bool>>(
                           stream: widget.bloc.listFilterStream,
                           builder: (context, snapshot) {
@@ -261,111 +256,30 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                 spaceH16,
                 Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
+                    horizontal: 7.w,
                   ),
                   child: Row(
                     children: [
                       Expanded(
-                        flex: 15,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[
-                                      PersonalLendingHardBloc.ZERO_TO_TEN] ??
-                                  false,
-                              nameCkcFilter: S.current.zero_to_ten,
-                              bloc: widget.bloc,
-                              index: PersonalLendingHardBloc.ZERO_TO_TEN,
-                            );
-                          },
+                        flex:10,
+                        child: IsBaseCheckBoxHard(
+                          title: S.current.hard_nft,
+                          stream: widget.bloc.isHardNFT,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                       Expanded(
-                        flex: 14,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[PersonalLendingHardBloc
-                                      .TEN_TO_TWENTY_FIVE] ??
-                                  false,
-                              nameCkcFilter: S.current.ten_twenty,
-                              bloc: widget.bloc,
-                              index: PersonalLendingHardBloc.TEN_TO_TWENTY_FIVE,
-                            );
-                          },
+                        flex: 11,
+                        child: IsBaseCheckBoxHard(
+                          title: S.current.soft_nft,
+                          stream: widget.bloc.isSoftNFT,
+                          funText: () {},
+                          funCheckBox: () {},
                         ),
                       ),
                     ],
                   ),
-                ),
-                spaceH16,
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: 15,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[PersonalLendingHardBloc
-                                      .TWENTY_FIVE_TO_FIVETY] ??
-                                  false,
-                              nameCkcFilter: S.current.twenty_five,
-                              bloc: widget.bloc,
-                              index:
-                                  PersonalLendingHardBloc.TWENTY_FIVE_TO_FIVETY,
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        flex: 14,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[PersonalLendingHardBloc
-                                      .MORE_THAN_FIVETY] ??
-                                  false,
-                              nameCkcFilter: S.current.more_than_fifty,
-                              bloc: widget.bloc,
-                              index: PersonalLendingHardBloc.MORE_THAN_FIVETY,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                spaceH16,
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Text(
-                    S.current.collateral_accepted,
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ),
-                  ),
-                ),
-                spaceH16,
-                ItemWidgetFilter(
-                  bloc: widget.bloc,
-                  list: widget.bloc.listCollateralTokenFilter,
                 ),
                 spaceH40,
                 GestureDetector(
