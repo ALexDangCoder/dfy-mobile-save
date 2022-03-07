@@ -7,6 +7,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'filter_collateral.dart';
 import 'item_become_bank.dart';
 import 'item_collateral.dart';
 
@@ -83,7 +84,16 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                       maxLines: 1,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterCollateral(
+                            bloc: _bloc,
+                          ),
+                        );
+                      },
                       child: Container(
                         margin: EdgeInsets.only(right: 16.w),
                         width: 24.w,
