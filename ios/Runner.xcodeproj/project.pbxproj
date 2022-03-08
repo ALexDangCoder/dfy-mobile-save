@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		523C52FD276F923B009DFA3F /* SharedPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C52FC276F923B009DFA3F /* SharedPreference.swift */; };
 		523C52FF277011D3009DFA3F /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C52FE277011D2009DFA3F /* TokenModel.swift */; };
 		523C53012770158E009DFA3F /* NftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C53002770158E009DFA3F /* NftModel.swift */; };
+		5292EC2427D7588D000D361C /* WalletCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5292EC2327D7588D000D361C /* WalletCore */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5292EC2427D7588D000D361C /* WalletCore in Frameworks */,
 				403D759EC05A6AA01864AD6D /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -190,10 +192,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				5247A74B27D7427B003E2BFA /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
+				5292EC2327D7588D000D361C /* WalletCore */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Defi For You.app */;
@@ -348,13 +350,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5247A74B27D7427B003E2BFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 5247A74A27D7427B003E2BFA /* WalletCore */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
@@ -1148,7 +1143,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5247A74A27D7427B003E2BFA /* WalletCore */ = {
+		5292EC2327D7588D000D361C /* WalletCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WalletCore;
 		};
