@@ -8,7 +8,7 @@ Widget _buildButtonPlaceBid(
   NFTOnAuction nftOnAuction,
   String marketId,
 ) {
-  if (!start && end) {
+  if (!start && end && (nftOnAuction.isBoughtByOther == false)) {
     return ButtonGradient(
       onPressed: () {
         showDialog(
@@ -72,17 +72,22 @@ Widget _buildButtonBuyOut(
   String marketId,
   bool start,
   bool end,
+  Function reload,
 ) {
   return ButtonTransparent(
     isEnable: !start == true && end == true,
-    child: Text(
-      S.current.buy_out,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
-      ),
-    ),
+    child: nftOnAuction.marketStatus == 10
+        ? processing()
+        : Text(
+            (nftOnAuction.marketStatus == 15)
+                ? S.current.success
+                : S.current.buy_out,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
     onPressed: () {
       showDialog(
         context: context,
@@ -94,7 +99,23 @@ Widget _buildButtonBuyOut(
           ),
           isRequireLoginEmail: false,
         ),
-      );
+      ).then((value) {
+        if (value != null) {
+          nftOnAuction.isBoughtByOther = true;
+          nftOnAuction.marketStatus = 10;
+          bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+          Timer(const Duration(seconds: 30), () {
+            nftOnAuction.isBoughtByOther = true;
+            nftOnAuction.marketStatus = 15;
+            bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+            showDialogSuccess(
+              context,
+              alert: S.current.buy_out_success,
+              text: S.current.buy_out_success_scrip ,
+            );
+          });
+        }
+      });
     },
   );
 }
@@ -112,7 +133,7 @@ Widget buttonCancelAuction({
         if (nftMarket.marketStatus == 8) {
           return;
         }
-        if(nftMarket.marketStatus == 0){
+        if (nftMarket.marketStatus == 0) {
           Navigator.pop(context);
           return;
         }
@@ -329,16 +350,11 @@ SizedBox _timeContainer(
               ),
             ),
           spaceH16,
-          if (start)
-            CountDownView(
-              timeInMilliSecond: startTime,
-              onRefresh: onRefresh,
-            )
-          else
-            CountDownView(
-              timeInMilliSecond: endTime,
-              onRefresh: onRefresh,
-            ),
+          CountDownView(
+            timeInMilliSecond: startTime,
+            onRefresh: onRefresh,
+            timeEnd: endTime,
+          ),
           spaceH24,
         ],
       ),

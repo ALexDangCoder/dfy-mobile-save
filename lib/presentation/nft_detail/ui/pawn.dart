@@ -74,7 +74,7 @@ Widget _durationRowOnPawn({
   required int durationType,
   required int durationQty,
 }) {
-  final String duration = (durationType == 0) ? 'week' : 'months';
+  final String duration = (durationType == 0) ? S.current.week : S.current.month;
   return Column(
     children: [
       Row(

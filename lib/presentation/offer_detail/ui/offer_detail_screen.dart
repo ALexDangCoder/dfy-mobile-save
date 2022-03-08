@@ -67,7 +67,9 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
               title: S.current.offer_detail,
               isImage: true,
               text: ImageAssets.ic_close,
-              onRightClick: () {},
+              onRightClick: () {
+                Navigator.pop(context);
+              },
               bottomBar: (isShow(offer?.status ?? 0) &&
                       PrefsService.getCurrentBEWallet().toLowerCase() ==
                           PrefsService.getOwnerPawn().toLowerCase())

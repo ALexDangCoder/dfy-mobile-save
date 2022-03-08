@@ -774,5 +774,7 @@
   "put_on_pawn_success":"Put on pawn success",
   "check_data_on_market":"Your NFT has put on ",
   "transfer_success":"Transfer success",
-  "transfer_success_to":"Your NFT has transfer to "
+  "transfer_success_to":"Your NFT has transfer to ",
+  "buy_out_success":"Buy out success",
+  "buy_out_success_scrip":"NFT has move your account.\n Check in NFT not on market."
 }
