@@ -55,14 +55,12 @@ class _CountDownViewState extends State<CountDownView> {
               bloc: _bloc,
               listener: (context, state) {
                 if (state is CompletedState) {
+                  widget.onRefresh();
                   _bloc.add(StartEvent(widget.timeEnd));
                 }
               },
               builder: (context, state) {
                 final int time = state.timeDuration;
-                if(time == 1) {
-                  widget.onRefresh();
-                }
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
