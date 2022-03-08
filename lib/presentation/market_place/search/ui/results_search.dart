@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,7 +72,11 @@ class ResultNFTSearch extends StatelessWidget {
         width: 46.w,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(nftItem.image),
+            image: (nftItem.typeNFT == TypeImage.IMAGE)
+                ? NetworkImage(nftItem.image)
+                : NetworkImage(
+                    '${ApiConstants.BASE_URL_IMAGE}${nftItem.coverCidIfVid ?? ''}',
+                  ),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(10.r),

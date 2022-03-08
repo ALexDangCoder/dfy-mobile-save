@@ -80,6 +80,9 @@ class SearchCubit extends BaseCubit<SearchState> {
         for (final element in nftsSearch) {
           listNFT.add(
             NftItem(
+              typeImage: (element.fileType ?? '').contains('image')
+                  ? TypeImage.IMAGE
+                  : TypeImage.VIDEO,
               marketId: element.id,
               price: 0,
               name: element.name ?? 'name',
@@ -93,6 +96,7 @@ class SearchCubit extends BaseCubit<SearchState> {
               typeNFT:
                   (element.type == 0) ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
               nftId: element.nftId,
+              coverCidIfVid: element.coverCid,
             ),
           );
         }
