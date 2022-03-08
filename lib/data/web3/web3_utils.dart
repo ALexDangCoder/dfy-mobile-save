@@ -825,8 +825,6 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    print(
-        'Fuck: $nftCollateralId, $repaymentAsset, $loanAmount, $interest, $duration, $loanDurationType, $repaymentCycleType');
     final deployContract =
         await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('createOffer');
@@ -949,7 +947,8 @@ class Web3Utils {
     required String evaluationFeeAddress,
     required String appointmentTime,
   }) async {
-    print('fuck $assetId, $evaluator, $evaluationFeeAddress, $appointmentTime');
+    print(
+        'fuck appoiment data: $assetId, $evaluator, $evaluationFeeAddress, $appointmentTime');
     final deployContract =
         await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('createAppointment');
