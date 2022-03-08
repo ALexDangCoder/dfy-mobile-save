@@ -462,7 +462,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       address:
                                           PrefsService.getCurrentBEWallet(),
                                     );
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => BaseSuccess(
