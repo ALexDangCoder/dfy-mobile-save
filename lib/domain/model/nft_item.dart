@@ -11,6 +11,7 @@ class NftItem {
   final int? type;
   final int? pawnId;
   final String? nftId;
+  final String? coverCidIfVid;
 
   NftItem({
     required this.name,
@@ -22,6 +23,7 @@ class NftItem {
     this.marketId,
     this.pawnId,
     this.type,
+    this.coverCidIfVid,
     this.nftId,
   });
 }

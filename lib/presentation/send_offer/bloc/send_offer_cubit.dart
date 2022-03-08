@@ -19,7 +19,7 @@ class SendOfferCubit extends BaseCubit<SendOfferState> {
 
   Sink<bool> get btnSink => _btnSubject.sink;
 
-  final _streamController = BehaviorSubject<int>.seeded(0);
+  final _streamController = BehaviorSubject<int>.seeded(1);
 
   Stream<int> get streamIndex => _streamController.stream;
 
