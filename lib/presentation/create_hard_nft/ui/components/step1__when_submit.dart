@@ -135,6 +135,14 @@ class Step1WhenSubmit extends StatelessWidget {
         bloc: cubit,
         builder: (ctx, state) {
           return BaseDesignScreen(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            onRightClick: () {
+              Navigator.of(context)
+                ..pop()
+                ..pop()
+                ..pop();
+            },
             title: S.current.provide_hard_nft_info,
             bottomBar: Container(
               padding: EdgeInsets.only(
@@ -203,24 +211,33 @@ class Step1WhenSubmit extends StatelessWidget {
                       FontWeight.w400,
                     ),
                   ),
-                  //todo WIDGET ẢNH
+                  spaceH20,
                   UploadImageWidget(
                     cubit: cubit,
                     showAddMore: false,
                   ),
                   spaceH32,
-                  textShowWithPadding(
-                    textShow: S.current.documents,
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().unselectedTabLabelColor(),
-                      14,
-                      FontWeight.w400,
+                  Visibility(
+                    visible: cubit.listDocumentPathSubject.hasValue
+                        ? true
+                        : false,
+                    child: Column(
+                      children: [
+                        textShowWithPadding(
+                          textShow: S.current.documents,
+                          txtStyle: textNormalCustom(
+                            AppTheme.getInstance().unselectedTabLabelColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceH20,
+                        UploadDocumentWidget(
+                          cubit: cubit,
+                          isVisibleDoc: false,
+                        ),
+                      ],
                     ),
-                  ),
-                  // spaceH20,
-                  UploadDocumentWidget(
-                    cubit: cubit,
-                    isVisibleDoc: false,
                   ),
                   ListView.builder(
                     shrinkWrap: true,

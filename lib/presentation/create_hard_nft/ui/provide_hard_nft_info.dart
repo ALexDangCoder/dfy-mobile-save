@@ -86,6 +86,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       title: S.current.provide_hard_nft_info,
+      isImage: true,
+      text: ImageAssets.ic_close,
+      onRightClick: () {
+        Navigator.of(context)..pop()..pop();
+      },
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [

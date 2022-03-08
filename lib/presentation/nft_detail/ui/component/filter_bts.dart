@@ -27,6 +27,8 @@ class FilterBts extends StatefulWidget {
 
 class _FilterBtsState extends State<FilterBts> {
   TextEditingController controller = TextEditingController();
+  final ScrollController _firstController =
+      ScrollController();
 
   @override
   void initState() {
@@ -35,6 +37,13 @@ class _FilterBtsState extends State<FilterBts> {
     );
     widget.listNftCubit.checkStatus();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    _firstController.dispose();
+    super.dispose();
   }
 
   @override
@@ -195,33 +204,38 @@ class _FilterBtsState extends State<FilterBts> {
                               if (snapshot.hasData) {
                                 final itemCount = snapshot.data?.length ?? 0;
                                 if (itemCount != 0) {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: (itemCount > 5) ? 5 : itemCount,
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          CheckBoxFilter(
-                                            cubit: widget.listNftCubit,
-                                            nameCkcFilter: snapshot.data?[index]
-                                                    .nameCkcFilter ??
-                                                '',
-                                            typeCkc:
-                                                snapshot.data?[index].typeCkc ??
-                                                    TYPE_CKC_FILTER.NON_IMG,
-                                            urlCover:
-                                                snapshot.data![index].urlCover,
-                                            filterType: S.current.collection,
-                                            collectionId: snapshot.data?[index]
-                                                    .collectionId ??
-                                                '',
-                                          ),
-                                          spaceH12,
-                                        ],
-                                      );
-                                    },
+                                  return Scrollbar(
+                                    controller: _firstController,
+                                    radius: Radius.circular(10.0.r),
+                                    isAlwaysShown: true,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: itemCount,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          children: [
+                                            CheckBoxFilter(
+                                              cubit: widget.listNftCubit,
+                                              nameCkcFilter: snapshot
+                                                      .data?[index]
+                                                      .nameCkcFilter ??
+                                                  '',
+                                              typeCkc: snapshot
+                                                      .data?[index].typeCkc ??
+                                                  TYPE_CKC_FILTER.NON_IMG,
+                                              urlCover: snapshot
+                                                  .data![index].urlCover,
+                                              filterType: S.current.collection,
+                                              collectionId: snapshot
+                                                      .data?[index]
+                                                      .collectionId ??
+                                                  '',
+                                            ),
+                                            spaceH12,
+                                          ],
+                                        );
+                                      },
+                                    ),
                                   );
                                 } else {
                                   return Padding(
