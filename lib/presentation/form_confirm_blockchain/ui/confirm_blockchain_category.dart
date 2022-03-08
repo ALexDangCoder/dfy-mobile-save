@@ -163,16 +163,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitSuccess(),
               ),
             ).then((value) async {
-              if (widget.pageRouter == PageRouter.MARKET) {
-                await Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: walletInfoIndex,
-                    ),
-                  ),
-                  (route) => route.isFirst,
-                );
-              } else {
+              if (widget.pageRouter == PageRouter.MY_ACC) {
                 await cubitFormCustomizeGasFee.pushSendNftToBE(
                   bcTxnHash: cubitFormCustomizeGasFee.txHashNft,
                   nftId: widget.nftInfo?.nftId ?? '',
@@ -182,6 +173,15 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                   return route.settings.name ==
                       AppRouter.send_nft;
                 });
+              } else {
+                await Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: walletInfoIndex,
+                    ),
+                  ),
+                      (route) => route.isFirst,
+                );
               }
             });
           } else if (state is FormBlockchainSendNftLoading) {
@@ -201,20 +201,20 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitFail(),
               ),
             ).then((value) {
-              if (widget.pageRouter == PageRouter.MARKET) {
+              if (widget.pageRouter == PageRouter.MY_ACC) {
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name ==
+                      AppRouter.nft_detail;
+                });
+              } else {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(
                       index: walletInfoIndex,
                     ),
                   ),
-                  (route) => route.isFirst,
+                      (route) => route.isFirst,
                 );
-              } else {
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name ==
-                      AppRouter.nft_detail;
-                });
               }
             });
           } else if (state is FormBlockchainSendTokenLoading) {
@@ -427,7 +427,7 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                     //todo hardcode amount 1
                                     amount: widget.quantity.toString(),
                                     symbol:
-                                        widget.nftInfo?.collectionSymbol ?? '',
+                                        widget.nftInfo?.collectionSymbol ?? 'DFY-NFT',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_OFFER:

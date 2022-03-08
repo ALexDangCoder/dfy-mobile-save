@@ -27,6 +27,9 @@ Widget action(
     contract: collectionAddress,
     id: nftTokenId,
     nftId: nftId,
+    collectionSymbol: 'DFY-NFT',
+    collectionId: nftMarket.collectionID,
+    collectionName: nftMarket.collectionName,
   );
   return InkWell(
     onTap: () {
