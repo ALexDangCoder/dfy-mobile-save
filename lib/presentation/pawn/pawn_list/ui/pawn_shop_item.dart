@@ -122,6 +122,9 @@ class PawnItem extends StatelessWidget {
                   child: Stack(
                     children: [
                       Container(
+                        margin: EdgeInsets.only(
+                          left: 16.w,
+                        ),
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(
@@ -145,7 +148,7 @@ class PawnItem extends StatelessWidget {
                       ),
                       Positioned(
                         top: 4.h,
-                        left: 4.w,
+                        left: 20.w,
                         child: Container(
                           clipBehavior: Clip.hardEdge,
                           decoration: const BoxDecoration(

@@ -14,6 +14,8 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
 
   BorrowRepository get _repo => Get.find();
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isHardNFT = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isSoftNFT = BehaviorSubject.seeded(false);
 
   //load more
   final bool _canLoadMore = true;
@@ -51,23 +53,13 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     false,
     false,
   ];
-  BehaviorSubject<List<bool>> listFilterLoanStream = BehaviorSubject.seeded([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  List<bool> listFilterLoan = [
-    false,
-    false,
-    false,
-    false,
-  ];
 
   //status filter
   //status filter
   String? checkStatus;
   String? searchStatus;
+  bool? statusHardFilter;
+  bool? statusSoftFilter;
   List<bool>? statusFilterNumberRange;
   List<bool>? statusFilterNumberLoan;
   List<int> statusListCollateral = [];
@@ -86,8 +78,8 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     textSearch.sink.add('');
     listFilter = List.filled(4, false);
     listFilterStream.add(listFilter);
-    listFilterLoan = List.filled(4, false);
-    listFilterLoanStream.add(listFilterLoan);
+    isSoftNFT.add(false);
+    isHardNFT.add(false);
     for (final TokenModelPawn value in listCollateralTokenFilter) {
       if (value.isCheck) {
         value.isCheck = false;
@@ -99,12 +91,6 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     listFilter = List.filled(4, false);
     listFilter[index] = true;
     listFilterStream.sink.add(listFilter);
-  }
-
-  void chooseFilterLoan({required int index}) {
-    listFilterLoan = List.filled(4, false);
-    listFilterLoan[index] = true;
-    listFilterLoanStream.sink.add(listFilterLoan);
   }
 
   Future<void> refreshPosts() async {
@@ -122,13 +108,15 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       searchStatus = '';
       statusFilterNumberRange = [false, false, false, false];
       statusFilterNumberLoan = [false, false, false, false];
+      statusHardFilter = false;
+      statusSoftFilter = false;
     } else {
       textSearch.sink.add(searchStatus ?? '');
 
       listFilter = statusFilterNumberRange ?? [];
       listFilterStream.add(listFilter);
-      listFilterLoan = statusFilterNumberLoan ?? [];
-      listFilterLoanStream.add(listFilterLoan);
+      isHardNFT.add(statusHardFilter ?? false);
+      isSoftNFT.add(statusSoftFilter ?? false);
       for (int i = 0; i < listCollateralTokenFilter.length; i++) {
         if (checkStatusFirstFilter(i, statusListCollateral)) {
           listCollateralTokenFilter[i].isCheck = true;
@@ -152,17 +140,15 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     page = 1;
     searchStatus = textSearch.value;
     statusFilterNumberRange = listFilterStream.value;
-    statusFilterNumberLoan = listFilterLoanStream.value;
+    statusHardFilter = isSoftNFT.value;
+    statusSoftFilter = isHardNFT.value;
     statusListCollateral = [];
     for (int i = 0; i < listCollateralTokenFilter.length; i++) {
       if (listCollateralTokenFilter[i].isCheck) {
         statusListCollateral.add(i);
       }
     }
-    String? interestRanges;
     name = textSearch.value;
-    String? loanToValueRanges;
-    String? collateralSymbols;
     getPersonLendingResult(
       name: name,
     );
@@ -198,7 +184,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     emit(PersonalLendingHardLoading());
     final Result<List<PersonalLending>> result =
         await _repo.getListPersonalLendingHard(
-       collateralAmount: collateralAmount,
+      collateralAmount: collateralAmount,
       collateralSymbols: collateralSymbols,
       name: name,
       interestRanges: interestRanges,

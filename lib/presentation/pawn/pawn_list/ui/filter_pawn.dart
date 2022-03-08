@@ -263,10 +263,15 @@ class _FilterPawnState extends State<FilterPawn> {
                   ),
                 ),
                 spaceH16,
-                ItemWidgetFilter(
-                  bloc: widget.bloc,
-                  list: widget.bloc.listLoanTokenFilter,
-                  type: TypeCheckBox.LOAN,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: ItemWidgetFilter(
+                    bloc: widget.bloc,
+                    list: widget.bloc.listLoanTokenFilter,
+                    type: TypeCheckBox.LOAN,
+                  ),
                 ),
                 spaceH16,
                 Padding(
@@ -283,10 +288,15 @@ class _FilterPawnState extends State<FilterPawn> {
                   ),
                 ),
                 spaceH16,
-                ItemWidgetFilter(
-                  bloc: widget.bloc,
-                  list: widget.bloc.listCollateralTokenFilter,
-                  type: TypeCheckBox.COLLATERAL,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: ItemWidgetFilter(
+                    bloc: widget.bloc,
+                    list: widget.bloc.listCollateralTokenFilter,
+                    type: TypeCheckBox.COLLATERAL,
+                  ),
                 ),
                 spaceH40,
                 GestureDetector(

@@ -361,9 +361,14 @@ class _PersonalFilterState extends State<PersonalFilter> {
                   ),
                 ),
                 spaceH16,
-                ItemWidgetFilter(
-                  bloc: widget.bloc,
-                  list: widget.bloc.listCollateralTokenFilter,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
+                  child: ItemWidgetFilter(
+                    bloc: widget.bloc,
+                    list: widget.bloc.listCollateralTokenFilter,
+                  ),
                 ),
                 spaceH40,
                 GestureDetector(

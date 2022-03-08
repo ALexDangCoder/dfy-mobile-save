@@ -1,18 +1,21 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
-import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/item_check_box_filter_hard.dart';
+import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'item_check_box_filter.dart';
+
 class ItemWidgetFilter extends StatefulWidget {
   final List<TokenModelPawn> list;
-  final PersonalLendingHardBloc bloc;
+  final CollateralResultBloc bloc;
+  final TypeCheckBox type;
 
   const ItemWidgetFilter({
     Key? key,
     required this.list,
     required this.bloc,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -51,8 +54,9 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
           ),
           itemCount: widget.list.length,
           itemBuilder: (context, index) {
-            return ItemCheckBoxFilterHard(
+            return ItemCheckBoxFilter(
               index: index,
+              typeCheckBox: widget.type,
               bloc: widget.bloc,
             );
           },
