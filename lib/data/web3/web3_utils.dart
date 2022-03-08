@@ -757,6 +757,8 @@ class Web3Utils {
     required String beNFTId,
     required BuildContext context,
   }) async {
+    print(
+        'fuck $nftContract, $nftTokenId, $expectedlLoanAmount, $loanAsset, $nftTokenQuantity, $expectedDurationQty, $durationType, $beNFTId');
     final deployContract =
         await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('putOnPawn');
@@ -766,7 +768,7 @@ class Web3Utils {
       parameters: [
         EthereumAddress.fromHex(nftContract),
         BigInt.from(num.parse(nftTokenId)),
-        BigInt.from(num.parse(expectedlLoanAmount)),
+        BigInt.from(num.parse(_handleAmount(18, expectedlLoanAmount))),
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(nftTokenQuantity)),
         BigInt.from(num.parse(expectedDurationQty)),
