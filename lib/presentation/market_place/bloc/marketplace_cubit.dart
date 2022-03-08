@@ -125,9 +125,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                         : MarketType.PAWN),
                 typeNFT:
                     element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-                typeImage: (element.fileType == 'image/jpeg' ||
-                        element.fileType == 'image/gif' ||
-                        element.fileType == 'image/JPG')
+                typeImage: (element.fileType ?? '').contains('image')
                     ? TypeImage.IMAGE
                     : TypeImage.VIDEO,
                 numberOfCopies: element.numberOfCopies,
@@ -158,9 +156,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -193,9 +189,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -227,9 +221,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -282,9 +274,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -316,9 +306,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
