@@ -507,8 +507,8 @@ class _BuyNFTState extends State<BuyNFT> {
                                   stream: cubit.balanceStream,
                                   builder: (context, snapshot) {
                                     return Text(
-                                      '${S.current.your_balance} ${snapshot.data}'
-                                      '${widget.nftMarket.symbolToken}',
+                                      '${S.current.your_balance} ${snapshot.data?.toStringAsFixed(5)}'
+                                      ' ${widget.nftMarket.symbolToken}',
                                       style: textNormalCustom(
                                         Colors.white.withOpacity(0.7),
                                         14,
