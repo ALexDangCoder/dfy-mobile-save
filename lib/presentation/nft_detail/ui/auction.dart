@@ -80,7 +80,7 @@ Widget _buildButtonBuyOut(
         ? processing()
         : Text(
             (nftOnAuction.marketStatus == 15)
-                ? S.current.success
+                ? S.current.put_on_market_success
                 : S.current.buy_out,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
@@ -89,33 +89,36 @@ Widget _buildButtonBuyOut(
             ),
           ),
     onPressed: () {
-      showDialog(
-        context: context,
-        builder: (context) => ConnectWalletDialog(
-          navigationTo: PlaceBid(
-            nftOnAuction: nftOnAuction,
-            typeBid: TypeBid.BUY_OUT,
-            marketId: marketId,
+      if(nftOnAuction.marketStatus !=10  && nftOnAuction.marketStatus !=15){
+        showDialog(
+          context: context,
+          builder: (ctx) => ConnectWalletDialog(
+            navigationTo: PlaceBid(
+              nftOnAuction: nftOnAuction,
+              typeBid: TypeBid.BUY_OUT,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+            hasFunction: true,
+            function: (){
+              nftOnAuction.isBoughtByOther = true;
+              nftOnAuction.marketStatus = 10;
+              bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+              Timer(const Duration(seconds: 20), () {
+                bloc.emit(NFTDetailInitial());
+                nftOnAuction.isBoughtByOther = true;
+                nftOnAuction.marketStatus = 15;
+                bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.buy_out_success,
+                  text: S.current.buy_out_success_scrip ,
+                );
+              });
+            },
           ),
-          isRequireLoginEmail: false,
-        ),
-      ).then((value) {
-        if (value != null) {
-          nftOnAuction.isBoughtByOther = true;
-          nftOnAuction.marketStatus = 10;
-          bloc.emit(NftOnAuctionSuccess(nftOnAuction));
-          Timer(const Duration(seconds: 30), () {
-            nftOnAuction.isBoughtByOther = true;
-            nftOnAuction.marketStatus = 15;
-            bloc.emit(NftOnAuctionSuccess(nftOnAuction));
-            showDialogSuccess(
-              context,
-              alert: S.current.buy_out_success,
-              text: S.current.buy_out_success_scrip ,
-            );
-          });
-        }
-      });
+        );
+      }
     },
   );
 }

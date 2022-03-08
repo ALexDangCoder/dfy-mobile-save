@@ -186,7 +186,7 @@ class PlaceBidCubit extends BaseCubit<PlaceBidState> {
         final int code = await methodCall.arguments['code'];
         switch (code) {
           case 200:
-            await Fluttertoast.showToast(msg: S.current.nft_success);
+
             break;
           case 400:
             await Fluttertoast.showToast(msg: S.current.nft_fail);
