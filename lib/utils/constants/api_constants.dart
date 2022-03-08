@@ -173,7 +173,7 @@ class ApiConstants {
 
   static const String GET_EVALUATORS_DETAIL_END = '/customer-view-profile';
 
-  static const String CREATE_EVALUATION = '/hard-nft-svc/api//appointments';
+  static const String CREATE_EVALUATION = '/hard-nft-svc/api/appointments';
 
   static const String CANCEL = '/hard-nft-svc/api/appointments/';
 
