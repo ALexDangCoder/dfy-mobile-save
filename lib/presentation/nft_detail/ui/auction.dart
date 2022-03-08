@@ -104,7 +104,7 @@ Widget _buildButtonBuyOut(
               nftOnAuction.isBoughtByOther = true;
               nftOnAuction.marketStatus = 10;
               bloc.emit(NftOnAuctionSuccess(nftOnAuction));
-              Timer(const Duration(seconds: 30), () {
+              Timer(const Duration(seconds: 20), () {
                 bloc.emit(NFTDetailInitial());
                 nftOnAuction.isBoughtByOther = true;
                 nftOnAuction.marketStatus = 15;
