@@ -22,13 +22,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ConnectWalletDialog extends StatefulWidget {
   /// The screen you want navigator to if user  has login
   final Widget? navigationTo;
+  final Function? function;
+  final bool hasFunction;
   final bool isRequireLoginEmail;
   final RouteSettings? settings;
 
   const ConnectWalletDialog({
     Key? key,
     this.navigationTo,
-    required this.isRequireLoginEmail, this.settings,
+    required this.isRequireLoginEmail, this.settings, this.function,
+    this.hasFunction = false,
   }) : super(key: key);
 
   @override
@@ -101,7 +104,11 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                             settings: widget.settings,
                             builder: (context) => widget.navigationTo!,
                           ),
-                        );
+                        ).then((value) {
+                          if (value != null && widget.hasFunction) {
+                            widget.function!();
+                          }
+                        });
                       }
                     }
                   } else {
@@ -112,7 +119,11 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           settings: widget.settings,
                           builder: (context) => widget.navigationTo!,
                         ),
-                      );
+                      ).then((value) {
+                        if (value != null && widget.hasFunction) {
+                          widget.function!();
+                        }
+                      });
                     }
                   }
                 } else {
@@ -129,7 +140,11 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                       MaterialPageRoute(
                         builder: (context) => const EnterEmail(),
                       ),
-                    );
+                    ).then((value) {
+                      if (value != null && widget.hasFunction) {
+                        widget.function!();
+                      }
+                    });
                   } else {
                     //ví đã liên kết email: => di chuyển đến màn tiếp theo
                     if (widget.navigationTo != null) {
@@ -139,7 +154,11 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                           settings: widget.settings,
                           builder: (context) => widget.navigationTo!,
                         ),
-                      );
+                      ).then((value) {
+                        if (value != null && widget.hasFunction) {
+                          widget.function!();
+                        }
+                      });
                     }
                   }
                 }
@@ -260,7 +279,7 @@ class _ConnectWalletDialogState extends State<ConnectWalletDialog> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const MainScreen(
+                                              const MainScreen(
                                                 index: registerIndex,
                                                 isFormConnectWlDialog: true,
                                               ),
