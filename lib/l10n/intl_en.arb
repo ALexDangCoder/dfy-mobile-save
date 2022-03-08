@@ -479,7 +479,7 @@
   "custom_url_taken": "This URL has been taken",
   "duration_more_content": "The auction start time must be at least 48 hours from the curent time\n\nThe minimum duration is 12 hours and the maximum duration is 168 hours (7 days)",
   "custom_url_info": "Customize your URL on Defi for you. Must only contain lowercase letters, numbers, and hyphens.",
-  "custom_url_err": "Only contain lowercase letters, numbers, and hyphens",
+  "custom_url_err": "Only contain lowercase letters,numbers,hyphens",
   "royalties_info": "Collect a fee when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout address of your choosing.",
   "name": "Name",
   "start_time_auction": "Start time must be at least 48 hours from the curent time",
