@@ -1071,6 +1071,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                               bloc.isStartAuction(
                                 nftOnAuction.endTime ?? 0,
                               ),
+                              onRefresh,
                             ),
                           ),
                           SizedBox(
@@ -1092,7 +1093,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                           ),
                         ],
                       )
-                    : const SizedBox(),
+                    : const SizedBox.shrink(),
             content: [
               _nameNFT(
                 context: context,
