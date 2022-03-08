@@ -53,6 +53,10 @@ mixin CreateHardNFTRepository {
     String evaluationID,
   );
 
+  Future<Result<String>> confirmTransferNftToBE(
+      Map<String,String> map
+      );
+
   Future<Result<DetailAssetHardNft>> getDetailAssetHardNFT(
     String assetId,
   );

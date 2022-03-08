@@ -18,12 +18,25 @@ Widget action(
   bool isOwner,
   String nftTokenId,
   String walletAddress,
+  String nftId,
+  NFTDetailBloc bloc,
+    NftMarket nftMarket,
+  Function reload,
 ) {
-  final NftInfo nftInfo = NftInfo(contract: collectionAddress, id: nftTokenId);
+  final NftInfo nftInfo = NftInfo(
+    contract: collectionAddress,
+    id: nftTokenId,
+    nftId: nftId,
+  );
   return InkWell(
     onTap: () {
-      if(isOwner){
-        Navigator.push(
+      if (isOwner) {
+        bloc.emitJsonNftToWalletCore(
+          contract: collectionAddress,
+          id: nftTokenId.parseToInt(),
+          address: walletAddress,
+        );
+        final result = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SendNft(
@@ -31,9 +44,28 @@ Widget action(
               addressFrom: walletAddress,
               imageWallet: '',
               nameWallet: '',
+              pageRouter: PageRouter.MY_ACC,
+            ),
+            settings: const RouteSettings(
+              name: AppRouter.send_nft,
             ),
           ),
         );
+        result.then((value) {
+          if (value != null) {
+            nftMarket.processStatus = 3;
+            bloc.emit(NftNotOnMarketSuccess(nftMarket));
+            Timer(const Duration(seconds: 30), () {
+              nftMarket.processStatus = 0;
+              bloc.emit(NftNotOnMarketSuccess(nftMarket));
+              showDialogSuccess(
+                context,
+                alert: S.current.transfer_success,
+                text: S.current.transfer_success_to + value.toString(),
+              );
+            });
+          }
+        });
       } else {
         showAlert(context, walletAddress);
       }

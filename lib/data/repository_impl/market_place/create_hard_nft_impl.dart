@@ -172,4 +172,16 @@ class CreateHardNFTImpl implements CreateHardNFTRepository {
       (response) => response.toDomain() ?? [],
     );
   }
+
+  @override
+  Future<Result<String>> confirmTransferNftToBE(Map<String, String> map) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmSendNft(
+        map,
+      ),
+          (response) => response.code ?? '',
+    );
+  }
+
+ 
 }
