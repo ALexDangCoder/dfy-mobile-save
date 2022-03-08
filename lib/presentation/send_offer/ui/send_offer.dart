@@ -37,7 +37,7 @@ class SendOffer extends StatefulWidget {
 class _SendOfferState extends State<SendOffer> {
   final Map<GlobalKey, bool> validator = {};
   final SendOfferCubit _cubit = SendOfferCubit();
-  int loanDurationType = 0;
+  int loanDurationType = 1;
   String duration = '';
   late String loanAmount;
   String interest = '';
@@ -132,7 +132,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        '$duration ${loanDurationType == 0 ? S.current.month : S.current.week}',
+                        '$duration ${loanDurationType == 1 ? S.current.month : S.current.week}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -158,7 +158,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        loanDurationType == 0
+                        loanDurationType == 1
                             ? S.current.month
                             : S.current.week,
                         style: textNormalCustom(
@@ -237,23 +237,25 @@ class _SendOfferState extends State<SendOffer> {
   Widget build(BuildContext context) {
     final List<Map<String, String>> listValueDuration = [
       {
+        'value': ID_WEEK.toString(),
+        'label': S.current.week,
+      },
+      {
         'value': ID_MONTH.toString(),
         'label': S.current.month,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.week,
-      }
+
     ];
     final List<Map<String, String>> listValueInterest = [
+      {
+        'value': ID_WEEK.toString(),
+        'label': S.current.weekly,
+      },
       {
         'value': ID_MONTH.toString(),
         'label': S.current.monthly,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.weekly,
-      }
+
     ];
     final List<Map<String, dynamic>> listValueToken =
         widget.nftOnPawn.expectedCollateralSymbol == DFY
@@ -520,7 +522,7 @@ class _SendOfferState extends State<SendOffer> {
                         width: 100.w,
                         child: StreamBuilder<int>(
                           stream: _cubit.streamIndex,
-                          initialData: 0,
+                          initialData: 1,
                           builder: (context, snapshot) {
                             return Center(
                               child: CustomDropDown(
