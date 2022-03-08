@@ -183,6 +183,15 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  Future<void> checkStatusBeHandle() async {
+    await getDetailAssetHardNFT(assetId: assetId);
+    if (statusWhenSubmit != 0) {
+      emit(CreateStep1ButtonProcess());
+    } else {
+      emit(CreateStep1ButtonFindEvaluator());
+    }
+  }
+
   String hexStringWeb3 = '';
   String assetId = '';
   PutHardNftModel resultAfterPut = PutHardNftModel();
@@ -202,6 +211,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
+  ///0 confirm done can next find evaluator
+  ///1 processing
+  ///2 is server not confirm blockchain yet
+  late int statusWhenSubmit;
+
   Future<void> getDetailAssetHardNFT({
     required String assetId,
   }) async {
@@ -217,6 +231,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         expectingPriceAddress = ADDRESS_DFY;
         collectionStandard = res.collection?.collectionType?.standard ?? 0;
         collectionAsset = res.collection?.collectionAddress ?? '';
+        statusWhenSubmit = res.status ?? 2;
       },
       error: (error) {},
     );
