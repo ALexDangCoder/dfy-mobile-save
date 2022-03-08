@@ -396,7 +396,7 @@ class _PlaceBidState extends State<PlaceBid> {
                             context: context,
                           )
                           .then(
-                            (value) => Navigator.pushReplacement(
+                            (value) => Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Approve(
@@ -446,6 +446,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                     ],
                                   ),
                                   onSuccessSign: (context, data) {
+                                    Navigator.pop(context, true);
                                     cubit.buyRequest(
                                       BuyOutRequest(
                                         widget.marketId,
@@ -469,11 +470,11 @@ class _PlaceBidState extends State<PlaceBid> {
                                           content: S.current.congratulation,
                                           callback: () {
                                             Navigator.pop(context);
+                                            Navigator.pop(context,true);
                                           },
                                         ),
                                       ),
                                     );
-                                    Navigator.pop(context, true);
                                   },
                                   onErrorSign: (context) async {
                                     Navigator.pop(context);
