@@ -340,7 +340,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                     ],
                                   ),
                                   onSuccessSign: (context, data) {
-                                    Navigator.pop(context);
+                                    Navigator.pop(context,true);
                                     cubit.bidRequest(
                                       BidNftRequest(
                                         widget.marketId,
@@ -356,7 +356,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           title: S.current.bidding,
                                           content: S.current.congratulation,
                                           callback: () {
-                                            Navigator.pop(context);
+                                            Navigator.pop(context,true);
                                           },
                                         ),
                                       ),
@@ -446,7 +446,6 @@ class _PlaceBidState extends State<PlaceBid> {
                                     ],
                                   ),
                                   onSuccessSign: (context, data) {
-                                    Navigator.pop(context);
                                     cubit.buyRequest(
                                       BuyOutRequest(
                                         widget.marketId,
@@ -474,6 +473,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                         ),
                                       ),
                                     );
+                                    Navigator.pop(context,true);
                                   },
                                   onErrorSign: (context) async {
                                     Navigator.pop(context);
