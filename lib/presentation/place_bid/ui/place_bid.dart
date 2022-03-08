@@ -88,7 +88,7 @@ class _PlaceBidState extends State<PlaceBid> {
         stream: cubit.balanceStream,
         builder: (context, snapshot) {
           return Text(
-            '${S.current.your_balance} ${snapshot.data} '
+            '${S.current.your_balance} ${formatPrice.format(snapshot.data)} '
             '${widget.nftOnAuction.tokenSymbol}',
             style: textNormalCustom(
               Colors.white.withOpacity(0.7),
@@ -462,7 +462,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       address:
                                           PrefsService.getCurrentBEWallet(),
                                     );
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => BaseSuccess(

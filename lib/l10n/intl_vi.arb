@@ -533,7 +533,7 @@
   "book_evaluation_request": "Yêu cầu đặt chỗ",
   "no_meeting_with_evaluator": "Không có cuộc họp với tiệm đánh giá",
   "book_evaluation": "Đặt chỗ đánh giá ",
-  "to_mint_hard_nft_you": "Để đúc Hard NFT, bạn cần tìm tiệm đánh giá để đánh giá Hard NFT của bạn.\nBạn có thể gửi yêu cầu đánh giá cho nhiều người đánh giá.",
+  "to_mint_hard_nft_you": "Để tạo Hard NFT, bạn cần tìm tiệm đánh giá để đánh giá Hard NFT của bạn.\nBạn có thể gửi yêu cầu đánh giá cho nhiều người đánh giá.",
   "your_appointment_request": "Yêu cầu cuộc hẹn của bạn đang được gửi đến tiệm đánh giá",
   "the_evaluator_has_rejected": "Tiệm đánh giá đã từ chối yêu cầu đánh giá của bạn",
   "view_reason": "Xem lý do",
