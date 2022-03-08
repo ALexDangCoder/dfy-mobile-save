@@ -44,6 +44,7 @@
 		523C52FC276F923B009DFA3F /* SharedPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreference.swift; sourceTree = "<group>"; };
 		523C52FE277011D2009DFA3F /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		523C53002770158E009DFA3F /* NftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftModel.swift; sourceTree = "<group>"; };
+		5247A74927D7425B003E2BFA /* wallet-core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "wallet-core"; path = "../wallet-core"; sourceTree = "<group>"; };
 		52D24424277310AB00526698 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = "../wallet-core/Package.swift"; sourceTree = "<group>"; };
 		587225CEC8297CD077FEF308 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		61DF442725ED049CC7B4ABE8 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +89,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		5247A74827D7425B003E2BFA /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				5247A74927D7425B003E2BFA /* wallet-core */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +111,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				5247A74827D7425B003E2BFA /* Packages */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -180,6 +190,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5247A74B27D7427B003E2BFA /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
@@ -337,6 +348,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5247A74B27D7427B003E2BFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 5247A74A27D7427B003E2BFA /* WalletCore */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
@@ -1128,6 +1146,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5247A74A27D7427B003E2BFA /* WalletCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WalletCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
