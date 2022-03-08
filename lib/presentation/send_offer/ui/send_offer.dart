@@ -40,7 +40,6 @@ class _SendOfferState extends State<SendOffer> {
   int loanDurationType = 0;
   String duration = '';
   late String loanAmount;
-  int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
   String repaymentAsset = Get.find<AppConstants>().contract_defy;
@@ -62,7 +61,7 @@ class _SendOfferState extends State<SendOffer> {
           interest: interest,
           duration: duration,
           loanDurationType: loanDurationType,
-          repaymentCycleType: repaymentCycleType,
+          repaymentCycleType: loanDurationType,
           context: context,
         )
         .then(
@@ -133,7 +132,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
+                        '$duration ${loanDurationType == 0 ? S.current.month : S.current.week}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -159,7 +158,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        repaymentCycleType == 0
+                        loanDurationType == 0
                             ? S.current.month
                             : S.current.week,
                         style: textNormalCustom(
@@ -181,7 +180,7 @@ class _SendOfferState extends State<SendOffer> {
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
-                    'repaymentCycleType': repaymentCycleType,
+                    'repaymentCycleType': loanDurationType,
                     'repaymentTokenSymbol': shortName,
                     'txid': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
@@ -583,7 +582,7 @@ class _SendOfferState extends State<SendOffer> {
                             listValue: listValueInterest,
                             textValue: (value) {
                               _cubit.sinkIndex.add(int.parse(value['value']!));
-                              repaymentCycleType = int.parse(value['value']);
+                              loanDurationType = int.parse(value['value']);
                             },
                             index: snapshot.data!,
                           );
