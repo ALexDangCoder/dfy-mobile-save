@@ -132,7 +132,8 @@ class _CardNFTState extends State<CardNFT> {
           walletAddress: widget.walletAddress,
           nameWallet: widget.walletName,
           walletCubit: widget.walletCubit,
-        ),
+        )
+        ,
       ),
     ).whenComplete(() => Navigator.pop(context));
   }

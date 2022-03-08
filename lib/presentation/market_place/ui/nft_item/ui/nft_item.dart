@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -112,6 +113,9 @@ class _NFTItemState extends State<NFTItemWidget> {
               collectionAddress: widget.nftMarket.collectionAddress,
               nftTokenId: widget.nftMarket.nftTokenId,
               pageRouter: widget.pageRouter,
+            ),
+            settings: const RouteSettings(
+              name: AppRouter.nft_detail,
             ),
           ),
         );

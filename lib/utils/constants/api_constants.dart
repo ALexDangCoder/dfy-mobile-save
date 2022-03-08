@@ -188,6 +188,7 @@ class ApiConstants {
   static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
 
   ///get_evaluation_result
+  static const String TRANSFER_NFT = '/nft-svc/api/soft-nft/transfer';
   static const String GET_LIST_EVALUATION_RESULT =
       '/hard-nft-svc/api/evaluations/';
   static const String GET_DETAIL_ASSETS_HARD_NFT = '/hard-nft-svc/api/assets/';

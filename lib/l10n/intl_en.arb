@@ -772,5 +772,7 @@
   "put_on_sale_success":"Put on sale success",
   "put_on_auction_success":"Put on auction success",
   "put_on_pawn_success":"Put on pawn success",
-  "check_data_on_market":"Your NFT has put on "
+  "check_data_on_market":"Your NFT has put on ",
+  "transfer_success":"Transfer success",
+  "transfer_success_to":"Your NFT has transfer to "
 }

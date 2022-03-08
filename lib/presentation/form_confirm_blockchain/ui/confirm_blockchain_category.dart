@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -51,12 +53,14 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.quantity,
     this.modelToken,
     this.nftInfo,
+    this.pageRouter,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
 
   //this field depend on name token
   final String? nameToken;
+  final PageRouter? pageRouter;
   final String addressFrom;
   final String addressTo;
   final double? amount;
@@ -158,16 +162,28 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitSuccess(),
               ),
-            ).then(
-              (value) => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => const MainScreen(
-                    index: walletInfoIndex,
+            ).then((value) async {
+              if (widget.pageRouter == PageRouter.MARKET) {
+                await Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: walletInfoIndex,
+                    ),
                   ),
-                ),
-                (route) => route.isFirst,
-              ),
-            );
+                  (route) => route.isFirst,
+                );
+              } else {
+                await cubitFormCustomizeGasFee.pushSendNftToBE(
+                  bcTxnHash: cubitFormCustomizeGasFee.txHashNft,
+                  nftId: widget.nftInfo?.nftId ?? '',
+                  walletReceived: widget.addressTo,
+                );
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name ==
+                      AppRouter.send_nft;
+                });
+              }
+            });
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
               barrierDismissible: false,
@@ -184,16 +200,23 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitFail(),
               ),
-            ).then(
-              (value) => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => const MainScreen(
-                    index: walletInfoIndex,
+            ).then((value) {
+              if (widget.pageRouter == PageRouter.MARKET) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(
+                      index: walletInfoIndex,
+                    ),
                   ),
-                ),
-                (route) => route.isFirst,
-              ),
-            );
+                  (route) => route.isFirst,
+                );
+              } else {
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name ==
+                      AppRouter.nft_detail;
+                });
+              }
+            });
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               barrierDismissible: false,
