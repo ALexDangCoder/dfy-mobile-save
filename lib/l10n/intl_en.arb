@@ -246,7 +246,7 @@
   "nft_on_sell": "NFT on sale",
   "soft_nft": "Soft NFT",
   "on_sell": "On sale",
-  "on_pawn": "On pawn",
+  "on_pawn": "Requesting loan",
   "nft_type": "NFT type",
   "collection": "Collection",
   "animals": "Animals",
@@ -307,7 +307,7 @@
   "depreciationD":"Depreciation",
   "addition_info": "Additional information",
   "images_videos": "Images and videos",
-  "nft_on_pawn": "NFT on pawn",
+  "nft_on_pawn": "NFT requesting loan",
   "on_auction": "On auction",
   "collection_type": "Collection type",
   "hard_nft_collection": "Hard NFT",
@@ -510,7 +510,7 @@
   "you_enter_balance": "You enter greater than the total balance ",
   "you_must_bid": "Invalid bid",
   "your_bid_is": "Your bid is ",
-  "higher_than": "higher than buyout price. Auction will end if you place this bid.",
+  "higher_than": " higher than buyout price. Auction will end if you place this bid.",
   "you_bid_equal": "Your bid is equal to buyout price. Auction will end if you place this bid.",
   "you_must_bid_greater": "You must bid greater than current price",
   "you_must_bid_equal": "You must bid equal price step",
@@ -774,5 +774,7 @@
   "put_on_pawn_success":"Put on pawn success",
   "check_data_on_market":"Your NFT has put on ",
   "transfer_success":"Transfer success",
-  "transfer_success_to":"Your NFT has transfer to "
+  "transfer_success_to":"Your NFT has transfer to ",
+  "buy_out_success":"Buy out success",
+  "buy_out_success_scrip":"NFT has move your account.\n Check in NFT not on market."
 }

@@ -59,8 +59,8 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
-const int ID_MONTH = 0;
-const int ID_WEEK = 1;
+const int ID_MONTH = 1;
+const int ID_WEEK = 0;
 
 const int secondShowPopUp = 2;
 

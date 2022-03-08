@@ -472,7 +472,7 @@ class Step1WhenSubmit extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '$textShow.${typeFile ??= ''}',
+          textShow,
           style: txtStyle,
         ),
       ),

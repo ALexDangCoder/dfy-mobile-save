@@ -37,10 +37,9 @@ class SendOffer extends StatefulWidget {
 class _SendOfferState extends State<SendOffer> {
   final Map<GlobalKey, bool> validator = {};
   final SendOfferCubit _cubit = SendOfferCubit();
-  int loanDurationType = 0;
+  int loanDurationType = 1;
   String duration = '';
   late String loanAmount;
-  int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
   String repaymentAsset = Get.find<AppConstants>().contract_defy;
@@ -62,7 +61,7 @@ class _SendOfferState extends State<SendOffer> {
           interest: interest,
           duration: duration,
           loanDurationType: loanDurationType,
-          repaymentCycleType: repaymentCycleType,
+          repaymentCycleType: loanDurationType,
           context: context,
         )
         .then(
@@ -133,7 +132,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
+                        '$duration ${loanDurationType == 1 ? S.current.month : S.current.week}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -159,7 +158,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        repaymentCycleType == 0
+                        loanDurationType == 1
                             ? S.current.month
                             : S.current.week,
                         style: textNormalCustom(
@@ -181,7 +180,7 @@ class _SendOfferState extends State<SendOffer> {
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
-                    'repaymentCycleType': repaymentCycleType,
+                    'repaymentCycleType': loanDurationType,
                     'repaymentTokenSymbol': shortName,
                     'txid': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
@@ -238,23 +237,25 @@ class _SendOfferState extends State<SendOffer> {
   Widget build(BuildContext context) {
     final List<Map<String, String>> listValueDuration = [
       {
+        'value': ID_WEEK.toString(),
+        'label': S.current.week,
+      },
+      {
         'value': ID_MONTH.toString(),
         'label': S.current.month,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.week,
-      }
+
     ];
     final List<Map<String, String>> listValueInterest = [
+      {
+        'value': ID_WEEK.toString(),
+        'label': S.current.weekly,
+      },
       {
         'value': ID_MONTH.toString(),
         'label': S.current.monthly,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.weekly,
-      }
+
     ];
     final List<Map<String, dynamic>> listValueToken =
         widget.nftOnPawn.expectedCollateralSymbol == DFY
@@ -521,7 +522,7 @@ class _SendOfferState extends State<SendOffer> {
                         width: 100.w,
                         child: StreamBuilder<int>(
                           stream: _cubit.streamIndex,
-                          initialData: 0,
+                          initialData: 1,
                           builder: (context, snapshot) {
                             return Center(
                               child: CustomDropDown(
@@ -583,7 +584,7 @@ class _SendOfferState extends State<SendOffer> {
                             listValue: listValueInterest,
                             textValue: (value) {
                               _cubit.sinkIndex.add(int.parse(value['value']!));
-                              repaymentCycleType = int.parse(value['value']);
+                              loanDurationType = int.parse(value['value']);
                             },
                             index: snapshot.data!,
                           );

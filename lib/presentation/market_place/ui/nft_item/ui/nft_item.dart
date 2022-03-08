@@ -451,7 +451,7 @@ class _NFTItemState extends State<NFTItemWidget> {
     switch (type) {
       case MarketType.PAWN:
         return Text(
-          'Pawn',
+          'Requesting loan',
           style: textNormalCustom(
             AppTheme.getInstance().blueColor(),
             13,
