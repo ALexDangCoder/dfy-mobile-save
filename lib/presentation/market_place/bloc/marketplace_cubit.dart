@@ -1,9 +1,11 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
 import 'package:Dfy/domain/model/market_place/list_type_nft_collection_explore_model.dart';
 import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -83,6 +85,13 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
   /// sell 1
   /// auction 2
   /// pawn 3
+
+  List<TokenInf> listTokenSupport = [];
+
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+  }
 
   void getNftCollectionExplore(
     List<ListTypeNftCollectionExploreModel> response,

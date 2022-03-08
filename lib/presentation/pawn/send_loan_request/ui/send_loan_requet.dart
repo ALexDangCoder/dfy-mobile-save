@@ -187,6 +187,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                 },
                               ),
                               Container(
+                                //todo ghép màn của huy vào
                                 color: Colors.green,
                               ),
                             ],
