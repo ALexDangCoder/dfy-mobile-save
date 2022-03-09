@@ -55,9 +55,13 @@ class _BookEvaluationState extends State<BookEvaluation> {
       text: ImageAssets.ic_close,
       onRightClick: () {
         if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
-          Navigator.of(context).popUntil(
-            (route) => route.settings.name == AppRouter.create_nft,
-          );
+          Navigator.of(context)
+            ..pop()
+            ..pop()
+            ..pop()
+            ..pop()
+            ..pop()
+            ..pop();
         } else {
           Navigator.of(context).popUntil(
             (route) => route.settings.name == AppRouter.list_hard_mint,

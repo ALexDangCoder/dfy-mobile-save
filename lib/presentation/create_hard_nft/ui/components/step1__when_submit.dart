@@ -70,7 +70,7 @@ class Step1WhenSubmit extends StatelessWidget {
                         // needApprove: true,
                         hexString: cubit.hexStringWeb3,
                         payValue: cubit.dataStep1.amountToken.toString(),
-                        tokenAddress: ADDRESS_DFY,
+                        tokenAddress: Get.find<AppConstants>().contract_defy,
                         title: S.current.create_hard_nft,
                         listDetail: [
                           DetailItemApproveModel(
@@ -218,9 +218,8 @@ class Step1WhenSubmit extends StatelessWidget {
                   ),
                   spaceH32,
                   Visibility(
-                    visible: cubit.listDocumentPathSubject.hasValue
-                        ? true
-                        : false,
+                    visible:
+                        cubit.listDocumentPathSubject.hasValue ? true : false,
                     child: Column(
                       children: [
                         textShowWithPadding(

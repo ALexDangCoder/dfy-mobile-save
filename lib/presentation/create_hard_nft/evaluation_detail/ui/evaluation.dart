@@ -83,13 +83,13 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {
-          if (widget.pageRouterHardNFT == PageRouterHardNFT.CREATE_HARD_NFT) {
+          if (widget.pageRouterHardNFT == PageRouterHardNFT.LIST_HARD) {
             Navigator.of(context).popUntil(
-              (route) => route.settings.name == AppRouter.create_nft,
+                  (route) => route.settings.name == AppRouter.list_hard_mint,
             );
           } else {
             Navigator.of(context).popUntil(
-              (route) => route.settings.name == AppRouter.list_hard_mint,
+                  (route) => route.settings.name == AppRouter.create_nft,
             );
           }
         },
