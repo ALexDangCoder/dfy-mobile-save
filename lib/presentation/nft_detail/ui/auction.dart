@@ -89,7 +89,7 @@ Widget _buildButtonBuyOut(
             ),
           ),
     onPressed: () {
-      if(nftOnAuction.marketStatus !=10  && nftOnAuction.marketStatus !=15){
+      if (nftOnAuction.marketStatus != 10 && nftOnAuction.marketStatus != 15) {
         showDialog(
           context: context,
           builder: (ctx) => ConnectWalletDialog(
@@ -100,7 +100,7 @@ Widget _buildButtonBuyOut(
             ),
             isRequireLoginEmail: false,
             hasFunction: true,
-            function: (){
+            function: () {
               nftOnAuction.isBoughtByOther = true;
               nftOnAuction.marketStatus = 10;
               bloc.emit(NftOnAuctionSuccess(nftOnAuction));
@@ -112,7 +112,7 @@ Widget _buildButtonBuyOut(
                 showDialogSuccess(
                   context,
                   alert: S.current.buy_out_success,
-                  text: S.current.buy_out_success_scrip ,
+                  text: S.current.buy_out_success_scrip,
                 );
               });
             },
@@ -353,11 +353,18 @@ SizedBox _timeContainer(
               ),
             ),
           spaceH16,
-          CountDownView(
-            timeInMilliSecond: startTime,
-            onRefresh: onRefresh,
-            timeEnd: endTime,
-          ),
+          if (start)
+            CountDownView(
+              timeInMilliSecond: startTime,
+              onRefresh: onRefresh,
+              timeEnd: endTime,
+            )
+          else
+            CountDownView(
+              timeInMilliSecond: endTime,
+              onRefresh: onRefresh,
+              timeEnd: endTime,
+            ),
           spaceH24,
         ],
       ),

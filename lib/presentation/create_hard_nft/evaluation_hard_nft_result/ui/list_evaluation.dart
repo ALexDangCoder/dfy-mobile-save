@@ -14,12 +14,12 @@ class ListEvaluation extends StatelessWidget {
     required this.listEvaluation,
     required this.cubit,
     required this.assetID,
-    required this.pageRouterHardNFT,
+    this.pageRouterHardNFT,
   }) : super(key: key);
   final List<EvaluationResult> listEvaluation;
   final EvaluationHardNftResultCubit cubit;
   final String assetID;
-  final PageRouterHardNFT pageRouterHardNFT;
+  final PageRouterHardNFT? pageRouterHardNFT;
 
   @override
   Widget build(BuildContext context) {
