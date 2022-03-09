@@ -385,6 +385,7 @@ class Web3Utils {
         'txHash': txh,
       };
     } catch (error) {
+      print('fuck $error');
       return {
         'isSuccess': false,
         'txHash': '',
