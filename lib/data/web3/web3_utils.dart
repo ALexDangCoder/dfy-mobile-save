@@ -372,7 +372,6 @@ class Web3Utils {
   Future<Map<String, dynamic>> sendRawTransaction({
     required String transaction,
   }) async {
-    print('fuck transaction $transaction');
     final List<int> listInt = hex.decode(transaction);
     final Uint8List signedTransaction = Uint8List.fromList(listInt);
     TransactionReceipt? receipt;
@@ -386,7 +385,6 @@ class Web3Utils {
         'txHash': txh,
       };
     } catch (error) {
-      print('fuck $error');
       return {
         'isSuccess': false,
         'txHash': '',
@@ -827,7 +825,6 @@ class Web3Utils {
     required int repaymentCycleType,
     required BuildContext context,
   }) async {
-    print('fuck $repaymentAsset');
     final deployContract =
         await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
     final function = deployContract.function('createOffer');
@@ -950,8 +947,6 @@ class Web3Utils {
     required String evaluationFeeAddress,
     required String appointmentTime,
   }) async {
-    print(
-        'fuck appoiment data: $assetId, $evaluator, $evaluationFeeAddress, $appointmentTime');
     final deployContract =
         await deployedEvaluationContract(Get.find<AppConstants>().eva);
     final function = deployContract.function('createAppointment');
