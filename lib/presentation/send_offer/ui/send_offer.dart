@@ -171,21 +171,36 @@ class _SendOfferState extends State<SendOffer> {
                   ],
                 ),
                 onSuccessSign: (context, data) async {
+                  // final Map<String, dynamic> sendOfferRequest = {
+                  //   'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
+                  //   'description': message,
+                  //   'durationQty': int.parse(duration),
+                  //   'durationType': loanDurationType,
+                  //   'interestRate': num.parse(interest),
+                  //   'liquidationThreshold': 0,
+                  //   'loanAmount': double.parse(loanAmount),
+                  //   'loanToValue': 0,
+                  //   'repaymentCycleType': loanDurationType,
+                  //   'repaymentTokenSymbol': shortName,
+                  //   'txid': data,
+                  //   'walletAddress': PrefsService.getCurrentBEWallet(),
+                  // };
                   final Map<String, dynamic> sendOfferRequest = {
-                    'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
-                    'description': message,
-                    'durationQty': int.parse(duration),
+                    'collateralId': widget.nftOnPawn.id ?? 0,
+                    'message': message,
+                    'duration': int.parse(duration),
                     'durationType': loanDurationType,
                     'interestRate': num.parse(interest),
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
                     'repaymentCycleType': loanDurationType,
-                    'repaymentTokenSymbol': shortName,
-                    'txid': data,
+                    'supplyCurrency': shortName,
+                    'repaymentToken': shortName,
+                    'latestBlockchainTxn': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
                   };
-                  _cubit.sendOffer(
+                  await _cubit.sendOffer(
                       offerRequest:
                           SendOfferRequest.fromJson(sendOfferRequest));
                   await showLoadSuccess(context)
@@ -244,7 +259,6 @@ class _SendOfferState extends State<SendOffer> {
         'value': ID_MONTH.toString(),
         'label': S.current.month,
       },
-
     ];
     final List<Map<String, String>> listValueInterest = [
       {
@@ -255,7 +269,6 @@ class _SendOfferState extends State<SendOffer> {
         'value': ID_MONTH.toString(),
         'label': S.current.monthly,
       },
-
     ];
     final List<Map<String, dynamic>> listValueToken =
         widget.nftOnPawn.expectedCollateralSymbol == DFY

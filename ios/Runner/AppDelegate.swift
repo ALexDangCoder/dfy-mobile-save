@@ -774,14 +774,12 @@ extension AppDelegate {
             param["walletAddress"] = walletAddress
             param["collectionAddress"] = tokenAddress
             param["nftId"] = tokenId
-            print("Fuck tx: \(value)")
         } else {
             param["isSuccess"] = false
             param["signedTransaction"] = ""
             param["walletAddress"] = ""
             param["collectionAddress"] = ""
             param["nftId"] = ""
-            print("Fuck tx: yguyuygyuy")
         }
         param["walletAddress"] = walletAddress
         param["toAddress"] = toAddress

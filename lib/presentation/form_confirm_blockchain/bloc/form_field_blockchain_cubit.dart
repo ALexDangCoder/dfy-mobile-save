@@ -234,7 +234,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
         final String name = S.current.send_nft;
         final String dateTime = DateTime.now().toString();
         String status = '';
-        print('Fuck send nft: $signedTransaction');
         final result = await Web3Utils()
             .sendRawTransaction(transaction: signedTransaction);
         txHashNft = result['txHash'];
