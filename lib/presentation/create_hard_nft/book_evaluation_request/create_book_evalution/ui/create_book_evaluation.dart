@@ -68,7 +68,13 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       evaluationID: widget.idEvaluation,
     );
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
+    bloc.getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress:
+      Get.find<AppConstants>().contract_defy,
+    );
     bloc.getEvaluationFee();
+
   }
 
   @override
@@ -834,13 +840,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   appointmentTime: bloc.appointmentTime,
                                   assetId: bloc.bcAssetId ?? '',
                                 );
-                                await bloc.getBalanceToken(
-                                  ofAddress: PrefsService.getCurrentBEWallet(),
-                                  tokenAddress:
-                                      Get.find<AppConstants>().contract_defy,
-                                );
 
-                                if (bloc.balanceStream.value >= 50) {
+
+                                if (bloc.balanceCheck >= 50) {
                                   unawaited(
                                     navigator.push(
                                       MaterialPageRoute(

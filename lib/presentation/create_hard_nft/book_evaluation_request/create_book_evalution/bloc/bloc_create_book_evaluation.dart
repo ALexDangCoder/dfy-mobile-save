@@ -67,7 +67,7 @@ class BlocCreateBookEvaluation {
   String textValidateTime = '';
   BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckTextValidateTime = BehaviorSubject.seeded(false);
-  BehaviorSubject<double> balanceStream = BehaviorSubject.seeded(0);
+  double balanceCheck = 0;
   late double locationLong;
   late double locationLat;
   String? hourMy;
@@ -112,7 +112,7 @@ class BlocCreateBookEvaluation {
         ofAddress: ofAddress,
         tokenAddress: tokenAddress,
       );
-      balanceStream.add(balance);
+      balanceCheck=balance;
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
