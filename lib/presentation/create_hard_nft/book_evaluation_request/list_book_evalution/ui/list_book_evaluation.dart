@@ -237,6 +237,17 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                     builder: (context, snapshot) {
                       return GestureDetector(
                         onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EvaluationResult(
+                                assetID: widget.assetId,
+                                pageRouter: widget.pageRouter,
+                              ),
+                              settings: const RouteSettings(
+                                name: AppRouter.step3ListEvaluation,
+                              ),
+                            ),
+                          );
                           if (snapshot.data ?? false) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
