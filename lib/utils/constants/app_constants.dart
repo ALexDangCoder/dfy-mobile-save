@@ -54,7 +54,7 @@ const String HOUR = 'hour';
 const String MINUTE = 'minute';
 const String EVALUATION_FEE = '2';
 NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
-NumberFormat formatPrice = NumberFormat('###,###,###.######', 'en_US');
+NumberFormat formatPrice = NumberFormat('###,###,###.#####', 'en_US');
 DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
