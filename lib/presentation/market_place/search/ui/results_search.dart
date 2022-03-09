@@ -4,8 +4,6 @@ import 'package:Dfy/domain/model/collection.dart';
 import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -104,7 +102,7 @@ class ResultNFTSearch extends StatelessWidget {
     switch (type) {
       case MarketType.PAWN:
         return Text(
-          'Pawn',
+          'Requesting loan',
           style: textNormalCustom(
             AppTheme.getInstance().blueColor(),
             13.sp,
