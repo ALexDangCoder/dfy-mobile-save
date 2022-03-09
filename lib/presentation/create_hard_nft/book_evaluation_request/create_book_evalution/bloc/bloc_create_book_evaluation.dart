@@ -17,13 +17,13 @@ class BlocCreateBookEvaluation {
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
   BehaviorSubject<EvaluatorsDetailModel> objDetail = BehaviorSubject();
   BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
-  static const MONDAY = 0;
-  static const TUESDAY = 1;
-  static const WEDNESDAY = 2;
-  static const THURSDAY = 3;
-  static const FRIDAY = 4;
-  static const SATURDAY = 5;
-  static const SUNDAY = 6;
+  static const MONDAY = 1;
+  static const TUESDAY = 2;
+  static const WEDNESDAY = 3;
+  static const THURSDAY = 4;
+  static const FRIDAY = 5;
+  static const SATURDAY = 6;
+  static const SUNDAY = 7;
 
   static const JEWELRY = 0;
   static const ARTWORK = 2;
@@ -211,14 +211,16 @@ class BlocCreateBookEvaluation {
   bool checkHourWorking(int hour, int minute) {
     //working hour
     final workingHour = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      (objDetail.value.workingTimeFrom ?? 0),
+      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
     final String hourWorking =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
     //working Min
     final workingMin = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      (objDetail.value.workingTimeFrom ?? 0),
+      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
     final String minWorking =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
@@ -235,7 +237,8 @@ class BlocCreateBookEvaluation {
 
     // working hour close
     final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0) * 1000,
+      (objDetail.value.workingTimeTo ?? 0),
+      // (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
     final String hourWorkingTo =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
@@ -243,7 +246,8 @@ class BlocCreateBookEvaluation {
 
     //working miu close
     final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0) * 1000,
+      (objDetail.value.workingTimeTo ?? 0),
+      // (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
     final String minWorkingTo =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
