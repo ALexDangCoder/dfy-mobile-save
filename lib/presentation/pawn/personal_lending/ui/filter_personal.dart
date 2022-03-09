@@ -4,7 +4,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/ui/check_box_loan_item.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/ui/item_widget_filter.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -230,109 +229,6 @@ class _PersonalFilterState extends State<PersonalFilter> {
                           builder: (context, snapshot) {
                             final listFilter = snapshot.data;
                             return CheckBoxItem(
-                              isSelected: listFilter?[
-                                      PersonalLendingBloc.MORE_THAN_FIVETY] ??
-                                  false,
-                              nameCkcFilter: S.current.more_than_fifty,
-                              bloc: widget.bloc,
-                              index: PersonalLendingBloc.MORE_THAN_FIVETY,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                spaceH16,
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Text(
-                    S.current.loan_to_value,
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ),
-                  ),
-                ),
-                spaceH16,
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 15,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[
-                                      PersonalLendingBloc.ZERO_TO_TEN] ??
-                                  false,
-                              nameCkcFilter: S.current.zero_to_ten,
-                              bloc: widget.bloc,
-                              index: PersonalLendingBloc.ZERO_TO_TEN,
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        flex: 14,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[
-                                      PersonalLendingBloc.TEN_TO_TWENTY_FIVE] ??
-                                  false,
-                              nameCkcFilter: S.current.ten_twenty,
-                              bloc: widget.bloc,
-                              index: PersonalLendingBloc.TEN_TO_TWENTY_FIVE,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                spaceH16,
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: 15,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
-                              isSelected: listFilter?[PersonalLendingBloc
-                                      .TWENTY_FIVE_TO_FIVETY] ??
-                                  false,
-                              nameCkcFilter: S.current.twenty_five,
-                              bloc: widget.bloc,
-                              index: PersonalLendingBloc.TWENTY_FIVE_TO_FIVETY,
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        flex: 14,
-                        child: StreamBuilder<List<bool>>(
-                          stream: widget.bloc.listFilterLoanStream,
-                          builder: (context, snapshot) {
-                            final listFilter = snapshot.data;
-                            return CheckBoxItemLoan(
                               isSelected: listFilter?[
                                       PersonalLendingBloc.MORE_THAN_FIVETY] ??
                                   false,

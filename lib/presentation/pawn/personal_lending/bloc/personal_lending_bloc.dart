@@ -51,25 +51,12 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     false,
     false,
   ];
-  BehaviorSubject<List<bool>> listFilterLoanStream = BehaviorSubject.seeded([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  List<bool> listFilterLoan = [
-    false,
-    false,
-    false,
-    false,
-  ];
 
   //status filter
   //status filter
   String? checkStatus;
   String? searchStatus;
   List<bool>? statusFilterNumberRange;
-  List<bool>? statusFilterNumberLoan;
   List<int> statusListCollateral = [];
   List<TokenModelPawn> listCollateralTokenFilter = [
     //2
@@ -86,8 +73,6 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     textSearch.sink.add('');
     listFilter = List.filled(4, false);
     listFilterStream.add(listFilter);
-    listFilterLoan = List.filled(4, false);
-    listFilterLoanStream.add(listFilterLoan);
     for (final TokenModelPawn value in listCollateralTokenFilter) {
       if (value.isCheck) {
         value.isCheck = false;
@@ -99,12 +84,6 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     listFilter = List.filled(4, false);
     listFilter[index] = true;
     listFilterStream.sink.add(listFilter);
-  }
-
-  void chooseFilterLoan({required int index}) {
-    listFilterLoan = List.filled(4, false);
-    listFilterLoan[index] = true;
-    listFilterLoanStream.sink.add(listFilterLoan);
   }
 
   Future<void> refreshPosts() async {
@@ -121,14 +100,11 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       checkStatus = 'have';
       searchStatus = '';
       statusFilterNumberRange = [false, false, false, false];
-      statusFilterNumberLoan = [false, false, false, false];
     } else {
       textSearch.sink.add(searchStatus ?? '');
 
       listFilter = statusFilterNumberRange ?? [];
       listFilterStream.add(listFilter);
-      listFilterLoan = statusFilterNumberLoan ?? [];
-      listFilterLoanStream.add(listFilterLoan);
       for (int i = 0; i < listCollateralTokenFilter.length; i++) {
         if (checkStatusFirstFilter(i, statusListCollateral)) {
           listCollateralTokenFilter[i].isCheck = true;
@@ -152,7 +128,6 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
     page = 1;
     searchStatus = textSearch.value;
     statusFilterNumberRange = listFilterStream.value;
-    statusFilterNumberLoan = listFilterLoanStream.value;
     statusListCollateral = [];
     for (int i = 0; i < listCollateralTokenFilter.length; i++) {
       if (listCollateralTokenFilter[i].isCheck) {
