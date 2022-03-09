@@ -767,7 +767,7 @@
   "evaluated":"Evaluated",
   "view_evaluation": "View evaluation",
   "put_on_market_success":"Success",
-  "cancel_success":"Cancel Success",
+  "cancel_success_s":"Cancel Success",
   "back_and_refresh_data":"Your NFT has move on NFT not on market.",
   "put_on_sale_success":"Put on sale success",
   "put_on_auction_success":"Put on auction success",
@@ -776,5 +776,6 @@
   "transfer_success":"Transfer success",
   "transfer_success_to":"Your NFT has transfer to ",
   "buy_out_success":"Buy out success",
-  "buy_out_success_scrip":"NFT has move your account.\n Check in NFT not on market."
+  "buy_out_success_scrip":"NFT has move your account.\n Check in NFT not on market.",
+  "you_must_have_five": "You must have 50 DFY to book evaluator."
 }
