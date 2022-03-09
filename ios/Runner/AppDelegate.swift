@@ -749,7 +749,7 @@ extension AppDelegate {
                                     gasLimit: String,
                                     tokenId: String, gasFee: String, amount: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
-        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
+        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress.lowercased() == walletAddress.lowercased()})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
             let privateKey = PrivateKey(data: walletModel.privateKey.hexadecimal!)!
             let signerInput = EthereumSigningInput.with {
@@ -774,12 +774,14 @@ extension AppDelegate {
             param["walletAddress"] = walletAddress
             param["collectionAddress"] = tokenAddress
             param["nftId"] = tokenId
+            print("Fuck tx: \(value)")
         } else {
             param["isSuccess"] = false
             param["signedTransaction"] = ""
             param["walletAddress"] = ""
             param["collectionAddress"] = ""
             param["nftId"] = ""
+            print("Fuck tx: yguyuygyuy")
         }
         param["walletAddress"] = walletAddress
         param["toAddress"] = toAddress
