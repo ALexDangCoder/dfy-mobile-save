@@ -26,11 +26,11 @@ class EvaluationResult extends StatefulWidget {
   const EvaluationResult({
     Key? key,
     required this.assetID,
-    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
+    this.pageRouter,
   }) : super(key: key);
 
   final String assetID;
-  final PageRouterHardNFT pageRouter;
+  final PageRouterHardNFT? pageRouter;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();

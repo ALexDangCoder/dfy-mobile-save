@@ -36,13 +36,13 @@ class EvaluationScreen extends StatefulWidget {
     required this.isAccept,
     required this.bcEvaluationId,
     required this.assetID,
-    this.pageRouterHardNFT = PageRouterHardNFT.CREATE_HARD_NFT,
+    this.pageRouterHardNFT,
   }) : super(key: key);
   final String evaluationId;
   final String bcEvaluationId;
   final bool isAccept;
   final String assetID;
-  final PageRouterHardNFT pageRouterHardNFT;
+  final PageRouterHardNFT? pageRouterHardNFT;
 
   @override
   _EvaluationScreenState createState() => _EvaluationScreenState();
