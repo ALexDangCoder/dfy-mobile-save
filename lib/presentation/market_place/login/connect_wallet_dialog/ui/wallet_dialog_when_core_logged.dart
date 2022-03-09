@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/bloc/c
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_email_dialog.dart';
 import 'package:Dfy/presentation/market_place/login/login_with_email/ui/enter_email_screen.dart';
 import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
@@ -278,7 +279,7 @@ class _WalletDialogWhenLoggedCoreState
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Text(
-                    '${snapshot.data ?? 0} $nameToken',
+                    '${formatPrice.format(snapshot.data ?? 0)} $nameToken',
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteColor(),
                       16,
