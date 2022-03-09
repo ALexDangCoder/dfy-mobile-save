@@ -245,7 +245,7 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
-            nftMarket.status == 0 ? S.current.cancel_success : S.current.cancel_pawn,
+            nftMarket.status == 0 ? S.current.cancel_success_s : S.current.cancel_pawn,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,
@@ -271,7 +271,7 @@ void showDialogSuccess (BuildContext context ,{String? alert, String? text}) {
         title: Column(
           children: [
             Text(
-              alert ?? S.current.cancel_success,
+              alert ?? S.current.cancel_success_s,
               style: textNormalCustom(
                 Colors.white,
                 20,

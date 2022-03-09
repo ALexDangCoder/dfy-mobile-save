@@ -1,3 +1,4 @@
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
@@ -17,6 +18,8 @@ class BlocCreateBookEvaluation {
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
   BehaviorSubject<EvaluatorsDetailModel> objDetail = BehaviorSubject();
   BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
+  final Web3Utils web3Client = Web3Utils();
+
   static const MONDAY = 1;
   static const TUESDAY = 2;
   static const WEDNESDAY = 3;
@@ -64,6 +67,7 @@ class BlocCreateBookEvaluation {
   String textValidateTime = '';
   BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckTextValidateTime = BehaviorSubject.seeded(false);
+  BehaviorSubject<double> balanceStream = BehaviorSubject.seeded(0);
   late double locationLong;
   late double locationLat;
   String? hourMy;
@@ -96,6 +100,23 @@ class BlocCreateBookEvaluation {
     double myDate = appointmentTimeBE / 1000;
     int secondInt = myDate.toInt();
     appointmentTime = secondInt.toString();
+  }
+
+  Future<double> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    late final double balance;
+    try {
+      balance = await web3Client.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      balanceStream.add(balance);
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+    return balance;
   }
 
   Future<void> getHexString({
