@@ -372,6 +372,7 @@ class Web3Utils {
   Future<Map<String, dynamic>> sendRawTransaction({
     required String transaction,
   }) async {
+    print('fuck transaction $transaction');
     final List<int> listInt = hex.decode(transaction);
     final Uint8List signedTransaction = Uint8List.fromList(listInt);
     TransactionReceipt? receipt;
