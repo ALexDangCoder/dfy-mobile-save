@@ -25,7 +25,7 @@ class ApiConstants {
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
   static const String GET_LIST_COLLECTION_MARKET =
-      '/nft-market-svc/public-api/search/collection';
+      '/inventory-svc/public-api/search/collection';
   static const String GET_LIST_FILTER_COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
