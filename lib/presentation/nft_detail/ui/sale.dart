@@ -268,7 +268,7 @@ Widget _buildButtonCancelOnSale(
         ? processing()
         : Text(
             nftMarket.marketStatus == 0
-                ? S.current.cancel_success
+                ? S.current.cancel_success_s
                 : S.current.cancel_sale,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
