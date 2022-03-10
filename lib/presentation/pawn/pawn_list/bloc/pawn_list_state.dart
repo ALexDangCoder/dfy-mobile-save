@@ -17,7 +17,7 @@ class PawnListLoading extends PawnListState {
 class PawnListSuccess extends PawnListState {
   final int id = DateTime.now().millisecond;
   final CompleteType completeType;
-  final List<PawnShopModel>? listPawn;
+  final List<PawnShopModelMy>? listPawn;
   final String? message;
 
   PawnListSuccess(

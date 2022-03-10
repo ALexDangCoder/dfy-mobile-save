@@ -1,9 +1,16 @@
+import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CollateralResultBloc {
+class CollateralResultBloc extends BaseCubit<CollateralResultState> {
+  CollateralResultBloc() : super(CollateralResultInitial());
+
   BehaviorSubject<int> numberListLength = BehaviorSubject.seeded(0);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isWeek = BehaviorSubject.seeded(false);
@@ -19,7 +26,20 @@ class CollateralResultBloc {
   List<int> statusListNetwork = [];
   bool statusWeek = false;
   bool statusMonth = false;
+
+  final bool _canLoadMore = true;
+  bool _isRefresh = true;
+  bool _isLoading = false;
   int page = 1;
+
+  bool get canLoadMore => _canLoadMore;
+
+  bool get isRefresh => _isRefresh;
+
+  //
+  String mess = '';
+
+  BorrowRepository get _pawnService => Get.find();
 
   List<TokenModelPawn> listLoanTokenFilter = [
     //1
@@ -29,41 +49,7 @@ class CollateralResultBloc {
     TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
   ];
 
-  List<CollateralResultModel> listCollateralResultModel = [
-    CollateralResultModel(
-      loadToken: 'DFY',
-      duration: '12 months',
-      address: '12341234123434',
-      rate: '1000',
-      iconLoadToken: ImageAssets.ic_dfy,
-      iconBorrower: ImageAssets.ic_dfy,
-      contracts: '100',
-      iconCollateral: ImageAssets.ic_dfy,
-      collateral: '10 ETH',
-    ),
-    CollateralResultModel(
-      loadToken: 'DFY',
-      duration: '12 months',
-      address: '12341234123434',
-      rate: '1000',
-      iconLoadToken: ImageAssets.ic_dfy,
-      iconBorrower: ImageAssets.ic_dfy,
-      contracts: '100',
-      iconCollateral: ImageAssets.ic_dfy,
-      collateral: '10 ETH',
-    ),
-    CollateralResultModel(
-      loadToken: 'DFY',
-      duration: '12 months',
-      address: '12341234123434',
-      rate: '1000',
-      iconLoadToken: ImageAssets.ic_dfy,
-      iconBorrower: ImageAssets.ic_dfy,
-      contracts: '100',
-      iconCollateral: ImageAssets.ic_dfy,
-      collateral: '10 ETH',
-    ),
-  ];
+  List<CollateralResultModel> listCollateralResultModel = [];
 
   List<TokenModelPawn> listCollateralTokenFilter = [
     //2
@@ -90,8 +76,61 @@ class CollateralResultBloc {
     TokenModelPawn(symbol: 'Polygon'),
   ];
 
+  Future<void> refreshPosts() async {
+    if (!_isLoading) {
+      page = 1;
+      _isRefresh = true;
+      _isLoading = true;
+      await getListCollateral();
+    }
+  }
+
   void funOnSearch(String value) {
     textSearch.sink.add(value);
+  }
+
+  void loadMorePosts() {
+    if (!_isLoading) {
+      page += 1;
+      _isRefresh = false;
+      _isLoading = true;
+      getListCollateral();
+    }
+  }
+
+  Future<void> getListCollateral() async {
+    emit(CollateralResultLoading());
+    final Result<List<CollateralResultModel>> response =
+        await _pawnService.getListCollateral(
+      page: page.toString(),
+      size: '12',
+    );
+    response.when(
+      success: (response) {
+        if (response.isNotEmpty) {
+          canLoadMore = true;
+
+          _isLoading = false;
+        } else {
+          canLoadMore = false;
+        }
+        emit(
+          CollateralResultSuccess(
+            CompleteType.SUCCESS,
+            listCollateral: response,
+          ),
+        );
+      },
+      error: (error) {
+        emit(
+          CollateralResultSuccess(
+            CompleteType.ERROR,
+            message: error.message,
+          ),
+        );
+        _isLoading = false;
+      },
+    );
   }
 
   void statusFilterFirst() {

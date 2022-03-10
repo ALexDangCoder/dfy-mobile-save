@@ -225,4 +225,7 @@ class ApiConstants {
 
   static const String GET_CRYPTO_COLLATERAL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/submit';
+
+  static const String GET_LIST_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/search';
 }

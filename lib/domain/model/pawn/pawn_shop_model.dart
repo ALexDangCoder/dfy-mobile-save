@@ -1,6 +1,6 @@
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 
-class PawnShopModel {
+class PawnShopModelMy {
   int? id;
   String? name;
   int? availableLoanPackage;
@@ -13,7 +13,7 @@ class PawnShopModel {
   List<TokenModelPawn>? collateralAccepted;
   List<TokenModelPawn>? loanToken;
 
-  PawnShopModel({
+  PawnShopModelMy({
     this.id,
     this.name,
     this.availableLoanPackage,
