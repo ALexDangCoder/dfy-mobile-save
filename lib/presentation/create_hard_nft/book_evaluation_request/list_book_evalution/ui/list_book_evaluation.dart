@@ -58,12 +58,18 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
           BaseDesignScreen(
             isCustomLeftClick: true,
             onLeftClick: () {
-              Navigator.of(context)
-                ..pop()
-                ..pop()
-                ..pop()
-                ..pop()
-                ..pop();
+              if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop();
+              } else {
+                Navigator.of(context).popUntil(
+                      (route) => route.settings.name == AppRouter.list_hard_mint,
+                );
+              }
             },
             isImage: true,
             text: ImageAssets.ic_close,
@@ -237,17 +243,6 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
                     builder: (context, snapshot) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => EvaluationResult(
-                                assetID: widget.assetId,
-                                pageRouter: widget.pageRouter,
-                              ),
-                              settings: const RouteSettings(
-                                name: AppRouter.step3ListEvaluation,
-                              ),
-                            ),
-                          );
                           if (snapshot.data ?? false) {
                             Navigator.of(context).push(
                               MaterialPageRoute(

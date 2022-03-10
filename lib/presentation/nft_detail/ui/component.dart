@@ -24,27 +24,27 @@ Widget action(
   Function reload,
 ) {
   final NftInfo nftInfo = NftInfo(
-    contract: collectionAddress,
+    contract: collectionAddress.toLowerCase(),
     id: nftTokenId,
     nftId: nftId,
     collectionSymbol: 'DFY-NFT',
-    collectionId: nftMarket.collectionID,
+    collectionId: nftMarket.collectionID?.toLowerCase(),
     collectionName: nftMarket.collectionName,
   );
   return InkWell(
     onTap: () {
       if (isOwner) {
         bloc.emitJsonNftToWalletCore(
-          contract: collectionAddress,
+          contract: collectionAddress.toLowerCase(),
           id: nftTokenId.parseToInt(),
-          address: walletAddress,
+          address: walletAddress.toLowerCase(),
         );
         final result = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SendNft(
               nftInfo: nftInfo,
-              addressFrom: walletAddress,
+              addressFrom: walletAddress.toLowerCase(),
               imageWallet: '',
               nameWallet: '',
               pageRouter: PageRouter.MY_ACC,

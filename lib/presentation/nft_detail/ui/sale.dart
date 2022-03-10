@@ -579,6 +579,7 @@ Widget _buildButtonPutOnMarket(
                 );
               }
               if (check == PUT_ON_AUCTION) {
+                bloc.emit(NFTDetailInitial());
                 nftMarket.processStatus = 9;
                 bloc.emit(NftNotOnMarketSuccess(nftMarket));
                 showDialogSuccess(
@@ -588,6 +589,7 @@ Widget _buildButtonPutOnMarket(
                 );
               }
               if (check == PUT_ON_SALE) {
+                bloc.emit(NFTDetailInitial());
                 nftMarket.processStatus = 9;
                 bloc.emit(NftNotOnMarketSuccess(nftMarket));
                 showDialogSuccess(
