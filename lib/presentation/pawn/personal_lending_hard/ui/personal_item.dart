@@ -5,6 +5,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -119,6 +120,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     interestRate,
@@ -145,6 +147,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -189,6 +192,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     signedContract,
@@ -217,10 +221,21 @@ class PersonalItem extends StatelessWidget {
                   children: [
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: Image.asset(
-                        ImageAssets.img_waning,
-                        height: 20.w,
-                        width: 20.w,
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => InfoPopup(
+                              name: S.current.duration,
+                              content: S.current.duration_more_content,
+                            ),
+                          );
+                        },
+                        child: Image.asset(
+                          ImageAssets.img_waning,
+                          height: 20.w,
+                          width: 20.w,
+                        ),
                       ),
                     ),
                   ],

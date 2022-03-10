@@ -23,6 +23,14 @@ class ItemWidgetFilter extends StatefulWidget {
 }
 
 class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
+  late ScrollController _controllerScrollBar;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerScrollBar = ScrollController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -38,28 +46,40 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
           ),
         ),
         height: 138.w,
-        child: GridView.builder(
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 55 / 15,
+        child: Theme(
+          data: ThemeData(
+            highlightColor: AppTheme.getInstance().colorTextReset(),
           ),
-          padding: EdgeInsets.only(
-            top: 5.h,
-            bottom: 5.h,
-            left: 15.w,
-            right: 15.w,
+          child: Scrollbar(
+            thickness: 4.w,
+            isAlwaysShown: true,
+            controller: _controllerScrollBar,
+            radius: Radius.circular(10.r),
+            child: GridView.builder(
+              controller: _controllerScrollBar,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 55 / 15,
+              ),
+              padding: EdgeInsets.only(
+                top: 5.h,
+                bottom: 5.h,
+                left: 15.w,
+                right: 15.w,
+              ),
+              itemCount: widget.list.length,
+              itemBuilder: (context, index) {
+                return ItemCheckBoxFilter(
+                  index: index,
+                  typeCheckBox: widget.type,
+                  bloc: widget.bloc,
+                );
+              },
+            ),
           ),
-          itemCount: widget.list.length,
-          itemBuilder: (context, index) {
-            return ItemCheckBoxFilter(
-              index: index,
-              typeCheckBox: widget.type,
-              bloc: widget.bloc,
-            );
-          },
         ),
       ),
     );

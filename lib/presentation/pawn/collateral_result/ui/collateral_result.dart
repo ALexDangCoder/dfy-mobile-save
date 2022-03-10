@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -27,8 +28,29 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
     _bloc = CollateralResultBloc();
   }
 
+  Widget widgetCheckList({
+    required int numberLength,
+    required int maxLength,
+    required List<CollateralResultModel> list,
+  }) {
+    return (numberLength >= maxLength)
+        ? ItemCollateral(
+            loadToken: list[maxLength - 1].loadToken ?? '',
+            duration: list[maxLength - 1].duration ?? '',
+            address: list[maxLength - 1].address ?? '',
+            rate: list[maxLength - 1].rate ?? '',
+            iconLoadToken: list[maxLength - 1].iconLoadToken ?? '',
+            iconBorrower: list[maxLength - 1].iconBorrower ?? '',
+            contracts: list[maxLength - 1].contracts ?? '',
+            iconCollateral: list[maxLength - 1].iconCollateral ?? '',
+            collateral: list[maxLength - 1].collateral ?? '',
+          )
+        : const SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final list = _bloc.listCollateralResultModel;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -130,46 +152,39 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        ItemCollateral(
-                          loadToken: 'DFY',
-                          duration: '12 months',
-                          address: '12341234123434',
-                          rate: '1000',
-                          iconLoadToken: ImageAssets.ic_dfy,
-                          iconBorrower: ImageAssets.ic_dfy,
-                          contracts: '100',
-                          iconCollateral: ImageAssets.ic_dfy,
-                          collateral: '10 ETH',
+                        widgetCheckList(
+                          numberLength: list.length,
+                          list: list,
+                          maxLength: 1,
                         ),
-                        ItemCollateral(
-                          loadToken: 'DFY',
-                          duration: '12 months',
-                          address: '12341234123434',
-                          rate: '1000',
-                          iconLoadToken: ImageAssets.ic_dfy,
-                          iconBorrower: ImageAssets.ic_dfy,
-                          contracts: '100',
-                          iconCollateral: ImageAssets.ic_dfy,
-                          collateral: '10 ETH',
+                        widgetCheckList(
+                          numberLength: list.length,
+                          list: list,
+                          maxLength: 2,
                         ),
                         const ItemBecomeBank(),
                         spaceH20,
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          itemBuilder: (context, index) => ItemCollateral(
-                            loadToken: 'DFY',
-                            duration: '12 months',
-                            address: '12341234123434',
-                            rate: '1000',
-                            iconLoadToken: ImageAssets.ic_dfy,
-                            iconBorrower: ImageAssets.ic_dfy,
-                            contracts: '100',
-                            iconCollateral: ImageAssets.ic_dfy,
-                            collateral: '10 ETH',
-                          ),
-                        ),
+                        if (list.length >= 3)
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: list.length - 2,
+                            itemBuilder: (context, index) => ItemCollateral(
+                              loadToken: list[index + 2].loadToken ?? '',
+                              duration: list[index + 2].duration ?? '',
+                              address: list[index + 2].address ?? '',
+                              rate: list[index + 2].rate ?? '',
+                              iconLoadToken:
+                                  list[index + 2].iconLoadToken ?? '',
+                              iconBorrower: list[index + 2].iconBorrower ?? '',
+                              contracts: list[index + 2].contracts ?? '',
+                              iconCollateral:
+                                  list[index + 2].iconCollateral ?? '',
+                              collateral: list[index + 2].collateral ?? '',
+                            ),
+                          )
+                        else
+                          const SizedBox.shrink(),
                       ],
                     ),
                   ),

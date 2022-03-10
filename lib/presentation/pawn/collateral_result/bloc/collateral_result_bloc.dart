@@ -1,4 +1,6 @@
+import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CollateralResultBloc {
@@ -25,6 +27,42 @@ class CollateralResultBloc {
     TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
     TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
     TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
+  ];
+
+  List<CollateralResultModel> listCollateralResultModel = [
+    CollateralResultModel(
+      loadToken: 'DFY',
+      duration: '12 months',
+      address: '12341234123434',
+      rate: '1000',
+      iconLoadToken: ImageAssets.ic_dfy,
+      iconBorrower: ImageAssets.ic_dfy,
+      contracts: '100',
+      iconCollateral: ImageAssets.ic_dfy,
+      collateral: '10 ETH',
+    ),
+    CollateralResultModel(
+      loadToken: 'DFY',
+      duration: '12 months',
+      address: '12341234123434',
+      rate: '1000',
+      iconLoadToken: ImageAssets.ic_dfy,
+      iconBorrower: ImageAssets.ic_dfy,
+      contracts: '100',
+      iconCollateral: ImageAssets.ic_dfy,
+      collateral: '10 ETH',
+    ),
+    CollateralResultModel(
+      loadToken: 'DFY',
+      duration: '12 months',
+      address: '12341234123434',
+      rate: '1000',
+      iconLoadToken: ImageAssets.ic_dfy,
+      iconBorrower: ImageAssets.ic_dfy,
+      contracts: '100',
+      iconCollateral: ImageAssets.ic_dfy,
+      collateral: '10 ETH',
+    ),
   ];
 
   List<TokenModelPawn> listCollateralTokenFilter = [

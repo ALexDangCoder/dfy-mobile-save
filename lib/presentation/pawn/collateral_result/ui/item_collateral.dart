@@ -1,11 +1,16 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/common_ext.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ItemCollateral extends StatelessWidget {
   final String address;
@@ -73,6 +78,7 @@ class ItemCollateral extends StatelessWidget {
                       ),
                     ),
                   ),
+                  spaceW4,
                   Expanded(
                     flex: 7,
                     child: RichText(
@@ -83,13 +89,27 @@ class ItemCollateral extends StatelessWidget {
                           16,
                         ),
                         children: [
-                          TextSpan(
-                            text: address,
-                            style: textNormal(
-                              AppTheme.getInstance().blueColor(),
-                              16,
-                            ).copyWith(
-                              decoration: TextDecoration.underline,
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: GestureDetector(
+                              onTap: () {
+                                launchURL(
+                                  Get.find<AppConstants>().bscScan +
+                                      ApiConstants.BSC_SCAN_ADDRESS +
+                                      address,
+                                );
+                              },
+                              child: Text(
+                                address.length > 11
+                                    ? address.formatAddressDialog()
+                                    : address,
+                                style: textNormal(
+                                  AppTheme.getInstance().blueColor(),
+                                  16,
+                                ).copyWith(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
                             ),
                           ),
                           WidgetSpan(
@@ -144,6 +164,7 @@ class ItemCollateral extends StatelessWidget {
                       ),
                     ),
                   ),
+                  spaceW4,
                   Expanded(
                     flex: 7,
                     child: RichText(
@@ -190,6 +211,7 @@ class ItemCollateral extends StatelessWidget {
                       ),
                     ),
                   ),
+                  spaceW4,
                   Expanded(
                     flex: 7,
                     child: RichText(
@@ -236,6 +258,7 @@ class ItemCollateral extends StatelessWidget {
                       ),
                     ),
                   ),
+                  spaceW4,
                   Expanded(
                     flex: 7,
                     child: RichText(
