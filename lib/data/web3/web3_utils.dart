@@ -369,6 +369,26 @@ class Web3Utils {
     return '$valueHundredMore';
   }
 
+  Future<String> getTransferNftData({
+    required String collectionAddress,
+    required String fromAddress,
+    required String toAddress,
+    required String tokenId,
+  }) async {
+    final deployedContract = await deployedErc721Contract(collectionAddress);
+    final transferFunction = deployedContract.function('transferFrom');
+    final transferTransaction = Transaction.callContract(
+      contract: deployedContract,
+      function: transferFunction,
+      parameters: [
+        EthereumAddress.fromHex(fromAddress),
+        EthereumAddress.fromHex(toAddress),
+        BigInt.from(num.parse(tokenId)),
+      ],
+    );
+    return hex.encode(transferTransaction.data ?? []);
+  }
+
   Future<Map<String, dynamic>> sendRawTransaction({
     required String transaction,
   }) async {
