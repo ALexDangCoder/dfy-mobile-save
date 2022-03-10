@@ -44,6 +44,12 @@ enum DropDownBtnType {
   CITY,
 }
 
+enum StateButton {
+  DEFAULT, //show edit and send request
+  PROCESSING,
+  FINDEVALUATOR,
+}
+
 class PropertyModel {
   String value;
   String property;
@@ -59,6 +65,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   BehaviorSubject<bool> visibleDropDownCountry = BehaviorSubject();
 
   BehaviorSubject<List<PropertyModel>> showItemProperties = BehaviorSubject();
+
+  BehaviorSubject<StateButton> stateButton = BehaviorSubject();
 
   ///Di
   Step1Repository get _step1Repository => Get.find();
@@ -185,10 +193,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> checkStatusBeHandle() async {
     await getDetailAssetHardNFT(assetId: assetId);
-    if (statusWhenSubmit != 0) {
-      emit(CreateStep1ButtonProcess());
+    if (statusWhenSubmit == 0) {
+      stateButton.sink.add(StateButton.FINDEVALUATOR);
+    } else if (statusWhenSubmit == 1){
+      stateButton.sink.add(StateButton.PROCESSING);
     } else {
-      emit(CreateStep1ButtonFindEvaluator());
+      stateButton.sink.add(StateButton.DEFAULT);
     }
   }
 

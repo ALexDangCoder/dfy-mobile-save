@@ -144,7 +144,6 @@ class Step1WhenSubmit extends StatelessWidget {
       builder: (ctx, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            print('call herer');
             if (cubit.statusWhenSubmit != null) {
               await cubit.checkStatusBeHandle();
             } else {}
@@ -159,7 +158,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 ..pop();
             },
             title: S.current.provide_hard_nft_info,
-            bottomBar: _buttonByState(state, context),
+            bottomBar: _buttonByState(context),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,96 +425,102 @@ class Step1WhenSubmit extends StatelessWidget {
     );
   }
 
-  Widget _buttonByState(ProvideHardNftState state, BuildContext context) {
-    if (state is CreateStep1ButtonProcess) {
-      //todo viết button đang quay
-      return Container(
-          padding: EdgeInsets.only(
-            bottom: 38.h,
-            left: 16.w,
-            right: 16.w,
-          ),
-          color: AppTheme.getInstance().bgBtsColor(),
-          child: ButtonGold(title: 'Processing', isEnable: true));
-    } else if (state is CreateStep1ButtonFindEvaluator) {
-      //todo viết button có thể chuyển sang màn của doanh
-      return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ListBookEvaluation(
-                    assetId: cubit.assetId,
-                  );
-                },
-                settings: const RouteSettings(
-                  name: AppRouter.step2ListBook,
-                ),
-              ),
-            ).then((value) => Navigator.pop(context));
-          },
-          child: Container(
+  Widget _buttonByState(BuildContext context) {
+    return StreamBuilder<StateButton>(
+      initialData: StateButton.DEFAULT,
+      stream: cubit.stateButton.stream,
+      builder: (context, snapshot) {
+        if ((snapshot.data ?? StateButton.DEFAULT) ==
+            StateButton.FINDEVALUATOR) {
+          return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ListBookEvaluation(
+                        assetId: cubit.assetId,
+                      );
+                    },
+                    settings: const RouteSettings(
+                      name: AppRouter.step2ListBook,
+                    ),
+                  ),
+                ).then((value) => Navigator.pop(context));
+              },
+              child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: 38.h,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  child: const ButtonGold(title: 'Find evaluator', isEnable: true)));
+        } else if ((snapshot.data ?? StateButton.DEFAULT) ==
+            StateButton.PROCESSING) {
+          return Container(
               padding: EdgeInsets.only(
                 bottom: 38.h,
                 left: 16.w,
                 right: 16.w,
               ),
               color: AppTheme.getInstance().bgBtsColor(),
-              child: ButtonGold(title: 'Find evaluator', isEnable: true)));
-    } else {
-      return Container(
-        padding: EdgeInsets.only(
-          bottom: 38.h,
-          left: 16.w,
-          right: 16.w,
-        ),
-        color: AppTheme.getInstance().bgBtsColor(),
-        child: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: ButtonGold(
-                  haveGradient: false,
-                  textColor: AppTheme.getInstance().yellowColor(),
-                  border: Border.all(
-                    color: AppTheme.getInstance().yellowColor(),
+              child: const ButtonGold(title: 'Processing', isEnable: true));
+        } else {
+          return Container(
+            padding: EdgeInsets.only(
+              bottom: 38.h,
+              left: 16.w,
+              right: 16.w,
+            ),
+            color: AppTheme.getInstance().bgBtsColor(),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: ButtonGold(
+                      haveGradient: false,
+                      textColor: AppTheme.getInstance().yellowColor(),
+                      border: Border.all(
+                        color: AppTheme.getInstance().yellowColor(),
+                      ),
+                      radiusButton: 22,
+                      textSize: 16,
+                      title: S.current.edit_info,
+                      isEnable: true,
+                      fixSize: false,
+                      height: 64.h,
+                      haveMargin: false,
+                    ),
                   ),
-                  radiusButton: 22,
-                  textSize: 16,
-                  title: S.current.edit_info,
-                  isEnable: true,
-                  fixSize: false,
-                  height: 64.h,
-                  haveMargin: false,
                 ),
-              ),
-            ),
-            const SizedBox(width: 23),
-            Expanded(
-              child: GestureDetector(
-                onTap: () async {
-                  await cubit.getDataFromStep1ToModelToSave();
-                  await cubit.postFileMediaFeatDocumentApi();
-                },
-                child: ButtonGold(
-                  radiusButton: 22,
-                  textSize: 16,
-                  title: S.current.submit,
-                  isEnable: true,
-                  height: 64.h,
-                  fixSize: false,
-                  haveMargin: false,
+                const SizedBox(width: 23),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await cubit.getDataFromStep1ToModelToSave();
+                      await cubit.postFileMediaFeatDocumentApi();
+                    },
+                    child: ButtonGold(
+                      radiusButton: 22,
+                      textSize: 16,
+                      title: S.current.submit,
+                      isEnable: true,
+                      height: 64.h,
+                      fixSize: false,
+                      haveMargin: false,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      );
-    }
+          );
+        }
+      },
+    );
   }
 
   Container textShowWithPadding({
