@@ -50,374 +50,378 @@ class Step1WhenSubmit extends StatelessWidget {
     cubit.dataStep1.wallet = cubit.getAddressWallet();
     final walletFormat = cubit.getAddressWallet().formatAddressWallet();
     return BlocConsumer(
-        listener: (context, state) {
-          if (state is CreateStep1Submitting) {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (_) => const AlertDialog(
-                backgroundColor: Colors.transparent,
-                content: TransactionSubmit(),
-              ),
-            );
-          } else if (state is CreateStep1SubmittingSuccess) {
-            final NavigatorState navigator = Navigator.of(context);
-            unawaited(
-              navigator
-                  .push(
-                    MaterialPageRoute(
-                      builder: (context) => Approve(
-                        // needApprove: true,
-                        hexString: cubit.hexStringWeb3,
-                        payValue: cubit.dataStep1.amountToken.toString(),
-                        tokenAddress: Get.find<AppConstants>().contract_defy,
-                        title: S.current.create_hard_nft,
-                        listDetail: [
-                          DetailItemApproveModel(
-                            title: '${S.current.name} :',
-                            value: cubit.dataStep1.hardNftName,
-                          ),
-                          DetailItemApproveModel(
-                            title: '${S.current.type} :',
-                            value: cubit.dataStep1.hardNftType.name ?? '',
-                          ),
-                          DetailItemApproveModel(
-                            title: '${S.current.collection} :',
-                            value: cubit.dataStep1.collection,
-                          ),
-                        ],
-                        onErrorSign: (context) async {
-                          final nav = Navigator.of(context);
-                          nav.pop();
-                          await showLoadFail(context);
-                        },
-                        onSuccessSign: (context, data) {
-                          cubit.bcTxnHashModel.bc_txn_hash = data;
-                          cubit.putHardNftBeforeConfirm(
-                            cubit.assetId,
-                            cubit.bcTxnHashModel,
-                          );
-                          showLoadSuccess(context).then((_) {
-                            /// đoạn này confirm blockchain xong thì check status cuả
-                            /// để trở lại màn hình
-                            Navigator.pop(context);
-                            cubit.checkStatusBeHandle();
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) {
-                            //       return ListBookEvaluation(
-                            //         assetId: cubit.assetId,
-                            //       );
-                            //     },
-                            //     settings: const RouteSettings(
-                            //       name: AppRouter.step2ListBook,
-                            //     ),
-                            //   ),
-                            // ).then((value) => Navigator.pop(context));
-                          });
-                        },
-                        textActiveButton: S.current.request_evaluation,
-                        spender: Get.find<AppConstants>().eva,
-                      ),
+      listener: (context, state) {
+        if (state is CreateStep1Submitting) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) =>
+            const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmit(),
+            ),
+          );
+        } else if (state is CreateStep1SubmittingSuccess) {
+          final NavigatorState navigator = Navigator.of(context);
+          unawaited(
+            navigator
+                .push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    Approve(
+                      // needApprove: true,
+                      hexString: cubit.hexStringWeb3,
+                      payValue: cubit.dataStep1.amountToken.toString(),
+                      tokenAddress: Get
+                          .find<AppConstants>()
+                          .contract_defy,
+                      title: S.current.create_hard_nft,
+                      listDetail: [
+                        DetailItemApproveModel(
+                          title: '${S.current.name} :',
+                          value: cubit.dataStep1.hardNftName,
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.type} :',
+                          value: cubit.dataStep1.hardNftType.name ?? '',
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.collection} :',
+                          value: cubit.dataStep1.collection,
+                        ),
+                      ],
+                      onErrorSign: (context) async {
+                        final nav = Navigator.of(context);
+                        nav.pop();
+                        await showLoadFail(context);
+                      },
+                      onSuccessSign: (context, data) {
+                        cubit.bcTxnHashModel.bc_txn_hash = data;
+                        cubit.putHardNftBeforeConfirm(
+                          cubit.assetId,
+                          cubit.bcTxnHashModel,
+                        );
+                        showLoadSuccess(context).then((_) {
+                          /// đoạn này confirm blockchain xong thì check status cuả
+                          /// để trở lại màn hình
+                          Navigator.pop(context);
+                          cubit.checkStatusBeHandle();
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ListBookEvaluation(
+                          //         assetId: cubit.assetId,
+                          //       );
+                          //     },
+                          //     settings: const RouteSettings(
+                          //       name: AppRouter.step2ListBook,
+                          //     ),
+                          //   ),
+                          // ).then((value) => Navigator.pop(context));
+                        });
+                      },
+                      textActiveButton: S.current.request_evaluation,
+                      spender: Get
+                          .find<AppConstants>()
+                          .eva,
                     ),
-                  )
-                  .then(
-                    (value) => Navigator.pop(context),
-                  ),
-            );
-          } else {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => const AlertDialog(
-                backgroundColor: Colors.transparent,
-                content: TransactionSubmitFail(),
               ),
-            );
-            Future.delayed(const Duration(seconds: 2), () {
-              Navigator.pop(context);
-            }).then((value) => Navigator.pop(context));
-          }
-        },
-        bloc: cubit,
-        builder: (ctx, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              if (cubit.statusWhenSubmit != null) {
-                await cubit.checkStatusBeHandle();
-              } else {}
+            )
+                .then(
+                  (value) => Navigator.pop(context),
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) =>
+            const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmitFail(),
+            ),
+          );
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pop(context);
+          }).then((value) => Navigator.pop(context));
+        }
+      },
+      bloc: cubit,
+      builder: (ctx, state) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            if (cubit.statusWhenSubmit != null) {
+              await cubit.checkStatusBeHandle();
+            } else {}
+          },
+          child: BaseDesignScreen(
+            isImage: true,
+            text: ImageAssets.ic_close,
+            onRightClick: () {
+              Navigator.of(context)
+                ..pop()..pop()..pop();
             },
-            child: BaseDesignScreen(
-              isImage: true,
-              text: ImageAssets.ic_close,
-              onRightClick: () {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop()
-                  ..pop();
-              },
-              title: S.current.provide_hard_nft_info,
-              bottomBar: _buttonByState(context),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    spaceH24,
-                    const Center(child: CircleStatusProvideHardNft()),
-                    spaceH32,
-                    textShowWithPadding(
-                      textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
-                      txtStyle: textNormalCustom(
-                        AppTheme.getInstance().unselectedTabLabelColor(),
-                        14,
-                        FontWeight.w400,
-                      ),
+            title: S.current.provide_hard_nft_info,
+            bottomBar: _buttonByState(context),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  spaceH24,
+                  const Center(child: CircleStatusProvideHardNft()),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
                     ),
-                    spaceH20,
-                    UploadImageWidget(
-                      cubit: cubit,
-                      showAddMore: false,
+                  ),
+                  spaceH20,
+                  UploadImageWidget(
+                    cubit: cubit,
+                    showAddMore: false,
+                  ),
+                  spaceH32,
+                  Visibility(
+                    visible:
+                    cubit.listDocumentPathSubject.hasValue ? true : false,
+                    child: Column(
+                      children: [
+                        textShowWithPadding(
+                          textShow: S.current.documents,
+                          txtStyle: textNormalCustom(
+                            AppTheme.getInstance().unselectedTabLabelColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceH20,
+                        UploadDocumentWidget(
+                          cubit: cubit,
+                          isVisibleDoc: false,
+                        ),
+                      ],
                     ),
-                    spaceH32,
-                    Visibility(
-                      visible:
-                          cubit.listDocumentPathSubject.hasValue ? true : false,
-                      child: Column(
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cubit.dataStep1.documents.length,
+                    itemBuilder: (ctx, index) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           textShowWithPadding(
-                            textShow: S.current.documents,
+                            textShow:
+                            basename(cubit.dataStep1.documents[index]),
                             txtStyle: textNormalCustom(
-                              AppTheme.getInstance().unselectedTabLabelColor(),
-                              14,
+                              AppTheme.getInstance().whiteColor(),
+                              16,
                               FontWeight.w400,
                             ),
                           ),
-                          spaceH20,
-                          UploadDocumentWidget(
-                            cubit: cubit,
-                            isVisibleDoc: false,
+                          if (index == cubit.dataStep1.documents.length)
+                            spaceH32
+                          else
+                            spaceH16,
+                        ],
+                      );
+                    },
+                  ),
+                  textShowWithPadding(
+                    textShow: S.current.hard_nft_info,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH16,
+                  //icon feat name
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          imageNftByTypeSelect(
+                            id: cubit.dataStep1.hardNftType.id ?? 0,
                           ),
+                          spaceW4,
+                          Text(
+                            cubit.dataStep1.hardNftName,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              24,
+                              FontWeight.w600,
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: cubit.dataStep1.documents.length,
-                      itemBuilder: (ctx, index) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            textShowWithPadding(
-                              textShow:
-                                  basename(cubit.dataStep1.documents[index]),
-                              txtStyle: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
-                              ),
-                            ),
-                            if (index == cubit.dataStep1.documents.length)
-                              spaceH32
-                            else
-                              spaceH16,
-                          ],
-                        );
-                      },
-                    ),
-                    textShowWithPadding(
-                      textShow: S.current.hard_nft_info,
-                      txtStyle: textNormalCustom(
-                        AppTheme.getInstance().unselectedTabLabelColor(),
-                        14,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    //icon feat name
-                    Container(
+                  ),
+                  spaceH8,
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
                       padding: EdgeInsets.only(
                         left: 16.w,
                       ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            imageNftByTypeSelect(
-                              id: cubit.dataStep1.hardNftType.id ?? 0,
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            cubit.dataStep1.hardNftType.name ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
                             ),
-                            spaceW4,
-                            Text(
-                              cubit.dataStep1.hardNftName,
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                24,
-                                FontWeight.w600,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    spaceH8,
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
-                        ),
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text(
-                              cubit.dataStep1.hardNftType.name ?? '',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
-                              ),
+                          ),
+                          spaceW4,
+                          Container(
+                            width: 1.w,
+                            height: 12.h,
+                            color: AppTheme.getInstance().whiteColor(),
+                          ),
+                          spaceW5,
+                          Text(
+                            cubit.dataStep1.conditionNft.name ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
                             ),
-                            spaceW4,
-                            Container(
-                              width: 1.w,
-                              height: 12.h,
-                              color: AppTheme.getInstance().whiteColor(),
+                          ),
+                          spaceW4,
+                          Container(
+                            width: 1.w,
+                            height: 12.h,
+                            color: AppTheme.getInstance().whiteColor(),
+                          ),
+                          spaceW5,
+                          Text(
+                            S.current.expecting_for,
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
                             ),
-                            spaceW5,
-                            Text(
-                              cubit.dataStep1.conditionNft.name ?? '',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
+                          ),
+                          spaceW4,
+                          SizedBox(
+                            width: 16.w,
+                            height: 16.h,
+                            child: Image.asset(
+                              ImageAssets.getSymbolAsset(
+                                cubit.dataStep1.tokenInfo.symbol ?? DFY,
                               ),
                             ),
-                            spaceW4,
-                            Container(
-                              width: 1.w,
-                              height: 12.h,
-                              color: AppTheme.getInstance().whiteColor(),
+                          ),
+                          spaceW4,
+                          Text(
+                            '${formatValue.format(cubit.dataStep1.amountToken)}'
+                                ' ${cubit.dataStep1.tokenInfo.symbol}',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
                             ),
-                            spaceW5,
-                            Text(
-                              S.current.expecting_for,
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
-                              ),
-                            ),
-                            spaceW4,
-                            SizedBox(
-                              width: 16.w,
-                              height: 16.h,
-                              child: Image.asset(
-                                ImageAssets.getSymbolAsset(
-                                  cubit.dataStep1.tokenInfo.symbol ?? DFY,
-                                ),
-                              ),
-                            ),
-                            spaceW4,
-                            Text(
-                              '${formatValue.format(cubit.dataStep1.amountToken)}'
-                              ' ${cubit.dataStep1.tokenInfo.symbol}',
-                              style: textNormalCustom(
-                                AppTheme.getInstance().whiteColor(),
-                                16,
-                                FontWeight.w400,
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                    spaceH8,
-                    textShowWithPadding(
-                      textShow: cubit.dataStep1.additionalInfo,
-                      txtStyle: textNormalCustom(
-                        AppTheme.getInstance().whiteOpacityDot5(),
-                        16,
-                        FontWeight.w400,
+                  ),
+                  spaceH8,
+                  textShowWithPadding(
+                    textShow: cubit.dataStep1.additionalInfo,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteOpacityDot5(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH12,
+                  //item properties
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                      ),
+                      child: Wrap(
+                        runSpacing: 10.h,
+                        children: cubit.dataStep1.properties.map((e) {
+                          final int index =
+                          cubit.dataStep1.properties.indexOf(e);
+                          return itemProperty(
+                            property: e.property,
+                            value: e.value,
+                            index: index,
+                          );
+                        }).toList(),
                       ),
                     ),
-                    spaceH12,
-                    //item properties
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
-                        ),
-                        child: Wrap(
-                          runSpacing: 10.h,
-                          children: cubit.dataStep1.properties.map((e) {
-                            final int index =
-                                cubit.dataStep1.properties.indexOf(e);
-                            return itemProperty(
-                              property: e.property,
-                              value: e.value,
-                              index: index,
-                            );
-                          }).toList(),
-                        ),
-                      ),
+                  ),
+                  spaceH20,
+                  textShowWithPadding(
+                    textShow: S.current.contact_info,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
                     ),
-                    spaceH20,
-                    textShowWithPadding(
-                      textShow: S.current.contact_info,
-                      txtStyle: textNormalCustom(
-                        AppTheme.getInstance().unselectedTabLabelColor(),
-                        14,
-                        FontWeight.w400,
-                      ),
+                  ),
+                  spaceH12,
+                  informationContactWidget(
+                    title: cubit.dataStep1.nameContact,
+                    image: ImageAssets.profileStep1,
+                  ),
+                  spaceH15,
+                  informationContactWidget(
+                    title: cubit.dataStep1.emailContact,
+                    image: ImageAssets.mailStep1,
+                  ),
+                  spaceH15,
+                  informationContactWidget(
+                    title: '${cubit.dataStep1.phoneCodeModel.code} '
+                        '${cubit.dataStep1.phoneContact}',
+                    image: ImageAssets.callStep1,
+                  ),
+                  spaceH15,
+                  informationContactWidget(
+                    title: cubit.dataStep1.addressContact,
+                    image: ImageAssets.locationStep1,
+                  ),
+                  spaceH32,
+                  textShowWithPadding(
+                    textShow: S.current.wallet_and_collection,
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
                     ),
-                    spaceH12,
-                    informationContactWidget(
-                      title: cubit.dataStep1.nameContact,
-                      image: ImageAssets.profileStep1,
-                    ),
-                    spaceH15,
-                    informationContactWidget(
-                      title: cubit.dataStep1.emailContact,
-                      image: ImageAssets.mailStep1,
-                    ),
-                    spaceH15,
-                    informationContactWidget(
-                      title: '${cubit.dataStep1.phoneCodeModel.code} '
-                          '${cubit.dataStep1.phoneContact}',
-                      image: ImageAssets.callStep1,
-                    ),
-                    spaceH15,
-                    informationContactWidget(
-                      title: cubit.dataStep1.addressContact,
-                      image: ImageAssets.locationStep1,
-                    ),
-                    spaceH32,
-                    textShowWithPadding(
-                      textShow: S.current.wallet_and_collection,
-                      txtStyle: textNormalCustom(
-                        AppTheme.getInstance().unselectedTabLabelColor(),
-                        14,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    spaceH16,
-                    widgetShowCollectionFtWallet(
-                      isWallet: true,
-                      walletAddress: walletFormat,
-                    ),
-                    spaceH18,
-                    widgetShowCollectionFtWallet(
-                      nameCollection: cubit.dataStep1.collection,
-                      isWallet: false,
-                    ),
-                    spaceH46,
-                  ],
-                ),
+                  ),
+                  spaceH16,
+                  widgetShowCollectionFtWallet(
+                    isWallet: true,
+                    walletAddress: walletFormat,
+                  ),
+                  spaceH18,
+                  widgetShowCollectionFtWallet(
+                    nameCollection: cubit.dataStep1.collection,
+                    isWallet: false,
+                  ),
+                  spaceH46,
+                ],
               ),
             ),
           ),
@@ -456,7 +460,8 @@ class Step1WhenSubmit extends StatelessWidget {
                     right: 16.w,
                   ),
                   color: AppTheme.getInstance().bgBtsColor(),
-                  child: const ButtonGold(title: 'Find evaluator', isEnable: true)));
+                  child: const ButtonGold(
+                      title: 'Find evaluator', isEnable: true)));
         } else if ((snapshot.data ?? StateButton.DEFAULT) ==
             StateButton.PROCESSING) {
           return Container(
@@ -562,7 +567,7 @@ class Step1WhenSubmit extends StatelessWidget {
         imageNFT = ImageAssets.watch;
         break;
       default:
-        //case other
+      //case other
         imageNFT = ImageAssets.others;
         break;
     }
@@ -677,89 +682,89 @@ class Step1WhenSubmit extends StatelessWidget {
   }) {
     return isWallet
         ? Container(
-            padding: EdgeInsets.only(
-              left: 16.w,
+      padding: EdgeInsets.only(
+        left: 16.w,
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            height: 24.h,
+            width: 24.w,
+            child: Image.asset(
+              ImageAssets.walletStep1,
             ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 24.h,
-                  width: 24.w,
-                  child: Image.asset(
-                    ImageAssets.walletStep1,
-                  ),
+          ),
+          spaceW6,
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.wallet} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
                 ),
-                spaceW6,
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '${S.current.wallet} ',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: walletAddress,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().blueText(),
-                            16,
-                            FontWeight.w500,
-                          ).copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' ${S.current.will_receive_nft}',
-                        )
-                      ],
+                children: [
+                  TextSpan(
+                    text: walletAddress,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().blueText(),
+                      16,
+                      FontWeight.w500,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                )
-              ],
+                  TextSpan(
+                    text: ' ${S.current.will_receive_nft}',
+                  )
+                ],
+              ),
             ),
           )
+        ],
+      ),
+    )
         : Container(
-            padding: EdgeInsets.only(
-              left: 16.w,
+      padding: EdgeInsets.only(
+        left: 16.w,
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            height: 24.h,
+            width: 24.w,
+            child: Image.asset(
+              ImageAssets.collectionStep1,
             ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 24.h,
-                  width: 24.w,
-                  child: Image.asset(
-                    ImageAssets.collectionStep1,
-                  ),
+          ),
+          spaceW6,
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                text: '${S.current.hard_nft_will_be_create} ',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
                 ),
-                spaceW6,
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '${S.current.hard_nft_will_be_create} ',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: nameCollection,
-                          style: textNormalCustom(
-                            AppTheme.getInstance().blueText(),
-                            16,
-                            FontWeight.w500,
-                          ).copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
+                children: [
+                  TextSpan(
+                    text: nameCollection,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().blueText(),
+                      16,
+                      FontWeight.w500,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          );
+          )
+        ],
+      ),
+    );
   }
 }
