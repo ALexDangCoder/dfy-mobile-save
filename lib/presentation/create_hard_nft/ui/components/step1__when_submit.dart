@@ -59,7 +59,6 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
   void initState() {
     super.initState();
     cubit = ProvideHardNftCubit();
-
     ///if from mintRequest Screen use it like param else
     ///default asset from cubit
     if (widget.assetId != null) {
@@ -183,239 +182,244 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
         Navigator.pop(context);
       }).then((value) => Navigator.pop(context));
     } else if (state is CreateStep1LoadingSuccess) {
-      return BaseDesignScreen(
-        isImage: true,
-        text: ImageAssets.ic_close,
-        onRightClick: () {
-          //todo handle thêm case của mint request của a hưng
-          Navigator.of(context)
-            ..pop()
-            ..pop()
-            ..pop();
+      return RefreshIndicator(
+        onRefresh: () async {
+          if (cubit.statusWhenSubmit != null) {
+            await cubit.checkStatusBeHandle();
+          } else {}
         },
-        title: S.current.provide_hard_nft_info,
-        bottomBar: _buttonByState(context),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              spaceH24,
-              const Center(child: CircleStatusProvideHardNft()),
-              spaceH32,
-              textShowWithPadding(
-                textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
-                txtStyle: textNormalCustom(
-                  AppTheme.getInstance().unselectedTabLabelColor(),
-                  14,
-                  FontWeight.w400,
-                ),
-              ),
-              spaceH20,
-              //todo chỉ đúng với case từ create step 1 sang, còn case 2 sẽ bị fail,
-              UploadImageWidget(
-                cubit: cubit,
-                showAddMore: false,
-              ),
-              spaceH20,
-              _widgetListDocument(),
-              textShowWithPadding(
-                textShow: S.current.hard_nft_info,
-                txtStyle: textNormalCustom(
-                  AppTheme.getInstance().unselectedTabLabelColor(),
-                  14,
-                  FontWeight.w400,
-                ),
-              ),
-              spaceH16,
-              Container(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      imageNftByTypeSelect(
-                        id: cubit.dataDetailAsset.assetType?.id ?? 0,
-                      ),
-                      spaceW4,
-                      Text(
-                        cubit.dataDetailAsset.name ?? '',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          24,
-                          FontWeight.w600,
-                        ),
-                      )
-                    ],
+        child: BaseDesignScreen(
+          isImage: true,
+          text: ImageAssets.ic_close,
+          onRightClick: () {
+            //todo handle thêm case của mint request của a hưng
+            Navigator.of(context)
+              ..pop()
+              ..pop()
+              ..pop();
+          },
+          title: S.current.provide_hard_nft_info,
+          bottomBar: _buttonByState(context),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                spaceH24,
+                const Center(child: CircleStatusProvideHardNft()),
+                spaceH32,
+                textShowWithPadding(
+                  textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
                   ),
                 ),
-              ),
-              spaceH8,
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
+                spaceH20,
+                //todo chỉ đúng với case từ create step 1 sang, còn case 2 sẽ bị fail,
+                UploadImageWidget(
+                  cubit: cubit,
+                  showAddMore: false,
+                ),
+                spaceH20,
+                _widgetListDocument(),
+                textShowWithPadding(
+                  textShow: S.current.hard_nft_info,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH16,
+                Container(
                   padding: EdgeInsets.only(
                     left: 16.w,
                   ),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      Text(
-                        cubit.dataDetailAsset.assetType?.name ?? '',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                          FontWeight.w400,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        imageNftByTypeSelect(
+                          id: cubit.dataDetailAsset.assetType?.id ?? 0,
                         ),
-                      ),
-                      spaceW4,
-                      Container(
-                        width: 1.w,
-                        height: 12.h,
-                        color: AppTheme.getInstance().whiteColor(),
-                      ),
-                      spaceW5,
-                      Text(
-                        cubit.dataDetailAsset.condition?.name ?? '',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                          FontWeight.w400,
-                        ),
-                      ),
-                      spaceW4,
-                      Container(
-                        width: 1.w,
-                        height: 12.h,
-                        color: AppTheme.getInstance().whiteColor(),
-                      ),
-                      spaceW5,
-                      Text(
-                        S.current.expecting_for,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                          FontWeight.w400,
-                        ),
-                      ),
-                      spaceW4,
-                      SizedBox(
-                        width: 16.w,
-                        height: 16.h,
-                        child: Image.asset(
-                          ImageAssets.getSymbolAsset(
-                            cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
+                        spaceW4,
+                        Text(
+                          cubit.dataDetailAsset.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            24,
+                            FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                spaceH8,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          cubit.dataDetailAsset.assetType?.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
                           ),
                         ),
-                      ),
-                      spaceW4,
-                      Text(
-                        '${formatValue.format(cubit.dataDetailAsset.expectingPrice)}'
-                        ' ${cubit.dataDetailAsset.expectingPriceSymbol ?? DFY}',
-                        style: textNormalCustom(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                          FontWeight.w400,
+                        spaceW4,
+                        Container(
+                          width: 1.w,
+                          height: 12.h,
+                          color: AppTheme.getInstance().whiteColor(),
                         ),
-                      )
-                    ],
+                        spaceW5,
+                        Text(
+                          cubit.dataDetailAsset.condition?.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceW4,
+                        Container(
+                          width: 1.w,
+                          height: 12.h,
+                          color: AppTheme.getInstance().whiteColor(),
+                        ),
+                        spaceW5,
+                        Text(
+                          S.current.expecting_for,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceW4,
+                        SizedBox(
+                          width: 16.w,
+                          height: 16.h,
+                          child: Image.asset(
+                            ImageAssets.getSymbolAsset(
+                              cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
+                            ),
+                          ),
+                        ),
+                        spaceW4,
+                        Text(
+                          '${formatValue.format(cubit.dataDetailAsset.expectingPrice)}'
+                          ' ${cubit.dataDetailAsset.expectingPriceSymbol ?? DFY}',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              ///
-              //todo start widget information text
-              textShowWithPadding(
-                textShow: cubit.dataDetailAsset.additionalInfo ?? '',
-                txtStyle: textNormalCustom(
-                  AppTheme.getInstance().whiteOpacityDot5(),
-                  16,
-                  FontWeight.w400,
-                ),
-              ),
-              //todo end
-              spaceH12,
-              //todo start
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                  ),
-                  child: Wrap(
-                    runSpacing: 10.h,
-                    children: (cubit.dataDetailAsset.additionalInfoList ?? [])
-                        .map((e) {
-                      final int index =
-                          (cubit.dataDetailAsset.additionalInfoList ?? [])
-                              .indexOf(e);
-                      return itemProperty(
-                        property: e.traitType ?? '',
-                        value: e.value ?? '',
-                        index: index,
-                      );
-                    }).toList(),
+                ///
+                //todo start widget information text
+                textShowWithPadding(
+                  textShow: cubit.dataDetailAsset.additionalInfo ?? '',
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().whiteOpacityDot5(),
+                    16,
+                    FontWeight.w400,
                   ),
                 ),
-              ),
-              //todo end
-              spaceH20,
-              textShowWithPadding(
-                textShow: S.current.contact_info,
-                txtStyle: textNormalCustom(
-                  AppTheme.getInstance().unselectedTabLabelColor(),
-                  14,
-                  FontWeight.w400,
+                spaceH12,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Wrap(
+                      runSpacing: 10.h,
+                      children: (cubit.dataDetailAsset.additionalInfoList ?? [])
+                          .map((e) {
+                        final int index =
+                            (cubit.dataDetailAsset.additionalInfoList ?? [])
+                                .indexOf(e);
+                        return itemProperty(
+                          property: e.traitType ?? '',
+                          value: e.value ?? '',
+                          index: index,
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
-              ),
-              spaceH12,
-              //4 widget contact info todo start
-              informationContactWidget(
-                title: cubit.dataDetailAsset.contactName ?? '',
-                image: ImageAssets.profileStep1,
-              ),
-              spaceH15,
-              informationContactWidget(
-                title: cubit.dataDetailAsset.contactEmail ?? '',
-                image: ImageAssets.mailStep1,
-              ),
-              spaceH15,
-              informationContactWidget(
-                title: '(${cubit.dataDetailAsset.contactPhoneCode?.code}) '
-                    '${cubit.dataDetailAsset.contactPhone}',
-                image: ImageAssets.callStep1,
-              ),
-              spaceH15,
-              informationContactWidget(
-                title: cubit.dataDetailAsset.contactAddress ?? '',
-                image: ImageAssets.locationStep1,
-              ),
-              spaceH32,
-              textShowWithPadding(
-                textShow: S.current.wallet_and_collection,
-                txtStyle: textNormalCustom(
-                  AppTheme.getInstance().unselectedTabLabelColor(),
-                  14,
-                  FontWeight.w400,
+                //todo end
+                spaceH20,
+                textShowWithPadding(
+                  textShow: S.current.contact_info,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
                 ),
-              ),
-              spaceH16,
-              widgetShowCollectionFtWallet(
-                isWallet: true,
-                walletAddress:
-                    cubit.dataDetailAsset.walletAddress?.formatAddressWallet(),
-              ),
-              spaceH18,
-              widgetShowCollectionFtWallet(
-                nameCollection: cubit.dataDetailAsset.collection?.name ?? '',
-                isWallet: false,
-              ),
-              spaceH46,
-            ],
+                spaceH12,
+                //4 widget contact info todo start
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactName ?? '',
+                  image: ImageAssets.profileStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactEmail ?? '',
+                  image: ImageAssets.mailStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: '(${cubit.dataDetailAsset.contactPhoneCode?.code}) '
+                      '${cubit.dataDetailAsset.contactPhone}',
+                  image: ImageAssets.callStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactAddress ?? '',
+                  image: ImageAssets.locationStep1,
+                ),
+                spaceH32,
+                textShowWithPadding(
+                  textShow: S.current.wallet_and_collection,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH16,
+                widgetShowCollectionFtWallet(
+                  isWallet: true,
+                  walletAddress: cubit.dataDetailAsset.walletAddress
+                      ?.formatAddressWallet(),
+                ),
+                spaceH18,
+                widgetShowCollectionFtWallet(
+                  nameCollection: cubit.dataDetailAsset.collection?.name ?? '',
+                  isWallet: false,
+                ),
+                spaceH46,
+              ],
+            ),
           ),
         ),
       );
@@ -510,7 +514,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                   child: GestureDetector(
                     onTap: () async {
                       await cubit.getDataFromStep1ToModelToSave();
-                      await cubit.postFileMediaFeatDocumentApi();
+                      await cubit.putInfoToBlockChain();
                     },
                     child: ButtonGold(
                       radiusButton: 22,

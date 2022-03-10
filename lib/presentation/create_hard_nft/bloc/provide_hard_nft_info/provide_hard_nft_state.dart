@@ -14,6 +14,21 @@ class ProvideHardNftConfirmInfo extends ProvideHardNftState {
   List<Object> get props => [];
 }
 
+class SubmittingFileSuccess extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
+
+class SubmittingFileLoading extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
+
+class SubmittingFileFail extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
+
 class CreateStep1Submitting extends ProvideHardNftState {
   @override
   List<Object> get props => [];
