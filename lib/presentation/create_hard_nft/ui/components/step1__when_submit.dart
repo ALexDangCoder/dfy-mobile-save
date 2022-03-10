@@ -50,91 +50,107 @@ class Step1WhenSubmit extends StatelessWidget {
     cubit.dataStep1.wallet = cubit.getAddressWallet();
     final walletFormat = cubit.getAddressWallet().formatAddressWallet();
     return BlocConsumer(
-        listener: (context, state) {
-          if (state is CreateStep1Submitting) {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (_) => const AlertDialog(
-                backgroundColor: Colors.transparent,
-                content: TransactionSubmit(),
-              ),
-            );
-          } else if (state is CreateStep1SubmittingSuccess) {
-            final NavigatorState navigator = Navigator.of(context);
-            unawaited(
-              navigator
-                  .push(
-                    MaterialPageRoute(
-                      builder: (context) => Approve(
-                        // needApprove: true,
-                        hexString: cubit.hexStringWeb3,
-                        payValue: cubit.dataStep1.amountToken.toString(),
-                        tokenAddress: Get.find<AppConstants>().contract_defy,
-                        title: S.current.create_hard_nft,
-                        listDetail: [
-                          DetailItemApproveModel(
-                            title: '${S.current.name} :',
-                            value: cubit.dataStep1.hardNftName,
-                          ),
-                          DetailItemApproveModel(
-                            title: '${S.current.type} :',
-                            value: cubit.dataStep1.hardNftType.name ?? '',
-                          ),
-                          DetailItemApproveModel(
-                            title: '${S.current.collection} :',
-                            value: cubit.dataStep1.collection,
-                          ),
-                        ],
-                        onErrorSign: (context) {},
-                        onSuccessSign: (context, data) {
-                          cubit.bcTxnHashModel.bc_txn_hash = data;
-                          cubit.putHardNftBeforeConfirm(
-                            cubit.assetId,
-                            cubit.bcTxnHashModel,
-                          );
-                          showLoadSuccess(context).then((value) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ListBookEvaluation(
-                                    assetId: cubit.assetId,
-                                  );
-                                },
-                                settings: const RouteSettings(
-                                  name: AppRouter.step2ListBook,
-                                ),
-                              ),
-                            ).then((value) => Navigator.pop(context));
-                          });
-                        },
-                        textActiveButton: S.current.request_evaluation,
-                        spender: Get.find<AppConstants>().eva,
-                      ),
+      listener: (context, state) {
+        if (state is CreateStep1Submitting) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) => const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmit(),
+            ),
+          );
+        } else if (state is CreateStep1SubmittingSuccess) {
+          final NavigatorState navigator = Navigator.of(context);
+          unawaited(
+            navigator
+                .push(
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      // needApprove: true,
+                      hexString: cubit.hexStringWeb3,
+                      payValue: cubit.dataStep1.amountToken.toString(),
+                      tokenAddress: Get.find<AppConstants>().contract_defy,
+                      title: S.current.create_hard_nft,
+                      listDetail: [
+                        DetailItemApproveModel(
+                          title: '${S.current.name} :',
+                          value: cubit.dataStep1.hardNftName,
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.type} :',
+                          value: cubit.dataStep1.hardNftType.name ?? '',
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.collection} :',
+                          value: cubit.dataStep1.collection,
+                        ),
+                      ],
+                      onErrorSign: (context) async {
+                        final nav = Navigator.of(context);
+                        nav.pop();
+                        await showLoadFail(context);
+                      },
+                      onSuccessSign: (context, data) {
+                        cubit.bcTxnHashModel.bc_txn_hash = data;
+                        cubit.putHardNftBeforeConfirm(
+                          cubit.assetId,
+                          cubit.bcTxnHashModel,
+                        );
+                        showLoadSuccess(context).then((_) {
+                          /// đoạn này confirm blockchain xong thì check status cuả
+                          /// để trở lại màn hình
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          cubit.checkStatusBeHandle();
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ListBookEvaluation(
+                          //         assetId: cubit.assetId,
+                          //       );
+                          //     },
+                          //     settings: const RouteSettings(
+                          //       name: AppRouter.step2ListBook,
+                          //     ),
+                          //   ),
+                          // ).then((value) => Navigator.pop(context));
+                        });
+                      },
+                      textActiveButton: S.current.request_evaluation,
+                      spender: Get.find<AppConstants>().eva,
                     ),
-                  )
-                  .then(
-                    (value) => Navigator.pop(context),
                   ),
-            );
-          } else {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => const AlertDialog(
-                backgroundColor: Colors.transparent,
-                content: TransactionSubmitFail(),
-              ),
-            );
-            Future.delayed(const Duration(seconds: 2), () {
-              Navigator.pop(context);
-            }).then((value) => Navigator.pop(context));
-          }
-        },
-        bloc: cubit,
-        builder: (ctx, state) {
-          return BaseDesignScreen(
+                )
+                .then((value) async => {
+                      Navigator.pop(context),
+                      await cubit.checkStatusBeHandle(),
+                    }),
+          );
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmitFail(),
+            ),
+          );
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pop(context);
+          }).then((value) => Navigator.pop(context));
+        }
+      },
+      bloc: cubit,
+      builder: (ctx, state) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            if (cubit.statusWhenSubmit != null) {
+              await cubit.checkStatusBeHandle();
+            } else {}
+          },
+          child: BaseDesignScreen(
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
@@ -144,57 +160,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 ..pop();
             },
             title: S.current.provide_hard_nft_info,
-            bottomBar: Container(
-              padding: EdgeInsets.only(
-                bottom: 38.h,
-                left: 16.w,
-                right: 16.w,
-              ),
-              color: AppTheme.getInstance().bgBtsColor(),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: ButtonGold(
-                        haveGradient: false,
-                        textColor: AppTheme.getInstance().yellowColor(),
-                        border: Border.all(
-                          color: AppTheme.getInstance().yellowColor(),
-                        ),
-                        radiusButton: 22,
-                        textSize: 16,
-                        title: S.current.edit_info,
-                        isEnable: true,
-                        fixSize: false,
-                        height: 64.h,
-                        haveMargin: false,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 23),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () async {
-                        await cubit.getDataFromStep1ToModelToSave();
-                        await cubit.postFileMediaFeatDocumentApi();
-                      },
-                      child: ButtonGold(
-                        radiusButton: 22,
-                        textSize: 16,
-                        title: S.current.submit,
-                        isEnable: true,
-                        height: 64.h,
-                        fixSize: false,
-                        haveMargin: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            bottomBar: _buttonByState(context),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -455,8 +421,113 @@ class Step1WhenSubmit extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buttonByState(BuildContext context) {
+    return StreamBuilder<StateButton>(
+      initialData: StateButton.DEFAULT,
+      stream: cubit.stateButton.stream,
+      builder: (context, snapshot) {
+        if ((snapshot.data ?? StateButton.DEFAULT) ==
+            StateButton.FINDEVALUATOR) {
+          return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ListBookEvaluation(
+                        assetId: cubit.assetId,
+                      );
+                    },
+                    settings: const RouteSettings(
+                      name: AppRouter.step2ListBook,
+                    ),
+                  ),
+                ).then((value) => Navigator.pop(context));
+              },
+              child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: 38.h,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  child: const ButtonGold(
+                      title: 'Find evaluator', isEnable: true)));
+        } else if ((snapshot.data ?? StateButton.DEFAULT) ==
+            StateButton.PROCESSING) {
+          return Container(
+              padding: EdgeInsets.only(
+                bottom: 38.h,
+                left: 16.w,
+                right: 16.w,
+              ),
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: const ButtonGold(
+                title: 'Processing',
+                isEnable: true,
+                isProcessing: true,
+              ));
+        } else {
+          return Container(
+            padding: EdgeInsets.only(
+              bottom: 38.h,
+              left: 16.w,
+              right: 16.w,
+            ),
+            color: AppTheme.getInstance().bgBtsColor(),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: ButtonGold(
+                      haveGradient: false,
+                      textColor: AppTheme.getInstance().yellowColor(),
+                      border: Border.all(
+                        color: AppTheme.getInstance().yellowColor(),
+                      ),
+                      radiusButton: 22,
+                      textSize: 16,
+                      title: S.current.edit_info,
+                      isEnable: true,
+                      fixSize: false,
+                      height: 64.h,
+                      haveMargin: false,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 23),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await cubit.getDataFromStep1ToModelToSave();
+                      await cubit.postFileMediaFeatDocumentApi();
+                    },
+                    child: ButtonGold(
+                      radiusButton: 22,
+                      textSize: 16,
+                      title: S.current.submit,
+                      isEnable: true,
+                      height: 64.h,
+                      fixSize: false,
+                      haveMargin: false,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
-        });
+        }
+      },
+    );
   }
 
   Container textShowWithPadding({
