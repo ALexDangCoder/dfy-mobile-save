@@ -679,6 +679,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
+          if(objSale.marketStatus == 10) {
+            Timer(const Duration(seconds: 20), () {
+              onRefresh();
+            });
+          }
           return BaseCustomScrollView(
             typeImage: objSale.typeImage ?? TypeImage.IMAGE,
             image: objSale.image ?? '',

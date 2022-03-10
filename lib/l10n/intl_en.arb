@@ -778,6 +778,7 @@
   "buy_out_success":"Buy out success",
   "buy_out_success_scrip":"NFT has move your account. Check in NFT not on market.",
   "you_must_have_five": "You must have 50 DFY to book evaluator.",
-  "processings": "Processing"
+  "processings": "Processing",
+  "sold":"Sold"
 
 }
