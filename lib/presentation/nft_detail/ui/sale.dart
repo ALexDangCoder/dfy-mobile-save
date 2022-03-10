@@ -268,7 +268,7 @@ Widget _buildButtonCancelOnSale(
         ? processing()
         : Text(
             nftMarket.marketStatus == 0
-                ? S.current.cancel_success
+                ? S.current.cancel_success_s
                 : S.current.cancel_sale,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
@@ -565,12 +565,8 @@ Widget _buildButtonPutOnMarket(
           );
           if (result != null) {
             final check = result.toString();
-            if (check == PUT_ON_PAWN) {
-              nftMarket.processStatus = 3;
-              bloc.emit(NftNotOnMarketSuccess(nftMarket));
-            } else {
-              reload();
-            }
+            nftMarket.processStatus = 3;
+            bloc.emit(NftNotOnMarketSuccess(nftMarket));
             Timer(const Duration(seconds: 30), () {
               if (check == PUT_ON_PAWN) {
                 bloc.emit(NFTDetailInitial());

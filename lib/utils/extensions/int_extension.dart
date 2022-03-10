@@ -10,7 +10,7 @@ extension formatInt on int {
 
   String formatHourMy(int date) {
     var millis = date;
-    var dt = DateTime.fromMillisecondsSinceEpoch(millis * 1000);
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
     String d24 = DateFormat('HH:mm').format(dt);
     return d24;
   }

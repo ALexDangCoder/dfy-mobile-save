@@ -7,6 +7,7 @@ import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_assets_request.
 import 'package:Dfy/data/request/create_hard_nft/create_hard_nft_ipfs_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/bc_txn_hash_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
@@ -236,7 +237,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         assetCid = res.assetCid ?? '';
         beAssetId = assetId;
         expectingPrice = res.expectingPrice.toString();
-        expectingPriceAddress = ADDRESS_DFY;
+        expectingPriceAddress = Get.find<AppConstants>().contract_defy;
         collectionStandard = res.collection?.collectionType?.standard ?? 0;
         collectionAsset = res.collection?.collectionAddress ?? '';
         statusWhenSubmit = res.status;

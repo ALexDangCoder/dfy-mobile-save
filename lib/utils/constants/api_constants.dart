@@ -25,7 +25,7 @@ class ApiConstants {
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
   static const String GET_LIST_COLLECTION_MARKET =
-      '/nft-market-svc/public-api/search/collection';
+      '/inventory-svc/public-api/search/collection';
   static const String GET_LIST_FILTER_COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
@@ -126,7 +126,7 @@ class ApiConstants {
   static const String REJECT_OFFER =
       'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{collateralId}/rejectOffer/{id}?wallet-address={walletAddress}';
   static const String SEND_OFFER =
-      'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
+      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer';
 
   //IPFS
   static const String PINATA_API_KEY = 'ac8828bff3bcd1c1b828';

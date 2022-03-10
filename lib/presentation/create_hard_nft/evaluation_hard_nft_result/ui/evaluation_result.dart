@@ -26,11 +26,11 @@ class EvaluationResult extends StatefulWidget {
   const EvaluationResult({
     Key? key,
     required this.assetID,
-    this.pageRouter = PageRouterHardNFT.CREATE_HARD_NFT,
+    this.pageRouter,
   }) : super(key: key);
 
   final String assetID;
-  final PageRouterHardNFT pageRouter;
+  final PageRouterHardNFT? pageRouter;
 
   @override
   _EvaluationResultState createState() => _EvaluationResultState();
@@ -80,14 +80,17 @@ class _EvaluationResultState extends State<EvaluationResult> {
         isImage: true,
         title: S.current.evaluation_results,
         onRightClick: () {
-          if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
-            Navigator.of(context).popUntil(
-              (route) => route.settings.name == AppRouter.create_nft,
-            );
-          } else {
+          if (widget.pageRouter == PageRouterHardNFT.LIST_HARD) {
             Navigator.of(context).popUntil(
               (route) => route.settings.name == AppRouter.list_hard_mint,
             );
+          } else {
+            Navigator.of(context)
+              ..pop()
+              ..pop()
+              ..pop()
+              ..pop()
+              ..pop()..pop();
           }
         },
         bottomBar: StreamBuilder<bool>(
