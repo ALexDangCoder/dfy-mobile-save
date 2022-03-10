@@ -141,6 +141,7 @@ class NftMyAccResponse extends Equatable {
   NftMarket toDomain() => NftMarket(
         marketId: marketId,
         marketType: getTypeMarket(marketStatus ?? 0),
+        marketStatus: marketStatus,
         typeImage: getTypeImage(fileType ?? 'image'),
         cover: getPath(coverCid ?? ''),
         typeNFT: getTypeNft(type ?? 0),
