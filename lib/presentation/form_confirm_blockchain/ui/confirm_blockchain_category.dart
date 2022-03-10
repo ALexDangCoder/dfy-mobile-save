@@ -53,14 +53,12 @@ class ConfirmBlockchainCategory extends StatefulWidget {
     this.quantity,
     this.modelToken,
     this.nftInfo,
-    this.pageRouter,
   }) : super(key: key);
 
   final TYPE_CONFIRM typeConfirm;
 
   //this field depend on name token
   final String? nameToken;
-  final PageRouter? pageRouter;
   final String addressFrom;
   final String addressTo;
   final double? amount;
@@ -163,26 +161,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitSuccess(),
               ),
             ).then((value) async {
-              if (widget.pageRouter == PageRouter.MY_ACC) {
-                await cubitFormCustomizeGasFee.pushSendNftToBE(
-                  bcTxnHash: cubitFormCustomizeGasFee.txHashNft,
-                  nftId: widget.nftInfo?.nftId ?? '',
-                  walletReceived: widget.addressTo,
-                );
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name ==
-                      AppRouter.send_nft;
-                });
-              } else {
-                await Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: walletInfoIndex,
-                    ),
+              await Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(
+                    index: walletInfoIndex,
                   ),
-                      (route) => route.isFirst,
-                );
-              }
+                ),
+                (route) => route.isFirst,
+              );
             });
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
@@ -201,21 +187,14 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 content: TransactionSubmitFail(),
               ),
             ).then((value) {
-              if (widget.pageRouter == PageRouter.MY_ACC) {
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name ==
-                      AppRouter.nft_detail;
-                });
-              } else {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(
-                      index: walletInfoIndex,
-                    ),
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(
+                    index: walletInfoIndex,
                   ),
-                      (route) => route.isFirst,
-                );
-              }
+                ),
+                (route) => route.isFirst,
+              );
             });
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
@@ -426,8 +405,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                     //todo hardcode amount 1
                                     amount: widget.quantity.toString(),
-                                    symbol:
-                                        widget.nftInfo?.collectionSymbol ?? 'DFY-NFT',
+                                    symbol: widget.nftInfo?.collectionSymbol ??
+                                        'DFY-NFT',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_OFFER:
