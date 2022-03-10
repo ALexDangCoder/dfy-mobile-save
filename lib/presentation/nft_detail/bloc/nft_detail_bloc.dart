@@ -150,7 +150,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       };
       await trustWalletChannel.invokeMethod('importNft', data);
     } on PlatformException {
-      //todo
     }
   }
 

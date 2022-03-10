@@ -140,7 +140,7 @@ Widget _buildButtonCancelOnPawn(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      if (nftMarket.status == 7) {
+      if (nftMarket.status == 7 || nftMarket.status == 5) {
         return;
       }
       if(nftMarket.status == 0){

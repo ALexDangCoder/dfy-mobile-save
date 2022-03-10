@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
@@ -9,6 +10,9 @@ import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -110,7 +114,6 @@ class _SendNftState extends State<SendNft> {
                         gasLimitFirstFetch: sendNftCubit.gasLimitNft,
                         amount: 0,
                         nftInfo: widget.nftInfo,
-                        pageRouter: widget.pageRouter,
                       );
                     },
                     settings: const RouteSettings(
@@ -119,7 +122,6 @@ class _SendNftState extends State<SendNft> {
                   ),
                 ).then(
                   (value) => Navigator.of(context).pop(
-                    txtToAddressNft.text,
                   ),
                 );
               }
@@ -216,15 +218,66 @@ class _SendNftState extends State<SendNft> {
                           ),
                           onTap: () async {
                             if (snapshot.data ?? false) {
-                              await sendNftCubit.getGasLimitNft(
-                                fromAddress: widget.addressFrom,
-                                toAddress: txtToAddressNft.text,
-                                contract: widget.nftInfo.contract ?? 'contract',
-                                symbol:
-                                    widget.nftInfo.collectionSymbol ?? 'symbol',
-                                id: widget.nftInfo.id ?? 'id',
-                                context: context,
-                              );
+                              if (widget.pageRouter == PageRouter.MY_ACC) {
+                                final hexString =
+                                    await sendNftCubit.getHexStringSendNft(
+                                  widget.nftInfo.contract ?? '',
+                                  widget.addressFrom,
+                                  txtToAddressNft.text,
+                                  widget.nftInfo.id ?? '',
+                                );
+                                goTo(
+                                  context,
+                                  Approve(
+                                    hexString: hexString,
+                                    onSuccessSign: (context, data) async {
+                                      await sendNftCubit.pushSendNftToBE(
+                                        bcTxnHash: hexString,
+                                        nftId: widget.nftInfo.nftId ?? '',
+                                        walletReceived: txtToAddressNft.text,
+                                      );
+                                      showLoadSuccess(context).then(
+                                        (value) {
+                                          Navigator.of(context)
+                                              .pop();
+                                          Navigator.of(context)
+                                              .pop();
+                                          Navigator.of(context)
+                                              .pop(txtToAddressNft.text);
+                                        }
+                                      );
+                                    },
+                                    onErrorSign: (context) {
+                                      showLoadFail(context);
+                                    },
+                                    listDetail: [
+                                      DetailItemApproveModel(
+                                        title: S.current.to,
+                                        value: txtToAddressNft.text
+                                            .formatAddressWalletConfirm(),
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: S.current.quantity,
+                                        value: '${txtQuantity.text} of 1',
+                                      ),
+                                    ],
+                                    title: S.current.transfer,
+                                    textActiveButton: S.current.transfer,
+                                    spender: widget.nftInfo.contract ?? '',
+                                  ),
+                                );
+                              } else {
+                                await sendNftCubit.getGasLimitNft(
+                                  fromAddress: widget.addressFrom,
+                                  toAddress: txtToAddressNft.text,
+                                  contract:
+                                      widget.nftInfo.contract ?? 'contract',
+                                  symbol: widget.nftInfo.collectionSymbol ??
+                                      'symbol',
+                                  id: widget.nftInfo.id ?? 'id',
+                                  context: context,
+                                );
+                              }
                             } else {
                               //nothing
                             }

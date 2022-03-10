@@ -171,8 +171,9 @@ class DetailHardNftResponse {
         numberOfCopies: numberOfCopies,
         mintingFeeNumber: mintingFeeNumber,
         mintingFeeToken: mintingFeeToken,
+        marketStatus: marketStatus,
         marketType:
-            getTypeMarket((marketType ?? marketStatus) ?? 0),
+            getTypeMarket((marketType ?? nftType) ?? 0),
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,

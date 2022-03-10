@@ -488,13 +488,18 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             );
           },
           textEmpty: '',
-          child: content(widget.typeMarket, state),
+          child: content(
+            widget.typeMarket,
+            state,
+            pageRouter: widget.pageRouter,
+          ),
         );
       },
     );
   }
 
-  Widget content(MarketType type, NFTDetailState state) {
+  Widget content(MarketType type, NFTDetailState state,
+      {PageRouter? pageRouter}) {
     switch (type) {
       case MarketType.NOT_ON_MARKET:
         if (state is NftNotOnMarketSuccess) {
@@ -505,7 +510,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             actions: [
-              if (widget.pageRouter == PageRouter.MY_ACC)
+              if (pageRouter == PageRouter.MY_ACC)
                 action(
                   context,
                   objSale.collectionAddress ?? '',
@@ -674,6 +679,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
+          if(objSale.marketStatus == 10) {
+            Timer(const Duration(seconds: 20), () {
+              onRefresh();
+            });
+          }
           return BaseCustomScrollView(
             typeImage: objSale.typeImage ?? TypeImage.IMAGE,
             image: objSale.image ?? '',

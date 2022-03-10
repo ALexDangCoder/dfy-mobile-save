@@ -70,11 +70,9 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
     bloc.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
-      tokenAddress:
-      Get.find<AppConstants>().contract_defy,
+      tokenAddress: Get.find<AppConstants>().contract_defy,
     );
     bloc.getEvaluationFee();
-
   }
 
   @override
@@ -171,12 +169,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                pawn.name ?? '',
-                                                style: textNormalCustom(
-                                                  null,
-                                                  16,
-                                                  FontWeight.w600,
+                                              SizedBox(
+                                                width: 180.w,
+                                                child: Text(
+                                                  pawn.name ?? '',
+                                                  maxLines: 1,
+                                                  style: textNormalCustom(
+                                                    null,
+                                                    16,
+                                                    FontWeight.w600,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               spaceH5,
@@ -840,7 +844,6 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                   appointmentTime: bloc.appointmentTime,
                                   assetId: bloc.bcAssetId ?? '',
                                 );
-
 
                                 if (bloc.balanceCheck >= 50) {
                                   unawaited(

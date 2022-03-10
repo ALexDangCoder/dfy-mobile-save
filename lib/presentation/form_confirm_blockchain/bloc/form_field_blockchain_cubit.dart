@@ -41,22 +41,6 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
     return regexAmount.hasMatch(value);
   }
 
-  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
-
-  Future<void> pushSendNftToBE({
-    required String bcTxnHash,
-    required String nftId,
-    required String walletReceived,
-  }) async {
-    final Map<String, String> map = {
-      'id': nftId,
-      'txn_hash': bcTxnHash,
-      'wallet_received': walletReceived,
-    };
-    final Result<String> code =
-        await _createHardNFTRepository.confirmTransferNftToBE(map);
-    code.when(success: (res) {}, error: (error) {});
-  }
 
   void validateGasLimit(String value) {
     if (!regexAmount.hasMatch(value) && value.isNotEmpty) {

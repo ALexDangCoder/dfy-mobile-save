@@ -115,41 +115,60 @@ Widget _buildButtonBuy(
   bool isBought,
   String marketId,
 ) {
-  return ButtonGradient(
-    onPressed: () {
-      if (isBought) {
-        _showDialog(
-          context,
-          nftMarket,
-          marketId,
-        );
-      } else {
-        showDialog(
-          builder: (context) => ConnectWalletDialog(
-            navigationTo: BuyNFT(
-              nftMarket: nftMarket,
-              marketId: marketId,
-            ),
-            isRequireLoginEmail: false,
+  if(nftMarket.marketStatus == 14){
+    return ErrorButton(
+      child: Center(
+        child: Text(
+          S.current.sold,
+          style: textNormalCustom(
+            Colors.white,
+            20,
+            FontWeight.w700,
           ),
-          context: context,
-        ).then((value) => null);
-      }
-    },
-    gradient: RadialGradient(
-      center: const Alignment(0.5, -0.5),
-      radius: 4,
-      colors: AppTheme.getInstance().gradientButtonColor(),
-    ),
-    child: Text(
-      S.current.buy_nft,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
+        ),
       ),
-    ),
-  );
+    );
+  } else {
+    return ButtonGradient(
+      onPressed: () {
+        if(nftMarket.marketStatus ==10) {
+          return;
+        }
+        if (isBought) {
+          _showDialog(
+            context,
+            nftMarket,
+            marketId,
+          );
+        } else {
+          showDialog(
+            builder: (context) => ConnectWalletDialog(
+              navigationTo: BuyNFT(
+                nftMarket: nftMarket,
+                marketId: marketId,
+              ),
+              isRequireLoginEmail: false,
+            ),
+            context: context,
+          ).then((value) => null);
+        }
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: nftMarket.marketStatus == 10 ? processing() : Text(
+        S.current.buy_nft,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
 }
 
 Widget _buildButtonCancelOnSale(
@@ -579,6 +598,7 @@ Widget _buildButtonPutOnMarket(
                 );
               }
               if (check == PUT_ON_AUCTION) {
+                bloc.emit(NFTDetailInitial());
                 nftMarket.processStatus = 9;
                 bloc.emit(NftNotOnMarketSuccess(nftMarket));
                 showDialogSuccess(
@@ -588,6 +608,7 @@ Widget _buildButtonPutOnMarket(
                 );
               }
               if (check == PUT_ON_SALE) {
+                bloc.emit(NFTDetailInitial());
                 nftMarket.processStatus = 9;
                 bloc.emit(NftNotOnMarketSuccess(nftMarket));
                 showDialogSuccess(
