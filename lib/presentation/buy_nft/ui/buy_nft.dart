@@ -340,7 +340,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.buyNftReq(
+                    await cubit.buyNftReq(
                       BuyNftRequest(
                         widget.marketId,
                         widget.nftMarket.nftStandard == ERC_721
@@ -348,11 +348,6 @@ class _BuyNFTState extends State<BuyNFT> {
                             : cubit.amountValue,
                         data,
                       ),
-                    );
-                    await cubit.importNft(
-                      contract: widget.nftMarket.collectionAddress ?? '',
-                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
-                      address: PrefsService.getCurrentBEWallet(),
                     );
                     await showLoadSuccess(context)
                         .then((value) => Navigator.pop(context))
@@ -370,6 +365,11 @@ class _BuyNFTState extends State<BuyNFT> {
                             ),
                           ),
                         );
+                    await cubit.importNft(
+                      contract: widget.nftMarket.collectionAddress ?? '',
+                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
+                      address: PrefsService.getCurrentBEWallet(),
+                    );
                   },
                   onErrorSign: (context) async {
                     Navigator.pop(context);
