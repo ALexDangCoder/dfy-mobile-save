@@ -3,7 +3,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/domain/repository/pawn/pawn_repository.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
@@ -30,7 +30,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   TypeFilter? typeInterest = TypeFilter.LOW_TO_HIGH;
   TypeFilter? typeSigned = TypeFilter.HIGH_TO_LOW;
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
-  List<PawnShopModel> list = [];
+  List<PawnShopModelMy> list = [];
   List<bool> listFilter = [
     false,
     false,
@@ -63,7 +63,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
   ];
 
-  PawnRepository get _pawnService => Get.find();
+  BorrowRepository get _pawnService => Get.find();
   static const int ZERO_TO_TEN = 0;
   static const int TEN_TO_TWENTY_FIVE = 1;
   static const int TWENTY_FIVE_TO_FIVETY = 2;
@@ -190,8 +190,8 @@ class PawnListBloc extends BaseCubit<PawnListState> {
 
   Future<void> getListPawn() async {
     emit(PawnListLoading());
-    final Result<List<PawnShopModel>> response =
-        await _pawnService.getListPawnShop();
+    final Result<List<PawnShopModelMy>> response =
+        await _pawnService.getListPawnShopMy();
     response.when(
       success: (response) {
         if (response.isNotEmpty) {

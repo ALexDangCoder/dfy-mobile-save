@@ -1,5 +1,7 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
+import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 
@@ -31,6 +33,7 @@ mixin BorrowRepository {
     String packageId,
     String page,
   );
+
   Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
     String? collateralAmount,
     String? collateralSymbols,
@@ -42,4 +45,13 @@ mixin BorrowRepository {
     String? page,
   });
 
+  Future<Result<List<CollateralResultModel>>> getListCollateral({
+    String? collateralSymbols,
+    String? loanSymbols,
+    String? durationTypes,
+    String? page,
+    String? size,
+  });
+
+  Future<Result<List<PawnShopModelMy>>> getListPawnShopMy();
 }

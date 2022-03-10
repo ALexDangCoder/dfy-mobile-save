@@ -86,7 +86,7 @@ class ContentResponse {
       this.loanToken,
       this.collateralAccepted);
 
-  PawnShopModel toDomain() => PawnShopModel(
+  PawnShopModelMy toDomain() => PawnShopModelMy(
         id: id,
         name: name,
         availableLoanPackage: availableLoanPackage,

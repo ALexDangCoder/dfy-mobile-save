@@ -1,10 +1,14 @@
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
+import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
+import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
+import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -98,15 +102,46 @@ class BorrowRepositoryImpl implements BorrowRepository {
 
   @override
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
-      String walletAddress,
-      String packageId,
-      String page,
-      ) {
+    String walletAddress,
+    String packageId,
+    String page,
+  ) {
     return runCatchingAsync<CryptoCollateralResponse,
         List<CryptoCollateralModel>>(
-          () => _client.getCryptoCollateral(walletAddress, packageId, 'true', page,
+      () => _client.getCryptoCollateral(walletAddress, packageId, 'true', page,
           ApiConstants.DEFAULT_PAGE_SIZE.toString()),
-          (response) => response.data?.toDomain() ?? [],
+      (response) => response.data?.toDomain() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<CollateralResultModel>>> getListCollateral({
+    String? collateralSymbols,
+    String? loanSymbols,
+    String? durationTypes,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<ListCollateralResponse,
+        List<CollateralResultModel>>(
+      () => _client.getListCollateral(
+        collateralSymbols,
+        loanSymbols,
+        durationTypes,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<PawnShopModelMy>>> getListPawnShopMy() {
+    return runCatchingAsync<PawnListResponse, List<PawnShopModelMy>>(
+      () => _client.getListPawnShopMy(),
+      (response) =>
+          response.data?.data?.content?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

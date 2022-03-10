@@ -119,7 +119,11 @@ class ItemCollateral extends StatelessWidget {
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
-                            child: Image.asset(iconBorrower),
+                            child: Image.asset(
+                              iconBorrower,
+                              width: 16.sp,
+                              height: 16.sp,
+                            ),
                           ),
                           WidgetSpan(
                             child: SizedBox(
