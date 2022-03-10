@@ -197,7 +197,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   Future<void> checkStatusBeHandle() async {
     //huy
     await getDetailAssetHardNFT(assetId: assetId);
-    if (statusWhenSubmit == 0) {
+    if (statusWhenSubmit == 2) {
       stateButton.sink.add(StateButton.FINDEVALUATOR);
     } else if (statusWhenSubmit == 1){
       stateButton.sink.add(StateButton.PROCESSING);

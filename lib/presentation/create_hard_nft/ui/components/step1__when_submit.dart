@@ -123,10 +123,9 @@ class Step1WhenSubmit extends StatelessWidget {
                     ),
                   ),
                 )
-                .then((value) => {
+                .then((value) async => {
                       Navigator.pop(context),
-                      Navigator.pop(context),
-                      cubit.checkStatusBeHandle(),
+                      await cubit.checkStatusBeHandle(),
                     }),
           );
         } else {
