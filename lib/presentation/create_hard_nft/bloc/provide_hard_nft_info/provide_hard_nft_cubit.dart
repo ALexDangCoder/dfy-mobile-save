@@ -184,7 +184,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     await resultAsset.when(
       success: (res) async {
         assetId = res.id ?? '';
-        await getDetailAssetHardNFT(assetId: assetId);
+        // await getDetailAssetHardNFT(assetId: assetId);
         hexStringWeb3 = await getHexStringFromWeb3();
         emit(CreateStep1SubmittingSuccess());
       },
@@ -193,6 +193,8 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       },
     );
   }
+
+
 
   Future<void> checkStatusBeHandle() async {
     //huy
@@ -223,31 +225,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
   }
 
-  ///0 confirm done can next find evaluator
-  ///1 processing
-  ///2 is server not confirm blockchain yet
-  int? statusWhenSubmit;
-
-  Future<void> getDetailAssetHardNFT({
-    required String assetId,
-  }) async {
-    final Result<ItemDataAfterPutModel> result =
-    await _step1Repository.getDetailAssetHardNFT(
-      assetId,
-    );
-    result.when(
-      success: (res) {
-        assetCid = res.assetCid ?? '';
-        beAssetId = assetId;
-        expectingPrice = res.expectingPrice.toString();
-        expectingPriceAddress = Get.find<AppConstants>().contract_defy;
-        collectionStandard = res.collection?.collectionType?.standard ?? 0;
-        collectionAsset = res.collection?.collectionAddress ?? '';
-        statusWhenSubmit = res.status;
-      },
-      error: (error) {},
-    );
-  }
 
   String assetCid = '';
   String collectionAsset = '';
@@ -267,6 +244,40 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     );
     return result;
   }
+
+  ///0 confirm done can next find evaluator
+  ///1 processing
+  ///2 is server not confirm blockchain yet
+  int? statusWhenSubmit;
+  ItemDataAfterPutModel dataDetailAsset = ItemDataAfterPutModel();
+
+  Future<void> getDetailAssetHardNFT({
+    required String assetId,
+  }) async {
+    final Result<ItemDataAfterPutModel> result =
+    await _step1Repository.getDetailAssetHardNFT(
+      assetId,
+    );
+    result.when(
+      success: (res) {
+        dataDetailAsset = res;
+        assetCid = res.assetCid ?? '';
+        beAssetId = assetId;
+        expectingPrice = res.expectingPrice.toString();
+        expectingPriceAddress = Get.find<AppConstants>().contract_defy;
+        collectionStandard = res.collection?.collectionType?.standard ?? 0;
+        collectionAsset = res.collection?.collectionAddress ?? '';
+        statusWhenSubmit = res.status;
+        emit(CreateStep1LoadingSuccess());
+        showContent();
+      },
+      error: (error) {
+        showError();
+      },
+    );
+  }
+
+
 
   final List<AdditionalInfoListRequest> listAddtional = [];
 

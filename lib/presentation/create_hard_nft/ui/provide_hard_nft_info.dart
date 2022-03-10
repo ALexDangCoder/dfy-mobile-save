@@ -518,7 +518,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) => Step1WhenSubmit(cubit: cubit),
+                          builder: (ctx) => const Step1WhenSubmit(),
                         ),
                       );
                     } else {

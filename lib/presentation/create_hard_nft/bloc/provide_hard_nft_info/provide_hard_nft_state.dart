@@ -38,3 +38,8 @@ class CreateStep1ButtonFindEvaluator extends ProvideHardNftState {
   @override
   List<Object> get props => [];
 }
+
+class CreateStep1LoadingSuccess extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
