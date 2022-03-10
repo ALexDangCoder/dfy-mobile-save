@@ -155,13 +155,13 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       acceptProcess = false;
       rejectProcess = false;
     } else if (obj.status == 4) {
-      acceptText = S.current.processing;
+      acceptText = S.current.processings;
       rejectText = S.current.reject;
       acceptProcess = true;
       rejectEnable = false;
     } else if (obj.status == 5) {
       acceptText = S.current.accept;
-      rejectText = S.current.processing;
+      rejectText = S.current.processings;
       rejectProcess = true;
       acceptEnable = false;
     }
