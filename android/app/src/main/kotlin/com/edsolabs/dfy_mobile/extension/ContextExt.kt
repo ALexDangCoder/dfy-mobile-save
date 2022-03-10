@@ -796,7 +796,7 @@ fun Context.signTransactionNft(
 ) {
     val hasMap = HashMap<String, Any>()
     val walletModel =
-            AppPreference(this).getListWallet().firstOrNull { it.walletAddress == walletAddress }
+            AppPreference(this).getListWallet().firstOrNull { it.walletAddress.lowercase(Locale.getDefault()) == walletAddress.lowercase(Locale.getDefault()) }
     if (walletModel != null && walletModel.privateKey.isNotEmpty()) {
         val signingInput = Ethereum.SigningInput.newBuilder().apply {
             this.privateKey =

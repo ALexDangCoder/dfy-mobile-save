@@ -53,8 +53,8 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
       'txn_hash': bcTxnHash,
       'wallet_received': walletReceived,
     };
-    final Result<String> code = await _createHardNFTRepository
-        .confirmTransferNftToBE(map);
+    final Result<String> code =
+        await _createHardNFTRepository.confirmTransferNftToBE(map);
     code.when(success: (res) {}, error: (error) {});
   }
 

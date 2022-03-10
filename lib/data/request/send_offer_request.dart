@@ -14,6 +14,7 @@ class SendOfferRequest {
   final num loanToValue;
   final int repaymentCycleType;
   final String repaymentTokenSymbol;
+  final String supplyCurrency;
   final String txid;
   final String walletAddress;
 
@@ -27,6 +28,7 @@ class SendOfferRequest {
       this.loanAmount,
       this.loanToValue,
       this.repaymentCycleType,
+      this.supplyCurrency,
       this.repaymentTokenSymbol,
       this.txid,
       this.walletAddress);

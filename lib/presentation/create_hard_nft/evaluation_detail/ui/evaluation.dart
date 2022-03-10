@@ -36,13 +36,13 @@ class EvaluationScreen extends StatefulWidget {
     required this.isAccept,
     required this.bcEvaluationId,
     required this.assetID,
-    this.pageRouterHardNFT = PageRouterHardNFT.CREATE_HARD_NFT,
+    this.pageRouterHardNFT,
   }) : super(key: key);
   final String evaluationId;
   final String bcEvaluationId;
   final bool isAccept;
   final String assetID;
-  final PageRouterHardNFT pageRouterHardNFT;
+  final PageRouterHardNFT? pageRouterHardNFT;
 
   @override
   _EvaluationScreenState createState() => _EvaluationScreenState();
@@ -88,9 +88,12 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                   (route) => route.settings.name == AppRouter.list_hard_mint,
             );
           } else {
-            Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRouter.create_nft,
-            );
+            Navigator.of(context)
+              ..pop()
+              ..pop()
+              ..pop()
+              ..pop()
+              ..pop()..pop()..pop();
           }
         },
         child: Stack(
