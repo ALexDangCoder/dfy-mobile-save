@@ -55,8 +55,7 @@ class Step1WhenSubmit extends StatelessWidget {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (_) =>
-            const AlertDialog(
+            builder: (_) => const AlertDialog(
               backgroundColor: Colors.transparent,
               content: TransactionSubmit(),
             ),
@@ -66,15 +65,12 @@ class Step1WhenSubmit extends StatelessWidget {
           unawaited(
             navigator
                 .push(
-              MaterialPageRoute(
-                builder: (context) =>
-                    Approve(
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
                       // needApprove: true,
                       hexString: cubit.hexStringWeb3,
                       payValue: cubit.dataStep1.amountToken.toString(),
-                      tokenAddress: Get
-                          .find<AppConstants>()
-                          .contract_defy,
+                      tokenAddress: Get.find<AppConstants>().contract_defy,
                       title: S.current.create_hard_nft,
                       listDetail: [
                         DetailItemApproveModel(
@@ -105,6 +101,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           /// đoạn này confirm blockchain xong thì check status cuả
                           /// để trở lại màn hình
                           Navigator.pop(context);
+                          Navigator.pop(context);
                           cubit.checkStatusBeHandle();
                           // Navigator.push(
                           //   context,
@@ -122,22 +119,21 @@ class Step1WhenSubmit extends StatelessWidget {
                         });
                       },
                       textActiveButton: S.current.request_evaluation,
-                      spender: Get
-                          .find<AppConstants>()
-                          .eva,
+                      spender: Get.find<AppConstants>().eva,
                     ),
-              ),
-            )
-                .then(
-                  (value) => Navigator.pop(context),
-            ),
+                  ),
+                )
+                .then((value) => {
+                      Navigator.pop(context),
+                      Navigator.pop(context),
+                      cubit.checkStatusBeHandle(),
+                    }),
           );
         } else {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) =>
-            const AlertDialog(
+            builder: (_) => const AlertDialog(
               backgroundColor: Colors.transparent,
               content: TransactionSubmitFail(),
             ),
@@ -160,7 +156,9 @@ class Step1WhenSubmit extends StatelessWidget {
             text: ImageAssets.ic_close,
             onRightClick: () {
               Navigator.of(context)
-                ..pop()..pop()..pop();
+                ..pop()
+                ..pop()
+                ..pop();
             },
             title: S.current.provide_hard_nft_info,
             bottomBar: _buttonByState(context),
@@ -188,7 +186,7 @@ class Step1WhenSubmit extends StatelessWidget {
                   spaceH32,
                   Visibility(
                     visible:
-                    cubit.listDocumentPathSubject.hasValue ? true : false,
+                        cubit.listDocumentPathSubject.hasValue ? true : false,
                     child: Column(
                       children: [
                         textShowWithPadding(
@@ -217,7 +215,7 @@ class Step1WhenSubmit extends StatelessWidget {
                         children: [
                           textShowWithPadding(
                             textShow:
-                            basename(cubit.dataStep1.documents[index]),
+                                basename(cubit.dataStep1.documents[index]),
                             txtStyle: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
@@ -329,7 +327,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           spaceW4,
                           Text(
                             '${formatValue.format(cubit.dataStep1.amountToken)}'
-                                ' ${cubit.dataStep1.tokenInfo.symbol}',
+                            ' ${cubit.dataStep1.tokenInfo.symbol}',
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
@@ -361,7 +359,7 @@ class Step1WhenSubmit extends StatelessWidget {
                         runSpacing: 10.h,
                         children: cubit.dataStep1.properties.map((e) {
                           final int index =
-                          cubit.dataStep1.properties.indexOf(e);
+                              cubit.dataStep1.properties.indexOf(e);
                           return itemProperty(
                             property: e.property,
                             value: e.value,
@@ -471,7 +469,11 @@ class Step1WhenSubmit extends StatelessWidget {
                 right: 16.w,
               ),
               color: AppTheme.getInstance().bgBtsColor(),
-              child: const ButtonGold(title: 'Processing', isEnable: true));
+              child: const ButtonGold(
+                title: 'Processing',
+                isEnable: true,
+                isProcessing: true,
+              ));
         } else {
           return Container(
             padding: EdgeInsets.only(
@@ -567,7 +569,7 @@ class Step1WhenSubmit extends StatelessWidget {
         imageNFT = ImageAssets.watch;
         break;
       default:
-      //case other
+        //case other
         imageNFT = ImageAssets.others;
         break;
     }
@@ -682,89 +684,89 @@ class Step1WhenSubmit extends StatelessWidget {
   }) {
     return isWallet
         ? Container(
-      padding: EdgeInsets.only(
-        left: 16.w,
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 24.h,
-            width: 24.w,
-            child: Image.asset(
-              ImageAssets.walletStep1,
+            padding: EdgeInsets.only(
+              left: 16.w,
             ),
-          ),
-          spaceW6,
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                text: '${S.current.wallet} ',
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                  FontWeight.w400,
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 24.h,
+                  width: 24.w,
+                  child: Image.asset(
+                    ImageAssets.walletStep1,
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    text: walletAddress,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().blueText(),
-                      16,
-                      FontWeight.w500,
-                    ).copyWith(
-                      decoration: TextDecoration.underline,
+                spaceW6,
+                Flexible(
+                  child: RichText(
+                    text: TextSpan(
+                      text: '${S.current.wallet} ',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                        FontWeight.w400,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: walletAddress,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().blueText(),
+                            16,
+                            FontWeight.w500,
+                          ).copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${S.current.will_receive_nft}',
+                        )
+                      ],
                     ),
                   ),
-                  TextSpan(
-                    text: ' ${S.current.will_receive_nft}',
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
-        ],
-      ),
-    )
         : Container(
-      padding: EdgeInsets.only(
-        left: 16.w,
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 24.h,
-            width: 24.w,
-            child: Image.asset(
-              ImageAssets.collectionStep1,
+            padding: EdgeInsets.only(
+              left: 16.w,
             ),
-          ),
-          spaceW6,
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                text: '${S.current.hard_nft_will_be_create} ',
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                  FontWeight.w400,
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 24.h,
+                  width: 24.w,
+                  child: Image.asset(
+                    ImageAssets.collectionStep1,
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    text: nameCollection,
-                    style: textNormalCustom(
-                      AppTheme.getInstance().blueText(),
-                      16,
-                      FontWeight.w500,
-                    ).copyWith(
-                      decoration: TextDecoration.underline,
+                spaceW6,
+                Flexible(
+                  child: RichText(
+                    text: TextSpan(
+                      text: '${S.current.hard_nft_will_be_create} ',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().whiteColor(),
+                        16,
+                        FontWeight.w400,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: nameCollection,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().blueText(),
+                            16,
+                            FontWeight.w500,
+                          ).copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 }

@@ -16,11 +16,13 @@ class ButtonGold extends StatelessWidget {
   final Border? border;
   final Color? textColor;
   final Color? background;
+  final bool? isProcessing;
 
   const ButtonGold({
     Key? key,
     required this.title,
     required this.isEnable,
+    this.isProcessing = false,
     this.fixSize = true,
     this.haveGradient = true,
     this.haveMargin = true,
@@ -63,7 +65,28 @@ class ButtonGold extends StatelessWidget {
       ),
       height: height ?? 64.h,
       width: fixSize == true ? 343.w : null,
-      child: SizedBox(
+      child: (isProcessing ?? false) ? Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 24.w,
+            height: 24.h,
+            child: CircularProgressIndicator(
+              strokeWidth: 4.r,
+              color: AppTheme.getInstance().whiteColor(),
+            ),
+          ),
+          spaceW10,
+          Text(
+            'Processing',
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
+          ),
+        ],
+      ) : SizedBox(
         child: Align(
           child: Text(
             title,
