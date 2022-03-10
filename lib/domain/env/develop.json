@@ -15,7 +15,7 @@
   "eva": "0xE3059b5143bfB2dd9C12581c841419863b868681",
   "sell_abi": "SellNFT_ABI_DEV2.json",
   "auction_abi": "AuctionNFT_ABI.json",
-  "default_collection_abi": "DefiForYouNFTDefault_ABI_DEV2.json",
+  "default_collection_abi": "DefiForYouNFTFactory_ABI_DEV2.json",
   "erc721_abi": "erc721_abi.json",
   "contract_defy": "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
 }
