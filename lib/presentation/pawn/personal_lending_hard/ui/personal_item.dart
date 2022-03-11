@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -226,8 +227,8 @@ class PersonalItem extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (_) => InfoPopup(
-                              name: S.current.duration,
-                              content: S.current.duration_more_content,
+                              name: S.current.total_contract_value,
+                              content: S.current.total_value_of_all,
                             ),
                           );
                         },
@@ -246,7 +247,15 @@ class PersonalItem extends StatelessWidget {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  //todo event
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SendLoanRequest(
+                        );
+                      },
+                    ),
+                  );
                 },
                 child: SizedBox(
                   width: 140.w,

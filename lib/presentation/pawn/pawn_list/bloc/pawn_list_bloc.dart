@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
@@ -15,12 +14,18 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   PawnListBloc() : super(PawnListInitial());
 
   //load more
-  final bool _canLoadMore = true;
+  bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
-  int page = 1;
+  int page = 0;
+  static const String A_TO_Z_REPUTATION = 'reputation,desc';
+  static const String Z_TO_A_REPUTATION = 'reputation,asc';
+  static const String A_TO_Z_INTEREST = 'interest,desc';
+  static const String Z_TO_A_INTEREST = 'interest,asc';
+  static const String A_TO_Z_COMPLETED = 'completedContracts,desc';
+  static const String Z_TO_A_COMPLETED = 'completedContracts,asc';
 
-  bool get canLoadMore => _canLoadMore;
+  bool get canLoadMore => canLoadMoreMy;
 
   bool get isRefresh => _isRefresh;
 
@@ -72,13 +77,14 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   //status filter
   String? checkStatus;
   String? searchStatus;
+  String? cusSort;
   List<bool>? statusFilterNumber;
   List<int> statusListLoan = [];
   List<int> statusListCollateral = [];
 
   Future<void> refreshPosts() async {
     if (!_isLoading) {
-      page = 1;
+      page = 0;
       _isRefresh = true;
       _isLoading = true;
       await getListPawn();
@@ -91,6 +97,31 @@ class PawnListBloc extends BaseCubit<PawnListState> {
       _isRefresh = false;
       _isLoading = true;
       getListPawn();
+    }
+  }
+
+  void getTextFilter(TypeFilter type, String checkType) {
+    page = 0;
+    if (checkType == S.current.rating) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_REPUTATION;
+      } else {
+        cusSort = Z_TO_A_REPUTATION;
+      }
+    } else if (checkType == S.current.interest_rate_pawn) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_INTEREST;
+      } else {
+        cusSort = Z_TO_A_INTEREST;
+      }
+    } else if (checkType == S.current.signed_contracts) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_COMPLETED;
+      } else {
+        cusSort = Z_TO_A_COMPLETED;
+      }
+    } else {
+      cusSort = '';
     }
   }
 
@@ -189,24 +220,24 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   }
 
   Future<void> getListPawn() async {
+    showLoading();
     emit(PawnListLoading());
     final Result<List<PawnShopModelMy>> response =
         await _pawnService.getListPawnShopMy();
     response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          canLoadMore = true;
-
-          emit(
-            PawnListSuccess(
-              CompleteType.SUCCESS,
-              listPawn: response,
-            ),
-          );
-          _isLoading = false;
+          canLoadMoreMy = true;
         } else {
-          canLoadMore = false;
+          canLoadMoreMy = false;
         }
+        emit(
+          PawnListSuccess(
+            CompleteType.SUCCESS,
+            listPawn: response,
+          ),
+        );
+        _isLoading = false;
       },
       error: (error) {
         emit(
