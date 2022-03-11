@@ -17,6 +17,10 @@ bool isEmail(String email) {
   return RegExp(EMAIL_REGEX).hasMatch(email);
 }
 
+bool isValidateAmount5(String amount) {
+  return RegExp(AMOUNT_5).hasMatch(amount);
+}
+
 /// validate vietnam phone number
 bool isVNPhone(String phone) {
   return RegExp(VN_PHONE).hasMatch(phone);
