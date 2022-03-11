@@ -9,6 +9,7 @@ import 'package:Dfy/presentation/pawn/pawn_list/ui/filter_pawn.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,6 @@ class PawnList extends StatefulWidget {
 
 class _PawnListState extends State<PawnList> {
   late PawnListBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -41,25 +41,17 @@ class _PawnListState extends State<PawnList> {
     return BlocConsumer<PawnListBloc, PawnListState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-        if (state is PawnListLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! PawnListLoading) {
-          hideLoading(context);
-        }
-
-        ///Get Blog List Completed
         if (state is PawnListSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {}
+            _bloc.showContent();
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.showError();
+          }
+          _bloc.canLoadMoreMy =
+              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
@@ -170,7 +162,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeRating = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.rating,
+                                    );
+                                    await _bloc.getListPawn();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -191,7 +187,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeInterest = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.interest_rate_pawn,
+                                    );
+                                    await _bloc.getListPawn();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -212,7 +212,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeSigned = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.signed_contracts,
+                                    );
+                                    await _bloc.getListPawn();
                                   }
                                 },
                                 child: ItemHeaderFilter(
