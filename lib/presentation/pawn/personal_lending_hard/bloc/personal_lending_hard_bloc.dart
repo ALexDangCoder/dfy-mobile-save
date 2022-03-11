@@ -16,6 +16,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isHardNFT = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isSoftNFT = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isALL = BehaviorSubject.seeded(false);
 
   //load more
   bool canLoadMoreMy = true;
@@ -39,7 +40,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   String? interestRanges;
   String? name;
   String? cusSort;
-  int typePersonal = 0;
+  int? typePersonal;
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -70,6 +71,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   String? searchStatus;
   bool? statusHardFilter;
   bool? statusSoftFilter;
+  bool? statusAllFilter;
   List<bool>? statusFilterNumberRange;
   List<bool>? statusFilterNumberLoan;
 
@@ -79,6 +81,23 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     listFilterStream.add(listFilter);
     isSoftNFT.add(false);
     isHardNFT.add(false);
+    isALL.add(false);
+  }
+
+  void check(String title) {
+    if (title == S.current.all_type_of_NFT) {
+      isSoftNFT.add(false);
+      isHardNFT.add(false);
+      isALL.add(true);
+    } else if (title == S.current.soft_nft) {
+      isALL.add(false);
+      isSoftNFT.add(true);
+      isHardNFT.add(false);
+    } else if (title == S.current.hard_NFT) {
+      isHardNFT.add(true);
+      isALL.add(false);
+      isSoftNFT.add(false);
+    }
   }
 
   String checkInterest(int index) {
@@ -151,6 +170,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       listFilterStream.add(listFilter);
       isHardNFT.add(statusHardFilter ?? false);
       isSoftNFT.add(statusSoftFilter ?? false);
+      isALL.add(statusAllFilter ?? false);
     }
   }
 
@@ -167,8 +187,9 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     page = 0;
     searchStatus = textSearch.value;
     statusFilterNumberRange = listFilterStream.value;
-    statusHardFilter = isSoftNFT.value;
-    statusSoftFilter = isHardNFT.value;
+    statusHardFilter = isHardNFT.value;
+    statusSoftFilter = isSoftNFT.value;
+    statusAllFilter = isALL.value;
     name = '';
     interestRanges = '';
     typePersonal = checkType();
@@ -181,13 +202,15 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     getPersonLendingResult();
   }
 
-  int checkType() {
-    if (isSoftNFT.value && !isHardNFT.value) {
+  int? checkType() {
+    if (isSoftNFT.value) {
       return SORT;
-    } else if (!isSoftNFT.value && isHardNFT.value) {
+    } else if (isHardNFT.value) {
       return HARD;
-    } else {
+    } else if (isALL.value) {
       return ALL;
+    } else {
+      return null;
     }
   }
 

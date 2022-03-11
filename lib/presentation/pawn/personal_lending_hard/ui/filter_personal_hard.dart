@@ -261,12 +261,12 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                   child: Row(
                     children: [
                       Expanded(
-                        flex:10,
+                        flex: 10,
                         child: IsBaseCheckBoxHard(
                           title: S.current.hard_nft,
                           stream: widget.bloc.isHardNFT,
-                          funText: () {},
-                          funCheckBox: () {},
+                          funText: widget.bloc.check,
+                          funCheckBox: widget.bloc.check,
                         ),
                       ),
                       Expanded(
@@ -274,9 +274,32 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                         child: IsBaseCheckBoxHard(
                           title: S.current.soft_nft,
                           stream: widget.bloc.isSoftNFT,
-                          funText: () {},
-                          funCheckBox: () {},
+                          funText: widget.bloc.check,
+                          funCheckBox: widget.bloc.check,
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                spaceH16,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 7.w,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: IsBaseCheckBoxHard(
+                          title: S.current.all_type_of_NFT,
+                          stream: widget.bloc.isALL,
+                          funText: widget.bloc.check,
+                          funCheckBox: widget.bloc.check,
+                        ),
+                      ),
+                      const Expanded(
+                        flex: 11,
+                        child: SizedBox.shrink(),
                       ),
                     ],
                   ),

@@ -151,14 +151,6 @@ class ContentResponse {
     }
   }
 
-  int returnPawnId(String pawnId) {
-    if (pawnId == '') {
-      return 0;
-    } else {
-      return int.parse(pawnId);
-    }
-  }
-
   NftMarket toDomain() => NftMarket(
         marketType: getTypeMarket(3),
         typeImage: getTypeImage(mediaType ?? 'image'),
@@ -169,7 +161,7 @@ class ContentResponse {
         price: expectedLoanAmount,
         name: nftName,
         tokenBuyOut: expectedLoanSymbol,
-        pawnId: returnPawnId(bcCollateralId.toString()),
+        pawnId: bcCollateralId ?? 0,
         totalCopies: totalOfCopies,
         numberOfCopies: numberOfCopies,
         walletAddress: borrowerWalletAddress,

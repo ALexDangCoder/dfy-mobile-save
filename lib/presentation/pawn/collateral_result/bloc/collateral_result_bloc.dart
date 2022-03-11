@@ -3,6 +3,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,8 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isWeek = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMonth = BehaviorSubject.seeded(false);
+  static const int WEEK = 0;
+  static const int MONTH = 1;
 
   //status filter
   String? checkStatus;
@@ -93,6 +96,16 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
       _isLoading = true;
       getListCollateral();
     }
+  }
+
+  String getTime({
+    required int type,
+    required int time,
+  }) {
+    if (type == WEEK) {
+      return '$time ${S.current.week}';
+    }
+    return '$time ${S.current.month}';
   }
 
   Future<void> getListCollateral() async {

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_bloc.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -160,19 +161,21 @@ class PersonalItem extends StatelessWidget {
                       ),
                       children: [
                         WidgetSpan(
-                          child: Image.asset(
-                            ImageAssets.ic_hard,
-                            width: 16.w,
-                            height: 16.w,
-                          ),
+                          child: collateral == PersonalLendingHardBloc.ALL
+                              ? const SizedBox.shrink()
+                              : Image.asset(
+                                  ImageAssets.ic_hard,
+                                  width: 16.w,
+                                  height: 16.w,
+                                ),
                         ),
                         WidgetSpan(
-                          child: spaceW4,
+                          child: collateral == PersonalLendingHardBloc.ALL
+                              ? const SizedBox.shrink()
+                              : spaceW4,
                         ),
                         TextSpan(
-                          text: collateral == HARD_COLLECTION
-                              ? S.current.hard_NFT
-                              : S.current.soft_nft,
+                          text: checkText(collateral),
                         ),
                       ],
                     ),
@@ -251,8 +254,7 @@ class PersonalItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SendLoanRequest(
-                        );
+                        return SendLoanRequest();
                       },
                     ),
                   );
@@ -275,5 +277,18 @@ class PersonalItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String checkText(int type) {
+    switch (type) {
+      case PersonalLendingHardBloc.ALL:
+        return S.current.all_type_of_NFT;
+      case PersonalLendingHardBloc.HARD:
+        return S.current.hard_NFT;
+      case PersonalLendingHardBloc.SORT:
+        return S.current.soft_nft;
+      default:
+        return '';
+    }
   }
 }

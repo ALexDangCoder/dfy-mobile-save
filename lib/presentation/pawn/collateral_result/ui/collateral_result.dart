@@ -43,7 +43,10 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
     return (numberLength >= maxLength)
         ? ItemCollateral(
             loadToken: list[maxLength - 1].loanSymbol ?? '',
-            duration: list[maxLength - 1].description ?? '',
+            duration: _bloc.getTime(
+              type: list[maxLength - 1].durationType ?? 0,
+              time: list[maxLength - 1].durationQty ?? 0,
+            ),
             address: list[maxLength - 1].walletAddress ?? '',
             rate: list[maxLength - 1].reputation.toString(),
             //check data
@@ -231,8 +234,12 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                           ItemCollateral(
                                         loadToken:
                                             list[index + 2].loanSymbol ?? '',
-                                        duration:
-                                            list[index + 2].description ?? '',
+                                        duration: _bloc.getTime(
+                                          type:
+                                              list[index + 2].durationType ?? 0,
+                                          time:
+                                              list[index + 2].durationQty ?? 0,
+                                        ),
                                         address:
                                             list[index + 2].walletAddress ?? '',
                                         rate: list[index + 2]
