@@ -7,7 +7,6 @@ import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/filter_pawn.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -49,8 +48,7 @@ class _PawnListState extends State<PawnList> {
             _bloc.mess = state.message ?? '';
             _bloc.showError();
           }
-          _bloc.canLoadMoreMy =
-              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          _bloc.canLoadMoreMy = _bloc.list.length >= 20;
           _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
@@ -61,7 +59,9 @@ class _PawnListState extends State<PawnList> {
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.getListPawn();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
