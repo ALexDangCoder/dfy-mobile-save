@@ -9,7 +9,8 @@ import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lendin
 import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_state.dart';
 import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/filter_personal_hard.dart';
 import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/personal_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class PersonalLendingHardScreen extends StatefulWidget {
 
 class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
   late PersonalLendingHardBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,25 +40,17 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
     return BlocConsumer<PersonalLendingHardBloc, PersonalLendingHardState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-        if (state is PersonalLendingHardLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! PersonalLendingHardLoading) {
-          hideLoading(context);
-        }
-
-        ///Get Blog List Completed
         if (state is PersonalLendingHardSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {}
+            _bloc.showContent();
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.showError();
+          }
+          _bloc.canLoadMoreMy =
+              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
@@ -68,7 +60,9 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.refreshPosts();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
@@ -169,7 +163,11 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeRating = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.rating,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -190,7 +188,11 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeInterest = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.interest_rate_pawn,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -211,7 +213,11 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeSigned = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.signed_contracts,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(

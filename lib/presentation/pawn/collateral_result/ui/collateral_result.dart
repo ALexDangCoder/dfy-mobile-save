@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_state.dart';
 import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -27,7 +28,6 @@ class CollateralResultScreen extends StatefulWidget {
 
 class _CollateralResultScreenState extends State<CollateralResultScreen> {
   late CollateralResultBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -72,36 +72,29 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
     return BlocConsumer<CollateralResultBloc, CollateralResultState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-        if (state is CollateralResultLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! CollateralResultLoading) {
-          hideLoading(context);
-        }
-
-        ///Get Blog List Completed
         if (state is CollateralResultSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {}
+            _bloc.showContent();
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.showError();
+          }
+          _bloc.canLoadMoreMy = _bloc.listCollateralResultModel.length >=
+              ApiConstants.DEFAULT_PAGE_SIZE;
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.listCollateralResultModel.clear();
           }
-
           _bloc.listCollateralResultModel.addAll(state.listCollateral ?? []);
         }
       },
       builder: (context, state) {
         final list = _bloc.listCollateralResultModel;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.getListCollateral();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
