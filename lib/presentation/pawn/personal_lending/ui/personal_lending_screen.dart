@@ -8,7 +8,8 @@ import 'package:Dfy/presentation/pawn/pawn_list/ui/item_header_filter.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_state.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/ui/personal_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class PersonalLendingScreen extends StatefulWidget {
 
 class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
   late PersonalLendingBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -41,24 +41,27 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
       bloc: _bloc,
       listener: (context, state) {
         ///Loading
-        if (state is PersonalLendingLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! PersonalLendingLoading) {
-          hideLoading(context);
-        }
 
         ///Get Blog List Completed
         if (state is PersonalLendingSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {
+              _bloc.list.clear();
+            }
+            if ((state.listPersonal ?? []).isEmpty) {
+              _bloc.showEmpty();
+            } else {
+              _bloc.showContent();
+            }
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.list.clear();
+            _bloc.showError();
+          }
+          _bloc.list.addAll(state.listPersonal ?? []);
+          _bloc.canLoadMore =
+              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
@@ -93,178 +96,222 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                       topRight: Radius.circular(30.h),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      spaceH16,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                left: 16.w,
-                              ),
-                              width: 28.w,
-                              height: 28.h,
-                              child: Image.asset(
-                                ImageAssets.ic_back,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            S.current.personal_lending,
-                            style: textNormalCustom(
-                              null,
-                              20.sp,
-                              FontWeight.w700,
-                            ).copyWith(
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 1,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (context) => PersonalFilter(
-                                  bloc: _bloc,
+                  child: list.isNotEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            spaceH16,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      left: 16.w,
+                                    ),
+                                    width: 28.w,
+                                    height: 28.h,
+                                    child: Image.asset(
+                                      ImageAssets.ic_back,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: 16.w),
-                              width: 24.w,
-                              height: 24.h,
-                              child: Image.asset(ImageAssets.ic_filter),
+                                Text(
+                                  S.current.personal_lending,
+                                  style: textNormalCustom(
+                                    null,
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ).copyWith(
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines: 1,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) => PersonalFilter(
+                                        bloc: _bloc,
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 16.w),
+                                    width: 24.w,
+                                    height: 24.h,
+                                    child: Image.asset(ImageAssets.ic_filter),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      spaceH20,
-                      line,
-                      spaceH24,
-                      Center(
-                        child: SizedBox(
-                          width: 343.w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            spaceH20,
+                            line,
+                            spaceH24,
+                            Center(
+                              child: SizedBox(
+                                width: 343.w,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final res = await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) => DialogFilter(
+                                            title: S.current.rating,
+                                            type: _bloc.typeRating ??
+                                                TypeFilter.HIGH_TO_LOW,
+                                          ),
+                                        );
+                                        if (res != null) {
+                                          _bloc.typeRating = res;
+                                          _bloc.getTextFilter(
+                                            res,
+                                            S.current.rating,
+                                          );
+                                          await _bloc.getPersonLendingResult();
+                                        }
+                                      },
+                                      child: ItemHeaderFilter(
+                                        title: S.current.rating,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final res = await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) => DialogFilter(
+                                            title: S.current.rating,
+                                            type: _bloc.typeInterest ??
+                                                TypeFilter.HIGH_TO_LOW,
+                                          ),
+                                        );
+                                        if (res != null) {
+                                          _bloc.typeInterest = res;
+                                          _bloc.getTextFilter(
+                                            res,
+                                            S.current.interest_rate_pawn,
+                                          );
+                                          await _bloc.getPersonLendingResult();
+                                        }
+                                      },
+                                      child: ItemHeaderFilter(
+                                        title: S.current.interest_rate_pawn,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final res = await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) => DialogFilter(
+                                            title: S.current.rating,
+                                            type: _bloc.typeSigned ??
+                                                TypeFilter.HIGH_TO_LOW,
+                                          ),
+                                        );
+                                        if (res != null) {
+                                          _bloc.typeSigned = res;
+                                          _bloc.getTextFilter(
+                                            res,
+                                            S.current.signed_contracts,
+                                          );
+                                          await _bloc.getPersonLendingResult();
+                                        }
+                                      },
+                                      child: ItemHeaderFilter(
+                                        title: S.current.signed_contracts,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            spaceH20,
+                            Expanded(
+                              child: NotificationListener<ScrollNotification>(
+                                onNotification:
+                                    (ScrollNotification scrollInfo) {
+                                  if (_bloc.canLoadMore &&
+                                      scrollInfo.metrics.pixels ==
+                                          scrollInfo.metrics.maxScrollExtent) {
+                                    _bloc.loadMorePosts();
+                                  }
+                                  return true;
+                                },
+                                child: RefreshIndicator(
+                                  onRefresh: _bloc.refreshPosts,
+                                  child: SingleChildScrollView(
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.only(
+                                        bottom: 20.h,
+                                      ),
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: list.length,
+                                      itemBuilder: (context, index) =>
+                                          PersonalItem(
+                                        rate: list[index].reputation.toString(),
+                                        isShop: list[index].isKYC ?? false,
+                                        nameShop: list[index].name.toString(),
+                                        interestRate:
+                                            '${list[index].minInterestRate}%'
+                                            '-${list[index].maxInterestRate}%',
+                                        collateral: list[index]
+                                                .p2PLenderPackages?[0]
+                                                .acceptableAssetsAsCollateral ??
+                                            [],
+                                        total: list[index]
+                                            .totalLoanValue
+                                            .toString(),
+                                        signedContract: list[index]
+                                            .completedContracts
+                                            .toString(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(top: 150.h),
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  final res = await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) => DialogFilter(
-                                      title: S.current.rating,
-                                      type: _bloc.typeRating ??
-                                          TypeFilter.HIGH_TO_LOW,
-                                    ),
-                                  );
-                                  if (res != null) {
-                                    _bloc.typeRating = res;
-                                    //todo filter
-                                  }
-                                },
-                                child: ItemHeaderFilter(
-                                  title: S.current.rating,
+                              Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
                                 ),
+                                height: 120.h,
+                                width: 120.w,
                               ),
-                              GestureDetector(
-                                onTap: () async {
-                                  final res = await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) => DialogFilter(
-                                      title: S.current.rating,
-                                      type: _bloc.typeInterest ??
-                                          TypeFilter.HIGH_TO_LOW,
-                                    ),
-                                  );
-                                  if (res != null) {
-                                    _bloc.typeInterest = res;
-                                    //todo filter
-                                  }
-                                },
-                                child: ItemHeaderFilter(
-                                  title: S.current.interest_rate_pawn,
-                                ),
+                              SizedBox(
+                                height: 17.7.h,
                               ),
-                              GestureDetector(
-                                onTap: () async {
-                                  final res = await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) => DialogFilter(
-                                      title: S.current.rating,
-                                      type: _bloc.typeSigned ??
-                                          TypeFilter.HIGH_TO_LOW,
-                                    ),
-                                  );
-                                  if (res != null) {
-                                    _bloc.typeSigned = res;
-                                    //todo filter
-                                  }
-                                },
-                                child: ItemHeaderFilter(
-                                  title: S.current.signed_contracts,
+                              Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      spaceH20,
-                      Expanded(
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (ScrollNotification scrollInfo) {
-                            if (_bloc.canLoadMore &&
-                                scrollInfo.metrics.pixels ==
-                                    scrollInfo.metrics.maxScrollExtent) {
-                              _bloc.loadMorePosts();
-                            }
-                            return true;
-                          },
-                          child: RefreshIndicator(
-                            onRefresh: _bloc.refreshPosts,
-                            child: SingleChildScrollView(
-                              child: ListView.builder(
-                                padding: EdgeInsets.only(
-                                  bottom: 20.h,
-                                ),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: list.length,
-                                itemBuilder: (context, index) => PersonalItem(
-                                  rate: list[index].reputation.toString(),
-                                  isShop: list[index].isKYC ?? false,
-                                  nameShop: list[index].name.toString(),
-                                  interestRate:
-                                      '${list[index].minInterestRate}%'
-                                      '-${list[index].maxInterestRate}%',
-                                  collateral: list[index]
-                                          .p2PLenderPackages?[0]
-                                          .acceptableAssetsAsCollateral ??
-                                      [],
-                                  total: list[index].totalLoanValue.toString(),
-                                  signedContract:
-                                      list[index].completedContracts.toString(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

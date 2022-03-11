@@ -40,12 +40,13 @@ abstract class BorrowService {
     @Query('loanType') String? loanType,
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('cusSort') String? cusSort,
   );
 
   @GET(ApiConstants.GET_PERSONAL_LENDING_HARD)
   Future<PersonalLendingHardResponse> getPersonalLendingHard(
     @Query('collateralAmount') String? collateralAmount,
-    @Query('collection_address') String? collateralSymbols,
+    @Query('collateralSymbols') String? collateralSymbols,
     @Query('name') String? name,
     @Query('interestRanges') String? interestRanges,
     @Query('loanToValueRanges') String? loanToValueRanges,
@@ -53,6 +54,7 @@ abstract class BorrowService {
     @Query('loanType') String? loanType,
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('cusSort') String? cusSort,
   );
 
   @GET(ApiConstants.GET_CRYPTO_COLLATERAL)
