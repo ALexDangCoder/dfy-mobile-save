@@ -209,7 +209,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   }
 
   void funFilter() {
-    page = 1;
+    page = 0;
     searchStatus = textSearch.value;
     statusFilterNumber = listFilterStream.value;
     statusListCollateral = [];
@@ -234,7 +234,10 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     showLoading();
     emit(PawnListLoading());
     final Result<List<PawnShopModelMy>> response =
-        await _pawnService.getListPawnShopMy();
+        await _pawnService.getListPawnShopMy(
+          size: '12',
+          page: page.toString(),
+        );
     response.when(
       success: (response) {
         if (response.isNotEmpty) {

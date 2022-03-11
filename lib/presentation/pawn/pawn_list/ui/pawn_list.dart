@@ -54,14 +54,14 @@ class _PawnListState extends State<PawnList> {
             _bloc.list.clear();
           }
           _bloc.list.addAll(state.listPawn ?? []);
-          _bloc.canLoadMoreMy = _bloc.list.length >= 20;
+          _bloc.canLoadMoreMy = _bloc.list.length >= 12;
         }
       },
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
           retry: () {
-            _bloc.getListPawn();
+            _bloc.refreshPosts();
           },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
@@ -167,7 +167,7 @@ class _PawnListState extends State<PawnList> {
                                       res,
                                       S.current.rating,
                                     );
-                                    await _bloc.getListPawn();
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -192,7 +192,7 @@ class _PawnListState extends State<PawnList> {
                                       res,
                                       S.current.interest_rate_pawn,
                                     );
-                                    await _bloc.getListPawn();
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -217,7 +217,7 @@ class _PawnListState extends State<PawnList> {
                                       res,
                                       S.current.signed_contracts,
                                     );
-                                    await _bloc.getListPawn();
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(
