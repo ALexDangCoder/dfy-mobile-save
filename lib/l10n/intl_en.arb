@@ -832,8 +832,10 @@
   "how_much": "How much?",
   "enter_amount": "Enter amount",
   "which_token": "Which token?",
-  "login_to_receive_email_notification":"Login to receive email notification",
+  "login_to_receive_email_notification": "Login to receive email notification",
   "what_is_your_collateral": "What is your collateral?",
   "select_loan_token": "Select loan token",
-  "how_much_is_your_desired_load": "How much is your desired load?"
+  "how_much_is_your_desired_load": "How much is your desired load?",
+  "total_value_of_all": "Total value of all lend contracts converted to USD",
+  "total_contract_value": "Total contract value"
 }

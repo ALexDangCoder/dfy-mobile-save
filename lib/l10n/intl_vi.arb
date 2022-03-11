@@ -794,5 +794,7 @@
   "which_token": "Chọn token nào?",
   "what_is_your_collateral": "Tài sản thế chấp của bạn là gì?",
   "select_loan_token": "Chọn token cho vay",
-  "how_much_is_your_desosystem_load": "Giá trị mong muốn của bạn là bao nhiêu?"
+  "how_much_is_your_desosystem_load": "Giá trị mong muốn của bạn là bao nhiêu?",
+  "total_value_of_all": "Tổng giá trị của tất cả các hợp đồng cho vay được quy đổi sang USD",
+  "total_contract_value": "Tổng giá trị hợp đồng"
 }

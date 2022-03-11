@@ -23,6 +23,7 @@ class PersonalLending {
   int? type;
   int? updatedAt;
   int? userId;
+  List<AcceptableAssetsAsCollateral>? collateralAccepted;
 
   PersonalLending({
     this.address,
@@ -49,6 +50,7 @@ class PersonalLending {
     this.type,
     this.updatedAt,
     this.userId,
+    this.collateralAccepted,
   });
 }
 

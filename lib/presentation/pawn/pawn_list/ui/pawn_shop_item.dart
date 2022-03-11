@@ -451,8 +451,8 @@ class PawnItem extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (_) => InfoPopup(
-                              name: S.current.duration,
-                              content: S.current.duration_more_content,
+                              name: S.current.total_contract_value,
+                              content: S.current.total_value_of_all,
                             ),
                           );
                         },

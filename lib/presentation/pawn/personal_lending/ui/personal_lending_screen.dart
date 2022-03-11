@@ -46,20 +46,15 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
         if (state is PersonalLendingSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
             if (_bloc.loadMoreRefresh) {
-              _bloc.list.clear();
+              // _bloc.list.clear();
             }
-            if ((state.listPersonal ?? []).isEmpty) {
-              _bloc.showEmpty();
-            } else {
-              _bloc.showContent();
-            }
+            _bloc.showContent();
           } else {
             _bloc.mess = state.message ?? '';
-            _bloc.list.clear();
+            //_bloc.list.clear();
             _bloc.showError();
           }
-          _bloc.list.addAll(state.listPersonal ?? []);
-          _bloc.canLoadMore =
+          _bloc.canLoadMoreMy =
               _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
           _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
@@ -71,7 +66,9 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.refreshPosts();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
@@ -268,10 +265,9 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                         interestRate:
                                             '${list[index].minInterestRate}%'
                                             '-${list[index].maxInterestRate}%',
-                                        collateral: list[index]
-                                                .p2PLenderPackages?[0]
-                                                .acceptableAssetsAsCollateral ??
-                                            [],
+                                        collateral:
+                                            list[index].collateralAccepted ??
+                                                [],
                                         total: list[index]
                                             .totalLoanValue
                                             .toString(),
@@ -280,7 +276,8 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                             .toString(),
                                       ),
                                     ),
-                                  ) : Column(
+                                  )
+                                : Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Center(
