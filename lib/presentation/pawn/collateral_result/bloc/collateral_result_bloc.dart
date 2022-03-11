@@ -11,7 +11,6 @@ import 'package:rxdart/rxdart.dart';
 class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   CollateralResultBloc() : super(CollateralResultInitial());
 
-  BehaviorSubject<int> numberListLength = BehaviorSubject.seeded(0);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isWeek = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMonth = BehaviorSubject.seeded(false);
@@ -97,6 +96,7 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   }
 
   Future<void> getListCollateral() async {
+    showLoading();
     emit(CollateralResultLoading());
     final Result<List<CollateralResultModel>> response =
         await _pawnService.getListCollateral(

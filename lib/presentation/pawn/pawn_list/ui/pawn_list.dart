@@ -48,12 +48,13 @@ class _PawnListState extends State<PawnList> {
             _bloc.mess = state.message ?? '';
             _bloc.showError();
           }
-          _bloc.canLoadMoreMy = _bloc.list.length >= 20;
+
           _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
           _bloc.list.addAll(state.listPawn ?? []);
+          _bloc.canLoadMoreMy = _bloc.list.length >= 20;
         }
       },
       builder: (context, state) {

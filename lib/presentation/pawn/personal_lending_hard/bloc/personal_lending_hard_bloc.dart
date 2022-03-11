@@ -25,6 +25,9 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   static const int ZERO_TO_TEN = 0;
   static const int TEN_TO_TWENTY_FIVE = 1;
   static const int TWENTY_FIVE_TO_FIVETY = 2;
+  static const int ALL = 0;
+  static const int SORT = 1;
+  static const int HARD = 2;
   static const int MORE_THAN_FIVETY = 3;
   static const String A_TO_Z_REPUTATION = 'reputation,desc';
   static const String Z_TO_A_REPUTATION = 'reputation,asc';
@@ -36,7 +39,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   String? interestRanges;
   String? name;
   String? cusSort;
-  String? collateralSymbols;
+  int typePersonal = 0;
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -168,6 +171,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     statusSoftFilter = isHardNFT.value;
     name = '';
     interestRanges = '';
+    typePersonal = checkType();
     name = textSearch.value;
     for (int i = 0; i < listFilterStream.value.length; i++) {
       if (listFilterStream.value[i]) {
@@ -175,6 +179,16 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       }
     }
     getPersonLendingResult();
+  }
+
+  int checkType() {
+    if (isSoftNFT.value && !isHardNFT.value) {
+      return SORT;
+    } else if (!isSoftNFT.value && isHardNFT.value) {
+      return HARD;
+    } else {
+      return ALL;
+    }
   }
 
   void funOnTapSearch() {
@@ -204,6 +218,8 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       interestRanges: interestRanges,
       page: page.toString(),
       cusSort: cusSort,
+      collateralType: typePersonal.toString(),
+      isNft: true,
     );
     result.when(
       success: (res) {

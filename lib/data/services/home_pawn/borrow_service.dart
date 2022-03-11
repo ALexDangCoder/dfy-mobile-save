@@ -1,5 +1,6 @@
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
@@ -55,6 +56,8 @@ abstract class BorrowService {
     @Query('page') String? page,
     @Query('size') String? size,
     @Query('cusSort') String? cusSort,
+    @Query('collateralType') String? collateralType,
+    @Query('isNft') bool? isNft,
   );
 
   @GET(ApiConstants.GET_CRYPTO_COLLATERAL)
@@ -76,5 +79,14 @@ abstract class BorrowService {
   );
 
   @GET(ApiConstants.GET_LIST_PAWN)
-  Future<PawnListResponse> getListPawnShopMy();
+  Future<PawnListResponse> getListPawnShopMy(
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_LIST_NFT_COLLATERAL)
+  Future<CollateralNFTResponse> getListNFTCollateral(
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
 }

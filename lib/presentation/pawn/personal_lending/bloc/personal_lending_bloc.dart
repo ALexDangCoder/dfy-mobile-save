@@ -237,6 +237,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       loanToValueRanges: loanToValueRanges,
       page: page.toString(),
       cusSort: cusSort,
+      isNft: false,
     );
     result.when(
       success: (res) {

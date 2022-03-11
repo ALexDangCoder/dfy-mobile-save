@@ -1,7 +1,9 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
@@ -11,7 +13,9 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PawnListBloc extends BaseCubit<PawnListState> {
-  PawnListBloc() : super(PawnListInitial());
+  PawnListBloc() : super(PawnListInitial()) {
+    getTokenInf();
+  }
 
   //load more
   bool canLoadMoreMy = true;
@@ -49,24 +53,9 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     false,
   ]);
 
-  List<TokenModelPawn> listLoanTokenFilter = [
-    //1
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listLoanTokenFilter = [];
 
-  List<TokenModelPawn> listCollateralTokenFilter = [
-    //2
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listCollateralTokenFilter = [];
 
   BorrowRepository get _pawnService => Get.find();
   static const int ZERO_TO_TEN = 0;
@@ -81,6 +70,28 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   List<bool>? statusFilterNumber;
   List<int> statusListLoan = [];
   List<int> statusListCollateral = [];
+  List<TokenInf> listTokenSupport = [];
+
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final TokenInf value in listTokenSupport) {
+      listCollateralTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+        ),
+      );
+      listLoanTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+        ),
+      );
+    }
+  }
 
   Future<void> refreshPosts() async {
     if (!_isLoading) {
@@ -231,13 +242,13 @@ class PawnListBloc extends BaseCubit<PawnListState> {
         } else {
           canLoadMoreMy = false;
         }
+        _isLoading = false;
         emit(
           PawnListSuccess(
             CompleteType.SUCCESS,
             listPawn: response,
           ),
         );
-        _isLoading = false;
       },
       error: (error) {
         emit(
