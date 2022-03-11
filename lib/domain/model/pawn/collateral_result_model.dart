@@ -11,7 +11,7 @@ class CollateralResultModel {
   int? status;
   int? durationType;
   int? durationQty;
-  String? bcCollateralId;
+  int? bcCollateralId;
   int? numberOfferReceived;
   String? latestBlockchainTxn;
   double? estimatePrice;

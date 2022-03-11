@@ -1,11 +1,13 @@
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
@@ -86,6 +88,8 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanType,
     String? page,
     String? cusSort,
+    String? collateralType,
+    bool? isNft,
   }) {
     return runCatchingAsync<PersonalLendingHardResponse, List<PersonalLending>>(
       () => _client.getPersonalLendingHard(
@@ -99,6 +103,8 @@ class BorrowRepositoryImpl implements BorrowRepository {
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
         cusSort,
+        collateralType,
+        isNft,
       ),
       (response) => response.data?.toDomain() ?? [],
     );
@@ -141,11 +147,32 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<List<PawnShopModelMy>>> getListPawnShopMy() {
+  Future<Result<List<PawnShopModelMy>>> getListPawnShopMy({
+    String? page,
+    String? size,
+  }) {
     return runCatchingAsync<PawnListResponse, List<PawnShopModelMy>>(
-      () => _client.getListPawnShopMy(),
+      () => _client.getListPawnShopMy(
+        page,
+        size,
+      ),
       (response) =>
           response.data?.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<NftMarket>>> getListNFTCollateral({
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<CollateralNFTResponse, List<NftMarket>>(
+      () => _client.getListNFTCollateral(
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

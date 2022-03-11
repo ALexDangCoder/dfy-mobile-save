@@ -48,13 +48,13 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
             _bloc.mess = state.message ?? '';
             _bloc.showError();
           }
-          _bloc.canLoadMoreMy =
-              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
           _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
           _bloc.list.addAll(state.listPersonal ?? []);
+          _bloc.canLoadMoreMy =
+              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
         }
       },
       builder: (context, state) {

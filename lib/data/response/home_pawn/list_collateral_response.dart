@@ -58,7 +58,7 @@ class ContentResponse {
   @JsonKey(name: 'durationQty')
   int? durationQty;
   @JsonKey(name: 'bcCollateralId')
-  String? bcCollateralId;
+  int? bcCollateralId;
   @JsonKey(name: 'numberOfferReceived')
   int? numberOfferReceived;
   @JsonKey(name: 'latestBlockchainTxn')
