@@ -77,7 +77,111 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProvideHardNftCubit, ProvideHardNftState>(
+    return BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
+      listener: (context, state) {
+        if (state is CreateStep1Submitting) {
+          print('call here 1');
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) => const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmit(),
+            ),
+          );
+        } else if (state is CreateStep1SubmittingSuccess) {
+          final NavigatorState navigator = Navigator.of(context);
+          unawaited(
+            navigator
+                .push(
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      // needApprove: true,
+                      hexString: cubit.hexStringWeb3,
+                      payValue: cubit.dataStep1.amountToken.toString(),
+                      tokenAddress: Get.find<AppConstants>().contract_defy,
+                      title: S.current.create_hard_nft,
+                      listDetail: [
+                        DetailItemApproveModel(
+                          title: '${S.current.name} :',
+                          value: cubit.dataStep1.hardNftName,
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.type} :',
+                          value: cubit.dataStep1.hardNftType.name ?? '',
+                        ),
+                        DetailItemApproveModel(
+                          title: '${S.current.collection} :',
+                          value: cubit.dataStep1.collection,
+                        ),
+                      ],
+                      onErrorSign: (context) async {
+                        final nav = Navigator.of(context);
+                        nav.pop();
+                        await showLoadFail(context);
+                      },
+                      onSuccessSign: (context, data) {
+                        cubit.bcTxnHashModel.bc_txn_hash = data;
+                        cubit.putHardNftBeforeConfirm(
+                          cubit.assetId,
+                          cubit.bcTxnHashModel,
+                        );
+                        showLoadSuccess(context).then((_) {
+                          /// đoạn này confirm blockchain xong thì check status cuả
+                          /// để trở lại màn hình
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          if (widget.assetId != null) {
+                            cubit.checkStatusBeHandle(
+                                assetId: widget.assetId ?? '');
+                          } else {
+                            cubit.checkStatusBeHandle(assetId: cubit.assetId);
+                          }
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ListBookEvaluation(
+                          //         assetId: cubit.assetId,
+                          //       );
+                          //     },
+                          //     settings: const RouteSettings(
+                          //       name: AppRouter.step2ListBook,
+                          //     ),
+                          //   ),
+                          // ).then((value) => Navigator.pop(context));
+                        });
+                      },
+                      textActiveButton: S.current.request_evaluation,
+                      spender: Get.find<AppConstants>().eva,
+                    ),
+                  ),
+                )
+                .then(
+                  (value) async => {
+                    Navigator.pop(context),
+                    if (widget.assetId != null)
+                      await cubit.checkStatusBeHandle(
+                          assetId: widget.assetId ?? '')
+                    else
+                      cubit.checkStatusBeHandle(assetId: cubit.assetId),
+                  },
+                ),
+          );
+        } else if (state is CreateStep1SubmittingFail) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmitFail(),
+            ),
+          );
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pop(context);
+          }).then((value) => Navigator.pop(context));
+        }
+      },
       bloc: cubit,
       builder: (ctx, state) {
         return StateStreamLayout(
@@ -85,119 +189,14 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
           error: AppException(S.current.error, S.current.something_went_wrong),
           retry: () async {},
           textEmpty: '',
-          child: _content(state, ctx) ??
-              const ModalProgressHUD(
-                inAsyncCall: true,
-                progressIndicator: CupertinoLoading(),
-                child: SizedBox(),
-              ),
+          child: _content(state, ctx),
         );
       },
     );
   }
 
-  Widget? _content(ProvideHardNftState state, BuildContext context) {
-    if (state is CreateStep1Submitting) {
-      print('call here 1');
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) => const AlertDialog(
-          backgroundColor: Colors.transparent,
-          content: TransactionSubmit(),
-        ),
-      );
-    } else if (state is CreateStep1SubmittingSuccess) {
-      final NavigatorState navigator = Navigator.of(context);
-      unawaited(
-        navigator
-            .push(
-              MaterialPageRoute(
-                builder: (context) => Approve(
-                  // needApprove: true,
-                  hexString: cubit.hexStringWeb3,
-                  payValue: cubit.dataStep1.amountToken.toString(),
-                  tokenAddress: Get.find<AppConstants>().contract_defy,
-                  title: S.current.create_hard_nft,
-                  listDetail: [
-                    DetailItemApproveModel(
-                      title: '${S.current.name} :',
-                      value: cubit.dataStep1.hardNftName,
-                    ),
-                    DetailItemApproveModel(
-                      title: '${S.current.type} :',
-                      value: cubit.dataStep1.hardNftType.name ?? '',
-                    ),
-                    DetailItemApproveModel(
-                      title: '${S.current.collection} :',
-                      value: cubit.dataStep1.collection,
-                    ),
-                  ],
-                  onErrorSign: (context) async {
-                    final nav = Navigator.of(context);
-                    nav.pop();
-                    await showLoadFail(context);
-                  },
-                  onSuccessSign: (context, data) {
-                    cubit.bcTxnHashModel.bc_txn_hash = data;
-                    cubit.putHardNftBeforeConfirm(
-                      cubit.assetId,
-                      cubit.bcTxnHashModel,
-                    );
-                    showLoadSuccess(context).then((_) {
-                      /// đoạn này confirm blockchain xong thì check status cuả
-                      /// để trở lại màn hình
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      if (widget.assetId != null) {
-                        cubit.checkStatusBeHandle(
-                            assetId: widget.assetId ?? '');
-                      } else {
-                        cubit.checkStatusBeHandle(assetId: cubit.assetId);
-                      }
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return ListBookEvaluation(
-                      //         assetId: cubit.assetId,
-                      //       );
-                      //     },
-                      //     settings: const RouteSettings(
-                      //       name: AppRouter.step2ListBook,
-                      //     ),
-                      //   ),
-                      // ).then((value) => Navigator.pop(context));
-                    });
-                  },
-                  textActiveButton: S.current.request_evaluation,
-                  spender: Get.find<AppConstants>().eva,
-                ),
-              ),
-            )
-            .then(
-              (value) async => {
-                Navigator.pop(context),
-                if (widget.assetId != null)
-                  await cubit.checkStatusBeHandle(assetId: widget.assetId ?? '')
-                else
-                  cubit.checkStatusBeHandle(assetId: cubit.assetId),
-              },
-            ),
-      );
-    } else if (state is CreateStep1SubmittingFail) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const AlertDialog(
-          backgroundColor: Colors.transparent,
-          content: TransactionSubmitFail(),
-        ),
-      );
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pop(context);
-      }).then((value) => Navigator.pop(context));
-    } else if (state is CreateStep1LoadingSuccess) {
+  Widget _content(ProvideHardNftState state, BuildContext context) {
+    if (state is CreateStep1LoadingSuccess) {
       return RefreshIndicator(
         onRefresh: () async {
           if (cubit.statusWhenSubmit != null) {
