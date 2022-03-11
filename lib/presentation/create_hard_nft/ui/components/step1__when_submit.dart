@@ -62,9 +62,9 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     ///if from mintRequest Screen use it like param else
     ///default asset from cubit
     if (widget.assetId != null) {
-      cubit.getDetailAssetHardNFT(assetId: widget.assetId ?? '');
+      cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
     } else {
-      cubit.getDetailAssetHardNFT(assetId: cubit.assetId);
+      cubit.checkStatusBeHandle(assetId: cubit.assetId);
     }
   }
 
@@ -139,9 +139,9 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                     showLoadSuccess(context).then((_) {
                       /// đoạn này confirm blockchain xong thì check status cuả
                       /// để trở lại màn hình
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      cubit.checkStatusBeHandle();
+                      // Navigator.pop(context);
+                      // Navigator.pop(context);
+                      // cubit.checkStatusBeHandle();
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -165,7 +165,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
             .then(
               (value) async => {
                 Navigator.pop(context),
-                await cubit.checkStatusBeHandle(),
+                await cubit.checkStatusBeHandle(assetId: cubit.assetId),
               },
             ),
       );
@@ -185,7 +185,11 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
       return RefreshIndicator(
         onRefresh: () async {
           if (cubit.statusWhenSubmit != null) {
-            await cubit.checkStatusBeHandle();
+            if(widget.assetId != null) {
+              await cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
+            } else {
+              await cubit.checkStatusBeHandle(assetId: cubit.assetId);
+            }
           } else {}
         },
         child: BaseDesignScreen(
