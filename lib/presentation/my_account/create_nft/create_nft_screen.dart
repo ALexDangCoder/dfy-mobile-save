@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
@@ -148,6 +149,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       fontSize: 14,
                     ),
                   ),
+
                   ///Space bottom + space top + height of the button
                   SizedBox(
                     height:
@@ -185,6 +187,9 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => const OnBoardingScreen(),
+                          settings: const RouteSettings(
+                            name: AppRouter.create_nft,
+                          ),
                         ),
                       );
                     }

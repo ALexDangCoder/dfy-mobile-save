@@ -58,6 +58,11 @@ abstract class CreateHardNFtService {
     @Path('evaluator_id') String evaluatorId,
     @Query('bc_txn_hash_reject') String bcTxnHash,
   );
+  @POST(
+      ApiConstants.TRANSFER_NFT)
+  Future<ConfirmEvaluationResponse> confirmSendNft(
+      @Body() Map<String,String> map,
+      );
 
   @GET(ApiConstants.GET_EVALUATION_FEE)
   Future<EvaluationFeeListResponse> getEvaluationFee();

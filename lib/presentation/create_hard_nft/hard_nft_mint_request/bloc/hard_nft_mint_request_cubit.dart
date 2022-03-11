@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -124,7 +126,7 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
   void loadMoreMintRequest() {
     if (!loadMore && !refresh) {
       page += 1;
-      canLoadMoreList = true;
+      canLoadMoreList = false;
       loadMore = true;
       getListMintRequest(
         name: query,
@@ -279,6 +281,8 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
         }
         if (res.isEmpty && loadMore) {
           canLoadMoreList = false;
+        } else {
+          canLoadMoreList = true;
         }
         if (loadMore) {
           emit(ListMintRequestLoadMoreSuccess(res));
@@ -296,6 +300,7 @@ class HardNftMintRequestCubit extends BaseCubit<HardNftMintRequestState> {
       error: (error) {
         loadMore = false;
         refresh = false;
+        canLoadMoreList = true;
         showError();
         apply = false;
       },

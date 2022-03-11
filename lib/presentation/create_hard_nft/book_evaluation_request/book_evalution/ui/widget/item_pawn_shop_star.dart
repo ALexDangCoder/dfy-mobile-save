@@ -61,12 +61,18 @@ class ItemPawnShopStar extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    namePawnShop,
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
+                  SizedBox(
+                    width: 180.w,
+                    child: Text(
+                      namePawnShop,
+                      maxLines: 1,
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ).copyWith(
+                        overflow: TextOverflow.ellipsis
+                      ),
                     ),
                   ),
                   spaceH4,

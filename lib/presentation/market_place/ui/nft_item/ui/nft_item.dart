@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -19,7 +20,8 @@ import 'package:intl/intl.dart';
 class NFTItemWidget extends StatefulWidget {
   const NFTItemWidget({
     Key? key,
-    required this.nftMarket, this.pageRouter,
+    required this.nftMarket,
+    this.pageRouter,
   }) : super(key: key);
 
   final NftMarket nftMarket;
@@ -45,7 +47,8 @@ class _NFTItemState extends State<NFTItemWidget> {
   void initState() {
     super.initState();
     cubitNft = NftItemCubit();
-    if (widget.nftMarket.marketType == MarketType.AUCTION) {
+    if (widget.nftMarket.marketType == MarketType.AUCTION &&
+        widget.pageRouter != PageRouter.MY_ACC) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
         value: widget.nftMarket.startTime ?? 0,
       );
@@ -81,7 +84,8 @@ class _NFTItemState extends State<NFTItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.nftMarket.marketType == MarketType.AUCTION) {
+    if (widget.nftMarket.marketType == MarketType.AUCTION &&
+        widget.pageRouter != PageRouter.MY_ACC) {
       startTimeAuction = cubitNft.parseTimeServerToDateTime(
         value: widget.nftMarket.startTime ?? 0,
       );
@@ -95,7 +99,6 @@ class _NFTItemState extends State<NFTItemWidget> {
       coutdownStartTime = CountdownTimerController(
         endTime: startTimeAuction?.millisecondsSinceEpoch ?? 0,
       );
-
     }
     return GestureDetector(
       onTap: () {
@@ -112,6 +115,9 @@ class _NFTItemState extends State<NFTItemWidget> {
               collectionAddress: widget.nftMarket.collectionAddress,
               nftTokenId: widget.nftMarket.nftTokenId,
               pageRouter: widget.pageRouter,
+            ),
+            settings: const RouteSettings(
+              name: AppRouter.nft_detail,
             ),
           ),
         );
@@ -306,7 +312,7 @@ class _NFTItemState extends State<NFTItemWidget> {
   }
 
   Widget timeCountdown(MarketType? type) {
-    if (type == MarketType.AUCTION) {
+    if (type == MarketType.AUCTION && widget.pageRouter != PageRouter.MY_ACC) {
       return Padding(
         padding: EdgeInsets.only(top: 119.h, left: 26.5.w),
         child: Container(
@@ -447,7 +453,7 @@ class _NFTItemState extends State<NFTItemWidget> {
     switch (type) {
       case MarketType.PAWN:
         return Text(
-          'Pawn',
+          'Requesting loan',
           style: textNormalCustom(
             AppTheme.getInstance().blueColor(),
             13,

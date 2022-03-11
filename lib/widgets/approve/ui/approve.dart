@@ -210,9 +210,7 @@ class _ApproveState extends State<Approve> {
             retry: () async {
               if (cubit.state is SignFail) {
                 await signTransaction(
-                  cubit.gasLimit ??
-                      cubit.gasLimitFirst ??
-                      0,
+                  cubit.gasLimit ?? cubit.gasLimitFirst ?? 0,
                   cubit.gasPrice ?? 1e9,
                 );
               } else {
@@ -227,7 +225,8 @@ class _ApproveState extends State<Approve> {
                   resizeToAvoidBottomInset: true,
                   body: GestureDetector(
                     onTap: () {
-                      final FocusScopeNode currentFocus = FocusScope.of(context);
+                      final FocusScopeNode currentFocus =
+                          FocusScope.of(context);
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
                       }
@@ -313,7 +312,8 @@ class _ApproveState extends State<Approve> {
                                       const SizedBox(height: 4),
                                     Divider(
                                       thickness: 1,
-                                      color: AppTheme.getInstance().divideColor(),
+                                      color:
+                                          AppTheme.getInstance().divideColor(),
                                     ),
                                     const SizedBox(height: 16),
                                     walletView(),
@@ -362,7 +362,8 @@ class _ApproveState extends State<Approve> {
                       color: AppTheme.getInstance().bgBtsColor(),
                     ),
                     child: Container(
-                      margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 38),
+                      margin:
+                          EdgeInsets.only(left: 16.w, right: 16.w, bottom: 38),
                       child: Row(
                         children: [
                           if (widget.needApprove ?? false)
@@ -370,8 +371,7 @@ class _ApproveState extends State<Approve> {
                               child: StreamBuilder<bool>(
                                 stream: cubit.isApprovedStream,
                                 builder: (context, snapshot) {
-                                  final isApproved =
-                                      snapshot.data ?? false;
+                                  final isApproved = snapshot.data ?? false;
                                   return GestureDetector(
                                     child: ButtonGold(
                                       haveGradient: !isApproved,
@@ -411,8 +411,9 @@ class _ApproveState extends State<Approve> {
                           else
                             const SizedBox.shrink(),
                           if (widget.needApprove ?? false)
-                          const SizedBox(width: 25)
-                          else const SizedBox.shrink(),
+                            const SizedBox(width: 25)
+                          else
+                            const SizedBox.shrink(),
                           Expanded(
                             child: StreamBuilder<bool>(
                               stream: cubit.isApprovedStream,
@@ -552,7 +553,7 @@ class _ApproveState extends State<Approve> {
                   builder: (context, snapshot) {
                     final double data = snapshot.data ?? 0;
                     return Text(
-                      '${S.current.balance}: $data ${S.current.bnb}',
+                      '${S.current.balance}: ${data.toStringAsFixed(5)} ${S.current.bnb}',
                       style: textNormal(
                         AppTheme.getInstance().whiteColor(),
                         16,

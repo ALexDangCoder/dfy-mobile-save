@@ -47,6 +47,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
 
   Future<void> getListNftCollectionExplore() async {
     emit(LoadingDataLoading());
+    getTokenInf();
     final Result<List<ListTypeNftCollectionExploreModel>> result =
         await _marketPlaceRepo.getListTypeNftCollectionExplore();
     result.when(
@@ -93,6 +94,15 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     listTokenSupport = TokenInf.decode(listToken);
   }
 
+  String getUrl(String tokenAddress) {
+    for (final token in listTokenSupport) {
+      if (tokenAddress.toLowerCase() == token.address?.toLowerCase()) {
+        return token.iconUrl ?? '';
+      }
+    }
+    return '';
+  }
+
   void getNftCollectionExplore(
     List<ListTypeNftCollectionExploreModel> response,
   ) {
@@ -101,6 +111,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsBuySellCreateCollectible.add(
             NftMarket(
+                urlToken: getUrl(element.token ?? ''),
                 marketId: element.id,
                 nftId: element.nftId ?? '',
                 tokenBuyOut: element.token ?? '',
@@ -114,9 +125,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                         : MarketType.PAWN),
                 typeNFT:
                     element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-                typeImage: (element.fileType == 'image/jpeg' ||
-                        element.fileType == 'image/gif' ||
-                        element.fileType == 'image/JPG')
+                typeImage: (element.fileType ?? '').contains('image')
                     ? TypeImage.IMAGE
                     : TypeImage.VIDEO,
                 numberOfCopies: element.numberOfCopies,
@@ -134,6 +143,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsFeaturedNfts.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -146,9 +156,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -168,6 +176,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsFeaturedSoft.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -180,9 +189,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -201,6 +208,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsHotAution.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -213,9 +221,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -255,6 +261,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsSale.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -267,9 +274,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,
@@ -288,6 +293,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
         e.items?.forEach(
           (element) => nftsCollateral.add(
             NftMarket(
+              urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
               nftId: element.nftId ?? '',
               tokenBuyOut: element.token ?? '',
@@ -300,9 +306,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
                       ? MarketType.AUCTION
                       : MarketType.PAWN),
               typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType == 'image/jpeg' ||
-                      element.fileType == 'image/gif' ||
-                      element.fileType == 'image/JPG')
+              typeImage: (element.fileType ?? '').contains('image')
                   ? TypeImage.IMAGE
                   : TypeImage.VIDEO,
               numberOfCopies: element.numberOfCopies,

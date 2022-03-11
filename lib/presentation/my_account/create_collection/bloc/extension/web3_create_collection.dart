@@ -40,7 +40,7 @@ extension Web3Call on CreateCollectionCubit {
       );
       if (collectionIPFS.isNotEmpty) {
         transactionData = await web3utils.getCreateCollectionData(
-          contractAddress: nft_factory_dev2,
+          contractAddress: Get.find<AppConstants>().nftFactory,
           name: collectionName,
           royaltyRate: royalties.toString(),
           collectionCID: collectionIPFS,

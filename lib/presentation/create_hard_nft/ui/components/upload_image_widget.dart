@@ -368,7 +368,37 @@ class UploadImageWidget extends StatelessWidget {
                           child: btnAdd(
                             isEnable: _isEnable,
                             onTap: () {
-                              cubit.pickMedia();
+                              if (Platform.isIOS) {
+                                showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (_) => CupertinoActionSheet(
+                                    actions: [
+                                      CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          cubit.pickMedia(pickImageIos: true);
+                                        },
+                                        child: const Text('Image'),
+                                      ),
+                                      CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          cubit.pickMedia();
+                                        },
+                                        child: const Text('Files'),
+                                      ),
+                                    ],
+                                    cancelButton: CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(S.current.cancel),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                cubit.pickMedia();
+                              }
                             },
                             content: S.current.add_more,
                           ),
