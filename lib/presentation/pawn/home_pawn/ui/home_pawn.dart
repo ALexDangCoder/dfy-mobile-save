@@ -560,9 +560,9 @@ class _HomePawnState extends State<HomePawn> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => const ConnectWalletDialog(
+                  builder: (context) => ConnectWalletDialog(
                     navigationTo: BorrowLendScreen(
-                      type: TYPE_BORROW_OR_LEND.BORROW,
+                      type: type,
                     ),
                     isRequireLoginEmail: true,
                   ),

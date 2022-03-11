@@ -44,11 +44,7 @@ class IsBaseCheckBoxHard extends StatelessWidget {
                   ),
                   value: snapshot.data ?? false,
                   onChanged: (value) {
-                    stream.sink.add(true);
-                    if (snapshot.data ?? false) {
-                      stream.sink.add(false);
-                    }
-                    funCheckBox();
+                    funCheckBox(title);
                   },
                 ),
               );
@@ -61,12 +57,7 @@ class IsBaseCheckBoxHard extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (stream.value) {
-                    stream.sink.add(false);
-                  } else {
-                    stream.sink.add(true);
-                  }
-                  funText();
+                  funText(title);
                 },
                 child: Text(
                   title,

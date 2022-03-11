@@ -207,6 +207,8 @@ class ApiConstants {
 //pawn
   static const String GET_LIST_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-pawnshop';
+  static const String GET_LIST_NFT_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts';
 
   ///PAWN
   static const String GET_OFFICIAL_PAWNSHOP_WITH_TOKEN =
