@@ -40,18 +40,12 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
     return BlocConsumer<PersonalLendingBloc, PersonalLendingState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-
-        ///Get Blog List Completed
         if (state is PersonalLendingSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (_bloc.loadMoreRefresh) {
-              // _bloc.list.clear();
-            }
+            if (_bloc.loadMoreRefresh) {}
             _bloc.showContent();
           } else {
             _bloc.mess = state.message ?? '';
-            //_bloc.list.clear();
             _bloc.showError();
           }
           _bloc.canLoadMoreMy =
