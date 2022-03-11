@@ -26,6 +26,7 @@ mixin BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? cusSort,
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
@@ -43,6 +44,7 @@ mixin BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? cusSort,
   });
 
   Future<Result<List<CollateralResultModel>>> getListCollateral({

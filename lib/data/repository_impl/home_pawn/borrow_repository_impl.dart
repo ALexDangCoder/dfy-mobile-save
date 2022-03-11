@@ -56,6 +56,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? cusSort,
   }) {
     return runCatchingAsync<PersonalLendingResponse, List<PersonalLending>>(
       () => _client.getPersonalLending(
@@ -68,6 +69,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanType,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+        cusSort,
       ),
       (response) => response.data?.toDomain() ?? [],
     );
@@ -83,6 +85,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? cusSort,
   }) {
     return runCatchingAsync<PersonalLendingHardResponse, List<PersonalLending>>(
       () => _client.getPersonalLendingHard(
@@ -95,6 +98,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanType,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+        cusSort,
       ),
       (response) => response.data?.toDomain() ?? [],
     );
