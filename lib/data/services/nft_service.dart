@@ -132,6 +132,8 @@ abstract class NFTClient {
   //reject offer:
   @PUT(ApiConstants.REJECT_OFFER)
   Future<String> rejectOffer(
+    @Path('walletAddress') String walletAddress,
+    @Path('collateralId') int collateralId,
     @Path('id') int idOffer,
   );
 

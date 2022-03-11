@@ -91,7 +91,9 @@ mixin NFTRepository {
   );
 
   Future<Result<String>> rejectOffer(
+    String walletAddress,
     int idOffer,
+    int idCollateral,
   );
 
   Future<Result<String>> sendOffer(

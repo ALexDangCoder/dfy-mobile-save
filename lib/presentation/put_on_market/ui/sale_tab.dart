@@ -119,7 +119,9 @@ class _SaleTabState extends State<SaleTab>
                         ),
                       ],
                       maxSize: 100,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       typeInput: widget.cubit.listToken
                           .map(
                             (e) => SizedBox(
@@ -247,7 +249,7 @@ class _SaleTabState extends State<SaleTab>
                                     return route.settings.name ==
                                         AppRouter.putOnSale;
                                   });
-                                  nav.pop(true);
+                                  nav.pop(PUT_ON_SALE);
                                 });
                               } else {
                                 await showLoadFail(context);

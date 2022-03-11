@@ -115,42 +115,60 @@ Widget _buildButtonBuy(
   bool isBought,
   String marketId,
 ) {
-  return ButtonGradient(
-    onPressed: () {
-      /// TODO: Handle if un login => push to login => buy
-      if (isBought) {
-        _showDialog(
-          context,
-          nftMarket,
-          marketId,
-        );
-      } else {
-        showDialog(
-          builder: (context) => ConnectWalletDialog(
-            navigationTo: BuyNFT(
-              nftMarket: nftMarket,
-              marketId: marketId,
-            ),
-            isRequireLoginEmail: false,
+  if(nftMarket.marketStatus == 14){
+    return ErrorButton(
+      child: Center(
+        child: Text(
+          S.current.sold,
+          style: textNormalCustom(
+            Colors.white,
+            20,
+            FontWeight.w700,
           ),
-          context: context,
-        ).then((value) => null);
-      }
-    },
-    gradient: RadialGradient(
-      center: const Alignment(0.5, -0.5),
-      radius: 4,
-      colors: AppTheme.getInstance().gradientButtonColor(),
-    ),
-    child: Text(
-      S.current.buy_nft,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
+        ),
       ),
-    ),
-  );
+    );
+  } else {
+    return ButtonGradient(
+      onPressed: () {
+        if(nftMarket.marketStatus ==10) {
+          return;
+        }
+        if (isBought) {
+          _showDialog(
+            context,
+            nftMarket,
+            marketId,
+          );
+        } else {
+          showDialog(
+            builder: (context) => ConnectWalletDialog(
+              navigationTo: BuyNFT(
+                nftMarket: nftMarket,
+                marketId: marketId,
+              ),
+              isRequireLoginEmail: false,
+            ),
+            context: context,
+          ).then((value) => null);
+        }
+      },
+      gradient: RadialGradient(
+        center: const Alignment(0.5, -0.5),
+        radius: 4,
+        colors: AppTheme.getInstance().gradientButtonColor(),
+      ),
+      child: nftMarket.marketStatus == 10 ? processing() : Text(
+        S.current.buy_nft,
+        style: textNormalCustom(
+          AppTheme.getInstance().textThemeColor(),
+          16,
+          FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
 }
 
 Widget _buildButtonCancelOnSale(
@@ -162,6 +180,10 @@ Widget _buildButtonCancelOnSale(
   return ButtonGradient(
     onPressed: () async {
       if (nftMarket.marketStatus == 7) {
+        return;
+      }
+      if (nftMarket.marketStatus == 0) {
+        Navigator.pop(context);
         return;
       }
       final nav = Navigator.of(context);
@@ -248,6 +270,11 @@ Widget _buildButtonCancelOnSale(
         );
         if (isSuccess) {
           reload();
+          Timer(const Duration(seconds: 30), () {
+            nftMarket.marketStatus = 0;
+            bloc.emit(NftOnSaleSuccess(nftMarket));
+            showDialogSuccess(context);
+          });
         }
       }
     },
@@ -259,7 +286,9 @@ Widget _buildButtonCancelOnSale(
     child: nftMarket.marketStatus == 7
         ? processing()
         : Text(
-            S.current.cancel_sale,
+            nftMarket.marketStatus == 0
+                ? S.current.cancel_success_s
+                : S.current.cancel_sale,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,
@@ -513,9 +542,15 @@ Widget _buildButtonPutOnMarket(
   return ButtonGradient(
     onPressed: () async {
       if (nftMarket.isOwner ?? false) {
+        if (nftMarket.processStatus == 9) {
+          Navigator.pop(context, true);
+          return;
+        }
         if (nftMarket.processStatus != 5 &&
             nftMarket.processStatus != 6 &&
-            nftMarket.processStatus != 3) {
+            nftMarket.processStatus != 3 &&
+            nftMarket.marketStatus != 6 &&
+            nftMarket.marketStatus != 5) {
           final navigator = Navigator.of(context);
           List<dynamic>? splitImageLink = nftMarket.image?.split('/');
           String imageId = '';
@@ -548,8 +583,41 @@ Widget _buildButtonPutOnMarket(
             ),
           );
           if (result != null) {
+            final check = result.toString();
             nftMarket.processStatus = 3;
             bloc.emit(NftNotOnMarketSuccess(nftMarket));
+            Timer(const Duration(seconds: 30), () {
+              if (check == PUT_ON_PAWN) {
+                bloc.emit(NFTDetailInitial());
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_pawn_success,
+                  text: S.current.check_data_on_market + PUT_ON_PAWN,
+                );
+              }
+              if (check == PUT_ON_AUCTION) {
+                bloc.emit(NFTDetailInitial());
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_auction_success,
+                  text: S.current.check_data_on_market + PUT_ON_AUCTION,
+                );
+              }
+              if (check == PUT_ON_SALE) {
+                bloc.emit(NFTDetailInitial());
+                nftMarket.processStatus = 9;
+                bloc.emit(NftNotOnMarketSuccess(nftMarket));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.put_on_sale_success,
+                  text: S.current.check_data_on_market + PUT_ON_SALE,
+                );
+              }
+            });
           }
         }
       } else {
@@ -563,10 +631,14 @@ Widget _buildButtonPutOnMarket(
     ),
     child: (nftMarket.processStatus == 5 ||
             nftMarket.processStatus == 6 ||
-            nftMarket.processStatus == 3)
+            nftMarket.processStatus == 3 ||
+            nftMarket.marketStatus == 5 ||
+            nftMarket.marketStatus == 6)
         ? processing()
         : Text(
-            S.current.put_on_market,
+            nftMarket.processStatus == 9
+                ? S.current.put_on_market_success
+                : S.current.put_on_market,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,

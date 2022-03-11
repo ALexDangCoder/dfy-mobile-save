@@ -53,6 +53,8 @@ class CollectionResponseMarket extends Equatable {
   bool? isFeature;
   @JsonKey(name: 'collection_address')
   String? collectionAddress;
+  @JsonKey(name: 'is_default')
+  bool? is_default;
 
   CollectionResponseMarket(
     this.id,

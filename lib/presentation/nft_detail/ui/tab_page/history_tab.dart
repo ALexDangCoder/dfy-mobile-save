@@ -299,7 +299,7 @@ Widget status(HistoryNFT historyNFT) {
               style: richTextBlue,
             ),
             TextSpan(
-              text: ' to',
+              text: ' to ',
               style: textNormal(
                 textHistory,
                 14,

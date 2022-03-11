@@ -1,3 +1,4 @@
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/market_place/create_evaluation_model.dart';
@@ -17,13 +18,15 @@ class BlocCreateBookEvaluation {
   CreateHardNFTRepository get _createHardNFTRepository => Get.find();
   BehaviorSubject<EvaluatorsDetailModel> objDetail = BehaviorSubject();
   BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
-  static const MONDAY = 0;
-  static const TUESDAY = 1;
-  static const WEDNESDAY = 2;
-  static const THURSDAY = 3;
-  static const FRIDAY = 4;
-  static const SATURDAY = 5;
-  static const SUNDAY = 6;
+  final Web3Utils web3Client = Web3Utils();
+
+  static const MONDAY = 1;
+  static const TUESDAY = 2;
+  static const WEDNESDAY = 3;
+  static const THURSDAY = 4;
+  static const FRIDAY = 5;
+  static const SATURDAY = 6;
+  static const SUNDAY = 7;
 
   static const JEWELRY = 0;
   static const ARTWORK = 2;
@@ -64,6 +67,7 @@ class BlocCreateBookEvaluation {
   String textValidateTime = '';
   BehaviorSubject<bool> isCheckTextValidateDate = BehaviorSubject.seeded(true);
   BehaviorSubject<bool> isCheckTextValidateTime = BehaviorSubject.seeded(false);
+  double balanceCheck = 0;
   late double locationLong;
   late double locationLat;
   String? hourMy;
@@ -96,6 +100,23 @@ class BlocCreateBookEvaluation {
     double myDate = appointmentTimeBE / 1000;
     int secondInt = myDate.toInt();
     appointmentTime = secondInt.toString();
+  }
+
+  Future<double> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    late final double balance;
+    try {
+      balance = await web3Client.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      balanceCheck=balance;
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+    return balance;
   }
 
   Future<void> getHexString({
@@ -211,14 +232,16 @@ class BlocCreateBookEvaluation {
   bool checkHourWorking(int hour, int minute) {
     //working hour
     final workingHour = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      (objDetail.value.workingTimeFrom ?? 0),
+      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
     final String hourWorking =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
     //working Min
     final workingMin = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      (objDetail.value.workingTimeFrom ?? 0),
+      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
     );
     final String minWorking =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
@@ -235,7 +258,8 @@ class BlocCreateBookEvaluation {
 
     // working hour close
     final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0) * 1000,
+      (objDetail.value.workingTimeTo ?? 0),
+      // (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
     final String hourWorkingTo =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
@@ -243,7 +267,8 @@ class BlocCreateBookEvaluation {
 
     //working miu close
     final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0) * 1000,
+      (objDetail.value.workingTimeTo ?? 0),
+      // (objDetail.value.workingTimeTo ?? 0) * 1000,
     );
     final String minWorkingTo =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
@@ -435,17 +460,17 @@ class BlocCreateBookEvaluation {
   String linkImage(int assetType) {
     switch (assetType) {
       case JEWELRY:
-        return ImageAssets.img_diamond;
+        return ImageAssets.diamond;
       case ARTWORK:
-        return ImageAssets.img_artwork;
+        return ImageAssets.artWork;
       case CAR:
-        return ImageAssets.img_car;
+        return ImageAssets.car;
       case WATCH:
-        return ImageAssets.img_watch;
+        return ImageAssets.watch;
       case HOUSE:
-        return ImageAssets.img_house;
+        return ImageAssets.house;
       case OTHERS:
-        return ImageAssets.img_other;
+        return ImageAssets.others;
       default:
         return '';
     }

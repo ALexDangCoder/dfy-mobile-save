@@ -110,6 +110,10 @@ class _ListNftState extends State<ListNft> {
     super.dispose();
   }
 
+  void refresh() {
+    _cubit.refreshPosts(widget.pageRouter);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,6 +236,10 @@ class _ListNftState extends State<ListNft> {
                                     child: Stack(
                                       children: [
                                         GridView.builder(
+                                          padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context)
+                                                  .padding
+                                                  .bottom),
                                           shrinkWrap: true,
                                           itemCount: _cubit.listData.length,
                                           itemBuilder: (context, index) {
@@ -255,10 +263,14 @@ class _ListNftState extends State<ListNft> {
                                           ),
                                         ),
                                         if (state is ListNftLoadMore)
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 595.h),
-                                            child: Center(
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .padding
+                                                    .bottom,
+                                              ),
                                               child: SizedBox(
                                                 height: 16.h,
                                                 width: 16.w,

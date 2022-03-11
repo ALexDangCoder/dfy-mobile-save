@@ -8,7 +8,7 @@ Widget _buildButtonPlaceBid(
   NFTOnAuction nftOnAuction,
   String marketId,
 ) {
-  if (!start && end) {
+  if (!start && end && (nftOnAuction.isBoughtByOther == false)) {
     return ButtonGradient(
       onPressed: () {
         showDialog(
@@ -72,29 +72,53 @@ Widget _buildButtonBuyOut(
   String marketId,
   bool start,
   bool end,
+  Function reload,
 ) {
   return ButtonTransparent(
     isEnable: !start == true && end == true,
-    child: Text(
-      S.current.buy_out,
-      style: textNormalCustom(
-        AppTheme.getInstance().textThemeColor(),
-        16,
-        FontWeight.w700,
-      ),
-    ),
-    onPressed: () {
-      showDialog(
-        context: context,
-        builder: (context) => ConnectWalletDialog(
-          navigationTo: PlaceBid(
-            nftOnAuction: nftOnAuction,
-            typeBid: TypeBid.BUY_OUT,
-            marketId: marketId,
+    child: nftOnAuction.marketStatus == 10
+        ? processing()
+        : Text(
+            (nftOnAuction.marketStatus == 15)
+                ? S.current.put_on_market_success
+                : S.current.buy_out,
+            style: textNormalCustom(
+              AppTheme.getInstance().textThemeColor(),
+              16,
+              FontWeight.w700,
+            ),
           ),
-          isRequireLoginEmail: false,
-        ),
-      );
+    onPressed: () {
+      if (nftOnAuction.marketStatus != 10 && nftOnAuction.marketStatus != 15) {
+        showDialog(
+          context: context,
+          builder: (ctx) => ConnectWalletDialog(
+            navigationTo: PlaceBid(
+              nftOnAuction: nftOnAuction,
+              typeBid: TypeBid.BUY_OUT,
+              marketId: marketId,
+            ),
+            isRequireLoginEmail: false,
+            hasFunction: true,
+            function: () {
+              nftOnAuction.isBoughtByOther = true;
+              nftOnAuction.marketStatus = 10;
+              bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+              Timer(const Duration(seconds: 20), () {
+                bloc.emit(NFTDetailInitial());
+                nftOnAuction.isBoughtByOther = true;
+                nftOnAuction.marketStatus = 15;
+                bloc.emit(NftOnAuctionSuccess(nftOnAuction));
+                showDialogSuccess(
+                  context,
+                  alert: S.current.buy_out_success,
+                  text: S.current.buy_out_success_scrip,
+                );
+              });
+            },
+          ),
+        );
+      }
     },
   );
 }
@@ -110,6 +134,10 @@ Widget buttonCancelAuction({
     return ButtonGradient(
       onPressed: () async {
         if (nftMarket.marketStatus == 8) {
+          return;
+        }
+        if (nftMarket.marketStatus == 0) {
+          Navigator.pop(context);
           return;
         }
         final nav = Navigator.of(context);
@@ -145,7 +173,7 @@ Widget buttonCancelAuction({
               nftOnAuction: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              spender: nft_auction_dev2,
+              spender: Get.find<AppConstants>().nftAuction,
               cancelInfo: S.current.auction_cancel_info,
               cancelWarning: S.current.cancel_auction_warning,
               title: S.current.cancel_aution,
@@ -187,6 +215,11 @@ Widget buttonCancelAuction({
         );
         if (isSuccess) {
           await refresh();
+          Timer(const Duration(seconds: 30), () {
+            nftMarket.marketStatus = 0;
+            bloc.emit(NftOnAuctionSuccess(nftMarket));
+            showDialogSuccess(context);
+          });
         }
       },
       gradient: RadialGradient(
@@ -197,7 +230,9 @@ Widget buttonCancelAuction({
       child: nftMarket.marketStatus == 8
           ? processing()
           : Text(
-              S.current.cancel_aution,
+              nftMarket.marketStatus == 0
+                  ? S.current.cancel_success
+                  : S.current.cancel_aution,
               style: textNormalCustom(
                 AppTheme.getInstance().textThemeColor(),
                 16,
@@ -253,8 +288,7 @@ Container _priceContainerOnAuction({
                 ),
                 spaceW4,
                 Text(
-                  '${!isBidding ? formatPrice.format(nftOnAuction.reservePrice)
-                      : formatPrice.format(nftOnAuction.currentPrice)} '
+                  '${!isBidding ? formatPrice.format(nftOnAuction.reservePrice) : formatPrice.format(nftOnAuction.currentPrice)} '
                   '${nftOnAuction.tokenSymbol ?? ''}',
                   style: textNormalCustom(
                     AppTheme.getInstance().textThemeColor(),
@@ -323,11 +357,13 @@ SizedBox _timeContainer(
             CountDownView(
               timeInMilliSecond: startTime,
               onRefresh: onRefresh,
+              timeEnd: endTime,
             )
           else
             CountDownView(
               timeInMilliSecond: endTime,
               onRefresh: onRefresh,
+              timeEnd: endTime,
             ),
           spaceH24,
         ],

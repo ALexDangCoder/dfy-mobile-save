@@ -1,13 +1,16 @@
 import 'dart:math';
 
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_history_nft.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,6 +40,7 @@ class FormFieldBlockchainCubit extends Cubit<FormFieldBlockchainState> {
   bool isAmount(String value) {
     return regexAmount.hasMatch(value);
   }
+
 
   void validateGasLimit(String value) {
     if (!regexAmount.hasMatch(value) && value.isNotEmpty) {

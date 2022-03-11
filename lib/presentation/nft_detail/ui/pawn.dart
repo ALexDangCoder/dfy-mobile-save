@@ -74,7 +74,7 @@ Widget _durationRowOnPawn({
   required int durationType,
   required int durationQty,
 }) {
-  final String duration = (durationType == 0) ? 'week' : 'months';
+  final String duration = (durationType == 0) ? S.current.week : S.current.month;
   return Column(
     children: [
       Row(
@@ -104,7 +104,6 @@ Widget _durationRowOnPawn({
 }
 
 Widget _buildButtonSendOffer(BuildContext context, NftOnPawn nftOnPawn) {
-  /// TODO: if un login => login => send offer
   return ButtonGradient(
     onPressed: () {
       showDialog(
@@ -141,7 +140,11 @@ Widget _buildButtonCancelOnPawn(
 ) {
   return ButtonGradient(
     onPressed: () async {
-      if (nftMarket.status == 7) {
+      if (nftMarket.status == 7 || nftMarket.status == 5) {
+        return;
+      }
+      if(nftMarket.status == 0){
+        Navigator.pop(context,true);
         return;
       }
       final nav = Navigator.of(context);
@@ -185,7 +188,7 @@ Widget _buildButtonCancelOnPawn(
               nftOnPawn: nftMarket,
               dataString: dataString,
               dataInfo: listApprove,
-              spender: nft_pawn_dev2,
+              spender: Get.find<AppConstants>().nftPawn,
               cancelInfo: S.current.pawn_cancel_info,
               cancelWarning: S.current.pawn_cancel_warning,
               title: S.current.cancel_pawn,
@@ -225,7 +228,12 @@ Widget _buildButtonCancelOnPawn(
           ),
         );
         if (isSuccess) {
-          await refresh();
+          refresh();
+          Timer(const Duration(seconds: 30), () {
+            nftMarket.status = 0;
+            bloc.emit(NftOnPawnSuccess(nftMarket));
+            showDialogSuccess(context);
+          });
         }
       }
     },
@@ -237,12 +245,77 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
-            S.current.cancel_pawn,
+            nftMarket.status == 0 ? S.current.cancel_success_s : S.current.cancel_pawn,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,
               FontWeight.w700,
             ),
           ),
+  );
+}
+void showDialogSuccess (BuildContext context ,{String? alert, String? text}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      // return object of type Dialog
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              36.0.r,
+            ),
+          ),
+        ),
+        backgroundColor: AppTheme.getInstance().selectDialogColor(),
+        title: Column(
+          children: [
+            Text(
+              alert ?? S.current.cancel_success_s,
+              style: textNormalCustom(
+                Colors.white,
+                20,
+                FontWeight.w700,
+              ),
+            ),
+            SizedBox(
+              height: 4.h,
+            ),
+            Text(
+              text ?? S.current.back_and_refresh_data,
+              style: textNormalCustom(
+                Colors.white,
+                12,
+                FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          Divider(
+            height: 1.h,
+            color: AppTheme.getInstance().divideColor(),
+          ),
+          Center(
+            child: TextButton(
+              child: Text(
+                S.current.ok,
+                style: textNormalCustom(
+                  AppTheme.getInstance().fillColor(),
+                  20,
+                  FontWeight.w700,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop(true);
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

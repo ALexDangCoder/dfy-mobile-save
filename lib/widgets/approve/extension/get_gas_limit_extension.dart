@@ -12,8 +12,7 @@ extension GetGasLimit on ApproveCubit {
     final web3Client = Web3Utils();
     String gasLimit = '';
     try {
-      gasLimit = await web3Client.
-      getGasLimitByData(
+      gasLimit = await web3Client.getGasLimitByData(
         from: addressWallet ?? '',
         toContractAddress: spender,
         dataString: hexString,
@@ -30,7 +29,7 @@ extension GetGasLimit on ApproveCubit {
       final data = await web3Client.getNftApproveForAllData(
         approved: true,
         collectionAddress: putOnMarketModel?.collectionAddress ?? '',
-        operatorAddress: spender ,
+        operatorAddress: spender,
       );
       return data;
     } else {

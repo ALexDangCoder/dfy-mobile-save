@@ -340,7 +340,7 @@ class _BuyNFTState extends State<BuyNFT> {
                   ),
                   onSuccessSign: (context, data) async {
                     Navigator.pop(context);
-                    cubit.buyNftReq(
+                    await cubit.buyNftReq(
                       BuyNftRequest(
                         widget.marketId,
                         widget.nftMarket.nftStandard == ERC_721
@@ -348,11 +348,6 @@ class _BuyNFTState extends State<BuyNFT> {
                             : cubit.amountValue,
                         data,
                       ),
-                    );
-                    await cubit.importNft(
-                      contract: widget.nftMarket.collectionAddress ?? '',
-                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
-                      address: PrefsService.getCurrentBEWallet(),
                     );
                     await showLoadSuccess(context)
                         .then((value) => Navigator.pop(context))
@@ -370,6 +365,11 @@ class _BuyNFTState extends State<BuyNFT> {
                             ),
                           ),
                         );
+                    await cubit.importNft(
+                      contract: widget.nftMarket.collectionAddress ?? '',
+                      id: int.parse(widget.nftMarket.nftTokenId ?? ''),
+                      address: PrefsService.getCurrentBEWallet(),
+                    );
                   },
                   onErrorSign: (context) async {
                     Navigator.pop(context);
@@ -464,8 +464,9 @@ class _BuyNFTState extends State<BuyNFT> {
           child: BaseDesignScreen(
             isImage: true,
             onRightClick: () {
-              Navigator.popUntil(
-                  context, (route) => route.settings.name == AppRouter.listNft);
+              Navigator.of(context)
+                ..pop()
+                ..pop();
             },
             text: ImageAssets.ic_close,
             title: '${S.current.buy} NFT',
@@ -506,8 +507,8 @@ class _BuyNFTState extends State<BuyNFT> {
                                   stream: cubit.balanceStream,
                                   builder: (context, snapshot) {
                                     return Text(
-                                      '${S.current.your_balance} ${snapshot.data}'
-                                      '${widget.nftMarket.symbolToken}',
+                                      '${S.current.your_balance} ${snapshot.data?.toStringAsFixed(5)}'
+                                      ' ${widget.nftMarket.symbolToken}',
                                       style: textNormalCustom(
                                         Colors.white.withOpacity(0.7),
                                         14,
