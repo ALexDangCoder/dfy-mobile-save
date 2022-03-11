@@ -96,164 +96,162 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                       topRight: Radius.circular(30.h),
                     ),
                   ),
-                  child: list.isNotEmpty
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            spaceH16,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      left: 16.w,
-                                    ),
-                                    width: 28.w,
-                                    height: 28.h,
-                                    child: Image.asset(
-                                      ImageAssets.ic_back,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  S.current.personal_lending,
-                                  style: textNormalCustom(
-                                    null,
-                                    20.sp,
-                                    FontWeight.w700,
-                                  ).copyWith(
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) => PersonalFilter(
-                                        bloc: _bloc,
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(right: 16.w),
-                                    width: 24.w,
-                                    height: 24.h,
-                                    child: Image.asset(ImageAssets.ic_filter),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            spaceH20,
-                            line,
-                            spaceH24,
-                            Center(
-                              child: SizedBox(
-                                width: 343.w,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final res = await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) => DialogFilter(
-                                            title: S.current.rating,
-                                            type: _bloc.typeRating ??
-                                                TypeFilter.HIGH_TO_LOW,
-                                          ),
-                                        );
-                                        if (res != null) {
-                                          _bloc.typeRating = res;
-                                          _bloc.getTextFilter(
-                                            res,
-                                            S.current.rating,
-                                          );
-                                          await _bloc.getPersonLendingResult();
-                                        }
-                                      },
-                                      child: ItemHeaderFilter(
-                                        title: S.current.rating,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final res = await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) => DialogFilter(
-                                            title: S.current.rating,
-                                            type: _bloc.typeInterest ??
-                                                TypeFilter.HIGH_TO_LOW,
-                                          ),
-                                        );
-                                        if (res != null) {
-                                          _bloc.typeInterest = res;
-                                          _bloc.getTextFilter(
-                                            res,
-                                            S.current.interest_rate_pawn,
-                                          );
-                                          await _bloc.getPersonLendingResult();
-                                        }
-                                      },
-                                      child: ItemHeaderFilter(
-                                        title: S.current.interest_rate_pawn,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final res = await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) => DialogFilter(
-                                            title: S.current.rating,
-                                            type: _bloc.typeSigned ??
-                                                TypeFilter.HIGH_TO_LOW,
-                                          ),
-                                        );
-                                        if (res != null) {
-                                          _bloc.typeSigned = res;
-                                          _bloc.getTextFilter(
-                                            res,
-                                            S.current.signed_contracts,
-                                          );
-                                          await _bloc.getPersonLendingResult();
-                                        }
-                                      },
-                                      child: ItemHeaderFilter(
-                                        title: S.current.signed_contracts,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      spaceH16,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                left: 16.w,
+                              ),
+                              width: 28.w,
+                              height: 28.h,
+                              child: Image.asset(
+                                ImageAssets.ic_back,
                               ),
                             ),
-                            spaceH20,
-                            Expanded(
-                              child: NotificationListener<ScrollNotification>(
-                                onNotification:
-                                    (ScrollNotification scrollInfo) {
-                                  if (_bloc.canLoadMore &&
-                                      scrollInfo.metrics.pixels ==
-                                          scrollInfo.metrics.maxScrollExtent) {
-                                    _bloc.loadMorePosts();
+                          ),
+                          Text(
+                            S.current.personal_lending,
+                            style: textNormalCustom(
+                              null,
+                              20.sp,
+                              FontWeight.w700,
+                            ).copyWith(
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 1,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) => PersonalFilter(
+                                  bloc: _bloc,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: 16.w),
+                              width: 24.w,
+                              height: 24.h,
+                              child: Image.asset(ImageAssets.ic_filter),
+                            ),
+                          ),
+                        ],
+                      ),
+                      spaceH20,
+                      line,
+                      spaceH24,
+                      Center(
+                        child: SizedBox(
+                          width: 343.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeRating ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeRating = res;
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.rating,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
-                                  return true;
                                 },
-                                child: RefreshIndicator(
-                                  onRefresh: _bloc.refreshPosts,
-                                  child: SingleChildScrollView(
+                                child: ItemHeaderFilter(
+                                  title: S.current.rating,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeInterest ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeInterest = res;
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.interest_rate_pawn,
+                                    );
+                                    await _bloc.getPersonLendingResult();
+                                  }
+                                },
+                                child: ItemHeaderFilter(
+                                  title: S.current.interest_rate_pawn,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  final res = await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) => DialogFilter(
+                                      title: S.current.rating,
+                                      type: _bloc.typeSigned ??
+                                          TypeFilter.HIGH_TO_LOW,
+                                    ),
+                                  );
+                                  if (res != null) {
+                                    _bloc.typeSigned = res;
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.signed_contracts,
+                                    );
+                                    await _bloc.getPersonLendingResult();
+                                  }
+                                },
+                                child: ItemHeaderFilter(
+                                  title: S.current.signed_contracts,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      spaceH20,
+                      Expanded(
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (_bloc.canLoadMore &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent) {
+                              _bloc.loadMorePosts();
+                            }
+                            return true;
+                          },
+                          child: RefreshIndicator(
+                            onRefresh: _bloc.refreshPosts,
+                            child: list.isNotEmpty
+                                ? SingleChildScrollView(
                                     child: ListView.builder(
                                       padding: EdgeInsets.only(
                                         bottom: 20.h,
@@ -282,36 +280,37 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                             .toString(),
                                       ),
                                     ),
+                                  ) : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image(
+                                          image: const AssetImage(
+                                            ImageAssets.img_search_empty,
+                                          ),
+                                          height: 120.h,
+                                          width: 120.w,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17.7.h,
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          S.current.no_result_found,
+                                          style: textNormal(
+                                            Colors.white54,
+                                            20.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 150.h),
-                          child: Column(
-                            children: [
-                              Image(
-                                image: const AssetImage(
-                                  ImageAssets.img_search_empty,
-                                ),
-                                height: 120.h,
-                                width: 120.w,
-                              ),
-                              SizedBox(
-                                height: 17.7.h,
-                              ),
-                              Text(
-                                S.current.no_result_found,
-                                style: textNormal(
-                                  Colors.white54,
-                                  20.sp,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
