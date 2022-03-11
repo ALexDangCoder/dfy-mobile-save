@@ -45,8 +45,10 @@ class Step1WhenSubmit extends StatefulWidget {
   const Step1WhenSubmit({
     Key? key,
     this.assetId,
+    this.cubit,
   }) : super(key: key);
   final String? assetId;
+  final ProvideHardNftCubit? cubit;
 
   @override
   _Step1WhenSubmitState createState() => _Step1WhenSubmitState();
@@ -58,7 +60,12 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
   @override
   void initState() {
     super.initState();
-    cubit = ProvideHardNftCubit();
+    if (widget.cubit != null) {
+      cubit = widget.cubit ?? ProvideHardNftCubit();
+    } else {
+      cubit = ProvideHardNftCubit();
+    }
+
     ///if from mintRequest Screen use it like param else
     ///default asset from cubit
     if (widget.assetId != null) {
@@ -91,6 +98,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
 
   Widget? _content(ProvideHardNftState state, BuildContext context) {
     if (state is CreateStep1Submitting) {
+      print('call here 1');
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -139,9 +147,14 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                     showLoadSuccess(context).then((_) {
                       /// đoạn này confirm blockchain xong thì check status cuả
                       /// để trở lại màn hình
-                      // Navigator.pop(context);
-                      // Navigator.pop(context);
-                      // cubit.checkStatusBeHandle();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      if (widget.assetId != null) {
+                        cubit.checkStatusBeHandle(
+                            assetId: widget.assetId ?? '');
+                      } else {
+                        cubit.checkStatusBeHandle(assetId: cubit.assetId);
+                      }
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -165,7 +178,10 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
             .then(
               (value) async => {
                 Navigator.pop(context),
-                await cubit.checkStatusBeHandle(assetId: cubit.assetId),
+                if (widget.assetId != null)
+                  await cubit.checkStatusBeHandle(assetId: widget.assetId ?? '')
+                else
+                  cubit.checkStatusBeHandle(assetId: cubit.assetId),
               },
             ),
       );
@@ -185,7 +201,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
       return RefreshIndicator(
         onRefresh: () async {
           if (cubit.statusWhenSubmit != null) {
-            if(widget.assetId != null) {
+            if (widget.assetId != null) {
               await cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
             } else {
               await cubit.checkStatusBeHandle(assetId: cubit.assetId);
@@ -203,7 +219,8 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
               ..pop();
           },
           title: S.current.provide_hard_nft_info,
-          bottomBar: _buttonByState(context),
+          bottomBar:
+              _buttonByState(context, assetIdMintRq: widget.assetId ?? ''),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,9 +453,10 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     }
   }
 
-  Widget _buttonByState(BuildContext context) {
+  Widget _buttonByState(BuildContext context, {required String assetIdMintRq}) {
     return StreamBuilder<StateButton>(
-      initialData: StateButton.DEFAULT,
+      initialData:
+          assetIdMintRq.isEmpty ? StateButton.PROCESSING : StateButton.DEFAULT,
       stream: cubit.stateButton.stream,
       builder: (context, snapshot) {
         if ((snapshot.data ?? StateButton.DEFAULT) ==
@@ -517,7 +535,6 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await cubit.getDataFromStep1ToModelToSave();
                       await cubit.putInfoToBlockChain();
                     },
                     child: ButtonGold(

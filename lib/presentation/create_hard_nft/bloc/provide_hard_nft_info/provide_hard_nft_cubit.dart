@@ -19,6 +19,7 @@ import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_m
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
+import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
@@ -183,15 +184,16 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     resultAsset.when(
       success: (res) {
         assetId = res.id ?? '';
-        emit(SubmittingFileFail());
+        emit(SubmittingFileSuccess());
       },
       error: (err) {
-        emit(SubmittingFileSuccess());
+        emit(SubmittingFileFail());
       },
     );
   }
 
   Future<void> putInfoToBlockChain() async {
+    print('call here');
     emit(CreateStep1Submitting());
     hexStringWeb3 = await getHexStringFromWeb3();
     if (hexStringWeb3.isEmpty) {

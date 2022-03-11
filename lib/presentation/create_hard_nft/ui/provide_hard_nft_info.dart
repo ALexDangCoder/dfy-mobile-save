@@ -63,6 +63,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
     final data = cubit.getInfoUserIsCreatedNft();
+    cubit.dataStep1.wallet = cubit.getAddressWallet();
     if (data != null) {
       currentInfo = data;
       cubit.mapValidate['country'] = true;
@@ -89,6 +90,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
+      bloc: cubit,
       listener: (context, state) {
         if (state is SubmittingFileLoading) {
           showDialog(
@@ -101,14 +103,19 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           );
         } else if (state is SubmittingFileSuccess) {
           showLoadSuccess(context).then(
-            (value) => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => const Step1WhenSubmit(),
-              ),
-            ).then((value) => Navigator.pop(context)),
+            (value) =>
+            { cubit.getDataFromStep1ToModelToSave(),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => Step1WhenSubmit(
+                    cubit: cubit,
+                  ),
+                ),
+              ).then((value) => Navigator.pop(context))
+            },
           );
-        } else if (state is SubmittingFileFail){
+        } else if (state is SubmittingFileFail) {
           showDialog(
             context: context,
             barrierDismissible: false,
