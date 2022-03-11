@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'filter_borrow.dart';
+
 class BorrowResult extends StatefulWidget {
   final String? nameToken;
   final String? amount;
@@ -60,11 +62,7 @@ class _BorrowResultState extends State<BorrowResult> {
             if (cubit.loadMoreRefresh) {
               cubit.personalLending.clear();
             }
-            if ((state.personalLending ?? []).isEmpty) {
-              cubit.showEmpty();
-            } else {
-              cubit.showContent();
-            }
+            cubit.showContent();
           } else {
             cubit.message = state.message ?? '';
             cubit.personalLending.clear();
@@ -110,8 +108,7 @@ class _BorrowResultState extends State<BorrowResult> {
                 isScrollControlled: true,
                 context: context,
                 builder: (_) {
-                  //TODO filter
-                  return const SizedBox();
+                  return FilterBorrow(cubit: cubit,);
                 },
               );
             },
@@ -180,7 +177,7 @@ class _BorrowResultState extends State<BorrowResult> {
                         ),
                         spaceH16,
                         SizedBox(
-                          height: 246.h,
+                          height: cubit.personalLending.isNotEmpty ? 246.h : 0,
                           child: ListView.builder(
                             padding: EdgeInsets.only(left: 16.w),
                             shrinkWrap: true,

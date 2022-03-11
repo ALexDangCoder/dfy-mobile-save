@@ -8,11 +8,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'borrow_result_state.dart';
 
 class BorrowResultCubit extends BaseCubit<BorrowResultState> {
   BorrowResultCubit() : super(BorrowResultInitial());
+
+  BehaviorSubject<String> focusTextField =
+  BehaviorSubject.seeded('');
 
   BorrowRepository get _repo => Get.find();
 

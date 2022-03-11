@@ -13,7 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest({Key? key}) : super(key: key);
+  const SendLoanRequest({Key? key, this.index = 1}) : super(key: key);
+  final int index;
 
   @override
   _SendLoanRequestState createState() => _SendLoanRequestState();
@@ -33,6 +34,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     checkLogin = cubit.getLoginState();
+    cubit.tabIndex.add(widget.index);
     _tabController = TabController(length: 2, vsync: this);
   }
 
