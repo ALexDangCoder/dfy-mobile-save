@@ -28,3 +28,13 @@ class CreateStep1SubmittingFail extends ProvideHardNftState {
   @override
   List<Object> get props => [];
 }
+
+class CreateStep1ButtonProcess extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}
+
+class CreateStep1ButtonFindEvaluator extends ProvideHardNftState {
+  @override
+  List<Object> get props => [];
+}

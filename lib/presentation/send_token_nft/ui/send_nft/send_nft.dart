@@ -1,13 +1,18 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
-import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/form_confirm_blockchain/ui/confirm_blockchain_category.dart';
 import 'package:Dfy/presentation/restore_account/ui/scan_qr.dart';
 import 'package:Dfy/presentation/send_token_nft/bloc/send_token_cubit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,11 +28,13 @@ class SendNft extends StatefulWidget {
     required this.nftInfo,
     required this.addressFrom,
     required this.imageWallet,
+    this.pageRouter,
   }) : super(key: key);
   final String addressFrom;
   final NftInfo nftInfo;
   final String nameWallet;
   final String imageWallet;
+  final PageRouter? pageRouter;
 
   @override
   _SendNftState createState() => _SendNftState();
@@ -77,7 +84,9 @@ class _SendNftState extends State<SendNft> {
                   context: context,
                   builder: (_) => const AlertDialog(
                     backgroundColor: Colors.transparent,
-                    content: TransactionSubmit(justLoading: true,),
+                    content: TransactionSubmit(
+                      justLoading: true,
+                    ),
                   ),
                 );
               } else {
@@ -97,20 +106,24 @@ class _SendNftState extends State<SendNft> {
                         quantity: int.parse(txtQuantity.text),
                         nameToken: 'BNB',
                         cubitCategory: sendNftCubit,
-                        gasPriceFirstFetch:
-                        sendNftCubit.gasPrice / 1000000000,
+                        gasPriceFirstFetch: sendNftCubit.gasPrice / 1000000000,
                         gasFeeFirstFetch:
-                        ((sendNftCubit.gasPrice / 1000000000) *
-                            sendNftCubit.gasLimitNft) /
-                            1000000000,
-                        gasLimitFirstFetch: sendNftCubit
-                            .gasLimitNft,
+                            ((sendNftCubit.gasPrice / 1000000000) *
+                                    sendNftCubit.gasLimitNft) /
+                                1000000000,
+                        gasLimitFirstFetch: sendNftCubit.gasLimitNft,
                         amount: 0,
                         nftInfo: widget.nftInfo,
                       );
                     },
+                    settings: const RouteSettings(
+                      name: AppRouter.send_nft_confirm_blockchain,
+                    ),
                   ),
-                ).then((value) => Navigator.pop(context));
+                ).then(
+                  (value) => Navigator.of(context).pop(
+                  ),
+                );
               }
             },
             bloc: sendNftCubit,
@@ -136,8 +149,8 @@ class _SendNftState extends State<SendNft> {
                             children: [
                               spaceH24,
                               formShowFtAddress(
-                                hintText: widget.addressFrom
-                                    .formatAddressWallet(),
+                                hintText:
+                                    widget.addressFrom.formatAddressWallet(),
                                 readOnly: true,
                                 prefixImg: ImageAssets.ic_from,
                                 suffixImg: '',
@@ -153,18 +166,16 @@ class _SendNftState extends State<SendNft> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (ctx) =>
-                                          QRViewExample(
-                                            controller: txtToAddressNft,
-                                          ),
+                                      builder: (ctx) => QRViewExample(
+                                        controller: txtToAddressNft,
+                                      ),
                                     ),
                                   ).then(
-                                        (_) =>
-                                    {
+                                    (_) => {
                                       txtToAddressNft.text =
                                           sendNftCubit.handleValueFromQR(
-                                            value: txtToAddressNft.text,
-                                          ),
+                                        value: txtToAddressNft.text,
+                                      ),
                                       sendNftCubit.checkValidateAddress(
                                         value: sendNftCubit.handleValueFromQR(
                                           value: txtToAddressNft.text,
@@ -207,16 +218,66 @@ class _SendNftState extends State<SendNft> {
                           ),
                           onTap: () async {
                             if (snapshot.data ?? false) {
-                              await sendNftCubit.getGasLimitNft(
-                                fromAddress: widget.addressFrom,
-                                toAddress: txtToAddressNft.text,
-                                contract: widget.nftInfo.contract ?? 'contract',
-                                symbol: widget.nftInfo.collectionSymbol ??
-                                    'symbol',
-                                id: widget.nftInfo.id ?? 'id',
-                                context: context,
-                              );
-
+                              if (widget.pageRouter == PageRouter.MY_ACC) {
+                                final hexString =
+                                    await sendNftCubit.getHexStringSendNft(
+                                  widget.nftInfo.contract ?? '',
+                                  widget.addressFrom,
+                                  txtToAddressNft.text,
+                                  widget.nftInfo.id ?? '',
+                                );
+                                goTo(
+                                  context,
+                                  Approve(
+                                    hexString: hexString,
+                                    onSuccessSign: (context, data) async {
+                                      await sendNftCubit.pushSendNftToBE(
+                                        bcTxnHash: hexString,
+                                        nftId: widget.nftInfo.nftId ?? '',
+                                        walletReceived: txtToAddressNft.text,
+                                      );
+                                      showLoadSuccess(context).then(
+                                        (value) {
+                                          Navigator.of(context)
+                                              .pop();
+                                          Navigator.of(context)
+                                              .pop();
+                                          Navigator.of(context)
+                                              .pop(txtToAddressNft.text);
+                                        }
+                                      );
+                                    },
+                                    onErrorSign: (context) {
+                                      showLoadFail(context);
+                                    },
+                                    listDetail: [
+                                      DetailItemApproveModel(
+                                        title: S.current.to,
+                                        value: txtToAddressNft.text
+                                            .formatAddressWalletConfirm(),
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: S.current.quantity,
+                                        value: '${txtQuantity.text} of 1',
+                                      ),
+                                    ],
+                                    title: S.current.transfer,
+                                    textActiveButton: S.current.transfer,
+                                    spender: widget.nftInfo.contract ?? '',
+                                  ),
+                                );
+                              } else {
+                                await sendNftCubit.getGasLimitNft(
+                                  fromAddress: widget.addressFrom,
+                                  toAddress: txtToAddressNft.text,
+                                  contract:
+                                      widget.nftInfo.contract ?? 'contract',
+                                  symbol: widget.nftInfo.collectionSymbol ??
+                                      'symbol',
+                                  id: widget.nftInfo.id ?? 'id',
+                                  context: context,
+                                );
+                              }
                             } else {
                               //nothing
                             }
@@ -280,12 +341,12 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: suffixImg == ''
                   ? const SizedBox(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : ImageIcon(
-                AssetImage(suffixImg),
-                color: AppTheme.getInstance().textThemeColor(),
-              ),
+                      AssetImage(suffixImg),
+                      color: AppTheme.getInstance().textThemeColor(),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),
@@ -340,24 +401,24 @@ class _SendNftState extends State<SendNft> {
               onTap: callBack,
               child: (isAmount && !isQuantity)
                   ? Center(
-                child: Text(
-                  S.current.max,
-                  style: textNormal(
-                    const Color.fromRGBO(228, 172, 26, 1),
-                    16,
-                  ).copyWith(fontWeight: FontWeight.w600),
-                ),
-              )
+                      child: Text(
+                        S.current.max,
+                        style: textNormal(
+                          const Color.fromRGBO(228, 172, 26, 1),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    )
                   : Padding(
-                padding: EdgeInsets.only(right: 20.w, top: 16.h),
-                child: Text(
-                  '${S.current.of_all} 1',
-                  style: textNormal(
-                    AppTheme.getInstance().textThemeColor(),
-                    16,
-                  ).copyWith(fontWeight: FontWeight.w400),
-                ),
-              ),
+                      padding: EdgeInsets.only(right: 20.w, top: 16.h),
+                      child: Text(
+                        '${S.current.of_all} 1',
+                        style: textNormal(
+                          AppTheme.getInstance().textThemeColor(),
+                          16,
+                        ).copyWith(fontWeight: FontWeight.w400),
+                      ),
+                    ),
             ),
             prefixIcon: ImageIcon(
               AssetImage(prefixImg),

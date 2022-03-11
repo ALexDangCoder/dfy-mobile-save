@@ -15,23 +15,59 @@ Widget _leading(BuildContext context) => InkWell(
 Widget action(
   BuildContext context,
   String collectionAddress,
+  bool isOwner,
   String nftTokenId,
   String walletAddress,
+  String nftId,
+  NFTDetailBloc bloc,
+    NftMarket nftMarket,
+  Function reload,
 ) {
-  final NftInfo nftInfo = NftInfo(contract: collectionAddress, id: nftTokenId);
+  final NftInfo nftInfo = NftInfo(
+    contract: collectionAddress.toLowerCase(),
+    id: nftTokenId,
+    nftId: nftMarket.id,
+    collectionSymbol: 'DFY-NFT',
+    collectionId: nftMarket.collectionID?.toLowerCase(),
+    collectionName: nftMarket.collectionName,
+  );
   return InkWell(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SendNft(
-            nftInfo: nftInfo,
-            addressFrom: walletAddress,
-            imageWallet: '',
-            nameWallet: '',
+      if (isOwner) {
+        final result = Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SendNft(
+              nftInfo: nftInfo,
+              addressFrom: walletAddress.toLowerCase(),
+              imageWallet: '',
+              nameWallet: '',
+              pageRouter: PageRouter.MY_ACC,
+            ),
+            settings: const RouteSettings(
+              name: AppRouter.send_nft,
+            ),
           ),
-        ),
-      );
+        );
+        result.then((value) {
+          if (value != null) {
+            nftMarket.processStatus = 3;
+            bloc.emit(NftNotOnMarketSuccess(nftMarket));
+            Timer(const Duration(seconds: 30), () {
+              bloc.emit(NFTDetailInitial());
+              nftMarket.processStatus = 0;
+              bloc.emit(NftNotOnMarketSuccess(nftMarket));
+              showDialogSuccess(
+                context,
+                alert: S.current.transfer_success,
+                text: S.current.transfer_success_to + value.toString(),
+              );
+            });
+          }
+        });
+      } else {
+        showAlert(context, walletAddress);
+      }
     },
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),

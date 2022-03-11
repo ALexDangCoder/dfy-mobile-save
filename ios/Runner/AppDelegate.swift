@@ -749,7 +749,7 @@ extension AppDelegate {
                                     gasLimit: String,
                                     tokenId: String, gasFee: String, amount: String, symbol: String) -> [String: Any] {
         var param = [String: Any]()
-        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress == walletAddress})
+        let walletModel = SharedPreference.shared.getListWallet().first(where: {$0.walletAddress.lowercased() == walletAddress.lowercased()})
         if let walletModel = walletModel, !walletModel.privateKey.isEmpty {
             let privateKey = PrivateKey(data: walletModel.privateKey.hexadecimal!)!
             let signerInput = EthereumSigningInput.with {

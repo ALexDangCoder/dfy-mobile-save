@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/model_token.dart';
@@ -10,6 +11,7 @@ import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -158,16 +160,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitSuccess(),
               ),
-            ).then(
-              (value) => Navigator.of(context).pushAndRemoveUntil(
+            ).then((value) async {
+              await Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => const MainScreen(
                     index: walletInfoIndex,
                   ),
                 ),
                 (route) => route.isFirst,
-              ),
-            );
+              );
+            });
           } else if (state is FormBlockchainSendNftLoading) {
             showDialog(
               barrierDismissible: false,
@@ -184,16 +186,16 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                 backgroundColor: Colors.transparent,
                 content: TransactionSubmitFail(),
               ),
-            ).then(
-              (value) => Navigator.of(context).pushAndRemoveUntil(
+            ).then((value) {
+              Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => const MainScreen(
                     index: walletInfoIndex,
                   ),
                 ),
                 (route) => route.isFirst,
-              ),
-            );
+              );
+            });
           } else if (state is FormBlockchainSendTokenLoading) {
             showDialog(
               barrierDismissible: false,
@@ -403,8 +405,8 @@ class _ConfirmBlockchainCategoryState extends State<ConfirmBlockchainCategory> {
                                         '${double.parse(_txtGasLimit.text) / 100000000} ${widget.nameTokenWallet}',
                                     //todo hardcode amount 1
                                     amount: widget.quantity.toString(),
-                                    symbol:
-                                        widget.nftInfo?.collectionSymbol ?? '',
+                                    symbol: widget.nftInfo?.collectionSymbol ??
+                                        'DFY-NFT',
                                   );
                                   break;
                                 case TYPE_CONFIRM.SEND_OFFER:

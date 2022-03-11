@@ -178,6 +178,7 @@ class DetailNftMyAccResponse {
         collectionName: collectionName,
         numberOfCopies: numberOfCopies,
         marketType: getTypeMarket(marketStatus ?? 0),
+        marketStatus: marketStatus,
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,

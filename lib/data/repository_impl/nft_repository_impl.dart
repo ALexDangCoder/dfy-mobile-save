@@ -195,9 +195,10 @@ class NFTRepositoryImpl implements NFTRepository {
   }
 
   @override
-  Future<Result<String>> rejectOffer(int idOffer) {
+  Future<Result<String>> rejectOffer(
+      String walletAddress, int idOffer, int idCollateral) {
     return runCatchingAsync<String, String>(
-      () => _nftClient.rejectOffer(idOffer),
+      () => _nftClient.rejectOffer(walletAddress, idCollateral, idOffer),
       (response) => response.toString(),
     );
   }
@@ -222,8 +223,7 @@ class NFTRepositoryImpl implements NFTRepository {
   Future<Result<NftMarket>> getDetailNft(
       String collectionAddress, String nftTokenId) {
     return runCatchingAsync<HardNftResponse, NftMarket>(
-      () =>
-          _nftClient.getDetailNft(collectionAddress, nftTokenId),
+      () => _nftClient.getDetailNft(collectionAddress, nftTokenId),
       (response) => response.item?.toOnSale() ?? NftMarket.init(),
     );
   }

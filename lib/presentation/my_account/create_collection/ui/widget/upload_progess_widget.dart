@@ -5,12 +5,14 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/collection_list/ui/collection_list.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/create_collection_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_collection/bloc/extension/call_api_be.dart';
 import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -20,6 +22,7 @@ import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class UploadProgress extends StatefulWidget {
   final CreateCollectionCubit bloc;
@@ -40,6 +43,7 @@ class _UploadProgressState extends State<UploadProgress>
   void initState() {
     // TODO: implement initState
     super.initState();
+    final appConstants = Get.find<AppConstants>();
     final int rdC = Random().nextInt(3);
     _avatarAnimationController = AnimationController(
       vsync: this,
@@ -116,7 +120,7 @@ class _UploadProgressState extends State<UploadProgress>
                 ),
                 DetailItemApproveModel(
                   title: 'URL:',
-                  value: widget.bloc.customUrl,
+                  value: appConstants.baseCustomUrl + widget.bloc.customUrl,
                 ),
                 DetailItemApproveModel(
                   title: '${S.current.categories}:',
@@ -130,8 +134,8 @@ class _UploadProgressState extends State<UploadProgress>
               title: S.current.create_collection,
               textActiveButton: S.current.create,
               spender: widget.bloc.collectionType == HARD_COLLECTION
-                  ? hard_nft_factory_address_dev2
-                  : nft_factory_dev2,
+                  ? Get.find<AppConstants>().hardNftFactory
+                  : Get.find<AppConstants>().nftFactory,
             ),
           ),
         );

@@ -489,17 +489,17 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   String getImage() {
     switch (widget.evaluation.assetType?.id ?? 0) {
       case 1:
-        return ImageAssets.img_diamond;
+        return ImageAssets.diamond;
       case 2:
-        return ImageAssets.img_artwork;
+        return ImageAssets.artWork;
       case 3:
-        return ImageAssets.img_car;
+        return ImageAssets.car;
       case 4:
-        return ImageAssets.img_watch;
+        return ImageAssets.watch;
       case 5:
-        return ImageAssets.img_house;
+        return ImageAssets.house;
       default:
-        return ImageAssets.img_other;
+        return ImageAssets.others;
     }
   }
 

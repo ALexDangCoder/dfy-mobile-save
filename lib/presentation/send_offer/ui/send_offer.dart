@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_on_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -23,6 +24,7 @@ import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SendOffer extends StatefulWidget {
   const SendOffer({Key? key, required this.nftOnPawn}) : super(key: key);
@@ -35,13 +37,12 @@ class SendOffer extends StatefulWidget {
 class _SendOfferState extends State<SendOffer> {
   final Map<GlobalKey, bool> validator = {};
   final SendOfferCubit _cubit = SendOfferCubit();
-  int loanDurationType = 0;
+  int loanDurationType = 1;
   String duration = '';
   late String loanAmount;
-  int repaymentCycleType = 0;
   String interest = '';
   String shortName = DFY;
-  String repaymentAsset = contract_defy;
+  String repaymentAsset = Get.find<AppConstants>().contract_defy;
 
   String message = '';
 
@@ -53,14 +54,14 @@ class _SendOfferState extends State<SendOffer> {
 
   Future<void> getHexStringThenNav() async {
     await _cubit
-        . getPawnHexString(
+        .getPawnHexString(
           nftCollateralId: widget.nftOnPawn.bcCollateralId.toString(),
           repaymentAsset: repaymentAsset,
           loanAmount: loanAmount,
           interest: interest,
           duration: duration,
           loanDurationType: loanDurationType,
-          repaymentCycleType: repaymentCycleType,
+          repaymentCycleType: loanDurationType,
           context: context,
         )
         .then(
@@ -131,7 +132,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        '$duration ${repaymentCycleType == 0 ? S.current.month : S.current.week}',
+                        '$duration ${loanDurationType == 1 ? S.current.month : S.current.week}',
                         style: textNormalCustom(
                           AppTheme.getInstance().textThemeColor(),
                           16,
@@ -157,7 +158,7 @@ class _SendOfferState extends State<SendOffer> {
                       flexLeft: 3,
                       flexRight: 2,
                       child: Text(
-                        repaymentCycleType == 0
+                        loanDurationType == 1
                             ? S.current.month
                             : S.current.week,
                         style: textNormalCustom(
@@ -170,21 +171,36 @@ class _SendOfferState extends State<SendOffer> {
                   ],
                 ),
                 onSuccessSign: (context, data) async {
+                  // final Map<String, dynamic> sendOfferRequest = {
+                  //   'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
+                  //   'description': message,
+                  //   'durationQty': int.parse(duration),
+                  //   'durationType': loanDurationType,
+                  //   'interestRate': num.parse(interest),
+                  //   'liquidationThreshold': 0,
+                  //   'loanAmount': double.parse(loanAmount),
+                  //   'loanToValue': 0,
+                  //   'repaymentCycleType': loanDurationType,
+                  //   'repaymentTokenSymbol': shortName,
+                  //   'txid': data,
+                  //   'walletAddress': PrefsService.getCurrentBEWallet(),
+                  // };
                   final Map<String, dynamic> sendOfferRequest = {
-                    'cryptoCollateralId': widget.nftOnPawn.id ?? 0,
-                    'description': message,
-                    'durationQty': int.parse(duration),
+                    'collateralId': widget.nftOnPawn.id ?? 0,
+                    'message': message,
+                    'duration': int.parse(duration),
                     'durationType': loanDurationType,
                     'interestRate': num.parse(interest),
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
-                    'repaymentCycleType': repaymentCycleType,
-                    'repaymentTokenSymbol': shortName,
-                    'txid': data,
+                    'repaymentCycleType': loanDurationType,
+                    'supplyCurrency': shortName,
+                    'repaymentToken': shortName,
+                    'latestBlockchainTxn': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
                   };
-                  _cubit.sendOffer(
+                  await _cubit.sendOffer(
                       offerRequest:
                           SendOfferRequest.fromJson(sendOfferRequest));
                   await showLoadSuccess(context)
@@ -225,7 +241,7 @@ class _SendOfferState extends State<SendOffer> {
                 textActiveButton: S.current.send_offer,
                 tokenAddress: repaymentAsset,
                 hexString: value,
-                spender: nft_pawn_dev2,
+                spender: Get.find<AppConstants>().nftPawn,
               ),
             ),
           ),
@@ -236,23 +252,23 @@ class _SendOfferState extends State<SendOffer> {
   Widget build(BuildContext context) {
     final List<Map<String, String>> listValueDuration = [
       {
+        'value': ID_WEEK.toString(),
+        'label': S.current.week,
+      },
+      {
         'value': ID_MONTH.toString(),
         'label': S.current.month,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.week,
-      }
     ];
     final List<Map<String, String>> listValueInterest = [
+      {
+        'value': ID_WEEK.toString(),
+        'label': S.current.weekly,
+      },
       {
         'value': ID_MONTH.toString(),
         'label': S.current.monthly,
       },
-      {
-        'value': ID_WEEK.toString(),
-        'label': S.current.weekly,
-      }
     ];
     final List<Map<String, dynamic>> listValueToken =
         widget.nftOnPawn.expectedCollateralSymbol == DFY
@@ -264,7 +280,7 @@ class _SendOfferState extends State<SendOffer> {
                     height: 20.h,
                     child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
                   ),
-                  'contract': contract_defy
+                  'contract': Get.find<AppConstants>().contract_defy
                 },
               ]
             : [
@@ -275,7 +291,7 @@ class _SendOfferState extends State<SendOffer> {
                     height: 20.h,
                     child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
                   ),
-                  'contract': contract_defy
+                  'contract': Get.find<AppConstants>().contract_defy
                 },
                 {
                   'value': ID_WEEK.toString(),
@@ -296,8 +312,9 @@ class _SendOfferState extends State<SendOffer> {
       title: S.current.send_offer,
       isImage: true,
       onRightClick: () {
-        Navigator.popUntil(
-            context, (route) => route.settings.name == AppRouter.listNft);
+        Navigator.of(context)
+          ..pop()
+          ..pop();
       },
       text: ImageAssets.ic_close,
       bottomBar: Container(
@@ -518,7 +535,7 @@ class _SendOfferState extends State<SendOffer> {
                         width: 100.w,
                         child: StreamBuilder<int>(
                           stream: _cubit.streamIndex,
-                          initialData: 0,
+                          initialData: 1,
                           builder: (context, snapshot) {
                             return Center(
                               child: CustomDropDown(
@@ -580,7 +597,7 @@ class _SendOfferState extends State<SendOffer> {
                             listValue: listValueInterest,
                             textValue: (value) {
                               _cubit.sinkIndex.add(int.parse(value['value']!));
-                              repaymentCycleType = int.parse(value['value']);
+                              loanDurationType = int.parse(value['value']);
                             },
                             index: snapshot.data!,
                           );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'component/custom_calandar.dart';
@@ -62,7 +64,6 @@ class _AuctionTabState extends State<AuctionTab>
 
   @override
   void initState() {
-    // TODO: implement initState
     final now = DateFormat('yyyy-MM-dd').format(DateTime.now());
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.numberOfCopies = 1;
@@ -71,8 +72,7 @@ class _AuctionTabState extends State<AuctionTab>
     widget.cubit.changeTokenSale(
       indexToken: 0,
     );
-    _putOnMarketModel.tokenAddress =
-        widget.cubit.listToken[0].address ?? '';
+    _putOnMarketModel.tokenAddress = widget.cubit.listToken[0].address ?? '';
     _tokenInf = widget.cubit.listToken[0];
     super.initState();
   }
@@ -96,29 +96,18 @@ class _AuctionTabState extends State<AuctionTab>
           errorTextStartTime = S.current.start_time_auction;
         });
         widget.cubit.timeValidate = false;
-      } else if ((durationTime ?? 0) > 10 || (durationTime ?? 0) < 0) {
+      } else if (difference < 12) {
         setState(() {
           errorTextStartTime = null;
           errorTextEndTime = S.current.min_duration_auction;
         });
-      }
-      // todo
-
-
-      // else if (difference < 12) {
-      //   setState(() {
-      //     errorTextStartTime = null;
-      //     errorTextEndTime = S.current.min_duration_auction;
-      //   });
-      //   widget.cubit.timeValidate = false;
-      // } else
-      // if (difference > 168) {
-      //   setState(() {
-      //     errorTextEndTime = S.current.max_duration_auction;
-      //   });
-      //   widget.cubit.timeValidate = false;
-      // }
-      else {
+        widget.cubit.timeValidate = false;
+      } else if (difference > 168) {
+        setState(() {
+          errorTextEndTime = S.current.max_duration_auction;
+        });
+        widget.cubit.timeValidate = false;
+      } else {
         setState(() {
           errorTextStartTime = null;
           errorTextEndTime = null;
@@ -217,35 +206,37 @@ class _AuctionTabState extends State<AuctionTab>
                   ),
                 ],
                 maxSize: 100,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 typeInput: widget.cubit.listToken
                     .map(
                       (e) => SizedBox(
-                    height: 64,
-                    width: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Image.network(
-                            e.iconUrl ?? '',
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Flexible(
-                          child: Text(
-                            e.symbol ?? '',
-                            style: textValueNFT.copyWith(
-                              decoration: TextDecoration.none,
+                        height: 64,
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Image.network(
+                                e.iconUrl ?? '',
+                                height: 20,
+                                width: 20,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                            const SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                e.symbol ?? '',
+                                style: textValueNFT.copyWith(
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                     .toList(),
                 hintText: S.current.enter_price,
                 onChangeType: (index) {
@@ -754,7 +745,7 @@ class _AuctionTabState extends State<AuctionTab>
                                       return route.settings.name ==
                                           AppRouter.putOnSale;
                                     });
-                                    nav.pop(true);
+                                    nav.pop(PUT_ON_AUCTION);
                                   });
                                 } else {
                                   await showLoadFail(context);
@@ -796,7 +787,7 @@ class _AuctionTabState extends State<AuctionTab>
                                 ),
                               ],
                               textActiveButton: S.current.put_on_auction,
-                              spender: nft_auction_dev2,
+                              spender: Get.find<AppConstants>().nftAuction,
                               isPutOnMarket: true,
                             ),
                           ),
@@ -860,7 +851,7 @@ class _AuctionTabState extends State<AuctionTab>
                           context: context,
                           builder: (_) => BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child:  AlertDialog(
+                            child: AlertDialog(
                               elevation: 0,
                               backgroundColor: Colors.transparent,
                               content: PickTime(

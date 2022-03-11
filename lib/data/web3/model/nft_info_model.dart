@@ -11,6 +11,7 @@ class NftInfo {
   String? blockchain = 'Binance smart chain';
   String? collectionSymbol;
   String? collectionName;
+  String? nftId;
 
   NftInfo({
     this.contract,
@@ -22,6 +23,7 @@ class NftInfo {
     this.blockchain,
     this.collectionSymbol,
     this.collectionName,
+    this.nftId,
   });
 
   NftInfo.fromJson(Map<String, dynamic> json) {
