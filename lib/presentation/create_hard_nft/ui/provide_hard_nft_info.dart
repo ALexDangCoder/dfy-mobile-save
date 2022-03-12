@@ -51,6 +51,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   late UserInfoCreateHardNft? currentInfo;
   String hardNftName = '';
   String additionalInfo = '';
+  bool isEdit = false; //this var checkWhenUserCombackToEdit
 
   @override
   void initState() {
@@ -88,6 +89,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   }
 
   @override
+  void dispose() {
+    isEdit = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
       bloc: cubit,
@@ -103,16 +109,17 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           );
         } else if (state is SubmittingFileSuccess) {
           showLoadSuccess(context).then(
-            (value) =>
+            (value) async =>
             { cubit.getDataFromStep1ToModelToSave(),
-              Navigator.push(
+              isEdit = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (ctx) => Step1WhenSubmit(
                     cubit: cubit,
                   ),
                 ),
-              ).then((value) => Navigator.pop(context))
+              ),
+              Navigator.pop(context),
             },
           );
         } else if (state is SubmittingFileFail) {
@@ -570,7 +577,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     return GestureDetector(
                       onTap: () async {
                         if (snapshot.data ?? false) {
-                          await cubit.postFileMediaFeatDocToBe();
+                          await cubit.postFileMediaFeatDocToBe(isEdit: isEdit);
                         } else {
                           //nothing
                         }

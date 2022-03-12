@@ -99,7 +99,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   final BehaviorSubject<bool> isPlayingAudioSubject = BehaviorSubject();
   String currentVideo = '';
 
-  Future<void> postFileMediaFeatDocToBe() async {
+  Future<void> postFileMediaFeatDocToBe({
+    bool isEdit = false,
+  }) async {
+    if (isEdit) {
+      mediasRequest.clear();
+      documentsRequest.clear();
+    } else {}
     emit(SubmittingFileLoading());
     final listCidMedia = [];
     final listCidDocument = [];
@@ -213,9 +219,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     bool isRefresh = false,
   }) async {
     //huy
-    await getDetailAssetHardNFT(
-      assetId: assetId, isRefresh: isRefresh
-    );
+    await getDetailAssetHardNFT(assetId: assetId, isRefresh: isRefresh);
     if (statusWhenSubmit == 2) {
       stateButton.sink.add(StateButton.FINDEVALUATOR);
     } else if (statusWhenSubmit == 1) {
@@ -275,9 +279,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }) async {
     if (isRefresh) {
       showLoading();
-    } else {
-
-    }
+    } else {}
     final Result<ItemDataAfterPutModel> result =
         await _step1Repository.getDetailAssetHardNFT(
       assetId,

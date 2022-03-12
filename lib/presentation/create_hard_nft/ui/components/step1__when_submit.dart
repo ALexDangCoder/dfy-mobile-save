@@ -575,7 +575,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                     child: ButtonGold(
                       haveGradient: false,
