@@ -53,6 +53,12 @@ enum StateButton {
   FINDEVALUATOR,
 }
 
+enum TypeMedia {
+  IMAGE,
+  VID,
+  NOT_IMG_VID,
+}
+
 class PropertyModel {
   String value;
   String property;
@@ -193,7 +199,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   Future<void> putInfoToBlockChain() async {
-    print('call here');
     emit(CreateStep1Submitting());
     hexStringWeb3 = await getHexStringFromWeb3();
     if (hexStringWeb3.isEmpty) {
@@ -203,9 +208,14 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
-  Future<void> checkStatusBeHandle({required String assetId}) async {
+  Future<void> checkStatusBeHandle({
+    required String assetId,
+    bool isRefresh = false,
+  }) async {
     //huy
-    await getDetailAssetHardNFT(assetId: assetId);
+    await getDetailAssetHardNFT(
+      assetId: assetId, isRefresh: isRefresh
+    );
     if (statusWhenSubmit == 2) {
       stateButton.sink.add(StateButton.FINDEVALUATOR);
     } else if (statusWhenSubmit == 1) {
@@ -261,7 +271,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
 
   Future<void> getDetailAssetHardNFT({
     required String assetId,
+    bool isRefresh = false,
   }) async {
+    if (isRefresh) {
+      showLoading();
+    } else {
+
+    }
     final Result<ItemDataAfterPutModel> result =
         await _step1Repository.getDetailAssetHardNFT(
       assetId,
@@ -283,6 +299,17 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         showError();
       },
     );
+  }
+
+  TypeMedia handleTypeImgOrVid() {
+    if (((dataDetailAsset.mediaList ?? [])[0].type ?? '').contains('image')) {
+      return TypeMedia.IMAGE;
+    } else if (((dataDetailAsset.mediaList ?? [])[0].type ?? '')
+        .contains('video')) {
+      return TypeMedia.VID;
+    } else {
+      return TypeMedia.NOT_IMG_VID;
+    }
   }
 
   final List<AdditionalInfoListRequest> listAddtional = [];

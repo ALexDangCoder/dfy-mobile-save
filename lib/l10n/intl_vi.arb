@@ -734,5 +734,7 @@
   "put_on_pawn_success": "Đưa lên thế chấp",
   "check_data_on_market": "NFT của bạn đã được đưa lên ",
   "you_must_have_five": "Bạn cần ít nhất 50 DFY để đặt lịch với người định giá.",
-  "processings": "Đang xử lý"
+  "processings": "Đang xử lý",
+  "and": "Và",
+  "other_file": "tệp khác"
 }

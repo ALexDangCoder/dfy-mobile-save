@@ -9,12 +9,14 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_bo
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -30,6 +32,7 @@ import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 enum NFT_TYPE {
   JEWELRY,
@@ -188,9 +191,13 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
         onRefresh: () async {
           if (cubit.statusWhenSubmit != null) {
             if (widget.assetId != null) {
-              await cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
+              await cubit.checkStatusBeHandle(
+                  assetId: widget.assetId ?? '', isRefresh: true);
             } else {
-              await cubit.checkStatusBeHandle(assetId: cubit.assetId);
+              await cubit.checkStatusBeHandle(
+                assetId: cubit.assetId,
+                isRefresh: true,
+              );
             }
           } else {}
         },
@@ -224,15 +231,14 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                   ),
                 ),
                 spaceH20,
-                /// chỉ đúng với case từ create step 1 sang, còn case 2 sẽ bị fail,
-                //todo handle case này nếu từ màn create step1 sang thihf hiện full
-                ///còn từ màn min request sẽ chỉ hiển thị vid or image còn lại không nhé
-                _buildPictureVidHardNft(),
-                UploadImageWidget(
-                  //widget chỉ từ step 1 sang
-                  cubit: cubit,
-                  showAddMore: false,
-                ),
+                if ((widget.assetId ?? '').isNotEmpty)
+                  _buildPictureVidHardNft()
+                else
+                  UploadImageWidget(
+                    //widget chỉ từ step 1 sang
+                    cubit: cubit,
+                    showAddMore: false,
+                  ),
                 spaceH20,
                 _widgetListDocument(),
                 textShowWithPadding(
@@ -443,7 +449,71 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     }
   }
 
-
+  Widget _buildPictureVidHardNft() {
+    if (cubit.handleTypeImgOrVid() == TypeMedia.VID) {
+      return Column(
+        children: [
+          VideoPlayerView(
+            urlVideo:
+                '${ApiConstants.URL_BASE}${(cubit.dataDetailAsset.mediaList ?? [])[0].cid}',
+            isJustWidget: true,
+          ),
+          spaceH8,
+          if ((cubit.dataDetailAsset.mediaList ?? []).length > 2)
+            textShowWithPadding(
+              textShow:
+                  '${S.current.and} ${(cubit.dataDetailAsset.mediaList ?? []).length - 1} ${S.current.other_file}',
+              txtStyle: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                24,
+                FontWeight.w600,
+              ),
+            )
+          else
+            Container(),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          FadeInImage.assetNetwork(
+            placeholder: ImageAssets.image_loading,
+            image:
+                '${ApiConstants.URL_BASE}${(cubit.dataDetailAsset.mediaList ?? [])[0].cid}',
+            imageCacheHeight: 290,
+            imageErrorBuilder: (context, url, error) {
+              return Center(
+                child: Text(
+                  S.current.unload_image,
+                  style: textNormalCustom(
+                    Colors.white,
+                    14,
+                    FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            },
+            placeholderCacheHeight: 200,
+            fit: BoxFit.cover,
+          ),
+          spaceH8,
+          if ((cubit.dataDetailAsset.mediaList ?? []).length > 2)
+            textShowWithPadding(
+              textShow:
+                  '${S.current.and} ${(cubit.dataDetailAsset.mediaList ?? []).length - 1} ${S.current.other_file}',
+              txtStyle: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                24,
+                FontWeight.w600,
+              ),
+            )
+          else
+            Container(),
+        ],
+      );
+    }
+  }
 
   Widget _buttonByState(BuildContext context, {required String assetIdMintRq}) {
     return StreamBuilder<StateButton>(
@@ -833,4 +903,3 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     );
   }
 }
-
