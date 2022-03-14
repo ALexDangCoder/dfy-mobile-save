@@ -187,6 +187,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   ];
 
   void getTokensRequestNft() {
+    if(listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
+      listTokenSupport.clear();
+      listDropDownToken.clear();
+    }
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     listDropDownToken.add({
