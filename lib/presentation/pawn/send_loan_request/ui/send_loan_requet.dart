@@ -27,7 +27,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     cubit = SendLoanRequestCubit();
     trustWalletChannel
