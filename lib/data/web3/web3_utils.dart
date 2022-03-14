@@ -1129,11 +1129,11 @@ class Web3Utils {
       function: function,
       parameters: [
         EthereumAddress.fromHex(collateralAddress),
-        packageId,
+        BigInt.from(num.parse(packageId)),
         BigInt.from(num.parse(amount)),
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(expectedDurationQty)),
-        expectedDurationType,
+        BigInt.from(expectedDurationType),
       ],
     );
     return hex.encode(createCollateral.data ?? []);
