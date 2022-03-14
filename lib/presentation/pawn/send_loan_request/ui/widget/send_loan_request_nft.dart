@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/form_dropdown.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/list_select_nft_collateral.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -44,32 +45,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DottedBorder(
-              radius: Radius.circular(20.r),
-              borderType: BorderType.RRect,
-              color: AppTheme.getInstance().dashedColorContainer(),
-              child: Container(
-                height: 172.h,
-                width: 343.w,
-                padding: EdgeInsets.only(top: 47.h),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      ImageAssets.createNft,
-                    ),
-                    spaceH16,
-                    Text(
-                      'Choose your NFT',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        14,
-                        FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            _chooseNftFtFillNft(context),
             spaceH36,
             Text(
               'Message',
@@ -208,6 +184,47 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
               isEnable: true,
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _chooseNftFtFillNft(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ListSelectNftCollateral(cubit: widget.cubit);
+            },
+          ),
+        );
+      },
+      child: DottedBorder(
+        radius: Radius.circular(20.r),
+        borderType: BorderType.RRect,
+        color: AppTheme.getInstance().dashedColorContainer(),
+        child: Container(
+          height: 172.h,
+          width: 343.w,
+          padding: EdgeInsets.only(top: 47.h),
+          child: Column(
+            children: [
+              Image.asset(
+                ImageAssets.createNft,
+              ),
+              spaceH16,
+              Text(
+                'Choose your NFT',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

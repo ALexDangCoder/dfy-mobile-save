@@ -1,5 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
@@ -31,10 +32,9 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
-    String walletAddress,
-    String packageId,
-    String page,
-  );
+      String walletAddress,
+      String packageId,
+      String page,);
 
   Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
     String? collateralAmount,
@@ -64,6 +64,12 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<NftMarket>>> getListNFTCollateral({
+    String? page,
+    String? size,
+  });
+
+  Future<Result<List<ContentNftOnRequestLoanModel>>> getListNftOnLoanRequest({
+    String walletAddress,
     String? page,
     String? size,
   });

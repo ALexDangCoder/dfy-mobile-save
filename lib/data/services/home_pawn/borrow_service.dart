@@ -5,6 +5,7 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
@@ -88,5 +89,14 @@ abstract class BorrowService {
   Future<CollateralNFTResponse> getListNFTCollateral(
     @Query('page') String? page,
     @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_NFT_SEND_lOAN_REQUEST)
+  Future<NftOnRequestLoanResponse> getListNftOnRequestLoan(
+    @Query('walletAddress') String walletAddress,
+    @Query('page') String? page,
+    @Query('page') String? size,
+    @Query('name') String? nameSearch,
+    @Query('nftType') String? nftType,
   );
 }

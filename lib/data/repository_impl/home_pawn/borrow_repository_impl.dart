@@ -5,9 +5,11 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
@@ -173,6 +175,28 @@ class BorrowRepositoryImpl implements BorrowRepository {
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<ContentNftOnRequestLoanModel>>> getListNftOnLoanRequest({
+    String? walletAddress,
+    String? page,
+    String? size,
+    String? nameSearch,
+    String? nftType,
+  }) {
+    return runCatchingAsync<NftOnRequestLoanResponse,
+        List<ContentNftOnRequestLoanModel>>(
+      () => _client.getListNftOnRequestLoan(
+        walletAddress ?? '',
+        page,
+        size,
+        nameSearch,
+        nftType,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toModel()).toList() ?? [],
     );
   }
 }
