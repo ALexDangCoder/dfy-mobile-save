@@ -56,8 +56,10 @@ class PersonalLending {
 
 class P2PLenderPackages {
   List<AcceptableAssetsAsCollateral>? acceptableAssetsAsCollateral;
+  int? id;
+  int? type;
 
-  P2PLenderPackages({this.acceptableAssetsAsCollateral});
+  P2PLenderPackages({this.acceptableAssetsAsCollateral,this.id,this.type});
 }
 
 class AcceptableAssetsAsCollateral {
