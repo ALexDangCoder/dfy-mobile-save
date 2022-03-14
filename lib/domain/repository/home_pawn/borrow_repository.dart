@@ -12,6 +12,7 @@ mixin BorrowRepository {
     String? loanToValueRanges,
     String? loanSymbols,
     String? loanType,
+    String? duration,
     String? page,
   });
 
@@ -24,6 +25,7 @@ mixin BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? duration,
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(

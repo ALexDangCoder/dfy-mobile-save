@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/bloc/borrow_result_cubit.dart';
@@ -39,6 +40,7 @@ class _BorrowResultState extends State<BorrowResult> {
     // TODO: implement initState
     super.initState();
     cubit = BorrowResultCubit();
+    cubit.getTokenInf();
     cubit.callApi(
       collateralSymbols:
           widget.nameToken != S.current.all ? widget.nameToken : '',
@@ -59,7 +61,7 @@ class _BorrowResultState extends State<BorrowResult> {
       listener: (context, state) {
         if (state is BorrowPersonSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (cubit.loadMoreRefresh) {
+            if (cubit.refresh) {
               cubit.personalLending.clear();
             }
             cubit.showContent();
@@ -69,20 +71,17 @@ class _BorrowResultState extends State<BorrowResult> {
             cubit.showError();
           }
           cubit.personalLending.addAll(state.personalLending ?? []);
-          cubit.canLoadMore =
+          cubit.canLoadMoreList =
               cubit.personalLending.length >= ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMoreLoading = false;
+          cubit.loadMore = false;
+          cubit.refresh = false;
         }
         if (state is BorrowPawnshopSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (cubit.loadMoreRefresh) {
+            if (cubit.refresh) {
               cubit.pawnshopPackage.clear();
             }
-            if ((state.pawnshopPackage ?? []).isEmpty) {
-              cubit.showEmpty();
-            } else {
-              cubit.showContent();
-            }
+            cubit.showContent();
           } else {
             cubit.message = state.message ?? '';
             cubit.pawnshopPackage.clear();
@@ -90,9 +89,10 @@ class _BorrowResultState extends State<BorrowResult> {
           }
           cubit.pawnshopPackage =
               cubit.pawnshopPackage + (state.pawnshopPackage ?? []);
-          cubit.canLoadMore =
+          cubit.canLoadMoreList =
               cubit.pawnshopPackage.length >= ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMoreLoading = false;
+          cubit.loadMore = false;
+          cubit.refresh = false;
         }
       },
       builder: (context, state) {
@@ -119,7 +119,7 @@ class _BorrowResultState extends State<BorrowResult> {
               height: 699.h,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
-                  if (cubit.canLoadMore &&
+                  if (cubit.canLoadMoreList &&
                       scrollInfo.metrics.pixels ==
                           scrollInfo.metrics.maxScrollExtent) {
                     cubit.loadMorePosts();
@@ -230,6 +230,20 @@ class _BorrowResultState extends State<BorrowResult> {
                             },
                           ),
                         ),
+                        if(state is BorrowResultLoadmore)
+                          Center(
+                            child: SizedBox(
+                              height: 16.h,
+                              width: 16.w,
+                              child:
+                              CircularProgressIndicator(
+                                strokeWidth: 1.r,
+                                color: AppTheme.getInstance()
+                                    .whiteColor(),
+                              ),
+                            ),
+                          ),
+                        spaceH16,
                       ],
                     ),
                   ),

@@ -25,6 +25,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? duration,
   }) {
     return runCatchingAsync<PawnshopPackageResponse, List<PawnshopPackage>>(
       () => _client.getPawnshopPackage(
@@ -35,6 +36,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanToValueRanges,
         loanSymbols,
         loanType,
+        duration,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       ),
@@ -52,6 +54,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? duration,
   }) {
     return runCatchingAsync<PersonalLendingResponse, List<PersonalLending>>(
       () => _client.getPersonalLending(
@@ -62,6 +65,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanToValueRanges,
         loanSymbols,
         loanType,
+        duration,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       ),

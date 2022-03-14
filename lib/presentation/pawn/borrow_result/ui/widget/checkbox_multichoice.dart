@@ -11,43 +11,42 @@ enum TYPE_CKC_FILTER {
   NON_IMG,
 }
 
-class CheckBoxMultiChoice extends StatefulWidget {
+class CheckBoxMultiChoice extends StatelessWidget {
   const CheckBoxMultiChoice({
     Key? key,
     required this.nameCkcFilter,
     required this.typeCkc,
     this.urlCover,
     required this.filterType,
-    this.cubit,
-    this.symbol,
+    required this.cubit,
+    this.isSelected,
   }) : super(key: key);
   final String nameCkcFilter;
   final TYPE_CKC_FILTER typeCkc;
   final String? urlCover;
-  final String? symbol;
+  final bool? isSelected;
   final String filterType;
-  final BorrowResultCubit? cubit;
-
-  @override
-  _CheckBoxMultiChoiceState createState() => _CheckBoxMultiChoiceState();
-}
-
-class _CheckBoxMultiChoiceState extends State<CheckBoxMultiChoice> {
-  late bool _isSelected;
-
-  @override
-  void initState() {
-    super.initState();
-    // _isSelected = widget.cubit?.checkFilter(widget.nameCkcFilter) ?? false;
-  }
+  final BorrowResultCubit cubit;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-
-        });
+        if (filterType == S.current.interest_range) {
+          cubit.setInterest(nameCkcFilter);
+        } else if (filterType == S.current.loan_to_value) {
+          cubit.setLoanToValue(nameCkcFilter);
+        } else if (filterType == S.current.collateral_accepted) {
+          cubit.selectCollateral(nameCkcFilter);
+        } else if (filterType == S.current.loan_token) {
+          cubit.selectLoanToken(nameCkcFilter);
+        } else if (filterType == S.current.loan_type) {
+          cubit.selectLoanType(nameCkcFilter);
+        } else if (filterType == S.current.duration) {
+          cubit.selectDuration(nameCkcFilter);
+        } else {
+          cubit.selectNetwork(nameCkcFilter);
+        }
       },
       child: Row(
         children: [
@@ -56,31 +55,35 @@ class _CheckBoxMultiChoiceState extends State<CheckBoxMultiChoice> {
             height: 24.h,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(6)),
-              color: _isSelected ? const Color(0xffE4AC1A) : Colors.transparent,
-              border: _isSelected
+              color: (isSelected ?? false)
+                  ? const Color(0xffE4AC1A)
+                  : Colors.transparent,
+              border: (isSelected ?? false)
                   ? null
                   : Border.all(
-                color: const Color(0xffF2F2F2),
-                width: 1.w,
-              ),
+                      color: const Color(0xffF2F2F2),
+                      width: 1.w,
+                    ),
             ),
-            child: _isSelected
+            child: (isSelected ?? false)
                 ? const ImageIcon(
-              AssetImage(ImageAssets.ic_ckc),
-              color: Colors.white,
-            )
+                    AssetImage(ImageAssets.ic_ckc),
+                    color: Colors.white,
+                  )
                 : Container(),
           ),
           spaceW8,
-          buildImg(widget.typeCkc),
+          buildImg(typeCkc),
           Expanded(
             child: Text(
-              widget.nameCkcFilter,
+              nameCkcFilter,
               style: textNormalCustom(
                 Colors.white,
                 16,
-                FontWeight.w600,
+                FontWeight.w400,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -96,9 +99,9 @@ class _CheckBoxMultiChoiceState extends State<CheckBoxMultiChoice> {
             width: 4.w,
           ),
           circularImage(
-            widget.urlCover ?? '',
-            height: 28.h,
-            width: 28.w,
+            urlCover ?? '',
+            height: 20.h,
+            width: 20.w,
           ),
           SizedBox(
             width: 8.w,
@@ -108,27 +111,5 @@ class _CheckBoxMultiChoiceState extends State<CheckBoxMultiChoice> {
     } else {
       return Container();
     }
-  }
-
-  void checkKey(String type, bool isSellect) {
-    // if (type == S.current.collection) {
-    //   if (isSellect) {
-    //     widget.cubit!.selectParamCollection(widget.nameCkcFilter);
-    //   } else {
-    //     widget.cubit!.moveParamCollection(widget.nameCkcFilter);
-    //   }
-    // } else if (type == S.current.status) {
-    //   if (isSellect) {
-    //     widget.cubit!.selectParamStatus(widget.nameCkcFilter);
-    //   } else {
-    //     widget.cubit!.moveParamStatus(widget.nameCkcFilter);
-    //   }
-    // } else {
-    //   if (isSellect) {
-    //     widget.cubit!.selectParamTypeNft(widget.nameCkcFilter);
-    //   } else {
-    //     widget.cubit!.moveParamTypeNft(widget.nameCkcFilter);
-    //   }
-    // }
   }
 }
