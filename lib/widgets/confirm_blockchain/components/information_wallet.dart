@@ -52,7 +52,7 @@ class InformationWallet extends StatelessWidget {
               ),
               child: circularImage(
                   '${ImageAssets.image_avatar}${cubitCategory.randomAvatar()}'
-                      '.png'),
+                  '.png'),
             ),
           ),
           spaceW8,
@@ -102,7 +102,7 @@ class InformationWallet extends StatelessWidget {
                   //hang 2
                   Text(
                     '${S.current.balance}: ${formatValue.format(amount)}'
-                        ' $nameToken',
+                    ' $nameToken',
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,

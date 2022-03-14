@@ -33,6 +33,7 @@ target 'Runner' do
   
   pod 'BigInt', '~> 5.1'
   pod 'CryptoSwift', '~> 1.4.1'
+  pod 'TrustWalletCore'
   
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end

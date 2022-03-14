@@ -28,6 +28,9 @@ class AppRouter {
   static const create_collection = '/create_collection';
   static const create_nft = '/create_nft';
   static const list_hard_mint = '/list_hard_mint';
+  static const nft_detail = '/nft_detail';
+  static const send_nft = '/send_nft';
+  static const send_nft_confirm_blockchain = '/send_nft_confirm';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

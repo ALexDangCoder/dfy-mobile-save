@@ -1,10 +1,10 @@
-import 'package:Dfy/config/base/base_state.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_request_nft.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/check_tab_bar.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/crypto_currentcy.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -28,7 +28,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     cubit = SendLoanRequestCubit();
     trustWalletChannel
@@ -192,9 +192,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                   }
                                 },
                               ),
-                              Container(
-                                color: Colors.green,
-                              ),
+                              SendLoanRequestNft(cubit: cubit,)
                             ],
                           ),
                         ),

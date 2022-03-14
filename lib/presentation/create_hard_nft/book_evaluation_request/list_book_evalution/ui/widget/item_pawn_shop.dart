@@ -10,6 +10,7 @@ import 'package:Dfy/presentation/wallet/ui/hero.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -131,12 +132,18 @@ class ItemPawnShop extends StatelessWidget {
                         );
                       }
                     },
-                    child: Text(
-                      appointment.evaluator?.name ?? '',
-                      style: textNormalCustom(
-                        null,
-                        16,
-                        FontWeight.w600,
+                    child: SizedBox(
+                      width: 180.w,
+                      child: Text(
+                        appointment.evaluator?.name ?? '',
+                        maxLines: 1,
+                        style: textNormalCustom(
+                          null,
+                          16,
+                          FontWeight.w600,
+                        ).copyWith(
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
@@ -182,9 +189,9 @@ class ItemPawnShop extends StatelessWidget {
                         alignment: PlaceholderAlignment.middle,
                         child: bloc.isLoadingText
                             ? Container(
-                                width: 14.w,
-                                height: 14.h,
-                                margin: EdgeInsets.only(right: 10.w),
+                                height: 8.h,
+                                width: 8.w,
+                                margin: EdgeInsets.only(right: 5.w),
                                 child: const CircularProgressIndicator(
                                   color: amountColor,
                                   strokeWidth: 2,

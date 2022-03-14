@@ -124,15 +124,19 @@ class MintRequestItem extends StatelessWidget {
                       ),
                     ),
                     spaceW4,
-                    Text(
-                      '${mintRequestModel.expectingPrice} '
-                      '${mintRequestModel.expectingPriceSymbol}',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
+                    SizedBox(
+                      width: 150.w,
+                      child: Text(
+                        '${mintRequestModel.expectingPrice} '
+                        '${mintRequestModel.expectingPriceSymbol}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                      overflow: TextOverflow.clip,
                     ),
                   ],
                 ),

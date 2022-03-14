@@ -3,8 +3,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -174,6 +176,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     interestRate,
@@ -200,6 +203,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -272,6 +276,7 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     signedContract,
@@ -300,10 +305,21 @@ class PersonalItem extends StatelessWidget {
                   children: [
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: Image.asset(
-                        ImageAssets.img_waning,
-                        height: 20.w,
-                        width: 20.w,
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => InfoPopup(
+                              name: S.current.total_contract_value,
+                              content: S.current.total_value_of_all,
+                            ),
+                          );
+                        },
+                        child: Image.asset(
+                          ImageAssets.img_waning,
+                          height: 20.w,
+                          width: 20.w,
+                        ),
                       ),
                     ),
                   ],
@@ -314,7 +330,14 @@ class PersonalItem extends StatelessWidget {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  //todo event
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SendLoanRequest();
+                      },
+                    ),
+                  );
                 },
                 child: SizedBox(
                   width: 140.w,

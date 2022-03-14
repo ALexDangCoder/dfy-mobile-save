@@ -11,16 +11,17 @@ class PawnShopModel {
   String? walletAddress;
   String? avatar;
 
-  PawnShopModel(
-      {this.id,
-      this.userId,
-      this.name,
-      this.reputation,
-      this.type,
-      this.email,
-      this.phoneNumber,
-      this.address,
-      this.description,
-      this.avatar,
-      this.walletAddress});
+  PawnShopModel({
+    this.id,
+    this.userId,
+    this.name,
+    this.reputation,
+    this.type,
+    this.email,
+    this.phoneNumber,
+    this.address,
+    this.description,
+    this.avatar,
+    this.walletAddress,
+  });
 }

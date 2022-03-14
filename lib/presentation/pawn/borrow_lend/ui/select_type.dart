@@ -26,7 +26,7 @@ class _SelectTypeState extends State<SelectType> {
   @override
   void initState() {
     super.initState();
-    _type = widget.bloc.typeScreen;
+    _type = widget.bloc.typeScreen.value;
   }
 
   @override
@@ -41,7 +41,7 @@ class _SelectTypeState extends State<SelectType> {
               onTap: () {
                 setState(() {
                   _type = TypeLend.CRYPTO;
-                  widget.bloc.typeScreen = _type;
+                  widget.bloc.typeScreen.add(_type) ;
                 });
               },
               child: Container(
@@ -76,7 +76,7 @@ class _SelectTypeState extends State<SelectType> {
                       onChanged: (TypeLend? value) {
                         setState(() {
                           _type = value ?? TypeLend.CRYPTO;
-                          widget.bloc.typeScreen = _type;
+                          widget.bloc.typeScreen.add(_type);
                         });
                       },
                     ),
@@ -102,7 +102,7 @@ class _SelectTypeState extends State<SelectType> {
               onTap: () {
                 setState(() {
                   _type = TypeLend.NFT;
-                  widget.bloc.typeScreen = _type;
+                  widget.bloc.typeScreen.add( _type);
                 });
               },
               child: Container(
@@ -140,7 +140,7 @@ class _SelectTypeState extends State<SelectType> {
                       onChanged: (TypeLend? value) {
                         setState(() {
                           _type = value ?? TypeLend.CRYPTO;
-                          widget.bloc.typeScreen = _type;
+                          widget.bloc.typeScreen.add(_type);
                         });
                       },
                     ),

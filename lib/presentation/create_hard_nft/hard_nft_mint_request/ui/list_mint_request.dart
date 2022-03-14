@@ -11,7 +11,8 @@ class ListMintRequest extends StatefulWidget {
   const ListMintRequest({
     Key? key,
     required this.listMintRequest,
-    required this.cubit, required this.checkRefresh,
+    required this.cubit,
+    required this.checkRefresh,
   }) : super(key: key);
 
   final List<MintRequestModel> listMintRequest;
@@ -40,6 +41,7 @@ class _ListMintRequestState extends State<ListMintRequest> {
             widget.cubit.refreshMintRequest();
           },
           child: ListView.builder(
+            padding: const EdgeInsets.only(top: 0),
             shrinkWrap: true,
             itemCount: widget.listMintRequest.length,
             itemBuilder: (BuildContext context, int index) {

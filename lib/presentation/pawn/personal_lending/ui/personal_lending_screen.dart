@@ -8,7 +8,8 @@ import 'package:Dfy/presentation/pawn/pawn_list/ui/item_header_filter.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_state.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/ui/personal_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class PersonalLendingScreen extends StatefulWidget {
 
 class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
   late PersonalLendingBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,35 +40,30 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
     return BlocConsumer<PersonalLendingBloc, PersonalLendingState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-        if (state is PersonalLendingLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! PersonalLendingLoading) {
-          hideLoading(context);
-        }
-
-        ///Get Blog List Completed
         if (state is PersonalLendingSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {}
+            _bloc.showContent();
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.showError();
+          }
+
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
           _bloc.list.addAll(state.listPersonal ?? []);
+          _bloc.canLoadMoreMy =
+              _bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
         }
       },
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.refreshPosts();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
@@ -169,7 +164,11 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeRating = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.rating,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -190,7 +189,11 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeInterest = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.interest_rate_pawn,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -211,7 +214,11 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                   );
                                   if (res != null) {
                                     _bloc.typeSigned = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.signed_contracts,
+                                    );
+                                    await _bloc.getPersonLendingResult();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -235,31 +242,62 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                           },
                           child: RefreshIndicator(
                             onRefresh: _bloc.refreshPosts,
-                            child: SingleChildScrollView(
-                              child: ListView.builder(
-                                padding: EdgeInsets.only(
-                                  bottom: 20.h,
-                                ),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: list.length,
-                                itemBuilder: (context, index) => PersonalItem(
-                                  rate: list[index].reputation.toString(),
-                                  isShop: list[index].isKYC ?? false,
-                                  nameShop: list[index].name.toString(),
-                                  interestRate:
-                                      '${list[index].minInterestRate}%'
-                                      '-${list[index].maxInterestRate}%',
-                                  collateral: list[index]
-                                          .p2PLenderPackages?[0]
-                                          .acceptableAssetsAsCollateral ??
-                                      [],
-                                  total: list[index].totalLoanValue.toString(),
-                                  signedContract:
-                                      list[index].completedContracts.toString(),
-                                ),
-                              ),
-                            ),
+                            child: list.isNotEmpty
+                                ? SingleChildScrollView(
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.only(
+                                        bottom: 20.h,
+                                      ),
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: list.length,
+                                      itemBuilder: (context, index) =>
+                                          PersonalItem(
+                                        rate: list[index].reputation.toString(),
+                                        isShop: list[index].isKYC ?? false,
+                                        nameShop: list[index].name.toString(),
+                                        interestRate:
+                                            '${list[index].minInterestRate}%'
+                                            '-${list[index].maxInterestRate}%',
+                                        collateral:
+                                            list[index].collateralAccepted ??
+                                                [],
+                                        total: list[index]
+                                            .totalLoanValue
+                                            .toString(),
+                                        signedContract: list[index]
+                                            .completedContracts
+                                            .toString(),
+                                      ),
+                                    ),
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image(
+                                          image: const AssetImage(
+                                            ImageAssets.img_search_empty,
+                                          ),
+                                          height: 120.h,
+                                          width: 120.w,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17.7.h,
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          S.current.no_result_found,
+                                          style: textNormal(
+                                            Colors.white54,
+                                            20.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ),
                       ),

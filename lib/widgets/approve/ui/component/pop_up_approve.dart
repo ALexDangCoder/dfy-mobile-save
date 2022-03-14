@@ -117,7 +117,7 @@ class _PopUpApproveState extends State<PopUpApprove> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Testnet',// todo
+                                  text: 'Testnet', // todo
                                   style: textNormalCustom(
                                     AppTheme.getInstance().textThemeColor(),
                                     14,
@@ -169,14 +169,16 @@ class _PopUpApproveState extends State<PopUpApprove> {
                                   const SizedBox(width: 8),
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
                                           Text(
                                             widget.accountName,
                                             style: textNormal(
-                                              AppTheme.getInstance().whiteColor(),
+                                              AppTheme.getInstance()
+                                                  .whiteColor(),
                                               16,
                                             ).copyWith(
                                               fontWeight: FontWeight.w700,
@@ -197,7 +199,7 @@ class _PopUpApproveState extends State<PopUpApprove> {
                                         ],
                                       ),
                                       Text(
-                                        '${S.current.balance}: ${widget.balanceWallet}',
+                                        '${S.current.balance}: ${widget.balanceWallet.toStringAsFixed(5)}',
                                         style: textNormal(
                                           AppTheme.getInstance().whiteColor(),
                                           16,

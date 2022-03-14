@@ -1,8 +1,8 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
-import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
 import 'package:Dfy/presentation/pawn/personal_lending_hard/bloc/personal_lending_hard_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -14,22 +14,35 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
 
   BorrowRepository get _repo => Get.find();
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> isHardNFT = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isSoftNFT = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isALL = BehaviorSubject.seeded(false);
 
   //load more
-  final bool _canLoadMore = true;
+  bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
   int page = 0;
   static const int ZERO_TO_TEN = 0;
   static const int TEN_TO_TWENTY_FIVE = 1;
   static const int TWENTY_FIVE_TO_FIVETY = 2;
+  static const int ALL = 0;
+  static const int SORT = 1;
+  static const int HARD = 2;
   static const int MORE_THAN_FIVETY = 3;
+  static const String A_TO_Z_REPUTATION = 'reputation,desc';
+  static const String Z_TO_A_REPUTATION = 'reputation,asc';
+  static const String A_TO_Z_INTEREST = 'interest,desc';
+  static const String Z_TO_A_INTEREST = 'interest,asc';
+  static const String A_TO_Z_COMPLETED = 'completedContracts,desc';
+  static const String Z_TO_A_COMPLETED = 'completedContracts,asc';
+
   String? interestRanges;
   String? name;
-  String? loanToValueRanges;
-  String? collateralSymbols;
+  String? cusSort;
+  int? typePersonal;
 
-  bool get canLoadMore => _canLoadMore;
+  bool get canLoadMore => canLoadMoreMy;
 
   bool get isRefresh => _isRefresh;
   String mess = '';
@@ -51,47 +64,79 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     false,
     false,
   ];
-  BehaviorSubject<List<bool>> listFilterLoanStream = BehaviorSubject.seeded([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  List<bool> listFilterLoan = [
-    false,
-    false,
-    false,
-    false,
-  ];
 
   //status filter
   //status filter
   String? checkStatus;
   String? searchStatus;
+  bool? statusHardFilter;
+  bool? statusSoftFilter;
+  bool? statusAllFilter;
   List<bool>? statusFilterNumberRange;
   List<bool>? statusFilterNumberLoan;
-  List<int> statusListCollateral = [];
-  List<TokenModelPawn> listCollateralTokenFilter = [
-    //2
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
 
   void funReset() {
     textSearch.sink.add('');
     listFilter = List.filled(4, false);
     listFilterStream.add(listFilter);
-    listFilterLoan = List.filled(4, false);
-    listFilterLoanStream.add(listFilterLoan);
-    for (final TokenModelPawn value in listCollateralTokenFilter) {
-      if (value.isCheck) {
-        value.isCheck = false;
+    isSoftNFT.add(false);
+    isHardNFT.add(false);
+    isALL.add(false);
+  }
+
+  void check(String title) {
+    if (title == S.current.all_type_of_NFT) {
+      isSoftNFT.add(false);
+      isHardNFT.add(false);
+      isALL.add(true);
+    } else if (title == S.current.soft_nft) {
+      isALL.add(false);
+      isSoftNFT.add(true);
+      isHardNFT.add(false);
+    } else if (title == S.current.hard_NFT) {
+      isHardNFT.add(true);
+      isALL.add(false);
+      isSoftNFT.add(false);
+    }
+  }
+
+  String checkInterest(int index) {
+    switch (index) {
+      case ZERO_TO_TEN:
+        return '0:0.1';
+      case TEN_TO_TWENTY_FIVE:
+        return '0.1:0.25';
+      case TWENTY_FIVE_TO_FIVETY:
+        return '0.25:0.5';
+      case MORE_THAN_FIVETY:
+        return '0.5:1';
+      default:
+        return '';
+    }
+  }
+
+  void getTextFilter(TypeFilter type, String checkType) {
+    page = 0;
+    if (checkType == S.current.rating) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_REPUTATION;
+      } else {
+        cusSort = Z_TO_A_REPUTATION;
       }
+    } else if (checkType == S.current.interest_rate_pawn) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_INTEREST;
+      } else {
+        cusSort = Z_TO_A_INTEREST;
+      }
+    } else if (checkType == S.current.signed_contracts) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_COMPLETED;
+      } else {
+        cusSort = Z_TO_A_COMPLETED;
+      }
+    } else {
+      cusSort = '';
     }
   }
 
@@ -99,12 +144,6 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     listFilter = List.filled(4, false);
     listFilter[index] = true;
     listFilterStream.sink.add(listFilter);
-  }
-
-  void chooseFilterLoan({required int index}) {
-    listFilterLoan = List.filled(4, false);
-    listFilterLoan[index] = true;
-    listFilterLoanStream.sink.add(listFilterLoan);
   }
 
   Future<void> refreshPosts() async {
@@ -122,20 +161,16 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       searchStatus = '';
       statusFilterNumberRange = [false, false, false, false];
       statusFilterNumberLoan = [false, false, false, false];
+      statusHardFilter = false;
+      statusSoftFilter = false;
     } else {
       textSearch.sink.add(searchStatus ?? '');
 
       listFilter = statusFilterNumberRange ?? [];
       listFilterStream.add(listFilter);
-      listFilterLoan = statusFilterNumberLoan ?? [];
-      listFilterLoanStream.add(listFilterLoan);
-      for (int i = 0; i < listCollateralTokenFilter.length; i++) {
-        if (checkStatusFirstFilter(i, statusListCollateral)) {
-          listCollateralTokenFilter[i].isCheck = true;
-        } else {
-          listCollateralTokenFilter[i].isCheck = false;
-        }
-      }
+      isHardNFT.add(statusHardFilter ?? false);
+      isSoftNFT.add(statusSoftFilter ?? false);
+      isALL.add(statusAllFilter ?? false);
     }
   }
 
@@ -149,23 +184,34 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   }
 
   void funFilter() {
-    page = 1;
+    page = 0;
     searchStatus = textSearch.value;
     statusFilterNumberRange = listFilterStream.value;
-    statusFilterNumberLoan = listFilterLoanStream.value;
-    statusListCollateral = [];
-    for (int i = 0; i < listCollateralTokenFilter.length; i++) {
-      if (listCollateralTokenFilter[i].isCheck) {
-        statusListCollateral.add(i);
+    statusHardFilter = isHardNFT.value;
+    statusSoftFilter = isSoftNFT.value;
+    statusAllFilter = isALL.value;
+    name = '';
+    interestRanges = '';
+    typePersonal = checkType();
+    name = textSearch.value;
+    for (int i = 0; i < listFilterStream.value.length; i++) {
+      if (listFilterStream.value[i]) {
+        interestRanges = checkInterest(i);
       }
     }
-    String? interestRanges;
-    name = textSearch.value;
-    String? loanToValueRanges;
-    String? collateralSymbols;
-    getPersonLendingResult(
-      name: name,
-    );
+    getPersonLendingResult();
+  }
+
+  int? checkType() {
+    if (isSoftNFT.value) {
+      return SORT;
+    } else if (isHardNFT.value) {
+      return HARD;
+    } else if (isALL.value) {
+      return ALL;
+    } else {
+      return null;
+    }
   }
 
   void funOnTapSearch() {
@@ -186,41 +232,32 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   }
 
   //
-  Future<void> getPersonLendingResult({
-    String? collateralAmount,
-    String? collateralSymbols,
-    String? name,
-    String? interestRanges,
-    String? loanToValueRanges,
-    String? loanSymbols,
-    String? loanType,
-  }) async {
+  Future<void> getPersonLendingResult() async {
+    showLoading();
     emit(PersonalLendingHardLoading());
     final Result<List<PersonalLending>> result =
         await _repo.getListPersonalLendingHard(
-       collateralAmount: collateralAmount,
-      collateralSymbols: collateralSymbols,
       name: name,
       interestRanges: interestRanges,
-      loanToValueRanges: loanToValueRanges,
-      loanSymbols: loanSymbols,
-      loanType: loanType,
       page: page.toString(),
+      cusSort: cusSort,
+      collateralType: typePersonal.toString(),
+      isNft: true,
     );
     result.when(
       success: (res) {
         if (res.isNotEmpty) {
-          canLoadMore = true;
-          emit(
-            PersonalLendingHardSuccess(
-              CompleteType.SUCCESS,
-              listPersonal: res,
-            ),
-          );
-          _isLoading = false;
+          canLoadMoreMy = true;
         } else {
-          canLoadMore = false;
+          canLoadMoreMy = false;
         }
+        emit(
+          PersonalLendingHardSuccess(
+            CompleteType.SUCCESS,
+            listPersonal: res,
+          ),
+        );
+        _isLoading = false;
       },
       error: (error) {
         emit(

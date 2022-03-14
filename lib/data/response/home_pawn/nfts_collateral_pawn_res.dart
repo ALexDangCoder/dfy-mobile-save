@@ -97,6 +97,8 @@ class NftCollateralPawnResponse extends Equatable {
   int? numberOfCopies;
   @JsonKey(name: 'totalOfCopies')
   int? totalOfCopies;
+  @JsonKey(name: 'urlToken')
+  String? urlToken;
 
   TypeNFT getTypeNft(int type) {
     if (type == 1) {
@@ -135,6 +137,7 @@ class NftCollateralPawnResponse extends Equatable {
         marketId: id.toString(),
         price: double.parse(expectedLoanAmount.toString()),
         borrowerWalletAddress: borrowerWalletAddress,
+        urlToken: urlToken
       );
 
   NftCollateralPawnResponse(

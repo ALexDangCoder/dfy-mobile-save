@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -38,6 +41,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
+
+
 
   NFTRepository get _nftRepo => Get.find();
 
@@ -107,6 +112,45 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         showContent();
       },
     );
+  }
+
+/// Import wallet
+  Future<void> emitJsonNftToWalletCore({
+    required String contract,
+    int? id,
+    required String address,
+  }) async {
+    Map<String, dynamic> result = {};
+    if (id != null) {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address, id: id);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    } else {
+      result = await Web3Utils()
+          .getCollectionInfo(contract: contract, address: address);
+      // result.putIfAbsent('walletAddress', () => address);
+      await importNftIntoWalletCore(
+        jsonNft: json.encode(result),
+        address: address,
+      );
+    }
+  }
+
+  Future<void> importNftIntoWalletCore({
+    required String jsonNft,
+    required String address,
+  }) async {
+    try {
+      final data = {
+        'jsonNft': jsonNft,
+        'walletAddress': address,
+      };
+      await trustWalletChannel.invokeMethod('importNft', data);
+    } on PlatformException {
+    }
   }
 
   ///GetOffer
@@ -406,8 +450,12 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
           }
         }
         return walletAddress;
+      case 'importNftCallback':
+        final int code = await methodCall.arguments['code'];
+        break;
       default:
         break;
+
     }
   }
 
@@ -552,7 +600,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     try {
       showLoading();
       hexString = await web3Client.getCancelAuctionData(
-        contractAddress: nft_auction_dev2,
+        contractAddress: Get.find<AppConstants>().nftAuction,
         context: context,
         auctionId: auctionId,
       );

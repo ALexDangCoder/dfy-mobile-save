@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
@@ -54,11 +53,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     super.initState();
     cubit = ProvideHardNftCubit();
     cubit.getTokenInf();
+    cubit.getListCollection();
     cubit.getCountriesApi();
     cubit.getPhonesApi();
     cubit.getConditionsApi();
     cubit.getListHardNftTypeApi();
-    cubit.getListCollection();
     final data = cubit.getInfoUserIsCreatedNft();
     if (data != null) {
       currentInfo = data;
@@ -87,6 +86,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       title: S.current.provide_hard_nft_info,
+      isImage: true,
+      text: ImageAssets.ic_close,
+      onRightClick: () {
+        Navigator.of(context)..pop()..pop();
+      },
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -379,13 +383,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                         decimal: true,
                       ),
                       prefixIcon: FormDropDown(
-                        defaultValue: currentInfo != null
-                            ? {
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                                'id': currentInfo?.phoneCode?.id,
-                                'label': currentInfo?.phoneCode?.code ?? '',
-                              }
-                            : null,
+                        currentInfo: currentInfo,
                         typeDrop: TYPE_FORM_DROPDOWN.PHONE,
                         cubit: cubit,
                       ),
@@ -400,7 +398,6 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                       },
                     ),
                   ),
-
                   spaceH16,
                   textShowWithPadding(
                     textShow: S.current.country,
@@ -414,12 +411,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                   FormDropDown(
                     typeDrop: TYPE_FORM_DROPDOWN.COUNTRY,
                     cubit: cubit,
-                    defaultValue: currentInfo != null
-                        ? {
-                            'value': currentInfo?.country?.id ?? '',
-                            'label': currentInfo?.country?.name ?? '',
-                          }
-                        : null,
+                    currentInfo: currentInfo,
                   ),
                   spaceH16,
                   textShowWithPadding(
@@ -552,6 +544,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       stream: cubit.showItemProperties,
       builder: (context, snapshot) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if ((snapshot.data ?? []).isEmpty)
@@ -632,19 +625,19 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
         image = ImageAssets.diamond;
         break;
       case 1:
-        image = ImageAssets.img_watch;
+        image = ImageAssets.watch;
         break;
       case 2:
         image = ImageAssets.artWork;
         break;
       case 3:
-        image = ImageAssets.img_house;
+        image = ImageAssets.house;
         break;
       case 4:
-        image = ImageAssets.img_car;
+        image = ImageAssets.car;
         break;
       default:
-        image = ImageAssets.img_other;
+        image = ImageAssets.others;
         break;
     }
     return Container(
@@ -709,7 +702,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
     required int index,
   }) {
     return Container(
-      height: 44.h,
+      // height: 44.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10.r),
@@ -765,6 +758,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       ),
     );
   }
+
+
 
   Container textShowWithPadding({
     required String textShow,

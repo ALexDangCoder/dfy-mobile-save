@@ -1,4 +1,7 @@
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
+import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
@@ -36,16 +39,17 @@ abstract class BorrowService {
     @Query('interestRanges') String? interestRanges,
     @Query('loanToValueRanges') String? loanToValueRanges,
     @Query('loanSymbols') String? loanSymbols,
-    @Query('loanTypes') String? loanType,
-    @Query('durationTypes') String? durationType,
+    @Query('loanType') String? loanType,
+      @Query('durationTypes') String? durationType,
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('cusSort') String? cusSort,
   );
 
   @GET(ApiConstants.GET_PERSONAL_LENDING_HARD)
   Future<PersonalLendingHardResponse> getPersonalLendingHard(
     @Query('collateralAmount') String? collateralAmount,
-    @Query('collection_address') String? collateralSymbols,
+    @Query('collateralSymbols') String? collateralSymbols,
     @Query('name') String? name,
     @Query('interestRanges') String? interestRanges,
     @Query('loanToValueRanges') String? loanToValueRanges,
@@ -53,6 +57,9 @@ abstract class BorrowService {
     @Query('loanType') String? loanType,
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('cusSort') String? cusSort,
+    @Query('collateralType') String? collateralType,
+    @Query('isNft') bool? isNft,
   );
 
   @GET(ApiConstants.GET_CRYPTO_COLLATERAL)
@@ -60,6 +67,27 @@ abstract class BorrowService {
     @Query('walletAddress') String walletAddress,
     @Query('packageId') String? packageId,
     @Query('isRequestLoan') String? isRequestLoan,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_LIST_COLLATERAL)
+  Future<ListCollateralResponse> getListCollateral(
+    @Query('collateralSymbols') String? collateralSymbols,
+    @Query('loanSymbols') String? loanSymbols,
+    @Query('durationTypes') String? durationTypes,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_LIST_PAWN)
+  Future<PawnListResponse> getListPawnShopMy(
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_LIST_NFT_COLLATERAL)
+  Future<CollateralNFTResponse> getListNFTCollateral(
     @Query('page') String? page,
     @Query('size') String? size,
   );

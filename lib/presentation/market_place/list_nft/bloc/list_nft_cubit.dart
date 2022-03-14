@@ -10,6 +10,7 @@ import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -160,7 +161,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     if (pageRouter == PageRouter.MARKET) {
       if (!loadMore && !refresh) {
         page += 1;
-        canLoadMoreListNft = true;
+        canLoadMoreListNft = false;
         loadMore = true;
         getListNft(
           name: name,
@@ -173,7 +174,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else {
       if (!loadMore && !refresh) {
         page += 1;
-        canLoadMoreListNft = true;
+        canLoadMoreListNft = false;
         loadMore = true;
         getListNft(
           name: name,
@@ -304,6 +305,8 @@ class ListNftCubit extends BaseCubit<ListNftState> {
         }
         if (res.isEmpty && loadMore) {
           canLoadMoreListNft = false;
+        } else {
+          canLoadMoreListNft = true;
         }
         if (loadMore) {
           listData = listData + res;
@@ -328,6 +331,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           emit(ListNftError());
           loadMore = false;
           refresh = false;
+          canLoadMoreListNft = true;
         }
       },
     );

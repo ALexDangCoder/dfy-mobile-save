@@ -1,13 +1,16 @@
 import 'dart:math';
 
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/repository/market_place/create_hard_nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'send_token_state.dart';
@@ -37,6 +40,40 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     gasPrice = double.parse(result);
   }
 
+  Web3Utils client = Web3Utils();
+
+  Future<String> getHexStringSendNft(
+    String collectionAddress,
+    String fromAddress,
+    String toAddress,
+    String tokenId,
+  ) async {
+    final String hexString = await client.getTransferNftData(
+      collectionAddress: collectionAddress,
+      fromAddress: fromAddress,
+      toAddress: toAddress,
+      tokenId: tokenId,
+    );
+    return hexString;
+  }
+
+  CreateHardNFTRepository get _createHardNFTRepository => Get.find();
+
+  Future<void> pushSendNftToBE({
+    required String bcTxnHash,
+    required String nftId,
+    required String walletReceived,
+  }) async {
+    final Map<String, String> map = {
+      'id': nftId,
+      'txn_hash': bcTxnHash,
+      'wallet_received': walletReceived,
+    };
+    final Result<String> code =
+    await _createHardNFTRepository.confirmTransferNftToBE(map);
+    code.when(success: (res) {}, error: (error) {});
+  }
+
   Future<void> getEstimateGas({
     required String from,
     required String to,
@@ -56,7 +93,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     estimateGasFee = double.parse(result);
     emit(LoadSuccessBeforeConfirm());
   }
+
   late double gasLimitNft;
+
   Future<void> getGasLimitNft({
     required String fromAddress,
     required String toAddress,
@@ -255,9 +294,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-
   //regex
   final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
+
   void checkHaveVLAmountFormToken(
     String value, {
     required double amountBalance,
@@ -267,13 +306,12 @@ class SendTokenCubit extends Cubit<SendTokenState> {
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.amount_required);
-    } else if(!regexAmount.hasMatch(value)) {
+    } else if (!regexAmount.hasMatch(value)) {
       _flagAmount = false;
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
       txtInvalidAmountSink.add(S.current.amount_invalid);
-    }
-    else if (double.parse(value) > amountBalance) {
+    } else if (double.parse(value) > amountBalance) {
       _flagAmount = false;
       isShowCFBlockChainSink.add(false);
       isValidAmountFormSink.add(true);
@@ -427,11 +465,9 @@ class SendTokenCubit extends Cubit<SendTokenState> {
     }
   }
 
-
   String handleValueFromQR({required String value}) {
     final int index = value.lastIndexOf('0x');
     final int lastIndex = index + 42;
     return value.substring(index, lastIndex);
   }
-
 }

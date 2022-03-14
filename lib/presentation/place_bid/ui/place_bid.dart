@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/bid_nft_request.dart';
 import 'package:Dfy/data/request/buy_out_request.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -25,6 +26,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 enum TypeBid { BUY_OUT, PLACE_BID }
 
@@ -86,7 +88,7 @@ class _PlaceBidState extends State<PlaceBid> {
         stream: cubit.balanceStream,
         builder: (context, snapshot) {
           return Text(
-            '${S.current.your_balance} ${snapshot.data} '
+            '${S.current.your_balance} ${formatPrice.format(snapshot.data)} '
             '${widget.nftOnAuction.tokenSymbol}',
             style: textNormalCustom(
               Colors.white.withOpacity(0.7),
@@ -151,11 +153,11 @@ class _PlaceBidState extends State<PlaceBid> {
           } else if (yourBid > bid && yourBid < bid + priceStep) {
             cubit.warnSink.add(S.current.you_must_bid_equal);
             cubit.btnSink.add(false);
-          } else if (yourBid == buyOut) {
+          } else if (yourBid == buyOut && buyOut != 0) {
             cubit.warnSink.add(S.current.you_bid_equal);
             bidValue = value;
             cubit.btnSink.add(true);
-          } else if (yourBid > buyOut) {
+          } else if (yourBid > buyOut && buyOut != 0) {
             cubit.warnSink.add(
                 '${S.current.your_bid_is}${yourBid - buyOut} $shortName${S.current.higher_than}');
             cubit.btnSink.add(true);
@@ -281,7 +283,8 @@ class _PlaceBidState extends State<PlaceBid> {
                     if (widget.typeBid == TypeBid.PLACE_BID) {
                       await cubit
                           .getBidData(
-                            contractAddress: nft_auction_dev2,
+                            contractAddress:
+                                Get.find<AppConstants>().nftAuction,
                             auctionId: widget.nftOnAuction.auctionId.toString(),
                             bidValue: bidValue,
                             context: context,
@@ -337,7 +340,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                     ],
                                   ),
                                   onSuccessSign: (context, data) {
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                     cubit.bidRequest(
                                       BidNftRequest(
                                         widget.marketId,
@@ -353,7 +356,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           title: S.current.bidding,
                                           content: S.current.congratulation,
                                           callback: () {
-                                            Navigator.pop(context);
+                                            Navigator.pop(context, true);
                                           },
                                         ),
                                       ),
@@ -379,7 +382,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   },
                                   textActiveButton: S.current.place_a_bid,
                                   hexString: value,
-                                  spender: nft_auction_dev2,
+                                  spender: Get.find<AppConstants>().nftAuction,
                                 ),
                               ),
                             ),
@@ -387,12 +390,13 @@ class _PlaceBidState extends State<PlaceBid> {
                     } else {
                       await cubit
                           .getBuyOutData(
-                            contractAddress: nft_auction_dev2,
+                            contractAddress:
+                                Get.find<AppConstants>().nftAuction,
                             auctionId: widget.nftOnAuction.auctionId.toString(),
                             context: context,
                           )
                           .then(
-                            (value) => Navigator.pushReplacement(
+                            (value) => Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Approve(
@@ -442,7 +446,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                     ],
                                   ),
                                   onSuccessSign: (context, data) {
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                     cubit.buyRequest(
                                       BuyOutRequest(
                                         widget.marketId,
@@ -458,7 +462,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                       address:
                                           PrefsService.getCurrentBEWallet(),
                                     );
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => BaseSuccess(
@@ -466,6 +470,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           content: S.current.congratulation,
                                           callback: () {
                                             Navigator.pop(context);
+                                            Navigator.pop(context,true);
                                           },
                                         ),
                                       ),
@@ -491,7 +496,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                   },
                                   textActiveButton: S.current.buy_out,
                                   hexString: value,
-                                  spender: nft_auction_dev2,
+                                  spender: Get.find<AppConstants>().nftAuction,
                                 ),
                               ),
                             ),

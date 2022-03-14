@@ -5,6 +5,8 @@ import 'package:Dfy/config/base/base_app_bar.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
@@ -26,6 +28,7 @@ import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 enum TypeEvaluation { NEW_CREATE, CREATE }
@@ -65,6 +68,10 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       evaluationID: widget.idEvaluation,
     );
     bloc.getDetailAssetHardNFT(assetId: widget.assetId);
+    bloc.getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress: Get.find<AppConstants>().contract_defy,
+    );
     bloc.getEvaluationFee();
   }
 
@@ -162,12 +169,18 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                pawn.name ?? '',
-                                                style: textNormalCustom(
-                                                  null,
-                                                  16,
-                                                  FontWeight.w600,
+                                              SizedBox(
+                                                width: 180.w,
+                                                child: Text(
+                                                  pawn.name ?? '',
+                                                  maxLines: 1,
+                                                  style: textNormalCustom(
+                                                    null,
+                                                    16,
+                                                    FontWeight.w600,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               spaceH5,
@@ -827,72 +840,80 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
                                 await bloc.getHexString(
                                   evaluator: pawn.walletAddress ?? '',
                                   evaluationFeeAddress:
-                                      BlocCreateBookEvaluation.DFY_ADDRESS,
+                                      Get.find<AppConstants>().contract_defy,
                                   appointmentTime: bloc.appointmentTime,
                                   assetId: bloc.bcAssetId ?? '',
                                 );
 
-                                unawaited(
-                                  navigator.push(
-                                    MaterialPageRoute(
-                                      builder: (context) => Approve(
-                                        needApprove: true,
-                                        hexString: bloc.hexString,
-                                        payValue:
-                                            '${bloc.evaluationFee?.amount ?? 0}',
-                                        tokenAddress: BlocCreateBookEvaluation
-                                            .DFY_ADDRESS,
-                                        title: S.current.book_appointment,
-                                        listDetail: [
-                                          DetailItemApproveModel(
-                                            title: '${S.current.evaluator} ',
-                                            value: pawn.name ?? '',
-                                          ),
-                                          DetailItemApproveModel(
-                                            title: '${S.current.date_time} ',
-                                            value: '${bloc.timeStream.value} '
-                                                '- ${bloc.dateMy}'
-                                                ', ${bloc.dateStream.value}',
-                                          ),
-                                          DetailItemApproveModel(
-                                            title: '${S.current.nft}: ',
-                                            value: bloc.typeNFT ?? '',
-                                          ),
-                                          DetailItemApproveModel(
-                                            title:
-                                                '${S.current.evaluation_fee} ',
-                                            value:
-                                                '${bloc.evaluationFee?.amount ?? 0} '
-                                                '${bloc.evaluationFee?.symbol ?? ''}',
-                                          ),
-                                        ],
-                                        onErrorSign: (context) {},
-                                        onSuccessSign: (context, data) {
-                                          bloc.createEvaluation(
-                                            evaluatorAddress:
-                                                pawn.walletAddress ?? '',
-                                            bcTxnHash: data,
-                                            appointmentTime:
-                                                bloc.appointmentTimeBE,
-                                            evaluatorId: pawn.id ?? '',
-                                            assetId: bloc.assetId ?? '',
-                                          );
-                                          showLoadSuccess(context)
-                                              .then((value) {
-                                            Navigator.of(context)
-                                                .popUntil((route) {
-                                              return route.settings.name ==
-                                                  AppRouter.step2ListBook;
+                                if (bloc.balanceCheck >= 50) {
+                                  unawaited(
+                                    navigator.push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Approve(
+                                          needApprove: true,
+                                          hexString: bloc.hexString,
+                                          payValue:
+                                              '${bloc.evaluationFee?.amount ?? 0}',
+                                          tokenAddress: Get.find<AppConstants>()
+                                              .contract_defy,
+                                          title: S.current.book_appointment,
+                                          listDetail: [
+                                            DetailItemApproveModel(
+                                              title: '${S.current.evaluator} ',
+                                              value: pawn.name ?? '',
+                                            ),
+                                            DetailItemApproveModel(
+                                              title: '${S.current.date_time} ',
+                                              value: '${bloc.timeStream.value} '
+                                                  '- ${bloc.dateMy}'
+                                                  ', ${bloc.dateStream.value}',
+                                            ),
+                                            DetailItemApproveModel(
+                                              title: '${S.current.nft}: ',
+                                              value: bloc.typeNFT ?? '',
+                                            ),
+                                            DetailItemApproveModel(
+                                              title:
+                                                  '${S.current.evaluation_fee} ',
+                                              value:
+                                                  '${bloc.evaluationFee?.amount ?? 0} '
+                                                  '${bloc.evaluationFee?.symbol ?? ''}',
+                                            ),
+                                          ],
+                                          onErrorSign: (context) {},
+                                          onSuccessSign: (context, data) {
+                                            bloc.createEvaluation(
+                                              evaluatorAddress:
+                                                  pawn.walletAddress ?? '',
+                                              bcTxnHash: data,
+                                              appointmentTime:
+                                                  bloc.appointmentTimeBE,
+                                              evaluatorId: pawn.id ?? '',
+                                              assetId: bloc.assetId ?? '',
+                                            );
+                                            showLoadSuccess(context)
+                                                .then((value) {
+                                              Navigator.of(context)
+                                                  .popUntil((route) {
+                                                return route.settings.name ==
+                                                    AppRouter.step2ListBook;
+                                              });
                                             });
-                                          });
-                                        },
-                                        textActiveButton:
-                                            S.current.request_evaluation,
-                                        spender: eva_dev2,
+                                          },
+                                          textActiveButton:
+                                              S.current.request_evaluation,
+                                          spender: Get.find<AppConstants>().eva,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                } else {
+                                  showErrDialog(
+                                    content: S.current.you_must_have_five,
+                                    title: S.current.warning,
+                                    context: context,
+                                  );
+                                }
                               }
                             }
                           },
@@ -941,4 +962,106 @@ class _CreateBookEvaluationState extends State<CreateBookEvaluation> {
       },
     );
   }
+}
+
+void showErrDialog({
+  required BuildContext context,
+  required String title,
+  required String content,
+  Function()? onCloseDialog,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) {
+      return GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: () {},
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(minHeight: 177.h),
+                width: 312.w,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().bgBtsColor(),
+                  borderRadius: const BorderRadius.all(Radius.circular(36)),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 19),
+                      child: Text(
+                        title,
+                        style: textNormal(
+                          AppTheme.getInstance().redColor(),
+                          20,
+                        ).copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      padding: const EdgeInsets.only(
+                        right: 35,
+                        bottom: 24,
+                        left: 35,
+                      ),
+                      child: Text(
+                        content,
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1.w,
+                            color: AppTheme.getInstance()
+                                .whiteBackgroundButtonColor(),
+                          ),
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (onCloseDialog != null) {
+                            onCloseDialog();
+                          }
+                          Navigator.pop(context);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 19,
+                            top: 17,
+                          ),
+                          child: Text(
+                            S.current.ok,
+                            style: textNormal(
+                              AppTheme.getInstance().fillColor(),
+                              20,
+                            ).copyWith(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

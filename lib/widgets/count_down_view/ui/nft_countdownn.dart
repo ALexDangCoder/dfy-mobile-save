@@ -16,11 +16,13 @@ enum TimeType {
 class CountDownView extends StatefulWidget {
   final int timeInMilliSecond;
   final Function onRefresh;
+  final int timeEnd;
 
   const CountDownView({
     Key? key,
     required this.timeInMilliSecond,
     required this.onRefresh,
+    required this.timeEnd,
   }) : super(key: key);
 
   @override
@@ -52,8 +54,9 @@ class _CountDownViewState extends State<CountDownView> {
             child: BlocConsumer<TimeBloc, TimeState>(
               bloc: _bloc,
               listener: (context, state) {
-                if(state is CompletedState) {
+                if (state is CompletedState) {
                   widget.onRefresh();
+                  _bloc.add(StartEvent(widget.timeEnd));
                 }
               },
               builder: (context, state) {

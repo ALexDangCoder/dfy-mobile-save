@@ -11,6 +11,15 @@ extension StringHandle on String {
   }
 }
 
+extension StringHandleTxtTooLong on String {
+  String handleTitle() {
+    if (length > 16) {
+      return '${substring(0, 15)} ...';
+    }
+    return this;
+  }
+}
+
 extension StringMoneyFormat on String {
   String formatMoney(double money) {
     final String result = formatValue.format(money);
@@ -23,6 +32,14 @@ extension StringMoneyFormat on String {
     String d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
+
+  String formatIfTooLong() {
+    if(length > 7) {
+      return substring(0, 5);
+    } else {
+      return this;
+    }
+  }
 }
 
 extension FormatAddress on String {
@@ -34,7 +51,6 @@ extension FormatAddress on String {
     return result;
   }
 }
-
 
 extension FormatAddressFire on String {
   String formatAddressActivityFire() {
@@ -77,11 +93,11 @@ extension StringParse on String {
     return parsedString;
   }
 
-  int parseToInt(){
+  int parseToInt() {
     int vl = -1;
     try {
       vl = int.parse(this);
-    } catch (_){}
+    } catch (_) {}
     return vl;
   }
 }

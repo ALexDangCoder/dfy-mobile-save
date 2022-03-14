@@ -31,7 +31,6 @@ class EvaluationHardNftResultCubit
   }
 
   static const oneSec = Duration(seconds: 30);
-  bool cancelTimer = false;
 
   late Timer timerReload;
 
@@ -40,9 +39,6 @@ class EvaluationHardNftResultCubit
       oneSec,
       (Timer timer) {
         getListEvaluationResult(assetID);
-        if(cancelTimer){
-          timer.cancel();
-        }
       },
     );
   }

@@ -38,7 +38,12 @@ class ReceiveHardNFTScreen extends StatelessWidget {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              Navigator.pop(context);
+              Navigator.of(context)
+                ..pop()
+                ..pop()
+                ..pop()
+                ..pop()
+                ..pop()..pop()..pop();
             },
             title: S.current.receive_hard_nft,
             bottomBar: Container(

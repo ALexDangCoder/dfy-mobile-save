@@ -46,6 +46,24 @@ class AppConstants {
   @JsonKey(name: 'eva')
   String eva;
 
+  @JsonKey(name: 'sell_abi')
+  String sell_abi;
+
+  @JsonKey(name: 'auction_abi')
+  String auction_abi;
+
+  @JsonKey(name: 'default_collection_abi')
+  String default_collection_abi;
+
+  @JsonKey(name: 'erc721_abi')
+  String erc721_abi;
+
+  @JsonKey(name: 'contract_defy')
+  String contract_defy;
+
+  @JsonKey(name: 'crypto_pawn_contract')
+  String crypto_pawn_contract;
+
   AppConstants(
     this.type,
     this.baseUrl,
@@ -61,6 +79,12 @@ class AppConstants {
     this.nftPawn,
     this.hardNftFactory,
     this.eva,
+    this.sell_abi,
+    this.auction_abi,
+    this.default_collection_abi,
+    this.erc721_abi,
+    this.contract_defy,
+    this.crypto_pawn_contract,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>

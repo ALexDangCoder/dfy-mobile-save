@@ -105,6 +105,8 @@ class DataResponse extends Equatable {
         address: associatedWalletAddress,
         isTrustedLender: isTrustedLender,
         type: collateralAccept,
+        collateralAccepted:
+            collateralAccepted?.map((e) => e.toDomain()).toList() ?? [],
       );
 
   @override

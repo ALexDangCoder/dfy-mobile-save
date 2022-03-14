@@ -40,6 +40,9 @@ const int NOT_ON_MARKET = 0;
 const int SALE = 1;
 const int AUCTION = 2;
 const int PAWN = 3;
+const String PUT_ON_PAWN = 'list NFT on pawn';
+const String PUT_ON_SALE = 'list NFT on sale';
+const String PUT_ON_AUCTION = 'list NFT on auction';
 
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
@@ -56,8 +59,8 @@ DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';
-const int ID_MONTH = 0;
-const int ID_WEEK = 1;
+const int ID_MONTH = 1;
+const int ID_WEEK = 0;
 
 const int secondShowPopUp = 2;
 
@@ -71,6 +74,8 @@ const VI_LANG = 'vn';
 const EMAIL_REGEX =
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 const VN_PHONE = r'(84|0[3|5|7|8|9])+([0-9]{8})\b';
+const AMOUNT_5 = r'^\d+((.)|(.\d{0,5})?)$';
+
 
 //2021-06-18 04:24:27
 const _dtFormat1 = 'yyyy-MM-dd HH:mm:ss';
@@ -170,7 +175,6 @@ class DateTimeFormat {
   static const CREATE_STRING_TO_DATE = _dtFormat15;
 }
 
-
 const USDT = 'USDT';
 const BNB = 'BNB';
 const PERCENT = '%';
@@ -215,7 +219,8 @@ const String DOCX =
 const String DOC = 'application/msword';
 const String PDF = 'application/pdf';
 const String XLS = 'application/vnd.ms-excel';
-const String XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const String XLSX =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const String POWER_POINT = 'application/vnd.ms-powerpoint';
 const String POWER_POINT_XML =
     'application/vnd.openxmlformats-officedocument.presentationml.presentation';

@@ -25,7 +25,7 @@ class ApiConstants {
   static const String GET_LIST_COLLECTION =
       '/inventory-svc/public-api/collections';
   static const String GET_LIST_COLLECTION_MARKET =
-      '/nft-market-svc/public-api/search/collection';
+      '/inventory-svc/public-api/search/collection';
   static const String GET_LIST_FILTER_COLLECTION_DETAIL =
       '/inventory-svc/public-api/collections/get-filter-properties';
   static const String GET_LIST_CATEGORY = '/nft-market-svc/public-api/category';
@@ -124,9 +124,9 @@ class ApiConstants {
   static const String ACCEPT_OFFER =
       'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/{id}/accept';
   static const String REJECT_OFFER =
-      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{id}/cancel';
+      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer/{collateralId}/rejectOffer/{id}?wallet-address={walletAddress}';
   static const String SEND_OFFER =
-      'defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
+      'defi-pawn-crypto-service/api/v1.0.0/crypto-offer';
 
   //IPFS
   static const String PINATA_API_KEY = 'ac8828bff3bcd1c1b828';
@@ -173,7 +173,7 @@ class ApiConstants {
 
   static const String GET_EVALUATORS_DETAIL_END = '/customer-view-profile';
 
-  static const String CREATE_EVALUATION = '/hard-nft-svc/api//appointments';
+  static const String CREATE_EVALUATION = '/hard-nft-svc/api/appointments';
 
   static const String CANCEL = '/hard-nft-svc/api/appointments/';
 
@@ -188,6 +188,7 @@ class ApiConstants {
   static const String GET_CITIES = '/hard-nft-svc/public-api/countries/';
 
   ///get_evaluation_result
+  static const String TRANSFER_NFT = '/nft-svc/api/soft-nft/transfer';
   static const String GET_LIST_EVALUATION_RESULT =
       '/hard-nft-svc/api/evaluations/';
   static const String GET_DETAIL_ASSETS_HARD_NFT = '/hard-nft-svc/api/assets/';
@@ -206,6 +207,8 @@ class ApiConstants {
 //pawn
   static const String GET_LIST_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/search-pawnshop';
+  static const String GET_LIST_NFT_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts';
 
   ///PAWN
   static const String GET_OFFICIAL_PAWNSHOP_WITH_TOKEN =
@@ -225,4 +228,8 @@ class ApiConstants {
 
   static const String GET_CRYPTO_COLLATERAL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/submit';
+
+  static const String GET_LIST_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/search';
+  static const String GET_COLLECTION_HARD_NFT = 'hard-nft-svc/api/collections';
 }

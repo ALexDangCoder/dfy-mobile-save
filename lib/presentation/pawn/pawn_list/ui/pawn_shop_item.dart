@@ -3,8 +3,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -124,6 +126,7 @@ class PawnItem extends StatelessWidget {
                       Container(
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
+                          color: AppTheme.getInstance().bgBtsColor(),
                           borderRadius: BorderRadius.all(
                             Radius.circular(
                               8.r,
@@ -133,12 +136,12 @@ class PawnItem extends StatelessWidget {
                         child: Image.network(
                           imageCover,
                           width: 99.w,
-                          height: 99.w,
+                          height: 99.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
                             width: 99.w,
-                            height: 99.w,
+                            height: 99.h,
                             color: AppTheme.getInstance().bgBtsColor(),
                           ),
                         ),
@@ -240,6 +243,7 @@ class PawnItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -313,6 +317,7 @@ class PawnItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -385,6 +390,7 @@ class PawnItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     availableLoan,
@@ -410,6 +416,7 @@ class PawnItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                spaceW4,
                 Expanded(
                   child: Text(
                     interestRate,
@@ -429,7 +436,7 @@ class PawnItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '\$ $total  ',
+                  text: '\$ ${formatPrice.format(double.parse(total))}  ',
                   style: textNormalCustom(
                     null,
                     24,
@@ -438,10 +445,21 @@ class PawnItem extends StatelessWidget {
                   children: [
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: Image.asset(
-                        ImageAssets.img_waning,
-                        height: 20.w,
-                        width: 20.w,
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => InfoPopup(
+                              name: S.current.total_contract_value,
+                              content: S.current.total_value_of_all,
+                            ),
+                          );
+                        },
+                        child: Image.asset(
+                          ImageAssets.img_waning,
+                          height: 20.w,
+                          width: 20.w,
+                        ),
                       ),
                     ),
                   ],

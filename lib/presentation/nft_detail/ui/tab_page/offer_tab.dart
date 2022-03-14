@@ -71,7 +71,7 @@ class _OfferTabState extends State<OfferTab> {
 
   Widget _buildItemOffer(OfferDetail objOffer) {
     final String duration =
-        (objOffer.durationType == 0) ? S.current.week : S.current.month;
+        (objOffer.durationType == 0) ? 'week' : 'month';
     return BaseItem(
       child: GestureDetector(
         onTap: () {

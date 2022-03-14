@@ -4,6 +4,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -22,6 +23,7 @@ import 'package:Dfy/widgets/views/row_description.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class OfferDetailScreen extends StatefulWidget {
   const OfferDetailScreen({
@@ -60,47 +62,50 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         stream: _cubit.offerStream,
         builder: (context, snapshot) {
           final offer = snapshot.data;
-          return snapshot.data != null
-              ? BaseDesignScreen(
-                  title: S.current.offer_detail,
-                  isImage: true,
-                  text: ImageAssets.ic_close,
-                  onRightClick: () {},
-                  bottomBar: (isShow(offer?.status ?? 0) &&
-                          PrefsService.getCurrentBEWallet().toLowerCase() ==
-                              PrefsService.getOwnerPawn().toLowerCase())
-                      ? rowButton(context, offer!)
-                      : null,
-                  child: RefreshIndicator(
-                    onRefresh: onRefresh,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        children: [
-                          spaceH20,
-                          Text(
-                            (offer?.walletAddress ?? '')
-                                .formatAddress(index: 4),
-                            style: richTextWhite.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                            ),
-                          ),
-                          spaceH8,
-                          _rowStar(Random().nextInt(100)),
-                          spaceH18,
-                          _textButton(),
-                          Divider(
-                            color: AppTheme.getInstance().divideColor(),
-                          ),
-                          spaceH20,
-                          ..._buildTable(offer),
-                        ],
+          if (snapshot.hasData) {
+            return BaseDesignScreen(
+              title: S.current.offer_detail,
+              isImage: true,
+              text: ImageAssets.ic_close,
+              onRightClick: () {
+                Navigator.pop(context);
+              },
+              bottomBar: (isShow(offer?.status ?? 0) &&
+                      PrefsService.getCurrentBEWallet().toLowerCase() ==
+                          PrefsService.getOwnerPawn().toLowerCase())
+                  ? rowButton(context, offer!)
+                  : null,
+              child: RefreshIndicator(
+                onRefresh: onRefresh,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      spaceH20,
+                      Text(
+                        (offer?.walletAddress ?? '').formatAddress(index: 4),
+                        style: richTextWhite.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
+                      spaceH8,
+                      _rowStar(Random().nextInt(100)),
+                      spaceH18,
+                      _textButton(),
+                      Divider(
+                        color: AppTheme.getInstance().divideColor(),
+                      ),
+                      spaceH20,
+                      ..._buildTable(offer),
+                    ],
                   ),
-                )
-              : ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+                ),
+              ),
+            );
+          } else {
+            return ColoredBox(color: AppTheme.getInstance().bgBtsColor());
+          }
         },
       ),
     );
@@ -150,13 +155,13 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       acceptProcess = false;
       rejectProcess = false;
     } else if (obj.status == 4) {
-      acceptText = S.current.processing;
+      acceptText = S.current.processings;
       rejectText = S.current.reject;
       acceptProcess = true;
       rejectEnable = false;
     } else if (obj.status == 5) {
       acceptText = S.current.accept;
-      rejectText = S.current.processing;
+      rejectText = S.current.processings;
       rejectProcess = true;
       acceptEnable = false;
     }
@@ -382,89 +387,106 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       isEnable: isEnable,
       isProcess: isProcess,
       onPressed: () {
-        _cubit
-            .getCancelOfferData(
-              obj.collateralId?.toString() ?? '',
-              obj.id?.toString() ?? '',
-              context,
-            )
-            .then(
-              (value) => Navigator.push(
+        if (!isProcess && isEnable && (obj.status != 4)) {
+          _cubit
+              .getCancelOfferData(
+                obj.bcCollateralId?.toString() ?? '',
+                obj.bcOfferId?.toString() ?? '',
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    title: S.current.reject_offer,
-                    spender: nft_pawn_dev2,
-                    textActiveButton: S.current.reject_offer,
-                    hexString: value,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.from}:',
-                          child: Text(
-                            obj.walletAddress?.formatAddressWalletConfirm() ??
-                                '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.loan_amount}',
-                          child: Text(
-                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        spaceH20,
-                        line,
-                      ],
-                    ),
-                    onSuccessSign: (context, data) async {
-                      Navigator.pop(context);
-                      _cubit.rejectOffer(obj.id?.toInt() ?? 0);
-                      await showLoadSuccess(context)
-                          .then((value) => Navigator.pop(context, true));
-                    },
-                    onErrorSign: (context) async {
-                      Navigator.pop(context);
-                      await showLoadFail(context)
-                          .then((_) => Navigator.pop(context))
-                          .then(
-                            (value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BaseFail(
-                                  title: S.current.reject_offer,
-                                  onTapBtn: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
+              )
+              .then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      title: S.current.reject_offer,
+                      spender: Get.find<AppConstants>().nftPawn,
+                      textActiveButton: S.current.reject_offer,
+                      hexString: value,
+                      header: Column(
+                        children: [
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.from}:',
+                            child: Text(
+                              obj.walletAddress?.formatAddressWalletConfirm() ??
+                                  '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
                               ),
                             ),
-                          );
-                    },
+                          ),
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.loan_amount}',
+                            child: Text(
+                              '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          spaceH20,
+                          line,
+                        ],
+                      ),
+                      onSuccessSign: (context, data) async {
+                        Navigator.pop(context);
+                        await _cubit.rejectOffer(
+                          obj.id?.toInt() ?? 0,
+                          obj.collateralId?.toInt() ?? 0,
+                          PrefsService.getCurrentBEWallet(),
+                        );
+                        await showLoadSuccess(context).then(
+                          (value) {
+                            Navigator.pop(context, true);
+                          },
+                        );
+                        await onRefresh();
+                      },
+                      onErrorSign: (context) async {
+                        Navigator.pop(context);
+                        await showLoadFail(context)
+                            .then((_) => Navigator.pop(context))
+                            .then(
+                              (value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BaseFail(
+                                    title: S.current.reject_offer,
+                                    onTapBtn: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+        }
       },
-      child: Text(
-        status,
-        style: textNormalCustom(
-          isEnable
-              ? AppTheme.getInstance().textThemeColor()
-              : AppTheme.getInstance().textGrayColor(),
-          16,
-          FontWeight.w700,
+      child: SizedBox(
+        width: 100.w,
+        child: Text(
+          status,
+          maxLines: 1,
+          style: textNormalCustom(
+            isEnable
+                ? AppTheme.getInstance().textThemeColor()
+                : AppTheme.getInstance().textGrayColor(),
+            16,
+            FontWeight.w700,
+          ).copyWith(
+            overflow: TextOverflow.ellipsis,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -481,74 +503,85 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       isEnable: isEnable,
       isProcess: isProcess,
       onPressed: () {
-        _cubit
-            .getAcceptOfferData(
-              obj.collateralId?.toString() ?? '',
-              obj.id?.toString() ?? '',
-              context,
-            )
-            .then(
-              (value) => Navigator.push(
+        if (isProcess || !isEnable) {
+        } else {
+          _cubit
+              .getAcceptOfferData(
+                obj.bcCollateralId?.toString() ?? '',
+                obj.bcOfferId?.toString() ?? '',
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Approve(
-                    title: S.current.accept_offer,
-                    spender: nft_pawn_dev2,
-                    textActiveButton: S.current.accept_offer,
-                    hexString: value,
-                    header: Column(
-                      children: [
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.from}:',
-                          child: Text(
-                            obj.walletAddress?.formatAddressWalletConfirm() ??
-                                '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
+              )
+              .then(
+                (value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Approve(
+                      title: S.current.accept_offer,
+                      spender: Get.find<AppConstants>().nftPawn,
+                      textActiveButton: S.current.accept_offer,
+                      hexString: value,
+                      header: Column(
+                        children: [
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.from}:',
+                            child: Text(
+                              obj.walletAddress?.formatAddressWalletConfirm() ??
+                                  '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        buildRowCustom(
-                          isPadding: false,
-                          title: '${S.current.loan_amount}:',
-                          child: Text(
-                            '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().textThemeColor(),
-                              16,
-                              FontWeight.w400,
+                          buildRowCustom(
+                            isPadding: false,
+                            title: '${S.current.loan_amount}:',
+                            child: Text(
+                              '${obj.loanAmount} ${obj.repaymentToken ?? ''}',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().textThemeColor(),
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                        spaceH20,
-                        line,
-                      ],
+                          spaceH20,
+                          line,
+                        ],
+                      ),
+                      onSuccessSign: (context, data) async {
+                        Navigator.pop(context);
+                        await _cubit.acceptOffer(obj.id?.toInt() ?? 0);
+                        await showLoadSuccess(context)
+                            .then((value) => Navigator.pop(context));
+                        await onRefresh();
+                      },
+                      onErrorSign: (context) async {
+                        Navigator.pop(context);
+                        await showLoadFail(context)
+                            .then((_) => Navigator.pop(context));
+                      },
                     ),
-                    onSuccessSign: (context, data) async {
-                      Navigator.pop(context);
-                      _cubit.acceptOffer(obj.id?.toInt() ?? 0);
-                      await showLoadSuccess(context)
-                          .then((value) => Navigator.pop(context));
-                    },
-                    onErrorSign: (context) async {
-                      Navigator.pop(context);
-                      await showLoadFail(context)
-                          .then((_) => Navigator.pop(context));
-                    },
                   ),
                 ),
-              ),
-            );
+              );
+        }
       },
-      child: Text(
-        status,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
+      child: SizedBox(
+        width: 100.w,
+        child: Text(
+          status,
+          maxLines: 1,
+          style: textNormalCustom(
+            AppTheme.getInstance().textThemeColor(),
+            16,
+            FontWeight.w700,
+          ).copyWith(
+            overflow: TextOverflow.ellipsis,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
