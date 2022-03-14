@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/bloc/borrow_result_cubit.dart';
@@ -14,6 +15,8 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'filter_borrow.dart';
 
 class BorrowResult extends StatefulWidget {
   final String? nameToken;
@@ -37,6 +40,7 @@ class _BorrowResultState extends State<BorrowResult> {
     // TODO: implement initState
     super.initState();
     cubit = BorrowResultCubit();
+    cubit.getTokenInf();
     cubit.callApi(
       collateralSymbols:
           widget.nameToken != S.current.all ? widget.nameToken : '',
@@ -57,34 +61,27 @@ class _BorrowResultState extends State<BorrowResult> {
       listener: (context, state) {
         if (state is BorrowPersonSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (cubit.loadMoreRefresh) {
+            if (cubit.refresh) {
               cubit.personalLending.clear();
             }
-            if ((state.personalLending ?? []).isEmpty) {
-              cubit.showEmpty();
-            } else {
-              cubit.showContent();
-            }
+            cubit.showContent();
           } else {
             cubit.message = state.message ?? '';
             cubit.personalLending.clear();
             cubit.showError();
           }
           cubit.personalLending.addAll(state.personalLending ?? []);
-          cubit.canLoadMore =
+          cubit.canLoadMoreList =
               cubit.personalLending.length >= ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMoreLoading = false;
+          cubit.loadMore = false;
+          cubit.refresh = false;
         }
         if (state is BorrowPawnshopSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (cubit.loadMoreRefresh) {
+            if (cubit.refresh) {
               cubit.pawnshopPackage.clear();
             }
-            if ((state.pawnshopPackage ?? []).isEmpty) {
-              cubit.showEmpty();
-            } else {
-              cubit.showContent();
-            }
+            cubit.showContent();
           } else {
             cubit.message = state.message ?? '';
             cubit.pawnshopPackage.clear();
@@ -92,9 +89,10 @@ class _BorrowResultState extends State<BorrowResult> {
           }
           cubit.pawnshopPackage =
               cubit.pawnshopPackage + (state.pawnshopPackage ?? []);
-          cubit.canLoadMore =
+          cubit.canLoadMoreList =
               cubit.pawnshopPackage.length >= ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMoreLoading = false;
+          cubit.loadMore = false;
+          cubit.refresh = false;
         }
       },
       builder: (context, state) {
@@ -110,8 +108,7 @@ class _BorrowResultState extends State<BorrowResult> {
                 isScrollControlled: true,
                 context: context,
                 builder: (_) {
-                  //TODO filter
-                  return const SizedBox();
+                  return FilterBorrow(cubit: cubit,);
                 },
               );
             },
@@ -122,7 +119,7 @@ class _BorrowResultState extends State<BorrowResult> {
               height: 699.h,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
-                  if (cubit.canLoadMore &&
+                  if (cubit.canLoadMoreList &&
                       scrollInfo.metrics.pixels ==
                           scrollInfo.metrics.maxScrollExtent) {
                     cubit.loadMorePosts();
@@ -180,7 +177,7 @@ class _BorrowResultState extends State<BorrowResult> {
                         ),
                         spaceH16,
                         SizedBox(
-                          height: 246.h,
+                          height: cubit.personalLending.isNotEmpty ? 246.h : 0,
                           child: ListView.builder(
                             padding: EdgeInsets.only(left: 16.w),
                             shrinkWrap: true,
@@ -233,6 +230,20 @@ class _BorrowResultState extends State<BorrowResult> {
                             },
                           ),
                         ),
+                        if(state is BorrowResultLoadmore)
+                          Center(
+                            child: SizedBox(
+                              height: 16.h,
+                              width: 16.w,
+                              child:
+                              CircularProgressIndicator(
+                                strokeWidth: 1.r,
+                                color: AppTheme.getInstance()
+                                    .whiteColor(),
+                              ),
+                            ),
+                          ),
+                        spaceH16,
                       ],
                     ),
                   ),

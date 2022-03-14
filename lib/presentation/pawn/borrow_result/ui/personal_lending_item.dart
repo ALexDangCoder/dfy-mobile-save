@@ -122,7 +122,7 @@ class PersonalLendingItem extends StatelessWidget {
                             width: 16.w,
                             height: 16.h,
                             child: Image.network(
-                              ImageAssets.getSymbolAsset(
+                              ImageAssets.getUrlToken(
                                 personalLending
                                         .p2PLenderPackages?[0]
                                         .acceptableAssetsAsCollateral?[index]
@@ -154,7 +154,7 @@ class PersonalLendingItem extends StatelessWidget {
                             width: 16.w,
                             height: 16.h,
                             child: Image.network(
-                              ImageAssets.getSymbolAsset(
+                              ImageAssets.getUrlToken(
                                 personalLending
                                         .p2PLenderPackages?[0]
                                         .acceptableAssetsAsCollateral?[index]

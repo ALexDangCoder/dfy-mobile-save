@@ -1133,7 +1133,7 @@ class Web3Utils {
         BigInt.from(num.parse(amount)),
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(expectedDurationQty)),
-        expectedDurationType,
+        BigInt.from(expectedDurationType),
       ],
     );
     return hex.encode(createCollateral.data ?? []);

@@ -431,6 +431,20 @@ class ImageAssets {
     icBack: [6, 12.25],
   };
 
+  static String getUrlToken(String symbol) {
+    List<TokenInf> listTokenSupport = [];
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    String urlToken = '';
+    for( final item in listTokenSupport) {
+      if(symbol.toLowerCase() == item.symbol?.toLowerCase()){
+        urlToken = item.iconUrl ?? '';
+        break;
+      }
+    }
+    return urlToken;
+  }
+
   static String getSymbolAsset(String shortName) {
     List<TokenInf> listTokenSupport = [];
     final String listToken = PrefsService.getListTokenSupport();
