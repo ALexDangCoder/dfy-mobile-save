@@ -10,6 +10,8 @@ import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///https://beta.gwapi.defiforyou.uk/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts?walletAddress=all&page=0&size=6
+
 class SendLoanRequestNft extends StatefulWidget {
   const SendLoanRequestNft({
     Key? key,
