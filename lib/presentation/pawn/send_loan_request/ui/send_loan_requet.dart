@@ -13,7 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest({Key? key}) : super(key: key);
+  const SendLoanRequest({Key? key, this.index = 0}) : super(key: key);
+  final int index;
 
   @override
   _SendLoanRequestState createState() => _SendLoanRequestState();
@@ -33,7 +34,9 @@ class _SendLoanRequestState extends State<SendLoanRequest>
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     checkLogin = cubit.getLoginState();
-    _tabController = TabController(length: 2, vsync: this);
+    cubit.tabIndex.add(widget.index);
+    _tabController =
+        TabController(initialIndex: widget.index, length: 2, vsync: this);
   }
 
   @override
@@ -126,36 +129,39 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                         ),
                         spaceH14,
                         SizedBox(
-                          child: TabBar(
-                            unselectedLabelColor: Colors.white,
-                            labelColor: Colors.white,
-                            onTap: (int i) {
-                              setState(() {});
-                            },
-                            indicatorColor: AppTheme.getInstance().bgBtsColor(),
-                            tabs: [
-                              Tab(
-                                icon: CheckboxItemTab(
-                                  isSelected: _tabController.index == 0,
-                                  nameCheckbox: 'Cryptocurrency',
-                                ),
-                              ),
-                              Tab(
-                                icon: CheckboxItemTab(
-                                  isSelected: _tabController.index == 1,
-                                  nameCheckbox: 'NFT',
-                                ),
-                              )
-                            ],
-                            controller: _tabController,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                          ),
+                          child: StreamBuilder<int>(
+                              stream: cubit.tabIndex,
+                              builder: (context, snapshot) {
+                                return TabBar(
+                                  unselectedLabelColor: Colors.white,
+                                  labelColor: Colors.white,
+                                  onTap: (int i) {
+                                    cubit.tabIndex.add(i);
+                                  },
+                                  indicatorColor:
+                                      AppTheme.getInstance().bgBtsColor(),
+                                  tabs: [
+                                    Tab(
+                                      icon: CheckboxItemTab(
+                                        isSelected: snapshot.data == 0,
+                                        nameCheckbox: 'Cryptocurrency',
+                                      ),
+                                    ),
+                                    Tab(
+                                      icon: CheckboxItemTab(
+                                        isSelected: snapshot.data == 1,
+                                        nameCheckbox: 'NFT',
+                                      ),
+                                    )
+                                  ],
+                                  controller: _tabController,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                );
+                              }),
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxHeight: 750.h,
-                            minHeight: 699.h
-                          ),
+                              maxHeight: 750.h, minHeight: 699.h),
                           child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,

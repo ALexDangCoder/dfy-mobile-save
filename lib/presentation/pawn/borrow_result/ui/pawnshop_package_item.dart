@@ -166,8 +166,8 @@ class PawnshopPackageItem extends StatelessWidget {
                               SizedBox(
                                 width: 16.w,
                                 height: 16.h,
-                                child: Image.asset(
-                                  ImageAssets.getSymbolAsset(
+                                child: Image.network(
+                                  ImageAssets.getUrlToken(
                                     pawnshopPackage
                                         .acceptableAssetsAsCollateral?[index].symbol ??
                                         '',
@@ -192,8 +192,8 @@ class PawnshopPackageItem extends StatelessWidget {
                               SizedBox(
                                 width: 16.w,
                                 height: 16.h,
-                                child: Image.asset(
-                                  ImageAssets.getSymbolAsset(
+                                child: Image.network(
+                                  ImageAssets.getUrlToken(
                                     pawnshopPackage
                                         .acceptableAssetsAsCollateral?[index].symbol ??
                                         '',

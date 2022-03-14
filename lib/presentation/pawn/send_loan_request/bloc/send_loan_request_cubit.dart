@@ -26,9 +26,14 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   BehaviorSubject<ModelToken> tokenStream =
       BehaviorSubject.seeded(ModelToken.init());
-  BehaviorSubject<String> focusTextField = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
+  BehaviorSubject<String> focusTextField =
+  BehaviorSubject.seeded('');
+  BehaviorSubject<bool> emailNotification =
+  BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> chooseExisting =
+  BehaviorSubject.seeded(false);
+  BehaviorSubject<int> tabIndex =
+  BehaviorSubject.seeded(0);
 
   String wallet = '';
 

@@ -25,7 +25,8 @@ abstract class BorrowService {
     @Query('interestRanges') String? interestRanges,
     @Query('loanToValueRanges') String? loanToValueRanges,
     @Query('loanSymbols') String? loanSymbols,
-    @Query('loanType') String? loanType,
+    @Query('loanTypes') String? loanType,
+    @Query('durationTypes') String? durationType,
     @Query('page') String? page,
     @Query('size') String? size,
   );
@@ -39,6 +40,7 @@ abstract class BorrowService {
     @Query('loanToValueRanges') String? loanToValueRanges,
     @Query('loanSymbols') String? loanSymbols,
     @Query('loanType') String? loanType,
+      @Query('durationTypes') String? durationType,
     @Query('page') String? page,
     @Query('size') String? size,
     @Query('cusSort') String? cusSort,

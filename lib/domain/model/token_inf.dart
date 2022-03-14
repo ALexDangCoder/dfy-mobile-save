@@ -10,6 +10,7 @@ class TokenInf {
   String? address;
   String? name;
   String? iconUrl;
+  bool? isSelect = false;
 
   TokenInf({
     this.symbol,
@@ -21,6 +22,7 @@ class TokenInf {
     this.usdExchange,
     this.address,
     this.iconUrl,
+    this.isSelect,
   });
 
   factory TokenInf.fromJson(Map<String, dynamic> json) {
@@ -29,7 +31,8 @@ class TokenInf {
       symbol: json['symbol'],
       iconUrl: json['iconUrl'],
       usdExchange: json['usdExchange'],
-      whiteListAsset: json['whitelistAsset']
+      whiteListAsset: json['whitelistAsset'],
+      isSelect: false,
     );
   }
 
