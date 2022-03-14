@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
@@ -38,7 +39,7 @@ class PersonalItem extends StatelessWidget {
     return WidgetSpan(
       alignment: PlaceholderAlignment.middle,
       child: listLength >= maxLength
-          ? Image.asset(
+          ? Image.network(
               ImageAssets.getSymbolAsset(
                 symbol,
               ),
@@ -114,51 +115,57 @@ class PersonalItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: nameShop,
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ).copyWith(
-                      overflow: TextOverflow.clip,
+                Expanded(
+                  flex: 8,
+                  child: RichText(
+                    text: TextSpan(
+                      text: nameShop,
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ).copyWith(
+                        overflow: TextOverflow.clip,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          child: spaceW6,
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: isShop
+                              ? Image.asset(ImageAssets.ic_selected)
+                              : const SizedBox.shrink(),
+                        ),
+                      ],
                     ),
-                    children: [
-                      WidgetSpan(
-                        child: spaceW6,
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: isShop
-                            ? Image.asset(ImageAssets.ic_selected)
-                            : const SizedBox.shrink(),
-                      ),
-                    ],
                   ),
                 ),
                 spaceH12,
-                RichText(
-                  text: TextSpan(
-                    text: '',
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ).copyWith(
-                      overflow: TextOverflow.clip,
+                Expanded(
+                  flex: 2,
+                  child: RichText(
+                    text: TextSpan(
+                      text: '',
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ).copyWith(
+                        overflow: TextOverflow.clip,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Image.asset(ImageAssets.img_star),
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: spaceW6,
+                        ),
+                        TextSpan(text: rate),
+                      ],
                     ),
-                    children: [
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: Image.asset(ImageAssets.img_star),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: spaceW6,
-                      ),
-                      TextSpan(text: rate),
-                    ],
                   ),
                 )
               ],
@@ -279,12 +286,13 @@ class PersonalItem extends StatelessWidget {
                 spaceW4,
                 Expanded(
                   child: Text(
-                    signedContract,
+                    formatPrice.format(double.parse(signedContract)),
                     style: textNormalCustom(
                       null,
                       14,
                       FontWeight.w400,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -296,7 +304,7 @@ class PersonalItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '\$ $total  ',
+                  text: '\$ ${formatPrice.format(double.parse(total))}  ',
                   style: textNormalCustom(
                     null,
                     24,

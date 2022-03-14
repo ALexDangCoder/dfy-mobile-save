@@ -266,7 +266,8 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                         collateral: '${formatPrice.format(
                                           list[index + 2].collateralAmount,
                                         )} '
-                                            '${list[index + 2].collateralSymbol ?? ''}',
+                                            '${list[index + 2].collateralSymbol
+                                            ?? ''}',
                                       ),
                                     )
                                   else

@@ -44,7 +44,7 @@ class PawnItem extends StatelessWidget {
     return WidgetSpan(
       alignment: PlaceholderAlignment.middle,
       child: listLength >= maxLength
-          ? Image.asset(
+          ? Image.network(
               ImageAssets.getSymbolAsset(
                 symbol,
               ),

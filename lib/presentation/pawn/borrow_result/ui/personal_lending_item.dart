@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
@@ -121,7 +120,7 @@ class PersonalLendingItem extends StatelessWidget {
                           SizedBox(
                             width: 16.w,
                             height: 16.h,
-                            child: Image.asset(
+                            child: Image.network(
                               ImageAssets.getSymbolAsset(
                                 personalLending
                                         .p2PLenderPackages?[0]
@@ -148,7 +147,7 @@ class PersonalLendingItem extends StatelessWidget {
                           SizedBox(
                             width: 16.w,
                             height: 16.h,
-                            child: Image.asset(
+                            child: Image.network(
                               ImageAssets.getSymbolAsset(
                                 personalLending
                                         .p2PLenderPackages?[0]

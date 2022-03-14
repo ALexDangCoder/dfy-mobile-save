@@ -7,7 +7,6 @@ import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_c
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
-import 'package:Dfy/widgets/form/from_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,7 +33,6 @@ class _FilterCollateralState extends State<FilterCollateral> {
     super.initState();
     textSearch = TextEditingController();
     widget.bloc.statusFilterFirst();
-    textSearch.text = widget.bloc.searchStatus ?? '';
   }
 
   @override
@@ -142,15 +140,6 @@ class _FilterCollateralState extends State<FilterCollateral> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       spaceH12,
-                      FormSearchBase(
-                        onChangedFunction: widget.bloc.funOnSearch,
-                        onTapFunction: widget.bloc.funOnTapSearch,
-                        urlIcon: ImageAssets.ic_search,
-                        hint: S.current.search_pawnshop,
-                        textSearchStream: widget.bloc.textSearch,
-                        textSearch: textSearch,
-                      ),
-                      spaceH16,
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.w,

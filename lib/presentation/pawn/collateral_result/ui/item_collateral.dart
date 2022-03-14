@@ -119,7 +119,7 @@ class ItemCollateral extends StatelessWidget {
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
-                            child: Image.asset(
+                            child: Image.network(
                               iconBorrower,
                               width: 16.sp,
                               height: 16.sp,
@@ -181,7 +181,7 @@ class ItemCollateral extends StatelessWidget {
                         children: [
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
-                            child: Image.asset(
+                            child: Image.network(
                               iconCollateral,
                               width: 16.sp,
                               height: 16.sp,
@@ -228,7 +228,7 @@ class ItemCollateral extends StatelessWidget {
                         children: [
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
-                            child: Image.asset(
+                            child: Image.network(
                               iconLoadToken,
                               width: 16.sp,
                               height: 16.sp,

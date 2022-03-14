@@ -86,7 +86,7 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
           onTap: () {
             check();
           },
-          child: Image.asset(
+          child: Image.network(
             ImageAssets.getSymbolAsset(
               name,
             ),

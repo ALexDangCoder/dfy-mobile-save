@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,10 +23,13 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
   Widget build(BuildContext context) {
     late bool isCheck;
     late String name;
+    late String symbolURL;
     isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
     name = widget.bloc.listCollateralTokenFilter[widget.index].symbol
         .toString()
         .toUpperCase();
+    symbolURL =
+        widget.bloc.listCollateralTokenFilter[widget.index].url.toString();
     void check() {
       late bool value;
       if (isCheck) {
@@ -72,13 +74,14 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
           onTap: () {
             check();
           },
-          child: Image.asset(
-            ImageAssets.getSymbolAsset(
-              name,
-            ),
+          child: Image.network(
+            symbolURL,
             width: 20.w,
             height: 20.w,
             fit: BoxFit.fill,
+            errorBuilder: (context, error, stackTrace) => Container(
+              color: AppTheme.getInstance().bgBtsColor(),
+            ),
           ),
         ),
         spaceW4,
