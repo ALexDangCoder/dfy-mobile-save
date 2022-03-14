@@ -17,5 +17,6 @@
   "auction_abi": "AuctionNFT_ABI.json",
   "default_collection_abi": "DefiForYouNFTFactory_ABI_DEV2.json",
   "erc721_abi": "erc721_abi.json",
-  "contract_defy": "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14"
+  "contract_defy": "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14",
+  "crypto_pawn_contract": "0x85e63AAA2CE9144bf7E716dF8CfAB1EcaE1E203A"
 }

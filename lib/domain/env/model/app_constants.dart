@@ -61,6 +61,9 @@ class AppConstants {
   @JsonKey(name: 'contract_defy')
   String contract_defy;
 
+  @JsonKey(name: 'crypto_pawn_contract')
+  String crypto_pawn_contract;
+
   AppConstants(
     this.type,
     this.baseUrl,
@@ -81,6 +84,7 @@ class AppConstants {
     this.default_collection_abi,
     this.erc721_abi,
     this.contract_defy,
+    this.crypto_pawn_contract,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>
