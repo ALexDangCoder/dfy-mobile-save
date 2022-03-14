@@ -806,6 +806,7 @@
   "processings": "Đang xử lý",
   "total_value_of_all": "Tổng giá trị của tất cả các hợp đồng cho vay được quy đổi sang USD",
   "total_contract_value": "Tổng giá trị hợp đồng",
-  "all_type_of_NFT": "All type of NFT"
-
+  "all_type_of_NFT": "All type of NFT",
+  "just_loan_amount": "Sô tiền vay",
+  "enter_mess": "Nhập tin nhắn"
 }

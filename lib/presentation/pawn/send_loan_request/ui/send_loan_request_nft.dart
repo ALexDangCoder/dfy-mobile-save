@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/form_dropdown.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -25,11 +26,19 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
   final GlobalKey<FormGroupState> _keyForm = GlobalKey<FormGroupState>();
 
   @override
+  void initState() {
+    super.initState();
+    widget.cubit.getTokensRequestNft();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FormGroup(
       key: _keyForm,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w,),
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -100,6 +109,13 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
               validator: (value) {
                 return widget.cubit.validateAmount(value ?? '');
               },
+              suffixIcon: FormDropDownWidget(
+                widthDropDown: 100.w,
+                heightDropDown: 300.h,
+                listDropDown: widget.cubit.listDropDownToken,
+                initValue: widget.cubit.listDropDownToken[0],
+                onChange: (Map<String, dynamic> value) {},
+              ),
             ),
             spaceH16,
             Text(
@@ -122,6 +138,22 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                         _keyForm.currentState?.checkValidator() ?? false;
                     widget.cubit.validateAll();
                   },
+                  suffixIcon: FormDropDownWidget(
+                    listDropDown: widget.cubit.listDropDownDuration,
+                    initValue: widget.cubit.listDropDownDuration[0],
+                    heightDropDown: 150.h,
+                    widthDropDown: 100.w,
+                    onChange: (value) => {
+                      if (value['label'] == 'month')
+                        {
+                          widget.cubit.isMonthForm.sink.add(true),
+                        }
+                      else
+                        {
+                          widget.cubit.isMonthForm.sink.add(false),
+                        }
+                    },
+                  ),
                   validator: (value) {
                     return (snapshot.data ?? true)
                         ? widget.cubit.validateDuration(value ?? '')
