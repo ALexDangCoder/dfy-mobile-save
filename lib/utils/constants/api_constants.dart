@@ -232,4 +232,9 @@ class ApiConstants {
   static const String GET_LIST_COLLATERAL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/search';
   static const String GET_COLLECTION_HARD_NFT = 'hard-nft-svc/api/collections';
+  static const String GET_COLLECTION_FILTER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/collections';
+
+  static const String GET_ASSET_FILTER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts/asset-types';
 }

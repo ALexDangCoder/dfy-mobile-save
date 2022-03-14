@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -128,6 +129,11 @@ class PersonalLendingItem extends StatelessWidget {
                                         .symbol ??
                                     '',
                               ),
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width: 16.w,
+                                height: 16.w,
+                              ),
                             ),
                           ),
                           spaceW8,
@@ -154,6 +160,11 @@ class PersonalLendingItem extends StatelessWidget {
                                         .acceptableAssetsAsCollateral?[index]
                                         .symbol ??
                                     '',
+                              ),
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width: 16.w,
+                                height: 16.h,
                               ),
                             ),
                           ),

@@ -8,6 +8,7 @@ import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/dialog_filter.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -235,7 +236,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     emit(PawnListLoading());
     final Result<List<PawnShopModelMy>> response =
         await _pawnService.getListPawnShopMy(
-          size: '12',
+          size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
           page: page.toString(),
         );
     response.when(

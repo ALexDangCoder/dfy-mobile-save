@@ -123,6 +123,11 @@ class ItemCollateral extends StatelessWidget {
                               iconBorrower,
                               width: 16.sp,
                               height: 16.sp,
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width: 16.sp,
+                                height: 16.sp,
+                              ),
                             ),
                           ),
                           WidgetSpan(
@@ -185,6 +190,11 @@ class ItemCollateral extends StatelessWidget {
                               iconCollateral,
                               width: 16.sp,
                               height: 16.sp,
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width:16.sp,
+                                height:16.sp,
+                              ),
                             ),
                           ),
                           WidgetSpan(

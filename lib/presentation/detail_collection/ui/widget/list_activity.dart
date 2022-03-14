@@ -104,6 +104,11 @@ class ListActivity extends StatelessWidget {
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(
@@ -324,6 +329,11 @@ class ListActivity extends StatelessWidget {
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(
@@ -385,6 +395,11 @@ class ListActivity extends StatelessWidget {
                               urlSymbol,
                               width: 14.w,
                               height: 14.w,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                          width: 14.w,
+                          height: 14.w,
+                        ),
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -445,6 +460,11 @@ class ListActivity extends StatelessWidget {
                               urlSymbol,
                               width: 14.w,
                               height: 14.w,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                          width: 14.w,
+                          height: 14.w,
+                        ),
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -506,6 +526,11 @@ class ListActivity extends StatelessWidget {
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(

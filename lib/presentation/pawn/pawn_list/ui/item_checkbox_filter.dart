@@ -1,11 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-enum TypeCheckBox { LOAN, COLLATERAL }
 
 class ItemCheckBoxFilter extends StatefulWidget {
   final int index;
@@ -93,6 +92,11 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
             width: 20.w,
             height: 20.w,
             fit: BoxFit.fill,
+            errorBuilder: (context, error, stackTrace) => Container(
+              color: AppTheme.getInstance().bgBtsColor(),
+              width: 20.w,
+              height: 20.w,
+            ),
           ),
         ),
         spaceW4,

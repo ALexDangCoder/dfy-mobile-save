@@ -115,6 +115,10 @@ class _ChooseTokenState extends State<ChooseToken> {
               )
             : Image.network(
                 widget.bloc.getListTokenModel.value[index].iconToken,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: AppTheme.getInstance().bgBtsColor(),
+
+          ),
               ),
         onChanged: (value) {},
         switchActiveColor: Colors.grey,
@@ -165,6 +169,10 @@ class _ChooseTokenState extends State<ChooseToken> {
               )
             : Image.network(
                 widget.bloc.getListTokenModel.value[index].iconToken,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: AppTheme.getInstance().bgBtsColor(),
+
+          ),
               ),
         onChanged: (value) {
           widget.bloc.getListTokenModel.value[index].isShow = value;
