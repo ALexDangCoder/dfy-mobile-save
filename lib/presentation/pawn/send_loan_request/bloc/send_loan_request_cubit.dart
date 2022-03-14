@@ -2,14 +2,20 @@ import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -131,9 +137,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   String? validateDuration(String value, {bool isMonth = true}) {
-    if(!isMonth) {
+    if (!isMonth) {
       //isWeek
-      if(value.isEmpty) {
+      if (value.isEmpty) {
         return 'Duration is required';
       } else if (int.parse(value) > 1200) {
         return 'Duration by week cannot be greater than 5,200';
@@ -142,7 +148,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       }
     } else {
       //isMonth
-      if(value.isEmpty) {
+      if (value.isEmpty) {
         return 'Duration is required';
       } else if (int.parse(value) > 1200) {
         return 'Duration by month cannot be greater than 1,200';
@@ -159,7 +165,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   };
 
   void validateAll() {
-    if(mapValidate.containsValue(false)) {
+    if (mapValidate.containsValue(false)) {
       //false cannot switch screen
     } else {
       //can switch
@@ -167,4 +173,56 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   BehaviorSubject<bool> isMonthForm = BehaviorSubject<bool>();
+  List<Map<String, dynamic>> listDropDownToken = [];
+  List<TokenInf> listTokenSupport = [];
+  List<Map<String, dynamic>> listDropDownDuration = [
+    {
+      'label': 'month',
+      'value': 'month',
+    },
+    {
+      'label': 'week',
+      'value': 'week',
+    },
+  ];
+
+  void getTokensRequestNft() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    listDropDownToken.add({
+      'label': DFY,
+      'value': 1,
+      'addressToken': Get.find<AppConstants>().contract_defy,
+      'icon': SizedBox(
+        width: 20.w,
+        height: 20.h,
+        child: Image.asset(
+          ImageAssets.getSymbolAsset(
+            DFY,
+          ),
+        ),
+      )
+    });
+    for (final element in listTokenSupport) {
+      if (element.symbol == USDT ||
+          element.symbol == 'DAI' ||
+          element.symbol == 'USDC' ||
+          element.symbol == 'BUSD') {
+        listDropDownToken.add({
+          'label': element.symbol,
+          'value': element.id,
+          'addressToken': element.address,
+          'icon': SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Image.asset(
+              ImageAssets.getSymbolAsset(
+                element.symbol ?? DFY,
+              ),
+            ),
+          )
+        });
+      }
+    }
+  }
 }
