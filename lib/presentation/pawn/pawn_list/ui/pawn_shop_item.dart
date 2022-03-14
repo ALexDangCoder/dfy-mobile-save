@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
@@ -123,11 +124,9 @@ class PawnItem extends StatelessWidget {
                   child: Stack(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
-                          left: 16.w,
-                        ),
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
+                          color: AppTheme.getInstance().bgBtsColor(),
                           borderRadius: BorderRadius.all(
                             Radius.circular(
                               8.r,
@@ -137,19 +136,19 @@ class PawnItem extends StatelessWidget {
                         child: Image.network(
                           imageCover,
                           width: 99.w,
-                          height: 99.w,
+                          height: 99.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
                             width: 99.w,
-                            height: 99.w,
+                            height: 99.h,
                             color: AppTheme.getInstance().bgBtsColor(),
                           ),
                         ),
                       ),
                       Positioned(
                         top: 4.h,
-                        left: 20.w,
+                        left: 4.w,
                         child: Container(
                           clipBehavior: Clip.hardEdge,
                           decoration: const BoxDecoration(
@@ -437,7 +436,7 @@ class PawnItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '\$ $total  ',
+                  text: '\$ ${formatPrice.format(double.parse(total))}  ',
                   style: textNormalCustom(
                     null,
                     24,
@@ -451,8 +450,8 @@ class PawnItem extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (_) => InfoPopup(
-                              name: S.current.duration,
-                              content: S.current.duration_more_content,
+                              name: S.current.total_contract_value,
+                              content: S.current.total_value_of_all,
                             ),
                           );
                         },

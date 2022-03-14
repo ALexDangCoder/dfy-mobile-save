@@ -3,6 +3,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
@@ -11,12 +12,11 @@ import 'package:rxdart/rxdart.dart';
 class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   CollateralResultBloc() : super(CollateralResultInitial());
 
-  BehaviorSubject<int> numberListLength = BehaviorSubject.seeded(0);
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isWeek = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMonth = BehaviorSubject.seeded(false);
-
-  //filter
+  static const int WEEK = 0;
+  static const int MONTH = 1;
 
   //status filter
   String? checkStatus;
@@ -27,12 +27,12 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   bool statusWeek = false;
   bool statusMonth = false;
 
-  final bool _canLoadMore = true;
+  bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
-  int page = 1;
+  int page = 0;
 
-  bool get canLoadMore => _canLoadMore;
+  bool get canLoadMore => canLoadMoreMy;
 
   bool get isRefresh => _isRefresh;
 
@@ -78,7 +78,7 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
 
   Future<void> refreshPosts() async {
     if (!_isLoading) {
-      page = 1;
+      page = 0;
       _isRefresh = true;
       _isLoading = true;
       await getListCollateral();
@@ -98,7 +98,18 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     }
   }
 
+  String getTime({
+    required int type,
+    required int time,
+  }) {
+    if (type == WEEK) {
+      return '$time ${S.current.week}';
+    }
+    return '$time ${S.current.month}';
+  }
+
   Future<void> getListCollateral() async {
+    showLoading();
     emit(CollateralResultLoading());
     final Result<List<CollateralResultModel>> response =
         await _pawnService.getListCollateral(
@@ -108,12 +119,11 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          canLoadMore = true;
-
-          _isLoading = false;
+          canLoadMoreMy = true;
         } else {
-          canLoadMore = false;
+          canLoadMoreMy = false;
         }
+        _isLoading = false;
         emit(
           CollateralResultSuccess(
             CompleteType.SUCCESS,
@@ -166,7 +176,7 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   }
 
   void funFilter() {
-    page = 1;
+    page = 0;
     searchStatus = textSearch.value;
     statusListCollateral = [];
     for (int i = 0; i < listCollateralTokenFilter.length; i++) {

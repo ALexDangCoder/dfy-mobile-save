@@ -21,7 +21,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
   BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
 
   //load more
-  final bool _canLoadMore = true;
+  bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
   int page = 0;
@@ -41,7 +41,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
   String? collateralSymbols;
   String? cusSort;
 
-  bool get canLoadMore => _canLoadMore;
+  bool get canLoadMore => canLoadMoreMy;
 
   bool get isRefresh => _isRefresh;
   String mess = '';
@@ -227,6 +227,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
 
 //
   Future<void> getPersonLendingResult() async {
+    showLoading();
     emit(PersonalLendingLoading());
     final Result<List<PersonalLending>> result =
         await _repo.getListPersonalLendingHard(
@@ -236,21 +237,22 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
       loanToValueRanges: loanToValueRanges,
       page: page.toString(),
       cusSort: cusSort,
+      isNft: false,
     );
     result.when(
       success: (res) {
         if (res.isNotEmpty) {
-          canLoadMore = true;
-          emit(
-            PersonalLendingSuccess(
-              CompleteType.SUCCESS,
-              listPersonal: res,
-            ),
-          );
-          _isLoading = false;
+          canLoadMoreMy = true;
         } else {
-          canLoadMore = false;
+          canLoadMoreMy = false;
         }
+        _isLoading = false;
+        emit(
+          PersonalLendingSuccess(
+            CompleteType.SUCCESS,
+            listPersonal: res,
+          ),
+        );
       },
       error: (error) {
         emit(

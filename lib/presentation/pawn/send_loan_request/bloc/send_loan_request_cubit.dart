@@ -5,7 +5,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/presentation/receive_token/ui/receive_token.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
@@ -20,12 +20,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   BehaviorSubject<ModelToken> tokenStream =
       BehaviorSubject.seeded(ModelToken.init());
-  BehaviorSubject<String> focusTextField =
-  BehaviorSubject.seeded('');
-  BehaviorSubject<bool> emailNotification =
-  BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> chooseExisting =
-  BehaviorSubject.seeded(false);
+  BehaviorSubject<String> focusTextField = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
 
   String wallet = '';
 
@@ -37,9 +34,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
   }
 
-  List<ModelToken> listTokenFromWalletCore = [
-
-  ];
+  List<ModelToken> listTokenFromWalletCore = [];
   final List<ModelToken> checkShow = [];
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -111,4 +106,65 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       return false;
     }
   }
+
+  ///Huy send loan nft
+  String? validateMessage(String value) {
+    if (value.isEmpty) {
+      return 'Message is required';
+    } else if (value.length > 100) {
+      return 'Maximum length allowed is 100 characters';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateAmount(String amount) {
+    if (amount.isEmpty) {
+      return 'Expected loan is required';
+    } else if (amount.length > 100) {
+      return 'Maximum length allowed is 100 characters';
+    } else if (!isValidateAmount5(amount)) {
+      return 'Invalid expected loan';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateDuration(String value, {bool isMonth = true}) {
+    if(!isMonth) {
+      //isWeek
+      if(value.isEmpty) {
+        return 'Duration is required';
+      } else if (int.parse(value) > 1200) {
+        return 'Duration by week cannot be greater than 5,200';
+      } else {
+        return null;
+      }
+    } else {
+      //isMonth
+      if(value.isEmpty) {
+        return 'Duration is required';
+      } else if (int.parse(value) > 1200) {
+        return 'Duration by month cannot be greater than 1,200';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  Map<String, bool> mapValidate = {
+    'form': false,
+    'tick': false,
+    'chooseNFT': false,
+  };
+
+  void validateAll() {
+    if(mapValidate.containsValue(false)) {
+      //false cannot switch screen
+    } else {
+      //can switch
+    }
+  }
+
+  BehaviorSubject<bool> isMonthForm = BehaviorSubject<bool>();
 }

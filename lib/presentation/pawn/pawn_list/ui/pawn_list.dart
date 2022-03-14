@@ -7,8 +7,8 @@ import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/filter_pawn.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/ui/pawn_shop_item.dart';
-import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,6 @@ class PawnList extends StatefulWidget {
 
 class _PawnListState extends State<PawnList> {
   late PawnListBloc _bloc;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -41,35 +40,29 @@ class _PawnListState extends State<PawnList> {
     return BlocConsumer<PawnListBloc, PawnListState>(
       bloc: _bloc,
       listener: (context, state) {
-        ///Loading
-        if (state is PawnListLoading && _bloc.isRefresh) {
-          if (!_isLoading) {
-            _isLoading = true;
-            showLoading(
-              context,
-              close: (value) {
-                _isLoading = false;
-              },
-            );
-          }
-        }
-
-        if (_isLoading && state is! PawnListLoading) {
-          hideLoading(context);
-        }
-
-        ///Get Blog List Completed
         if (state is PawnListSuccess) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (_bloc.loadMoreRefresh) {}
+            _bloc.showContent();
+          } else {
+            _bloc.mess = state.message ?? '';
+            _bloc.showError();
+          }
+
+          _bloc.loadMoreLoading = false;
           if (_bloc.isRefresh) {
             _bloc.list.clear();
           }
           _bloc.list.addAll(state.listPawn ?? []);
+          _bloc.canLoadMoreMy = _bloc.list.length >= 12;
         }
       },
       builder: (context, state) {
         final list = _bloc.list;
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            _bloc.refreshPosts();
+          },
           textEmpty: _bloc.mess,
           error: AppException(S.current.error, _bloc.mess),
           stream: _bloc.stateStream,
@@ -170,7 +163,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeRating = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.rating,
+                                    );
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -191,7 +188,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeInterest = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.interest_rate_pawn,
+                                    );
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(
@@ -212,7 +213,11 @@ class _PawnListState extends State<PawnList> {
                                   );
                                   if (res != null) {
                                     _bloc.typeSigned = res;
-                                    //todo filter
+                                    _bloc.getTextFilter(
+                                      res,
+                                      S.current.signed_contracts,
+                                    );
+                                    await _bloc.refreshPosts();
                                   }
                                 },
                                 child: ItemHeaderFilter(

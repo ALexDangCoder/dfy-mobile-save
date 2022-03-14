@@ -1,8 +1,9 @@
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_state.dart';
@@ -12,15 +13,23 @@ import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PawnListBloc extends BaseCubit<PawnListState> {
-  PawnListBloc() : super(PawnListInitial());
+  PawnListBloc() : super(PawnListInitial()) {
+    getTokenInf();
+  }
 
   //load more
-  final bool _canLoadMore = true;
+  bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
-  int page = 1;
+  int page = 0;
+  static const String A_TO_Z_REPUTATION = 'reputation,desc';
+  static const String Z_TO_A_REPUTATION = 'reputation,asc';
+  static const String A_TO_Z_INTEREST = 'interest,desc';
+  static const String Z_TO_A_INTEREST = 'interest,asc';
+  static const String A_TO_Z_COMPLETED = 'completedContracts,desc';
+  static const String Z_TO_A_COMPLETED = 'completedContracts,asc';
 
-  bool get canLoadMore => _canLoadMore;
+  bool get canLoadMore => canLoadMoreMy;
 
   bool get isRefresh => _isRefresh;
 
@@ -44,24 +53,9 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     false,
   ]);
 
-  List<TokenModelPawn> listLoanTokenFilter = [
-    //1
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listLoanTokenFilter = [];
 
-  List<TokenModelPawn> listCollateralTokenFilter = [
-    //2
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listCollateralTokenFilter = [];
 
   BorrowRepository get _pawnService => Get.find();
   static const int ZERO_TO_TEN = 0;
@@ -72,13 +66,36 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   //status filter
   String? checkStatus;
   String? searchStatus;
+  String? cusSort;
   List<bool>? statusFilterNumber;
   List<int> statusListLoan = [];
   List<int> statusListCollateral = [];
+  List<TokenInf> listTokenSupport = [];
+
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final TokenInf value in listTokenSupport) {
+      listCollateralTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+        ),
+      );
+      listLoanTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+        ),
+      );
+    }
+  }
 
   Future<void> refreshPosts() async {
     if (!_isLoading) {
-      page = 1;
+      page = 0;
       _isRefresh = true;
       _isLoading = true;
       await getListPawn();
@@ -91,6 +108,31 @@ class PawnListBloc extends BaseCubit<PawnListState> {
       _isRefresh = false;
       _isLoading = true;
       getListPawn();
+    }
+  }
+
+  void getTextFilter(TypeFilter type, String checkType) {
+    page = 0;
+    if (checkType == S.current.rating) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_REPUTATION;
+      } else {
+        cusSort = Z_TO_A_REPUTATION;
+      }
+    } else if (checkType == S.current.interest_rate_pawn) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_INTEREST;
+      } else {
+        cusSort = Z_TO_A_INTEREST;
+      }
+    } else if (checkType == S.current.signed_contracts) {
+      if (type == TypeFilter.HIGH_TO_LOW) {
+        cusSort = A_TO_Z_COMPLETED;
+      } else {
+        cusSort = Z_TO_A_COMPLETED;
+      }
+    } else {
+      cusSort = '';
     }
   }
 
@@ -167,7 +209,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   }
 
   void funFilter() {
-    page = 1;
+    page = 0;
     searchStatus = textSearch.value;
     statusFilterNumber = listFilterStream.value;
     statusListCollateral = [];
@@ -189,24 +231,27 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   }
 
   Future<void> getListPawn() async {
+    showLoading();
     emit(PawnListLoading());
     final Result<List<PawnShopModelMy>> response =
-        await _pawnService.getListPawnShopMy();
+        await _pawnService.getListPawnShopMy(
+          size: '12',
+          page: page.toString(),
+        );
     response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          canLoadMore = true;
-
-          emit(
-            PawnListSuccess(
-              CompleteType.SUCCESS,
-              listPawn: response,
-            ),
-          );
-          _isLoading = false;
+          canLoadMoreMy = true;
         } else {
-          canLoadMore = false;
+          canLoadMoreMy = false;
         }
+        _isLoading = false;
+        emit(
+          PawnListSuccess(
+            CompleteType.SUCCESS,
+            listPawn: response,
+          ),
+        );
       },
       error: (error) {
         emit(
