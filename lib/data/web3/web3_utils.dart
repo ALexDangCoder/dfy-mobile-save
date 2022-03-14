@@ -1139,6 +1139,21 @@ class Web3Utils {
     return hex.encode(createCollateral.data ?? []);
   }
 
+  Future<String> getWithdrawCryptoCollateralData({
+    required String wad, //int dang string
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('withdrawCollateral');
+    final withdrawCollateral = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(wad)),
+      ],
+    );
+    return hex.encode(withdrawCollateral.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
