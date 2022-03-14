@@ -49,7 +49,7 @@ class ItemCryptoCollateral extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.h,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(
                       model.collateralSymbol ?? '',
                     ),
@@ -75,7 +75,7 @@ class ItemCryptoCollateral extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.h,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(
                       model.loanTokenSymbol ?? '',
                     ),

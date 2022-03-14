@@ -1,29 +1,27 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/presentation/pawn/pawn_list/bloc/pawn_list_bloc.dart';
-import 'package:Dfy/presentation/pawn/pawn_list/ui/item_checkbox_filter.dart';
-import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/presentation/pawn/collateral_nft_result/bloc/collateral_result_nft_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemWidgetFilter extends StatefulWidget {
-  final List<TokenModelPawn> list;
-  final PawnListBloc bloc;
-  final TypeCheckBox type;
+import 'item_text.dart';
 
-  const ItemWidgetFilter({
+class ItemWidgetTextFilter extends StatefulWidget {
+  final List<TokenModelPawn> list;
+  final CollateralResultNFTBloc bloc;
+
+  const ItemWidgetTextFilter({
     Key? key,
     required this.list,
     required this.bloc,
-    required this.type,
   }) : super(key: key);
 
   @override
-  _ItemWidgetFilterState createState() => _ItemWidgetFilterState();
+  _ItemWidgetTextFilterState createState() => _ItemWidgetTextFilterState();
 }
 
-class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
-  late final ScrollController _controllerScrollBar;
+class _ItemWidgetTextFilterState extends State<ItemWidgetTextFilter> {
+  late ScrollController _controllerScrollBar;
 
   @override
   void initState() {
@@ -71,9 +69,8 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
               ),
               itemCount: widget.list.length,
               itemBuilder: (context, index) {
-                return ItemCheckBoxFilter(
+                return ItemTextFilter(
                   index: index,
-                  typeCheckBox: widget.type,
                   bloc: widget.bloc,
                 );
               },

@@ -1,6 +1,8 @@
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -91,6 +93,15 @@ abstract class BorrowService {
   Future<CollateralNFTResponse> getListNFTCollateral(
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('maximunLoanAmount') String? maximunLoanAmount,
+    @Query('loanSymbols') String? loanSymbols,
+    @Query('durationTypes') String? durationTypes,
+    @Query('durationQuantity') String? durationQuantity,
+    @Query('types') String? types,
+    @Query('assetTypes') String? assetTypes,
+    @Query('loanAmountFrom') String? loanAmountFrom,
+    @Query('loanAmountTo') String? loanAmountTo,
+    @Query('collectionId') String? collectionId,
   );
   @POST(
       ApiConstants.POST_COLLATERAL_TO_BE)
@@ -98,4 +109,10 @@ abstract class BorrowService {
       @Body() Map<String,String> map,
       );
 
+
+  @GET(ApiConstants.GET_COLLECTION_FILTER)
+  Future<ListCollectionFilterResponse> getListCollectionFilter();
+
+  @GET(ApiConstants.GET_ASSET_FILTER)
+  Future<AssetFilterResponse> getListAssetFilter();
 }

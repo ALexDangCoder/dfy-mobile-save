@@ -1,6 +1,5 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
-import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/request/send_offer_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
@@ -278,7 +277,7 @@ class _SendOfferState extends State<SendOffer> {
                   'label': DFY,
                   'icon': SizedBox(
                     height: 20.h,
-                    child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
+                    child: Image.network(ImageAssets.getSymbolAsset(DFY)),
                   ),
                   'contract': Get.find<AppConstants>().contract_defy
                 },
@@ -289,7 +288,7 @@ class _SendOfferState extends State<SendOffer> {
                   'label': DFY,
                   'icon': SizedBox(
                     height: 20.h,
-                    child: Image.asset(ImageAssets.getSymbolAsset(DFY)),
+                    child: Image.network(ImageAssets.getSymbolAsset(DFY)),
                   ),
                   'contract': Get.find<AppConstants>().contract_defy
                 },
@@ -298,7 +297,7 @@ class _SendOfferState extends State<SendOffer> {
                   'label': widget.nftOnPawn.expectedCollateralSymbol ?? '',
                   'icon': SizedBox(
                     height: 20.h,
-                    child: Image.asset(
+                    child: Image.network(
                       ImageAssets.getSymbolAsset(
                         widget.nftOnPawn.expectedCollateralSymbol ?? '',
                       ),

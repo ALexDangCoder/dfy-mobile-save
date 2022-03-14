@@ -11,6 +11,7 @@ enum LoadingType { REFRESH, LOAD_MORE }
 enum CompleteType { SUCCESS, ERROR }
 
 enum MenuType { FEED, NOTIFICATIONS, POLICY, LOGOUT }
+enum TypeCheckBox { LOAN, COLLATERAL, COLLECTION }
 
 enum AuthMode { LOGIN, REGISTER }
 
@@ -43,7 +44,8 @@ const int PAWN = 3;
 const String PUT_ON_PAWN = 'list NFT on pawn';
 const String PUT_ON_SALE = 'list NFT on sale';
 const String PUT_ON_AUCTION = 'list NFT on auction';
-
+const int WEEK = 0;
+const int MONTH = 1;
 const String CALENDAR_TYPE_DAY = 'Day';
 const String CALENDAR_TYPE_MONTH = 'Month';
 const String CALENDAR_TYPE_YEAR = 'Year';
@@ -75,7 +77,6 @@ const EMAIL_REGEX =
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 const VN_PHONE = r'(84|0[3|5|7|8|9])+([0-9]{8})\b';
 const AMOUNT_5 = r'^\d+((.)|(.\d{0,5})?)$';
-
 
 //2021-06-18 04:24:27
 const _dtFormat1 = 'yyyy-MM-dd HH:mm:ss';

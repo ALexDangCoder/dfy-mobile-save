@@ -1,4 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
@@ -68,7 +70,20 @@ mixin BorrowRepository {
   Future<Result<List<NftMarket>>> getListNFTCollateral({
     String? page,
     String? size,
+    String? maximunLoanAmount,
+    String? loanSymbols,
+    String? durationTypes,
+    String? durationQuantity,
+    String? types,
+    String? assetTypes,
+    String? loanAmountFrom,
+    String? loanAmountTo,
+    String? collectionId,
   });
 
   Future<Result<String>> confirmCollateralToBe({required Map<String,String> map});
+
+  Future<Result<List<CollectionMarketModel>>> getListCollectionFilter();
+
+  Future<Result<List<AssetFilterModel>>> getListAssetFilter();
 }

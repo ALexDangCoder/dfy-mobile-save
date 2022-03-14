@@ -1,18 +1,22 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_state.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CollateralResultBloc extends BaseCubit<CollateralResultState> {
-  CollateralResultBloc() : super(CollateralResultInitial());
+  CollateralResultBloc() : super(CollateralResultInitial()) {
+    getTokenInf();
+  }
 
-  BehaviorSubject<String> textSearch = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isWeek = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isMonth = BehaviorSubject.seeded(false);
   static const int WEEK = 0;
@@ -20,13 +24,14 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
 
   //status filter
   String? checkStatus;
-  String? searchStatus;
   List<int> statusListCollateral = [];
   List<int> statusListLoan = [];
   List<int> statusListNetwork = [];
   bool statusWeek = false;
   bool statusMonth = false;
-
+  String? collateralSymbols;
+  String? durationTypes;
+  String? loanSymbols;
   bool canLoadMoreMy = true;
   bool _isRefresh = true;
   bool _isLoading = false;
@@ -41,26 +46,11 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
 
   BorrowRepository get _pawnService => Get.find();
 
-  List<TokenModelPawn> listLoanTokenFilter = [
-    //1
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listLoanTokenFilter = [];
 
   List<CollateralResultModel> listCollateralResultModel = [];
 
-  List<TokenModelPawn> listCollateralTokenFilter = [
-    //2
-    TokenModelPawn(id: '1', address: '', symbol: 'DFY'),
-    TokenModelPawn(id: '1', address: '', symbol: 'USDT'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BNB'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-    TokenModelPawn(id: '1', address: '', symbol: 'BTC'),
-  ];
+  List<TokenModelPawn> listCollateralTokenFilter = [];
 
   List<TokenModelPawn> listNetworkFilter = [
     TokenModelPawn(symbol: 'Ethereum dsafsdafsdfsadfsadf'),
@@ -76,6 +66,31 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     TokenModelPawn(symbol: 'Polygon'),
   ];
 
+  List<TokenInf> listTokenSupport = [];
+
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final TokenInf value in listTokenSupport) {
+      listCollateralTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+          url: value.iconUrl,
+        ),
+      );
+      listLoanTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+          url: value.iconUrl,
+        ),
+      );
+    }
+  }
+
   Future<void> refreshPosts() async {
     if (!_isLoading) {
       page = 0;
@@ -83,10 +98,6 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
       _isLoading = true;
       await getListCollateral();
     }
-  }
-
-  void funOnSearch(String value) {
-    textSearch.sink.add(value);
   }
 
   void loadMorePosts() {
@@ -113,8 +124,11 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     emit(CollateralResultLoading());
     final Result<List<CollateralResultModel>> response =
         await _pawnService.getListCollateral(
+      collateralSymbols: collateralSymbols,
+      durationTypes: durationTypes,
+      loanSymbols: loanSymbols,
       page: page.toString(),
-      size: '12',
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
     );
     response.when(
       success: (response) {
@@ -146,9 +160,7 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   void statusFilterFirst() {
     if (checkStatus == null) {
       checkStatus = 'have';
-      searchStatus = '';
     } else {
-      textSearch.sink.add(searchStatus ?? '');
       for (int i = 0; i < listCollateralTokenFilter.length; i++) {
         if (checkStatusFirstFilter(i, statusListCollateral)) {
           listCollateralTokenFilter[i].isCheck = true;
@@ -177,13 +189,7 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
 
   void funFilter() {
     page = 0;
-    searchStatus = textSearch.value;
     statusListCollateral = [];
-    for (int i = 0; i < listCollateralTokenFilter.length; i++) {
-      if (listCollateralTokenFilter[i].isCheck) {
-        statusListCollateral.add(i);
-      }
-    }
     statusListNetwork = [];
     for (int i = 0; i < listNetworkFilter.length; i++) {
       if (listNetworkFilter[i].isCheck) {
@@ -191,14 +197,41 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
       }
     }
     statusListLoan = [];
+    statusMonth = isMonth.value;
+    statusWeek = isWeek.value;
+    if (isMonth.value && isWeek.value) {
+      durationTypes = '$WEEK,$MONTH';
+    } else if (!isMonth.value && isWeek.value) {
+      durationTypes = '$WEEK';
+    } else {
+      durationTypes = '$MONTH';
+    }
+    //
+    collateralSymbols = '';
+    for (int i = 0; i < listCollateralTokenFilter.length; i++) {
+      if (listCollateralTokenFilter[i].isCheck) {
+        statusListCollateral.add(i);
+        if (collateralSymbols?.isNotEmpty ?? false) {
+          collateralSymbols =
+              '$collateralSymbols,${listCollateralTokenFilter[i].symbol ?? ''}';
+        } else {
+          collateralSymbols = listCollateralTokenFilter[i].symbol;
+        }
+      }
+    }
+    //
+    loanSymbols = '';
     for (int i = 0; i < listLoanTokenFilter.length; i++) {
       if (listLoanTokenFilter[i].isCheck) {
         statusListLoan.add(i);
+        if (loanSymbols?.isNotEmpty ?? false) {
+          loanSymbols = '$loanSymbols,${listLoanTokenFilter[i].symbol ?? ''}';
+        } else {
+          loanSymbols = listLoanTokenFilter[i].symbol;
+        }
       }
     }
-    statusMonth = isMonth.value;
-    statusWeek = isWeek.value;
-    //todo filter
+    getListCollateral();
   }
 
   bool checkStatusFirstFilter(int i, List<int> list) {
@@ -211,7 +244,6 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
   }
 
   void funReset() {
-    textSearch.sink.add('');
     for (final TokenModelPawn value in listCollateralTokenFilter) {
       if (value.isCheck) {
         value.isCheck = false;
@@ -229,9 +261,5 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
         value.isCheck = false;
       }
     }
-  }
-
-  void funOnTapSearch() {
-    textSearch.sink.add('');
   }
 }
