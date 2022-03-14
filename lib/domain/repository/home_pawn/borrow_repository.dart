@@ -69,4 +69,6 @@ mixin BorrowRepository {
     String? page,
     String? size,
   });
+
+  Future<Result<String>> confirmCollateralToBe({required Map<String,String> map});
 }

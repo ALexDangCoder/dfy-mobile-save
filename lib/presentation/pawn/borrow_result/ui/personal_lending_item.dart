@@ -184,8 +184,14 @@ class PersonalLendingItem extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>
-                  const SendLoanRequest(),
+                  builder: (context) => SendLoanRequest(
+                    packageId:
+                        personalLending.p2PLenderPackages?[0].id.toString() ??
+                            '',
+                    pawnshopType:
+                        personalLending.p2PLenderPackages?[0].type.toString() ??
+                            '',
+                  ),
                 ),
               );
             },

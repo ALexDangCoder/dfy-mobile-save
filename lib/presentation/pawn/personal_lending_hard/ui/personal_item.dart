@@ -254,7 +254,7 @@ class PersonalItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SendLoanRequest();
+                        return const SendLoanRequest(packageId: '',pawnshopType: '',);
                       },
                     ),
                   );

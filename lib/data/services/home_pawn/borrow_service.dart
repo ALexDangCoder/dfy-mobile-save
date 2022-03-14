@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
@@ -91,4 +92,10 @@ abstract class BorrowService {
     @Query('page') String? page,
     @Query('size') String? size,
   );
+  @POST(
+      ApiConstants.POST_COLLATERAL_TO_BE)
+  Future<ConfirmEvaluationResponse> confirmSendLoanRequest(
+      @Body() Map<String,String> map,
+      );
+
 }

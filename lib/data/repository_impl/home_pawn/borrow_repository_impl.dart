@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
@@ -177,6 +178,14 @@ class BorrowRepositoryImpl implements BorrowRepository {
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmCollateralToBe({required Map<String, String> map}) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmSendLoanRequest(map),
+          (response) => response.code ?? '',
     );
   }
 }
