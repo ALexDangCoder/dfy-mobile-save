@@ -1113,6 +1113,32 @@ class Web3Utils {
     return hex.encode(rejectEvaluation.data ?? []);
   }
 
+  //pawn crypto
+  Future<String> getCreateCryptoCollateralData({
+    required String collateralAddress,
+    required String packageId,
+    required String amount,
+    required String loanAsset,
+    required String expectedDurationQty,
+    required int expectedDurationType,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('createCollateral');
+    final createCollateral = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(collateralAddress),
+        BigInt.from(num.parse(packageId)),
+        BigInt.from(num.parse(amount)),
+        EthereumAddress.fromHex(loanAsset),
+        BigInt.from(num.parse(expectedDurationQty)),
+        expectedDurationType,
+      ],
+    );
+    return hex.encode(createCollateral.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -1197,6 +1223,16 @@ class Web3Utils {
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'eva'),
       EthereumAddress.fromHex(contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedPawnCryptoContract() async {
+    final abiCode =
+        await rootBundle.loadString('assets/abi/PawnCrypto_abi.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'pawnCrypto'),
+      EthereumAddress.fromHex(Get.find<AppConstants>().crypto_pawn_contract),
     );
     return deployContract;
   }
