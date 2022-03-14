@@ -65,6 +65,7 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
               list[maxLength - 1].collateralAmount,
             )} '
                 '${list[maxLength - 1].collateralSymbol ?? ''}',
+            id: list[maxLength - 1].id.toString(),
           )
         : const SizedBox.shrink();
   }
@@ -279,6 +280,7 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                                     .collateralAmount,
                                               )} '
                                                   '${list[index + 2].collateralSymbol ?? ''}',
+                                              id: list[index + 2].id.toString(),
                                             ),
                                           )
                                         else

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/collateral_detail/ui/collateral_detail.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
@@ -22,6 +23,7 @@ class ItemCollateral extends StatelessWidget {
   final String collateral;
   final String loadToken;
   final String duration;
+  final String id;
 
   const ItemCollateral({
     Key? key,
@@ -34,6 +36,7 @@ class ItemCollateral extends StatelessWidget {
     required this.duration,
     required this.iconLoadToken,
     required this.iconCollateral,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -123,7 +126,8 @@ class ItemCollateral extends StatelessWidget {
                               iconBorrower,
                               width: 16.sp,
                               height: 16.sp,
-                              errorBuilder: (context, error, stackTrace) => Container(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
                                 color: AppTheme.getInstance().bgBtsColor(),
                                 width: 16.sp,
                                 height: 16.sp,
@@ -190,10 +194,11 @@ class ItemCollateral extends StatelessWidget {
                               iconCollateral,
                               width: 16.sp,
                               height: 16.sp,
-                              errorBuilder: (context, error, stackTrace) => Container(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
                                 color: AppTheme.getInstance().bgBtsColor(),
-                                width:16.sp,
-                                height:16.sp,
+                                width: 16.sp,
+                                height: 16.sp,
                               ),
                             ),
                           ),
@@ -296,7 +301,14 @@ class ItemCollateral extends StatelessWidget {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    //todo event
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CollateralDetailScreen(
+                          id: id,
+                        ),
+                      ),
+                    );
                   },
                   child: SizedBox(
                     width: 103.w,
