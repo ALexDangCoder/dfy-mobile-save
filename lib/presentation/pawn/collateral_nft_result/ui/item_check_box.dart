@@ -1,17 +1,20 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
+import 'package:Dfy/presentation/pawn/collateral_nft_result/bloc/collateral_result_nft_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemCheckBoxFilter extends StatefulWidget {
   final int index;
-  final PersonalLendingBloc bloc;
+  final CollateralResultNFTBloc bloc;
+  final TypeCheckBox typeCheckBox;
 
   const ItemCheckBoxFilter({
     Key? key,
     required this.index,
     required this.bloc,
+    required this.typeCheckBox,
   }) : super(key: key);
 
   @override
@@ -23,13 +26,19 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
   Widget build(BuildContext context) {
     late bool isCheck;
     late String name;
-    late String symbolURL;
-    isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
-    name = widget.bloc.listCollateralTokenFilter[widget.index].symbol
-        .toString()
-        .toUpperCase();
-    symbolURL =
-        widget.bloc.listCollateralTokenFilter[widget.index].url.toString();
+    late String urlSymbol;
+    if (widget.typeCheckBox == TypeCheckBox.COLLECTION) {
+      isCheck = widget.bloc.listCollection[widget.index].isCheck;
+      urlSymbol = widget.bloc.listCollection[widget.index].url.toString();
+      name = widget.bloc.listCollection[widget.index].symbol.toString();
+    } else {
+      isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
+      urlSymbol =
+          widget.bloc.listCollateralTokenFilter[widget.index].url.toString();
+      name = widget.bloc.listCollateralTokenFilter[widget.index].symbol
+          .toString()
+          .toUpperCase();
+    }
     void check() {
       late bool value;
       if (isCheck) {
@@ -38,8 +47,11 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
         value = true;
       }
       isCheck = value;
-
-      widget.bloc.listCollateralTokenFilter[widget.index].isCheck = value;
+      if (widget.typeCheckBox == TypeCheckBox.COLLECTION) {
+        widget.bloc.listCollection[widget.index].isCheck = value;
+      } else {
+        widget.bloc.listCollateralTokenFilter[widget.index].isCheck = value;
+      }
       setState(() {});
     }
 
@@ -75,26 +87,33 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
             check();
           },
           child: Image.network(
-            symbolURL,
+            urlSymbol,
             width: 20.w,
             height: 20.w,
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) => Container(
               color: AppTheme.getInstance().bgBtsColor(),
+              width: 20.w,
+              height: 20.w,
             ),
           ),
         ),
         spaceW4,
-        GestureDetector(
-          onTap: () {
-            check();
-          },
-          child: Text(
-            name,
-            style: textNormalCustom(
-              null,
-              16,
-              FontWeight.w400,
+        Expanded(
+          flex: 8,
+          child: GestureDetector(
+            onTap: () {
+              check();
+            },
+            child: Text(
+              name,
+              maxLines: 1,
+              style: textNormalCustom(
+                null,
+                16,
+                FontWeight.w400,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         )

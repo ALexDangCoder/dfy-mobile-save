@@ -205,74 +205,116 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                           child: RefreshIndicator(
                             onRefresh: _bloc.refreshPosts,
                             child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  widgetCheckList(
-                                    numberLength: list.length,
-                                    list: list,
-                                    maxLength: 1,
-                                  ),
-                                  widgetCheckList(
-                                    numberLength: list.length,
-                                    list: list,
-                                    maxLength: 2,
-                                  ),
-                                  Center(
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: const ItemBecomeBank(),
-                                    ),
-                                  ),
-                                  spaceH20,
-                                  if (list.length >= 3)
-                                    ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: list.length - 2,
-                                      itemBuilder: (context, index) =>
-                                          ItemCollateral(
-                                        loadToken:
-                                            list[index + 2].loanSymbol ?? '',
-                                        duration: _bloc.getTime(
-                                          type:
-                                              list[index + 2].durationType ?? 0,
-                                          time:
-                                              list[index + 2].durationQty ?? 0,
-                                        ),
-                                        address:
-                                            list[index + 2].walletAddress ?? '',
-                                        rate: list[index + 2]
-                                            .reputation
-                                            .toString(),
-                                        //check data
-                                        iconLoadToken:
-                                            ImageAssets.getSymbolAsset(
-                                          list[index + 2].loanSymbol ?? '',
-                                        ),
-                                        iconBorrower:
-                                            ImageAssets.getSymbolAsset(
-                                          list[index + 2].loanSymbol ?? '',
-                                        ),
-                                        //todo img
-                                        contracts: list[index + 2]
-                                            .completedContracts
-                                            .toString(),
-                                        iconCollateral:
-                                            ImageAssets.getSymbolAsset(
-                                          list[index + 2].collateralSymbol ??
-                                              '',
-                                        ),
-                                        collateral: '${formatPrice.format(
-                                          list[index + 2].collateralAmount,
-                                        )} '
-                                            '${list[index + 2].collateralSymbol ?? ''}',
-                                      ),
-                                    )
-                                  else
-                                    const SizedBox.shrink(),
-                                ],
+                              physics: const ClampingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics(),
                               ),
+                              child: list.isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        widgetCheckList(
+                                          numberLength: list.length,
+                                          list: list,
+                                          maxLength: 1,
+                                        ),
+                                        widgetCheckList(
+                                          numberLength: list.length,
+                                          list: list,
+                                          maxLength: 2,
+                                        ),
+                                        Center(
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: const ItemBecomeBank(),
+                                          ),
+                                        ),
+                                        spaceH20,
+                                        if (list.length >= 3)
+                                          ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: list.length - 2,
+                                            itemBuilder: (context, index) =>
+                                                ItemCollateral(
+                                              loadToken:
+                                                  list[index + 2].loanSymbol ??
+                                                      '',
+                                              duration: _bloc.getTime(
+                                                type: list[index + 2]
+                                                        .durationType ??
+                                                    0,
+                                                time: list[index + 2]
+                                                        .durationQty ??
+                                                    0,
+                                              ),
+                                              address: list[index + 2]
+                                                      .walletAddress ??
+                                                  '',
+                                              rate: list[index + 2]
+                                                  .reputation
+                                                  .toString(),
+                                              //check data
+                                              iconLoadToken:
+                                                  ImageAssets.getSymbolAsset(
+                                                list[index + 2].loanSymbol ??
+                                                    '',
+                                              ),
+                                              iconBorrower:
+                                                  ImageAssets.getSymbolAsset(
+                                                list[index + 2].loanSymbol ??
+                                                    '',
+                                              ),
+                                              //todo img
+                                              contracts: list[index + 2]
+                                                  .completedContracts
+                                                  .toString(),
+                                              iconCollateral:
+                                                  ImageAssets.getSymbolAsset(
+                                                list[index + 2]
+                                                        .collateralSymbol ??
+                                                    '',
+                                              ),
+                                              collateral: '${formatPrice.format(
+                                                list[index + 2]
+                                                    .collateralAmount,
+                                              )} '
+                                                  '${list[index + 2].collateralSymbol ?? ''}',
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox.shrink(),
+                                      ],
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 60.h,
+                                        ),
+                                        Center(
+                                          child: Image(
+                                            image: const AssetImage(
+                                              ImageAssets.img_search_empty,
+                                            ),
+                                            height: 120.h,
+                                            width: 120.w,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 17.7.h,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            S.current.no_result_found,
+                                            style: textNormal(
+                                              Colors.white54,
+                                              20.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
                         ),

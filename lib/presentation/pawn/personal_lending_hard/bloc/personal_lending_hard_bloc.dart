@@ -40,7 +40,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
   String? interestRanges;
   String? name;
   String? cusSort;
-  int? typePersonal;
+  String typePersonal = '';
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -202,15 +202,15 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
     getPersonLendingResult();
   }
 
-  int? checkType() {
+  String checkType() {
     if (isSoftNFT.value) {
-      return SORT;
+      return SORT.toString();
     } else if (isHardNFT.value) {
-      return HARD;
+      return HARD.toString();
     } else if (isALL.value) {
-      return ALL;
+      return ALL.toString();
     } else {
-      return null;
+      return '';
     }
   }
 
@@ -241,7 +241,7 @@ class PersonalLendingHardBloc extends BaseCubit<PersonalLendingHardState> {
       interestRanges: interestRanges,
       page: page.toString(),
       cusSort: cusSort,
-      collateralType: typePersonal.toString(),
+      collateralType: typePersonal,
       isNft: true,
     );
     result.when(

@@ -157,7 +157,7 @@ class _BorrowItemState extends State<BorrowItem> {
                           child: tokenSymbol ==
                                   S.current.all.toUpperCase()
                               ? const SizedBox.shrink()
-                              : Image.asset(
+                              : Image.network(
                                   ImageAssets.getSymbolAsset(
                                     tokenSymbol,
                                   ),

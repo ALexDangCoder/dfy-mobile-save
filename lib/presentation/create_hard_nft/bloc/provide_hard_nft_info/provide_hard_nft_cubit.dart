@@ -545,7 +545,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'icon': SizedBox(
               width: 20.w,
               height: 20.h,
-              child: Image.asset(
+              child: Image.network(
                 ImageAssets.getSymbolAsset(
                   element.symbol ?? DFY,
                 ),
@@ -561,7 +561,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'icon': SizedBox(
               width: 20.w,
               height: 20.h,
-              child: Image.asset(
+              child: Image.network(
                 ImageAssets.getSymbolAsset(
                   element.symbol ?? DFY,
                 ),

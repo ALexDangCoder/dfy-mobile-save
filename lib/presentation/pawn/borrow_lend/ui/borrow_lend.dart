@@ -229,7 +229,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                                   child: _bloc.listToken[index].toUpperCase() ==
                                           S.current.all.toUpperCase()
                                       ? const SizedBox.shrink()
-                                      : Image.asset(
+                                      : Image.network(
                                           ImageAssets.getSymbolAsset(
                                             _bloc.listToken[index]
                                                 .toUpperCase(),

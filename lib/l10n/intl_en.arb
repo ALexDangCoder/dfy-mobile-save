@@ -856,6 +856,7 @@
   "total_value_of_all": "Total value of all lend contracts converted to USD",
   "total_contract_value": "Total contract value",
   "all_type_of_NFT": "All type of NFT",
+  "expected_loan_range": "Expected loan range",
   "just_loan_amount": "Loan amount",
   "enter_mess": "Enter message"
 }

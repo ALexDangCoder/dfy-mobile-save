@@ -1,35 +1,30 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/pawn/personal_lending/bloc/personal_lending_bloc.dart';
+import 'package:Dfy/presentation/pawn/collateral_nft_result/bloc/collateral_result_nft_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemCheckBoxFilter extends StatefulWidget {
+class ItemTextFilter extends StatefulWidget {
   final int index;
-  final PersonalLendingBloc bloc;
+  final CollateralResultNFTBloc bloc;
 
-  const ItemCheckBoxFilter({
+  const ItemTextFilter({
     Key? key,
     required this.index,
     required this.bloc,
   }) : super(key: key);
 
   @override
-  State<ItemCheckBoxFilter> createState() => _ItemCheckBoxFilterState();
+  State<ItemTextFilter> createState() => _ItemTextFilterState();
 }
 
-class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
+class _ItemTextFilterState extends State<ItemTextFilter> {
   @override
   Widget build(BuildContext context) {
     late bool isCheck;
     late String name;
-    late String symbolURL;
-    isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
-    name = widget.bloc.listCollateralTokenFilter[widget.index].symbol
-        .toString()
-        .toUpperCase();
-    symbolURL =
-        widget.bloc.listCollateralTokenFilter[widget.index].url.toString();
+    isCheck = widget.bloc.listAssetFilter[widget.index].isCheck;
+    name = widget.bloc.listAssetFilter[widget.index].symbol.toString();
     void check() {
       late bool value;
       if (isCheck) {
@@ -38,8 +33,7 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
         value = true;
       }
       isCheck = value;
-
-      widget.bloc.listCollateralTokenFilter[widget.index].isCheck = value;
+      widget.bloc.listAssetFilter[widget.index].isCheck = value;
       setState(() {});
     }
 
@@ -74,27 +68,16 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
           onTap: () {
             check();
           },
-          child: Image.network(
-            symbolURL,
-            width: 20.w,
-            height: 20.w,
-            fit: BoxFit.fill,
-            errorBuilder: (context, error, stackTrace) => Container(
-              color: AppTheme.getInstance().bgBtsColor(),
-            ),
-          ),
-        ),
-        spaceW4,
-        GestureDetector(
-          onTap: () {
-            check();
-          },
-          child: Text(
-            name,
-            style: textNormalCustom(
-              null,
-              16,
-              FontWeight.w400,
+          child: SizedBox(
+            width: 100.w,
+            child: Text(
+              name,
+              maxLines: 1,
+              style: textNormalCustom(
+                null,
+                16,
+                FontWeight.w400,
+              ).copyWith(overflow: TextOverflow.ellipsis),
             ),
           ),
         )
