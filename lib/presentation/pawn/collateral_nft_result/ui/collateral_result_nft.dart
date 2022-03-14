@@ -171,6 +171,9 @@ class _CollateralResultNFTScreenState extends State<CollateralResultNFTScreen> {
                             onRefresh: _bloc.refreshPosts,
                             child: _bloc.list.isNotEmpty
                                 ? GridView.builder(
+                                    physics: const ClampingScrollPhysics(
+                                      parent: AlwaysScrollableScrollPhysics(),
+                                    ),
                                     shrinkWrap: true,
                                     itemCount: list.length,
                                     gridDelegate:

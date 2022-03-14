@@ -242,26 +242,65 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                           child: RefreshIndicator(
                             onRefresh: _bloc.refreshPosts,
                             child: SingleChildScrollView(
-                              child: ListView.builder(
-                                padding: EdgeInsets.only(
-                                  bottom: 20.h,
-                                ),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: list.length,
-                                itemBuilder: (context, index) => PersonalItem(
-                                  rate: list[index].reputation.toString(),
-                                  isShop: list[index].isKYC ?? false,
-                                  nameShop: list[index].name.toString(),
-                                  interestRate:
-                                      '${list[index].maxInterestRate}%'
-                                      '-${list[index].maxInterestRate}%',
-                                  collateral: list[index].type ?? 0,
-                                  total: list[index].totalLoanValue.toString(),
-                                  signedContract:
-                                      list[index].completedContracts.toString(),
-                                ),
+                              physics: const ClampingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics(),
                               ),
+                              child: list.isNotEmpty
+                                  ? ListView.builder(
+                                      padding: EdgeInsets.only(
+                                        bottom: 20.h,
+                                      ),
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: list.length,
+                                      itemBuilder: (context, index) =>
+                                          PersonalItem(
+                                        rate: list[index].reputation.toString(),
+                                        isShop: list[index].isKYC ?? false,
+                                        nameShop: list[index].name.toString(),
+                                        interestRate:
+                                            '${list[index].maxInterestRate}%'
+                                            '-${list[index].maxInterestRate}%',
+                                        collateral: list[index].type ?? 0,
+                                        total: list[index]
+                                            .totalLoanValue
+                                            .toString(),
+                                        signedContract: list[index]
+                                            .completedContracts
+                                            .toString(),
+                                      ),
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 60.h,
+                                        ),
+                                        Center(
+                                          child: Image(
+                                            image: const AssetImage(
+                                              ImageAssets.img_search_empty,
+                                            ),
+                                            height: 120.h,
+                                            width: 120.w,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 17.7.h,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            S.current.no_result_found,
+                                            style: textNormal(
+                                              Colors.white54,
+                                              20.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
                         ),
