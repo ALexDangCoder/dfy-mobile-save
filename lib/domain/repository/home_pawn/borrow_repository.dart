@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 
 mixin BorrowRepository {
   Future<Result<List<PawnshopPackage>>> getListPawnshop({
@@ -92,5 +93,9 @@ mixin BorrowRepository {
 
   Future<Result<CollateralDetail>> getDetailCollateral({
     String? id,
+  });
+
+  Future<Result<List<ReputationBorrower>>> getListReputation({
+    String? addressWallet,
   });
 }

@@ -124,8 +124,20 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
                                   width: 4.w,
                                 ),
                               ),
-                              TextSpan(
-                                text: obj?.reputation.toString(),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: StreamBuilder<String>(
+                                  stream: bloc.rate,
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? '',
+                                      style: textNormal(
+                                        null,
+                                        16,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),

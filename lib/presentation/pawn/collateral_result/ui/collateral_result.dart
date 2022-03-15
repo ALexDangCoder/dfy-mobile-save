@@ -42,14 +42,13 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
   }) {
     return (numberLength >= maxLength)
         ? ItemCollateral(
+            bloc: _bloc,
             loadToken: list[maxLength - 1].loanSymbol ?? '',
             duration: _bloc.getTime(
               type: list[maxLength - 1].durationType ?? 0,
               time: list[maxLength - 1].durationQty ?? 0,
             ),
             address: list[maxLength - 1].walletAddress ?? '',
-            rate: list[maxLength - 1].reputation.toString(),
-            //check data
             iconLoadToken: ImageAssets.getSymbolAsset(
               list[maxLength - 1].loanSymbol ?? '',
             ),
@@ -251,10 +250,6 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                               address: list[index + 2]
                                                       .walletAddress ??
                                                   '',
-                                              rate: list[index + 2]
-                                                  .reputation
-                                                  .toString(),
-                                              //check data
                                               iconLoadToken:
                                                   ImageAssets.getSymbolAsset(
                                                 list[index + 2].loanSymbol ??
@@ -281,6 +276,7 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                               )} '
                                                   '${list[index + 2].collateralSymbol ?? ''}',
                                               id: list[index + 2].id.toString(),
+                                              bloc: _bloc,
                                             ),
                                           )
                                         else
