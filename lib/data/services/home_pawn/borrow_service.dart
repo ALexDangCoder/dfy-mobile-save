@@ -95,7 +95,7 @@ abstract class BorrowService {
   Future<NftOnRequestLoanResponse> getListNftOnRequestLoan(
     @Query('walletAddress') String walletAddress,
     @Query('page') String? page,
-    @Query('page') String? size,
+    @Query('size') String? size,
     @Query('name') String? nameSearch,
     @Query('nftType') String? nftType,
   );

@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListSelectNftCollateral extends StatefulWidget {
@@ -23,15 +27,15 @@ class ListSelectNftCollateral extends StatefulWidget {
 }
 
 class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
-
   TextEditingController controller = TextEditingController();
   late Timer _debounce;
-
 
   @override
   void initState() {
     super.initState();
     _debounce = Timer(const Duration(milliseconds: 500), () {});
+    widget.cubit
+        .getSelectNftCollateral('0x0103919F4084a836288e895143E4f031761fcFbE');
   }
 
   @override
@@ -61,27 +65,76 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                 topRight: Radius.circular(30),
               ),
             ),
-            child: BaseDesignScreen(
-              title: 'Select NFT collateral',
-              isHaveLeftIcon: false,
-              isImage: true,
-              text: ImageAssets.ic_close,
-              onRightClick: () {
-
+            child: BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
+              listener: (context, state) {
+                if (state is ListSelectNftCollateralGetApi) {
+                  if (state.completeType == CompleteType.SUCCESS) {
+                    if (widget.cubit.loadMoreRefresh) {
+                      widget.cubit.contentNftOnSelect.clear();
+                    }
+                    if ((state.list ?? []).isEmpty) {
+                      widget.cubit.showEmpty();
+                    } else {
+                      widget.cubit.showContent();
+                    }
+                  } else {
+                    widget.cubit.message = state.message ?? '';
+                    widget.cubit.showError();
+                  }
+                }
               },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                      top: 12.h,
-                      bottom: 6.h,
+              bloc: widget.cubit,
+              builder: (context, state) {
+                return StateStreamLayout(
+                  retry: () {
+                    widget.cubit.refreshGetListNftCollateral(
+                      '0x0103919F4084a836288e895143E4f031761fcFbE',
+                    );
+                  },
+                  textEmpty: widget.cubit.message,
+                  error: AppException(S.current.error, widget.cubit.message),
+                  stream: widget.cubit.stateStream,
+                  child: BaseDesignScreen(
+                    title: 'Select NFT collateral',
+                    isHaveLeftIcon: false,
+                    isImage: true,
+                    text: ImageAssets.ic_close,
+                    onRightClick: () {
+                      Navigator.pop(context);
+                    },
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (value) {
+                        if (widget.cubit.canLoadMore &&
+                            value.metrics.pixels ==
+                                value.metrics.maxScrollExtent) {
+                          widget.cubit.loadMoreGetListNftCollateral(
+                              '0x0103919F4084a836288e895143E4f031761fcFbE');
+                        }
+                        return true;
+                      },
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await widget.cubit.refreshGetListNftCollateral(
+                              '0x0103919F4084a836288e895143E4f031761fcFbE');
+                        },
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 16.w,
+                                right: 16.w,
+                                top: 12.h,
+                                bottom: 6.h,
+                              ),
+                              child: searchBar(),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: searchBar(),
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),
@@ -117,7 +170,7 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                   child: TextFormField(
                     controller: controller,
                     onChanged: (value) {
-                      //todo
+                      widget.cubit.isShowIcCloseSearch.sink.add(true);
                     },
                     cursorColor: AppTheme.getInstance().whiteColor(),
                     style: textNormal(
@@ -138,26 +191,35 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      controller.text = '';
-                      //todo handle case này khi bấm X
-                    });
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 13.w,
-                    ),
-                    child: ImageIcon(
-                      const AssetImage(
-                        ImageAssets.ic_close,
+                StreamBuilder<bool>(
+                  initialData: false,
+                  stream: widget.cubit.isShowIcCloseSearch,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: snapshot.data ?? false,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            controller.text = '';
+                            widget.cubit.isShowIcCloseSearch.sink.add(false);
+                          });
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: 13.w,
+                          ),
+                          child: ImageIcon(
+                            const AssetImage(
+                              ImageAssets.ic_close,
+                            ),
+                            color: AppTheme.getInstance().whiteColor(),
+                            size: 20.sp,
+                          ),
+                        ),
                       ),
-                      color: AppTheme.getInstance().whiteColor(),
-                      size: 20.sp,
-                    ),
-                  ),
+                    );
+                  }
                 )
               ],
             ),

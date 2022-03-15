@@ -32,9 +32,10 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
-      String walletAddress,
-      String packageId,
-      String page,);
+    String walletAddress,
+    String packageId,
+    String page,
+  );
 
   Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
     String? collateralAmount,
@@ -69,8 +70,10 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<ContentNftOnRequestLoanModel>>> getListNftOnLoanRequest({
-    String walletAddress,
+    String? walletAddress,
     String? page,
     String? size,
+    String? name,
+    String? nftType,
   });
 }

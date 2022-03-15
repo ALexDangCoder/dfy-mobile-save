@@ -26,7 +26,7 @@ class SendLoanRequestNft extends StatefulWidget {
 }
 
 class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
-  final GlobalKey<FormGroupState> _keyForm = GlobalKey<FormGroupState>();
+  final GlobalKey<FormGroupState> _key = GlobalKey<FormGroupState>();
 
   @override
   void initState() {
@@ -36,154 +36,156 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
 
   @override
   Widget build(BuildContext context) {
-    return FormGroup(
-      key: _keyForm,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _chooseNftFtFillNft(context),
-            spaceH36,
-            Text(
-              'Message',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            spaceH4,
-            TextFieldValidator(
-              hint: 'Enter message',
-              onChange: (value) {
-                widget.cubit.mapValidate['form'] =
-                    _keyForm.currentState?.checkValidator() ?? false;
-                widget.cubit.validateAll();
-              },
-              validator: (value) {
-                return widget.cubit.validateMessage(value ?? '');
-              },
-            ),
-            spaceH16,
-            Text(
-              'Loan amount',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            spaceH4,
-            TextFieldValidator(
-              hint: 'Loan amount',
-              onChange: (value) {
-                widget.cubit.mapValidate['form'] =
-                    _keyForm.currentState?.checkValidator() ?? false;
-                widget.cubit.validateAll();
-              },
-              validator: (value) {
-                return widget.cubit.validateAmount(value ?? '');
-              },
-              suffixIcon: FormDropDownWidget(
-                widthDropDown: 100.w,
-                heightDropDown: 300.h,
-                listDropDown: widget.cubit.listDropDownToken,
-                initValue: widget.cubit.listDropDownToken[0],
-                onChange: (Map<String, dynamic> value) {},
-              ),
-            ),
-            spaceH16,
-            Text(
-              'Duration',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            spaceH4,
-            StreamBuilder<bool>(
-              initialData: true,
-              stream: widget.cubit.isMonthForm,
-              builder: (context, snapshot) {
-                return TextFieldValidator(
-                  hint: 'Duration',
-                  onChange: (value) {
-                    widget.cubit.mapValidate['form'] =
-                        _keyForm.currentState?.checkValidator() ?? false;
-                    widget.cubit.validateAll();
-                  },
-                  suffixIcon: FormDropDownWidget(
-                    listDropDown: widget.cubit.listDropDownDuration,
-                    initValue: widget.cubit.listDropDownDuration[0],
-                    heightDropDown: 150.h,
-                    widthDropDown: 100.w,
-                    onChange: (value) => {
-                      if (value['label'] == 'month')
-                        {
-                          widget.cubit.isMonthForm.sink.add(true),
-                        }
-                      else
-                        {
-                          widget.cubit.isMonthForm.sink.add(false),
-                        }
-                    },
-                  ),
-                  validator: (value) {
-                    return (snapshot.data ?? true)
-                        ? widget.cubit.validateDuration(value ?? '')
-                        : widget.cubit.validateDuration(
-                            value ?? '',
-                            isMonth: false,
-                          );
-                  },
-                );
-              },
-            ),
-            spaceH20,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 24.w,
-                  height: 24.h,
-                  child: Checkbox(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    fillColor: MaterialStateProperty.all(
-                        AppTheme.getInstance().fillColor()),
-                    activeColor: AppTheme.getInstance().activeColor(),
-                    // checkColor: const Colors,
-                    onChanged: (value) {},
-                    value: true,
-                  ),
+    return SizedBox(
+      child: FormGroup(
+        key: _key,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _chooseNftFtFillNft(context),
+              spaceH36,
+              Text(
+                'Message',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
                 ),
-                spaceW12,
-                SizedBox(
-                  width: 287.w,
-                  child: Flexible(
-                    child: Text(
-                      'Login to receive email notifications',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
+              ),
+              spaceH4,
+              TextFieldValidator(
+                hint: 'Enter message',
+                onChange: (value) {
+                  widget.cubit.mapValidate['form'] =
+                      _key.currentState?.checkValidator() ?? false;
+                  widget.cubit.validateAll();
+                },
+                validator: (value) {
+                  return widget.cubit.validateMessage(value ?? '');
+                },
+              ),
+              spaceH16,
+              Text(
+                'Loan amount',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH4,
+              TextFieldValidator(
+                hint: 'Loan amount',
+                onChange: (value) {
+                  widget.cubit.mapValidate['form'] =
+                      _key.currentState?.checkValidator() ?? false;
+                  widget.cubit.validateAll();
+                },
+                validator: (value) {
+                  return widget.cubit.validateAmount(value ?? '');
+                },
+                suffixIcon: FormDropDownWidget(
+                  widthDropDown: 100.w,
+                  heightDropDown: 300.h,
+                  listDropDown: widget.cubit.listDropDownToken,
+                  initValue: widget.cubit.listDropDownToken[0],
+                  onChange: (Map<String, dynamic> value) {},
+                ),
+              ),
+              spaceH16,
+              Text(
+                'Duration',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              spaceH4,
+              StreamBuilder<bool>(
+                initialData: true,
+                stream: widget.cubit.isMonthForm,
+                builder: (context, snapshot) {
+                  return TextFieldValidator(
+                    hint: 'Duration',
+                    onChange: (value) {
+                      widget.cubit.mapValidate['form'] =
+                          _key.currentState?.checkValidator() ?? false;
+                      widget.cubit.validateAll();
+                    },
+                    suffixIcon: FormDropDownWidget(
+                      listDropDown: widget.cubit.listDropDownDuration,
+                      initValue: widget.cubit.listDropDownDuration[0],
+                      heightDropDown: 150.h,
+                      widthDropDown: 100.w,
+                      onChange: (value) => {
+                        if (value['label'] == 'month')
+                          {
+                            widget.cubit.isMonthForm.sink.add(true),
+                          }
+                        else
+                          {
+                            widget.cubit.isMonthForm.sink.add(false),
+                          }
+                      },
+                    ),
+                    validator: (value) {
+                      return (snapshot.data ?? true)
+                          ? widget.cubit.validateDuration(value ?? '')
+                          : widget.cubit.validateDuration(
+                              value ?? '',
+                              isMonth: false,
+                            );
+                    },
+                  );
+                },
+              ),
+              spaceH20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 24.w,
+                    height: 24.h,
+                    child: Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      fillColor: MaterialStateProperty.all(
+                          AppTheme.getInstance().fillColor()),
+                      activeColor: AppTheme.getInstance().activeColor(),
+                      // checkColor: const Colors,
+                      onChanged: (value) {},
+                      value: true,
+                    ),
+                  ),
+                  spaceW12,
+                  SizedBox(
+                    width: 287.w,
+                    child: Flexible(
+                      child: Text(
+                        'Login to receive email notifications',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-            spaceH40,
-            const ButtonGold(
-              title: 'Request loan',
-              isEnable: true,
-            )
-          ],
+                  )
+                ],
+              ),
+              spaceH40,
+              const ButtonGold(
+                title: 'Request loan',
+                isEnable: true,
+              )
+            ],
+          ),
         ),
       ),
     );

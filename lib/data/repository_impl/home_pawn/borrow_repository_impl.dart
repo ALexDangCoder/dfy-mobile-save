@@ -183,7 +183,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? walletAddress,
     String? page,
     String? size,
-    String? nameSearch,
+    String? name,
     String? nftType,
   }) {
     return runCatchingAsync<NftOnRequestLoanResponse,
@@ -192,7 +192,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         walletAddress ?? '',
         page,
         size,
-        nameSearch,
+        name,
         nftType,
       ),
       (response) =>

@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/app_utils.dart' as utils;
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
@@ -129,7 +132,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       return 'Expected loan is required';
     } else if (amount.length > 100) {
       return 'Maximum length allowed is 100 characters';
-    } else if (!isValidateAmount5(amount)) {
+    } else if (!utils.isValidateAmount5(amount)) {
       return 'Invalid expected loan';
     } else {
       return null;
@@ -187,7 +190,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   ];
 
   void getTokensRequestNft() {
-    if(listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
+    if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
       listTokenSupport.clear();
       listDropDownToken.clear();
     }
@@ -227,6 +230,78 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           )
         });
       }
+    }
+  }
+
+  BehaviorSubject<bool> isShowIcCloseSearch = BehaviorSubject<bool>();
+
+  BorrowRepository get _repo => Get.find();
+
+  ///Call API
+  String message = '';
+  int page = 0;
+  List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
+
+  Future<void> getSelectNftCollateral(
+    String? walletAddress, {
+    String? name,
+    String? nftType,
+  }) async {
+    showLoading();
+    final Result<List<ContentNftOnRequestLoanModel>> result =
+        await _repo.getListNftOnLoanRequest(
+      walletAddress: walletAddress,
+      page: page.toString(),
+      name: name,
+      nftType: nftType ?? '0',
+      // size: '6',
+    );
+    result.when(
+      success: (res) {
+        emit(
+          ListSelectNftCollateralGetApi(
+            CompleteType.SUCCESS,
+            list: res,
+          ),
+        );
+        showContent();
+      },
+      error: (error) {
+        emit(
+          ListSelectNftCollateralGetApi(
+            CompleteType.ERROR,
+            message: error.message,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> loadMoreGetListNftCollateral(
+    String walletAddress, {
+    String? name,
+    String? nftType,
+  }) async {
+    if (loadMoreLoading == false) {
+      showLoading();
+      page += 1;
+      loadMoreRefresh = false;
+      loadMoreLoading = true;
+      await getSelectNftCollateral(walletAddress, nftType: nftType, name: name);
+    } else {
+      //nothing
+    }
+  }
+
+  Future<void> refreshGetListNftCollateral(String walletAddress) async {
+    if (loadMoreLoading == false) {
+      showLoading();
+      page = 0;
+      loadMoreRefresh = true;
+      loadMoreLoading = true;
+      await getSelectNftCollateral(walletAddress);
+    } else {
+      //nothing
     }
   }
 }
