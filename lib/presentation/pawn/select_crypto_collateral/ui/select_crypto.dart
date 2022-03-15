@@ -55,7 +55,7 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
             cubit.showError();
           }
           cubit.listCryptoCollateral.addAll(state.list ?? []);
-          cubit.canLoadMoreList = cubit.listCryptoCollateral.length >=
+          cubit.canLoadMoreList = (state.list?.length ?? 0) >=
               ApiConstants.DEFAULT_PAGE_SIZE;
           cubit.loadMore = false;
         }
