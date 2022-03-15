@@ -2,6 +2,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -59,13 +60,14 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     TokenModelPawn(symbol: 'Binance Smart doanh'),
     TokenModelPawn(symbol: 'Alavanche'),
     TokenModelPawn(symbol: 'Polygon'),
-    TokenModelPawn(symbol: 'Alavanche'),
+    TokenModelPawn(symbol: 'Alavanche'), //todo
     TokenModelPawn(symbol: 'Polygon'),
     TokenModelPawn(symbol: 'Polygon'),
     TokenModelPawn(symbol: 'Alavanche'),
     TokenModelPawn(symbol: 'Polygon'),
   ];
-
+  BehaviorSubject<List<ReputationBorrower>> listReputationBorrower =
+      BehaviorSubject.seeded([]);
   List<TokenInf> listTokenSupport = [];
 
   void getTokenInf() {
@@ -109,6 +111,21 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
     }
   }
 
+  Future<void> getReputation(String addressWallet) async {
+    final Result<List<ReputationBorrower>> response =
+        await _pawnService.getListReputation(
+      addressWallet: addressWallet,
+    );
+    response.when(
+      success: (response) {
+        if (response.isNotEmpty) {
+          listReputationBorrower.add(response);
+        }
+      },
+      error: (error) {},
+    );
+  }
+
   String getTime({
     required int type,
     required int time,
@@ -134,6 +151,17 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
       success: (response) {
         if (response.isNotEmpty) {
           canLoadMoreMy = true;
+          String addressWallet = '';
+          for (final CollateralResultModel value in response) {
+            if (value.walletAddress?.isNotEmpty ?? false) {
+              if (addressWallet.isNotEmpty) {
+                addressWallet = '$addressWallet,${value.walletAddress}';
+              } else {
+                addressWallet = value.walletAddress.toString();
+              }
+            }
+          }
+          getReputation(addressWallet);
         } else {
           canLoadMoreMy = false;
         }

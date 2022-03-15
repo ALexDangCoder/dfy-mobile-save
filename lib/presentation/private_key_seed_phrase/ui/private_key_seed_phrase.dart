@@ -7,7 +7,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/dialog_remove/choose_acc.dart';
-import 'package:Dfy/widgets/form/form%20_text_privatekey.dart';
+import 'package:Dfy/widgets/form/form_text_private_key.dart';
 import 'package:Dfy/widgets/form/form_text_walletaddress.dart';
 import 'package:Dfy/widgets/list_passphrase/box_list_passphrase_show.dart';
 import 'package:flutter/cupertino.dart';
