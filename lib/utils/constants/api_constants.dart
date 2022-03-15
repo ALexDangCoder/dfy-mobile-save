@@ -239,4 +239,6 @@ class ApiConstants {
 
   static const String GET_ASSET_FILTER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts/asset-types';
+  static const String GET_DETAIL_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/';
 }

@@ -1,6 +1,7 @@
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
+import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
@@ -43,7 +44,7 @@ abstract class BorrowService {
     @Query('loanToValueRanges') String? loanToValueRanges,
     @Query('loanSymbols') String? loanSymbols,
     @Query('loanType') String? loanType,
-      @Query('durationTypes') String? durationType,
+    @Query('durationTypes') String? durationType,
     @Query('page') String? page,
     @Query('size') String? size,
     @Query('cusSort') String? cusSort,
@@ -115,4 +116,9 @@ abstract class BorrowService {
 
   @GET(ApiConstants.GET_ASSET_FILTER)
   Future<AssetFilterResponse> getListAssetFilter();
+
+  @GET('${ApiConstants.GET_DETAIL_COLLATERAL}{id}')
+  Future<DetailCollateralResponse> getDetailCollateral(
+    @Path('id') String? id,
+  );
 }
