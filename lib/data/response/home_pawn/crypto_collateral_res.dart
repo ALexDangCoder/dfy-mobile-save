@@ -57,9 +57,18 @@ class DataResponse extends Equatable {
   num? duration;
   @JsonKey(name: 'durationType')
   int? durationType;
+  @JsonKey(name: 'isActive')
+  bool? isSelect;
 
-  DataResponse(this.name, this.collateralSymbol, this.collateralAmount,
-      this.loanTokenSymbol, this.duration, this.durationType);
+  DataResponse(
+    this.name,
+    this.collateralSymbol,
+    this.collateralAmount,
+    this.loanTokenSymbol,
+    this.duration,
+    this.durationType,
+    this.isSelect,
+  );
 
   factory DataResponse.fromJson(Map<String, dynamic> json) =>
       _$DataResponseFromJson(json);
@@ -77,5 +86,6 @@ class DataResponse extends Equatable {
         loanTokenSymbol: loanTokenSymbol,
         duration: duration,
         durationType: durationType,
+        isSelect: isSelect,
       );
 }

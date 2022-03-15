@@ -3,9 +3,9 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 class PawnshopPackage {
   List<AcceptableAssetsAsCollateral>? acceptableAssetsAsCollateral;
   int? id;
-  int? interest;
+  num? interest;
   bool? isFavourite;
-  int? loanToValue;
+  num? loanToValue;
   int? durationQtyType;
   Pawnshop? pawnshop;
 

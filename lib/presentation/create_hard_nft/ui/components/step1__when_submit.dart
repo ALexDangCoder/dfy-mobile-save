@@ -317,7 +317,7 @@ class Step1WhenSubmit extends StatelessWidget {
                           SizedBox(
                             width: 16.w,
                             height: 16.h,
-                            child: Image.asset(
+                            child: Image.network(
                               ImageAssets.getSymbolAsset(
                                 cubit.dataStep1.tokenInfo.symbol ?? DFY,
                               ),

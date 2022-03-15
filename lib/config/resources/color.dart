@@ -185,6 +185,8 @@ abstract class AppColor {
 
   Color redColor();
 
+  Color getGray3();
+
   Color colorTextFieldZeroFire();
 
   Color colorTextReset();
@@ -742,6 +744,11 @@ class LightApp extends AppColor {
   Color blackColor() {
     return Colors.black;
   }
+
+  @override
+  Color getGray3() {
+  return grey3;
+  }
 }
 
 class DarkApp extends AppColor {
@@ -1245,6 +1252,12 @@ class DarkApp extends AppColor {
   @override
   Color pawnItemColor() {
     // TODO: implement pawnItemColor
+    throw UnimplementedError();
+  }
+
+  @override
+  Color getGray3() {
+    // TODO: implement getGray3
     throw UnimplementedError();
   }
 }

@@ -15,6 +15,12 @@ class BorrowResultLoading extends BorrowResultState {
   List<Object?> get props => [];
 }
 
+class BorrowResultLoadmore extends BorrowResultState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
 class BorrowPersonSuccess extends BorrowResultState {
   final int id = DateTime.now().millisecond;
   final CompleteType completeType;

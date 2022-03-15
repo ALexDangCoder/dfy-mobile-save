@@ -5,6 +5,7 @@ class CryptoCollateralModel {
   String? loanTokenSymbol;
   num? duration;
   int? durationType;
+  bool? isSelect;
 
   CryptoCollateralModel({
     this.name,
@@ -13,5 +14,6 @@ class CryptoCollateralModel {
     this.loanTokenSymbol,
     this.duration,
     this.durationType,
+    this.isSelect,
   });
 }
