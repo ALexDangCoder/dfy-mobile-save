@@ -74,15 +74,22 @@ class PersonalItem extends StatelessWidget {
     );
   }
 
-  TextSpan widgetTextSpan({
+  WidgetSpan widgetTextSpan({
     required int listLength,
   }) {
-    return TextSpan(
-      text: listLength > 5
-          ? '& ${listLength - 5} '
-                  '${S.current.more}'
-              .toLowerCase()
-          : '',
+    return WidgetSpan(
+      alignment: PlaceholderAlignment.middle,
+      child: Text(
+        listLength > 5
+            ? '& ${listLength - 5} '
+                    '${S.current.more}'
+                .toLowerCase()
+            : '',
+        style: textNormal(
+          null,
+          16,
+        ),
+      ),
     );
   }
 
@@ -163,7 +170,16 @@ class PersonalItem extends StatelessWidget {
                           alignment: PlaceholderAlignment.middle,
                           child: spaceW6,
                         ),
-                        TextSpan(text: rate),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Text(
+                            rate,
+                            style: textNormal(
+                              null,
+                              16,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -304,13 +320,24 @@ class PersonalItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '\$ ${formatPrice.format(double.parse(total))}  ',
+                  text: '',
                   style: textNormalCustom(
                     null,
                     24,
                     FontWeight.w600,
                   ),
                   children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Text(
+                        '\$ ${formatPrice.format(double.parse(total))}  ',
+                        style: textNormalCustom(
+                          null,
+                          24,
+                          FontWeight.w600,
+                        ),
+                      ),
+                    ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: GestureDetector(

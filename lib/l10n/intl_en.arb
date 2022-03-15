@@ -859,5 +859,6 @@
   "expected_loan_range": "Expected loan range",
   "just_loan_amount": "Loan amount",
   "enter_mess": "Enter message",
-  "collateral_of_bda": "Collateral of BDA"
+  "collateral_of_bda": "Collateral of BDA",
+  "recurring_interest_pawn": "Recurring interest"
 }

@@ -810,5 +810,6 @@
   "expected_loan_range": "Khoảng vay dự kiến",
   "just_loan_amount": "Sô tiền vay",
   "enter_mess": "Nhập tin nhắn",
-  "collateral_of_bda": "Collateral of BDA"
+  "collateral_of_bda": "Collateral of BDA",
+  "recurring_interest_pawn": "Lãi định kỳ"
 }
