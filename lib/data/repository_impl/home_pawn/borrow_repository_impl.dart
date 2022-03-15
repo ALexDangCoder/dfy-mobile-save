@@ -4,6 +4,7 @@ import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -20,6 +21,7 @@ import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 
@@ -206,10 +208,11 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<String>> confirmCollateralToBe({required Map<String, String> map}) {
+  Future<Result<String>> confirmCollateralToBe(
+      {required Map<String, String> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmSendLoanRequest(map),
-          (response) => response.code ?? '',
+      () => _client.confirmSendLoanRequest(map),
+      (response) => response.code ?? '',
     );
   }
 
@@ -237,6 +240,19 @@ class BorrowRepositoryImpl implements BorrowRepository {
         id,
       ),
       (response) => response.data?.toDomain() ?? CollateralDetail(),
+    );
+  }
+
+  @override
+  Future<Result<List<ReputationBorrower>>> getListReputation({
+    String? addressWallet,
+  }) {
+    return runCatchingAsync<List<ReputationBorrowerResponse>,
+        List<ReputationBorrower>>(
+      () => _client.getListReputation(
+        addressWallet,
+      ),
+      (response) => response.map((e) => e.toDomain()).toList(),
     );
   }
 }

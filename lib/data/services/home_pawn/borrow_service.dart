@@ -4,6 +4,7 @@ import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -104,12 +105,11 @@ abstract class BorrowService {
     @Query('loanAmountTo') String? loanAmountTo,
     @Query('collectionId') String? collectionId,
   );
-  @POST(
-      ApiConstants.POST_COLLATERAL_TO_BE)
-  Future<ConfirmEvaluationResponse> confirmSendLoanRequest(
-      @Body() Map<String,String> map,
-      );
 
+  @POST(ApiConstants.POST_COLLATERAL_TO_BE)
+  Future<ConfirmEvaluationResponse> confirmSendLoanRequest(
+    @Body() Map<String, String> map,
+  );
 
   @GET(ApiConstants.GET_COLLECTION_FILTER)
   Future<ListCollectionFilterResponse> getListCollectionFilter();
@@ -120,5 +120,10 @@ abstract class BorrowService {
   @GET('${ApiConstants.GET_DETAIL_COLLATERAL}{id}')
   Future<DetailCollateralResponse> getDetailCollateral(
     @Path('id') String? id,
+  );
+
+  @GET(ApiConstants.GET_LIST_REPUTATION)
+  Future<List<ReputationBorrowerResponse>> getListReputation(
+    @Query('walletAddress') String? walletAddress,
   );
 }
