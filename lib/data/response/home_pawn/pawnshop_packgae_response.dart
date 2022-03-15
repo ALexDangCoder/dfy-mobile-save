@@ -50,11 +50,11 @@ class DataResponse extends Equatable {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'interest')
-  int? interest;
+  num? interest;
   @JsonKey(name: 'isFavourite')
   bool? isFavourite;
   @JsonKey(name: 'loanToValue')
-  int? loanToValue;
+  num? loanToValue;
   @JsonKey(name: 'durationQtyType')
   int? durationQtyType;
   @JsonKey(name: 'pawnShop')

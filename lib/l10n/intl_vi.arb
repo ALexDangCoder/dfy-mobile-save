@@ -746,7 +746,7 @@
   "confirm_send_offer": "Xác nhận gửi phiếu mua hàng",
   "collateral_result": "Kết quả tài sản thế chấp",
   "pawnshop_list": "Danh sách hiệu cầm đồ",
-  "loan_token": "Mã thông báo cho vay",
+  "loan_token": "Loan token",
   "rating": "Xếp hạng",
   "signed_contracts": "Hợp đồng đã ký",
   "available_loan_package": "Gói vay khả dụng",
@@ -807,6 +807,8 @@
   "total_value_of_all": "Tổng giá trị của tất cả các hợp đồng cho vay được quy đổi sang USD",
   "total_contract_value": "Tổng giá trị hợp đồng",
   "all_type_of_NFT": "All type of NFT",
+  "expected_loan_range": "Khoảng vay dự kiến",
   "just_loan_amount": "Sô tiền vay",
-  "enter_mess": "Nhập tin nhắn"
+  "enter_mess": "Nhập tin nhắn",
+  "collateral_of_bda": "Collateral of BDA"
 }

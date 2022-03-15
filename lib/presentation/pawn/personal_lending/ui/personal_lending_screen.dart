@@ -244,6 +244,9 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                             onRefresh: _bloc.refreshPosts,
                             child: list.isNotEmpty
                                 ? SingleChildScrollView(
+                                    physics: const ClampingScrollPhysics(
+                                      parent: AlwaysScrollableScrollPhysics(),
+                                    ),
                                     child: ListView.builder(
                                       padding: EdgeInsets.only(
                                         bottom: 20.h,

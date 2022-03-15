@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
@@ -13,7 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest({Key? key}) : super(key: key);
+  const SendLoanRequest(
+      {Key? key,
+      this.index = 0,
+      required this.packageId,
+      required this.pawnshopType})
+      : super(key: key);
+  final int index;
+  final String packageId;
+  final String pawnshopType;
 
   @override
   _SendLoanRequestState createState() => _SendLoanRequestState();
@@ -24,16 +33,18 @@ class _SendLoanRequestState extends State<SendLoanRequest>
   late SendLoanRequestCubit cubit;
   late TabController _tabController;
   late bool checkLogin;
+  String walletAddress = PrefsService.getCurrentWalletCore();
 
   @override
   void initState() {
-
     super.initState();
     cubit = SendLoanRequestCubit();
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     checkLogin = cubit.getLoginState();
-    _tabController = TabController(length: 2, vsync: this);
+    cubit.tabIndex.add(widget.index);
+    _tabController =
+        TabController(initialIndex: widget.index, length: 2, vsync: this);
   }
 
   @override
@@ -126,36 +137,39 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                         ),
                         spaceH14,
                         SizedBox(
-                          child: TabBar(
-                            unselectedLabelColor: Colors.white,
-                            labelColor: Colors.white,
-                            onTap: (int i) {
-                              setState(() {});
-                            },
-                            indicatorColor: AppTheme.getInstance().bgBtsColor(),
-                            tabs: [
-                              Tab(
-                                icon: CheckboxItemTab(
-                                  isSelected: _tabController.index == 0,
-                                  nameCheckbox: 'Cryptocurrency',
-                                ),
-                              ),
-                              Tab(
-                                icon: CheckboxItemTab(
-                                  isSelected: _tabController.index == 1,
-                                  nameCheckbox: 'NFT',
-                                ),
-                              )
-                            ],
-                            controller: _tabController,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                          ),
+                          child: StreamBuilder<int>(
+                              stream: cubit.tabIndex,
+                              builder: (context, snapshot) {
+                                return TabBar(
+                                  unselectedLabelColor: Colors.white,
+                                  labelColor: Colors.white,
+                                  onTap: (int i) {
+                                    cubit.tabIndex.add(i);
+                                  },
+                                  indicatorColor:
+                                      AppTheme.getInstance().bgBtsColor(),
+                                  tabs: [
+                                    Tab(
+                                      icon: CheckboxItemTab(
+                                        isSelected: snapshot.data == 0,
+                                        nameCheckbox: 'Cryptocurrency',
+                                      ),
+                                    ),
+                                    Tab(
+                                      icon: CheckboxItemTab(
+                                        isSelected: snapshot.data == 1,
+                                        nameCheckbox: 'NFT',
+                                      ),
+                                    )
+                                  ],
+                                  controller: _tabController,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                );
+                              }),
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxHeight: 750.h,
-                            minHeight: 699.h
-                          ),
+                              maxHeight: 750.h, minHeight: 699.h),
                           child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,
@@ -178,6 +192,10 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                   if (state is GetWalletSuccess) {
                                     return CryptoCurrency(
                                       cubit: cubit,
+                                      packageId: widget.packageId,
+                                      walletAddress: walletAddress,
+                                      hasEmail: cubit.hasEmail,
+                                      pawnshopType: widget.pawnshopType,
                                     );
                                   } else {
                                     return const Center(
@@ -186,7 +204,9 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                   }
                                 },
                               ),
-                              SendLoanRequestNft(cubit: cubit,)
+                              SendLoanRequestNft(
+                                cubit: cubit,
+                              )
                             ],
                           ),
                         ),

@@ -24,7 +24,7 @@ class PersonalLendingResponse extends Equatable {
 }
 
 @JsonSerializable()
-class ContentResponse extends Equatable{
+class ContentResponse extends Equatable {
   @JsonKey(name: 'content')
   List<DataResponse>? data;
 
@@ -35,8 +35,7 @@ class ContentResponse extends Equatable{
 
   Map<String, dynamic> toJson() => _$ContentResponseToJson(this);
 
-  List<PersonalLending>? toDomain() =>
-      data?.map((e) => e.toDomain()).toList();
+  List<PersonalLending>? toDomain() => data?.map((e) => e.toDomain()).toList();
 
   @override
   // TODO: implement props
@@ -44,7 +43,7 @@ class ContentResponse extends Equatable{
 }
 
 @JsonSerializable()
-class DataResponse extends Equatable{
+class DataResponse extends Equatable {
   @JsonKey(name: 'address')
   String? address;
   @JsonKey(name: 'associatedAddress')
@@ -162,8 +161,13 @@ class DataResponse extends Equatable{
 class P2PLenderPackagesResponse extends Equatable {
   @JsonKey(name: 'acceptableAssetsAsCollateral')
   List<AcceptableAssetsAsCollateralResponse>? acceptableAssetsAsCollateral;
+  @JsonKey(name: 'id')
+  int? id;
+  @JsonKey(name: 'type')
+  int? type;
 
-  P2PLenderPackagesResponse(this.acceptableAssetsAsCollateral);
+  P2PLenderPackagesResponse(
+      this.acceptableAssetsAsCollateral, this.id, this.type);
 
   factory P2PLenderPackagesResponse.fromJson(Map<String, dynamic> json) =>
       _$P2PLenderPackagesResponseFromJson(json);
@@ -176,6 +180,8 @@ class P2PLenderPackagesResponse extends Equatable {
               (e) => e.toDomain(),
             )
             .toList(),
+        id: id,
+        type: type,
       );
 
   @override

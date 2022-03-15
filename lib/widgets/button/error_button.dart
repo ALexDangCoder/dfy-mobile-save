@@ -4,16 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorButton extends StatelessWidget {
   final Widget child;
+  final double? width;
+  final double? height;
+
 
   const ErrorButton({
     Key? key,
-    required this.child,
+    required this.child, this.width, this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 64.h,
+      height: height ?? 64.h,
+      width: width,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().errorColorButton(),
         borderRadius: BorderRadius.circular(22),
