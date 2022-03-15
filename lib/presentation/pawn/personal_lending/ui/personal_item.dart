@@ -345,6 +345,7 @@ class PersonalItem extends StatelessWidget {
                         return const SendLoanRequest(
                           packageId: '',
                           pawnshopType: '3',
+                          collateralAccepted: [],
                         );
                       },
                     ),

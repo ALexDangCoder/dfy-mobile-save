@@ -1130,7 +1130,7 @@ class Web3Utils {
       parameters: [
         EthereumAddress.fromHex(collateralAddress),
         BigInt.from(num.parse(packageId)),
-        BigInt.from(num.parse(amount)),
+        BigInt.from(num.parse(_handleAmount(18, amount))),
         EthereumAddress.fromHex(loanAsset),
         BigInt.from(num.parse(expectedDurationQty)),
         BigInt.from(expectedDurationType),

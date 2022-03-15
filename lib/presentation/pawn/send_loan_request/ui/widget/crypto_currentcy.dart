@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -9,9 +11,9 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/select_crypto_collateral/ui/select_crypto.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/check_tab_bar.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
@@ -20,15 +22,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'check_tab_bar.dart';
-
 class CryptoCurrency extends StatefulWidget {
   const CryptoCurrency({
     Key? key,
     required this.cubit,
     required this.walletAddress,
     required this.packageId,
-    required this.hasEmail, required this.pawnshopType,
+    required this.hasEmail,
+    required this.pawnshopType,
   }) : super(key: key);
 
   final SendLoanRequestCubit cubit;
@@ -50,12 +51,18 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
   late ModelToken loanToken;
   late String duration;
   bool checkEmail = true;
+  String txhChoseCollateral = '';
+  String bcCollateralId = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    item = widget.cubit.listTokenFromWalletCore[0];
+    if (widget.cubit.listTokenCollateral.isNotEmpty) {
+      item = widget.cubit.listTokenCollateral[0];
+    } else {
+      item = ModelToken.init();
+    }
     loanToken = widget.cubit.checkShow[0];
     duration = S.current.week;
   }
@@ -79,124 +86,141 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: collateralAmount,
-                    maxLength: 50,
-                    onChanged: (value) {
-                      if (value == '') {
-                        widget.cubit.errorCollateral
-                            .add('Collateral amount not null');
-                      } else {
-                        if (double.parse(value) >
-                            widget.cubit.getMaxBalance(item.nameShortToken)) {
-                          widget.cubit.errorCollateral.add(
-                            'Max amount '
-                                '${widget.cubit.getMaxBalance(
-                                item.nameShortToken)}',
-                          );
-                        } else {
-                          widget.cubit.errorCollateral.add('');
-                        }
-                      }
-                      widget.cubit.enableButtonRequest();
-                    },
-                    cursorColor: AppTheme.getInstance().whiteColor(),
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isCollapsed: true,
-                      counterText: '',
-                      hintText: S.current.enter_amount,
-                      hintStyle: textNormal(
-                        Colors.white.withOpacity(0.5),
-                        16,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              bool enable;
+              if (snapshot.hasData) {
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                Row(
+                child: Row(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        collateralAmount.text =
-                            widget.cubit.getMax(item.nameShortToken);
-                      },
-                      child: Text(
-                        'Max',
-                        style: textNormalCustom(
-                          fillYellowColor,
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        enabled: enable,
+                        controller: collateralAmount,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          if (value == '') {
+                            widget.cubit.errorCollateral
+                                .add('Collateral amount not null');
+                          } else {
+                            if (double.parse(value) >
+                                widget.cubit
+                                    .getMaxBalance(item.nameShortToken)) {
+                              widget.cubit.errorCollateral.add(
+                                'Max amount '
+                                '${widget.cubit.getMaxBalance(item.nameShortToken)}',
+                              );
+                            } else {
+                              widget.cubit.errorCollateral.add('');
+                            }
+                          }
+                          widget.cubit.enableButtonRequest();
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
                           16,
-                          FontWeight.w400,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: S.current.enter_amount,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                    spaceW10,
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<ModelToken>(
-                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                        dropdownColor:
-                        AppTheme.getInstance().backgroundBTSColor(),
-                        items: widget.cubit.listTokenFromWalletCore
-                            .map((ModelToken model) {
-                          return DropdownMenuItem(
-                            value: model,
-                            child: Row(
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: ImageAssets.symbol,
-                                    image: model.iconToken,
-                                  ),
-                                ),
-                                spaceW5,
-                                Text(
-                                  model.nameShortToken,
-                                  style: textNormal(
-                                    Colors.white.withOpacity(0.5),
-                                    16,
-                                  ),
-                                ),
-                              ],
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            if (enable) {
+                              collateralAmount.text =
+                                  widget.cubit.getMax(item.nameShortToken);
+                            }
+                          },
+                          child: Text(
+                            'Max',
+                            style: textNormalCustom(
+                              fillYellowColor,
+                              16,
+                              FontWeight.w400,
                             ),
-                          );
-                        }).toList(),
-                        onChanged: (ModelToken? newValue) {
-                          setState(() {
-                            item = newValue!;
-                          });
-                        },
-                        value: item,
-                        icon: Image.asset(
-                          ImageAssets.ic_line_down,
-                          height: 24.h,
-                          width: 24.w,
+                          ),
                         ),
-                      ),
+                        spaceW10,
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<ModelToken>(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.r)),
+                            dropdownColor:
+                                AppTheme.getInstance().backgroundBTSColor(),
+                            items: widget.cubit.listTokenCollateral
+                                .map((ModelToken model) {
+                              return DropdownMenuItem(
+                                value: model,
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 20.w,
+                                      height: 20.h,
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: ImageAssets.symbol,
+                                        image: model.iconToken,
+                                      ),
+                                    ),
+                                    spaceW5,
+                                    Text(
+                                      model.nameShortToken,
+                                      style: textNormal(
+                                        Colors.white.withOpacity(0.5),
+                                        16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (ModelToken? newValue) {
+                              if (enable) {
+                                setState(() {
+                                  item = newValue!;
+                                });
+                              }
+                            },
+                            value: item,
+                            icon: Image.asset(
+                              ImageAssets.ic_line_down,
+                              height: 24.h,
+                              width: 24.w,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
           StreamBuilder<String>(
             stream: widget.cubit.errorCollateral,
@@ -272,14 +296,14 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       },
                       child: (snapshot.data != '')
                           ? Image.asset(
-                        ImageAssets.ic_close,
-                        width: 20.w,
-                        height: 20.h,
-                      )
+                              ImageAssets.ic_close,
+                              width: 20.w,
+                              height: 20.h,
+                            )
                           : SizedBox(
-                        height: 20.h,
-                        width: 20.w,
-                      ),
+                              height: 20.h,
+                              width: 20.w,
+                            ),
                     );
                   },
                 ),
@@ -309,88 +333,102 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: TextFormField(
-                    controller: durationController,
-                    maxLength: 50,
-                    onChanged: (value) {
-                      if (value == '') {
-                        widget.cubit.errorDuration.add('Duration not null');
-                      } else {
-                        widget.cubit.errorDuration.add('');
-                      }
-                      widget.cubit.enableButtonRequest();
-                    },
-                    cursorColor: AppTheme.getInstance().whiteColor(),
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isCollapsed: true,
-                      counterText: '',
-                      hintText: 'Duration',
-                      hintStyle: textNormal(
-                        Colors.white.withOpacity(0.5),
-                        16,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              bool enable;
+              if (snapshot.hasData) {
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                      dropdownColor:
-                      AppTheme.getInstance().backgroundBTSColor(),
-                      items:
-                      [S.current.week, S.current.month].map((String item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                item,
-                                style: textNormal(
-                                  Colors.white.withOpacity(0.5),
-                                  16,
-                                ),
-                              ),
-                            ],
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                        enabled: enable,
+                        controller: durationController,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          if (value == '') {
+                            widget.cubit.errorDuration.add('Duration not null');
+                          } else {
+                            widget.cubit.errorDuration.add('');
+                          }
+                          widget.cubit.enableButtonRequest();
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: 'Duration',
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          duration = newValue!;
-                        });
-                      },
-                      value: duration,
-                      icon: Image.asset(
-                        ImageAssets.ic_line_down,
-                        height: 24.h,
-                        width: 24.w,
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                          dropdownColor:
+                              AppTheme.getInstance().backgroundBTSColor(),
+                          items: [S.current.week, S.current.month]
+                              .map((String item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    item,
+                                    style: textNormal(
+                                      Colors.white.withOpacity(0.5),
+                                      16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            if (enable) {
+                              setState(() {
+                                duration = newValue!;
+                              });
+                            }
+                          },
+                          value: duration,
+                          icon: Image.asset(
+                            ImageAssets.ic_line_down,
+                            height: 24.h,
+                            width: 24.w,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
           StreamBuilder<String>(
             stream: widget.cubit.errorDuration,
@@ -415,70 +453,86 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            width: double.infinity,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2<ModelToken>(
-                buttonDecoration: BoxDecoration(
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              bool enable;
+              if (snapshot.hasData) {
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                width: double.infinity,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
                   color: AppTheme.getInstance().backgroundBTSColor(),
                   borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                items: widget.cubit.checkShow.map((ModelToken model) {
-                  return DropdownMenuItem(
-                    value: model,
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: FadeInImage.assetNetwork(
-                            placeholder: ImageAssets.symbol,
-                            image: model.iconToken,
+                child: Theme(
+                  data: ThemeData(
+                    hintColor: Colors.white24,
+                    selectedRowColor: Colors.white24,
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<ModelToken>(
+                      buttonDecoration: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      ),
+                      items: widget.cubit.checkShow.map((ModelToken model) {
+                        return DropdownMenuItem(
+                          value: model,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20.w,
+                                height: 20.h,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: ImageAssets.symbol,
+                                  image: model.iconToken,
+                                ),
+                              ),
+                              spaceW5,
+                              Text(
+                                model.nameShortToken,
+                                style: textNormal(
+                                  Colors.white.withOpacity(0.5),
+                                  16,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        spaceW5,
-                        Text(
-                          model.nameShortToken,
-                          style: textNormal(
-                            Colors.white.withOpacity(0.5),
-                            16,
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
+                      onChanged: (ModelToken? newValue) {
+                        if (enable) {
+                          setState(() {
+                            loanToken = newValue!;
+                          });
+                        }
+                      },
+                      dropdownMaxHeight: 200,
+                      dropdownWidth: MediaQuery.of(context).size.width - 32.w,
+                      dropdownDecoration: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      ),
+                      scrollbarThickness: 0,
+                      scrollbarAlwaysShow: false,
+                      offset: const Offset(-20, 0),
+                      value: loanToken,
+                      icon: Image.asset(
+                        ImageAssets.ic_line_down,
+                        height: 24.h,
+                        width: 24.w,
+                      ),
                     ),
-                  );
-                }).toList(),
-                onChanged: (ModelToken? newValue) {
-                  setState(() {
-                    loanToken = newValue!;
-                  });
-                },
-                dropdownMaxHeight: 200,
-                dropdownWidth: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 32.w,
-                dropdownDecoration: BoxDecoration(
-                  color: AppTheme.getInstance().backgroundBTSColor(),
-                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                  ),
                 ),
-                scrollbarThickness: 0,
-                scrollbarAlwaysShow: false,
-                offset: const Offset(-20, 0),
-                value: loanToken,
-                icon: Image.asset(
-                  ImageAssets.ic_line_down,
-                  height: 24.h,
-                  width: 24.w,
-                ),
-              ),
-            ),
+              );
+            },
           ),
           spaceH16,
           Text(
@@ -490,85 +544,86 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
           ),
           spaceH4,
           StreamBuilder<bool>(
-              stream: widget.cubit.chooseExisting,
-              builder: (context, snapshot) {
-                return InkWell(
-                  onTap: () {
-                    if (snapshot.data == false) {
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              SelectCryptoCollateral(
-                                walletAddress: widget.walletAddress,
-                                packageId: widget.packageId,
-                              ),
+            stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              return InkWell(
+                onTap: () {
+                  if (snapshot.data == false) {
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SelectCryptoCollateral(
+                          walletAddress: widget.walletAddress,
+                          packageId: widget.packageId,
                         ),
-                      )
-                          .then((value) {
-                        if (value != null) {
-                          final CryptoCollateralModel select =
-                          value as CryptoCollateralModel;
-                          if (select.loanTokenSymbol != '') {
-                            widget.cubit.chooseExisting.add(true);
-                            collateralAmount.text =
-                                select.collateralAmount.toString();
-                            durationController.text =
-                                select.duration.toString();
-                            duration = select.durationType == 0
-                                ? S.current.week
-                                : S.current.month;
-                            item =
-                                widget.cubit.listTokenFromWalletCore.firstWhere(
-                                      (element) =>
-                                  element.nameShortToken ==
-                                      select.collateralSymbol,
-                                );
-                            loanToken = widget.cubit.checkShow.firstWhere(
-                                  (element) =>
-                              element.nameShortToken ==
-                                  select.loanTokenSymbol,
-                            );
-                          }
+                      ),
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        final CryptoCollateralModel select =
+                            value as CryptoCollateralModel;
+                        if (select.loanTokenSymbol != '') {
+                          widget.cubit.chooseExisting.add(true);
+                          collateralAmount.text =
+                              select.collateralAmount.toString();
+                          bcCollateralId = select.bcCollateralId.toString();
+                          txhChoseCollateral = select.txhHash.toString();
+                          durationController.text = select.duration.toString();
+                          duration = select.durationType == 0
+                              ? S.current.week
+                              : S.current.month;
+                          item =
+                              widget.cubit.listTokenFromWalletCore.firstWhere(
+                            (element) =>
+                                element.nameShortToken ==
+                                select.collateralSymbol,
+                          );
+                          loanToken = widget.cubit.checkShow.firstWhere(
+                            (element) =>
+                                element.nameShortToken ==
+                                select.loanTokenSymbol,
+                          );
                         }
-                      });
-                    } else {
-                      collateralAmount.text = '';
-                      durationController.text = '';
-                      duration = S.current.week;
-                      item = widget.cubit.listTokenFromWalletCore[0];
-                      loanToken = widget.cubit.checkShow[0];
-                      widget.cubit.chooseExisting.add(false);
-                    }
-                  },
-                  child: Container(
-                    height: 48.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                      border: Border.all(
-                        color: (snapshot.data == false)
+                      }
+                    });
+                  } else {
+                    collateralAmount.text = '';
+                    durationController.text = '';
+                    duration = S.current.week;
+                    item = widget.cubit.listTokenFromWalletCore[0];
+                    loanToken = widget.cubit.checkShow[0];
+                    widget.cubit.chooseExisting.add(false);
+                  }
+                },
+                child: Container(
+                  height: 48.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    border: Border.all(
+                      color: (snapshot.data == false)
+                          ? fillYellowColor
+                          : redMarketColor,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      (snapshot.data == false)
+                          ? 'Choose existing collateral'
+                          : 'Clear existing collateral',
+                      style: textNormalCustom(
+                        (snapshot.data == false)
                             ? fillYellowColor
                             : redMarketColor,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        (snapshot.data == false)
-                            ? 'Choose existing collateral'
-                            : 'Clear existing collateral',
-                        style: textNormalCustom(
-                          (snapshot.data == false)
-                              ? fillYellowColor
-                              : redMarketColor,
-                          16,
-                          FontWeight.w400,
-                        ),
+                        16,
+                        FontWeight.w400,
                       ),
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
           spaceH24,
           Visibility(
             visible: !widget.hasEmail,
@@ -578,17 +633,16 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                 widget.cubit.emailNotification.add(checkEmail);
                 showDialog(
                   context: context,
-                  builder: (context) =>
-                      ConnectWalletDialog(
-                        navigationTo: CryptoCurrency(
-                          cubit: widget.cubit,
-                          walletAddress: widget.walletAddress,
-                          packageId: widget.packageId,
-                          pawnshopType: widget.pawnshopType,
-                          hasEmail: true,
-                        ),
-                        isRequireLoginEmail: true,
-                      ),
+                  builder: (context) => ConnectWalletDialog(
+                    navigationTo: CryptoCurrency(
+                      cubit: widget.cubit,
+                      walletAddress: widget.walletAddress,
+                      packageId: widget.packageId,
+                      pawnshopType: widget.pawnshopType,
+                      hasEmail: true,
+                    ),
+                    isRequireLoginEmail: true,
+                  ),
                 );
               },
               child: StreamBuilder<bool>(
@@ -604,110 +658,143 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
           ),
           spaceH35,
           StreamBuilder<bool>(
-              stream: widget.cubit.enableButton,
-              builder: (context, snapshot) {
-                if (snapshot.data ?? false) {
-                  return ButtonGradient(
-                    onPressed: () async {
+            stream: widget.cubit.enableButton,
+            builder: (context, snapshot) {
+              if (snapshot.data ?? false) {
+                return ButtonGradient(
+                  onPressed: () async {
+                    if (collateralAmount.text.isEmpty ||
+                        message.text.isEmpty ||
+                        durationController.text.isEmpty) {
+                      if (collateralAmount.text.isEmpty) {
+                        widget.cubit.errorCollateral
+                            .add('Collateral amount not null');
+                      }
+                      if (message.text.isEmpty) {
+                        widget.cubit.errorMessage.add('Message not null');
+                      }
+                      if (durationController.text.isEmpty) {
+                        widget.cubit.errorDuration.add('Duration not null');
+                      }
+                      widget.cubit.enableButtonRequest();
+                    } else {
                       if (widget.cubit.chooseExisting.value) {
+                        unawaited(showLoadingDialog(context));
                         await widget.cubit.pushSendNftToBE(
                           amount: collateralAmount.text,
                           bcPackageId: widget.packageId,
                           collateral: item.nameShortToken,
-                          collateralId: '',
+                          collateralId: bcCollateralId,
                           description: message.text,
                           duration: durationController.text,
-                          durationType: duration == S.current.week
-                              ? '0'
-                              : '1',
-                          packageId
-                              :widget.packageId,
-                          pawnshopType
-                              :widget.pawnshopType,
-                          txId
-                              :'' , ///TODO getHexString
-                          supplyCurrency
-                              :loanToken.nameShortToken,
-                          walletAddress
-                              :widget.walletAddress,
-
+                          durationType: duration == S.current.week ? '0' : '1',
+                          packageId: widget.packageId,
+                          pawnshopType: widget.pawnshopType,
+                          txId: txhChoseCollateral,
+                          supplyCurrency: loanToken.nameShortToken,
+                          walletAddress: widget.walletAddress,
+                        );
+                        await showLoadSuccess(context).then(
+                          (value) => Navigator.of(context)
+                            ..pop()
+                            ..pop(),
                         );
                       } else {
+                        final nav = Navigator.of(context);
                         final hexString =
-                        await widget.cubit.getCreateCryptoCollateral(
+                            await widget.cubit.getCreateCryptoCollateral(
                           collateralAddress: item.tokenAddress,
-                          packageID: widget.packageId,
+                          packageID: '-1',
                           amount: collateralAmount.text,
                           loanToken: loanToken.tokenAddress,
                           durationQty: durationController.text,
                           durationType: duration == S.current.week ? 0 : 1,
                         );
-                        goTo(
-                          context,
-                          Approve(
-                            hexString: hexString,
-                            tokenAddress:
-                            Get
-                                .find<AppConstants>()
-                                .contract_defy,
-                            needApprove: true,
-                            onSuccessSign: (context, data) async {
-                              await widget.cubit.pushSendNftToBE(
-                                amount: collateralAmount.text,
-                                bcPackageId: widget.packageId,
-                                collateral: item.nameShortToken,
-                                collateralId: '',
-                                description: message.text,
-                                duration: durationController.text,
-                                durationType:
-                                    duration == S.current.week ? '0' : '1',
-                                packageId: widget.packageId,
-                                pawnshopType: widget.pawnshopType,
-                                txId: hexString,
-                                supplyCurrency: loanToken.nameShortToken,
-                                walletAddress: widget.walletAddress,
-                              );
-                            },
-                            onErrorSign: (context) {
-                              showLoadFail(context);
-                            },
-                            listDetail: [
-                              DetailItemApproveModel(
-                                title: '${S.current.message}',
-                                value: message.text,
+                        unawaited(
+                          nav.push(
+                            MaterialPageRoute(
+                              builder: (context) => Approve(
+                                hexString: hexString,
+                                payValue: collateralAmount.text,
+                                tokenAddress:
+                                    Get.find<AppConstants>().contract_defy,
+                                needApprove: true,
+                                onSuccessSign: (context, data) async {
+                                  await widget.cubit.pushSendNftToBE(
+                                    amount: collateralAmount.text,
+                                    bcPackageId: widget.packageId,
+                                    collateral: item.nameShortToken,
+                                    collateralId: '',
+                                    description: message.text,
+                                    duration: durationController.text,
+                                    durationType:
+                                        duration == S.current.week ? '0' : '1',
+                                    packageId: widget.packageId,
+                                    pawnshopType: widget.pawnshopType,
+                                    txId: data,
+                                    supplyCurrency: loanToken.nameShortToken,
+                                    walletAddress: widget.walletAddress,
+                                  );
+                                  await showLoadSuccess(context).then(
+                                    (value) => Navigator.of(context)
+                                      ..pop()
+                                      ..pop()..pop(),
+                                  );
+                                },
+                                onErrorSign: (context) {
+                                  showLoadFail(context);
+                                },
+                                listDetail: [
+                                  DetailItemApproveModel(
+                                    title: S.current.message,
+                                    value: message.text,
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: S.current.collateral,
+                                    urlToken: item.iconToken,
+                                    value:
+                                        '${collateralAmount.text} ${item.nameShortToken}',
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: S.current.loan_token,
+                                    urlToken: loanToken.iconToken,
+                                    value: loanToken.nameShortToken,
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: S.current.duration,
+                                    value:
+                                        '${durationController.text} $duration',
+                                  ),
+                                ],
+                                title: 'Confirm loan request',
+                                textActiveButton: S.current.send,
+                                spender: Get.find<AppConstants>()
+                                    .crypto_pawn_contract,
                               ),
-                              DetailItemApproveModel(
-                                title: '${S.current.collateral}',
-                                urlToken: item.iconToken,
-                                value:
-                                '${collateralAmount.text} ${item
-                                    .nameShortToken}',
-                              ),
-                              DetailItemApproveModel(
-                                title: '${S.current.loan_token}',
-                                urlToken: loanToken.iconToken,
-                                value: '${loanToken.nameShortToken}',
-                              ),
-                              DetailItemApproveModel(
-                                title: '${S.current.duration}',
-                                value: '${durationController.text} ${duration}',
-                              ),
-                            ],
-                            title: 'Confirm loan request',
-                            textActiveButton: S.current.send,
-                            spender:
-                            Get
-                                .find<AppConstants>()
-                                .crypto_pawn_contract,
+                            ),
                           ),
                         );
                       }
-                    },
-                    gradient: RadialGradient(
-                      center: const Alignment(0.5, -0.5),
-                      radius: 4,
-                      colors: AppTheme.getInstance().gradientButtonColor(),
+                    }
+                  },
+                  gradient: RadialGradient(
+                    center: const Alignment(0.5, -0.5),
+                    radius: 4,
+                    colors: AppTheme.getInstance().gradientButtonColor(),
+                  ),
+                  child: Text(
+                    S.current.request_loan,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().textThemeColor(),
+                      16,
+                      FontWeight.w700,
                     ),
+                  ),
+                );
+              } else {
+                return ErrorButton(
+                  width: double.infinity,
+                  child: Center(
                     child: Text(
                       S.current.request_loan,
                       style: textNormalCustom(
@@ -716,23 +803,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         FontWeight.w700,
                       ),
                     ),
-                  );
-                } else {
-                  return ErrorButton(
-                    width: double.infinity,
-                    child: Center(
-                      child: Text(
-                        S.current.request_loan,
-                        style: textNormalCustom(
-                          AppTheme.getInstance().textThemeColor(),
-                          16,
-                          FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              }),
+                  ),
+                );
+              }
+            },
+          ),
         ],
       ),
     );

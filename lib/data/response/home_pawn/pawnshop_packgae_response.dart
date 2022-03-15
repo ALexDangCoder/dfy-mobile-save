@@ -25,7 +25,7 @@ class PawnshopPackageResponse extends Equatable {
 }
 
 @JsonSerializable()
-class ContentResponse extends Equatable{
+class ContentResponse extends Equatable {
   @JsonKey(name: 'content')
   List<DataResponse>? data;
 
@@ -49,8 +49,14 @@ class DataResponse extends Equatable {
   List<AcceptableAssetsAsCollateralResponse>? acceptableAssetsAsCollateral;
   @JsonKey(name: 'id')
   int? id;
+  @JsonKey(name: 'type')
+  int? type;
   @JsonKey(name: 'interest')
   num? interest;
+  @JsonKey(name: 'interestMax')
+  num? interestMax;
+  @JsonKey(name: 'interestMin')
+  num? interestMin;
   @JsonKey(name: 'isFavourite')
   bool? isFavourite;
   @JsonKey(name: 'loanToValue')
@@ -68,6 +74,9 @@ class DataResponse extends Equatable {
     this.loanToValue,
     this.durationQtyType,
     this.pawnshop,
+    this.type,
+    this.interestMin,
+    this.interestMax,
   );
 
   factory DataResponse.fromJson(Map<String, dynamic> json) =>
@@ -83,6 +92,9 @@ class DataResponse extends Equatable {
         isFavourite: isFavourite,
         loanToValue: loanToValue,
         durationQtyType: durationQtyType,
+        type: type,
+        interestMax: interestMax,
+        interestMin: interestMin,
         pawnshop: pawnshop?.toDomain(),
       );
 

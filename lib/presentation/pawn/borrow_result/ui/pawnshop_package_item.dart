@@ -65,7 +65,7 @@ class PawnshopPackageItem extends StatelessWidget {
                   ),
                   spaceH8,
                   Row(
-                    crossAxisAlignment:CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.asset(ImageAssets.img_star),
                       spaceW6,
@@ -102,7 +102,10 @@ class PawnshopPackageItem extends StatelessWidget {
                     ),
                     spaceH3,
                     Text(
-                      '${pawnshopPackage.interest}% APR',
+                      (pawnshopPackage.interest != null)
+                          ? '${pawnshopPackage.interest}% APR'
+                          : '${pawnshopPackage.interestMin} - '
+                          '${pawnshopPackage.interestMax}% APR',
                       style: textNormalCustom(
                         Colors.white,
                         20,
@@ -148,8 +151,7 @@ class PawnshopPackageItem extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    if ((pawnshopPackage
-                        .acceptableAssetsAsCollateral?.length ??
+                    if ((pawnshopPackage.acceptableAssetsAsCollateral?.length ??
                         0) <
                         5)
                       ListView.builder(
@@ -168,10 +170,11 @@ class PawnshopPackageItem extends StatelessWidget {
                                 child: Image.network(
                                   ImageAssets.getUrlToken(
                                     pawnshopPackage
-                                        .acceptableAssetsAsCollateral?[index].symbol ??
+                                        .acceptableAssetsAsCollateral?[
+                                    index]
+                                        .symbol ??
                                         '',
                                   ),
-
                                 ),
                               ),
                               spaceW8,
@@ -194,7 +197,9 @@ class PawnshopPackageItem extends StatelessWidget {
                                 child: Image.network(
                                   ImageAssets.getUrlToken(
                                     pawnshopPackage
-                                        .acceptableAssetsAsCollateral?[index].symbol ??
+                                        .acceptableAssetsAsCollateral?[
+                                    index]
+                                        .symbol ??
                                         '',
                                   ),
                                 ),
@@ -204,13 +209,12 @@ class PawnshopPackageItem extends StatelessWidget {
                           );
                         },
                       ),
-                    if ((pawnshopPackage
-                        .acceptableAssetsAsCollateral?.length ??
+                    if ((pawnshopPackage.acceptableAssetsAsCollateral?.length ??
                         0) >
                         5)
                       Text(
-                        '& ${pawnshopPackage.
-                        acceptableAssetsAsCollateral!.length - 5} more',
+                        '& ${pawnshopPackage.acceptableAssetsAsCollateral!
+                            .length - 5} more',
                         style: textNormalCustom(
                           Colors.white,
                           14,
@@ -233,25 +237,43 @@ class PawnshopPackageItem extends StatelessWidget {
   }
 
   Widget typeLoan() {
-    if(pawnshopPackage.pawnshop?.type == 0) {
-      return Text(
-        'Auto',
-        style: textNormalCustom(
-          blueMarketColor,
-          20,
-          FontWeight.w600,
-        ),
-      );
-    }
-    else {
-      return Text(
-        'Semi-auto',
-        style: textNormalCustom(
-          orangeColor,
-          20,
-          FontWeight.w600,
-        ),
-      );
+    switch (pawnshopPackage.type) {
+      case 0:
+        return Text(
+          'Auto',
+          style: textNormalCustom(
+            blueMarketColor,
+            20,
+            FontWeight.w600,
+          ),
+        );
+      case 1:
+        return Text(
+          'Semi-auto',
+          style: textNormalCustom(
+            orangeColor,
+            20,
+            FontWeight.w600,
+          ),
+        );
+      case 2:
+        return Text(
+          'Negotiation',
+          style: textNormalCustom(
+            redMarketColor,
+            20,
+            FontWeight.w600,
+          ),
+        );
+      default:
+        return Text(
+          'P2P',
+          style: textNormalCustom(
+            deliveredColor,
+            20,
+            FontWeight.w600,
+          ),
+        );
     }
   }
 }
