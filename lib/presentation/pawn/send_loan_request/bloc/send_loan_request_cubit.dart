@@ -61,11 +61,16 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    for(final element in collateralAccepted){
-      for(final item in listTokenFromWalletCore) {
-        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-          listTokenCollateral.add(item);
-        }
+    // for(final element in collateralAccepted){
+    //   for(final item in checkShow) {
+    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+    //       listTokenCollateral.add(item);
+    //     }
+    //   }
+    // }
+    for(final element in listTokenFromWalletCore) {
+      if(element.nameShortToken == DFY){
+        listTokenCollateral.add(element);
       }
     }
   }
@@ -202,6 +207,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     final Map<String, String> map = {
       'amount': amount,
       'bcPackageId': bcPackageId,
+      'collateral': collateral,
       'collateralId': collateralId,
       'description': description,
       'expected_loan_duration_time': duration,

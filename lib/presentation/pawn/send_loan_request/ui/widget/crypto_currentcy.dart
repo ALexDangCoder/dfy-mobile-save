@@ -715,6 +715,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             MaterialPageRoute(
                               builder: (context) => Approve(
                                 hexString: hexString,
+                                payValue: collateralAmount.text,
                                 tokenAddress:
                                     Get.find<AppConstants>().contract_defy,
                                 needApprove: true,
@@ -730,14 +731,14 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                         duration == S.current.week ? '0' : '1',
                                     packageId: widget.packageId,
                                     pawnshopType: widget.pawnshopType,
-                                    txId: hexString,
+                                    txId: data,
                                     supplyCurrency: loanToken.nameShortToken,
                                     walletAddress: widget.walletAddress,
                                   );
                                   await showLoadSuccess(context).then(
                                     (value) => Navigator.of(context)
                                       ..pop()
-                                      ..pop(),
+                                      ..pop()..pop(),
                                   );
                                 },
                                 onErrorSign: (context) {
