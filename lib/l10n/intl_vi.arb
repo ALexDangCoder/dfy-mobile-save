@@ -746,7 +746,7 @@
   "confirm_send_offer": "Xác nhận gửi phiếu mua hàng",
   "collateral_result": "Kết quả tài sản thế chấp",
   "pawnshop_list": "Danh sách hiệu cầm đồ",
-  "loan_token": "Mã thông báo cho vay",
+  "loan_token": "Loan token",
   "rating": "Xếp hạng",
   "signed_contracts": "Hợp đồng đã ký",
   "available_loan_package": "Gói vay khả dụng",
