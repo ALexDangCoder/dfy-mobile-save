@@ -12,7 +12,7 @@ class ConfirmEvaluationResponse extends Equatable {
   int? rc;
 
   @JsonKey(name: 'code')
-  String? code;
+  dynamic code;
 
   ConfirmEvaluationResponse(
     this.rd,

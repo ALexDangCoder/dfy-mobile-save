@@ -209,7 +209,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<String>> confirmCollateralToBe({required Map<String, String> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
           () => _client.confirmSendLoanRequest(map),
-          (response) => response.code ?? '',
+          (response) => response.code.toString(),
     );
   }
 
