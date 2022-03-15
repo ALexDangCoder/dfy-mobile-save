@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
+import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
@@ -86,4 +87,8 @@ mixin BorrowRepository {
   Future<Result<List<CollectionMarketModel>>> getListCollectionFilter();
 
   Future<Result<List<AssetFilterModel>>> getListAssetFilter();
+
+  Future<Result<CollateralDetail>> getDetailCollateral({
+    String? id,
+  });
 }

@@ -858,5 +858,6 @@
   "all_type_of_NFT": "All type of NFT",
   "expected_loan_range": "Expected loan range",
   "just_loan_amount": "Loan amount",
-  "enter_mess": "Enter message"
+  "enter_mess": "Enter message",
+  "collateral_of_bda": "Collateral of BDA"
 }
