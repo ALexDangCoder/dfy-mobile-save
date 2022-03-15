@@ -6,6 +6,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/main.dart';
@@ -27,7 +28,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   SendLoanRequestCubit() : super(SendLoanRequestInitial());
 
   BehaviorSubject<ModelToken> tokenStream =
-  BehaviorSubject.seeded(ModelToken.init());
+      BehaviorSubject.seeded(ModelToken.init());
   BehaviorSubject<String> focusTextField = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorMessage = BehaviorSubject.seeded('');
@@ -42,11 +43,11 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   final Web3Utils client = Web3Utils();
 
   void enableButtonRequest() {
-    if (errorCollateral.value == '' && errorMessage.value == '' &&
+    if (errorCollateral.value == '' &&
+        errorMessage.value == '' &&
         errorDuration.value == '') {
       enableButton.add(true);
-    }
-    else {
+    } else {
       enableButton.add(false);
     }
   }
@@ -56,8 +57,21 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       yield listModelToken[i];
     }
   }
+  List<AcceptableAssetsAsCollateral> collateralAccepted = [];
+  void checkShowCollateral(
+    List<AcceptableAssetsAsCollateral> collateralAccepted,
+  ) {
+    for(final element in collateralAccepted){
+      for(final item in listTokenFromWalletCore) {
+        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+          listTokenCollateral.add(item);
+        }
+      }
+    }
+  }
 
   List<ModelToken> listTokenFromWalletCore = [];
+  List<ModelToken> listTokenCollateral = [];
   final List<ModelToken> checkShow = [];
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -74,6 +88,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           }
         }
         await getBalanceOFToken(listTokenFromWalletCore);
+        checkShowCollateral(collateralAccepted);
         emit(GetWalletSuccess());
         break;
       default:
@@ -148,6 +163,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   final Web3Utils _client = Web3Utils();
+
   BorrowRepository get _repo => Get.find();
 
   Future<String> getCreateCryptoCollateral({
@@ -168,6 +184,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     );
     return hexString;
   }
+
   Future<void> pushSendNftToBE({
     required String amount,
     required String bcPackageId,
@@ -195,8 +212,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'txid': txId,
       'wallet_address': walletAddress,
     };
-    final Result<String> code =
-    await _repo.confirmCollateralToBe(map: map);
+    final Result<String> code = await _repo.confirmCollateralToBe(map: map);
     code.when(success: (res) {}, error: (error) {});
   }
 
@@ -283,9 +299,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     listDropDownToken.add({
       'label': DFY,
       'value': 1,
-      'addressToken': Get
-          .find<AppConstants>()
-          .contract_defy,
+      'addressToken': Get.find<AppConstants>().contract_defy,
       'icon': SizedBox(
         width: 20.w,
         height: 20.h,

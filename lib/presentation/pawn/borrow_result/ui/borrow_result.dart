@@ -71,10 +71,6 @@ class _BorrowResultState extends State<BorrowResult> {
             cubit.showError();
           }
           cubit.personalLending.addAll(state.personalLending ?? []);
-          cubit.canLoadMoreList =
-              cubit.personalLending.length >= ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMore = false;
-          cubit.refresh = false;
         }
         if (state is BorrowPawnshopSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
@@ -89,8 +85,8 @@ class _BorrowResultState extends State<BorrowResult> {
           }
           cubit.pawnshopPackage =
               cubit.pawnshopPackage + (state.pawnshopPackage ?? []);
-          cubit.canLoadMoreList =
-              cubit.pawnshopPackage.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+          cubit.canLoadMoreList = (state.pawnshopPackage?.length ?? 0) >=
+              ApiConstants.DEFAULT_PAGE_SIZE;
           cubit.loadMore = false;
           cubit.refresh = false;
         }
@@ -108,7 +104,9 @@ class _BorrowResultState extends State<BorrowResult> {
                 isScrollControlled: true,
                 context: context,
                 builder: (_) {
-                  return FilterBorrow(cubit: cubit,);
+                  return FilterBorrow(
+                    cubit: cubit,
+                  );
                 },
               );
             },
@@ -230,16 +228,14 @@ class _BorrowResultState extends State<BorrowResult> {
                             },
                           ),
                         ),
-                        if(state is BorrowResultLoadmore)
+                        if (state is BorrowResultLoadmore)
                           Center(
                             child: SizedBox(
                               height: 16.h,
                               width: 16.w,
-                              child:
-                              CircularProgressIndicator(
+                              child: CircularProgressIndicator(
                                 strokeWidth: 1.r,
-                                color: AppTheme.getInstance()
-                                    .whiteColor(),
+                                color: AppTheme.getInstance().whiteColor(),
                               ),
                             ),
                           ),

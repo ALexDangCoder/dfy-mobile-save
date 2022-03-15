@@ -59,6 +59,10 @@ class DataResponse extends Equatable {
   int? durationType;
   @JsonKey(name: 'isActive')
   bool? isSelect;
+  @JsonKey(name: 'bcCollateralId')
+  int? bcCollateralId;
+  @JsonKey(name: 'latestBlockchainTxn')
+  String? txhHash;
 
   DataResponse(
     this.name,
@@ -68,6 +72,8 @@ class DataResponse extends Equatable {
     this.duration,
     this.durationType,
     this.isSelect,
+    this.bcCollateralId,
+    this.txhHash,
   );
 
   factory DataResponse.fromJson(Map<String, dynamic> json) =>
@@ -87,5 +93,7 @@ class DataResponse extends Equatable {
         duration: duration,
         durationType: durationType,
         isSelect: isSelect,
+        bcCollateralId: bcCollateralId,
+        txhHash: txhHash,
       );
 }

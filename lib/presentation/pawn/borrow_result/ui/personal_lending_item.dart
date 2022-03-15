@@ -85,7 +85,7 @@ class PersonalLendingItem extends StatelessWidget {
             '${personalLending.minInterestRate} - '
             '${personalLending.maxInterestRate}% Interest rate',
             style: textNormalCustom(
-              Colors.green,
+              greenMarketColor,
               14,
               FontWeight.w400,
             ),
@@ -129,7 +129,8 @@ class PersonalLendingItem extends StatelessWidget {
                                         .symbol ??
                                     '',
                               ),
-                              errorBuilder: (context, error, stackTrace) => Container(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
                                 color: AppTheme.getInstance().bgBtsColor(),
                                 width: 16.w,
                                 height: 16.w,
@@ -161,7 +162,8 @@ class PersonalLendingItem extends StatelessWidget {
                                         .symbol ??
                                     '',
                               ),
-                              errorBuilder: (context, error, stackTrace) => Container(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
                                 color: AppTheme.getInstance().bgBtsColor(),
                                 width: 16.w,
                                 height: 16.h,
@@ -201,6 +203,9 @@ class PersonalLendingItem extends StatelessWidget {
                     pawnshopType:
                         personalLending.p2PLenderPackages?[0].type.toString() ??
                             '',
+                    collateralAccepted: personalLending.p2PLenderPackages?[0]
+                            .acceptableAssetsAsCollateral ??
+                        [],
                   ),
                 ),
               );
