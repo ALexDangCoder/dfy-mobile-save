@@ -1,5 +1,8 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
+import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -8,6 +11,8 @@ import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
+import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
@@ -33,6 +38,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? duration,
   }) {
     return runCatchingAsync<PawnshopPackageResponse, List<PawnshopPackage>>(
       () => _client.getPawnshopPackage(
@@ -43,6 +49,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanToValueRanges,
         loanSymbols,
         loanType,
+        duration,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       ),
@@ -60,6 +67,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String? loanSymbols,
     String? loanType,
     String? page,
+    String? duration,
     String? cusSort,
   }) {
     return runCatchingAsync<PersonalLendingResponse, List<PersonalLending>>(
@@ -71,6 +79,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         loanToValueRanges,
         loanSymbols,
         loanType,
+        duration,
         page,
         ApiConstants.DEFAULT_PAGE_SIZE.toString(),
         cusSort,
@@ -167,14 +176,59 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<List<NftMarket>>> getListNFTCollateral({
     String? page,
     String? size,
+    String? maximunLoanAmount,
+    String? loanSymbols,
+    String? durationTypes,
+    String? durationQuantity,
+    String? types,
+    String? assetTypes,
+    String? loanAmountFrom,
+    String? loanAmountTo,
+    String? collectionId,
   }) {
     return runCatchingAsync<CollateralNFTResponse, List<NftMarket>>(
       () => _client.getListNFTCollateral(
         page,
         size,
+        maximunLoanAmount,
+        loanSymbols,
+        durationTypes,
+        durationQuantity,
+        types,
+        assetTypes,
+        loanAmountFrom,
+        loanAmountTo,
+        collectionId,
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> confirmCollateralToBe({required Map<String, String> map}) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.confirmSendLoanRequest(map),
+          (response) => response.code ?? '',
+    );
+  }
+
+  @override
+  Future<Result<List<CollectionMarketModel>>> getListCollectionFilter() {
+    return runCatchingAsync<ListCollectionFilterResponse, List<CollectionMarketModel>>(
+      () => _client.getListCollectionFilter(),
+      (response) =>
+          response.data?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+
+  @override
+  Future<Result<List<AssetFilterModel>>> getListAssetFilter() {
+    return runCatchingAsync<AssetFilterResponse, List<AssetFilterModel>>(
+          () => _client.getListAssetFilter(),
+          (response) =>
+      response.data?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 

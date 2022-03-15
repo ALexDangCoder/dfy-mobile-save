@@ -235,7 +235,7 @@ class ReceiveHardNFTScreen extends StatelessWidget {
                         SizedBox(
                           height: 28,
                           width: 28,
-                          child: Image.asset(
+                          child: Image.network(
                             ImageAssets.getSymbolAsset(
                               state.data.expectingPriceSymbol ?? 'DFY',
                             ),

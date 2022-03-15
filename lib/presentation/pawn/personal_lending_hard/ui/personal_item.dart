@@ -60,51 +60,59 @@ class PersonalItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: nameShop,
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ).copyWith(
-                      overflow: TextOverflow.clip,
+                Expanded(
+                  flex: 8,
+                  child: RichText(
+                    text: TextSpan(
+                      text: nameShop,
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ).copyWith(
+                        overflow: TextOverflow.clip,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          child: spaceW6,
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: isShop
+                              ? Image.asset(ImageAssets.ic_selected)
+                              : const SizedBox.shrink(),
+                        ),
+                      ],
                     ),
-                    children: [
-                      WidgetSpan(
-                        child: spaceW6,
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: isShop
-                            ? Image.asset(ImageAssets.ic_selected)
-                            : const SizedBox.shrink(),
-                      ),
-                    ],
                   ),
                 ),
                 spaceH12,
-                RichText(
-                  text: TextSpan(
-                    text: '',
-                    style: textNormalCustom(
-                      null,
-                      16,
-                      FontWeight.w600,
-                    ).copyWith(
-                      overflow: TextOverflow.clip,
+                Expanded(
+                  flex: 2,
+                  child: RichText(
+                    maxLines: 1,
+                    textAlign: TextAlign.end,
+                    text: TextSpan(
+                      text: '',
+                      style: textNormalCustom(
+                        null,
+                        16,
+                        FontWeight.w600,
+                      ).copyWith(
+                        overflow: TextOverflow.clip,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Image.asset(ImageAssets.img_star),
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: spaceW6,
+                        ),
+                        TextSpan(text: rate),
+                      ],
                     ),
-                    children: [
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: Image.asset(ImageAssets.img_star),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: spaceW6,
-                      ),
-                      TextSpan(text: rate),
-                    ],
                   ),
                 )
               ],
@@ -199,7 +207,7 @@ class PersonalItem extends StatelessWidget {
                 spaceW4,
                 Expanded(
                   child: Text(
-                    signedContract,
+                    formatPrice.format(double.parse(signedContract)),
                     style: textNormalCustom(
                       null,
                       14,
@@ -216,7 +224,7 @@ class PersonalItem extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: RichText(
                 text: TextSpan(
-                  text: '\$ $total  ',
+                  text: '\$ ${formatPrice.format(double.parse(total))}  ',
                   style: textNormalCustom(
                     null,
                     24,
@@ -254,7 +262,7 @@ class PersonalItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SendLoanRequest();
+                        return const SendLoanRequest(packageId: '',pawnshopType: '',);
                       },
                     ),
                   );

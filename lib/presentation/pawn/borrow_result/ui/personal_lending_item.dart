@@ -1,7 +1,7 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
@@ -121,13 +121,18 @@ class PersonalLendingItem extends StatelessWidget {
                           SizedBox(
                             width: 16.w,
                             height: 16.h,
-                            child: Image.asset(
-                              ImageAssets.getSymbolAsset(
+                            child: Image.network(
+                              ImageAssets.getUrlToken(
                                 personalLending
                                         .p2PLenderPackages?[0]
                                         .acceptableAssetsAsCollateral?[index]
                                         .symbol ??
                                     '',
+                              ),
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width: 16.w,
+                                height: 16.w,
                               ),
                             ),
                           ),
@@ -148,13 +153,18 @@ class PersonalLendingItem extends StatelessWidget {
                           SizedBox(
                             width: 16.w,
                             height: 16.h,
-                            child: Image.asset(
-                              ImageAssets.getSymbolAsset(
+                            child: Image.network(
+                              ImageAssets.getUrlToken(
                                 personalLending
                                         .p2PLenderPackages?[0]
                                         .acceptableAssetsAsCollateral?[index]
                                         .symbol ??
                                     '',
+                              ),
+                              errorBuilder: (context, error, stackTrace) => Container(
+                                color: AppTheme.getInstance().bgBtsColor(),
+                                width: 16.w,
+                                height: 16.h,
                               ),
                             ),
                           ),
@@ -184,8 +194,14 @@ class PersonalLendingItem extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>
-                  const SendLoanRequest(),
+                  builder: (context) => SendLoanRequest(
+                    packageId:
+                        personalLending.p2PLenderPackages?[0].id.toString() ??
+                            '',
+                    pawnshopType:
+                        personalLending.p2PLenderPackages?[0].type.toString() ??
+                            '',
+                  ),
                 ),
               );
             },

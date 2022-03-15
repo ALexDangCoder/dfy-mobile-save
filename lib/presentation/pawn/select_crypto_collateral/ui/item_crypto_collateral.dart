@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
+import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,7 +49,7 @@ class ItemCryptoCollateral extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.h,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(
                       model.collateralSymbol ?? '',
                     ),
@@ -74,7 +75,7 @@ class ItemCryptoCollateral extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.h,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(
                       model.loanTokenSymbol ?? '',
                     ),
@@ -96,8 +97,7 @@ class ItemCryptoCollateral extends StatelessWidget {
           _row(
             'Duration',
             Text(
-              '${model.duration} ${(model.durationType == 0) ?
-              S.current.week : S.current.month}',
+              '${model.duration} ${(model.durationType == 0) ? S.current.week : S.current.month}',
               style: textNormalCustom(
                 Colors.white,
                 14,
@@ -108,22 +108,39 @@ class ItemCryptoCollateral extends StatelessWidget {
           spaceH20,
           InkWell(
             onTap: () {
-              Navigator.pop(context,model);
+             if(model.isSelect == true) {
+               Navigator.pop(context, model);
+             }
             },
-            child: ButtonRadial(
-              height: 40.h,
-              width: 100.w,
-              child: Center(
-                child: Text(
-                  'Select',
-                  style: textNormalCustom(
-                    Colors.white,
-                    16,
-                    FontWeight.w600,
+            child: (model.isSelect == true)
+                ? ButtonRadial(
+                    height: 40.h,
+                    width: 100.w,
+                    child: Center(
+                      child: Text(
+                        'Select',
+                        style: textNormalCustom(
+                          Colors.white,
+                          16,
+                          FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                : ErrorButton(
+                    height: 40.h,
+                    width: 100.w,
+                    child: Center(
+                      child: Text(
+                        'Select',
+                        style: textNormalCustom(
+                          Colors.white,
+                          16,
+                          FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
           ),
           spaceH20,
         ],

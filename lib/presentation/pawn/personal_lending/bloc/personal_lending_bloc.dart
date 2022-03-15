@@ -81,6 +81,7 @@ class PersonalLendingBloc extends BaseCubit<PersonalLendingState> {
           symbol: value.symbol,
           address: value.address,
           id: value.id.toString(),
+          url: value.iconUrl,
         ),
       );
     }

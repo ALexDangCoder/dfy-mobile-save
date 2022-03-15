@@ -277,20 +277,39 @@ class _ApproveState extends State<Approve> {
                                               ),
                                               Expanded(
                                                 flex: widget.flexContent ?? 6,
-                                                child: Text(
-                                                  item.value,
-                                                  style: item.isToken ?? false
-                                                      ? textNormalCustom(
-                                                          AppTheme.getInstance()
-                                                              .fillColor(),
-                                                          20,
-                                                          FontWeight.w600,
-                                                        )
-                                                      : textNormal(
-                                                          AppTheme.getInstance()
-                                                              .whiteColor(),
-                                                          16,
+                                                child: Row(
+                                                  children: [
+                                                    if (item.urlToken
+                                                            ?.isNotEmpty ??
+                                                        false)
+                                                      SizedBox(
+                                                        height: 20.h,
+                                                        width: 20.w,
+                                                        child: Image.network(
+                                                          item.urlToken ?? '',
                                                         ),
+                                                      ),
+                                                    if (item.urlToken
+                                                            ?.isNotEmpty ??
+                                                        false)
+                                                      spaceW8,
+                                                    Text(
+                                                      item.value,
+                                                      style: item.isToken ??
+                                                              false
+                                                          ? textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .fillColor(),
+                                                              20,
+                                                              FontWeight.w600,
+                                                            )
+                                                          : textNormal(
+                                                              AppTheme.getInstance()
+                                                                  .whiteColor(),
+                                                              16,
+                                                            ),
+                                                    ),
+                                                  ],
                                                 ),
                                               )
                                             ],

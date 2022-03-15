@@ -4,6 +4,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/presentation/market_place/list_hard_nft/bloc/list_hard_nft_state.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -104,9 +105,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
   }
 
   Future<void> getListNft({
-    String? limit = '12',
     String? name = '',
-    String? size = '12',
     String? status = '',
     bool isLoad = true,
   }) async {
@@ -115,8 +114,8 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
     emit(LoadingData());
     final result = await _nftRepo.getListHardNft(
       name: textSearch.value,
-      limit: limit,
-      size: size,
+      limit: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       page: nextPage.toString(),
       status: checkStatusFilter(),
     );
@@ -128,7 +127,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
           listRes.clear();
           listRes.addAll(res);
           emit(LoadingDataSuccess());
-          if (res.length != 12) {
+          if (res.length != ApiConstants.DEFAULT_PAGE_SIZE) {
             isCanLoadMore.add(false);
           }
           listNft.sink.add(res);
@@ -146,9 +145,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
   }
 
   Future<void> getListNftReload({
-    String? limit = '12',
     String? name = '',
-    String? size = '12',
     bool isLoad = true,
   }) async {
     if (nextPage == 1) {
@@ -156,8 +153,8 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
     }
     final result = await _nftRepo.getListHardNft(
       name: textSearch.value,
-      limit: limit,
-      size: size,
+      limit: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       page: nextPage.toString(),
       status: checkStatusFilter(),
     );
@@ -166,7 +163,7 @@ class ListHardNftBloc extends BaseCubit<ListHardNftState> {
         if (res.isNotEmpty) {
           listRes.clear();
           listRes.addAll(res);
-          if (res.length != 12) {
+          if (res.length != ApiConstants.DEFAULT_PAGE_SIZE) {
             isCanLoadMore.add(false);
           }
           listNft.sink.add([...listNft.value, ...res]);

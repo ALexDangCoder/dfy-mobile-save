@@ -232,7 +232,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 SizedBox(
                   height: 20.h,
                   width: 20.w,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(
                       data?.supplyCurrencySymbol ?? 'DFY',
                     ),
@@ -294,7 +294,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 SizedBox(
                   height: 20.h,
                   width: 20.w,
-                  child: Image.asset(
+                  child: Image.network(
                     ImageAssets.getSymbolAsset(data?.repaymentToken ?? 'DFY'),
                   ),
                 )

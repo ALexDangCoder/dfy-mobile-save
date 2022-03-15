@@ -44,23 +44,20 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
       listener: (context, state) {
         if (state is GetApiSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
-            if (cubit.loadMoreRefresh) {
+            if (cubit.refresh) {
               cubit.listCryptoCollateral.clear();
+              cubit.refresh = false;
             }
-            if ((state.list ?? []).isEmpty) {
-              cubit.showEmpty();
-            } else {
               cubit.showContent();
-            }
           } else {
             cubit.message = state.message ?? '';
             cubit.listCryptoCollateral.clear();
             cubit.showError();
           }
           cubit.listCryptoCollateral.addAll(state.list ?? []);
-          cubit.canLoadMore = cubit.listCryptoCollateral.length >=
+          cubit.canLoadMoreList = cubit.listCryptoCollateral.length >=
               ApiConstants.DEFAULT_PAGE_SIZE;
-          cubit.loadMoreLoading = false;
+          cubit.loadMore = false;
         }
       },
       builder: (context, state) {
@@ -76,7 +73,7 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
             child: SizedBox(
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
-                  if (cubit.canLoadMore &&
+                  if (cubit.canLoadMoreList &&
                       scrollInfo.metrics.pixels ==
                           scrollInfo.metrics.maxScrollExtent) {
                     cubit.loadMorePosts(
@@ -93,7 +90,7 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
                       widget.packageId,
                     );
                   },
-                  child: ListView.builder(
+                  child: (cubit.listCryptoCollateral.isNotEmpty) ?ListView.builder(
                     padding: EdgeInsets.only(
                       left: 16.w,
                       right: 16.w,
@@ -110,6 +107,29 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
                         ],
                       );
                     },
+                  ) : Padding(
+                    padding: EdgeInsets.only(top: 150.h),
+                    child: Column(
+                      children: [
+                        Image(
+                          image: const AssetImage(
+                            ImageAssets.img_search_empty,
+                          ),
+                          height: 120.h,
+                          width: 120.w,
+                        ),
+                        SizedBox(
+                          height: 17.7.h,
+                        ),
+                        Text(
+                          S.current.no_result_found,
+                          style: textNormal(
+                            Colors.white54,
+                            20.sp,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

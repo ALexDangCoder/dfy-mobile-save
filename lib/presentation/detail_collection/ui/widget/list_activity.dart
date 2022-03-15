@@ -50,7 +50,7 @@ class ListActivity extends StatelessWidget {
       nftType: objActivity.nftType ?? 0,
     );
     final String urlSymbol =
-        bloc.funGetSymbolUrl(objActivity.priceSymbol ?? '');
+        ImageAssets.getSymbolAsset(objActivity.priceSymbol ?? '');
     final String? urlAvatar;
     final String fromAddress = objActivity.fromAddress ?? '';
     final String priceSymbol = objActivity.priceSymbol ?? '';
@@ -100,10 +100,15 @@ class ListActivity extends StatelessWidget {
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: urlSymbol.isNotEmpty
-                        ? Image.asset(
+                        ? Image.network(
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(
@@ -320,10 +325,15 @@ class ListActivity extends StatelessWidget {
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: urlSymbol.isNotEmpty
-                        ? Image.asset(
+                        ? Image.network(
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(
@@ -381,10 +391,15 @@ class ListActivity extends StatelessWidget {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: urlSymbol.isNotEmpty
-                          ? Image.asset(
+                          ? Image.network(
                               urlSymbol,
                               width: 14.w,
                               height: 14.w,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                          width: 14.w,
+                          height: 14.w,
+                        ),
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -441,10 +456,15 @@ class ListActivity extends StatelessWidget {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: urlSymbol.isNotEmpty
-                          ? Image.asset(
+                          ? Image.network(
                               urlSymbol,
                               width: 14.w,
                               height: 14.w,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                          width: 14.w,
+                          height: 14.w,
+                        ),
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -502,10 +522,15 @@ class ListActivity extends StatelessWidget {
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: urlSymbol.isNotEmpty
-                        ? Image.asset(
+                        ? Image.network(
                             urlSymbol,
                             width: 14.w,
                             height: 14.w,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        width: 14.w,
+                        height: 14.w,
+                      ),
                           )
                         : Container(
                             decoration: BoxDecoration(

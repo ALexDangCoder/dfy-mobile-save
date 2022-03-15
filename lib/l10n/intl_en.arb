@@ -787,6 +787,9 @@
   "pawnshop_list": "Pawnshop list",
   "loan_token": "Loan token",
   "rating": "Rating",
+  "loan_type":"Loan type",
+  "auto":"Auto",
+  "semi_auto":"Semi-auto",
   "signed_contracts": "Signed contracts",
   "available_loan_package": "Available loan package",
   "interest_rate_from": "Interest rate from",
@@ -853,6 +856,7 @@
   "total_value_of_all": "Total value of all lend contracts converted to USD",
   "total_contract_value": "Total contract value",
   "all_type_of_NFT": "All type of NFT",
+  "expected_loan_range": "Expected loan range",
   "just_loan_amount": "Loan amount",
   "enter_mess": "Enter message"
 }

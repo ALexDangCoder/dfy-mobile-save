@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -19,18 +23,25 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
 
   int page = 0;
 
+
   BorrowRepository get _repo => Get.find();
+
+
+
+  bool loadMore = false;
+  bool canLoadMoreList = true;
+  bool refresh = false;
 
   Future<void> refreshPosts(
     String walletAddress,
     String packageId,
   ) async {
-    if (!loadMoreLoading) {
+    if (!refresh) {
       showLoading();
       emit(SelectCryptoLoading());
       page = 0;
-      loadMoreRefresh = true;
-      loadMoreLoading = true;
+      canLoadMoreList = true;
+      refresh = true;
       await getCryptoCollateral(walletAddress, packageId);
     }
   }
@@ -39,12 +50,12 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
     String walletAddress,
     String packageId,
   ) async {
-    if (!loadMoreLoading) {
+    if (!loadMore) {
       emit(SelectCryptoLoading());
       showLoading();
       page += 1;
-      loadMoreRefresh = false;
-      loadMoreLoading = true;
+      canLoadMoreList = false;
+      loadMore = true;
       await getCryptoCollateral(walletAddress, packageId);
     }
   }
