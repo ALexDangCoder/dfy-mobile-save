@@ -51,6 +51,8 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
   late ModelToken loanToken;
   late String duration;
   bool checkEmail = true;
+  String txhChoseCollateral = '';
+  String bcCollateralId = '';
 
   @override
   void initState() {
@@ -84,124 +86,138 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: collateralAmount,
-                    maxLength: 50,
-                    onChanged: (value) {
-                      if (value == '') {
-                        widget.cubit.errorCollateral
-                            .add('Collateral amount not null');
-                      } else {
-                        if (double.parse(value) >
-                            widget.cubit.getMaxBalance(item.nameShortToken)) {
-                          widget.cubit.errorCollateral.add(
-                            'Max amount '
-                                '${widget.cubit.getMaxBalance(
-                                item.nameShortToken)}',
-                          );
-                        } else {
-                          widget.cubit.errorCollateral.add('');
-                        }
-                      }
-                      widget.cubit.enableButtonRequest();
-                    },
-                    cursorColor: AppTheme.getInstance().whiteColor(),
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isCollapsed: true,
-                      counterText: '',
-                      hintText: S.current.enter_amount,
-                      hintStyle: textNormal(
-                        Colors.white.withOpacity(0.5),
-                        16,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              bool enable;
+              if(snapshot.hasData){
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                Row(
+                child: Row(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        collateralAmount.text =
-                            widget.cubit.getMax(item.nameShortToken);
-                      },
-                      child: Text(
-                        'Max',
-                        style: textNormalCustom(
-                          fillYellowColor,
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        enabled: enable,
+                        controller: collateralAmount,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          if (value == '') {
+                            widget.cubit.errorCollateral
+                                .add('Collateral amount not null');
+                          } else {
+                            if (double.parse(value) >
+                                widget.cubit.getMaxBalance(item.nameShortToken)) {
+                              widget.cubit.errorCollateral.add(
+                                'Max amount '
+                                    '${widget.cubit.getMaxBalance(
+                                    item.nameShortToken)}',
+                              );
+                            } else {
+                              widget.cubit.errorCollateral.add('');
+                            }
+                          }
+                          widget.cubit.enableButtonRequest();
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
                           16,
-                          FontWeight.w400,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: S.current.enter_amount,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                    spaceW10,
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<ModelToken>(
-                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                        dropdownColor:
-                        AppTheme.getInstance().backgroundBTSColor(),
-                        items: widget.cubit.listTokenCollateral
-                            .map((ModelToken model) {
-                          return DropdownMenuItem(
-                            value: model,
-                            child: Row(
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: ImageAssets.symbol,
-                                    image: model.iconToken,
-                                  ),
-                                ),
-                                spaceW5,
-                                Text(
-                                  model.nameShortToken,
-                                  style: textNormal(
-                                    Colors.white.withOpacity(0.5),
-                                    16,
-                                  ),
-                                ),
-                              ],
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            collateralAmount.text =
+                                widget.cubit.getMax(item.nameShortToken);
+                          },
+                          child: Text(
+                            'Max',
+                            style: textNormalCustom(
+                              fillYellowColor,
+                              16,
+                              FontWeight.w400,
                             ),
-                          );
-                        }).toList(),
-                        onChanged: (ModelToken? newValue) {
-                          setState(() {
-                            item = newValue!;
-                          });
-                        },
-                        value: item,
-                        icon: Image.asset(
-                          ImageAssets.ic_line_down,
-                          height: 24.h,
-                          width: 24.w,
+                          ),
                         ),
-                      ),
+                        spaceW10,
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<ModelToken>(
+                            borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                            dropdownColor:
+                            AppTheme.getInstance().backgroundBTSColor(),
+                            items: widget.cubit.listTokenCollateral
+                                .map((ModelToken model) {
+                              return DropdownMenuItem(
+                                value: model,
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 20.w,
+                                      height: 20.h,
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: ImageAssets.symbol,
+                                        image: model.iconToken,
+                                      ),
+                                    ),
+                                    spaceW5,
+                                    Text(
+                                      model.nameShortToken,
+                                      style: textNormal(
+                                        Colors.white.withOpacity(0.5),
+                                        16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (ModelToken? newValue) {
+                              if(enable){
+                                setState(() {
+                                  item = newValue!;
+                                });
+                              }
+                            },
+                            value: item,
+                            icon: Image.asset(
+                              ImageAssets.ic_line_down,
+                              height: 24.h,
+                              width: 24.w,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
           StreamBuilder<String>(
             stream: widget.cubit.errorCollateral,
@@ -314,88 +330,102 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: TextFormField(
-                    controller: durationController,
-                    maxLength: 50,
-                    onChanged: (value) {
-                      if (value == '') {
-                        widget.cubit.errorDuration.add('Duration not null');
-                      } else {
-                        widget.cubit.errorDuration.add('');
-                      }
-                      widget.cubit.enableButtonRequest();
-                    },
-                    cursorColor: AppTheme.getInstance().whiteColor(),
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isCollapsed: true,
-                      counterText: '',
-                      hintText: 'Duration',
-                      hintStyle: textNormal(
-                        Colors.white.withOpacity(0.5),
-                        16,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              bool enable;
+              if(snapshot.hasData){
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                      dropdownColor:
-                      AppTheme.getInstance().backgroundBTSColor(),
-                      items:
-                      [S.current.week, S.current.month].map((String item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                item,
-                                style: textNormal(
-                                  Colors.white.withOpacity(0.5),
-                                  16,
-                                ),
-                              ),
-                            ],
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                        enabled: enable,
+                        controller: durationController,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          if (value == '') {
+                            widget.cubit.errorDuration.add('Duration not null');
+                          } else {
+                            widget.cubit.errorDuration.add('');
+                          }
+                          widget.cubit.enableButtonRequest();
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: 'Duration',
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          duration = newValue!;
-                        });
-                      },
-                      value: duration,
-                      icon: Image.asset(
-                        ImageAssets.ic_line_down,
-                        height: 24.h,
-                        width: 24.w,
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                          dropdownColor:
+                          AppTheme.getInstance().backgroundBTSColor(),
+                          items:
+                          [S.current.week, S.current.month].map((String item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    item,
+                                    style: textNormal(
+                                      Colors.white.withOpacity(0.5),
+                                      16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            if(enable){
+                              setState(() {
+                                duration = newValue!;
+                              });
+                            }
+                          },
+                          value: duration,
+                          icon: Image.asset(
+                            ImageAssets.ic_line_down,
+                            height: 24.h,
+                            width: 24.w,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
           StreamBuilder<String>(
             stream: widget.cubit.errorDuration,
@@ -420,76 +450,89 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            width: double.infinity,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Theme(
-              data: ThemeData(
-                hintColor: Colors.white24,
-                selectedRowColor: Colors.white24,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2<ModelToken>(
-                  buttonDecoration: BoxDecoration(
-                    color: AppTheme.getInstance().backgroundBTSColor(),
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+          StreamBuilder<bool>(
+            stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              bool enable;
+              if(snapshot.hasData){
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                width: double.infinity,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    hintColor: Colors.white24,
+                    selectedRowColor: Colors.white24,
                   ),
-                  items: widget.cubit.checkShow.map((ModelToken model) {
-                    return DropdownMenuItem(
-                      value: model,
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: FadeInImage.assetNetwork(
-                              placeholder: ImageAssets.symbol,
-                              image: model.iconToken,
-                            ),
-                          ),
-                          spaceW5,
-                          Text(
-                            model.nameShortToken,
-                            style: textNormal(
-                              Colors.white.withOpacity(0.5),
-                              16,
-                            ),
-                          ),
-                        ],
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<ModelToken>(
+                      buttonDecoration: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (ModelToken? newValue) {
-                    setState(() {
-                      loanToken = newValue!;
-                    });
-                  },
-                  dropdownMaxHeight: 200,
-                  dropdownWidth: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 32.w,
-                  dropdownDecoration: BoxDecoration(
-                    color: AppTheme.getInstance().backgroundBTSColor(),
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                  ),
-                  scrollbarThickness: 0,
-                  scrollbarAlwaysShow: false,
-                  offset: const Offset(-20, 0),
-                  value: loanToken,
-                  icon: Image.asset(
-                    ImageAssets.ic_line_down,
-                    height: 24.h,
-                    width: 24.w,
+                      items: widget.cubit.checkShow.map((ModelToken model) {
+                        return DropdownMenuItem(
+                          value: model,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20.w,
+                                height: 20.h,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: ImageAssets.symbol,
+                                  image: model.iconToken,
+                                ),
+                              ),
+                              spaceW5,
+                              Text(
+                                model.nameShortToken,
+                                style: textNormal(
+                                  Colors.white.withOpacity(0.5),
+                                  16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (ModelToken? newValue) {
+                        if(enable){
+                          setState(() {
+                            loanToken = newValue!;
+                          });
+                        }
+                      },
+                      dropdownMaxHeight: 200,
+                      dropdownWidth: MediaQuery
+                          .of(context)
+                          .size
+                          .width - 32.w,
+                      dropdownDecoration: BoxDecoration(
+                        color: AppTheme.getInstance().backgroundBTSColor(),
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      ),
+                      scrollbarThickness: 0,
+                      scrollbarAlwaysShow: false,
+                      offset: const Offset(-20, 0),
+                      value: loanToken,
+                      icon: Image.asset(
+                        ImageAssets.ic_line_down,
+                        height: 24.h,
+                        width: 24.w,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }
           ),
           spaceH16,
           Text(
@@ -524,6 +567,8 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             widget.cubit.chooseExisting.add(true);
                             collateralAmount.text =
                                 select.collateralAmount.toString();
+                            bcCollateralId = select.bcCollateralId.toString();
+                            txhChoseCollateral = select.txhHash.toString();
                             durationController.text =
                                 select.duration.toString();
                             duration = select.durationType == 0
@@ -640,18 +685,21 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             amount: collateralAmount.text,
                             bcPackageId: widget.packageId,
                             collateral: item.nameShortToken,
-                            collateralId: '',
+                            collateralId: bcCollateralId,
                             description: message.text,
                             duration: durationController.text,
                             durationType:
                             duration == S.current.week ? '0' : '1',
                             packageId: widget.packageId,
                             pawnshopType: widget.pawnshopType,
-                            txId: '',
+                            txId: txhChoseCollateral,
 
                             ///TODO getHexString
                             supplyCurrency: loanToken.nameShortToken,
                             walletAddress: widget.walletAddress,
+                          );
+                          await showLoadSuccess(context).then(
+                                (value) => Navigator.of(context)..pop(),
                           );
                         } else {
                           final hexString =
@@ -687,6 +735,9 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                   txId: hexString,
                                   supplyCurrency: loanToken.nameShortToken,
                                   walletAddress: widget.walletAddress,
+                                );
+                                showLoadSuccess(context).then(
+                                      (value) => Navigator.of(context)..pop()..pop(),
                                 );
                               },
                               onErrorSign: (context) {
