@@ -82,6 +82,8 @@ mixin BorrowRepository {
     String? collectionId,
   });
 
+  Future<Result<String>> confirmCollateralToBe({required Map<String,String> map});
+
   Future<Result<List<CollectionMarketModel>>> getListCollectionFilter();
 
   Future<Result<List<AssetFilterModel>>> getListAssetFilter();

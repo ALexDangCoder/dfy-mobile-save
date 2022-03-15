@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
@@ -13,8 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest({Key? key, this.index = 0}) : super(key: key);
+  const SendLoanRequest(
+      {Key? key,
+      this.index = 0,
+      required this.packageId,
+      required this.pawnshopType})
+      : super(key: key);
   final int index;
+  final String packageId;
+  final String pawnshopType;
 
   @override
   _SendLoanRequestState createState() => _SendLoanRequestState();
@@ -25,10 +33,10 @@ class _SendLoanRequestState extends State<SendLoanRequest>
   late SendLoanRequestCubit cubit;
   late TabController _tabController;
   late bool checkLogin;
+  String walletAddress = PrefsService.getCurrentWalletCore();
 
   @override
   void initState() {
-
     super.initState();
     cubit = SendLoanRequestCubit();
     trustWalletChannel
@@ -184,6 +192,10 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                   if (state is GetWalletSuccess) {
                                     return CryptoCurrency(
                                       cubit: cubit,
+                                      packageId: widget.packageId,
+                                      walletAddress: walletAddress,
+                                      hasEmail: cubit.hasEmail,
+                                      pawnshopType: widget.pawnshopType,
                                     );
                                   } else {
                                     return const Center(
@@ -192,7 +204,9 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                   }
                                 },
                               ),
-                              SendLoanRequestNft(cubit: cubit,)
+                              SendLoanRequestNft(
+                                cubit: cubit,
+                              )
                             ],
                           ),
                         ),

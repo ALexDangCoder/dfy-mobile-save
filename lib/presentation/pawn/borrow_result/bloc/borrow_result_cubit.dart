@@ -481,7 +481,14 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       emit(BorrowResultLoading());
       page = 0;
       refresh = true;
-      callApi();
+      callApi(
+        interestRanges: interestRateParam(),
+        loanToValueRanges: loanToValueParam(),
+        collateralSymbols: getParam(paramCollateral),
+        loanSymbols: getParam(paramLoanToken),
+        loanType: getParam(paramLoanType),
+        duration: getParam(paramDuration),
+      );
     }
   }
 
@@ -491,7 +498,14 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
-      await getPawnshopPackageResult();
+      await getPawnshopPackageResult(
+        interestRanges: interestRateParam(),
+        loanToValueRanges: loanToValueParam(),
+        collateralSymbols: getParam(paramCollateral),
+        loanSymbols: getParam(paramLoanToken),
+        loanType: getParam(paramLoanType),
+        duration: getParam(paramDuration),
+      );
     }
   }
 

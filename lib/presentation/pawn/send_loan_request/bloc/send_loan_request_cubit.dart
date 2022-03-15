@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -25,19 +27,29 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   SendLoanRequestCubit() : super(SendLoanRequestInitial());
 
   BehaviorSubject<ModelToken> tokenStream =
-      BehaviorSubject.seeded(ModelToken.init());
-  BehaviorSubject<String> focusTextField =
-  BehaviorSubject.seeded('');
-  BehaviorSubject<bool> emailNotification =
-  BehaviorSubject.seeded(true);
-  BehaviorSubject<bool> chooseExisting =
-  BehaviorSubject.seeded(false);
-  BehaviorSubject<int> tabIndex =
-  BehaviorSubject.seeded(0);
+  BehaviorSubject.seeded(ModelToken.init());
+  BehaviorSubject<String> focusTextField = BehaviorSubject.seeded('');
+  BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
+  BehaviorSubject<String> errorMessage = BehaviorSubject.seeded('');
+  BehaviorSubject<String> errorDuration = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> enableButton = BehaviorSubject.seeded(false);
+  BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
 
   String wallet = '';
 
   final Web3Utils client = Web3Utils();
+
+  void enableButtonRequest() {
+    if (errorCollateral.value == '' && errorMessage.value == '' &&
+        errorDuration.value == '') {
+      enableButton.add(true);
+    }
+    else {
+      enableButton.add(false);
+    }
+  }
 
   Stream<ModelToken> getTokenRealtime(List<ModelToken> listModelToken) async* {
     for (int i = 0; i < listModelToken.length; i++) {
@@ -95,6 +107,16 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
   }
 
+  double getMaxBalance(String symbol) {
+    double balance = 0;
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
+        balance = element.balanceToken;
+      }
+    }
+    return balance;
+  }
+
   String getMax(String symbol) {
     double balance = 0;
     for (final element in listTokenFromWalletCore) {
@@ -105,17 +127,77 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     return formatPrice.format(balance);
   }
 
+  bool hasEmail = false;
+
   bool getLoginState() {
     final account = PrefsService.getWalletLogin();
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
     if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
       wallet = PrefsService.getCurrentBEWallet();
       getTokens(wallet);
+      final userInfo = PrefsService.getUserProfile();
+      final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
+      if (mapProfileUser.stringValueOrEmpty('email') != '') {
+        hasEmail = true;
+      }
       return true;
     } else {
       emit(NoLogin());
       return false;
     }
+  }
+
+  final Web3Utils _client = Web3Utils();
+  BorrowRepository get _repo => Get.find();
+
+  Future<String> getCreateCryptoCollateral({
+    required String collateralAddress,
+    required String packageID,
+    required String amount,
+    required String loanToken,
+    required String durationQty,
+    required int durationType,
+  }) async {
+    final String hexString = await _client.getCreateCryptoCollateralData(
+      collateralAddress: collateralAddress,
+      packageId: packageID,
+      amount: amount,
+      loanAsset: loanToken,
+      expectedDurationQty: durationQty,
+      expectedDurationType: durationType,
+    );
+    return hexString;
+  }
+  Future<void> pushSendNftToBE({
+    required String amount,
+    required String bcPackageId,
+    required String collateral,
+    required String collateralId,
+    required String description,
+    required String duration,
+    required String durationType,
+    required String packageId,
+    required String pawnshopType,
+    required String txId,
+    required String supplyCurrency,
+    required String walletAddress,
+  }) async {
+    final Map<String, String> map = {
+      'amount': amount,
+      'bcPackageId': bcPackageId,
+      'collateralId': collateralId,
+      'description': description,
+      'expected_loan_duration_time': duration,
+      'expected_loan_duration_type': durationType,
+      'pawnShopPackageId': packageId,
+      'pawnShopPackageType': pawnshopType,
+      'supply_currency': supplyCurrency,
+      'txid': txId,
+      'wallet_address': walletAddress,
+    };
+    final Result<String> code =
+    await _repo.confirmCollateralToBe(map: map);
+    code.when(success: (res) {}, error: (error) {});
   }
 
   ///Huy send loan nft
@@ -192,7 +274,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   ];
 
   void getTokensRequestNft() {
-    if(listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
+    if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
       listTokenSupport.clear();
       listDropDownToken.clear();
     }
@@ -201,7 +283,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     listDropDownToken.add({
       'label': DFY,
       'value': 1,
-      'addressToken': Get.find<AppConstants>().contract_defy,
+      'addressToken': Get
+          .find<AppConstants>()
+          .contract_defy,
       'icon': SizedBox(
         width: 20.w,
         height: 20.h,
