@@ -115,14 +115,16 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             widget.cubit.errorCollateral
                                 .add('Collateral amount not null');
                           } else {
-                            if (double.parse(value) >
+                            if (double.parse(value.replaceAll(',', '')) >
                                 widget.cubit
                                     .getMaxBalance(item.nameShortToken)) {
                               widget.cubit.errorCollateral.add(
                                 'Max amount '
                                 '${widget.cubit.getMaxBalance(item.nameShortToken)}',
                               );
-                            } else if (double.parse(value) <= 0) {
+                            } else if (double.parse(
+                                    value.replaceAll(',', '')) <=
+                                0) {
                               widget.cubit.errorCollateral
                                   .add('Invalid amount');
                             } else {
@@ -154,19 +156,22 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     ),
                     Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            if (enable) {
-                              collateralAmount.text =
-                                  widget.cubit.getMax(item.nameShortToken);
-                            }
-                          },
-                          child: Text(
-                            'Max',
-                            style: textNormalCustom(
-                              fillYellowColor,
-                              16,
-                              FontWeight.w400,
+                        Visibility(
+                          visible: enable,
+                          child: InkWell(
+                            onTap: () {
+                              collateralAmount.text = widget.cubit
+                                  .getMax(item.nameShortToken)
+                                  .replaceAll(',', '');
+                              widget.cubit.errorCollateral.add('');
+                            },
+                            child: Text(
+                              'Max',
+                              style: textNormalCustom(
+                                fillYellowColor,
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
@@ -367,7 +372,8 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                               value.contains('.')) {
                             widget.cubit.errorDuration
                                 .add('Duration must be integer');
-                          } else if (double.parse(value) <= 0) {
+                          } else if (double.parse(value.replaceAll(',', '')) <=
+                              0) {
                             widget.cubit.errorDuration.add('Invalid amount');
                           } else {
                             widget.cubit.errorDuration.add('');
