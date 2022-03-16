@@ -264,8 +264,10 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                             return ListSelectNftCollateral(cubit: widget.cubit);
                           },
                         ),
-                      );
-
+                      ).then((value) {
+                        widget.cubit.emit(GetWalletSuccess());
+                        return value;
+                      });
                       ///fill data to request to post
                       widget.cubit.nftRequest.durationType =
                           result.durationType;
@@ -274,7 +276,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                       widget.cubit.nftRequest.walletAddress =
                           result.walletAddress;
                       widget.cubit.nftRequest.marketType =
-                          (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
+                      (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
                       widget.cubit.nftRequest.nftId = result.nftId ?? '';
                       widget.cubit.nftRequest.pawnShopPackageId =
                           int.parse(widget.packageId);

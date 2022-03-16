@@ -44,9 +44,9 @@ class CryptoCurrency extends StatefulWidget {
 
 class _CryptoCurrencyState extends State<CryptoCurrency>
     with SingleTickerProviderStateMixin {
-  TextEditingController collateralAmount = TextEditingController();
-  TextEditingController message = TextEditingController();
-  TextEditingController durationController = TextEditingController();
+  late TextEditingController collateralAmount = TextEditingController();
+  late TextEditingController message = TextEditingController();
+  late TextEditingController durationController = TextEditingController();
   late ModelToken item;
   late ModelToken loanToken;
   late String duration;
@@ -59,12 +59,16 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
     // TODO: implement initState
     super.initState();
     if (widget.cubit.listTokenCollateral.isNotEmpty) {
-      item = widget.cubit.listTokenCollateral[0];
+      item = widget.cubit.collateralTokenCached ??
+          widget.cubit.listTokenCollateral[0];
     } else {
       item = ModelToken.init();
     }
-    loanToken = widget.cubit.checkShow[0];
-    duration = S.current.week;
+    collateralAmount.text = widget.cubit.collateralCached ?? '';
+    message.text = widget.cubit.messageCached ?? '';
+    durationController.text = widget.cubit.durationCached ?? '';
+    loanToken = widget.cubit.loanTokenCached ?? widget.cubit.checkShow[0];
+    duration = widget.cubit.durationCachedType ?? S.current.week;
   }
 
   @override
@@ -115,14 +119,17 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             widget.cubit.errorCollateral
                                 .add('Collateral amount not null');
                           } else {
-                            if (double.parse(value) >
+                            widget.cubit.collateralCached = value;
+                            if (double.parse(value.replaceAll(',', '')) >
                                 widget.cubit
                                     .getMaxBalance(item.nameShortToken)) {
                               widget.cubit.errorCollateral.add(
                                 'Max amount '
                                 '${widget.cubit.getMaxBalance(item.nameShortToken)}',
                               );
-                            } else if (double.parse(value) <= 0) {
+                            } else if (double.parse(
+                                    value.replaceAll(',', '')) <=
+                                0) {
                               widget.cubit.errorCollateral
                                   .add('Invalid amount');
                             } else {
@@ -154,19 +161,22 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     ),
                     Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            if (enable) {
-                              collateralAmount.text =
-                                  widget.cubit.getMax(item.nameShortToken);
-                            }
-                          },
-                          child: Text(
-                            'Max',
-                            style: textNormalCustom(
-                              fillYellowColor,
-                              16,
-                              FontWeight.w400,
+                        Visibility(
+                          visible: enable,
+                          child: InkWell(
+                            onTap: () {
+                              collateralAmount.text = widget.cubit
+                                  .getMax(item.nameShortToken)
+                                  .replaceAll(',', '');
+                              widget.cubit.errorCollateral.add('');
+                            },
+                            child: Text(
+                              'Max',
+                              style: textNormalCustom(
+                                fillYellowColor,
+                                16,
+                                FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
@@ -206,6 +216,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             onChanged: (ModelToken? newValue) {
                               if (enable) {
                                 setState(() {
+                                  widget.cubit.collateralTokenCached = newValue;
                                   item = newValue!;
                                 });
                               }
@@ -267,6 +278,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       if (value == '') {
                         widget.cubit.errorMessage.add('Message not null');
                       } else {
+                        widget.cubit.messageCached = value;
                         widget.cubit.errorMessage.add('');
                       }
                       widget.cubit.enableButtonRequest();
@@ -367,9 +379,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                               value.contains('.')) {
                             widget.cubit.errorDuration
                                 .add('Duration must be integer');
-                          } else if (double.parse(value) <= 0) {
+                          } else if (double.parse(value.replaceAll(',', '')) <=
+                              0) {
                             widget.cubit.errorDuration.add('Invalid amount');
                           } else {
+                            widget.cubit.durationCached = value;
                             widget.cubit.errorDuration.add('');
                           }
                           widget.cubit.enableButtonRequest();
@@ -421,6 +435,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                           onChanged: (String? newValue) {
                             if (enable) {
                               setState(() {
+                                widget.cubit.durationCachedType = newValue;
                                 duration = newValue!;
                               });
                             }
@@ -518,6 +533,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       onChanged: (ModelToken? newValue) {
                         if (enable) {
                           setState(() {
+                            widget.cubit.loanTokenCached = newValue;
                             loanToken = newValue!;
                           });
                         }
@@ -530,7 +546,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       ),
                       scrollbarThickness: 0,
                       scrollbarAlwaysShow: false,
-                      offset: const Offset(-20, 0),
+                      offset: Offset(-16.w, 0),
                       value: loanToken,
                       icon: Image.asset(
                         ImageAssets.ic_line_down,
@@ -575,23 +591,35 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                           widget.cubit.chooseExisting.add(true);
                           collateralAmount.text =
                               select.collateralAmount.toString();
+                          widget.cubit.collateralCached =
+                              collateralAmount.text;
                           bcCollateralId = select.bcCollateralId.toString();
                           txhChoseCollateral = select.txhHash.toString();
+                          message.text = select.name.toString();
+                          widget.cubit.messageCached = message.text;
                           durationController.text = select.duration.toString();
+                          widget.cubit.durationCached =
+                              durationController.text;
                           duration = select.durationType == 0
                               ? S.current.week
                               : S.current.month;
+                          widget.cubit.durationCachedType =
+                          duration;
                           item =
                               widget.cubit.listTokenFromWalletCore.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.collateralSymbol,
                           );
+                          widget.cubit.collateralTokenCached =
+                              item;
                           loanToken = widget.cubit.checkShow.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.loanTokenSymbol,
                           );
+                          widget.cubit.loanTokenCached =
+                              loanToken;
                         }
                       }
                     });
@@ -599,7 +627,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     collateralAmount.text = '';
                     durationController.text = '';
                     duration = S.current.week;
-                    item = widget.cubit.listTokenFromWalletCore[0];
+                    item = widget.cubit.listTokenCollateral[0];
                     loanToken = widget.cubit.checkShow[0];
                     widget.cubit.chooseExisting.add(false);
                   }

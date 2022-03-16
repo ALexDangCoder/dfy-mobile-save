@@ -42,6 +42,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
 
   String wallet = '';
+   String? collateralCached;
+   String? messageCached;
+   String? durationCached;
+  String? durationCachedType;
+   ModelToken? collateralTokenCached;
+   ModelToken? loanTokenCached;
 
   final Web3Utils client = Web3Utils();
 
@@ -66,16 +72,11 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    // for(final element in collateralAccepted){
-    //   for(final item in checkShow) {
-    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-    //       listTokenCollateral.add(item);
-    //     }
-    //   }
-    // }
-    for (final element in listTokenFromWalletCore) {
-      if (element.nameShortToken == DFY) {
-        listTokenCollateral.add(element);
+    for(final element in collateralAccepted){
+      for(final item in checkShow) {
+        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+          listTokenCollateral.add(item);
+        }
       }
     }
   }
