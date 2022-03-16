@@ -1,17 +1,24 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/send_offer_pawn/bloc/send_offer_pawn_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SendOfferPawnScreen extends StatefulWidget {
   const SendOfferPawnScreen({
@@ -196,17 +203,88 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
           Positioned(
             bottom: 0,
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 if (bloc.checkBtn()) {
-                  //todo
-                  print('--------------${bloc.textMess.value}');
-                  print('--------------${bloc.textLoan.value}');
-                  print('--------------${bloc.textAmount.value}');
-                  print('--------------${bloc.textLiquidationThreshold.value}');
-                  print('--------------${bloc.textInterestRate.value}');
-                  print('--------------${bloc.textDuration.value}');
-                  print('--------------${bloc.textRecurringInterest.value}');
-                  print('--------------${bloc.textToken.value}');
+                  final NavigatorState navigator = Navigator.of(context);
+                  await bloc.getCreateCryptoOfferDataHexString(
+                    duration: bloc.textDuration.value,
+                    collateralId:
+                        widget.objCollateralDetail.bcCollateralId.toString(),
+                    loanAmount: bloc.textAmount.value,
+                    repaymentCycleType:
+                        duration == S.current.weeks_pawn ? 0 : 1,
+                    interest: bloc.textInterestRate.value,
+                    liquidityThreshold: bloc.textLiquidationThreshold.value,
+                    loanDurationType: duration == S.current.weeks_pawn ? 0 : 1,
+                    repaymentAssetAddress:
+                        ImageAssets.getAddressToken(symbolAmount),
+                  );
+                  unawaited(
+                    navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          textActiveButton: S.current.send,
+                          spender:
+                              Get.find<AppConstants>().crypto_pawn_contract,
+                          needApprove: true,
+                          hexString: bloc.hexString,
+                          payValue: bloc.textAmount.value,
+                          tokenAddress: Get.find<AppConstants>().contract_defy,
+                          title: S.current.confirm_send_offer,
+                          listDetail: [
+                            DetailItemApproveModel(
+                              title: '${S.current.message}: ',
+                              value: bloc.textMess.value,
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.interest_rate_pawn}: ',
+                              value: '${bloc.textInterestRate.value} %APR',
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.duration_pawn}: ',
+                              value: '${bloc.textDuration.value} $duration',
+                            ),
+                            DetailItemApproveModel(
+                              title: '${S.current.loan_amount}: ',
+                              value: '$symbolAmount ${bloc.textAmount.value}',
+                              urlToken:
+                                  ImageAssets.getSymbolAsset(symbolAmount),
+                              isToken: true,
+                            ),
+                          ],
+                          onErrorSign: (context) {},
+                          onSuccessSign: (context, data) {
+                            //Be
+                            bloc.postSendOfferRequest(
+                              loanAmount:bloc.textAmount.value ,
+                              collateralId: widget.objCollateralDetail.id.toString(),
+                              duration: bloc.textDuration.value,
+                              supplyCurrency: symbolAmount,
+                              repaymentToken:bloc.textToken.value ,
+                              message:bloc.textMess.value ,
+                              loanRequestId: '',//todo
+                              walletAddress:PrefsService.getCurrentWalletCore() ,
+                              durationType:duration == S.current.weeks_pawn
+                                  ? '0' : '1' ,
+                              latestBlockchainTxn: data,
+                              interestRate: bloc.textInterestRate.value,
+                              liquidationThreshold: bloc.textLiquidationThreshold.value,
+                              loanToValue: bloc.textLoan.value,
+
+                            );
+                            showLoadSuccess(context).then((value) {
+                              Navigator.of(context)..pop()..pop();
+                              // Navigator.of(context)
+                              //     .popUntil((route) {
+                              //   return route.settings.name ==
+                              //       AppRouter.step2ListBook;
+                              // });//todo pop
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 }
               },
               child: StreamBuilder<bool>(

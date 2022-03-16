@@ -10,10 +10,12 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
@@ -213,8 +215,8 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<String>> confirmCollateralToBe(
       {required Map<String, String> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.confirmSendLoanRequest(map),
-          (response) => response.code.toString(),
+      () => _client.confirmSendLoanRequest(map),
+      (response) => response.code.toString(),
     );
   }
 
@@ -277,6 +279,43 @@ class BorrowRepositoryImpl implements BorrowRepository {
       ),
       (response) =>
           response.data?.content?.map((e) => e.toModel()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<SendOfferLendCryptoModel>> postSendOfferRequest({
+    String? collateralId,
+    String? loanRequestId,
+    String? duration,
+    String? durationType,
+    String? interestRate,
+    String? latestBlockchainTxn,
+    String? liquidationThreshold,
+    String? loanAmount,
+    String? loanToValue,
+    String? message,
+    String? repaymentToken,
+    String? supplyCurrency,
+    String? walletAddress,
+  }) {
+    return runCatchingAsync<SendOfferLendCryptoResponse,
+        SendOfferLendCryptoModel>(
+      () => _client.postSendOfferRequest(
+        collateralId,
+        loanRequestId,
+        duration,
+        durationType,
+        interestRate,
+        latestBlockchainTxn,
+        liquidationThreshold,
+        loanAmount,
+        loanToValue,
+        message,
+        repaymentToken,
+        supplyCurrency,
+        walletAddress,
+      ),
+      (response) => response.data?.toDomain() ?? SendOfferLendCryptoModel(),
     );
   }
 }

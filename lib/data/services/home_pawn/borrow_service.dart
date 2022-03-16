@@ -11,6 +11,7 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -142,5 +143,22 @@ abstract class BorrowService {
     @Query('size') String? size,
     @Query('name') String? nameSearch,
     @Query('nftType') String? nftType,
+  );
+
+  @POST(ApiConstants.POST_SEND_OFFER_REQUEST)
+  Future<SendOfferLendCryptoResponse> postSendOfferRequest(
+    @Field('collateralId') String? collateralId,
+    @Field('loanRequestId') String? loanRequestId,
+    @Field('duration') String? duration,
+    @Field('durationType') String? durationType,
+    @Field('interestRate') String? interestRate,
+    @Field('latestBlockchainTxn') String? latestBlockchainTxn,
+    @Field('liquidationThreshold') String? liquidationThreshold,
+    @Field('loanAmount') String? loanAmount,
+    @Field('loanToValue') String? loanToValue,
+    @Field('message') String? message,
+    @Field('repaymentToken') String? repaymentToken,
+    @Field('supplyCurrency') String? supplyCurrency,
+    @Field('walletAddress') String? walletAddress,
   );
 }

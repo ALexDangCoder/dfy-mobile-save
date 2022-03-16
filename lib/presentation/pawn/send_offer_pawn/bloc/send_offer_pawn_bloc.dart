@@ -1,14 +1,20 @@
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum TypeLoanAmount { LOAN, AMOUNT }
 
 class SendOfferPawnBloc {
+  BorrowRepository get _repo => Get.find();
+
   BehaviorSubject<String> textMess = BehaviorSubject.seeded('');
   BehaviorSubject<String> textAmount = BehaviorSubject.seeded('');
   BehaviorSubject<String> textLoan = BehaviorSubject.seeded('');
@@ -27,6 +33,31 @@ class SendOfferPawnBloc {
   BehaviorSubject<String> textToken = BehaviorSubject.seeded('DFY');
   BehaviorSubject<String> isLiquidationThreshold = BehaviorSubject.seeded('');
   BehaviorSubject<String> balanceWallet = BehaviorSubject.seeded('0');
+  final _web3utils = Web3Utils();
+  String hexString = '';
+
+  Future<void> getCreateCryptoOfferDataHexString({
+    required String repaymentAssetAddress,
+    required String loanAmount,
+    required String interest,
+    required String duration,
+    required String collateralId,
+    required String liquidityThreshold,
+    required int loanDurationType,
+    required int repaymentCycleType,
+  }) async {
+    hexString = await _web3utils.getCreateCryptoOfferData(
+      collateralId: collateralId,
+      liquidityThreshold: liquidityThreshold,
+      repaymentAssetAddress: repaymentAssetAddress,
+      loanAmount: loanAmount,
+      interest: interest,
+      duration: duration,
+      loanDurationType: loanDurationType,
+      repaymentCycleType: repaymentCycleType,
+    );
+  }
+
   List<String> listToken = [];
   final regexAmount = RegExp(r'^\d+((.)|(.\d{0,5})?)$');
   final regexInterestRate = RegExp(r'^\d+((.)|(.\d{0,2})?)$');
@@ -71,6 +102,43 @@ class SendOfferPawnBloc {
       isBtn.add(false);
       return false;
     }
+  }
+
+  Future<void> postSendOfferRequest({
+    String? loanToValue,
+    String? liquidationThreshold,
+    String? interestRate,
+    String? loanAmount,
+    String? latestBlockchainTxn,
+    String? durationType,
+    String? walletAddress,
+    String? collateralId,
+    String? loanRequestId,
+    String? duration,
+    String? message,
+    String? repaymentToken,
+    String? supplyCurrency,
+  }) async {
+    final Result<SendOfferLendCryptoModel> result =
+        await _repo.postSendOfferRequest(
+      loanToValue: loanToValue,
+      liquidationThreshold: liquidationThreshold,
+      interestRate: interestRate,
+      loanAmount: loanAmount,
+      latestBlockchainTxn: latestBlockchainTxn,
+      durationType: durationType,
+      walletAddress: walletAddress,
+      collateralId: collateralId,
+      duration: duration,
+      loanRequestId: loanRequestId,
+      message: message,
+      repaymentToken: repaymentToken,
+      supplyCurrency: supplyCurrency,
+    );
+    result.when(
+      success: (res) {},
+      error: (error) {},
+    );
   }
 
   void enableButtonRequest(String value) {
