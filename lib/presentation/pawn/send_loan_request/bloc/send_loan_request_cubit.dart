@@ -42,12 +42,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
 
   String wallet = '';
-   String? collateralCached;
-   String? messageCached;
-   String? durationCached;
+  String? collateralCached;
+  String? messageCached;
+  String? durationCached;
   String? durationCachedType;
-   ModelToken? collateralTokenCached;
-   ModelToken? loanTokenCached;
+  ModelToken? collateralTokenCached;
+  ModelToken? loanTokenCached;
 
   final Web3Utils client = Web3Utils();
 
@@ -72,11 +72,16 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    for(final element in collateralAccepted){
-      for(final item in checkShow) {
-        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-          listTokenCollateral.add(item);
-        }
+    // for(final element in collateralAccepted){
+    //   for(final item in checkShow) {
+    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+    //       listTokenCollateral.add(item);
+    //     }
+    //   }
+    // }
+    for (final item in checkShow) {
+      if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
+        listTokenCollateral.add(item);
       }
     }
   }
@@ -310,6 +315,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   };
 
   final NftSendLoanRequest nftRequest = NftSendLoanRequest();
+
   //THIS VAR SAVE INFOR NFT WIDGET
   NftMarket nftMarketConfirm = NftMarket();
 
