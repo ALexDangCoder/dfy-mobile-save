@@ -605,7 +605,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     collateralAmount.text = '';
                     durationController.text = '';
                     duration = S.current.week;
-                    item = widget.cubit.listTokenFromWalletCore[0];
+                    item = widget.cubit.listTokenCollateral[0];
                     loanToken = widget.cubit.checkShow[0];
                     widget.cubit.chooseExisting.add(false);
                   }

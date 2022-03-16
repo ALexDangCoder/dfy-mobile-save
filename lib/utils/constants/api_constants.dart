@@ -243,4 +243,6 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/';
   static const String GET_LIST_REPUTATION =
       '/defi-user-service/public-api/v1.0.0/users/reputation/by-wallet';
+  static const String GET_PAWNSHOP_PACKAGE_DETAIL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/';
 }

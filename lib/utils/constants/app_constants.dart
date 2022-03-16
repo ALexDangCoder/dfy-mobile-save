@@ -20,6 +20,7 @@ enum MarketType { SALE, AUCTION, PAWN, NOT_ON_MARKET }
 enum PageRouter { MARKET, MY_ACC }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
+enum PackageType {AUTO,SEMI_AUTO,NEGOTIATION,P2P}
 
 enum PageTransitionType {
   FADE,

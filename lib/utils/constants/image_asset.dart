@@ -333,7 +333,8 @@ class ImageAssets {
       '$baseImg/ic_transaction_fail_svg.svg';
   static const String ic_transaction_pending_svg =
       '$baseImg/ic_transaction_pending_svg.svg';
-  static const String ic_bsc_svg = '$baseImg/ic_bsc.svg';
+  static const String ic_bsc_svg = '$baseImg/ic_bsc.png';
+  static const String ic_identity = '$baseImg/ic_identity.png';
 
   static const String ic_token_dfy_svg = '$baseImg/ic_token_dfy_svg.svg';
   static const String ic_token_btc_svg = '$baseImg/ic_token_btc_svg.svg';

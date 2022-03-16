@@ -61,16 +61,11 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    // for(final element in collateralAccepted){
-    //   for(final item in checkShow) {
-    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-    //       listTokenCollateral.add(item);
-    //     }
-    //   }
-    // }
-    for(final element in listTokenFromWalletCore) {
-      if(element.nameShortToken == DFY){
-        listTokenCollateral.add(element);
+    for(final element in collateralAccepted){
+      for(final item in checkShow) {
+        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+          listTokenCollateral.add(item);
+        }
       }
     }
   }
