@@ -241,4 +241,6 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts/asset-types';
   static const String GET_DETAIL_COLLATERAL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/';
+  static const String GET_LIST_REPUTATION =
+      '/defi-user-service/public-api/v1.0.0/users/reputation/by-wallet';
 }

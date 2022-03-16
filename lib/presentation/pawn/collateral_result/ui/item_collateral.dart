@@ -1,8 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail/ui/collateral_detail.dart';
+import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
@@ -13,9 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ItemCollateral extends StatelessWidget {
+class ItemCollateral extends StatefulWidget {
   final String address;
-  final String rate;
   final String contracts;
   final String iconBorrower;
   final String iconLoadToken;
@@ -24,11 +25,11 @@ class ItemCollateral extends StatelessWidget {
   final String loadToken;
   final String duration;
   final String id;
+  final CollateralResultBloc bloc;
 
   const ItemCollateral({
     Key? key,
     required this.address,
-    required this.rate,
     required this.contracts,
     required this.iconBorrower,
     required this.collateral,
@@ -37,7 +38,31 @@ class ItemCollateral extends StatelessWidget {
     required this.iconLoadToken,
     required this.iconCollateral,
     required this.id,
+    required this.bloc,
   }) : super(key: key);
+
+  @override
+  State<ItemCollateral> createState() => _ItemCollateralState();
+}
+
+class _ItemCollateralState extends State<ItemCollateral> {
+  String reputationBorrower = '';
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.listReputationBorrower.listen((value) {
+      for (final ReputationBorrower vl in value) {
+        if (vl.walletAddress?.toLowerCase() == widget.address.toLowerCase()) {
+          reputationBorrower = vl.reputationBorrower.toString();
+          break;
+        } else {
+          reputationBorrower = '0';
+        }
+      }
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +124,13 @@ class ItemCollateral extends StatelessWidget {
                                 launchURL(
                                   Get.find<AppConstants>().bscScan +
                                       ApiConstants.BSC_SCAN_ADDRESS +
-                                      address,
+                                      widget.address,
                                 );
                               },
                               child: Text(
-                                address.length > 11
-                                    ? address.formatAddressDialog()
-                                    : address,
+                                widget.address.length > 11
+                                    ? widget.address.formatAddressDialog()
+                                    : widget.address,
                                 style: textNormal(
                                   AppTheme.getInstance().blueColor(),
                                   16,
@@ -123,7 +148,7 @@ class ItemCollateral extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
-                              iconBorrower,
+                              widget.iconBorrower,
                               width: 16.sp,
                               height: 16.sp,
                               errorBuilder: (context, error, stackTrace) =>
@@ -139,6 +164,38 @@ class ItemCollateral extends StatelessWidget {
                               width: 4.w,
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      '${S.current.borrower}:',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().borderItemColor(),
+                        16,
+                        FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  spaceW4,
+                  Expanded(
+                    flex: 7,
+                    child: RichText(
+                      text: TextSpan(
+                        text: '',
+                        style: textNormal(
+                          null,
+                          16,
+                        ),
+                        children: [
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.asset(
@@ -148,12 +205,14 @@ class ItemCollateral extends StatelessWidget {
                             ),
                           ),
                           WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
                             child: SizedBox(
                               width: 4.w,
                             ),
                           ),
                           TextSpan(
-                            text: '$rate | $contracts ${S.current.contracts}',
+                            text:
+                                '$reputationBorrower | ${widget.contracts} ${S.current.contracts}',
                           ),
                         ],
                       ),
@@ -191,7 +250,7 @@ class ItemCollateral extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
-                              iconCollateral,
+                              widget.iconCollateral,
                               width: 16.sp,
                               height: 16.sp,
                               errorBuilder: (context, error, stackTrace) =>
@@ -207,7 +266,7 @@ class ItemCollateral extends StatelessWidget {
                               width: 4.w,
                             ),
                           ),
-                          TextSpan(text: collateral),
+                          TextSpan(text: widget.collateral),
                         ],
                       ),
                     ),
@@ -244,7 +303,7 @@ class ItemCollateral extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
-                              iconLoadToken,
+                              widget.iconLoadToken,
                               width: 16.sp,
                               height: 16.sp,
                             ),
@@ -254,7 +313,7 @@ class ItemCollateral extends StatelessWidget {
                               width: 4.w,
                             ),
                           ),
-                          TextSpan(text: loadToken),
+                          TextSpan(text: widget.loadToken),
                         ],
                       ),
                     ),
@@ -289,7 +348,7 @@ class ItemCollateral extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: duration,
+                            text: widget.duration,
                           ),
                         ],
                       ),
@@ -305,7 +364,7 @@ class ItemCollateral extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => CollateralDetailScreen(
-                          id: id,
+                          id: widget.id,
                         ),
                       ),
                     );
