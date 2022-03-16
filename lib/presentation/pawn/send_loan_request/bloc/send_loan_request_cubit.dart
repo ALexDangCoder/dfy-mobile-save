@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -58,7 +60,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       yield listModelToken[i];
     }
   }
+
   List<AcceptableAssetsAsCollateral> collateralAccepted = [];
+
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
@@ -69,8 +73,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     //     }
     //   }
     // }
-    for(final element in listTokenFromWalletCore) {
-      if(element.nameShortToken == DFY){
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken == DFY) {
         listTokenCollateral.add(element);
       }
     }
@@ -224,58 +228,91 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   ///Huy send loan nft
-  String? validateMessage(String value) {
+
+  void validateMessage(String value) {
     if (value.isEmpty) {
-      return 'Message is required';
+      mapValidate['formMess'] = false;
+      isShowMessage.sink.add(true);
+      txtWarnMess.sink.add('Message is required');
     } else if (value.length > 100) {
-      return 'Maximum length allowed is 100 characters';
+      mapValidate['formMess'] = false;
+      isShowMessage.sink.add(true);
+      txtWarnMess.sink.add('Maximum length allowed is 100 characters');
     } else {
-      return null;
+      mapValidate['formMess'] = true;
+      isShowMessage.sink.add(false);
     }
   }
 
-  String? validateAmount(String amount) {
+  void validateAmount(String amount) {
     if (amount.isEmpty) {
-      return 'Expected loan is required';
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Expected loan is required');
     } else if (!utils.isValidateAmount5(amount)) {
-      return 'Invalid expected loan';
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Invalid expected loan');
     } else if (amount.length > 100) {
-      return 'Maximum length allowed is 100 characters';
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Maximum length allowed is 100 characters');
     } else {
-      return null;
+      nftRequest.loanAmount = double.parse(amount);
+      mapValidate['formLoan'] = true;
+      isShowLoanToken.sink.add(false);
     }
   }
 
-  String? validateDuration(String value, {bool isMonth = true}) {
+  void validateDuration(String value, {bool isMonth = true}) {
     if (!isMonth) {
       //isWeek
       if (value.isEmpty) {
-        return 'Duration is required';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink.add('Duration is required');
       } else if (int.parse(value) > 1200) {
-        return 'Duration by week cannot be greater than 5,200';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink
+            .add('Duration by week cannot be greater than 5,200');
       } else {
-        return null;
+        nftRequest.durationTime = int.parse(value);
+        mapValidate['formDuration'] = true;
+        isShowDuration.add(false);
       }
     } else {
       //isMonth
       if (value.isEmpty) {
-        return 'Duration is required';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink.add('Duration is required');
       } else if (int.parse(value) > 1200) {
-        return 'Duration by month cannot be greater than 1,200';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink
+            .add('Duration by month cannot be greater than 1,200');
       } else {
-        return null;
+        nftRequest.durationTime = int.parse(value);
+        mapValidate['formDuration'] = true;
+        isShowDuration.add(false);
       }
     }
   }
 
   Map<String, bool> mapValidate = {
-    'form': false,
+    'formLoan': false,
+    'formMess': false,
+    'formDuration': false,
     'tick': true,
     'chooseNFT': false,
   };
 
+  final NftSendLoanRequest nftRequest = NftSendLoanRequest();
+  //THIS VAR SAVE INFOR NFT WIDGET
+  NftMarket nftMarketConfirm = NftMarket();
+
   void validateAll() {
-    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       isEnableSendRqNft.sink.add(false);
     } else {
@@ -299,10 +336,19 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     },
   ];
 
-  Map<String, dynamic> fillToken = {};
+  ///warning form
+  BehaviorSubject<bool> isShowMessage = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowLoanToken = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowDuration = BehaviorSubject<bool>();
+  BehaviorSubject<String> txtWarnMess = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnLoan = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnDuration = BehaviorSubject<String>();
+
+  BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
+      BehaviorSubject<Map<String, dynamic>>();
 
   void fillTokenAfterChooseNft(String symbolToken) {
-    print('symbooool $symbolToken');
+    Map<String, dynamic> fillToken = {};
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     for (final element in listTokenSupport) {
@@ -321,6 +367,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             ),
           )
         };
+        tokenAfterChooseNft.sink.add(fillToken);
         break;
       }
     }

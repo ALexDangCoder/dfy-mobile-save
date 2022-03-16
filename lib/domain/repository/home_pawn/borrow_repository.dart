@@ -95,7 +95,6 @@ mixin BorrowRepository {
     String? nftType,
   });
 
-  Future<Result<String>> confirmCollateralToBe({required Map<String,String> map});
 
   Future<Result<List<CollectionMarketModel>>> getListCollectionFilter();
 

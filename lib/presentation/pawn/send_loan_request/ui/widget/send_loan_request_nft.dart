@@ -10,7 +10,6 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
-import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,205 +27,204 @@ class SendLoanRequestNft extends StatefulWidget {
 }
 
 class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
-  final GlobalKey<FormGroupState> _key = GlobalKey<FormGroupState>();
   final TextEditingController loanController = TextEditingController();
-  late Map<String, dynamic> tokenSymbol;
 
   @override
   void initState() {
     super.initState();
     widget.cubit.getTokensRequestNft();
-    tokenSymbol = widget.cubit.listDropDownToken[0];
   }
 
   @override
   Widget build(BuildContext context) {
-    return FormGroup(
-      key: _key,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _chooseNftFtFillNft(context),
-            spaceH36,
-            Text(
-              'Message',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.w,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _chooseNftFtFillNft(context),
+          spaceH36,
+          Text(
+            'Message',
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              16,
+              FontWeight.w400,
             ),
-            spaceH4,
-            TextFieldValidator(
-              hint: 'Enter message',
-              onChange: (value) {
-                widget.cubit.mapValidate['form'] =
-                    _key.currentState?.checkValidator() ?? false;
-                widget.cubit.validateAll();
-              },
-              validator: (value) {
-                return widget.cubit.validateMessage(value ?? '');
-              },
+          ),
+          spaceH4,
+          TextFieldValidator(
+            hint: 'Enter message',
+            onChange: (value) {
+              widget.cubit.nftRequest.message = value;
+              widget.cubit.validateMessage(value);
+              widget.cubit.validateAll();
+            },
+          ),
+          _txtWarning(
+            isShowStream: widget.cubit.isShowMessage,
+            txtWarningStream: widget.cubit.txtWarnMess,
+          ),
+          spaceH16,
+          Text(
+            'Loan amount',
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              16,
+              FontWeight.w400,
             ),
-            spaceH16,
-            Text(
-              'Loan amount',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            spaceH4,
-            TextFieldValidator(
-              controller: loanController,
-              hint: 'Loan amount',
-              onChange: (value) {
-                widget.cubit.mapValidate['form'] =
-                    _key.currentState?.checkValidator() ?? false;
-                widget.cubit.validateAll();
-              },
-              validator: (value) {
-                return widget.cubit.validateAmount(value ?? '');
-              },
-              suffixIcon: FormDropDownWidget(
-                widthDropDown: 100.w,
-                heightDropDown: 300.h,
-                listDropDown: widget.cubit.listDropDownToken,
-                initValue: tokenSymbol,
-                onChange: (Map<String, dynamic> value) {},
-              ),
-            ),
-            spaceH16,
-            Text(
-              'Duration',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            spaceH4,
-            StreamBuilder<bool>(
-              initialData: true,
-              stream: widget.cubit.isMonthForm,
+          ),
+          spaceH4,
+          TextFieldValidator(
+            controller: loanController,
+            hint: 'Loan amount',
+            onChange: (value) {
+              widget.cubit.validateAmount(value);
+              widget.cubit.validateAll();
+            },
+            suffixIcon: StreamBuilder<Map<String, dynamic>>(
+              initialData: widget.cubit.listDropDownToken[0],
+              stream: widget.cubit.tokenAfterChooseNft,
               builder: (context, snapshot) {
-                return TextFieldValidator(
-                  hint: 'Duration',
-                  onChange: (value) {
-                    widget.cubit.mapValidate['form'] =
-                        _key.currentState?.checkValidator() ?? false;
-                    widget.cubit.validateAll();
-                  },
-                  suffixIcon: FormDropDownWidget(
-                    listDropDown: widget.cubit.listDropDownDuration,
-                    initValue: widget.cubit.listDropDownDuration[0],
-                    heightDropDown: 150.h,
-                    widthDropDown: 100.w,
-                    onChange: (value) => {
-                      if (value['label'] == 'month')
-                        {
-                          widget.cubit.isMonthForm.sink.add(true),
-                        }
-                      else
-                        {
-                          widget.cubit.isMonthForm.sink.add(false),
-                        }
-                    },
-                  ),
-                  validator: (value) {
-                    return (snapshot.data ?? true)
-                        ? widget.cubit.validateDuration(value ?? '')
-                        : widget.cubit.validateDuration(
-                            value ?? '',
-                            isMonth: false,
-                          );
-                  },
+                return FormDropDownWidget(
+                  widthDropDown: 100.w,
+                  heightDropDown: 300.h,
+                  listDropDown: widget.cubit.listDropDownToken,
+                  initValue: snapshot.data ?? widget.cubit.listDropDownToken[0],
+                  onChange: (Map<String, dynamic> value) {},
                 );
               },
             ),
-            spaceH20,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                StreamBuilder<bool>(
-                    initialData: true,
-                    stream: widget.cubit.tickBoxSendRqNft,
-                    builder: (context, snapshot) {
-                      return SizedBox(
-                        width: 24.w,
-                        height: 24.h,
-                        child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.r),
-                          ),
-                          fillColor: MaterialStateProperty.all(
-                              AppTheme.getInstance().fillColor()),
-                          activeColor: AppTheme.getInstance().activeColor(),
-                          // checkColor: const Colors,
-                          onChanged: (value) {
-                            widget.cubit.tickBoxSendRqNft.sink
-                                .add(value ?? false);
-                            if (value ?? false) {
-                              widget.cubit.mapValidate['tick'] = true;
-                              widget.cubit.validateAll();
-                            } else {
-                              widget.cubit.mapValidate['tick'] = false;
-                              widget.cubit.validateAll();
-                            }
-                          },
-                          value: snapshot.data ?? false,
+          ),
+          _txtWarning(
+            isShowStream: widget.cubit.isShowLoanToken,
+            txtWarningStream: widget.cubit.txtWarnLoan,
+          ),
+          spaceH16,
+          Text(
+            'Duration',
+            style: textNormalCustom(
+              AppTheme.getInstance().whiteColor(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
+          spaceH4,
+          StreamBuilder<bool>(
+            initialData: true,
+            stream: widget.cubit.isMonthForm,
+            builder: (context, snapshot) {
+              return TextFieldValidator(
+                hint: 'Duration',
+                onChange: (value) {
+                  widget.cubit.validateDuration(
+                    value,
+                    isMonth: snapshot.data ?? false,
+                  );
+                  widget.cubit.validateAll();
+                },
+                suffixIcon: FormDropDownWidget(
+                  listDropDown: widget.cubit.listDropDownDuration,
+                  initValue: widget.cubit.listDropDownDuration[0],
+                  heightDropDown: 150.h,
+                  widthDropDown: 100.w,
+                  onChange: (value) => {
+                    if (value['label'] == 'month')
+                      {
+                        widget.cubit.isMonthForm.sink.add(true),
+                      }
+                    else
+                      {
+                        widget.cubit.isMonthForm.sink.add(false),
+                      }
+                  },
+                ),
+              );
+            },
+          ),
+          _txtWarning(
+            isShowStream: widget.cubit.isShowDuration,
+            txtWarningStream: widget.cubit.txtWarnDuration,
+          ),
+          spaceH20,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              StreamBuilder<bool>(
+                  initialData: true,
+                  stream: widget.cubit.tickBoxSendRqNft,
+                  builder: (context, snapshot) {
+                    return SizedBox(
+                      width: 24.w,
+                      height: 24.h,
+                      child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
-                      );
-                    }),
-                spaceW12,
-                SizedBox(
-                  width: 287.w,
-                  child: Flexible(
-                    child: Text(
-                      'Login to receive email notifications',
-                      style: textNormalCustom(
-                        AppTheme.getInstance().whiteColor(),
-                        16,
-                        FontWeight.w400,
+                        fillColor: MaterialStateProperty.all(
+                            AppTheme.getInstance().fillColor()),
+                        activeColor: AppTheme.getInstance().activeColor(),
+                        // checkColor: const Colors,
+                        onChanged: (value) {
+                          widget.cubit.tickBoxSendRqNft.sink
+                              .add(value ?? false);
+                          if (value ?? false) {
+                            widget.cubit.mapValidate['tick'] = true;
+                            widget.cubit.validateAll();
+                          } else {
+                            widget.cubit.mapValidate['tick'] = false;
+                            widget.cubit.validateAll();
+                          }
+                        },
+                        value: snapshot.data ?? false,
                       ),
+                    );
+                  }),
+              spaceW12,
+              SizedBox(
+                width: 287.w,
+                child: Flexible(
+                  child: Text(
+                    'Login to receive email notifications',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
                     ),
                   ),
-                )
-              ],
-            ),
-            spaceH40,
-            StreamBuilder<bool>(
-                initialData: false,
-                stream: widget.cubit.isEnableSendRqNft,
-                builder: (context, snapshot) {
-                  return InkWell(
-                    onTap: () {
-                      if (snapshot.data ?? false) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConfirmSendLoanNft(
-                              cubit: widget.cubit,
-                            ),
+                ),
+              )
+            ],
+          ),
+          spaceH40,
+          StreamBuilder<bool>(
+              initialData: false,
+              stream: widget.cubit.isEnableSendRqNft,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: () {
+                    if (snapshot.data ?? false) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmSendLoanNft(
+                            cubit: widget.cubit,
                           ),
-                        );
-                      } else {}
-                    },
-                    child: ButtonGold(
-                      title: 'Request loan',
-                      isEnable: snapshot.data ?? false,
-                    ),
-                  );
-                }),
-            // SizedBox(height: 200.h,),
-          ],
-        ),
+                        ),
+                      );
+                    } else {}
+                  },
+                  child: ButtonGold(
+                    title: 'Request loan',
+                    isEnable: snapshot.data ?? false,
+                  ),
+                );
+              }),
+          // SizedBox(height: 200.h,),
+        ],
       ),
     );
   }
@@ -259,12 +257,14 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                           },
                         ),
                       );
+                      widget.cubit.nftMarketConfirm = result;
                       widget.cubit.nftMarketFill.sink.add(result);
                       widget.cubit.mapValidate['chooseNFT'] = true;
                       loanController.text = result.price.toString();
+                      widget.cubit.validateAmount(loanController.text);
+                      //todo why dont work run still ok
                       widget.cubit
                           .fillTokenAfterChooseNft(result.symbolToken ?? DFY);
-                      tokenSymbol = widget.cubit.fillToken;
                       widget.cubit.validateAll();
                     },
                     child: Column(
@@ -306,6 +306,39 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
           );
         },
       ),
+    );
+  }
+
+  Widget _txtWarning({
+    required Stream<bool> isShowStream,
+    required Stream<String> txtWarningStream,
+  }) {
+    return StreamBuilder<bool>(
+      initialData: false,
+      stream: isShowStream,
+      builder: (context, snapshot) {
+        return Visibility(
+          visible: snapshot.data ?? false,
+          child: StreamBuilder<String>(
+            initialData: '',
+            stream: txtWarningStream,
+            builder: (context, snapshot) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                ),
+                child: Text(
+                  snapshot.data ?? '',
+                  style: textNormalCustom(
+                      AppTheme.getInstance().redMarketColors(),
+                      12,
+                      FontWeight.w400),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

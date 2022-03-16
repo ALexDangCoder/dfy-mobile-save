@@ -4,22 +4,22 @@ part 'nft_send_loan_request.g.dart';
 
 @JsonSerializable()
 class NftSendLoanRequest {
-  final String walletAddress;
-  final String nftId;
-  final String message;
-  final double loanAmount;
-  final String loanSymbol;
-  final int durationTime;
-  final int durationType;
-  final int pawnShopPackageId;
-  final String collateralSymbol;
-  final int collateralId;
-  final dynamic txId;
-  final int marketType;
+   String? walletAddress;
+   String? nftId;
+   String? message;
+   double? loanAmount;
+   String? loanSymbol;
+   int? durationTime;
+   int? durationType;
+   int? pawnShopPackageId;
+   String? collateralSymbol;
+   int? collateralId;
+   dynamic txId;
+   int? marketType;
 
 
   NftSendLoanRequest(
-      this.walletAddress,
+      {this.walletAddress,
       this.nftId,
       this.message,
       this.loanAmount,
@@ -30,7 +30,7 @@ class NftSendLoanRequest {
       this.collateralSymbol,
       this.collateralId,
       this.txId,
-      this.marketType);
+      this.marketType});
 
   factory NftSendLoanRequest.fromJson(Map<String, dynamic> json) =>
       _$NftSendLoanRequestFromJson(json);
