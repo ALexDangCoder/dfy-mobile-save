@@ -45,7 +45,6 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          spaceH8,
           BaseDesignScreen(
             title: S.current.collateral_detail,
             isImage: true,
@@ -304,6 +303,7 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
                                     ),
                                   ),
                                   WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
                                     child: Text(
                                       obj?.loanSymbol ?? '',
                                       style: textNormalCustom(
@@ -363,14 +363,18 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SendOfferPawnScreen();
-                  },
-                ),
-              );
+              if (!(bloc.objCollateral.value.id?.isNaN ?? true)) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SendOfferPawnScreen(
+                        objCollateralDetail: bloc.objCollateral.value,
+                      );
+                    },
+                  ),
+                );
+              }
             },
             child: Padding(
               padding: EdgeInsets.only(bottom: 38.h),
