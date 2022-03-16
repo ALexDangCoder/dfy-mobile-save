@@ -48,15 +48,15 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
               cubit.listCryptoCollateral.clear();
               cubit.refresh = false;
             }
-              cubit.showContent();
+            cubit.showContent();
           } else {
             cubit.message = state.message ?? '';
             cubit.listCryptoCollateral.clear();
             cubit.showError();
           }
           cubit.listCryptoCollateral.addAll(state.list ?? []);
-          cubit.canLoadMoreList = (state.list?.length ?? 0) >=
-              ApiConstants.DEFAULT_PAGE_SIZE;
+          cubit.canLoadMoreList =
+              (state.list?.length ?? 0) >= ApiConstants.DEFAULT_PAGE_SIZE;
           cubit.loadMore = false;
         }
       },
@@ -83,55 +83,57 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
                   }
                   return true;
                 },
-                child: RefreshIndicator(
+                child: (state is GetApiSuccess) ? RefreshIndicator(
                   onRefresh: () async {
                     await cubit.refreshPosts(
                       widget.walletAddress,
                       widget.packageId,
                     );
                   },
-                  child: (cubit.listCryptoCollateral.isNotEmpty) ?ListView.builder(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                      right: 16.w,
-                    ),
-                    itemCount: cubit.listCryptoCollateral.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          ItemCryptoCollateral(
-                            model: cubit.listCryptoCollateral[index],
+                  child: (cubit.listCryptoCollateral.isNotEmpty)
+                      ? ListView.builder(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
                           ),
-                          spaceH20,
-                        ],
-                      );
-                    },
-                  ) : Padding(
-                    padding: EdgeInsets.only(top: 150.h),
-                    child: Column(
-                      children: [
-                        Image(
-                          image: const AssetImage(
-                            ImageAssets.img_search_empty,
+                          itemCount: cubit.listCryptoCollateral.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                ItemCryptoCollateral(
+                                  model: cubit.listCryptoCollateral[index],
+                                ),
+                                spaceH20,
+                              ],
+                            );
+                          },
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(top: 150.h),
+                          child: Column(
+                            children: [
+                              Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
+                                ),
+                                height: 120.h,
+                                width: 120.w,
+                              ),
+                              SizedBox(
+                                height: 17.7.h,
+                              ),
+                              Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
+                                ),
+                              ),
+                            ],
                           ),
-                          height: 120.h,
-                          width: 120.w,
                         ),
-                        SizedBox(
-                          height: 17.7.h,
-                        ),
-                        Text(
-                          S.current.no_result_found,
-                          style: textNormal(
-                            Colors.white54,
-                            20.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ) : const SizedBox(),
               ),
             ),
           ),

@@ -19,6 +19,7 @@ class PersonalItem extends StatelessWidget {
   final String interestRate;
   final String signedContract;
   final String total;
+  final String id;
 
   const PersonalItem({
     Key? key,
@@ -28,7 +29,7 @@ class PersonalItem extends StatelessWidget {
     required this.collateral,
     required this.interestRate,
     required this.signedContract,
-    required this.total,
+    required this.total, required this.id,
   }) : super(key: key);
 
   WidgetSpan widgetSpanBase({
@@ -342,10 +343,10 @@ class PersonalItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const SendLoanRequest(
-                          packageId: '',
+                        return  SendLoanRequest(
+                          packageId: id,
                           pawnshopType: '3',
-                          collateralAccepted: [],
+                          collateralAccepted: collateral,
                         );
                       },
                     ),

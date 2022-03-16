@@ -107,4 +107,8 @@ mixin BorrowRepository {
   Future<Result<List<ReputationBorrower>>> getListReputation({
     String? addressWallet,
   });
+
+  Future<Result<PawnshopPackage>> getPawnshopDetail({
+    required String packageId,
+  });
 }

@@ -68,3 +68,17 @@ class AcceptableAssetsAsCollateral {
 
   AcceptableAssetsAsCollateral({this.address, this.symbol});
 }
+class RepaymentToken {
+  String? address;
+  String? symbol;
+
+  RepaymentToken({this.address, this.symbol});
+}
+class LoanToken {
+  String? address;
+  String? symbol;
+
+  LoanToken({this.address, this.symbol});
+}
+
+
