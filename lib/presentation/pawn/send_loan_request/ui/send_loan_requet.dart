@@ -6,7 +6,7 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
-import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_request_nft.dart';
+import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/send_loan_request_nft.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/check_tab_bar.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/crypto_currentcy.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -62,7 +62,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            height: 763.h,
+            // height: 763.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -172,7 +172,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                              maxHeight: 750.h, minHeight: 699.h,),
+                              maxHeight: 800.h, minHeight: 699.h),
                           child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,

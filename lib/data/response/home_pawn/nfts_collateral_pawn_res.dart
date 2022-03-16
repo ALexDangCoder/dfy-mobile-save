@@ -120,7 +120,6 @@ class NftCollateralPawnResponse extends Equatable {
     }
   }
 
-  //todo khi nào checkout check lại các fill này để còn làm nft widget
 
   NftMarket toModel() => NftMarket(
         marketType: MarketType.PAWN,
@@ -137,7 +136,7 @@ class NftCollateralPawnResponse extends Equatable {
         marketId: id.toString(),
         price: double.parse(expectedLoanAmount.toString()),
         borrowerWalletAddress: borrowerWalletAddress,
-        urlToken: urlToken
+        urlToken: urlToken,
       );
 
   NftCollateralPawnResponse(
