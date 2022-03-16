@@ -1154,6 +1154,35 @@ class Web3Utils {
     return hex.encode(withdrawCollateral.data ?? []);
   }
 
+  Future<String> getCreateCryptoOfferData({
+    required String collateralId,
+    required String repaymentAssetAddress,
+    required String loanAmount,
+    required String duration,
+    required String interest,
+    required int loanDurationType,
+    required int repaymentCycleType,
+    required String liquidityThreshold,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('createOffer');
+    final createOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(collateralId)),
+        EthereumAddress.fromHex(repaymentAssetAddress),
+        BigInt.from(num.parse(_handleAmount(18, loanAmount))),
+        BigInt.from(num.parse(duration)),
+        BigInt.from(num.parse(_handleAmount(5, interest))),
+        BigInt.from(loanDurationType),
+        BigInt.from(repaymentCycleType),
+        BigInt.from(num.parse(_handleAmount(5, liquidityThreshold))),
+      ],
+    );
+    return hex.encode(createOffer.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
