@@ -249,7 +249,6 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                               value: '$symbolAmount ${bloc.textAmount.value}',
                               urlToken:
                                   ImageAssets.getSymbolAsset(symbolAmount),
-                              isToken: true,
                             ),
                           ],
                           onErrorSign: (context) {},
