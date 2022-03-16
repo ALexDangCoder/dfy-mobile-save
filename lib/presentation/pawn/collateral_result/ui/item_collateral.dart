@@ -210,9 +210,15 @@ class _ItemCollateralState extends State<ItemCollateral> {
                               width: 4.w,
                             ),
                           ),
-                          TextSpan(
-                            text:
-                                '$reputationBorrower | ${widget.contracts} ${S.current.contracts}',
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Text(
+                              '$reputationBorrower | ${widget.contracts} ${S.current.contracts}',
+                              style: textNormal(
+                                null,
+                                16,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -266,7 +272,16 @@ class _ItemCollateralState extends State<ItemCollateral> {
                               width: 4.w,
                             ),
                           ),
-                          TextSpan(text: widget.collateral),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Text(
+                              widget.collateral,
+                              style: textNormal(
+                                null,
+                                16,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -313,7 +328,16 @@ class _ItemCollateralState extends State<ItemCollateral> {
                               width: 4.w,
                             ),
                           ),
-                          TextSpan(text: widget.loadToken),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Text(
+                              widget.loadToken,
+                              style: textNormal(
+                                null,
+                                16,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -347,8 +371,15 @@ class _ItemCollateralState extends State<ItemCollateral> {
                           16,
                         ),
                         children: [
-                          TextSpan(
-                            text: widget.duration,
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Text(
+                              widget.duration,
+                              style: textNormal(
+                                null,
+                                16,
+                              ),
+                            ),
                           ),
                         ],
                       ),
