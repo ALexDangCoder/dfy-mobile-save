@@ -169,43 +169,43 @@ class _HomePawnState extends State<HomePawn> {
                         ),
                       ),
                     ),
-                    // spaceH32,
-                    // ListItemHorizontal(
-                    //   title: S.current.top_sale_pawn,
-                    //   listItemWidget: SizedBox(
-                    //     height: 267.h,
-                    //     child: ListView.builder(
-                    //       itemCount: cubit.topSalePawnShop.length,
-                    //       shrinkWrap: true,
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemBuilder: (_, index) {
-                    //         return _itemPawnShopPackage(
-                    //           imgShop: cubit.topSalePawnShop[index]
-                    //                   .pawnShopPackage?.pawnShop?.avatar ??
-                    //               '',
-                    //           iconTokenUrl: cubit.topSalePawnShop[index]
-                    //                   .pawnShopPackage?.loanToken?.iconUrl ??
-                    //               '',
-                    //           signedContracts: cubit
-                    //               .topSalePawnShop[index].signedContract
-                    //               .toString(),
-                    //           nameShop: cubit.topSalePawnShop[index]
-                    //                   .pawnShopPackage?.name ??
-                    //               '',
-                    //           reputation: cubit.topSalePawnShop[index]
-                    //                   .pawnShopPackage?.pawnShop?.reputation ??
-                    //               0,
-                    //           loan: cubit.topSalePawnShop[index].pawnShopPackage
-                    //                   ?.allowedLoanMax ??
-                    //               0,
-                    //           interestRate: cubit.topSalePawnShop[index]
-                    //                   .pawnShopPackage?.interestRate ??
-                    //               0,
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                    spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.top_sale_pawn,
+                      listItemWidget: SizedBox(
+                        height: 267.h,
+                        child: ListView.builder(
+                          itemCount: cubit.topSalePawnShop.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return _itemPawnShopPackage(
+                              imgShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.avatar ??
+                                  '',
+                              iconTokenUrl: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.loanToken?.iconUrl ??
+                                  '',
+                              signedContracts: cubit
+                                  .topSalePawnShop[index].signedContract
+                                  .toString(),
+                              nameShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.name ??
+                                  '',
+                              reputation: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.reputation ??
+                                  0,
+                              loan: cubit.topSalePawnShop[index].pawnShopPackage
+                                      ?.allowedLoanMax ??
+                                  0,
+                              interestRate: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.interestRate ??
+                                  0,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                     // spaceH32,
                     // ListItemHorizontal(
                     //   title: S.current.nft_collateral,
