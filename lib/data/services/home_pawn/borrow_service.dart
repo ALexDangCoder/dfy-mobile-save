@@ -2,8 +2,10 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
+import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -117,6 +119,16 @@ abstract class BorrowService {
 
   @GET(ApiConstants.GET_ASSET_FILTER)
   Future<AssetFilterResponse> getListAssetFilter();
+
+  @GET('${ApiConstants.GET_DETAIL_COLLATERAL}{id}')
+  Future<DetailCollateralResponse> getDetailCollateral(
+    @Path('id') String? id,
+  );
+
+  @GET(ApiConstants.GET_LIST_REPUTATION)
+  Future<List<ReputationBorrowerResponse>> getListReputation(
+    @Query('walletAddress') String? walletAddress,
+  );
 
   @POST(ApiConstants.POST_NFT_SEND_LOAN_REQUEST)
   Future<NftResAfterPostLoanRequestResponse> postNftOnLoanRequest(

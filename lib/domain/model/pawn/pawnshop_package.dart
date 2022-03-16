@@ -4,10 +4,13 @@ class PawnshopPackage {
   List<AcceptableAssetsAsCollateral>? acceptableAssetsAsCollateral;
   int? id;
   num? interest;
+  num? interestMax;
+  num? interestMin;
   bool? isFavourite;
   num? loanToValue;
   int? durationQtyType;
   Pawnshop? pawnshop;
+  int? type;
 
   PawnshopPackage({
     this.acceptableAssetsAsCollateral,
@@ -17,6 +20,9 @@ class PawnshopPackage {
     this.loanToValue,
     this.durationQtyType,
     this.pawnshop,
+    this.type,
+    this.interestMax,
+    this.interestMin,
   });
 }
 

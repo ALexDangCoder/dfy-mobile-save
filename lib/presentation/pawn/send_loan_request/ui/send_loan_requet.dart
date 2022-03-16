@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
@@ -14,15 +15,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest({
-    Key? key,
-    this.index = 0,
-    required this.packageId,
-    required this.pawnshopType,
-  }) : super(key: key);
+  const SendLoanRequest(
+      {Key? key,
+      this.index = 0,
+      required this.packageId,
+      required this.pawnshopType, required this.collateralAccepted})
+      : super(key: key);
   final int index;
   final String packageId;
   final String pawnshopType;
+  final List<AcceptableAssetsAsCollateral> collateralAccepted;
 
   @override
   _SendLoanRequestState createState() => _SendLoanRequestState();
@@ -43,6 +45,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     checkLogin = cubit.getLoginState();
     cubit.tabIndex.add(widget.index);
+    cubit.collateralAccepted = widget.collateralAccepted;
     _tabController =
         TabController(initialIndex: widget.index, length: 2, vsync: this);
   }
@@ -199,7 +202,9 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                     );
                                   } else {
                                     return const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
                                     );
                                   }
                                 },

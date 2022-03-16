@@ -5,9 +5,11 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
+import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 
 mixin BorrowRepository {
   Future<Result<List<PawnshopPackage>>> getListPawnshop({
@@ -82,6 +84,9 @@ mixin BorrowRepository {
     String? collectionId,
   });
 
+  Future<Result<String>> confirmCollateralToBe({
+    required Map<String, String> map,
+  });
   Future<Result<List<ContentNftOnRequestLoanModel>>> getListNftOnLoanRequest({
     String? walletAddress,
     String? page,
@@ -95,4 +100,12 @@ mixin BorrowRepository {
   Future<Result<List<CollectionMarketModel>>> getListCollectionFilter();
 
   Future<Result<List<AssetFilterModel>>> getListAssetFilter();
+
+  Future<Result<CollateralDetail>> getDetailCollateral({
+    String? id,
+  });
+
+  Future<Result<List<ReputationBorrower>>> getListReputation({
+    String? addressWallet,
+  });
 }

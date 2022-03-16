@@ -6,7 +6,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
-import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -58,8 +58,26 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       yield listModelToken[i];
     }
   }
+  List<AcceptableAssetsAsCollateral> collateralAccepted = [];
+  void checkShowCollateral(
+    List<AcceptableAssetsAsCollateral> collateralAccepted,
+  ) {
+    // for(final element in collateralAccepted){
+    //   for(final item in checkShow) {
+    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+    //       listTokenCollateral.add(item);
+    //     }
+    //   }
+    // }
+    for(final element in listTokenFromWalletCore) {
+      if(element.nameShortToken == DFY){
+        listTokenCollateral.add(element);
+      }
+    }
+  }
 
   List<ModelToken> listTokenFromWalletCore = [];
+  List<ModelToken> listTokenCollateral = [];
   final List<ModelToken> checkShow = [];
 
   Future<dynamic> nativeMethodCallBackTrustWallet(MethodCall methodCall) async {
@@ -76,6 +94,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           }
         }
         await getBalanceOFToken(listTokenFromWalletCore);
+        checkShowCollateral(collateralAccepted);
         emit(GetWalletSuccess());
         break;
       default:
@@ -189,6 +208,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     final Map<String, String> map = {
       'amount': amount,
       'bcPackageId': bcPackageId,
+      'collateral': collateral,
       'collateralId': collateralId,
       'description': description,
       'expected_loan_duration_time': duration,
