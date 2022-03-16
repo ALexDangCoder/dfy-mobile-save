@@ -42,6 +42,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
 
   String wallet = '';
+   String? collateralCached;
+   String? messageCached;
+   String? durationCached;
+  String? durationCachedType;
+   ModelToken? collateralTokenCached;
+   ModelToken? loanTokenCached;
 
   final Web3Utils client = Web3Utils();
 

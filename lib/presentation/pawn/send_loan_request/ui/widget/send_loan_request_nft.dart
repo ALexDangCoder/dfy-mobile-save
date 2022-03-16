@@ -256,7 +256,10 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                             return ListSelectNftCollateral(cubit: widget.cubit);
                           },
                         ),
-                      );
+                      ).then((value) {
+                        widget.cubit.emit(GetWalletSuccess());
+                        return value;
+                      });
                       widget.cubit.nftMarketConfirm = result;
                       widget.cubit.nftMarketFill.sink.add(result);
                       widget.cubit.mapValidate['chooseNFT'] = true;
