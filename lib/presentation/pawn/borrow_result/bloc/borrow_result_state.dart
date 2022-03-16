@@ -5,19 +5,16 @@ abstract class BorrowResultState extends Equatable {}
 
 class BorrowResultInitial extends BorrowResultState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
 class BorrowResultLoading extends BorrowResultState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
 class BorrowResultLoadmore extends BorrowResultState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -30,7 +27,6 @@ class BorrowPersonSuccess extends BorrowResultState {
   BorrowPersonSuccess(this.completeType, {this.personalLending, this.message});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, completeType, personalLending, message];
 }
 
@@ -47,6 +43,5 @@ class BorrowPawnshopSuccess extends BorrowResultState {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, completeType, pawnshopPackage, message];
 }

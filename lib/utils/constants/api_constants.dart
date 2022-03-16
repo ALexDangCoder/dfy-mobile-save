@@ -240,5 +240,8 @@ class ApiConstants {
   static const String GET_ASSET_FILTER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/nfts/asset-types';
 
-  static const String GET_NFT_SEND_lOAN_REQUEST = '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts';
+  static const String GET_NFT_SEND_lOAN_REQUEST =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts';
+  static const String POST_NFT_SEND_LOAN_REQUEST =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/submit-nft-collateral';
 }

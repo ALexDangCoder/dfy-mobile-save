@@ -4,8 +4,11 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -34,13 +37,13 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
   void initState() {
     super.initState();
     _debounce = Timer(const Duration(milliseconds: 500), () {});
-    widget.cubit
-        .getSelectNftCollateral('0x0103919F4084a836288e895143E4f031761fcFbE');
+    widget.cubit.getSelectNftCollateral(widget.cubit.getCurrentWallet());
   }
 
   @override
   void dispose() {
     _debounce.cancel();
+    widget.cubit.close();
     super.dispose();
   }
 
@@ -69,18 +72,22 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
               listener: (context, state) {
                 if (state is ListSelectNftCollateralGetApi) {
                   if (state.completeType == CompleteType.SUCCESS) {
-                    if (widget.cubit.loadMoreRefresh) {
+                    if (widget.cubit.refresh) {
                       widget.cubit.contentNftOnSelect.clear();
                     }
-                    if ((state.list ?? []).isEmpty) {
-                      widget.cubit.showEmpty();
-                    } else {
-                      widget.cubit.showContent();
-                    }
+                    widget.cubit.showContent();
                   } else {
                     widget.cubit.message = state.message ?? '';
+                    widget.cubit.contentNftOnSelect.clear();
                     widget.cubit.showError();
                   }
+                  widget.cubit.contentNftOnSelect =
+                      widget.cubit.contentNftOnSelect + (state.list ?? []);
+                  widget.cubit.canLoadMoreList =
+                      widget.cubit.contentNftOnSelect.length >=
+                          ApiConstants.DEFAULT_PAGE_SIZE;
+                  widget.cubit.loadMore = false;
+                  widget.cubit.refresh = false;
                 }
               },
               bloc: widget.cubit,
@@ -88,7 +95,7 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                 return StateStreamLayout(
                   retry: () {
                     widget.cubit.refreshGetListNftCollateral(
-                      '0x0103919F4084a836288e895143E4f031761fcFbE',
+                      widget.cubit.getCurrentWallet(),
                     );
                   },
                   textEmpty: widget.cubit.message,
@@ -104,18 +111,20 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                     },
                     child: NotificationListener<ScrollNotification>(
                       onNotification: (value) {
-                        if (widget.cubit.canLoadMore &&
+                        if (widget.cubit.canLoadMoreList &&
                             value.metrics.pixels ==
                                 value.metrics.maxScrollExtent) {
                           widget.cubit.loadMoreGetListNftCollateral(
-                              '0x0103919F4084a836288e895143E4f031761fcFbE');
+                              widget.cubit.getCurrentWallet());
                         }
                         return true;
                       },
                       child: RefreshIndicator(
                         onRefresh: () async {
                           await widget.cubit.refreshGetListNftCollateral(
-                              '0x0103919F4084a836288e895143E4f031761fcFbE');
+                            widget.cubit.getCurrentWallet(),
+                          );
+                          controller.text = '';
                         },
                         child: Column(
                           children: [
@@ -127,6 +136,40 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                                 bottom: 6.h,
                               ),
                               child: searchBar(),
+                            ),
+                            GridView.builder(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).padding.bottom),
+                              shrinkWrap: true,
+                              itemCount: widget.cubit.contentNftOnSelect.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 16.w),
+                                  child: NFTItemWidget(
+                                    nftMarket: widget
+                                            .cubit
+                                            .contentNftOnSelect[index]
+                                            .nft ??
+                                        NftMarket(),
+                                    isChoosing: true,
+                                    callBack: () {
+                                      Navigator.pop(
+                                        context,
+                                        widget.cubit.contentNftOnSelect[index]
+                                                .nft ??
+                                            NftMarket(),
+                                      );
+                                    },
+                                    // pageRouter: widget.pageRouter,
+                                  ),
+                                );
+                              },
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 170.w / 231.h,
+                              ),
                             ),
                           ],
                         ),
@@ -171,6 +214,7 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                     controller: controller,
                     onChanged: (value) {
                       widget.cubit.isShowIcCloseSearch.sink.add(true);
+                      _onSearchChanged(value.trim());
                     },
                     cursorColor: AppTheme.getInstance().whiteColor(),
                     style: textNormal(
@@ -202,6 +246,9 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                           setState(() {
                             controller.text = '';
                             widget.cubit.isShowIcCloseSearch.sink.add(false);
+                            widget.cubit.getSelectNftCollateral(
+                              widget.cubit.getCurrentWallet(),
+                            );
                           });
                           FocusScope.of(context).unfocus();
                         },
@@ -219,7 +266,7 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                         ),
                       ),
                     );
-                  }
+                  },
                 )
               ],
             ),
@@ -232,7 +279,11 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
   void _onSearchChanged(String query) {
     if (_debounce.isActive) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 900), () {
-      //todo
+      widget.cubit.getSelectNftCollateral(
+        widget.cubit.getCurrentWallet(),
+        name: query,
+        isSearch: true,
+      );
     });
   }
 }

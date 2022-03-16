@@ -1,3 +1,4 @@
+import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
@@ -9,6 +10,7 @@ import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
+import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
@@ -44,7 +46,7 @@ abstract class BorrowService {
     @Query('loanToValueRanges') String? loanToValueRanges,
     @Query('loanSymbols') String? loanSymbols,
     @Query('loanType') String? loanType,
-      @Query('durationTypes') String? durationType,
+    @Query('durationTypes') String? durationType,
     @Query('page') String? page,
     @Query('size') String? size,
     @Query('cusSort') String? cusSort,
@@ -104,18 +106,22 @@ abstract class BorrowService {
     @Query('loanAmountTo') String? loanAmountTo,
     @Query('collectionId') String? collectionId,
   );
-  @POST(
-      ApiConstants.POST_COLLATERAL_TO_BE)
-  Future<ConfirmEvaluationResponse> confirmSendLoanRequest(
-      @Body() Map<String,String> map,
-      );
 
+  @POST(ApiConstants.POST_COLLATERAL_TO_BE)
+  Future<ConfirmEvaluationResponse> confirmSendLoanRequest(
+    @Body() Map<String, String> map,
+  );
 
   @GET(ApiConstants.GET_COLLECTION_FILTER)
   Future<ListCollectionFilterResponse> getListCollectionFilter();
 
   @GET(ApiConstants.GET_ASSET_FILTER)
   Future<AssetFilterResponse> getListAssetFilter();
+
+  @POST(ApiConstants.POST_NFT_SEND_LOAN_REQUEST)
+  Future<NftResAfterPostLoanRequestResponse> postNftOnLoanRequest(
+    @Body() NftSendLoanRequest nftSendLoanRequest,
+  );
 
   @GET(ApiConstants.GET_NFT_SEND_lOAN_REQUEST)
   Future<NftOnRequestLoanResponse> getListNftOnRequestLoan(

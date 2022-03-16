@@ -6,6 +6,7 @@ import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -28,7 +29,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   SendLoanRequestCubit() : super(SendLoanRequestInitial());
 
   BehaviorSubject<ModelToken> tokenStream =
-  BehaviorSubject.seeded(ModelToken.init());
+      BehaviorSubject.seeded(ModelToken.init());
   BehaviorSubject<String> focusTextField = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorMessage = BehaviorSubject.seeded('');
@@ -43,11 +44,11 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   final Web3Utils client = Web3Utils();
 
   void enableButtonRequest() {
-    if (errorCollateral.value == '' && errorMessage.value == '' &&
+    if (errorCollateral.value == '' &&
+        errorMessage.value == '' &&
         errorDuration.value == '') {
       enableButton.add(true);
-    }
-    else {
+    } else {
       enableButton.add(false);
     }
   }
@@ -149,6 +150,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   final Web3Utils _client = Web3Utils();
+
   BorrowRepository get _repo => Get.find();
 
   Future<String> getCreateCryptoCollateral({
@@ -169,6 +171,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     );
     return hexString;
   }
+
   Future<void> pushSendNftToBE({
     required String amount,
     required String bcPackageId,
@@ -196,8 +199,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'txid': txId,
       'wallet_address': walletAddress,
     };
-    final Result<String> code =
-    await _repo.confirmCollateralToBe(map: map);
+    final Result<String> code = await _repo.confirmCollateralToBe(map: map);
     code.when(success: (res) {}, error: (error) {});
   }
 
@@ -215,10 +217,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   String? validateAmount(String amount) {
     if (amount.isEmpty) {
       return 'Expected loan is required';
-    } else if (amount.length > 100) {
-      return 'Maximum length allowed is 100 characters';
     } else if (!utils.isValidateAmount5(amount)) {
       return 'Invalid expected loan';
+    } else if (amount.length > 100) {
+      return 'Maximum length allowed is 100 characters';
     } else {
       return null;
     }
@@ -248,19 +250,22 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   Map<String, bool> mapValidate = {
     'form': false,
-    'tick': false,
+    'tick': true,
     'chooseNFT': false,
   };
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
-      //false cannot switch screen
+      isEnableSendRqNft.sink.add(false);
     } else {
-      //can switch
+      isEnableSendRqNft.sink.add(true);
     }
   }
 
   BehaviorSubject<bool> isMonthForm = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isEnableSendRqNft = BehaviorSubject<bool>();
+  BehaviorSubject<bool> tickBoxSendRqNft = BehaviorSubject<bool>();
   List<Map<String, dynamic>> listDropDownToken = [];
   List<TokenInf> listTokenSupport = [];
   List<Map<String, dynamic>> listDropDownDuration = [
@@ -274,6 +279,33 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     },
   ];
 
+  Map<String, dynamic> fillToken = {};
+
+  void fillTokenAfterChooseNft(String symbolToken) {
+    print('symbooool $symbolToken');
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final element in listTokenSupport) {
+      if (element.symbol == symbolToken) {
+        fillToken = {
+          'label': element.symbol,
+          'value': element.id,
+          'addressToken': element.address,
+          'icon': SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Image.network(
+              ImageAssets.getSymbolAsset(
+                element.symbol ?? DFY,
+              ),
+            ),
+          )
+        };
+        break;
+      }
+    }
+  }
+
   void getTokensRequestNft() {
     if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
       listTokenSupport.clear();
@@ -284,13 +316,11 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     listDropDownToken.add({
       'label': DFY,
       'value': 1,
-      'addressToken': Get
-          .find<AppConstants>()
-          .contract_defy,
+      'addressToken': Get.find<AppConstants>().contract_defy,
       'icon': SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset(
+        child: Image.network(
           ImageAssets.getSymbolAsset(
             DFY,
           ),
@@ -309,7 +339,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           'icon': SizedBox(
             width: 20.w,
             height: 20.h,
-            child: Image.asset(
+            child: Image.network(
               ImageAssets.getSymbolAsset(
                 element.symbol ?? DFY,
               ),
@@ -320,20 +350,29 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
   }
 
-  BehaviorSubject<bool> isShowIcCloseSearch = BehaviorSubject<bool>();
+  ///autoFill data when choosing data
+  BehaviorSubject<NftMarket?> nftMarketFill = BehaviorSubject<NftMarket>();
 
-  BorrowRepository get _repo => Get.find();
+  BehaviorSubject<bool> isShowIcCloseSearch = BehaviorSubject<bool>();
 
   ///Call API
   String message = '';
   int page = 0;
+  bool loadMore = false;
+  bool canLoadMoreList = true;
+  bool refresh = false;
   List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
 
   Future<void> getSelectNftCollateral(
     String? walletAddress, {
     String? name,
     String? nftType,
+    bool isSearch = false,
   }) async {
+    if (isSearch) {
+      contentNftOnSelect.clear();
+      page = 0;
+    }
     showLoading();
     final Result<List<ContentNftOnRequestLoanModel>> result =
         await _repo.getListNftOnLoanRequest(
@@ -351,7 +390,6 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             list: res,
           ),
         );
-        showContent();
       },
       error: (error) {
         emit(
@@ -369,23 +407,27 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     String? name,
     String? nftType,
   }) async {
-    if (loadMoreLoading == false) {
+    if (loadMore == false) {
       showLoading();
       page += 1;
-      loadMoreRefresh = false;
-      loadMoreLoading = true;
+      canLoadMoreList = true;
+      loadMore = true;
       await getSelectNftCollateral(walletAddress, nftType: nftType, name: name);
     } else {
       //nothing
     }
   }
 
+  String getCurrentWallet() {
+    return PrefsService.getCurrentBEWallet();
+  }
+
   Future<void> refreshGetListNftCollateral(String walletAddress) async {
-    if (loadMoreLoading == false) {
+    canLoadMoreList = true;
+    if (refresh == false) {
       showLoading();
       page = 0;
-      loadMoreRefresh = true;
-      loadMoreLoading = true;
+      refresh = true;
       await getSelectNftCollateral(walletAddress);
     } else {
       //nothing

@@ -14,12 +14,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest(
-      {Key? key,
-      this.index = 0,
-      required this.packageId,
-      required this.pawnshopType})
-      : super(key: key);
+  const SendLoanRequest({
+    Key? key,
+    this.index = 0,
+    required this.packageId,
+    required this.pawnshopType,
+  }) : super(key: key);
   final int index;
   final String packageId;
   final String pawnshopType;
@@ -59,7 +59,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            height: 763.h,
+            // height: 763.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -169,7 +169,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                              maxHeight: 750.h, minHeight: 699.h),
+                              maxHeight: 800.h, minHeight: 699.h),
                           child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,

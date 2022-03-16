@@ -196,7 +196,9 @@ class NftOnRequestLoanContentResponse extends Equatable {
         walletAddress: walletAddress,
         completedContracts: completedContracts,
         type: type,
-        nft: nft?.toModel(),
+        nft: nft?.toModel(
+            expectedLoanAmount: expectedLoanAmount ?? 0,
+            loanSymbol: loanSymbol ?? ''),
         nftCollateralDetailDTO: nftCollateralDetailDTO?.toDomain(),
       );
 
@@ -307,11 +309,15 @@ class NftResponse extends Equatable {
       return TypeNFT.HARD_NFT;
     }
   }
-
-  NftMarket toModel() => NftMarket(
+  //todo cần xem lại các trường khi dùng nftmarket
+  NftMarket toModel(
+          {required double expectedLoanAmount, required String loanSymbol}) =>
+      NftMarket(
+        price: expectedLoanAmount,
+        symbolToken: loanSymbol,
+        name: nftName,
         nftId: nftId,
         typeNFT: getTypeNft(nftType ?? 0),
-        name: nftName,
         collectionAddress: collectionAddress,
         collectionName: collectionName,
         isWhitelist: isWhitelist,
@@ -320,6 +326,9 @@ class NftResponse extends Equatable {
         totalCopies: (totalOfCopies ?? 0) as int,
         bcNftId: bcNftId,
         typeImage: getTypeImage(fileType ?? ''),
+        numberOfCopies: (numberOfCopies ?? 0) as int,
+        ///đang fix cứng theo web
+        marketType: MarketType.PAWN,
       );
 
   factory NftResponse.fromJson(Map<String, dynamic> json) =>
