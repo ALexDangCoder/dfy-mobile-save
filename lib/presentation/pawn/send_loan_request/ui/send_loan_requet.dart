@@ -63,7 +63,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            height: 763.h,
+            // height: 763.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -202,6 +202,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                       pawnshopType: widget.pawnshopType,
                                     ),
                                     SendLoanRequestNft(
+                                      packageId: widget.packageId,
                                       cubit: cubit,
                                     )
                                   ],

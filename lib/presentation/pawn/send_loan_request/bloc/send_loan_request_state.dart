@@ -40,6 +40,23 @@ class ListSelectNftLoading extends SendLoanRequestState {
   List<Object?> get props => [];
 }
 
+class SubmittingNft extends SendLoanRequestState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SubmitNftSuccess extends SendLoanRequestState {
+
+  final CompleteType complete;
+
+  SubmitNftSuccess(this.complete);
+
+  @override
+  List<Object?> get props => [];
+}
+
+
+
 
 
 

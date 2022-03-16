@@ -197,8 +197,14 @@ class NftOnRequestLoanContentResponse extends Equatable {
         completedContracts: completedContracts,
         type: type,
         nft: nft?.toModel(
-            expectedLoanAmount: expectedLoanAmount ?? 0,
-            loanSymbol: loanSymbol ?? ''),
+          collateralId: id ?? 0,
+          walletAddress: walletAddress ?? '',
+          expectedCollateralSymbol: expectedCollateralSymbol ?? DFY,
+          durationType: durationType ?? 0,
+          durationQty: durationQty ?? 0,
+          expectedLoanAmount: expectedLoanAmount ?? 0,
+          loanSymbol: loanSymbol ?? '',
+        ),
         nftCollateralDetailDTO: nftCollateralDetailDTO?.toDomain(),
       );
 
@@ -309,16 +315,29 @@ class NftResponse extends Equatable {
       return TypeNFT.HARD_NFT;
     }
   }
+
   //todo cần xem lại các trường khi dùng nftmarket
-  NftMarket toModel(
-          {required double expectedLoanAmount, required String loanSymbol}) =>
+  NftMarket toModel({
+    required double expectedLoanAmount,
+    required String loanSymbol,
+    required String expectedCollateralSymbol,
+    required int durationType,
+    required int durationQty,
+    required int collateralId,
+    required String walletAddress,
+  }) =>
       NftMarket(
+        walletAddress: walletAddress,
+        expectedCollateralSymbol: expectedCollateralSymbol,
         price: expectedLoanAmount,
         symbolToken: loanSymbol,
+        collateralId: collateralId,
         name: nftName,
         nftId: nftId,
         typeNFT: getTypeNft(nftType ?? 0),
         collectionAddress: collectionAddress,
+        durationQty: durationQty,
+        durationType: durationType,
         collectionName: collectionName,
         isWhitelist: isWhitelist,
         image: getPath(nftAvatarCid ?? ''),
@@ -327,6 +346,7 @@ class NftResponse extends Equatable {
         bcNftId: bcNftId,
         typeImage: getTypeImage(fileType ?? ''),
         numberOfCopies: (numberOfCopies ?? 0) as int,
+
         ///đang fix cứng theo web
         marketType: MarketType.PAWN,
       );

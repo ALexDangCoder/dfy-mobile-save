@@ -37,7 +37,9 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
   void initState() {
     super.initState();
     _debounce = Timer(const Duration(milliseconds: 500), () {});
-    widget.cubit.getSelectNftCollateral(widget.cubit.getCurrentWallet());
+    widget.cubit.getSelectNftCollateral(
+      widget.cubit.getCurrentWallet(),
+    );
   }
 
   @override
@@ -147,10 +149,8 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                                 return Padding(
                                   padding: EdgeInsets.only(left: 16.w),
                                   child: NFTItemWidget(
-                                    nftMarket: widget
-                                            .cubit
-                                            .contentNftOnSelect[index]
-                                            .nft ??
+                                    nftMarket: widget.cubit
+                                            .contentNftOnSelect[index].nft ??
                                         NftMarket(),
                                     isChoosing: true,
                                     callBack: () {

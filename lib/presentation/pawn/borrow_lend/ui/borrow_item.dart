@@ -18,7 +18,13 @@ class BorrowItem extends StatefulWidget {
 }
 
 class _BorrowItemState extends State<BorrowItem> {
-  TextEditingController textAmountController = TextEditingController();
+  late TextEditingController textAmountController;
+
+  @override
+  void initState() {
+    super.initState();
+    textAmountController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +141,7 @@ class _BorrowItemState extends State<BorrowItem> {
           child: StreamBuilder<String>(
             stream: bloc.tokenSymbol,
             builder: (context, snapshot) {
-              final String tokenSymbol =
-                  (snapshot.data ?? '').toUpperCase();
+              final String tokenSymbol = (snapshot.data ?? '').toUpperCase();
               return Container(
                 height: 64.h,
                 padding: EdgeInsets.symmetric(
@@ -154,8 +159,7 @@ class _BorrowItemState extends State<BorrowItem> {
                     Row(
                       children: [
                         SizedBox(
-                          child: tokenSymbol ==
-                                  S.current.all.toUpperCase()
+                          child: tokenSymbol == S.current.all.toUpperCase()
                               ? const SizedBox.shrink()
                               : Image.network(
                                   ImageAssets.getSymbolAsset(
@@ -163,14 +167,13 @@ class _BorrowItemState extends State<BorrowItem> {
                                   ),
                                   height: 24.w,
                                   width: 24.w,
-                                  errorBuilder:
-                                      (context, error, stackTrace) =>
-                                          Container(
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Container(
                                     height: 24.w,
                                     width: 24.w,
                                     decoration: BoxDecoration(
-                                      color: AppTheme.getInstance()
-                                          .bgBtsColor(),
+                                      color:
+                                          AppTheme.getInstance().bgBtsColor(),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
