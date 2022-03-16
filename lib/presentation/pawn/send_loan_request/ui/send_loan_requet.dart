@@ -210,6 +210,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                 },
                               ),
                               SendLoanRequestNft(
+                                packageId: widget.packageId,
                                 cubit: cubit,
                               )
                             ],

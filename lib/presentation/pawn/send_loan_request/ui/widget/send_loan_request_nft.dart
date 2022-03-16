@@ -18,9 +18,11 @@ class SendLoanRequestNft extends StatefulWidget {
   const SendLoanRequestNft({
     Key? key,
     required this.cubit,
+    required this.packageId,
   }) : super(key: key);
 
   final SendLoanRequestCubit cubit;
+  final String packageId;
 
   @override
   _SendLoanRequestNftState createState() => _SendLoanRequestNftState();
@@ -28,6 +30,7 @@ class SendLoanRequestNft extends StatefulWidget {
 
 class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
   final TextEditingController loanController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
 
   @override
   void initState() {
@@ -94,7 +97,9 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                   heightDropDown: 300.h,
                   listDropDown: widget.cubit.listDropDownToken,
                   initValue: snapshot.data ?? widget.cubit.listDropDownToken[0],
-                  onChange: (Map<String, dynamic> value) {},
+                  onChange: (Map<String, dynamic> value) {
+                    widget.cubit.nftRequest.loanSymbol = value['label'];
+                  },
                 );
               },
             ),
@@ -118,6 +123,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             stream: widget.cubit.isMonthForm,
             builder: (context, snapshot) {
               return TextFieldValidator(
+                controller: durationController,
                 hint: 'Duration',
                 onChange: (value) {
                   widget.cubit.validateDuration(
@@ -134,10 +140,12 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                   onChange: (value) => {
                     if (value['label'] == 'month')
                       {
+                        widget.cubit.nftRequest.durationType = 1,
                         widget.cubit.isMonthForm.sink.add(true),
                       }
                     else
                       {
+                        widget.cubit.nftRequest.durationType = 0,
                         widget.cubit.isMonthForm.sink.add(false),
                       }
                   },
@@ -257,14 +265,39 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                           },
                         ),
                       );
+
+                      ///fill data to request to post
+                      widget.cubit.nftRequest.durationType =
+                          result.durationType;
+                      widget.cubit.nftRequest.collateralId =
+                          result.collateralId;
+                      widget.cubit.nftRequest.walletAddress =
+                          result.walletAddress;
+                      widget.cubit.nftRequest.marketType =
+                          (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
+                      widget.cubit.nftRequest.nftId = result.nftId ?? '';
+                      widget.cubit.nftRequest.pawnShopPackageId =
+                          int.parse(widget.packageId);
+                      widget.cubit.nftRequest.durationTime = result.durationQty;
+                      widget.cubit.nftRequest.txId = null;//case nay dang de null
+                      widget.cubit.nftRequest.collateralSymbol =
+                          result.expectedCollateralSymbol;
+                      durationController.text = result.durationQty.toString();
+                      widget.cubit.validateDuration(
+                        durationController.text,
+                        isMonth: result.durationType == 0 ? false : true,
+                      );
+
+                      ///end
                       widget.cubit.nftMarketConfirm = result;
                       widget.cubit.nftMarketFill.sink.add(result);
                       widget.cubit.mapValidate['chooseNFT'] = true;
                       loanController.text = result.price.toString();
                       widget.cubit.validateAmount(loanController.text);
                       //todo why dont work run still ok
-                      widget.cubit
-                          .fillTokenAfterChooseNft(result.symbolToken ?? DFY);
+                      widget.cubit.fillTokenAfterChooseNft(
+                        result.expectedCollateralSymbol ?? DFY,
+                      );
                       widget.cubit.validateAll();
                     },
                     child: Column(
@@ -330,9 +363,10 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                 child: Text(
                   snapshot.data ?? '',
                   style: textNormalCustom(
-                      AppTheme.getInstance().redMarketColors(),
-                      12,
-                      FontWeight.w400),
+                    AppTheme.getInstance().redMarketColors(),
+                    12,
+                    FontWeight.w400,
+                  ),
                 ),
               );
             },

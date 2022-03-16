@@ -58,10 +58,20 @@ class NftMarket {
   int? bcNftId;
   String? borrowerWalletAddress;
 
+  //properties for send loan request
+  int? durationType;
+  int? durationQty;
+  String? expectedCollateralSymbol;
+  int? collateralId;
+
   NftMarket.init();
 
   NftMarket({
     this.bcCollateralId,
+    this.collateralId,
+    this.durationType,
+    this.durationQty,
+    this.expectedCollateralSymbol,
     this.bcNftId,
     this.borrowerWalletAddress,
     this.cover,

@@ -308,7 +308,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     'chooseNFT': false,
   };
 
-  final NftSendLoanRequest nftRequest = NftSendLoanRequest();
+  final NftSendLoanRequest nftRequest = NftSendLoanRequest(
+    loanSymbol: DFY,
+  );
+
   //THIS VAR SAVE INFOR NFT WIDGET
   NftMarket nftMarketConfirm = NftMarket();
 
@@ -446,7 +449,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       walletAddress: walletAddress,
       page: page.toString(),
       name: name,
-      nftType: nftType ?? '0',
+      // nftType: nftType ?? '0',
       // size: '6',
     );
     result.when(
@@ -487,6 +490,20 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   String getCurrentWallet() {
     return PrefsService.getCurrentBEWallet();
+  }
+
+  Future<void> postNftToServer() async {
+    emit(SubmittingNft());
+    final result = await _repo.postNftToServer(request: nftRequest);
+    result.when(success: (res) {
+      if(res.error == 'success') {
+        emit(SubmitNftSuccess(CompleteType.SUCCESS));
+      } else {
+        emit(SubmitNftSuccess(CompleteType.ERROR));
+      }
+    }, error: (error) {
+      emit(SubmitNftSuccess(CompleteType.ERROR));
+    });
   }
 
   Future<void> refreshGetListNftCollateral(String walletAddress) async {
