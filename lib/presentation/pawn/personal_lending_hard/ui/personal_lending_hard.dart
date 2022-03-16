@@ -256,6 +256,7 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                       itemCount: list.length,
                                       itemBuilder: (context, index) =>
                                           PersonalItem(
+                                            id: list[index].id.toString(),
                                         rate: list[index].reputation.toString(),
                                         isShop: list[index].isKYC ?? false,
                                         nameShop: list[index].name.toString(),

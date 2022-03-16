@@ -19,7 +19,8 @@ class SendLoanRequest extends StatefulWidget {
       {Key? key,
       this.index = 0,
       required this.packageId,
-      required this.pawnshopType, required this.collateralAccepted})
+      required this.pawnshopType,
+      required this.collateralAccepted})
       : super(key: key);
   final int index;
   final String packageId;
@@ -62,7 +63,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            // height: 763.h,
+            height: 763.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -118,107 +119,111 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                 ),
                 spaceH20,
                 line,
-                SizedBox(
-                  height: 696.h,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        spaceH12,
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 16.w,
-                          ),
-                          child: Text(
-                            'Collateral type',
-                            style: textNormalCustom(
-                              Colors.white,
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
+                BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
+                  bloc: cubit,
+                  listener: (context, state) {
+                    if (state is NoLogin) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const ConnectWalletDialog(
+                          isRequireLoginEmail: true,
                         ),
-                        spaceH14,
-                        SizedBox(
-                          child: StreamBuilder<int>(
-                              stream: cubit.tabIndex,
-                              builder: (context, snapshot) {
-                                return TabBar(
-                                  unselectedLabelColor: Colors.white,
-                                  labelColor: Colors.white,
-                                  onTap: (int i) {
-                                    cubit.tabIndex.add(i);
-                                  },
-                                  indicatorColor:
-                                      AppTheme.getInstance().bgBtsColor(),
-                                  tabs: [
-                                    Tab(
-                                      icon: CheckboxItemTab(
-                                        isSelected: snapshot.data == 0,
-                                        nameCheckbox: 'Cryptocurrency',
-                                      ),
-                                    ),
-                                    Tab(
-                                      icon: CheckboxItemTab(
-                                        isSelected: snapshot.data == 1,
-                                        nameCheckbox: 'NFT',
-                                      ),
-                                    )
-                                  ],
-                                  controller: _tabController,
-                                  indicatorSize: TabBarIndicatorSize.tab,
-                                );
-                              }),
-                        ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxHeight: 800.h, minHeight: 699.h),
-                          child: TabBarView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: _tabController,
+                      ).then((_) => cubit.getLoginState());
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is GetWalletSuccess) {
+                      return SizedBox(
+                        height: 696.h,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BlocConsumer<SendLoanRequestCubit,
-                                  SendLoanRequestState>(
-                                bloc: cubit,
-                                listener: (context, state) {
-                                  if (state is NoLogin) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          const ConnectWalletDialog(
-                                        isRequireLoginEmail: true,
-                                      ),
-                                    ).then((_) => cubit.getLoginState());
-                                  }
-                                },
-                                builder: (context, state) {
-                                  if (state is GetWalletSuccess) {
-                                    return CryptoCurrency(
+                              spaceH12,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 16.w,
+                                ),
+                                child: Text(
+                                  'Collateral type',
+                                  style: textNormalCustom(
+                                    Colors.white,
+                                    16,
+                                    FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              spaceH14,
+                              SizedBox(
+                                child: StreamBuilder<int>(
+                                    stream: cubit.tabIndex,
+                                    builder: (context, snapshot) {
+                                      return TabBar(
+                                        unselectedLabelColor: Colors.white,
+                                        labelColor: Colors.white,
+                                        onTap: (int i) {
+                                          cubit.tabIndex.add(i);
+                                        },
+                                        indicatorColor:
+                                            AppTheme.getInstance().bgBtsColor(),
+                                        tabs: [
+                                          Tab(
+                                            icon: CheckboxItemTab(
+                                              isSelected: snapshot.data == 0,
+                                              nameCheckbox: 'Cryptocurrency',
+                                            ),
+                                          ),
+                                          Tab(
+                                            icon: CheckboxItemTab(
+                                              isSelected: snapshot.data == 1,
+                                              nameCheckbox: 'NFT',
+                                            ),
+                                          )
+                                        ],
+                                        controller: _tabController,
+                                        indicatorSize: TabBarIndicatorSize.tab,
+                                      );
+                                    }),
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight: 700.h,
+                                  minHeight: 699.h,
+                                ),
+                                child: TabBarView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  controller: _tabController,
+                                  children: [
+                                    CryptoCurrency(
                                       cubit: cubit,
                                       packageId: widget.packageId,
                                       walletAddress: walletAddress,
                                       hasEmail: cubit.hasEmail,
                                       pawnshopType: widget.pawnshopType,
-                                    );
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    );
-                                  }
-                                },
+                                    ),
+                                    SendLoanRequestNft(
+                                      cubit: cubit,
+                                    )
+                                  ],
+                                ),
                               ),
-                              SendLoanRequestNft(
-                                cubit: cubit,
-                              )
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 350.h,),
+                        child:  Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.r,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),

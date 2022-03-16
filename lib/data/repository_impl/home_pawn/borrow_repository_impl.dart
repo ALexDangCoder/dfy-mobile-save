@@ -2,6 +2,7 @@ import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.da
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/detail_pawnshop_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
@@ -257,6 +258,14 @@ class BorrowRepositoryImpl implements BorrowRepository {
         addressWallet,
       ),
       (response) => response.map((e) => e.toDomain()).toList(),
+    );
+  }
+
+  @override
+  Future<Result<PawnshopPackage>> getPawnshopDetail({required String packageId}) {
+    return runCatchingAsync<DetailPawnShopResponse, PawnshopPackage>(
+          () => _client.getPawnshopPackageDetail(packageId),
+          (response) => response.data?.toDomain() ?? PawnshopPackage(),
     );
   }
 

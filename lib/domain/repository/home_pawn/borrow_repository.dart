@@ -124,4 +124,8 @@ mixin BorrowRepository {
     String? supplyCurrency,
    String? walletAddress,
   });
+
+  Future<Result<PawnshopPackage>> getPawnshopDetail({
+    required String packageId,
+  });
 }
