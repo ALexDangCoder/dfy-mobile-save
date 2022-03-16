@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/main.dart';
-import 'package:Dfy/utils/app_utils.dart';
+import 'package:Dfy/utils/app_utils.dart' as utils;
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
@@ -57,7 +60,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       yield listModelToken[i];
     }
   }
+
   List<AcceptableAssetsAsCollateral> collateralAccepted = [];
+
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
@@ -68,8 +73,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     //     }
     //   }
     // }
-    for(final element in listTokenFromWalletCore) {
-      if(element.nameShortToken == DFY){
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken == DFY) {
         listTokenCollateral.add(element);
       }
     }
@@ -223,65 +228,101 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   ///Huy send loan nft
-  String? validateMessage(String value) {
+
+  void validateMessage(String value) {
     if (value.isEmpty) {
-      return 'Message is required';
+      mapValidate['formMess'] = false;
+      isShowMessage.sink.add(true);
+      txtWarnMess.sink.add('Message is required');
     } else if (value.length > 100) {
-      return 'Maximum length allowed is 100 characters';
+      mapValidate['formMess'] = false;
+      isShowMessage.sink.add(true);
+      txtWarnMess.sink.add('Maximum length allowed is 100 characters');
     } else {
-      return null;
+      mapValidate['formMess'] = true;
+      isShowMessage.sink.add(false);
     }
   }
 
-  String? validateAmount(String amount) {
+  void validateAmount(String amount) {
     if (amount.isEmpty) {
-      return 'Expected loan is required';
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Expected loan is required');
+    } else if (!utils.isValidateAmount5(amount)) {
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Invalid expected loan');
     } else if (amount.length > 100) {
-      return 'Maximum length allowed is 100 characters';
-    } else if (!isValidateAmount5(amount)) {
-      return 'Invalid expected loan';
+      mapValidate['formLoan'] = false;
+      isShowLoanToken.sink.add(true);
+      txtWarnLoan.sink.add('Maximum length allowed is 100 characters');
     } else {
-      return null;
+      nftRequest.loanAmount = double.parse(amount);
+      mapValidate['formLoan'] = true;
+      isShowLoanToken.sink.add(false);
     }
   }
 
-  String? validateDuration(String value, {bool isMonth = true}) {
+  void validateDuration(String value, {bool isMonth = true}) {
     if (!isMonth) {
       //isWeek
       if (value.isEmpty) {
-        return 'Duration is required';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink.add('Duration is required');
       } else if (int.parse(value) > 1200) {
-        return 'Duration by week cannot be greater than 5,200';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink
+            .add('Duration by week cannot be greater than 5,200');
       } else {
-        return null;
+        nftRequest.durationTime = int.parse(value);
+        mapValidate['formDuration'] = true;
+        isShowDuration.add(false);
       }
     } else {
       //isMonth
       if (value.isEmpty) {
-        return 'Duration is required';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink.add('Duration is required');
       } else if (int.parse(value) > 1200) {
-        return 'Duration by month cannot be greater than 1,200';
+        mapValidate['formDuration'] = false;
+        isShowDuration.sink.add(true);
+        txtWarnDuration.sink
+            .add('Duration by month cannot be greater than 1,200');
       } else {
-        return null;
+        nftRequest.durationTime = int.parse(value);
+        mapValidate['formDuration'] = true;
+        isShowDuration.add(false);
       }
     }
   }
 
   Map<String, bool> mapValidate = {
-    'form': false,
-    'tick': false,
+    'formLoan': false,
+    'formMess': false,
+    'formDuration': false,
+    'tick': true,
     'chooseNFT': false,
   };
 
+  final NftSendLoanRequest nftRequest = NftSendLoanRequest();
+  //THIS VAR SAVE INFOR NFT WIDGET
+  NftMarket nftMarketConfirm = NftMarket();
+
   void validateAll() {
     if (mapValidate.containsValue(false)) {
-      //false cannot switch screen
+      isEnableSendRqNft.sink.add(false);
     } else {
-      //can switch
+      isEnableSendRqNft.sink.add(true);
     }
   }
 
   BehaviorSubject<bool> isMonthForm = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isEnableSendRqNft = BehaviorSubject<bool>();
+  BehaviorSubject<bool> tickBoxSendRqNft = BehaviorSubject<bool>();
   List<Map<String, dynamic>> listDropDownToken = [];
   List<TokenInf> listTokenSupport = [];
   List<Map<String, dynamic>> listDropDownDuration = [
@@ -294,6 +335,43 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'value': 'week',
     },
   ];
+
+  ///warning form
+  BehaviorSubject<bool> isShowMessage = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowLoanToken = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowDuration = BehaviorSubject<bool>();
+  BehaviorSubject<String> txtWarnMess = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnLoan = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnDuration = BehaviorSubject<String>();
+
+  BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
+      BehaviorSubject<Map<String, dynamic>>();
+
+  void fillTokenAfterChooseNft(String symbolToken) {
+    Map<String, dynamic> fillToken = {};
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final element in listTokenSupport) {
+      if (element.symbol == symbolToken) {
+        fillToken = {
+          'label': element.symbol,
+          'value': element.id,
+          'addressToken': element.address,
+          'icon': SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Image.network(
+              ImageAssets.getSymbolAsset(
+                element.symbol ?? DFY,
+              ),
+            ),
+          )
+        };
+        tokenAfterChooseNft.sink.add(fillToken);
+        break;
+      }
+    }
+  }
 
   void getTokensRequestNft() {
     if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
@@ -309,7 +387,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'icon': SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset(
+        child: Image.network(
           ImageAssets.getSymbolAsset(
             DFY,
           ),
@@ -328,7 +406,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           'icon': SizedBox(
             width: 20.w,
             height: 20.h,
-            child: Image.asset(
+            child: Image.network(
               ImageAssets.getSymbolAsset(
                 element.symbol ?? DFY,
               ),
@@ -336,6 +414,90 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
           )
         });
       }
+    }
+  }
+
+  ///autoFill data when choosing data
+  BehaviorSubject<NftMarket?> nftMarketFill = BehaviorSubject<NftMarket>();
+
+  BehaviorSubject<bool> isShowIcCloseSearch = BehaviorSubject<bool>();
+
+  ///Call API
+  String message = '';
+  int page = 0;
+  bool loadMore = false;
+  bool canLoadMoreList = true;
+  bool refresh = false;
+  List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
+
+  Future<void> getSelectNftCollateral(
+    String? walletAddress, {
+    String? name,
+    String? nftType,
+    bool isSearch = false,
+  }) async {
+    if (isSearch) {
+      contentNftOnSelect.clear();
+      page = 0;
+    }
+    showLoading();
+    final Result<List<ContentNftOnRequestLoanModel>> result =
+        await _repo.getListNftOnLoanRequest(
+      walletAddress: walletAddress,
+      page: page.toString(),
+      name: name,
+      nftType: nftType ?? '0',
+      // size: '6',
+    );
+    result.when(
+      success: (res) {
+        emit(
+          ListSelectNftCollateralGetApi(
+            CompleteType.SUCCESS,
+            list: res,
+          ),
+        );
+      },
+      error: (error) {
+        emit(
+          ListSelectNftCollateralGetApi(
+            CompleteType.ERROR,
+            message: error.message,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> loadMoreGetListNftCollateral(
+    String walletAddress, {
+    String? name,
+    String? nftType,
+  }) async {
+    if (loadMore == false) {
+      showLoading();
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getSelectNftCollateral(walletAddress, nftType: nftType, name: name);
+    } else {
+      //nothing
+    }
+  }
+
+  String getCurrentWallet() {
+    return PrefsService.getCurrentBEWallet();
+  }
+
+  Future<void> refreshGetListNftCollateral(String walletAddress) async {
+    canLoadMoreList = true;
+    if (refresh == false) {
+      showLoading();
+      page = 0;
+      refresh = true;
+      await getSelectNftCollateral(walletAddress);
+    } else {
+      //nothing
     }
   }
 }

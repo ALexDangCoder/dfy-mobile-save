@@ -22,10 +22,14 @@ class NFTItemWidget extends StatefulWidget {
     Key? key,
     required this.nftMarket,
     this.pageRouter,
+    this.isChoosing = false,
+    this.callBack,
   }) : super(key: key);
 
   final NftMarket nftMarket;
   final PageRouter? pageRouter;
+  final bool? isChoosing;
+  final Function()? callBack;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -102,25 +106,30 @@ class _NFTItemState extends State<NFTItemWidget> {
     }
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NFTDetailScreen(
-              key: nftKey,
-              typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
-              marketId: widget.nftMarket.marketId,
-              typeNft: widget.nftMarket.typeNFT,
-              nftId: widget.nftMarket.nftId,
-              pawnId: widget.nftMarket.pawnId,
-              collectionAddress: widget.nftMarket.collectionAddress,
-              nftTokenId: widget.nftMarket.nftTokenId,
-              pageRouter: widget.pageRouter,
-            ),
-            settings: const RouteSettings(
-              name: AppRouter.nft_detail,
-            ),
-          ),
-        );
+        (widget.isChoosing ?? false)
+            ? Navigator.pop(
+                context,
+                widget.nftMarket,
+              )
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NFTDetailScreen(
+                    key: nftKey,
+                    typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
+                    marketId: widget.nftMarket.marketId,
+                    typeNft: widget.nftMarket.typeNFT,
+                    nftId: widget.nftMarket.nftId,
+                    pawnId: widget.nftMarket.pawnId,
+                    collectionAddress: widget.nftMarket.collectionAddress,
+                    nftTokenId: widget.nftMarket.nftTokenId,
+                    pageRouter: widget.pageRouter,
+                  ),
+                  settings: const RouteSettings(
+                    name: AppRouter.nft_detail,
+                  ),
+                ),
+              );
       },
       child: Stack(
         children: [
@@ -143,19 +152,21 @@ class _NFTItemState extends State<NFTItemWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NFTDetailScreen(
-                            typeMarket:
-                                widget.nftMarket.marketType ?? MarketType.SALE,
-                            marketId: widget.nftMarket.marketId,
-                            typeNft: widget.nftMarket.typeNFT,
-                            nftId: widget.nftMarket.nftId,
-                            pawnId: widget.nftMarket.pawnId,
-                          ),
-                        ),
-                      );
+                      (widget.isChoosing ?? false)
+                          ? widget.callBack
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NFTDetailScreen(
+                                  typeMarket: widget.nftMarket.marketType ??
+                                      MarketType.SALE,
+                                  marketId: widget.nftMarket.marketId,
+                                  typeNft: widget.nftMarket.typeNFT,
+                                  nftId: widget.nftMarket.nftId,
+                                  pawnId: widget.nftMarket.pawnId,
+                                ),
+                              ),
+                            );
                     },
                     child: Stack(
                       children: [
