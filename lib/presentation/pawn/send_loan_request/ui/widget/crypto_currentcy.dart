@@ -122,6 +122,9 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 'Max amount '
                                 '${widget.cubit.getMaxBalance(item.nameShortToken)}',
                               );
+                            } else if (double.parse(value) <= 0) {
+                              widget.cubit.errorCollateral
+                                  .add('Invalid amount');
                             } else {
                               widget.cubit.errorCollateral.add('');
                             }
@@ -360,6 +363,12 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         onChanged: (value) {
                           if (value == '') {
                             widget.cubit.errorDuration.add('Duration not null');
+                          } else if (value.contains(',') ||
+                              value.contains('.')) {
+                            widget.cubit.errorDuration
+                                .add('Duration must be integer');
+                          } else if (double.parse(value) <= 0) {
+                            widget.cubit.errorDuration.add('Invalid amount');
                           } else {
                             widget.cubit.errorDuration.add('');
                           }
@@ -738,7 +747,8 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                   await showLoadSuccess(context).then(
                                     (value) => Navigator.of(context)
                                       ..pop()
-                                      ..pop()..pop(),
+                                      ..pop()
+                                      ..pop(),
                                   );
                                 },
                                 onErrorSign: (context) {
