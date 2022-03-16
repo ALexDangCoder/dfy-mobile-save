@@ -626,6 +626,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                   } else {
                     collateralAmount.text = '';
                     durationController.text = '';
+                    message.text = '';
                     duration = S.current.week;
                     item = widget.cubit.listTokenCollateral[0];
                     loanToken = widget.cubit.checkShow[0];
@@ -754,7 +755,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 hexString: hexString,
                                 payValue: collateralAmount.text,
                                 tokenAddress:
-                                    Get.find<AppConstants>().contract_defy,
+                                    item.tokenAddress,
                                 needApprove: true,
                                 onSuccessSign: (context, data) async {
                                   await widget.cubit.pushSendNftToBE(
