@@ -82,6 +82,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                             value: _key.currentState?.checkValidator() ?? false,
                           );
                         },
+                        context: context,
                       ),
                       spaceH16,
                       Text(
