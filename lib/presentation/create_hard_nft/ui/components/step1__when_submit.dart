@@ -32,7 +32,6 @@ import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:video_player/video_player.dart';
 
 enum NFT_TYPE {
   JEWELRY,
