@@ -20,6 +20,7 @@ class PawnshopPackageItem extends StatelessWidget {
           context,
           LoanPackageDetail(
             packageId: pawnshopPackage.id.toString(),
+            packageType: pawnshopPackage.type ?? 0,
           ),
         );
       },
