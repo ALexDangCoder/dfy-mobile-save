@@ -263,48 +263,11 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                           },
                         ),
                       ).then((value) {
-                          loanController.text = result.price.toString();
-                          print('----------- ${result.price}');
-
-                          ///fill data to request to post
-                          // widget.cubit.nftRequest.durationType =
-                          //     result.durationType;
-                          // widget.cubit.nftRequest.collateralId =
-                          //     result.collateralId;
-                          // widget.cubit.nftRequest.walletAddress =
-                          //     result.walletAddress;
-                          // widget.cubit.nftRequest.marketType =
-                          // (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
-                          // widget.cubit.nftRequest.nftId = result.nftId ?? '';
-                          // widget.cubit.nftRequest.pawnShopPackageId =
-                          //     int.parse(widget.packageId);
-                          // widget.cubit.nftRequest.durationTime = result.durationQty;
-                          // widget.cubit.nftRequest.txId =
-                          // null; //case nay dang de null
-                          // widget.cubit.nftRequest.collateralSymbol =
-                          //     result.expectedCollateralSymbol;
-                          // durationController.text = result.durationQty.toString();
-                          // widget.cubit.validateDuration(
-                          //   durationController.text,
-                          //   isMonth: result.durationType == 0 ? false : true,
-                          // );
-                          //
-                          // ///end
-                          // widget.cubit.nftMarketConfirm = result;
-                          // widget.cubit.nftMarketFill.sink.add(result);
-                          // widget.cubit.mapValidate['chooseNFT'] = true;
-                          // print('----------- ${result.price}');
-                          // widget.cubit.validateAmount(loanController.text);
-                          // //todo why dont work run still ok
-                          // widget.cubit.fillTokenAfterChooseNft(
-                          //   result.expectedCollateralSymbol ?? DFY,
-                          // );
-                          // widget.cubit.validateAll();
-
-
                         widget.cubit.emit(GetWalletSuccess());
                         return value;
                       });
+
+
                       ///fill data to request to post
                       widget.cubit.nftRequest.durationType =
                           result.durationType;
@@ -313,12 +276,13 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                       widget.cubit.nftRequest.walletAddress =
                           result.walletAddress;
                       widget.cubit.nftRequest.marketType =
-                      (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
+                          (result.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1);
                       widget.cubit.nftRequest.nftId = result.nftId ?? '';
                       widget.cubit.nftRequest.pawnShopPackageId =
                           int.parse(widget.packageId);
                       widget.cubit.nftRequest.durationTime = result.durationQty;
-                      widget.cubit.nftRequest.txId = null;//case nay dang de null
+                      widget.cubit.nftRequest.txId =
+                          null; //case nay dang de null
                       widget.cubit.nftRequest.collateralSymbol =
                           result.expectedCollateralSymbol;
                       durationController.text = result.durationQty.toString();
@@ -333,7 +297,6 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                       widget.cubit.mapValidate['chooseNFT'] = true;
                       loanController.text = result.price.toString();
                       widget.cubit.validateAmount(loanController.text);
-                      //todo why dont work run still ok
                       widget.cubit.fillTokenAfterChooseNft(
                         result.expectedCollateralSymbol ?? DFY,
                       );
@@ -402,9 +365,10 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                 child: Text(
                   snapshot.data ?? '',
                   style: textNormalCustom(
-                      AppTheme.getInstance().redMarketColors(),
-                      12,
-                      FontWeight.w400),
+                    AppTheme.getInstance().redMarketColors(),
+                    12,
+                    FontWeight.w400,
+                  ),
                 ),
               );
             },
