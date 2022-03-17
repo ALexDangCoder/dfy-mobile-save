@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/bloc/borrow_lend_bloc.dart';
@@ -54,7 +55,9 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
     return BaseDesignScreen(
       text: ImageAssets.ic_close,
       title: _tabController.index == 0 ? S.current.borrow : S.current.lend,
-      onRightClick: () {},
+      onRightClick: () {
+        Navigator.pop(context);
+      },
       isImage: true,
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -127,17 +130,17 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                                     bloc: _bloc,
                                   ),
                                   StreamBuilder<TypeLend>(
-                                      stream: _bloc.typeScreen,
-                                      builder: (context, snapshot) {
-                                        return SizedBox(
-                                          child:
-                                              snapshot.data == TypeLend.CRYPTO
-                                                  ? BorrowItem(
-                                                      bloc: _bloc,
-                                                    )
-                                                  : const SizedBox.shrink(),
-                                        );
-                                      }),
+                                    stream: _bloc.typeScreen,
+                                    builder: (context, snapshot) {
+                                      return SizedBox(
+                                        child: snapshot.data == TypeLend.CRYPTO
+                                            ? BorrowItem(
+                                                bloc: _bloc,
+                                              )
+                                            : const SizedBox.shrink(),
+                                      );
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -332,6 +335,9 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                       context,
                       MaterialPageRoute(
                         builder: (context) => const CollateralResultScreen(),
+                        settings: const RouteSettings(
+                          name: AppRouter.collateral_result,
+                        ),
                       ),
                     );
                   } else {
