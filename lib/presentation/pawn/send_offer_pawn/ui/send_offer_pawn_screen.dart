@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -149,7 +150,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                           Flexible(
                             child: InkWell(
                               onTap: () {
-                                //todo
+                                Navigator.pop(context);
                               },
                               child: Image.asset(
                                 ImageAssets.ic_close,
@@ -255,29 +256,30 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                           onSuccessSign: (context, data) {
                             //Be
                             bloc.postSendOfferRequest(
-                              loanAmount:bloc.textAmount.value ,
-                              collateralId: widget.objCollateralDetail.id.toString(),
+                              loanAmount: bloc.textAmount.value,
+                              collateralId:
+                                  widget.objCollateralDetail.id.toString(),
                               duration: bloc.textDuration.value,
                               supplyCurrency: symbolAmount,
-                              repaymentToken:bloc.textToken.value ,
-                              message:bloc.textMess.value ,
-                              loanRequestId: '',//todo
-                              walletAddress:PrefsService.getCurrentWalletCore() ,
-                              durationType:duration == S.current.weeks_pawn
-                                  ? '0' : '1' ,
+                              repaymentToken: bloc.textToken.value,
+                              message: bloc.textMess.value,
+                              loanRequestId: '',
+                              //todo
+                              walletAddress:
+                                  PrefsService.getCurrentWalletCore(),
+                              durationType:
+                                  duration == S.current.weeks_pawn ? '0' : '1',
                               latestBlockchainTxn: data,
                               interestRate: bloc.textInterestRate.value,
-                              liquidationThreshold: bloc.textLiquidationThreshold.value,
+                              liquidationThreshold:
+                                  bloc.textLiquidationThreshold.value,
                               loanToValue: bloc.textLoan.value,
-
                             );
                             showLoadSuccess(context).then((value) {
-                              Navigator.of(context)..pop()..pop();
-                              // Navigator.of(context)
-                              //     .popUntil((route) {
-                              //   return route.settings.name ==
-                              //       AppRouter.step2ListBook;
-                              // });//todo pop
+                              Navigator.of(context).popUntil((route) {
+                                return route.settings.name ==
+                                    AppRouter.collateral_result;
+                              });
                             });
                           },
                         ),
@@ -915,7 +917,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 3,
+                    flex: 8,
                     child: TextFormField(
                       enabled: enable,
                       controller: durationController,
@@ -945,6 +947,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                     ),
                   ),
                   Expanded(
+                    flex: 3,
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         borderRadius: BorderRadius.all(Radius.circular(20.r)),
