@@ -80,6 +80,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
         top: 21.h,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(

@@ -63,7 +63,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            // height: 763.h,
+            height: 763.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -185,37 +185,43 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                       );
                                     }),
                               ),
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: 755.h,
-                                  minHeight: 699.h,
-                                ),
-                                child: TabBarView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  controller: _tabController,
-                                  children: [
-                                    CryptoCurrency(
-                                      cubit: cubit,
-                                      packageId: widget.packageId,
-                                      walletAddress: walletAddress,
-                                      hasEmail: cubit.hasEmail,
-                                      pawnshopType: widget.pawnshopType,
-                                    ),
-                                    SendLoanRequestNft(
-                                      packageId: widget.packageId,
-                                      cubit: cubit,
-                                    )
-                                  ],
-                                ),
-                              ),
+                              StreamBuilder<int>(
+                                  stream: cubit.tabIndex,
+                                  builder: (context, snapshot) {
+                                    return SizedBox(
+                                      height: cubit.tabIndex.value == 0
+                                          ? 699.h
+                                          : 755.h,
+                                      child: TabBarView(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        controller: _tabController,
+                                        children: [
+                                          CryptoCurrency(
+                                            cubit: cubit,
+                                            packageId: widget.packageId,
+                                            walletAddress: walletAddress,
+                                            hasEmail: cubit.hasEmail,
+                                            pawnshopType: widget.pawnshopType,
+                                          ),
+                                          SendLoanRequestNft(
+                                            packageId: widget.packageId,
+                                            cubit: cubit,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
                             ],
                           ),
                         ),
                       );
                     } else {
                       return Padding(
-                        padding: EdgeInsets.only(top: 350.h,),
-                        child:  Center(
+                        padding: EdgeInsets.only(
+                          top: 350.h,
+                        ),
+                        child: Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2.r,
                             color: Colors.white,

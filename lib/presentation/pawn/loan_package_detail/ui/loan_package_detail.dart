@@ -16,10 +16,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoanPackageDetail extends StatefulWidget {
-  const LoanPackageDetail({Key? key, required this.packageId})
-      : super(key: key);
+  const LoanPackageDetail({
+    Key? key,
+    required this.packageId,
+    required this.packageType,
+  }) : super(key: key);
 
   final String packageId;
+  final int packageType;
 
   @override
   _LoanPackageDetailState createState() => _LoanPackageDetailState();
@@ -79,7 +83,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     colors: AppTheme.getInstance().gradientButtonColor(),
                   ),
                   child: Text(
-                    cubit.pawnshopPackage.type == 0
+                    widget.packageType == 0
                         ? 'Sign loan contract'
                         : 'Send collateral',
                     style: textNormalCustom(
