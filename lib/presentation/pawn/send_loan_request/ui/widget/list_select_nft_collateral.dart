@@ -140,41 +140,72 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                               child: searchBar(),
                             ),
                             spaceH16,
-                            Expanded(
-                              child: GridView.builder(
-                                padding: EdgeInsets.only(
-                                    bottom:
-                                        MediaQuery.of(context).padding.bottom),
-                                shrinkWrap: true,
-                                itemCount:
-                                    widget.cubit.contentNftOnSelect.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(left: 16.w),
-                                    child: NFTItemWidget(
-                                      nftMarket: widget.cubit
-                                              .contentNftOnSelect[index].nft ??
-                                          NftMarket(),
-                                      isChoosing: true,
-                                      callBack: () {
-                                        Navigator.pop(
-                                          context,
-                                          widget.cubit.contentNftOnSelect[index]
-                                                  .nft ??
-                                              NftMarket(),
+                            widget.cubit.contentNftOnSelect.isNotEmpty
+                                ? Expanded(
+                                    child: GridView.builder(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .padding
+                                              .bottom),
+                                      shrinkWrap: true,
+                                      itemCount: widget
+                                          .cubit.contentNftOnSelect.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(left: 16.w),
+                                          child: NFTItemWidget(
+                                            nftMarket: widget
+                                                    .cubit
+                                                    .contentNftOnSelect[index]
+                                                    .nft ??
+                                                NftMarket(),
+                                            isChoosing: true,
+                                            callBack: () {
+                                              Navigator.pop(
+                                                context,
+                                                widget
+                                                        .cubit
+                                                        .contentNftOnSelect[
+                                                            index]
+                                                        .nft ??
+                                                    NftMarket(),
+                                              );
+                                            },
+                                            // pageRouter: widget.pageRouter,
+                                          ),
                                         );
                                       },
-                                      // pageRouter: widget.pageRouter,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 170.w / 231.h,
+                                      ),
                                     ),
-                                  );
-                                },
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 170.w / 231.h,
-                                ),
-                              ),
-                            ),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(top: 150.h),
+                                    child: Column(
+                                      children: [
+                                        Image(
+                                          image: const AssetImage(
+                                            ImageAssets.img_search_empty,
+                                          ),
+                                          height: 120.h,
+                                          width: 120.w,
+                                        ),
+                                        SizedBox(
+                                          height: 17.7.h,
+                                        ),
+                                        Text(
+                                          S.current.no_result_found,
+                                          style: textNormal(
+                                            Colors.white54,
+                                            20.sp,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
