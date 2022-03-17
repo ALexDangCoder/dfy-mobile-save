@@ -90,7 +90,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                   builder: (context, snapshot) {
                     final statusButton = snapshot.data ?? false;
                     return ButtonLuxury(
-                      marginHorizontal: 16.w,
+                      marginHorizontal: 0,
                       title: S.current.create,
                       isEnable: statusButton,
                       buttonHeight: 64,

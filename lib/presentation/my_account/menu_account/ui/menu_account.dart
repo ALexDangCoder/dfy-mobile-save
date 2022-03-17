@@ -744,7 +744,7 @@ class _MenuAccountState extends State<MenuAccount> {
                             child: SizedBox(
                               width: 100,
                               child: Text(
-                                S.current.connect_wallet,
+                                S.current.wallet,
                                 maxLines: 2,
                                 textAlign: TextAlign.right,
                                 style: textNormalCustom(
