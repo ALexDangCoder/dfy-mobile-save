@@ -3,8 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerView extends StatefulWidget {
-  const VideoPlayerView({Key? key, required this.urlVideo}) : super(key: key);
+  const VideoPlayerView({
+    Key? key,
+    required this.urlVideo,
+    this.isJustWidget = false,
+  }) : super(key: key);
   final String urlVideo;
+  final bool isJustWidget;
 
   @override
   _VideoPlayerViewState createState() => _VideoPlayerViewState();
@@ -20,7 +25,11 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
     _controller.addListener(() {
       setState(() {});
     });
-    _controller.setLooping(true);
+    if (widget.isJustWidget) {
+      _controller.setLooping(false);
+    } else {
+      _controller.setLooping(true);
+    }
     _controller.initialize().then((_) => setState(() {}));
     _controller.play();
   }
@@ -33,36 +42,44 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: [
-            Align(
-              child: GestureDetector(
-                onTap: () {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
-                },
-                child: SizedBox(
-                  height: 290.h,
-                  child: VideoPlayer(_controller),
-                ),
+    return widget.isJustWidget
+        ? Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+            ),
+            height: 290.h,
+            child: VideoPlayer(_controller),
+          )
+        : Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: Stack(
+                children: [
+                  Align(
+                    child: GestureDetector(
+                      onTap: () {
+                        _controller.value.isPlaying
+                            ? _controller.pause()
+                            : _controller.play();
+                      },
+                      child: SizedBox(
+                        height: 290.h,
+                        child: VideoPlayer(_controller),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    child: _controller.value.isPlaying
+                        ? const SizedBox()
+                        : Icon(
+                            Icons.play_circle_outline_sharp,
+                            size: 36.sp,
+                            color: Colors.white,
+                          ),
+                  ),
+                ],
               ),
             ),
-            Align(
-              child: _controller.value.isPlaying
-                  ? const SizedBox()
-                  : Icon(
-                      Icons.play_circle_outline_sharp,
-                      size: 36.sp,
-                      color: Colors.white,
-                    ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

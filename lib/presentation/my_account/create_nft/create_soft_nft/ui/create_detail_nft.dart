@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/input_information_widget.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/upload_widget_create_nft.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/validator_property_row.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
@@ -50,6 +51,13 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
     return KeyboardDismisser(
       child: BaseDesignScreen(
         resizeBottomInset: true,
+        text: ImageAssets.ic_close,
+        isImage: true,
+        onRightClick: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+        },
         title: S.current.create_nft,
         child: FormGroup(
           key: _key,
@@ -74,6 +82,7 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                             value: _key.currentState?.checkValidator() ?? false,
                           );
                         },
+                        context: context,
                       ),
                       spaceH16,
                       Text(

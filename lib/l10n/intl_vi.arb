@@ -112,7 +112,7 @@
   "failed": "Thất bại",
   "wallet": "Ví",
   "quantity": "Số lượng",
-  "pls_import_seed": "Nhập seedpharse của bạn",
+  "pls_import_seed": "Nhập seed phrase của bạn",
   "smart_chain": "Smart chain",
   "address_required": "Địa chỉ là bắt buộc",
   "invalid_address": "Địa chỉ không hợp lệ",
@@ -454,7 +454,7 @@
   "format_image": "Định dạng: JPG, PNG, GIFF",
   "collection_name": "Tên bộ sưu tập",
   "categories": "Phân loại",
-  "sold":"Đã bán",
+  "sold": "Đã bán",
   "royalties": "Tiền bản quyền",
   "social_links": "Liên kết mạng xã hội",
   "maximum_len": "Số kí tự tối đa là 255",
@@ -734,5 +734,8 @@
   "put_on_pawn_success": "Đưa lên thế chấp",
   "check_data_on_market": "NFT của bạn đã được đưa lên ",
   "you_must_have_five": "Bạn cần ít nhất 50 DFY để đặt lịch với người định giá.",
-  "processings": "Đang xử lý"
+  "processings": "Đang xử lý",
+  "and": "Và",
+  "other_file": "tệp khác",
+  "collect_a_fee_mess": "Thu phí khi người dùng bán lại một mặt hàng mà bạn đã tạo ban đầu. Khoản này được khấu trừ vào giá ưu đãi cuối cùng và được thanh toán hàng tháng cho địa chỉ thanh toán mà bạn chọn."
 }
