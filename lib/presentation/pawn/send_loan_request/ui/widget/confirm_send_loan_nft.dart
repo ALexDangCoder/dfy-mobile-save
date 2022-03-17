@@ -78,6 +78,49 @@ class ConfirmSendLoanNft extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        if (state is SubmittingNft) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) => const AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: TransactionSubmit(),
+            ),
+          );
+        } else if (state is SubmitNftSuccess) {
+          if (state.complete == CompleteType.SUCCESS) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitSuccess(),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+            }).then(
+                  (value) => {
+                Navigator.pop(context),
+                Navigator.pop(context),
+                Navigator.pop(context),
+                Navigator.pop(context),
+              },
+            );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmitFail(),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+            }).then((value) => Navigator.pop(context));
+          }
+        }
         return BaseDesignScreen(
           title: 'Confirm loan request',
           onRightClick: () {},
@@ -85,9 +128,14 @@ class ConfirmSendLoanNft extends StatelessWidget {
           bottomBar: Container(
             padding: EdgeInsets.only(bottom: 38.h),
             color: AppTheme.getInstance().bgBtsColor(),
-            child: const ButtonGold(
-              title: 'Send request',
-              isEnable: true,
+            child:  InkWell(
+              onTap: () {
+                cubit.postNftToServer();
+              },
+              child: const ButtonGold(
+                title: 'Send request',
+                isEnable: true,
+              ),
             ),
           ),
           isImage: true,

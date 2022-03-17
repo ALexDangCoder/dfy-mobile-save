@@ -117,7 +117,8 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                             value.metrics.pixels ==
                                 value.metrics.maxScrollExtent) {
                           widget.cubit.loadMoreGetListNftCollateral(
-                              widget.cubit.getCurrentWallet());
+                            widget.cubit.getCurrentWallet(),
+                          );
                         }
                         return true;
                       },
