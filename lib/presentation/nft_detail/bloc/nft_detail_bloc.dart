@@ -42,8 +42,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   double totalPayment = 0;
   double bidValue = 0;
 
-
-
   NFTRepository get _nftRepo => Get.find();
 
   late NftMarket nftMarket;
@@ -114,7 +112,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     );
   }
 
-/// Import wallet
+  /// Import wallet
   Future<void> emitJsonNftToWalletCore({
     required String contract,
     int? id,
@@ -149,8 +147,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         'walletAddress': address,
       };
       await trustWalletChannel.invokeMethod('importNft', data);
-    } on PlatformException {
-    }
+    } on PlatformException {}
   }
 
   ///GetOffer
@@ -187,35 +184,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   ///GetInfoNft
-  ///
-  Future<void> getDetailNft({
-    required String marketId,
-    required MarketType type,
-    required TypeNFT typeNFT,
-    required String nftId,
-    required int pawnId,
-    required String collectionAddress,
-    required String nftTokenId,
-  }) async {
-    final Result<NftMarket> result = await _nftRepo.getDetailNft(
-      collectionAddress,
-      nftTokenId,
-    );
-    result.when(
-      success: (res) {
-        getInForNFT(
-          marketId: res.marketId ?? marketId,
-          type: res.marketType ?? type,
-          typeNFT: typeNFT,
-          nftId: nftId,
-          pawnId: res.pawnId ?? pawnId,
-          collectionAddress: collectionAddress,
-          nftTokenId: nftTokenId,
-        );
-      },
-      error: (error) {},
-    );
-  }
+
 
   Future<void> getInForNFT({
     required String marketId,
@@ -230,15 +199,27 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     if (type == MarketType.NOT_ON_MARKET) {
       showLoading();
       final Result<NftMarket> result;
+      final Result<NftMarket> result2;
       if (typeNFT == TypeNFT.SOFT_NFT) {
         result = await _nftRepo.getDetailNftMyAccNotOnMarket(nftId, '0');
+        result2 = await _nftRepo.getDetailNft2(nftId);
       } else {
         result = await _nftRepo.getDetailHardNftOnSale(
           nftId,
         );
+        result2 = await _nftRepo.getDetailNft2(nftId);
       }
       result.when(
         success: (res) {
+          if (typeNFT == TypeNFT.SOFT_NFT) {
+            result2.when(
+              success: (res2) {
+                res.collectionName = res2.collectionName;
+                res.description = res2.description;
+              },
+              error: (error2) {},
+            );
+          }
           final String wallet = PrefsService.getCurrentBEWallet();
           if (res.walletAddress?.toLowerCase() == wallet.toLowerCase() ||
               res.owner?.toLowerCase() == wallet.toLowerCase()) {
@@ -455,7 +436,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         break;
       default:
         break;
-
     }
   }
 

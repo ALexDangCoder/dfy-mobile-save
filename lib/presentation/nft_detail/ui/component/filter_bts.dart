@@ -538,6 +538,7 @@ class _FilterBtsState extends State<FilterBts> {
                 ),
               ],
             ),
+            if(widget.listNftCubit.showDropdownAddress)
             Image.asset(
               ImageAssets.ic_line_down,
               height: 20.67.h,
