@@ -236,7 +236,7 @@ class _MenuAccountState extends State<MenuAccount> {
               ),
             ).then((_) => cubit.getLoginState());
           } else {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const ListHardNftMintRequest(),

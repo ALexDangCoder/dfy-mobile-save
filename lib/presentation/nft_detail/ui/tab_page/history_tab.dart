@@ -243,6 +243,24 @@ Widget getHistory(int historyType) {
           FontWeight.w700,
         ),
       );
+    case 14:
+      return Text(
+        'End auction',
+        style: textNormalCustom(
+          Colors.white,
+          14,
+          FontWeight.w700,
+        ),
+      );
+    case 15:
+      return Text(
+        'Reject auction',
+        style: textNormalCustom(
+          Colors.white,
+          14,
+          FontWeight.w700,
+        ),
+      );
     default:
       return const SizedBox();
   }
@@ -720,6 +738,54 @@ Widget status(HistoryNFT historyNFT) {
                 amountColor,
                 14,
               ),
+            ),
+          ],
+        ),
+      );
+    case 14:
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'NFT has moved to ',
+              style: textNormal(
+                textHistory,
+                14,
+              ),
+            ),
+            TextSpan(
+              text: historyNFT.toAddress!.formatAddress(index: 4),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => launch(
+                  Get.find<AppConstants>().bscScan +
+                      ApiConstants.BSC_SCAN_ADDRESS +
+                      walletAddress,
+                ),
+              style: richTextBlue,
+            ),
+          ],
+        ),
+      );
+    case 15:
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'NFT has rejected and moved ',
+              style: textNormal(
+                textHistory,
+                14,
+              ),
+            ),
+            TextSpan(
+              text: historyNFT.walletAddress!.formatAddress(index: 4),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => launch(
+                  Get.find<AppConstants>().bscScan +
+                      ApiConstants.BSC_SCAN_ADDRESS +
+                      walletAddress,
+                ),
+              style: richTextBlue,
             ),
           ],
         ),
