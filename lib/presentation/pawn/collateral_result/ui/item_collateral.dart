@@ -1,6 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail/ui/collateral_detail.dart';
@@ -321,6 +322,19 @@ class _ItemCollateralState extends State<ItemCollateral> {
                               widget.iconLoadToken,
                               width: 16.sp,
                               height: 16.sp,
+                              errorBuilder: (
+                                context,
+                                error,
+                                stackTrace,
+                              ) =>
+                                  Container(
+                                height: 16.sp,
+                                width: 16.sp,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.getInstance().bgBtsColor(),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
                             ),
                           ),
                           WidgetSpan(
@@ -391,14 +405,17 @@ class _ItemCollateralState extends State<ItemCollateral> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CollateralDetailScreen(
-                          id: widget.id,
+                    if (PrefsService.getCurrentWalletCore().toUpperCase() !=
+                        widget.address.toUpperCase()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CollateralDetailScreen(
+                            id: widget.id,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                   child: SizedBox(
                     width: 103.w,
@@ -407,7 +424,9 @@ class _ItemCollateralState extends State<ItemCollateral> {
                       radiusButton: 16,
                       haveMargin: false,
                       title: S.current.send_offer,
-                      isEnable: true,
+                      isEnable:
+                          PrefsService.getCurrentWalletCore().toUpperCase() !=
+                              widget.address.toUpperCase(),
                       fixSize: false,
                       textSize: 16,
                     ),
