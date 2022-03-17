@@ -831,5 +831,6 @@
   "invalid_liquid_threshold": "Ngưỡng thanh lý không hợp lệ",
   "must_below_2": "Phải dưới 2 chữ số sau số thập phân",
   "interest_rate_is_required": "Lãi suất là bắt buộc",
-  "or_pawn": "hoặc"
+  "or_pawn": "hoặc",
+  "offer_received": "Offer received"
 }

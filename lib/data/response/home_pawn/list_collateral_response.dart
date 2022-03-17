@@ -79,6 +79,10 @@ class ContentResponse {
   bool? isActive;
   @JsonKey(name: 'type')
   int? type;
+  @JsonKey(name: 'nft')
+  String? nft;
+  @JsonKey(name: 'nftCollateralDetailDTO')
+  String? nftCollateralDetailDTO;
 
   ContentResponse(
     this.id,
@@ -133,5 +137,7 @@ class ContentResponse {
         numberOfferReceived: numberOfferReceived,
         reputation: reputation,
         userId: userId,
+        nftCollateralDetailDTO: nftCollateralDetailDTO,
+        nft: nft,
       );
 }

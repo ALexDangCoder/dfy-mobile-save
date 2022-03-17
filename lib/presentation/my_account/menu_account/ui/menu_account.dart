@@ -14,6 +14,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
+import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -268,6 +269,26 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+      case 'collateral':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: CollateralMyAcc(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CollateralMyAcc(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
     }
   }
 
@@ -333,11 +354,11 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_token_symbol,
       children: [
         ItemMenuModel.createChild(
-          routeName: 'about_us',
+          routeName: 'collateral',
           title: S.current.collateral,
         ),
         ItemMenuModel.createChild(
-          routeName: 'about_us',
+          routeName: 'contracts',
           title: S.current.contracts,
         ),
       ],
@@ -571,7 +592,8 @@ class _MenuAccountState extends State<MenuAccount> {
                                                     child: Container(
                                                       constraints:
                                                           const BoxConstraints(
-                                                              minHeight: 60),
+                                                        minHeight: 60,
+                                                      ),
                                                       child: Container(
                                                         alignment: Alignment
                                                             .centerLeft,

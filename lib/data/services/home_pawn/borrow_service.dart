@@ -134,8 +134,8 @@ abstract class BorrowService {
 
   @GET('${ApiConstants.GET_PAWNSHOP_PACKAGE_DETAIL}{packageId}')
   Future<DetailPawnShopResponse> getPawnshopPackageDetail(
-      @Path('packageId') String? packageId,
-      );
+    @Path('packageId') String? packageId,
+  );
 
   @POST(ApiConstants.POST_NFT_SEND_LOAN_REQUEST)
   Future<NftResAfterPostLoanRequestResponse> postNftOnLoanRequest(
@@ -166,5 +166,15 @@ abstract class BorrowService {
     @Field('repaymentToken') String? repaymentToken,
     @Field('supplyCurrency') String? supplyCurrency,
     @Field('walletAddress') String? walletAddress,
+  );
+
+  @GET(ApiConstants.COLLATERAL_MY_ACC)
+  Future<ListCollateralResponse> getListCollateralMyAcc(
+    @Query('status') String? status,
+    @Query('page') String? page,
+    @Query('size') String? size,
+    @Query('collateralCurrencySymbol') String? collateralCurrencySymbol,
+    @Query('walletAddress') String? walletAddress,
+    @Query('sort') String? sort,
   );
 }
