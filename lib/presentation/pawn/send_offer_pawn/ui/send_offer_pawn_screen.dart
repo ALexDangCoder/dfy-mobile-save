@@ -94,219 +94,221 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
     return Scaffold(
       backgroundColor: AppTheme.getInstance().blackColor(),
       resizeToAvoidBottomInset: false,
-      body: Stack(
+      body: Align(
         alignment: Alignment.bottomCenter,
-        children: [
-          Container(
-            height: 764.h,
-            clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.only(top: 26.h),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
+        child: Container(
+          height: 764.h,
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.only(top: 26.h),
+          decoration: BoxDecoration(
+            color: AppTheme.getInstance().bgBtsColor(),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
-            child: GestureDetector(
-              onTap: () {
-                closeKey();
-              },
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 64.h,
-                    child: SizedBox(
-                      height: 28.h,
-                      width: 343.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: SizedBox(
-                                height: 30.h,
-                                width: 30.w,
-                                child: Image.asset(ImageAssets.ic_back),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 6,
-                            child: Align(
-                              child: Text(
-                                S.current.send_offer,
-                                textAlign: TextAlign.center,
-                                style: titleText(
-                                  color:
-                                      AppTheme.getInstance().textThemeColor(),
+          ),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  closeKey();
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 64.h,
+                      child: SizedBox(
+                        height: 28.h,
+                        width: 343.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: SizedBox(
+                                  height: 30.h,
+                                  width: 30.w,
+                                  child: Image.asset(ImageAssets.ic_back),
                                 ),
                               ),
                             ),
-                          ),
-                          Flexible(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Image.asset(
-                                ImageAssets.ic_close,
-                                height: 30.h,
-                                width: 30.w,
+                            Flexible(
+                              flex: 6,
+                              child: Align(
+                                child: Text(
+                                  S.current.send_offer,
+                                  textAlign: TextAlign.center,
+                                  style: titleText(
+                                    color: AppTheme.getInstance().textThemeColor(),
+                                  ),
+                                ),
                               ),
                             ),
+                            Flexible(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Image.asset(
+                                  ImageAssets.ic_close,
+                                  height: 30.h,
+                                  width: 30.w,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: AppTheme.getInstance().divideColor(),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                            16.w,
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    color: AppTheme.getInstance().divideColor(),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          16.w,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            spaceH8,
-                            fromMess(),
-                            spaceH16,
-                            fromLoanTo(),
-                            spaceH16,
-                            fromAmount(),
-                            spaceH16,
-                            fromLiquidationThreshold(),
-                            spaceH16,
-                            fromInterestRate(),
-                            spaceH16,
-                            formDuration(),
-                            spaceH16,
-                            formRepaymentToken(),
-                            spaceH16,
-                            formInterest(),
-                            spaceH152,
-                          ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              spaceH8,
+                              fromMess(),
+                              spaceH16,
+                              fromLoanTo(),
+                              spaceH16,
+                              fromAmount(),
+                              spaceH16,
+                              fromLiquidationThreshold(),
+                              spaceH16,
+                              fromInterestRate(),
+                              spaceH16,
+                              formDuration(),
+                              spaceH16,
+                              formRepaymentToken(),
+                              spaceH16,
+                              formInterest(),
+                              spaceH152,
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: GestureDetector(
-              onTap: () async {
-                if (bloc.checkBtn()) {
-                  final NavigatorState navigator = Navigator.of(context);
-                  await bloc.getCreateCryptoOfferDataHexString(
-                    duration: bloc.textDuration.value,
-                    collateralId:
-                        widget.objCollateralDetail.bcCollateralId.toString(),
-                    loanAmount: bloc.textAmount.value,
-                    repaymentCycleType:
-                        duration == S.current.weeks_pawn ? 0 : 1,
-                    interest: bloc.textInterestRate.value,
-                    liquidityThreshold: bloc.textLiquidationThreshold.value,
-                    loanDurationType: duration == S.current.weeks_pawn ? 0 : 1,
-                    repaymentAssetAddress:
-                        ImageAssets.getAddressToken(symbolAmount),
-                  );
-                  unawaited(
-                    navigator.push(
-                      MaterialPageRoute(
-                        builder: (context) => Approve(
-                          textActiveButton: S.current.send,
-                          spender:
-                              Get.find<AppConstants>().crypto_pawn_contract,
-                          needApprove: true,
-                          hexString: bloc.hexString,
-                          payValue: bloc.textAmount.value,
-                          tokenAddress: Get.find<AppConstants>().contract_defy,
-                          title: S.current.confirm_send_offer,
-                          listDetail: [
-                            DetailItemApproveModel(
-                              title: '${S.current.message}: ',
-                              value: bloc.textMess.value,
+              Positioned(
+                bottom: 0,
+                child: GestureDetector(
+                  onTap: () async {
+                    if (bloc.checkBtn()) {
+                      final NavigatorState navigator = Navigator.of(context);
+                      await bloc.getCreateCryptoOfferDataHexString(
+                        duration: bloc.textDuration.value,
+                        collateralId:
+                            widget.objCollateralDetail.bcCollateralId.toString(),
+                        loanAmount: bloc.textAmount.value,
+                        repaymentCycleType:
+                            duration == S.current.weeks_pawn ? 0 : 1,
+                        interest: bloc.textInterestRate.value,
+                        liquidityThreshold: bloc.textLiquidationThreshold.value,
+                        loanDurationType: duration == S.current.weeks_pawn ? 0 : 1,
+                        repaymentAssetAddress:
+                            ImageAssets.getAddressToken(symbolAmount),
+                      );
+                      unawaited(
+                        navigator.push(
+                          MaterialPageRoute(
+                            builder: (context) => Approve(
+                              textActiveButton: S.current.send,
+                              spender:
+                                  Get.find<AppConstants>().crypto_pawn_contract,
+                              needApprove: true,
+                              hexString: bloc.hexString,
+                              payValue: bloc.textAmount.value,
+                              tokenAddress: Get.find<AppConstants>().contract_defy,
+                              title: S.current.confirm_send_offer,
+                              listDetail: [
+                                DetailItemApproveModel(
+                                  title: '${S.current.message}: ',
+                                  value: bloc.textMess.value,
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.interest_rate_pawn}: ',
+                                  value: '${bloc.textInterestRate.value} %APR',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.duration_pawn}: ',
+                                  value: '${bloc.textDuration.value} $duration',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.loan_amount}: ',
+                                  value: '$symbolAmount ${bloc.textAmount.value}',
+                                  urlToken:
+                                      ImageAssets.getSymbolAsset(symbolAmount),
+                                ),
+                              ],
+                              onErrorSign: (context) {},
+                              onSuccessSign: (context, data) {
+                                //Be
+                                bloc.postSendOfferRequest(
+                                  loanAmount: bloc.textAmount.value,
+                                  collateralId:
+                                      widget.objCollateralDetail.id.toString(),
+                                  duration: bloc.textDuration.value,
+                                  supplyCurrency: symbolAmount,
+                                  repaymentToken: bloc.textToken.value,
+                                  message: bloc.textMess.value,
+                                  loanRequestId: '',
+                                  //todo
+                                  walletAddress:
+                                      PrefsService.getCurrentWalletCore(),
+                                  durationType:
+                                      duration == S.current.weeks_pawn ? '0' : '1',
+                                  latestBlockchainTxn: data,
+                                  interestRate: bloc.textInterestRate.value,
+                                  liquidationThreshold:
+                                      bloc.textLiquidationThreshold.value,
+                                  loanToValue: bloc.textLoan.value,
+                                );
+                                showLoadSuccess(context).then((value) {
+                                  Navigator.of(context).popUntil((route) {
+                                    return route.settings.name ==
+                                        AppRouter.collateral_result;
+                                  });
+                                });
+                              },
                             ),
-                            DetailItemApproveModel(
-                              title: '${S.current.interest_rate_pawn}: ',
-                              value: '${bloc.textInterestRate.value} %APR',
-                            ),
-                            DetailItemApproveModel(
-                              title: '${S.current.duration_pawn}: ',
-                              value: '${bloc.textDuration.value} $duration',
-                            ),
-                            DetailItemApproveModel(
-                              title: '${S.current.loan_amount}: ',
-                              value: '$symbolAmount ${bloc.textAmount.value}',
-                              urlToken:
-                                  ImageAssets.getSymbolAsset(symbolAmount),
-                            ),
-                          ],
-                          onErrorSign: (context) {},
-                          onSuccessSign: (context, data) {
-                            //Be
-                            bloc.postSendOfferRequest(
-                              loanAmount: bloc.textAmount.value,
-                              collateralId:
-                                  widget.objCollateralDetail.id.toString(),
-                              duration: bloc.textDuration.value,
-                              supplyCurrency: symbolAmount,
-                              repaymentToken: bloc.textToken.value,
-                              message: bloc.textMess.value,
-                              loanRequestId: '',
-                              //todo
-                              walletAddress:
-                                  PrefsService.getCurrentWalletCore(),
-                              durationType:
-                                  duration == S.current.weeks_pawn ? '0' : '1',
-                              latestBlockchainTxn: data,
-                              interestRate: bloc.textInterestRate.value,
-                              liquidationThreshold:
-                                  bloc.textLiquidationThreshold.value,
-                              loanToValue: bloc.textLoan.value,
-                            );
-                            showLoadSuccess(context).then((value) {
-                              Navigator.of(context).popUntil((route) {
-                                return route.settings.name ==
-                                    AppRouter.collateral_result;
-                              });
-                            });
-                          },
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }
-              },
-              child: StreamBuilder<bool>(
-                stream: bloc.isBtn,
-                builder: (context, snapshot) {
-                  return Container(
-                    color: AppTheme.getInstance().bgBtsColor(),
-                    padding: EdgeInsets.only(
-                      bottom: 38.h,
-                      top: 6.h,
-                    ),
-                    child: ButtonGold(
-                      isEnable: snapshot.data ?? false,
-                      title: S.current.send_offer,
-                    ),
-                  );
-                },
+                      );
+                    }
+                  },
+                  child: StreamBuilder<bool>(
+                    stream: bloc.isBtn,
+                    builder: (context, snapshot) {
+                      return Container(
+                        color: AppTheme.getInstance().bgBtsColor(),
+                        padding: EdgeInsets.only(
+                          bottom: 38.h,
+                          top: 6.h,
+                        ),
+                        child: ButtonGold(
+                          isEnable: snapshot.data ?? false,
+                          title: S.current.send_offer,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
