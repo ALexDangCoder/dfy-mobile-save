@@ -63,7 +63,8 @@ class _SendLoanRequestState extends State<SendLoanRequest>
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            height: 763.h,
+            height: 812.h,
+            margin: EdgeInsets.only(top: 26.h),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -134,7 +135,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                   builder: (context, state) {
                     if (state is GetWalletSuccess) {
                       return SizedBox(
-                        height: 696.h,
+                        height: 718.h,
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
