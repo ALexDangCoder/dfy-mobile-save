@@ -91,7 +91,7 @@
   "smart_chain": "Smart chain",
   "support_type": "Support file type:",
   "change_password": "Change password",
-  "pls_import_seed": "Import secret seedphrase",
+  "pls_import_seed": "Import secret seed phrase",
   "address_required": "Address is required",
   "amount_required": "Amount is required",
   "amount": "Amount",
@@ -780,5 +780,7 @@
   "you_must_have_five": "You must have 50 DFY to book evaluator.",
   "processings": "Processing",
   "sold": "Sold",
+  "and": "And",
+  "other_file": "other files",
   "collect_a_fee_mess": "Collect a fee when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout address of your choosing."
 }
