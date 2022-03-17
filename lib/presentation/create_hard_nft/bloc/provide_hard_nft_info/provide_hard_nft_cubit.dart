@@ -543,7 +543,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'label': e.code,
           });
         }
-
         phonesCodeBHVSJ.sink.add(phonesCode);
       },
       error: (error) {
@@ -683,6 +682,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
         await _step1Repository.getCollectionHardNft();
     result.when(
       success: (res) {
+        final Map<String, CollectionHardNft> collectionMap = {};
+        for (final element in res) {
+          collectionMap[element.name ?? ''] = element;
+        }
+        res = collectionMap.values.toList();
         res.forEach((element) {
           listDropDown.add({
             'label': element.name,
@@ -690,28 +694,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
             'id': element.id,
           });
         });
-        // listHardCl = res
-        //     .where(
-        //       (element) =>
-        //           (element.type == HARD_COLLECTION) &&
-        //           ((element.addressCollection ?? '').isNotEmpty),
-        //     )
-        //     .toList();
-        // final listDropDown = listHardCl.map((e) => e.toDropDownMap()).toList();
-        // listDropDown.add(
-        //   {
-        //     'label': 'COLLECTION 721',
-        //     'value': ADDRESS_COLLECTION_721,
-        //     'id': ID_COLLECTION_721,
-        //   },
-        // );
-        // listDropDown.add(
-        //   {
-        //     'label': 'COLLECTION 1155',
-        //     'value': ADDRESS_COLLECTION_1155,
-        //     'id': ID_COLLECTION_1155,
-        //   },
-        // );
+
         collectionsBHVSJ.sink.add(listDropDown);
       },
       error: (_) {
