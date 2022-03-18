@@ -214,7 +214,7 @@ Widget buttonCancelAuction({
           ),
         );
         if (isSuccess) {
-          await refresh();
+          refresh();
           Timer(const Duration(seconds: 30), () {
             nftMarket.marketStatus = 0;
             bloc.emit(NftOnAuctionSuccess(nftMarket));

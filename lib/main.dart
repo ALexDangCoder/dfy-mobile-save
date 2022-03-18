@@ -130,5 +130,4 @@ class _MyAppState extends State<MyApp> {
     final login = PrefsService.getWalletLogin();
     return loginFromJson(login);
   }
-
 }
