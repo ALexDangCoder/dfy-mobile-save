@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/call_api.dart';
@@ -14,8 +15,11 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/ui/widget/validator_property_row.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
+import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
@@ -33,17 +37,29 @@ class CreateDetailNFT extends StatefulWidget {
 
 class _CreateDetailNFTState extends State<CreateDetailNFT> {
   final GlobalKey<FormGroupState> _key = GlobalKey<FormGroupState>();
+  late final TextEditingController textRoyalties;
 
   @override
   void initState() {
-    widget.cubit.getListCollection();
     super.initState();
+    widget.cubit.getListCollection();
+    textRoyalties = TextEditingController();
+    widget.cubit.textRoyalties.listen((value) {
+      final List<String> valueRoyalties = value.split('.');
+      textRoyalties.text = valueRoyalties.first;
+    });
+    textRoyalties.addListener(() {
+      widget.cubit.validateRoyalty(textRoyalties.text);
+      widget.cubit.validateInput(
+        value: _key.currentState?.checkValidator() ?? false,
+      );
+    });
   }
 
   @override
   void dispose() {
-    widget.cubit.dispose();
     super.dispose();
+    widget.cubit.dispose();
   }
 
   @override
@@ -83,6 +99,49 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                           );
                         },
                         context: context,
+                      ),
+                      TextFieldValidator(
+                        controller: textRoyalties,
+                        hint: S.current.royalties,
+                        textInputType: TextInputType.number,
+                        maxInputChar: 2,
+                        prefixIcon: sizedSvgImage(
+                          w: 20,
+                          h: 20,
+                          image: ImageAssets.ic_round_percent_svg,
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => InfoPopup(
+                                name: S.current.royalties,
+                                content: S.current.collect_a_fee_mess,
+                              ),
+                            );
+                          },
+                          child: sizedSvgImage(
+                            w: 20,
+                            h: 20,
+                            image: ImageAssets.ic_round_i,
+                          ),
+                        ),
+                      ),
+                      spaceH4,
+                      StreamBuilder<String>(
+                        stream: widget.cubit.validateRoyalties,
+                        builder: (context, snapshot) {
+                          return snapshot.data?.isNotEmpty ?? false
+                              ? Text(
+                                  snapshot.data ?? '',
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().redColor(),
+                                    14,
+                                    null,
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        },
                       ),
                       spaceH16,
                       Text(
