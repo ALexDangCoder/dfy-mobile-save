@@ -209,6 +209,7 @@ class _FilterBtsState extends State<FilterBts> {
                                     radius: Radius.circular(10.0.r),
                                     isAlwaysShown: true,
                                     child: ListView.builder(
+                                      controller: _firstController,
                                       shrinkWrap: true,
                                       itemCount: itemCount,
                                       itemBuilder: (context, index) {

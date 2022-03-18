@@ -547,13 +547,28 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonPutOnMarket(
-              context,
-              bloc,
-              objSale,
-              widget.nftId,
-              onRefresh,
-            ),
+            bottomBar: StreamBuilder<Evaluation>(
+                stream: bloc.evaluationStream,
+                builder: (context, snapshot) {
+                  return _buildButtonPutOnMarket(
+                    context,
+                    bloc,
+                    objSale,
+                    widget.nftId,
+                    objSale.typeNFT == TypeNFT.HARD_NFT
+                        ? (bloc.evaluationStream.hasValue
+                            ? bloc.evaluationStream.value.evaluatedPrice
+                                .toString()
+                            : '')
+                        : '',
+                    objSale.typeNFT == TypeNFT.HARD_NFT
+                        ? (bloc.evaluationStream.hasValue
+                            ? bloc.evaluationStream.value.evaluatedSymbol
+                            : '')
+                        : DFY,
+                    onRefresh,
+                  );
+                }),
             content: [
               _nameNFT(
                 context: context,
@@ -679,7 +694,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
-          if(objSale.marketStatus == 10) {
+          if (objSale.marketStatus == 10) {
             Timer(const Duration(seconds: 20), () {
               onRefresh();
             });

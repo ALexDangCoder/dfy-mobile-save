@@ -46,6 +46,7 @@ class _PawnTabState extends State<PawnTab>
 
   @override
   void initState() {
+    super.initState();
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.durationType = 0;
     _putOnMarketModel.numberOfCopies = 1;
@@ -54,7 +55,6 @@ class _PawnTabState extends State<PawnTab>
     );
     _putOnMarketModel.tokenAddress = widget.cubit.listToken[0].address ?? '';
     _putOnMarketModel.loanSymbol = widget.cubit.listToken[0].symbol ?? '';
-    super.initState();
   }
 
   void checkDuration() {
@@ -90,6 +90,7 @@ class _PawnTabState extends State<PawnTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.getInstance().bgBtsColor(),
@@ -138,6 +139,7 @@ class _PawnTabState extends State<PawnTab>
                 height: 4,
               ),
               InputWithSelectType(
+                loanAmount: _putOnMarketModel.loanAmount.toString(),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
                     RegExp(r'^\d+\.?\d{0,5}'),
@@ -147,6 +149,7 @@ class _PawnTabState extends State<PawnTab>
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                chooseIndex: widget.cubit.listToken.indexWhere((element) => element.symbol == _putOnMarketModel.loanSymbol),
                 typeInput: widget.cubit.listToken
                     .map(
                       (e) => SizedBox(
