@@ -433,7 +433,9 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ],
                           maxLength: 100,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           onChanged: (value) {
                             _putOnMarketModel.buyOutPrice = value;
                             if (!validateBuyOutPrice()) {
@@ -601,7 +603,9 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ],
                           maxLength: 100,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           onChanged: (value) {
                             _putOnMarketModel.priceStep = value;
                             if (!validatePriceStep()) {

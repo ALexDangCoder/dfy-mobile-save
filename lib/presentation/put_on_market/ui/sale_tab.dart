@@ -309,7 +309,7 @@ class _SaleTabState extends State<SaleTab>
                             title: S.current.put_on_sale,
                             listDetail: [
                               DetailItemApproveModel(
-                                title: '${S.current.sell_items} :',
+                                title: '${S.current.sale_quantity} :',
                                 value:
                                     '${widget.cubit.quantitySale} of ${widget.quantity ?? 1}',
                               ),

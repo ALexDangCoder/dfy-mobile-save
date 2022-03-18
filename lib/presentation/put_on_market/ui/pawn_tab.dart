@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -60,6 +59,11 @@ class _PawnTabState extends State<PawnTab>
 
   void checkDuration() {
     final int duration = widget.cubit.valueDuration ?? 0;
+    if (widget.cubit.typeDuration == null) {
+      widget.cubit.typeDuration = 0; //default is week
+    } else {
+      //nothing
+    }
     if (widget.cubit.typeDuration == 0 && duration > 5200) {
       setState(() {
         errorTextDuration = S.current.Duration_by_week_cannot_be_greater_than;

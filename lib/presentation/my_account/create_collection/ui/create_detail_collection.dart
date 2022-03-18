@@ -72,6 +72,13 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
       child: BaseDesignScreen(
         resizeBottomInset: true,
         title: S.current.create_collection,
+        text: ImageAssets.ic_close,
+        isImage: true,
+        onRightClick: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+        },
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),

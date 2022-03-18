@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
@@ -31,6 +32,11 @@ class CreateCollectionScreen extends StatelessWidget {
       error: AppException('', S.current.something_went_wrong),
       child: BaseDesignScreen(
         title: S.current.create_collection,
+        isImage: true,
+        text: ImageAssets.ic_close,
+        onRightClick: () {
+          Navigator.pop(context);
+        },
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Container(
@@ -83,7 +89,9 @@ class CreateCollectionScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 12.h,),
+                  SizedBox(
+                    height: 12.h,
+                  ),
                   Text(
                     S.current.hard_nft,
                     style: textLabelNFT,
@@ -101,7 +109,7 @@ class CreateCollectionScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
@@ -122,8 +130,8 @@ class CreateCollectionScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height:
-                    (64 + 38 + 24 + MediaQuery.of(context).padding.bottom)
-                        .h,
+                        (64 + 38 + 24 + MediaQuery.of(context).padding.bottom)
+                            .h,
                   )
                 ],
               ),
