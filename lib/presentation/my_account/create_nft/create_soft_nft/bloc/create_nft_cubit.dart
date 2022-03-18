@@ -25,9 +25,7 @@ const String INPUT_KEY = 'input_text';
 const String COLLECTION_KEY = 'collection';
 const String PROPERTIES_KEY = 'properties';
 
-
 class CreateNftCubit extends BaseCubit<CreateNftState> {
-
   CreateNftCubit() : super(CreateNftInitial());
 
   VideoPlayerController? controller;
@@ -35,7 +33,6 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   AudioPlayer audioPlayer = AudioPlayer();
 
   CollectionDetailRepository get collectionDetailRepository => Get.find();
-
 
   final PinToIPFS ipfsService = PinToIPFS();
 
@@ -58,6 +55,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   ///Detail NFT var
   String mediaType = '';
   String nftName = '';
+  BehaviorSubject<String> validateRoyalties = BehaviorSubject.seeded('');
   String collectionAddress = '';
   String collectionId = '';
   String description = '';
@@ -114,14 +112,24 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
 
   List<Map<String, String>> listProperty = [];
   List<bool> boolProperties = [];
+  BehaviorSubject<String> textRoyalties = BehaviorSubject.seeded('');
 
   Map<String, bool> createNftMapCheck = {
     MEDIA_KEY: false,
     COVER_PHOTO_KEY: false,
     INPUT_KEY: false,
     COLLECTION_KEY: false,
-    PROPERTIES_KEY : true,
+    PROPERTIES_KEY: true,
   };
+
+  void getRoyalties() {
+    textRoyalties.add('');
+    for (final CollectionMarketModel value in softCollectionList) {
+      if (value.collectionId == collectionId) {
+        textRoyalties.add(value.textRoyalties ?? '');
+      }
+    }
+  }
 
   void validateCreate() {
     if (mediaType == MEDIA_IMAGE_FILE) {

@@ -12,6 +12,7 @@ import 'package:Dfy/presentation/send_offer/ui/day_drop_down.dart';
 import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -513,7 +514,9 @@ class _SendOfferState extends State<SendOffer> {
                       maxLength: 4,
                       validator: validator,
                       validatorValue: (value) {
-                        if (value?.isEmpty ?? true) {
+                        if ((value ?? '').isEmpty ||
+                            (double.parse(value ?? '') <= 0) ||
+                            !Validator.validateAmountFtQuantity(value ?? '')) {
                           return S.current.invalid_duration;
                         } else if (loanDurationType == ID_WEEK &&
                             int.parse(value!) > 5200) {

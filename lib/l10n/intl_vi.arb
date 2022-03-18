@@ -21,7 +21,7 @@
   "buy_out_price": "Giá mua đứt",
   "price_step_content": "Đây là khoảng giá mà người trả giá sau phải đặt cao hơn người đặt giá trước",
   "buy_out_price_content": "Phiên đấu giá sẽ kết thúc ngay lập tức nếu có người mua với giá này",
-  "search": "Tìm kiếm...",
+  "search": "Tìm kiếm",
   "format": "Định dạng",
   "enter": "Nhập",
   "start_date": "Ngày bắt đầu",
@@ -737,5 +737,6 @@
   "processings": "Đang xử lý",
   "and": "Và",
   "other_file": "tệp khác",
+  "invalid_expect_price": "Gía mong muốn không hợp lệ",
   "collect_a_fee_mess": "Thu phí khi người dùng bán lại một mặt hàng mà bạn đã tạo ban đầu. Khoản này được khấu trừ vào giá ưu đãi cuối cùng và được thanh toán hàng tháng cho địa chỉ thanh toán mà bạn chọn."
 }
