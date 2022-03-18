@@ -56,6 +56,10 @@ abstract class NFTClient {
     @Query('collection-address') String collectionAddress,
     @Query('nft-token-id') String nftTokenId,
   );
+  @GET('${ApiConstants.GET_DETAIL_NFT_NOT_ON_MARKET_2}{nftId}')
+  Future<HardNftResponse> getDetailNft2(
+      @Path('nftId') String nftId,
+      );
 
   @GET('${ApiConstants.GET_DETAIL_NFT_ON_PAWN}{id}')
   Future<OnPawnResponse> getDetailNftOnPawn(

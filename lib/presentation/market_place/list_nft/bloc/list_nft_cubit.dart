@@ -10,7 +10,6 @@ import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/component/ckc_filter.dart';
-import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -69,7 +68,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
       return S.current.nft_on_sell;
     } else {
       selectStatus.add(0);
-      return S.current.not_on_market;
+      return 'NFT ${S.current.not_on_market}';
     }
   }
 
@@ -229,6 +228,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     result.when(
       success: (res) {
         if (res.isEmpty) {
+           showDropdownAddress = false;
         } else {
           res = res.where((element) => element.walletAddress != null).toList();
           if (res.length < 2) {
@@ -244,7 +244,9 @@ class ListNftCubit extends BaseCubit<ListNftState> {
           }
         }
       },
-      error: (error) {},
+      error: (error) {
+        showDropdownAddress = false;
+      },
     );
   }
 
@@ -300,6 +302,11 @@ class ListNftCubit extends BaseCubit<ListNftState> {
               item.urlToken = value.iconUrl;
               item.symbolToken = value.symbol;
               item.usdExchange = value.usdExchange;
+            }
+          }
+          if(pageRouter == PageRouter.MY_ACC){
+            if(status![0] == '0'){
+              item.price = 0;
             }
           }
         }
@@ -525,7 +532,7 @@ class ListNftCubit extends BaseCubit<ListNftState> {
     } else if (type == MarketType.AUCTION) {
       return S.current.nft_on_auction;
     } else if (type == MarketType.NOT_ON_MARKET) {
-      return S.current.not_on_market;
+      return 'NFT ${S.current.not_on_market}';
     } else {
       return S.current.nft_on_pawn;
     }
