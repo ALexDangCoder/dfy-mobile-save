@@ -46,38 +46,6 @@ Widget inputInformationWidget({
         },
       ),
       spaceH16,
-      TextFieldValidator(
-        hint: S.current.royalties,
-        textInputType: TextInputType.number,
-        maxInputChar: 2,
-        prefixIcon: sizedSvgImage(
-          w: 20,
-          h: 20,
-          image: ImageAssets.ic_round_percent_svg,
-        ),
-        suffixIcon: GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (_) => InfoPopup(
-                name: S.current.royalties,
-                content: S.current.collect_a_fee_mess,
-              ),
-            );
-          },
-          child: sizedSvgImage(
-            w: 20,
-            h: 20,
-            image: ImageAssets.ic_round_i,
-          ),
-        ),
-        onChange: (vl) {
-          onChange();
-        },
-        validator: (vl) {
-          return cubit.validateRoyalty(vl ?? '');
-        },
-      ),
     ],
   );
 }
