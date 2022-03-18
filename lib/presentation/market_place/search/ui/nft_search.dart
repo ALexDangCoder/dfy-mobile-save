@@ -182,6 +182,7 @@ class _SearchNFTState extends State<SearchNFT> {
                   ),
                   Expanded(
                     child: TextFormField(
+                      maxLength: 255,
                       controller: controller,
                       onChanged: (value) {
                         searchCubit.show();
