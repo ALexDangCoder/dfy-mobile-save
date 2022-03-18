@@ -66,7 +66,7 @@ class ContentResponse {
   @JsonKey(name: 'estimatePrice')
   double? estimatePrice;
   @JsonKey(name: 'expectedLoanAmount')
-  String? expectedLoanAmount;
+  num? expectedLoanAmount;
   @JsonKey(name: 'expectedCollateralSymbol')
   String? expectedCollateralSymbol;
   @JsonKey(name: 'reputation')

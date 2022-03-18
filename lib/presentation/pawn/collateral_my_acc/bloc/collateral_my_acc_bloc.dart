@@ -9,6 +9,15 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 
 class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
+  static const int PROCESSING_CREATE = 1;
+  static const int FAIL_CREATE = 2;
+  static const int OPEN = 3;
+  static const int PROCESSING_ACCEPT = 4;
+  static const int PROCESSING_WITHDRAW = 5;
+  static const int ACCEPTED = 6;
+  static const int WITHDRAW = 7;
+  static const int FAILED = 8;
+
   CollateralMyAccBloc() : super(CollateralMyAccInitial());
   String mess = '';
   String walletAddress = PrefsService.getCurrentWalletCore();
@@ -19,6 +28,8 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   List<CollateralResultModel> list = [];
 
   bool get canLoadMore => canLoadMoreMy;
+
+  BorrowRepository get _pawnService => Get.find();
 
   bool get isRefresh => _isRefresh;
 
@@ -31,7 +42,14 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
     }
   }
 
-  BorrowRepository get _pawnService => Get.find();
+  void loadMorePosts() {
+    if (!_isLoading) {
+      page += 1;
+      _isRefresh = false;
+      _isLoading = true;
+      getListCollateral();
+    }
+  }
 
   Future<void> getListCollateral() async {
     showLoading();

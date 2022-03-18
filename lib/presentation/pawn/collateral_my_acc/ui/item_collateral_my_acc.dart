@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,11 +11,14 @@ class ItemCollateralMyAcc extends StatelessWidget {
   const ItemCollateralMyAcc({
     Key? key,
     required this.bloc,
+    required this.index,
   }) : super(key: key);
   final CollateralMyAccBloc bloc;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    final obj = bloc.list[index];
     return Center(
       child: Container(
         width: 343.w,
@@ -59,9 +63,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '15-20%', //todo
+                      obj.description.toString(),
                       style: textNormalCustom(
-                        AppTheme.getInstance().pawnItemGray(),
+                        null,
                         16,
                         FontWeight.w400,
                       ),
@@ -101,7 +105,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
-                              '', //todo
+                              ImageAssets.getSymbolAsset(
+                                obj.collateralSymbol.toString(),
+                              ),
                               width: 16.sp,
                               height: 16.sp,
                               errorBuilder: (context, error, stackTrace) =>
@@ -121,7 +127,7 @@ class ItemCollateralMyAcc extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Text(
-                              '${formatPrice.format(10000)} DFY',
+                              '${formatPrice.format(obj.collateralAmount)} ${obj.collateralSymbol.toString()}',
                               style: textNormal(
                                 null,
                                 16,
@@ -164,7 +170,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
-                              '', //todo
+                              ImageAssets.getSymbolAsset(
+                                obj.loanSymbol.toString(),
+                              ),
                               width: 16.sp,
                               height: 16.sp,
                               errorBuilder: (context, error, stackTrace) =>
@@ -184,7 +192,7 @@ class ItemCollateralMyAcc extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Text(
-                              'DFY',
+                              obj.loanSymbol.toString(),
                               style: textNormal(
                                 null,
                                 16,
@@ -217,9 +225,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '12 months',
+                      '${obj.durationQty} ${obj.durationType == WEEK ? S.current.week : S.current.month}',
                       style: textNormalCustom(
-                        AppTheme.getInstance().pawnItemGray(),
+                        null,
                         16,
                         FontWeight.w400,
                       ),
@@ -247,9 +255,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '16',
+                      obj.numberOfferReceived.toString(),
                       style: textNormalCustom(
-                        AppTheme.getInstance().pawnItemGray(),
+                        null,
                         16,
                         FontWeight.w400,
                       ),
@@ -277,9 +285,9 @@ class ItemCollateralMyAcc extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '16',
+                      getStatus(obj.status ?? 0),
                       style: textNormalCustom(
-                        AppTheme.getInstance().pawnItemGray(),
+                        getColor(obj.status ?? 0),
                         16,
                         FontWeight.w400,
                       ),
@@ -292,5 +300,51 @@ class ItemCollateralMyAcc extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getStatus(int status) {
+    switch (status) {
+      case CollateralMyAccBloc.PROCESSING_CREATE:
+        return S.current.processing_create;
+      case CollateralMyAccBloc.FAIL_CREATE:
+        return S.current.failed_create;
+      case CollateralMyAccBloc.OPEN:
+        return S.current.open;
+      case CollateralMyAccBloc.PROCESSING_ACCEPT:
+        return S.current.processing_accept;
+      case CollateralMyAccBloc.PROCESSING_WITHDRAW:
+        return S.current.processing_withdraw;
+      case CollateralMyAccBloc.ACCEPTED:
+        return S.current.accepted;
+      case CollateralMyAccBloc.WITHDRAW:
+        return S.current.withdraw;
+      case CollateralMyAccBloc.FAILED:
+        return S.current.failed;
+      default:
+        return '';
+    }
+  }
+
+  Color getColor(int status) {
+    switch (status) {
+      case CollateralMyAccBloc.PROCESSING_CREATE:
+        return AppTheme.getInstance().orangeMarketColors();
+      case CollateralMyAccBloc.FAIL_CREATE:
+        return AppTheme.getInstance().redColor();
+      case CollateralMyAccBloc.OPEN:
+        return AppTheme.getInstance().blueColor();
+      case CollateralMyAccBloc.PROCESSING_ACCEPT:
+        return AppTheme.getInstance().orangeMarketColors();
+      case CollateralMyAccBloc.PROCESSING_WITHDRAW:
+        return AppTheme.getInstance().orangeMarketColors();
+      case CollateralMyAccBloc.ACCEPTED:
+        return AppTheme.getInstance().greenMarketColors();
+      case CollateralMyAccBloc.WITHDRAW:
+        return AppTheme.getInstance().redColor();
+      case CollateralMyAccBloc.FAILED:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
   }
 }

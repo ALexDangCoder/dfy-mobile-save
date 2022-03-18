@@ -129,7 +129,7 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                             ),
                           ),
                           Text(
-                            S.current.collateral_of_bda, //todo
+                            S.current.collateral_list,
                             style: textNormalCustom(
                               null,
                               20.sp,
@@ -169,7 +169,7 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                             if (_bloc.canLoadMore &&
                                 scrollInfo.metrics.pixels ==
                                     scrollInfo.metrics.maxScrollExtent) {
-                              //todo   _bloc.loadMorePosts();
+                                 _bloc.loadMorePosts();
                             }
                             return true;
                           },
@@ -185,10 +185,11 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
-                                      itemCount: 10,
+                                      itemCount: list.length,
                                       itemBuilder: (context, index) =>
                                           ItemCollateralMyAcc(
                                         bloc: _bloc,
+                                        index: index,
                                       ),
                                     )
                                   : Column(

@@ -15,7 +15,7 @@ class CollateralResultModel {
   int? numberOfferReceived;
   String? latestBlockchainTxn;
   double? estimatePrice;
-  String? expectedLoanAmount;
+  num? expectedLoanAmount;
   String? expectedCollateralSymbol;
   int? reputation;
   String? walletAddress;
