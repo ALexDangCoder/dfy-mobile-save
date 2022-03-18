@@ -116,21 +116,30 @@ mixin BorrowRepository {
 
   Future<Result<SendOfferLendCryptoModel>> postSendOfferRequest({
     String? collateralId,
-   String? loanRequestId,
-     String? duration,
-     String? durationType,
-     String? interestRate,
-     String? latestBlockchainTxn,
+    String? loanRequestId,
+    String? duration,
+    String? durationType,
+    String? interestRate,
+    String? latestBlockchainTxn,
     String? liquidationThreshold,
-     String? loanAmount,
- String? loanToValue,
-     String? message,
-     String? repaymentToken,
+    String? loanAmount,
+    String? loanToValue,
+    String? message,
+    String? repaymentToken,
     String? supplyCurrency,
-   String? walletAddress,
+    String? walletAddress,
   });
 
   Future<Result<PawnshopPackage>> getPawnshopDetail({
     required String packageId,
+  });
+
+  Future<Result<List<CollateralResultModel>>> getListCollateralMyAcc({
+    String? status,
+    String? page,
+    String? size,
+    String? collateralCurrencySymbol,
+    String? walletAddress,
+    String? sort,
   });
 }

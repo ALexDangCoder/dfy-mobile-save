@@ -264,10 +264,11 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<PawnshopPackage>> getPawnshopDetail({required String packageId}) {
+  Future<Result<PawnshopPackage>> getPawnshopDetail(
+      {required String packageId}) {
     return runCatchingAsync<DetailPawnShopResponse, PawnshopPackage>(
-          () => _client.getPawnshopPackageDetail(packageId),
-          (response) => response.data?.toDomain() ?? PawnshopPackage(),
+      () => _client.getPawnshopPackageDetail(packageId),
+      (response) => response.data?.toDomain() ?? PawnshopPackage(),
     );
   }
 
@@ -293,10 +294,10 @@ class BorrowRepositoryImpl implements BorrowRepository {
     );
   }
 
-
   @override
-  Future<Result<NftResAfterPostLoanRequestResponse>> postNftToServer(
-      {required NftSendLoanRequest request}) {
+  Future<Result<NftResAfterPostLoanRequestResponse>> postNftToServer({
+    required NftSendLoanRequest request,
+  }) {
     return runCatchingAsync<NftResAfterPostLoanRequestResponse,
         NftResAfterPostLoanRequestResponse>(
       () => _client.postNftOnLoanRequest(request),
@@ -338,6 +339,29 @@ class BorrowRepositoryImpl implements BorrowRepository {
         walletAddress,
       ),
       (response) => response.data?.toDomain() ?? SendOfferLendCryptoModel(),
+    );
+  }
+
+  @override
+  Future<Result<List<CollateralResultModel>>> getListCollateralMyAcc(
+      {String? status,
+      String? page,
+      String? size,
+      String? collateralCurrencySymbol,
+      String? walletAddress,
+      String? sort}) {
+    return runCatchingAsync<ListCollateralResponse,
+        List<CollateralResultModel>>(
+      () => _client.getListCollateralMyAcc(
+        status,
+        page,
+        size,
+        collateralCurrencySymbol,
+        walletAddress,
+        sort,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }
