@@ -219,7 +219,7 @@ class _PlaceBidState extends State<PlaceBid> {
               ),
             ),
           ),
-          inputType: TextInputType.number,
+          inputType: const TextInputType.numberWithOptions(decimal: true),
         );
       } else {
         return Container(

@@ -441,7 +441,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (value.trim().isEmpty) {
       return S.current.amount_required;
     } else if (!regexAmount.hasMatch(value)) {
-      return S.current.invalid_amount;
+      return S.current.invalid_expect_price;
     } else {
       return null;
     }
