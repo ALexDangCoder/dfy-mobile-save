@@ -157,34 +157,35 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                               spaceH14,
                               SizedBox(
                                 child: StreamBuilder<int>(
-                                    stream: cubit.tabIndex,
-                                    builder: (context, snapshot) {
-                                      return TabBar(
-                                        unselectedLabelColor: Colors.white,
-                                        labelColor: Colors.white,
-                                        onTap: (int i) {
-                                          cubit.tabIndex.add(i);
-                                        },
-                                        indicatorColor:
-                                            AppTheme.getInstance().bgBtsColor(),
-                                        tabs: [
-                                          Tab(
-                                            icon: CheckboxItemTab(
-                                              isSelected: snapshot.data == 0,
-                                              nameCheckbox: 'Cryptocurrency',
-                                            ),
+                                  stream: cubit.tabIndex,
+                                  builder: (context, snapshot) {
+                                    return TabBar(
+                                      unselectedLabelColor: Colors.white,
+                                      labelColor: Colors.white,
+                                      onTap: (int i) {
+                                        cubit.tabIndex.add(i);
+                                      },
+                                      indicatorColor:
+                                          AppTheme.getInstance().bgBtsColor(),
+                                      tabs: [
+                                        Tab(
+                                          icon: CheckboxItemTab(
+                                            isSelected: snapshot.data == 0,
+                                            nameCheckbox: 'Cryptocurrency',
                                           ),
-                                          Tab(
-                                            icon: CheckboxItemTab(
-                                              isSelected: snapshot.data == 1,
-                                              nameCheckbox: 'NFT',
-                                            ),
-                                          )
-                                        ],
-                                        controller: _tabController,
-                                        indicatorSize: TabBarIndicatorSize.tab,
-                                      );
-                                    }),
+                                        ),
+                                        Tab(
+                                          icon: CheckboxItemTab(
+                                            isSelected: snapshot.data == 1,
+                                            nameCheckbox: 'NFT',
+                                          ),
+                                        )
+                                      ],
+                                      controller: _tabController,
+                                      indicatorSize: TabBarIndicatorSize.tab,
+                                    );
+                                  },
+                                ),
                               ),
                               StreamBuilder<int>(
                                 stream: cubit.tabIndex,
