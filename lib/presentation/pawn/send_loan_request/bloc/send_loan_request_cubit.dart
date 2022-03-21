@@ -322,6 +322,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   NftMarket nftMarketConfirm = NftMarket();
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       isEnableSendRqNft.sink.add(false);
     } else {
@@ -466,6 +467,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             list: res,
           ),
         );
+        showContent();
       },
       error: (error) {
         emit(
@@ -484,7 +486,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     String? nftType,
   }) async {
     if (loadMore == false) {
-      showLoading();
+      print('case load more');
+      // showLoading();
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
@@ -515,7 +518,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   Future<void> refreshGetListNftCollateral(String walletAddress) async {
     canLoadMoreList = true;
     if (refresh == false) {
-      showLoading();
+      print('case refresh');
+      // showLoading();
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);

@@ -44,9 +44,9 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
 
   @override
   void dispose() {
+    super.dispose();
     _debounce.cancel();
     widget.cubit.close();
-    super.dispose();
   }
 
   @override
@@ -91,6 +91,7 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                   widget.cubit.loadMore = false;
                   widget.cubit.refresh = false;
                 }
+
               },
               bloc: widget.cubit,
               builder: (context, state) {
@@ -141,72 +142,72 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral> {
                               child: searchBar(),
                             ),
                             spaceH16,
-                            widget.cubit.contentNftOnSelect.isNotEmpty
-                                ? Expanded(
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                              .padding
-                                              .bottom),
-                                      shrinkWrap: true,
-                                      itemCount: widget
-                                          .cubit.contentNftOnSelect.length,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(left: 16.w),
-                                          child: NFTItemWidget(
-                                            nftMarket: widget
+                            if (widget.cubit.contentNftOnSelect.isNotEmpty)
+                              Expanded(
+                                child: GridView.builder(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .padding
+                                          .bottom),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      widget.cubit.contentNftOnSelect.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(left: 16.w),
+                                      child: NFTItemWidget(
+                                        nftMarket: widget
+                                                .cubit
+                                                .contentNftOnSelect[index]
+                                                .nft ??
+                                            NftMarket(),
+                                        isChoosing: true,
+                                        callBack: () {
+                                          Navigator.pop(
+                                            context,
+                                            widget
                                                     .cubit
                                                     .contentNftOnSelect[index]
                                                     .nft ??
                                                 NftMarket(),
-                                            isChoosing: true,
-                                            callBack: () {
-                                              Navigator.pop(
-                                                context,
-                                                widget
-                                                        .cubit
-                                                        .contentNftOnSelect[
-                                                            index]
-                                                        .nft ??
-                                                    NftMarket(),
-                                              );
-                                            },
-                                            // pageRouter: widget.pageRouter,
-                                          ),
-                                        );
-                                      },
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 170.w / 231.h,
+                                          );
+                                        },
+                                        // pageRouter: widget.pageRouter,
+                                      ),
+                                    );
+                                  },
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 170.w / 231.h,
+                                  ),
+                                ),
+                              )
+                            else
+                              Padding(
+                                padding: EdgeInsets.only(top: 150.h),
+                                child: Column(
+                                  children: [
+                                    Image(
+                                      image: const AssetImage(
+                                        ImageAssets.img_search_empty,
+                                      ),
+                                      height: 120.h,
+                                      width: 120.w,
+                                    ),
+                                    SizedBox(
+                                      height: 17.7.h,
+                                    ),
+                                    Text(
+                                      S.current.no_result_found,
+                                      style: textNormal(
+                                        Colors.white54,
+                                        20.sp,
                                       ),
                                     ),
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(top: 150.h),
-                                    child: Column(
-                                      children: [
-                                        Image(
-                                          image: const AssetImage(
-                                            ImageAssets.img_search_empty,
-                                          ),
-                                          height: 120.h,
-                                          width: 120.w,
-                                        ),
-                                        SizedBox(
-                                          height: 17.7.h,
-                                        ),
-                                        Text(
-                                          S.current.no_result_found,
-                                          style: textNormal(
-                                            Colors.white54,
-                                            20.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
                       ),
