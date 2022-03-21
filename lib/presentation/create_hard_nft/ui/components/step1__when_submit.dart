@@ -204,7 +204,6 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
           isImage: true,
           text: ImageAssets.ic_close,
           onRightClick: () {
-            //todo handle thêm case của mint request của a hưng
             Navigator.of(context)
               ..pop()
               ..pop()
@@ -516,37 +515,39 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
 
   Widget _buttonByState(BuildContext context, {required String assetIdMintRq}) {
     return StreamBuilder<StateButton>(
-      initialData:
-          assetIdMintRq.isEmpty ? StateButton.PROCESSING : StateButton.DEFAULT,
+      initialData: assetIdMintRq.isNotEmpty
+          ? StateButton.PROCESSING
+          : StateButton.DEFAULT,
       stream: cubit.stateButton.stream,
       builder: (context, snapshot) {
         if ((snapshot.data ?? StateButton.DEFAULT) ==
             StateButton.FINDEVALUATOR) {
           return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ListBookEvaluation(
-                        assetId: cubit.assetId,
-                      );
-                    },
-                    settings: const RouteSettings(
-                      name: AppRouter.step2ListBook,
-                    ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ListBookEvaluation(
+                      assetId: cubit.assetId,
+                    );
+                  },
+                  settings: const RouteSettings(
+                    name: AppRouter.step2ListBook,
                   ),
-                ).then((value) => Navigator.pop(context));
-              },
-              child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: 38.h,
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  child: const ButtonGold(
-                      title: 'Find evaluator', isEnable: true)));
+                ),
+              ).then((value) => Navigator.pop(context));
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: 38.h,
+                left: 16.w,
+                right: 16.w,
+              ),
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: const ButtonGold(title: 'Find evaluator', isEnable: true),
+            ),
+          );
         } else if ((snapshot.data ?? StateButton.DEFAULT) ==
             StateButton.PROCESSING) {
           return Container(
