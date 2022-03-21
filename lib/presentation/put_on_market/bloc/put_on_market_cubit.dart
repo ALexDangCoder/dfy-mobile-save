@@ -206,7 +206,7 @@ class PutOnMarketCubit extends BaseCubit<PutOnMarketState> {
                 putOnMarketModel.buyOutPrice == '')
             ? putOnMarketModel.buyOutPrice ?? '0'
             : '0',
-        contractAddress: Get.find<AppConstants>().nftSalesAddress,
+        contractAddress: Get.find<AppConstants>().nftAuction,
         collectionAddress: putOnMarketModel.collectionAddress ?? '',
         currencyAddress: putOnMarketModel.tokenAddress ?? '',
         endTime: putOnMarketModel.endTime ?? '',

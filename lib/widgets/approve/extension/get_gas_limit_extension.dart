@@ -18,6 +18,7 @@ extension GetGasLimit on ApproveCubit {
         dataString: hexString,
       );
     } catch (e) {
+      print('fuck $e');
       AppException(S.current.error, e.toString());
     }
     return double.parse(gasLimit);

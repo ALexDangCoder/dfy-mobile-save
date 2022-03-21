@@ -191,7 +191,7 @@ class _SendOfferState extends State<SendOffer> {
                     'message': message,
                     'duration': int.parse(duration),
                     'durationType': loanDurationType,
-                    'interestRate': num.parse(interest),
+                    'interestRate': interest,
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
@@ -200,6 +200,8 @@ class _SendOfferState extends State<SendOffer> {
                     'repaymentToken': shortName,
                     'latestBlockchainTxn': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
+                    'pawnShopPackageId': 0,
+                    'bcOfferId': 0,
                   };
                   await _cubit.sendOffer(
                       offerRequest:
