@@ -758,7 +758,7 @@ class Web3Utils {
       parameters: [
         name,
         'DFY-NFT',
-        BigInt.from(num.parse(royaltyRate)),
+        BigInt.from(num.parse(_handleAmount(5, royaltyRate))),
         collectionCID
       ],
     );
