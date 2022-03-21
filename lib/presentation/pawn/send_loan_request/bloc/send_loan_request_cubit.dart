@@ -356,32 +356,6 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
       BehaviorSubject<Map<String, dynamic>>();
 
-  void fillTokenAfterChooseNft(String symbolToken) {
-    Map<String, dynamic> fillToken = {};
-    final String listToken = PrefsService.getListTokenSupport();
-    listTokenSupport = TokenInf.decode(listToken);
-    for (final element in listTokenSupport) {
-      if (element.symbol == symbolToken) {
-        fillToken = {
-          'label': element.symbol,
-          'value': element.id,
-          'addressToken': element.address,
-          'icon': SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: Image.network(
-              ImageAssets.getSymbolAsset(
-                element.symbol ?? DFY,
-              ),
-            ),
-          )
-        };
-        tokenAfterChooseNft.sink.add(fillToken);
-        break;
-      }
-    }
-  }
-
   void getTokensRequestNft() {
     if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
       listTokenSupport.clear();
@@ -466,6 +440,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             list: res,
           ),
         );
+        showContent();
       },
       error: (error) {
         emit(
@@ -484,7 +459,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     String? nftType,
   }) async {
     if (loadMore == false) {
-      showLoading();
+      // showLoading();
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
@@ -502,7 +477,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     emit(SubmittingNft());
     final result = await _repo.postNftToServer(request: nftRequest);
     result.when(success: (res) {
-      if(res.error == 'success') {
+      if (res.error == 'success') {
         emit(SubmitNftSuccess(CompleteType.SUCCESS));
       } else {
         emit(SubmitNftSuccess(CompleteType.ERROR));
@@ -515,7 +490,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   Future<void> refreshGetListNftCollateral(String walletAddress) async {
     canLoadMoreList = true;
     if (refresh == false) {
-      showLoading();
+      // showLoading();
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);
