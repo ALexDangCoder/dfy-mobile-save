@@ -880,6 +880,11 @@
   "invalid_liquid_threshold": "Invalid liquid threshold",
   "must_below_2": "Must below 2 digit after decimal",
   "interest_rate_is_required": "Interest Rate is required",
-  "or_pawn": "or"
+  "or_pawn": "or",
+  "offer_received": "Offer received",
+  "processing_create": "Processing create",
+  "processing_withdraw": "Processing withdraw",
+  "withdraw": "Withdraw",
+  "collateral_list": "Danh sách Collateral"
 
 }

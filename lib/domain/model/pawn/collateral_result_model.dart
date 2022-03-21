@@ -15,13 +15,15 @@ class CollateralResultModel {
   int? numberOfferReceived;
   String? latestBlockchainTxn;
   double? estimatePrice;
-  String? expectedLoanAmount;
+  num? expectedLoanAmount;
   String? expectedCollateralSymbol;
   int? reputation;
   String? walletAddress;
   int? completedContracts;
   bool? isActive;
   int? type;
+  String? nftCollateralDetailDTO;
+  String? nft;
 
   CollateralResultModel({
     this.id,
@@ -47,5 +49,7 @@ class CollateralResultModel {
     this.completedContracts,
     this.isActive,
     this.type,
+    this.nftCollateralDetailDTO,
+    this.nft,
   });
 }

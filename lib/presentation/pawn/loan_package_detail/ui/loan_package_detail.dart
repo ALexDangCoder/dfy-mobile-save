@@ -5,8 +5,10 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/cubit/loan_package_cubit.dart';
+import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -16,10 +18,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoanPackageDetail extends StatefulWidget {
-  const LoanPackageDetail({Key? key, required this.packageId})
-      : super(key: key);
+  const LoanPackageDetail({
+    Key? key,
+    required this.packageId,
+    required this.packageType,
+  }) : super(key: key);
 
   final String packageId;
+  final int packageType;
 
   @override
   _LoanPackageDetailState createState() => _LoanPackageDetailState();
@@ -72,14 +78,20 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                   bottom: 16.h,
                 ),
                 child: ButtonGradient(
-                  onPressed: () {},
+                  onPressed: () {
+                    goTo(
+                        context,
+                        SignLoanContract(
+                          pawnshopPackage: cubit.pawnshopPackage,
+                        ));
+                  },
                   gradient: RadialGradient(
                     center: const Alignment(0.5, -0.5),
                     radius: 4,
                     colors: AppTheme.getInstance().gradientButtonColor(),
                   ),
                   child: Text(
-                    cubit.pawnshopPackage.type == 0
+                    widget.packageType == 0
                         ? 'Sign loan contract'
                         : 'Send collateral',
                     style: textNormalCustom(
