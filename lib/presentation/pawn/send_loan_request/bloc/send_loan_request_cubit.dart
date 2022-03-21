@@ -345,46 +345,6 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     },
   ];
 
-  Map<String, dynamic> filTokenAfterChooseNft(String? expectedSymbol) {
-    Map<String, dynamic> fillToken = {};
-    final String listToken = PrefsService.getListTokenSupport();
-    listTokenSupport = TokenInf.decode(listToken);
-    for (final element in listTokenSupport) {
-      if (element.symbol == expectedSymbol) {
-        fillToken = {
-          'label': element.symbol,
-          'value': element.id,
-          'addressToken': element.address,
-          'icon': SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: Image.network(
-              ImageAssets.getSymbolAsset(
-                element.symbol ?? DFY,
-              ),
-            ),
-          )
-        };
-        break;
-      }
-    }
-    return fillToken;
-  }
-
-  Map<String, dynamic> fillDurationAfterChooseNft(int? durationType) {
-    if (durationType == 0) {
-      return {
-        'label': 'month',
-        'value': 'month',
-      };
-    } else {
-      return {
-        'label': 'week',
-        'value': 'week',
-      };
-    }
-  }
-
   ///warning form
   BehaviorSubject<bool> isShowMessage = BehaviorSubject<bool>();
   BehaviorSubject<bool> isShowLoanToken = BehaviorSubject<bool>();
@@ -395,8 +355,6 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
       BehaviorSubject<Map<String, dynamic>>();
-
-
 
   void getTokensRequestNft() {
     if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
@@ -501,7 +459,6 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     String? nftType,
   }) async {
     if (loadMore == false) {
-
       // showLoading();
       page += 1;
       canLoadMoreList = true;
@@ -520,7 +477,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     emit(SubmittingNft());
     final result = await _repo.postNftToServer(request: nftRequest);
     result.when(success: (res) {
-      if(res.error == 'success') {
+      if (res.error == 'success') {
         emit(SubmitNftSuccess(CompleteType.SUCCESS));
       } else {
         emit(SubmitNftSuccess(CompleteType.ERROR));
