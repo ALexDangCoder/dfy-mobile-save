@@ -1,4 +1,6 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -40,7 +42,9 @@ class _OfferSentListState extends State<OfferSentList>
           },
           child: Container(
             height: 812.h,
-            margin: EdgeInsets.only(top: 26.h,),
+            margin: EdgeInsets.only(
+              top: 26.h,
+            ),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -49,9 +53,117 @@ class _OfferSentListState extends State<OfferSentList>
               ),
             ),
             child: Column(
-
+              children: [
+                _header(),
+                Divider(
+                  color: AppTheme.getInstance().divideColor(),
+                ),
+                spaceH30,
+                Flexible(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 30.w),
+                        child: TabBar(
+                          unselectedLabelColor: const Color(0xFF9997FF),
+                          labelColor: Colors.white,
+                          indicatorColor: const Color(0xFF6F6FC5),
+                          controller: _tabController,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelStyle: textNormalCustom(
+                            Colors.red,
+                            14,
+                            FontWeight.w600,
+                          ),
+                          onTap: (index) {
+                            //todo
+                          },
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                'Crypto',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().whiteColor(),
+                                  14,
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                'NFT',
+                                style: textNormalCustom(
+                                  AppTheme.getInstance().whiteColor(),
+                                  14,
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      spaceH24,
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            ///Tab crypto
+                            Container(color: Colors.white,),
+                            ///Tab Nft
+                            Container(color: Colors.green,),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _header() {
+    return SizedBox(
+      height: 64.h,
+      child: SizedBox(
+        height: 28.h,
+        width: 343.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: InkWell(
+                onTap: () {},
+                child: SizedBox(
+                  height: 30.h,
+                  width: 30.w,
+                  child: Image.asset(ImageAssets.ic_menu),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 6,
+              child: Align(
+                child: Text(
+                  'Offer sent list',
+                  textAlign: TextAlign.center,
+                  style: titleText(
+                    color: AppTheme.getInstance().textThemeColor(),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              child: InkWell(
+                onTap: () {},
+                child: Image.asset(ImageAssets.ic_filter),
+              ),
+            ),
+          ],
         ),
       ),
     );
