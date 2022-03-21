@@ -148,7 +148,7 @@ class ConfirmSendLoanNft extends StatelessWidget {
                     spaceW5,
                     Flexible(
                       child: Text(
-                        formatValue.format(cubit.nftMarketConfirm.price ?? 0),
+                        formatValue.format(cubit.nftRequest.loanAmount ?? 0),
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           16,

@@ -345,23 +345,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     },
   ];
 
-  ///warning form
-  BehaviorSubject<bool> isShowMessage = BehaviorSubject<bool>();
-  BehaviorSubject<bool> isShowLoanToken = BehaviorSubject<bool>();
-  BehaviorSubject<bool> isShowDuration = BehaviorSubject<bool>();
-  BehaviorSubject<String> txtWarnMess = BehaviorSubject<String>();
-  BehaviorSubject<String> txtWarnLoan = BehaviorSubject<String>();
-  BehaviorSubject<String> txtWarnDuration = BehaviorSubject<String>();
-
-  BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
-      BehaviorSubject<Map<String, dynamic>>();
-
-  void fillTokenAfterChooseNft(String symbolToken) {
+  Map<String, dynamic> filTokenAfterChooseNft(String? expectedSymbol) {
     Map<String, dynamic> fillToken = {};
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
     for (final element in listTokenSupport) {
-      if (element.symbol == symbolToken) {
+      if (element.symbol == expectedSymbol) {
         fillToken = {
           'label': element.symbol,
           'value': element.id,
@@ -376,11 +365,38 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             ),
           )
         };
-        tokenAfterChooseNft.sink.add(fillToken);
         break;
       }
     }
+    return fillToken;
   }
+
+  Map<String, dynamic> fillDurationAfterChooseNft(int? durationType) {
+    if (durationType == 0) {
+      return {
+        'label': 'month',
+        'value': 'month',
+      };
+    } else {
+      return {
+        'label': 'week',
+        'value': 'week',
+      };
+    }
+  }
+
+  ///warning form
+  BehaviorSubject<bool> isShowMessage = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowLoanToken = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isShowDuration = BehaviorSubject<bool>();
+  BehaviorSubject<String> txtWarnMess = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnLoan = BehaviorSubject<String>();
+  BehaviorSubject<String> txtWarnDuration = BehaviorSubject<String>();
+
+  BehaviorSubject<Map<String, dynamic>> tokenAfterChooseNft =
+      BehaviorSubject<Map<String, dynamic>>();
+
+
 
   void getTokensRequestNft() {
     if (listTokenSupport.isNotEmpty || listDropDownToken.isNotEmpty) {
