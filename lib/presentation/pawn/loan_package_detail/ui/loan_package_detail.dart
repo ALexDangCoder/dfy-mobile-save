@@ -5,6 +5,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/cubit/loan_package_cubit.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -425,7 +426,13 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
           Center(
             child: InkWell(
               onTap: () {
-                /// TODO push profile
+                goTo(
+                  context,
+                  OtherProfile(
+                    userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
+                    index: 0,
+                  ),
+                );
               },
               child: Container(
                 height: 40.h,

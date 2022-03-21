@@ -2,17 +2,17 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 
 class PawnshopPackage {
   List<AcceptableAssetsAsCollateral>? acceptableAssetsAsCollateral;
-  int? id;//
-  num? interest;//
-  num? interestMax;//
-  num? interestMin;//
-  bool? isFavourite;//
-  num? loanToValue;//
-  int? durationQtyType;//
+  int? id; //
+  num? interest; //
+  num? interestMax; //
+  num? interestMin; //
+  bool? isFavourite; //
+  num? loanToValue; //
+  int? durationQtyType; //
   int? durationQtyTypeMin;
   int? durationQtyTypeMax;
-  Pawnshop? pawnshop;//
-  int? type;//
+  Pawnshop? pawnshop; //
+  int? type; //
   int? signContracts;
   List<RepaymentToken>? repaymentToken;
   List<LoanToken>? loanToken;
@@ -53,17 +53,22 @@ class PawnshopPackage {
 }
 
 class Pawnshop {
-  String? address;
-  String? avatar;
-  String? cover;
-  String? name;
-  int? id;
-  int? type;
-  int? userId;
+  String? address; //
+  String? avatar; //
+  String? cover; //
+  String? name; //
+  int? id; //
+  int? type; //
+  int? userId; //
   bool? isKYC;
   bool? isTrustedLender;
-  int? reputation;
-  String? walletAddress;
+  int? reputation; //
+  String? walletAddress; //
+  String? email;
+  String? description;
+  String? phoneNumber;
+  int? createAt;
+  int? updateAt;
 
   Pawnshop({
     this.address,
@@ -77,5 +82,10 @@ class Pawnshop {
     this.name,
     this.reputation,
     this.walletAddress,
+    this.email,
+    this.description,
+    this.phoneNumber,
+    this.createAt,
+    this.updateAt,
   });
 }
