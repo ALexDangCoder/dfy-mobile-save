@@ -36,6 +36,7 @@ class _OtherProfileState extends State<OtherProfile>
     with SingleTickerProviderStateMixin {
   late OtherProfileCubit cubit;
   late TabController _tabController;
+  late ScrollController scrollController;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _OtherProfileState extends State<OtherProfile>
     cubit.getUserProfile(userId: widget.userId);
     _tabController =
         TabController(initialIndex: widget.index, length: 2, vsync: this);
+    scrollController = ScrollController();
   }
 
   @override
@@ -77,206 +79,212 @@ class _OtherProfileState extends State<OtherProfile>
               return BaseDesignScreen(
                 title: snapshot.data ?? 'View profile',
                 child: state is OtherProfileSuccess
-                    ? SingleChildScrollView(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
-                          right: 16.w,
-                          top: 24.h,
+                    ? NestedScrollView(
+                  controller:scrollController,
+                  physics: const ScrollPhysics(parent: PageScrollPhysics()),
+                  body: DefaultTabController(
+                    length: 2,
+                    child: Column(
+                      children: [
+                        TabBar(
+                          unselectedLabelColor: Colors.white,
+                          labelColor: Colors.white,
+                          onTap: (int i) {
+                            cubit.setTitle(i);
+                          },
+                          indicatorColor: formColor,
+                          labelStyle: textNormalCustom(
+                            Colors.white,
+                            14,
+                            FontWeight.w600,
+                          ),
+                          tabs: const [
+                            Tab(
+                              text: 'Borrower profile',
+                            ),
+                            Tab(
+                              text: 'Lender profile',
+                            )
+                          ],
+                          controller: _tabController,
+                          indicatorSize: TabBarIndicatorSize.tab,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            title('PAWNSHOP INFORMATION'),
-                            spaceH20,
-                            boxCover(),
-                            spaceH12,
-                            Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    cubit.userProfile.pawnshop?.name ?? '',
-                                    style: textNormalCustom(
-                                      Colors.white,
-                                      20,
-                                      FontWeight.w600,
-                                    ),
-                                  ),
-                                  spaceH8,
-                                  Text(
-                                    'Joined in ${cubit.date()}',
-                                    style: textNormalCustom(
-                                      textPawnGray,
-                                      16,
-                                      FontWeight.w400,
-                                    ),
-                                  ),
-                                  spaceH4,
-                                  if (cubit.userProfile.kyc != null)
-                                    Row(
-                                      children: [
-                                        sizedSvgImage(
-                                          w: 14,
-                                          h: 14,
-                                          image: ImageAssets.ic_verify_svg,
-                                        ),
-                                        Text(
-                                          'Identity verified',
-                                          style: textNormalCustom(
-                                            textPawnGray,
-                                            16,
-                                            FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                ],
-                              ),
-                            ),
-                            spaceH32,
-                            rowItem(
-                              'Name:',
-                              cubit.userProfile.pawnshop?.name ?? '',
-                              moreValue: true,
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Email:',
-                              cubit.userProfile.pawnshop?.email ?? '',
-                              moreValue: true,
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Phone number:',
-                              cubit.userProfile.pawnshop?.phoneNumber ?? '',
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Description:',
-                              cubit.userProfile.pawnshop?.description ?? '',
-                              moreValue: true,
-                            ),
-                            spaceH32,
-                            title('PERSONAL INFORMATION'),
-                            spaceH16,
-                            rowItem(
-                              'Name:',
-                              cubit.userProfile.name ?? '',
-                              moreValue: true,
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Email:',
-                              cubit.userProfile.email ?? '',
-                              moreValue: true,
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Referral link:',
-                              '${Get.find<AppConstants>().baseUrl}/login?tab=1&referral=${cubit.userProfile.referredId}',
-                              urlLink: true,
-                            ),
-                            spaceH16,
-                            rowItem(
-                              'Referral ID:',
-                              cubit.userProfile.referredId ?? '',
-                              hasCopy: true,
-                            ),
-                            spaceH16,
-                            Row(
+                        SizedBox(
+                          height: 24.h,
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: const [
+                              BorrowTab(),
+                              LenderTab(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      SliverList(delegate: SliverChildListDelegate(
+                        [title('PAWNSHOP INFORMATION'),
+                          spaceH20,
+                          boxCover(),
+                          spaceH12,
+                          Center(
+                            child: Column(
                               children: [
                                 Text(
-                                  'Personal link:',
+                                  cubit.userProfile.pawnshop?.name ?? '',
                                   style: textNormalCustom(
-                                    grey3,
+                                    Colors.white,
+                                    20,
+                                    FontWeight.w600,
+                                  ),
+                                ),
+                                spaceH8,
+                                Text(
+                                  'Joined in ${cubit.date()}',
+                                  style: textNormalCustom(
+                                    textPawnGray,
                                     16,
                                     FontWeight.w400,
                                   ),
                                 ),
-                                spaceW8,
-                                Expanded(
-                                  flex: 2,
-                                  child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        cubit.userProfile.links?.length ?? 0,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              launch(
-                                                cubit.userProfile
-                                                        .links?[index] ??
-                                                    '',
-                                              );
-                                            },
-                                            child: Text(
-                                              cubit.userProfile.links?[index] ??
+                                spaceH4,
+                                if (cubit.userProfile.kyc != null)
+                                  Row(
+                                    children: [
+                                      sizedSvgImage(
+                                        w: 14,
+                                        h: 14,
+                                        image: ImageAssets.ic_verify_svg,
+                                      ),
+                                      Text(
+                                        'Identity verified',
+                                        style: textNormalCustom(
+                                          textPawnGray,
+                                          16,
+                                          FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              ],
+                            ),
+                          ),
+                          spaceH32,
+                          rowItem(
+                            'Name:',
+                            cubit.userProfile.pawnshop?.name ?? '',
+                            moreValue: true,
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Email:',
+                            cubit.userProfile.pawnshop?.email ?? '',
+                            moreValue: true,
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Phone number:',
+                            cubit.userProfile.pawnshop?.phoneNumber ?? '',
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Description:',
+                            cubit.userProfile.pawnshop?.description ?? '',
+                            moreValue: true,
+                          ),
+                          spaceH32,
+                          title('PERSONAL INFORMATION'),
+                          spaceH16,
+                          rowItem(
+                            'Name:',
+                            cubit.userProfile.name ?? '',
+                            moreValue: true,
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Email:',
+                            cubit.userProfile.email ?? '',
+                            moreValue: true,
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Referral link:',
+                            '${Get.find<AppConstants>().baseUrl}/login?tab=1&referral=${cubit.userProfile.referredId}',
+                            urlLink: true,
+                          ),
+                          spaceH16,
+                          rowItem(
+                            'Referral ID:',
+                            cubit.userProfile.referredId ?? '',
+                            hasCopy: true,
+                          ),
+                          spaceH16,
+                          Row(
+                            children: [
+                              Text(
+                                'Personal link:',
+                                style: textNormalCustom(
+                                  grey3,
+                                  16,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                              spaceW8,
+                              Expanded(
+                                flex: 2,
+                                child: ListView.builder(
+                                  physics:
+                                  const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                  cubit.userProfile.links?.length ?? 0,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            launch(
+                                              cubit.userProfile
+                                                  .links?[index] ??
                                                   '',
-                                              style: textNormalCustom(
-                                                Colors.white,
-                                                16,
-                                                FontWeight.w400,
-                                              ).copyWith(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            cubit.userProfile.links?[index] ??
+                                                '',
+                                            style: textNormalCustom(
+                                              Colors.white,
+                                              16,
+                                              FontWeight.w400,
+                                            ).copyWith(
+                                              decoration:
+                                              TextDecoration.underline,
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 45.h,
-                            ),
-                            TabBar(
-                              unselectedLabelColor: Colors.white,
-                              labelColor: Colors.white,
-                              onTap: (int i) {
-                                cubit.setTitle(i);
-                              },
-                              indicatorColor: formColor,
-                              labelStyle: textNormalCustom(
-                                Colors.white,
-                                14,
-                                FontWeight.w600,
                               ),
-                              tabs: const [
-                                Tab(
-                                  text: 'Borrower profile',
-                                ),
-                                Tab(
-                                  text: 'Lender profile',
-                                )
-                              ],
-                              controller: _tabController,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                            ),
-                            SizedBox(
-                              height: 24.h,
-                            ),
-                            SizedBox(
-                              height: 665.h,
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: const [
-                                  BorrowTab(),
-                                  LenderTab(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 45.h,
+                          ),
+                        ]
+                      ))
+                    ];
+                  },
+
+                )
                     : const SizedBox(),
               );
             },
@@ -354,14 +362,13 @@ class _OtherProfileState extends State<OtherProfile>
     );
   }
 
-  Widget rowItem(
-    String title,
-    String value, {
-    Color? color,
-    bool? urlLink,
-    bool? moreValue,
-    bool? hasCopy,
-  }) {
+  Widget rowItem(String title,
+      String value, {
+        Color? color,
+        bool? urlLink,
+        bool? moreValue,
+        bool? hasCopy,
+      }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
