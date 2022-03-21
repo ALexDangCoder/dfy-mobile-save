@@ -1,13 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/presentation/pawn/collateral_nft_result/bloc/collateral_result_nft_bloc.dart';
+import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemCheckBoxFilter extends StatefulWidget {
   final int index;
-  final CollateralResultNFTBloc bloc;
+  final CollateralMyAccBloc bloc;
   final TypeCheckBox typeCheckBox;
 
   const ItemCheckBoxFilter({
@@ -27,10 +27,10 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
     late bool isCheck;
     late String name;
     late String urlSymbol;
-    if (widget.typeCheckBox == TypeCheckBox.COLLECTION) {
-      isCheck = widget.bloc.listCollection[widget.index].isCheck;
-      urlSymbol = widget.bloc.listCollection[widget.index].url.toString();
-      name = widget.bloc.listCollection[widget.index].symbol.toString();
+    if (widget.typeCheckBox == TypeCheckBox.LOAN) {
+      isCheck = widget.bloc.listLoanTokenFilter[widget.index].isCheck;
+      urlSymbol = widget.bloc.listLoanTokenFilter[widget.index].url.toString();
+      name = widget.bloc.listLoanTokenFilter[widget.index].symbol.toString();
     } else {
       isCheck = widget.bloc.listCollateralTokenFilter[widget.index].isCheck;
       urlSymbol =
@@ -47,8 +47,8 @@ class _ItemCheckBoxFilterState extends State<ItemCheckBoxFilter> {
         value = true;
       }
       isCheck = value;
-      if (widget.typeCheckBox == TypeCheckBox.COLLECTION) {
-        widget.bloc.listCollection[widget.index].isCheck = value;
+      if (widget.typeCheckBox == TypeCheckBox.LOAN) {
+        widget.bloc.listLoanTokenFilter[widget.index].isCheck = value;
       } else {
         widget.bloc.listCollateralTokenFilter[widget.index].isCheck = value;
       }

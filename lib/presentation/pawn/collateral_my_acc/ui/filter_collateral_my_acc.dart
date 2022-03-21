@@ -3,12 +3,16 @@ import 'dart:ui';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'item_widget_filter.dart';
 
 class FilterCollateralMyAcc extends StatefulWidget {
   const FilterCollateralMyAcc({
@@ -25,11 +29,7 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
   @override
   void initState() {
     super.initState();
-    // if (widget.collectionBloc.statusAddress?.isNotEmpty ?? false) {
-    //   widget.collectionBloc.checkStatus();
-    // }else{
-    //   widget.collectionBloc.checkStatusFirst();
-    // }//todo
+    widget.bloc.statusFilterFirst();
   }
 
   @override
@@ -99,7 +99,7 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              //todo widget.collectionBloc.resetFilterMyAcc();
+                              widget.bloc.funReset();
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -208,28 +208,140 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 10.w),
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
                             child: Text(
                               S.current.loan_token,
                               style:
                                   textNormalCustom(null, 16, FontWeight.w600),
                             ),
                           ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: ItemWidgetFilter(
+                              bloc: widget.bloc,
+                              list: widget.bloc.listLoanTokenFilter,
+                              type: TypeCheckBox.LOAN,
+                            ),
+                          ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: Text(
+                              S.current.collateral,
+                              style:
+                                  textNormalCustom(null, 16, FontWeight.w600),
+                            ),
+                          ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: ItemWidgetFilter(
+                              bloc: widget.bloc,
+                              list: widget.bloc.listCollateralTokenFilter,
+                              type: TypeCheckBox.COLLATERAL,
+                            ),
+                          ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: Text(
+                              S.current.status,
+                              style:
+                                  textNormalCustom(null, 16, FontWeight.w600),
+                            ),
+                          ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 14,
+                                  child: IsBaseCheckBox(
+                                    title: S.current.all,
+                                    stream: widget.bloc.isAll,
+                                    funText: () {},
+                                    funCheckBox: () {},
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 15,
+                                  child: IsBaseCheckBox(
+                                    title: S.current.open,
+                                    stream: widget.bloc.isOpen,
+                                    funText: () {},
+                                    funCheckBox: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          spaceH16,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 14,
+                                  child: IsBaseCheckBox(
+                                    title: S.current.accepted,
+                                    stream: widget.bloc.isAccepted,
+                                    funText: () {},
+                                    funCheckBox: () {},
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 15,
+                                  child: IsBaseCheckBox(
+                                    title: S.current.withdraw,
+                                    stream: widget.bloc.isWithDrawn,
+                                    funText: () {},
+                                    funCheckBox: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          spaceH24,
                         ],
                       ),
                     ),
-                    spaceH24,
-                    GestureDetector(
-                      onTap: () {
-                        //todo bloc.funFilterMyAcc();
-                        Navigator.pop(context);
-                      },
-                      child: ButtonLuxury(
-                        title: S.current.apply,
-                        isEnable: true,
-                      ),
-                    ),
+                    spaceH60,
                   ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              margin: EdgeInsets.only(
+                top: 16.h,
+              ),
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: GestureDetector(
+                onTap: () {
+                  bloc.funFilter();
+                  Navigator.pop(context);
+                },
+                child: ButtonLuxury(
+                  title: S.current.apply,
+                  isEnable: true,
                 ),
               ),
             ),
@@ -241,7 +353,7 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
               return Visibility(
                 visible: snapshot.data ?? false,
                 child: Positioned(
-                  top: 160.h,
+                  top: 150.h,
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(

@@ -1,16 +1,16 @@
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
-import 'package:Dfy/presentation/pawn/collateral_nft_result/bloc/collateral_result_nft_bloc.dart';
+import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'item_check_box.dart';
 
-
 class ItemWidgetFilter extends StatefulWidget {
   final List<TokenModelPawn> list;
-  final CollateralResultNFTBloc bloc;
+
+  final CollateralMyAccBloc bloc;
   final TypeCheckBox type;
 
   const ItemWidgetFilter({

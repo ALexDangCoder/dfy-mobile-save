@@ -349,7 +349,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
       String? size,
       String? collateralCurrencySymbol,
       String? walletAddress,
-      String? sort}) {
+      String? sort,String? supplyCurrencySymbol,}) {
     return runCatchingAsync<ListCollateralResponse,
         List<CollateralResultModel>>(
       () => _client.getListCollateralMyAcc(
@@ -358,7 +358,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         size,
         collateralCurrencySymbol,
         walletAddress,
-        sort,
+        sort,supplyCurrencySymbol,
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
