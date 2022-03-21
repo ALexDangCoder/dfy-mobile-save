@@ -466,6 +466,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             list: res,
           ),
         );
+        showContent();
       },
       error: (error) {
         emit(
@@ -484,7 +485,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     String? nftType,
   }) async {
     if (loadMore == false) {
-      showLoading();
+
+      // showLoading();
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
@@ -515,7 +517,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   Future<void> refreshGetListNftCollateral(String walletAddress) async {
     canLoadMoreList = true;
     if (refresh == false) {
-      showLoading();
+      // showLoading();
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);

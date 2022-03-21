@@ -187,32 +187,33 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                     }),
                               ),
                               StreamBuilder<int>(
-                                  stream: cubit.tabIndex,
-                                  builder: (context, snapshot) {
-                                    return SizedBox(
-                                      height: cubit.tabIndex.value == 0
-                                          ? 699.h
-                                          : 755.h,
-                                      child: TabBarView(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        controller: _tabController,
-                                        children: [
-                                          CryptoCurrency(
-                                            cubit: cubit,
-                                            packageId: widget.packageId,
-                                            walletAddress: walletAddress,
-                                            hasEmail: cubit.hasEmail,
-                                            pawnshopType: widget.pawnshopType,
-                                          ),
-                                          SendLoanRequestNft(
-                                            packageId: widget.packageId,
-                                            cubit: cubit,
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
+                                stream: cubit.tabIndex,
+                                builder: (context, snapshot) {
+                                  return SizedBox(
+                                    height: cubit.tabIndex.value == 0
+                                        ? 699.h
+                                        : 800.h,
+                                    child: TabBarView(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      controller: _tabController,
+                                      children: [
+                                        CryptoCurrency(
+                                          cubit: cubit,
+                                          packageId: widget.packageId,
+                                          walletAddress: walletAddress,
+                                          hasEmail: cubit.hasEmail,
+                                          pawnshopType: widget.pawnshopType,
+                                        ),
+                                        SendLoanRequestNft(
+                                          packageId: widget.packageId,
+                                          cubit: cubit,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
