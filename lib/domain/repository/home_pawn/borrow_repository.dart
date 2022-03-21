@@ -41,10 +41,9 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
-    String walletAddress,
-    String packageId,
-    String page,
-  );
+      String walletAddress,
+      String packageId,
+      String page,);
 
   Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
     String? collateralAmount,
@@ -141,5 +140,6 @@ mixin BorrowRepository {
     String? collateralCurrencySymbol,
     String? walletAddress,
     String? sort,
+    String? supplyCurrencySymbol,
   });
 }

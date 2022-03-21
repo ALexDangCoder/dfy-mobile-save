@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'filter_collateral_my_acc.dart';
 import 'item_collateral_my_acc.dart';
 
 class CollateralMyAcc extends StatefulWidget {
@@ -29,7 +30,6 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
   void initState() {
     super.initState();
     _bloc = CollateralMyAccBloc();
-    _bloc.refreshPosts();
   }
 
   @override
@@ -141,15 +141,14 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // showModalBottomSheet(
-                              //   isScrollControlled: true,
-                              //   backgroundColor: Colors.transparent,
-                              //   context: context,
-                              //   builder: (context) => FilterCollateral(
-                              //     bloc: _bloc,
-                              //   ),
-                              // );
-                              //todo
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) => FilterCollateralMyAcc(
+                                  bloc: _bloc,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: EdgeInsets.only(right: 16.w),
@@ -169,7 +168,7 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                             if (_bloc.canLoadMore &&
                                 scrollInfo.metrics.pixels ==
                                     scrollInfo.metrics.maxScrollExtent) {
-                                 _bloc.loadMorePosts();
+                              _bloc.loadMorePosts();
                             }
                             return true;
                           },
