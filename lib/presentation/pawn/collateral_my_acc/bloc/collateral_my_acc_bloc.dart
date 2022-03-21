@@ -18,6 +18,7 @@ import 'package:rxdart/rxdart.dart';
 class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   CollateralMyAccBloc() : super(CollateralMyAccInitial()) {
     getListWallet();
+    refreshPosts();
   }
 
   String mess = '';
@@ -42,8 +43,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   static const int FAILED = 8;
   bool checkWalletAddress = false;
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
-  BehaviorSubject<String> textAddressFilter =
-      BehaviorSubject.seeded(S.current.all);
+  BehaviorSubject<String> textAddressFilter = BehaviorSubject.seeded('all');
   BehaviorSubject<bool> isAll = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isOpen = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAccepted = BehaviorSubject.seeded(false);
@@ -72,12 +72,37 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   String loanToken = '';
   String collateralToken = '';
   String status = '';
+  String textAddress = 'all';
 
   void chooseAddressFilter(String address) {
     textAddressFilter.sink.add(
       address,
     );
     isChooseAcc.sink.add(false);
+  }
+
+  void check(String title) {
+    if (title == S.current.all) {
+      isOpen.add(false);
+      isAccepted.add(false);
+      isWithDrawn.add(false);
+      isAll.add(true);
+    } else if (title == S.current.open) {
+      isOpen.add(true);
+      isAccepted.add(false);
+      isWithDrawn.add(false);
+      isAll.add(false);
+    } else if (title == S.current.accepted) {
+      isOpen.add(false);
+      isAccepted.add(true);
+      isWithDrawn.add(false);
+      isAll.add(false);
+    } else if (title == S.current.withdraw) {
+      isOpen.add(false);
+      isAccepted.add(false);
+      isWithDrawn.add(true);
+      isAll.add(false);
+    }
   }
 
   void funFilter() {
@@ -113,27 +138,22 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
     statusAccepted = isAccepted.value;
     statusWithDrawn = isWithDrawn.value;
     status = '';
+    if (textAddressFilter.value == S.current.all) {
+      textAddress = 'all';
+    } else {
+      textAddress = textAddressFilter.value;
+    }
+
     if (isAll.value) {
       status = '';
-    } else {
-      checkStatusId(OPEN.toString(), isOpen.value);
-      checkStatusId(ACCEPTED.toString(), isAccepted.value);
-      checkStatusId(WITHDRAW.toString(), isWithDrawn.value);
+    } else if (isAccepted.value) {
+      status = ACCEPTED.toString();
+    } else if (isWithDrawn.value) {
+      status = WITHDRAW.toString();
+    } else if (isOpen.value) {
+      status = OPEN.toString();
     }
     getListCollateral();
-  }
-
-  void checkStatusId(
-    String idStatus,
-    bool data,
-  ) {
-    if (data) {
-      if (status.isNotEmpty) {
-        status = '$status,$idStatus';
-      }
-    } else {
-      status = idStatus;
-    }
   }
 
   bool checkStatusFirstFilter(int i, List<int> list) {
@@ -172,15 +192,17 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   }
 
   void funReset() {
-    textAddressFilter.add(S.current.all);
-    for (final TokenModelPawn value in listLoanTokenFilter) {
-      if (value.isCheck) {
-        value.isCheck = false;
+    if (listAcc.length > 2) {
+      textAddressFilter.add(S.current.all);
+    }
+    for (int i = 0; i < listCollateralTokenFilter.length; i++) {
+      if (listCollateralTokenFilter[i].isCheck) {
+        listCollateralTokenFilter[i].isCheck = false;
       }
     }
-    for (final TokenModelPawn value in listCollateralTokenFilter) {
-      if (value.isCheck) {
-        value.isCheck = false;
+    for (int i = 0; i < listLoanTokenFilter.length; i++) {
+      if (listLoanTokenFilter[i].isCheck) {
+        listLoanTokenFilter[i].isCheck = false;
       }
     }
     isWithDrawn.add(false);
@@ -223,34 +245,39 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   }
 
   Future<void> getListWallet() async {
-    getTokenInf();
     final Result<List<WalletAddressModel>> result =
         await _walletAddressRepository.getListWalletAddress();
+    getTokenInf();
     result.when(
       success: (res) {
         if (res.isEmpty) {
           checkWalletAddress = false;
         } else {
-          statusWallet = res.first.walletAddress;
+          statusWallet = PrefsService.getCurrentWalletCore();
           if (res.length < 2) {
             for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
+            textAddress = PrefsService.getCurrentWalletCore();
             checkWalletAddress = false;
+            textAddressFilter.add(PrefsService.getCurrentWalletCore());
           } else {
             for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
+            textAddress = 'all';
             checkWalletAddress = true;
+            textAddressFilter.add(S.current.all);
           }
-          refreshPosts();
         }
       },
       error: (error) {
+        textAddress = PrefsService.getCurrentWalletCore();
+        textAddressFilter.add(PrefsService.getCurrentWalletCore());
         if (error.code == CODE_ERROR_AUTH) {
           getListWallet();
         }
@@ -295,12 +322,12 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
         await _pawnService.getListCollateralMyAcc(
       page: page.toString(),
       size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
-      walletAddress: statusWallet,
+      walletAddress: textAddress,
       sort: 'id,desc',
       //todo
-      collateralCurrencySymbol: loanToken,
+      collateralCurrencySymbol: collateralToken,
       status: status,
-      supplyCurrencySymbol: collateralToken,
+      supplyCurrencySymbol: loanToken,
     );
     response.when(
       success: (response) {

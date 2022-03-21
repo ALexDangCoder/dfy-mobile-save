@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/detail_collection/ui/check_box_filter/is_base_checkbox_activity.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
+import 'package:Dfy/presentation/pawn/personal_lending_hard/ui/is_base_check_box_hard.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_luxury.dart';
@@ -100,6 +101,9 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                           GestureDetector(
                             onTap: () {
                               widget.bloc.funReset();
+                              setState(() {
+
+                              });
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -263,27 +267,27 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                           ),
                           spaceH16,
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 10.w,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 7.w,
                             ),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 14,
-                                  child: IsBaseCheckBox(
+                                  flex: 10,
+                                  child: IsBaseCheckBoxHard(
                                     title: S.current.all,
                                     stream: widget.bloc.isAll,
-                                    funText: () {},
-                                    funCheckBox: () {},
+                                    funText: widget.bloc.check,
+                                    funCheckBox: widget.bloc.check,
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 15,
-                                  child: IsBaseCheckBox(
+                                  flex: 11,
+                                  child: IsBaseCheckBoxHard(
                                     title: S.current.open,
                                     stream: widget.bloc.isOpen,
-                                    funText: () {},
-                                    funCheckBox: () {},
+                                    funText: widget.bloc.check,
+                                    funCheckBox: widget.bloc.check,
                                   ),
                                 ),
                               ],
@@ -291,27 +295,27 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                           ),
                           spaceH16,
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 10.w,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 7.w,
                             ),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 14,
-                                  child: IsBaseCheckBox(
+                                  flex: 10,
+                                  child: IsBaseCheckBoxHard(
                                     title: S.current.accepted,
                                     stream: widget.bloc.isAccepted,
-                                    funText: () {},
-                                    funCheckBox: () {},
+                                    funText: widget.bloc.check,
+                                    funCheckBox: widget.bloc.check,
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 15,
-                                  child: IsBaseCheckBox(
+                                  flex: 11,
+                                  child: IsBaseCheckBoxHard(
                                     title: S.current.withdraw,
                                     stream: widget.bloc.isWithDrawn,
-                                    funText: () {},
-                                    funCheckBox: () {},
+                                    funText: widget.bloc.check,
+                                    funCheckBox: widget.bloc.check,
                                   ),
                                 ),
                               ],
