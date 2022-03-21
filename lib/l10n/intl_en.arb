@@ -885,6 +885,8 @@
   "processing_create": "Processing create",
   "processing_withdraw": "Processing withdraw",
   "withdraw": "Withdraw",
-  "collateral_list": "Danh sách Collateral"
-
+  "collateral_list": "Danh sách Collateral",
+  "create_new_collateral": "Create new collateral",
+  "collateral_amount": "Collateral amount",
+  "login_to_receive_email_notifications": "Login to receive email notifications"
 }

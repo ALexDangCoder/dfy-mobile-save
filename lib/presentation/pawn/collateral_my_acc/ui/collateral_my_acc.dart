@@ -5,6 +5,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_state.dart';
+import 'package:Dfy/presentation/pawn/create_new_collateral/ui/create_new_collateral.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -66,7 +67,12 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
           child: Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () {
-                //todo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateNewCollateral(),
+                  ),
+                );
               },
               child: Container(
                 width: 50.w,
