@@ -30,8 +30,6 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
   void initState() {
     super.initState();
     _bloc = CollateralMyAccBloc();
-    _bloc.refreshPosts();
-    _bloc.getListWallet();
   }
 
   @override

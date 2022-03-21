@@ -247,6 +247,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
             }
             checkWalletAddress = true;
           }
+          refreshPosts();
         }
       },
       error: (error) {
