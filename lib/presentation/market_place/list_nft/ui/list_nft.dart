@@ -211,7 +211,7 @@ class _ListNftState extends State<ListNft> {
                                   scrollInfo.metrics.maxScrollExtent)) {
                             _cubit.loadMorePosts(
                               widget.pageRouter,
-                              controller.text.trim(),
+                              widget.queryAllResult ?? controller.text.trim(),
                             );
                           }
                           return true;
