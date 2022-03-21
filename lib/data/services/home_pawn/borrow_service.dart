@@ -176,5 +176,6 @@ abstract class BorrowService {
     @Query('collateralCurrencySymbol') String? collateralCurrencySymbol,
     @Query('walletAddress') String? walletAddress,
     @Query('sort') String? sort,
+    @Query('supplyCurrencySymbol') String? supplyCurrencySymbol,
   );
 }

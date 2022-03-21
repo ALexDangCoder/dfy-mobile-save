@@ -157,62 +157,64 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                               spaceH14,
                               SizedBox(
                                 child: StreamBuilder<int>(
-                                    stream: cubit.tabIndex,
-                                    builder: (context, snapshot) {
-                                      return TabBar(
-                                        unselectedLabelColor: Colors.white,
-                                        labelColor: Colors.white,
-                                        onTap: (int i) {
-                                          cubit.tabIndex.add(i);
-                                        },
-                                        indicatorColor:
-                                            AppTheme.getInstance().bgBtsColor(),
-                                        tabs: [
-                                          Tab(
-                                            icon: CheckboxItemTab(
-                                              isSelected: snapshot.data == 0,
-                                              nameCheckbox: 'Cryptocurrency',
-                                            ),
-                                          ),
-                                          Tab(
-                                            icon: CheckboxItemTab(
-                                              isSelected: snapshot.data == 1,
-                                              nameCheckbox: 'NFT',
-                                            ),
-                                          )
-                                        ],
-                                        controller: _tabController,
-                                        indicatorSize: TabBarIndicatorSize.tab,
-                                      );
-                                    }),
-                              ),
-                              StreamBuilder<int>(
                                   stream: cubit.tabIndex,
                                   builder: (context, snapshot) {
-                                    return SizedBox(
-                                      height: cubit.tabIndex.value == 0
-                                          ? 699.h
-                                          : 755.h,
-                                      child: TabBarView(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        controller: _tabController,
-                                        children: [
-                                          CryptoCurrency(
-                                            cubit: cubit,
-                                            packageId: widget.packageId,
-                                            walletAddress: walletAddress,
-                                            hasEmail: cubit.hasEmail,
-                                            pawnshopType: widget.pawnshopType,
+                                    return TabBar(
+                                      unselectedLabelColor: Colors.white,
+                                      labelColor: Colors.white,
+                                      onTap: (int i) {
+                                        cubit.tabIndex.add(i);
+                                      },
+                                      indicatorColor:
+                                          AppTheme.getInstance().bgBtsColor(),
+                                      tabs: [
+                                        Tab(
+                                          icon: CheckboxItemTab(
+                                            isSelected: snapshot.data == 0,
+                                            nameCheckbox: 'Cryptocurrency',
                                           ),
-                                          SendLoanRequestNft(
-                                            packageId: widget.packageId,
-                                            cubit: cubit,
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        Tab(
+                                          icon: CheckboxItemTab(
+                                            isSelected: snapshot.data == 1,
+                                            nameCheckbox: 'NFT',
+                                          ),
+                                        )
+                                      ],
+                                      controller: _tabController,
+                                      indicatorSize: TabBarIndicatorSize.tab,
                                     );
-                                  }),
+                                  },
+                                ),
+                              ),
+                              StreamBuilder<int>(
+                                stream: cubit.tabIndex,
+                                builder: (context, snapshot) {
+                                  return SizedBox(
+                                    height: cubit.tabIndex.value == 0
+                                        ? 699.h
+                                        : 800.h,
+                                    child: TabBarView(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      controller: _tabController,
+                                      children: [
+                                        CryptoCurrency(
+                                          cubit: cubit,
+                                          packageId: widget.packageId,
+                                          walletAddress: walletAddress,
+                                          hasEmail: cubit.hasEmail,
+                                          pawnshopType: widget.pawnshopType,
+                                        ),
+                                        SendLoanRequestNft(
+                                          packageId: widget.packageId,
+                                          cubit: cubit,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
