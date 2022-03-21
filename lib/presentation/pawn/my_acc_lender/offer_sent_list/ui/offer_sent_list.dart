@@ -1,4 +1,6 @@
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OfferSentList extends StatefulWidget {
   const OfferSentList({Key? key}) : super(key: key);
@@ -31,7 +33,26 @@ class _OfferSentListState extends State<OfferSentList>
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       body: Align(
-        alignment: Al,
+        alignment: Alignment.bottomCenter,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            height: 812.h,
+            margin: EdgeInsets.only(top: 26.h,),
+            decoration: BoxDecoration(
+              color: AppTheme.getInstance().bgBtsColor(),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.h),
+                topRight: Radius.circular(30.h),
+              ),
+            ),
+            child: Column(
+
+            ),
+          ),
+        ),
       ),
     );
   }
