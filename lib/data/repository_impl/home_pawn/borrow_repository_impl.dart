@@ -1,25 +1,33 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/detail_pawnshop_response.dart';
+import 'package:Dfy/data/response/home_pawn/history_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/offer_received_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
+import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
+import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
+import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
+import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
@@ -395,6 +403,66 @@ class BorrowRepositoryImpl implements BorrowRepository {
         walletAddress,
       ),
       (response) => response.data?.toDomain() ?? ResultCreateNewModel(),
+    );
+  }
+
+  @override
+  Future<Result<CollateralDetailMyAcc>> getDetailCollateralMyAcc(
+      {String? collateralId}) {
+    return runCatchingAsync<CollateralDetailMyAccResponse,
+        CollateralDetailMyAcc>(
+      () => _client.getDetailCollateralMyAcc(
+        collateralId,
+      ),
+      (response) => response.data?.toDomain() ?? CollateralDetailMyAcc(),
+    );
+  }
+
+  @override
+  Future<Result<List<HistoryCollateralModel>>> getHistoryDetailCollateralMyAcc({
+    String? collateralId,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<HistoryCollateralResponse,
+        List<HistoryCollateralModel>>(
+      () => _client.getHistoryDetailCollateralMyAcc(
+        collateralId,
+        page,
+        size,
+      ),
+      (response) => response.data?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<OffersReceivedModel>>> getListReceived({
+    String? collateralId,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<OfferReceivedResponse, List<OffersReceivedModel>>(
+      () => _client.getListReceived(
+        collateralId,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<SendToLoanPackageModel>>> getListSendToLoanPackage(
+      {String? collateralId, String? page, String? size}) {
+    return runCatchingAsync<SendToLoanPackageResponse,
+        List<SendToLoanPackageModel>>(
+      () => _client.getListSendToLoanPackage(
+        collateralId,
+        page,
+        size,
+      ),
+      (response) => response.data?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

@@ -200,7 +200,9 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  CollateralDetailMyAcc(),
+                                                  CollateralDetailMyAccScreen(
+                                                    id: list[index].id.toString(),
+                                                  ),
                                             ),
                                           );
                                         },

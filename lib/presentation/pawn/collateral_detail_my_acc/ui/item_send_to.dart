@@ -1,12 +1,17 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemSendTo extends StatelessWidget {
-  const ItemSendTo({Key? key}) : super(key: key);
+  const ItemSendTo({
+    Key? key,
+    required this.obj,
+  }) : super(key: key);
+  final SendToLoanPackageModel obj;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class ItemSendTo extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      "obj.description.toString()", //todo
+                      obj.name.toString(),
                       style: textNormalCustom(
                         null,
                         16,
@@ -114,7 +119,7 @@ class ItemSendTo extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '100000 dfy',
+                      0.formatDateTimeMy(obj.createdAt ?? 0),
                       style: textNormalCustom(
                         null,
                         16,

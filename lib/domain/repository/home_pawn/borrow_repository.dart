@@ -2,7 +2,11 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
+import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
+import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
+import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
@@ -155,5 +159,27 @@ mixin BorrowRepository {
     String? supplyCurrency,
     String? txid,
     String? walletAddress,
+  });
+
+  Future<Result<CollateralDetailMyAcc>> getDetailCollateralMyAcc({
+    String? collateralId,
+  });
+
+  Future<Result<List<HistoryCollateralModel>>> getHistoryDetailCollateralMyAcc({
+    String? collateralId,
+    String? page,
+    String? size,
+  });
+
+  Future<Result<List<OffersReceivedModel>>> getListReceived({
+    String? collateralId,
+    String? page,
+    String? size,
+  });
+
+  Future<Result<List<SendToLoanPackageModel>>> getListSendToLoanPackage({
+    String? collateralId,
+    String? page,
+    String? size,
   });
 }
