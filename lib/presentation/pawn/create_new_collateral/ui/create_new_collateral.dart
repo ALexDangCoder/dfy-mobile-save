@@ -100,6 +100,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                             ).copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),
+                            textAlign: TextAlign.center,
                             maxLines: 1,
                           ),
                         ),
