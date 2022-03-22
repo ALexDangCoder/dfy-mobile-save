@@ -70,8 +70,10 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateNewCollateral(),
+                    builder: (context) => const CreateNewCollateral(),
                   ),
+                ).whenComplete(
+                  () => _bloc.refreshPosts(),
                 );
               },
               child: Container(

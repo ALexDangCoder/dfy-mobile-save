@@ -190,8 +190,8 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                       : MONTH,
                               expectedDurationQty: bloc.textDuration.value,
                               amount: bloc.amountCollateral.value,
-                              collateralAddress: ImageAssets.getSymbolAsset(
-                                bloc.item.nameToken,
+                              collateralAddress: ImageAssets.getAddressToken(
+                                bloc.item.nameShortToken,
                               ),
                               packageId: '-1',
                             ); //todo packageId
@@ -217,9 +217,9 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                       DetailItemApproveModel(
                                         title: '${S.current.collateral}: ',
                                         value: '${bloc.amountCollateral.value} '
-                                            '${bloc.item.nameToken}',
+                                            '${bloc.item.nameShortToken}',
                                         urlToken: ImageAssets.getSymbolAsset(
-                                          bloc.item.nameToken,
+                                          bloc.item.nameShortToken,
                                         ),
                                       ),
                                       DetailItemApproveModel(
@@ -253,7 +253,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                         ,
                                         amount: bloc.amountCollateral.value,
                                         supplyCurrency: bloc.textToken.value,
-                                        collateral: bloc.item.nameToken,
+                                        collateral: bloc.item.nameShortToken,
                                         txid: data,
                                       );
                                       showLoadSuccess(context).then((value) {
