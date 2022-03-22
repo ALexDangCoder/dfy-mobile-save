@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/city_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/country_model.dart';
@@ -109,13 +110,16 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
           );
         } else if (state is SubmittingFileSuccess) {
           showLoadSuccess(context).then(
-            (value) async =>
-            { cubit.getDataFromStep1ToModelToSave(),
+            (value) async => {
+              cubit.getDataFromStep1ToModelToSave(),
               isEdit = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (ctx) => Step1WhenSubmit(
                     cubit: cubit,
+                  ),
+                  settings: const RouteSettings(
+                    name: AppRouter.step1WhenSubmit,
                   ),
                 ),
               ),
