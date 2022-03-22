@@ -39,6 +39,44 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   List<ModelToken> listTokenFromWalletCore = [];
   final regexTime = RegExp(r'^\d+(()|(\d{})?)$');
 
+  String getMax(String symbol) {
+    double balance = 0;
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
+        balance = element.balanceToken;
+      }
+    }
+    return formatPrice.format(balance);
+  }
+
+  double getMaxBalance(String symbol) {
+    double balance = 0;
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
+        balance = element.balanceToken;
+      }
+    }
+    return balance;
+  }
+
+  void validateAmount(String value) {
+    if (value == '') {
+      errorCollateral.add(S.current.amount_required);
+    } else {
+      if (double.parse(value.replaceAll(',', '')) >
+          getMaxBalance(item.nameShortToken)) {
+        errorCollateral.add(
+          '${S.current.max} ${S.current.amount.toLowerCase()} '
+          '${getMaxBalance(item.nameShortToken)}',
+        );
+      } else if (double.parse(value.replaceAll(',', '')) <= 0) {
+        errorCollateral.add(S.current.invalid_amount);
+      } else {
+        errorCollateral.add('');
+      }
+    }
+  }
+
   void enableButtonRequest(String value) {
     if (value.isNotEmpty) {
       if (regexTime.hasMatch(value)) {

@@ -10,6 +10,7 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -351,11 +352,16 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   Expanded(
                     flex: 2,
                     child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,5}'),
+                        ),
+                      ],
                       enabled: enable,
                       controller: collateralAmount,
                       maxLength: 50,
                       onChanged: (value) {
-                        //todo
+                        bloc.validateAmount(value);
                       },
                       cursorColor: AppTheme.getInstance().whiteColor(),
                       style: textNormal(
@@ -384,7 +390,11 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                         visible: enable,
                         child: InkWell(
                           onTap: () {
-                            //todo
+                            collateralAmount.text = bloc
+                                .getMax(bloc.item.nameShortToken)
+                                .replaceAll(',', '');
+                            bloc.errorCollateral.add('');
+                            bloc.validateAmount(collateralAmount.text);
                           },
                           child: Text(
                             S.current.max,
@@ -432,6 +442,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                             if (enable) {
                               setState(() {
                                 bloc.item = newValue!;
+                                bloc.validateAmount(collateralAmount.text);
                               });
                             }
                           },
