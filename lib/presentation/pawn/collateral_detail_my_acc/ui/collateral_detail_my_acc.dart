@@ -93,9 +93,13 @@ class _CollateralDetailMyAccScreenState
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    'Activit', //todo
+                                    bloc.getStatus(
+                                      obj.status ?? 0,
+                                    ),
                                     style: textNormalCustom(
-                                      null,
+                                      bloc.getColor(
+                                        obj.status ?? 0,
+                                      ),
                                       16,
                                       FontWeight.w400,
                                     ),
@@ -220,10 +224,10 @@ class _CollateralDetailMyAccScreenState
                                           alignment:
                                               PlaceholderAlignment.middle,
                                           child: Text(
-                                            '${obj.collateralAmount?.isNaN ?? false ? formatPrice.format(
-                                                obj.collateralAmount,
-                                              ) : 0}'
-                                            ' ${obj.collateralSymbol.toString().toUpperCase()}',
+                                            '${formatPrice.format(obj
+                                                .collateralAmount ?? 0,)}'
+                                            ' ${obj.collateralSymbol
+                                                .toString().toUpperCase()}',
                                             style: textNormalCustom(
                                               null,
                                               16,
@@ -391,7 +395,9 @@ class _CollateralDetailMyAccScreenState
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${obj.durationQty} ${obj.durationType == WEEK ? S.current.weeks_pawn : S.current.months_pawn}',
+                                    '${obj.durationQty} ${obj.durationType
+                                        == WEEK ? S.current.weeks_pawn
+                                        : S.current.months_pawn}',
                                     style: textNormalCustom(
                                       null,
                                       16,
