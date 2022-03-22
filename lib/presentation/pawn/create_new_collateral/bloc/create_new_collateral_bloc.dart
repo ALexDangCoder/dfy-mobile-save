@@ -28,8 +28,9 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   BehaviorSubject<String> textToken = BehaviorSubject.seeded('DFY');
   List<String> listToken = [];
   BehaviorSubject<String> textRecurringInterest =
-      BehaviorSubject.seeded(S.current.weekly_pawn);
+      BehaviorSubject.seeded(S.current.weeks_pawn);
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
+  BehaviorSubject<String> amountCollateral = BehaviorSubject.seeded('');
   BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox = BehaviorSubject.seeded(false);
   List<ModelToken> listTokenCollateral = [];
@@ -38,6 +39,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   late ModelToken item;
   List<ModelToken> listTokenFromWalletCore = [];
   final regexTime = RegExp(r'^\d+(()|(\d{})?)$');
+  BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
 
   String getMax(String symbol) {
     double balance = 0;
@@ -62,6 +64,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   void validateAmount(String value) {
     if (value == '') {
       errorCollateral.add(S.current.amount_required);
+      amountCollateral.add('');
     } else {
       //   if (double.parse(value.replaceAll(',', '')) >
       //       getMaxBalance(item.nameShortToken)) {
@@ -75,13 +78,25 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
       //     errorCollateral.add('');
       //   }
       errorCollateral.add('');
+      amountCollateral.add(value);
+    }
+  }
+
+  void checkButton() {
+    if (isCheckBox.value &&
+        amountCollateral.value.isNotEmpty &&
+        textMess.value.isNotEmpty &&
+        textDuration.value.isNotEmpty) {
+      isCheckBtn.add(true);
+    } else {
+      isCheckBtn.add(false);
     }
   }
 
   void enableButtonRequest(String value) {
     if (value.isNotEmpty) {
       if (regexTime.hasMatch(value)) {
-        if (textRecurringInterest.value == S.current.weekly_pawn) {
+        if (textRecurringInterest.value == S.current.weeks_pawn) {
           if (int.parse(value) > 5200) {
             textDuration.add('');
             isDuration.add(S.current.invalid_duration_week);

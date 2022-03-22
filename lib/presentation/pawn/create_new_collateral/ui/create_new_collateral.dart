@@ -163,7 +163,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                 child: Container(
                   color: AppTheme.getInstance().bgBtsColor(),
                   child: StreamBuilder<bool>(
-                    // stream: bloc.isCheckBtn,
+                    stream: bloc.isCheckBtn,
                     builder: (context, snapshot) {
                       return GestureDetector(
                         onTap: () async {
@@ -303,6 +303,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                       // checkColor: const Colors,
                       onChanged: (value) {
                         bloc.isCheckBox.sink.add(value ?? false);
+                        bloc.checkButton();
                       },
                       value: snapshot.data ?? false,
                     ),
@@ -362,6 +363,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                       maxLength: 50,
                       onChanged: (value) {
                         bloc.validateAmount(value);
+                        bloc.checkButton();
                       },
                       cursorColor: AppTheme.getInstance().whiteColor(),
                       style: textNormal(
@@ -510,6 +512,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   maxLength: 100,
                   onChanged: (value) {
                     bloc.funCheckMess(value);
+                    bloc.checkButton();
                   },
                   cursorColor: AppTheme.getInstance().whiteColor(),
                   style: textNormal(
@@ -537,6 +540,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                       bloc.textMess.add('');
                       messageController.text = '';
                       bloc.isMess.add(true);
+                      bloc.checkButton();
                       closeKey();
                     },
                     child: snapshot.data?.isNotEmpty ?? false
@@ -614,6 +618,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                       maxLength: 50,
                       onChanged: (value) {
                         bloc.enableButtonRequest(value);
+                        bloc.checkButton();
                       },
                       cursorColor: AppTheme.getInstance().whiteColor(),
                       style: textNormal(
@@ -668,8 +673,9 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                               duration = newValue!;
                               bloc.textRecurringInterest.add(duration);
                               bloc.enableButtonRequest(
-                                bloc.textDuration.value,
+                                durationController.text,
                               );
+                              bloc.checkButton();
                             });
                           }
                         },
