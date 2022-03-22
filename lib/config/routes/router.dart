@@ -32,6 +32,7 @@ class AppRouter {
   static const send_nft = '/send_nft';
   static const send_nft_confirm_blockchain = '/send_nft_confirm';
   static const collateral_result = '/collateral_result';
+  static const collateral_list_myacc = '/collateral_list_myacc';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;
