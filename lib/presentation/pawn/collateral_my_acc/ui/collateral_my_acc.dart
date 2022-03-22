@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/ui/collateral_detail_my_acc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_state.dart';
 import 'package:Dfy/presentation/pawn/create_new_collateral/ui/create_new_collateral.dart';
@@ -194,9 +195,19 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                       padding: EdgeInsets.zero,
                                       itemCount: list.length,
                                       itemBuilder: (context, index) =>
-                                          ItemCollateralMyAcc(
-                                        bloc: _bloc,
-                                        index: index,
+                                          GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CollateralDetailMyAcc(),
+                                            ),
+                                          );
+                                        },
+                                        child: ItemCollateralMyAcc(
+                                          bloc: _bloc,
+                                          index: index,
+                                        ),
                                       ),
                                     )
                                   : Column(

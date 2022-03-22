@@ -889,5 +889,16 @@
   "create_new_collateral": "Create new collateral",
   "collateral_amount": "Collateral amount",
   "login_to_receive_email_notifications": "Login to receive email notifications",
-  "confirm_new_collateral": "Confirm new collateral"
+  "confirm_new_collateral": "Confirm new collateral",
+  "collateral_id": "Collateral ID",
+  "view_all": "View all",
+  "total_estimate": "Total estimate",
+  "offers_received": "Offers received",
+  "send_to": "Send to",
+  "loan_package": "loan package",
+  "lender": "Lender",
+  "date": "Date",
+  "transaction_hash": "Transaction hash",
+  "estimate": "Estimate",
+  "added_collateral": "Added collateral"
 }
