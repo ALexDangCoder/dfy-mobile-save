@@ -268,4 +268,20 @@ class ApiConstants {
   //myacc
   static const String COLLATERAL_MY_ACC =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals';
+
+  static const String CREATE_NEW_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals';
+
+  static const String DETAIL_COLLATERAL_MY_ACC =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/';
+
+  static const String HISTORY_DETAIL_COLLATERAL_MY_ACC =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/';
+  static const String HISTORY_MY_ACC = '/history';
+
+  static const String OFFERS_RECEIVED_MY_ACC =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/loan-crypto-offer';
+
+  static const String SEND_TO_LOAN_PACKAGE_MY_ACC =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package';
 }

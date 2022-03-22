@@ -836,5 +836,20 @@
   "processing_create": "Đang xử lý tạo",
   "processing_withdraw": "Đang xử lý rút tiền",
   "withdraw": "Rút tiền",
-  "collateral_list": "Collateral list"
+  "collateral_list": "Collateral list",
+  "create_new_collateral": "Tạo tài sản thế chấp mới",
+  "accept_amount": "Số tiền thế chấp",
+  "login_to_receive_email_notifications": "Đăng nhập để nhận thông báo qua email",
+  "confirm_new_collateral": "Xác nhận tài sản thế chấp mới",
+  "collateral_id": "ID tài sản thế chấp",
+  "view_all": "Xem tất cả",
+  "total_estimate": "Tổng ước tính",
+  "offers_received": "Đã nhận được phiếu mua hàng",
+  "send_to": "Gửi tới",
+  "loan_package": "gói vay",
+  "lender": "Người cho vay",
+  "date": "Ngày",
+  "transaction_hash": "Transaction hash",
+  "estimate": "Ước tính",
+  "added_collateral": "Đã thêm tài sản thế chấp"
 }

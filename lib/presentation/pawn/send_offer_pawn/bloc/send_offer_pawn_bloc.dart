@@ -21,6 +21,7 @@ class SendOfferPawnBloc {
   BehaviorSubject<String> textLiquidationThreshold = BehaviorSubject.seeded('');
   BehaviorSubject<String> textDuration = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isMess = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> isAmount = BehaviorSubject.seeded('');
   BehaviorSubject<String> isInterestRate = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);

@@ -3,6 +3,7 @@ class TokenModelPawn {
   String? symbol;
   String? address;
   String? url;
+  double? amount;
   bool isCheck;
 
   TokenModelPawn({
@@ -11,5 +12,6 @@ class TokenModelPawn {
     this.address,
     this.isCheck = false,
     this.url,
+    this.amount,
   });
 }
