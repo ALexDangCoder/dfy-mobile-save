@@ -1,6 +1,7 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/detail_pawnshop_response.dart';
@@ -29,6 +30,7 @@ import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
+import 'package:Dfy/domain/model/pawn/result_create_new_collateral_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 
@@ -343,13 +345,15 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<List<CollateralResultModel>>> getListCollateralMyAcc(
-      {String? status,
-      String? page,
-      String? size,
-      String? collateralCurrencySymbol,
-      String? walletAddress,
-      String? sort,String? supplyCurrencySymbol,}) {
+  Future<Result<List<CollateralResultModel>>> getListCollateralMyAcc({
+    String? status,
+    String? page,
+    String? size,
+    String? collateralCurrencySymbol,
+    String? walletAddress,
+    String? sort,
+    String? supplyCurrencySymbol,
+  }) {
     return runCatchingAsync<ListCollateralResponse,
         List<CollateralResultModel>>(
       () => _client.getListCollateralMyAcc(
@@ -358,10 +362,39 @@ class BorrowRepositoryImpl implements BorrowRepository {
         size,
         collateralCurrencySymbol,
         walletAddress,
-        sort,supplyCurrencySymbol,
+        sort,
+        supplyCurrencySymbol,
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<ResultCreateNewModel>> postCreateNewCollateral({
+    String? amount,
+    String? collateral,
+    String? description,
+    String? expectedLoanDurationTime,
+    String? expectedLoanDurationType,
+    String? status,
+    String? supplyCurrency,
+    String? txid,
+    String? walletAddress,
+  }) {
+    return runCatchingAsync<CreateNewCollateralResponse, ResultCreateNewModel>(
+      () => _client.postCreateNewCollateral(
+        amount,
+        collateral,
+        description,
+        expectedLoanDurationTime,
+        expectedLoanDurationType,
+        status,
+        supplyCurrency,
+        txid,
+        walletAddress,
+      ),
+      (response) => response.data?.toDomain() ?? ResultCreateNewModel(),
     );
   }
 }

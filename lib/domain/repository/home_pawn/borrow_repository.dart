@@ -13,6 +13,7 @@ import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
+import 'package:Dfy/domain/model/pawn/result_create_new_collateral_model.dart';
 
 mixin BorrowRepository {
   Future<Result<List<PawnshopPackage>>> getListPawnshop({
@@ -41,9 +42,10 @@ mixin BorrowRepository {
   });
 
   Future<Result<List<CryptoCollateralModel>>> getListCryptoCollateral(
-      String walletAddress,
-      String packageId,
-      String page,);
+    String walletAddress,
+    String packageId,
+    String page,
+  );
 
   Future<Result<List<PersonalLending>>> getListPersonalLendingHard({
     String? collateralAmount,
@@ -141,5 +143,17 @@ mixin BorrowRepository {
     String? walletAddress,
     String? sort,
     String? supplyCurrencySymbol,
+  });
+
+  Future<Result<ResultCreateNewModel>> postCreateNewCollateral({
+    String? amount,
+    String? collateral,
+    String? description,
+    String? expectedLoanDurationTime,
+    String? expectedLoanDurationType,
+    String? status,
+    String? supplyCurrency,
+    String? txid,
+    String? walletAddress,
   });
 }

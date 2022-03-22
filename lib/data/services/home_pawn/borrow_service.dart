@@ -1,6 +1,7 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/detail_pawnshop_response.dart';
@@ -177,5 +178,18 @@ abstract class BorrowService {
     @Query('walletAddress') String? walletAddress,
     @Query('sort') String? sort,
     @Query('supplyCurrencySymbol') String? supplyCurrencySymbol,
+  );
+
+  @POST(ApiConstants.CREATE_NEW_COLLATERAL)
+  Future<CreateNewCollateralResponse> postCreateNewCollateral(
+    @Field('amount') String? amount,
+    @Field('collateral') String? collateral,
+    @Field('description') String? description,
+    @Field('expected_loan_duration_time') String? expectedLoanDurationTime,
+    @Field('expected_loan_duration_type') String? expectedLoanDurationType,
+    @Field('status') String? status,
+    @Field('supply_currency') String? supplyCurrency,
+    @Field('txid') String? txid,
+    @Field('wallet_address') String? walletAddress,
   );
 }

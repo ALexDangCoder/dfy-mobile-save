@@ -839,5 +839,6 @@
   "collateral_list": "Collateral list",
   "create_new_collateral": "Tạo tài sản thế chấp mới",
   "accept_amount": "Số tiền thế chấp",
-  "login_to_receive_email_notifications": "Đăng nhập để nhận thông báo qua email"
+  "login_to_receive_email_notifications": "Đăng nhập để nhận thông báo qua email",
+  "confirm_new_collateral": "Xác nhận tài sản thế chấp mới"
 }

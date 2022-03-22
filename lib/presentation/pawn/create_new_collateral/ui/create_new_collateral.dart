@@ -1,18 +1,27 @@
-import 'package:Dfy/config/resources/color.dart';
+import 'dart:async';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/model_token.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/create_new_collateral/bloc/create_new_collateral_bloc.dart';
 import 'package:Dfy/presentation/pawn/create_new_collateral/bloc/create_new_collateral_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CreateNewCollateral extends StatefulWidget {
   const CreateNewCollateral({Key? key}) : super(key: key);
@@ -167,90 +176,98 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                     builder: (context, snapshot) {
                       return GestureDetector(
                         onTap: () async {
-                          // if (snapshot.data ?? false) {
-                          //   if (widget.type == TypeEvaluation.NEW_CREATE) {
-                          //     bloc.getDateStringToInt();
-                          //     final NavigatorState navigator =
-                          //     Navigator.of(context);
-                          //     await bloc.getHexString(
-                          //       evaluator: pawn.walletAddress ?? '',
-                          //       evaluationFeeAddress:
-                          //       Get.find<AppConstants>().contract_defy,
-                          //       appointmentTime: bloc.appointmentTime,
-                          //       assetId: bloc.bcAssetId ?? '',
-                          //     );
-                          //
-                          //     if (bloc.balanceCheck >= 50) {
-                          //       unawaited(
-                          //         navigator.push(
-                          //           MaterialPageRoute(
-                          //             builder: (context) => Approve(
-                          //               needApprove: true,
-                          //               hexString: bloc.hexString,
-                          //               payValue:
-                          //               '${bloc.evaluationFee?.amount ?? 0}',
-                          //               tokenAddress: Get.find<AppConstants>()
-                          //                   .contract_defy,
-                          //               title: S.current.book_appointment,
-                          //               listDetail: [
-                          //                 DetailItemApproveModel(
-                          //                   title: '${S.current.evaluator} ',
-                          //                   value: pawn.name ?? '',
-                          //                 ),
-                          //                 DetailItemApproveModel(
-                          //                   title: '${S.current.date_time} ',
-                          //                   value: '${bloc.timeStream.value} '
-                          //                       '- ${bloc.dateMy}'
-                          //                       ', ${bloc.dateStream.value}',
-                          //                 ),
-                          //                 DetailItemApproveModel(
-                          //                   title: '${S.current.nft}: ',
-                          //                   value: bloc.typeNFT ?? '',
-                          //                 ),
-                          //                 DetailItemApproveModel(
-                          //                   title:
-                          //                   '${S.current.evaluation_fee} ',
-                          //                   value:
-                          //                   '${bloc.evaluationFee?.amount ?? 0} '
-                          //                       '${bloc.evaluationFee?.symbol ?? ''}',
-                          //                 ),
-                          //               ],
-                          //               onErrorSign: (context) {},
-                          //               onSuccessSign: (context, data) {
-                          //                 bloc.createEvaluation(
-                          //                   evaluatorAddress:
-                          //                   pawn.walletAddress ?? '',
-                          //                   bcTxnHash: data,
-                          //                   appointmentTime:
-                          //                   bloc.appointmentTimeBE,
-                          //                   evaluatorId: pawn.id ?? '',
-                          //                   assetId: bloc.assetId ?? '',
-                          //                 );
-                          //                 showLoadSuccess(context)
-                          //                     .then((value) {
-                          //                   Navigator.of(context)
-                          //                       .popUntil((route) {
-                          //                     return route.settings.name ==
-                          //                         AppRouter.step2ListBook;
-                          //                   });
-                          //                 });
-                          //               },
-                          //               textActiveButton:
-                          //               S.current.request_evaluation,
-                          //               spender: Get.find<AppConstants>().eva,
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       );
-                          //     } else {
-                          //       showErrDialog(
-                          //         content: S.current.you_must_have_five,
-                          //         title: S.current.warning,
-                          //         context: context,
-                          //       );
-                          //     }
-                          //   }
-                          // }
+                          if (snapshot.data ?? false) {
+                            final NavigatorState navigator =
+                                Navigator.of(context);
+                            await bloc.getCreateCryptoCollateralData(
+                              loanAsset: ImageAssets.getAddressToken(
+                                bloc.textToken.value,
+                              ),
+                              expectedDurationType:
+                                  bloc.textRecurringInterest.value ==
+                                          S.current.weeks_pawn
+                                      ? WEEK
+                                      : MONTH,
+                              expectedDurationQty: bloc.textDuration.value,
+                              amount: bloc.amountCollateral.value,
+                              collateralAddress: ImageAssets.getSymbolAsset(
+                                bloc.item.nameToken,
+                              ),
+                              packageId: '-1',
+                            ); //todo packageId
+                            unawaited(
+                              navigator.push(
+                                MaterialPageRoute(
+                                  builder: (context) => Approve(
+                                    textActiveButton:
+                                        S.current.confirm_new_collateral,
+                                    spender: Get.find<AppConstants>()
+                                        .crypto_pawn_contract,
+                                    needApprove: true,
+                                    hexString: bloc.hexString,
+                                    payValue: bloc.amountCollateral.value,
+                                    tokenAddress:
+                                        Get.find<AppConstants>().contract_defy,
+                                    title: S.current.confirm_send_offer,
+                                    listDetail: [
+                                      DetailItemApproveModel(
+                                        title: '${S.current.message}: ',
+                                        value: bloc.textMess.value,
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: '${S.current.collateral}: ',
+                                        value: '${bloc.amountCollateral.value} '
+                                            '${bloc.item.nameToken}',
+                                        urlToken: ImageAssets.getSymbolAsset(
+                                          bloc.item.nameToken,
+                                        ),
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: '${S.current.loan_token}: ',
+                                        value: bloc.textToken.value,
+                                        urlToken: ImageAssets.getSymbolAsset(
+                                          bloc.textToken.value,
+                                        ),
+                                      ),
+                                      DetailItemApproveModel(
+                                        title: '${S.current.duration_pawn}: ',
+                                        value: '${bloc.textDuration.value} '
+                                            '${bloc.textRecurringInterest.value}',
+                                      ),
+                                    ],
+                                    onErrorSign: (context) {},
+                                    onSuccessSign: (context, data) {
+                                      bloc.postCreateNewCollateral(
+                                        expectedLoanDurationType:
+                                            bloc.textRecurringInterest.value ==
+                                                    S.current.weeks_pawn
+                                                ? WEEK.toString()
+                                                : MONTH.toString(),
+                                        expectedLoanDurationTime:
+                                            bloc.textDuration.toString(),
+                                        description: bloc.textMess.value,
+                                        walletAddress:
+                                            PrefsService.getCurrentWalletCore(),
+                                        status: 1.toString()
+                                        //todo status
+                                        ,
+                                        amount: bloc.amountCollateral.value,
+                                        supplyCurrency: bloc.textToken.value,
+                                        collateral: bloc.item.nameToken,
+                                        txid: data,
+                                      );
+                                      showLoadSuccess(context).then((value) {
+                                        Navigator.of(context).popUntil((route) {
+                                          return route.settings.name ==
+                                              AppRouter.collateral_list_myacc;
+                                        });
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         child: Container(
                           color: AppTheme.getInstance().bgBtsColor(),

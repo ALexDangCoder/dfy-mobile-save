@@ -1,12 +1,16 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/pawn/result_create_new_collateral_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/create_new_collateral/bloc/create_new_collateral_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../main.dart';
@@ -21,6 +25,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
     getTokenInf();
   }
 
+  String? hexString;
   BehaviorSubject<String> textDuration = BehaviorSubject.seeded('');
   BehaviorSubject<String> textMess = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isMess = BehaviorSubject.seeded(false);
@@ -40,6 +45,38 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   List<ModelToken> listTokenFromWalletCore = [];
   final regexTime = RegExp(r'^\d+(()|(\d{})?)$');
   BehaviorSubject<bool> isCheckBtn = BehaviorSubject.seeded(false);
+  final _web3utils = Web3Utils();
+
+  BorrowRepository get _pawnService => Get.find();
+
+  Future<void> postCreateNewCollateral({
+    String? amount,
+    String? collateral,
+    String? description,
+    String? expectedLoanDurationTime,
+    String? expectedLoanDurationType,
+    String? status,
+    String? supplyCurrency,
+    String? txid,
+    String? walletAddress,
+  }) async {
+    final Result<ResultCreateNewModel> response =
+        await _pawnService.postCreateNewCollateral(
+      txid: txid,
+      collateral: collateral,
+      supplyCurrency: supplyCurrency,
+      amount: amount,
+      status: status,
+      walletAddress: walletAddress,
+      description: description,
+      expectedLoanDurationTime: expectedLoanDurationTime,
+      expectedLoanDurationType: expectedLoanDurationType,
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
 
   String getMax(String symbol) {
     double balance = 0;
@@ -49,6 +86,24 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
       }
     }
     return formatPrice.format(balance);
+  }
+
+  Future<void> getCreateCryptoCollateralData({
+    required String collateralAddress,
+    required String amount,
+    required String expectedDurationQty,
+    required String loanAsset,
+    required String packageId,
+    required int expectedDurationType,
+  }) async {
+    hexString = await _web3utils.getCreateCryptoCollateralData(
+      collateralAddress: collateralAddress,
+      amount: amount,
+      expectedDurationQty: expectedDurationQty,
+      expectedDurationType: expectedDurationType,
+      loanAsset: loanAsset,
+      packageId: packageId,
+    );
   }
 
   // double getMaxBalance(String symbol) {
