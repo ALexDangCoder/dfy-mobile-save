@@ -386,27 +386,27 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   ),
                   Row(
                     children: [
-                      Visibility(
-                        visible: enable,
-                        child: InkWell(
-                          onTap: () {
-                            collateralAmount.text = bloc
-                                .getMax(bloc.item.nameShortToken)
-                                .replaceAll(',', '');
-                            bloc.errorCollateral.add('');
-                            bloc.validateAmount(collateralAmount.text);
-                          },
-                          child: Text(
-                            S.current.max,
-                            style: textNormalCustom(
-                              fillYellowColor,
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
-                      spaceW10,
+                      // Visibility(
+                      //   visible: enable,
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       collateralAmount.text = bloc
+                      //           .getMax(bloc.item.nameShortToken)
+                      //           .replaceAll(',', '');
+                      //       bloc.errorCollateral.add('');
+                      //       bloc.validateAmount(collateralAmount.text);
+                      //     },
+                      //     child: Text(
+                      //       S.current.max,
+                      //       style: textNormalCustom(
+                      //         fillYellowColor,
+                      //         16,
+                      //         FontWeight.w400,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // spaceW10,
                       DropdownButtonHideUnderline(
                         child: DropdownButton<ModelToken>(
                           borderRadius: BorderRadius.all(Radius.circular(20.r)),
@@ -509,7 +509,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   controller: messageController,
                   maxLength: 100,
                   onChanged: (value) {
-                    //todo  bloc.funCheckMess(value);
+                    bloc.funCheckMess(value);
                   },
                   cursorColor: AppTheme.getInstance().whiteColor(),
                   style: textNormal(
@@ -534,10 +534,10 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                 builder: (context, AsyncSnapshot<String> snapshot) {
                   return GestureDetector(
                     onTap: () {
-                      // bloc.textMess.add('');
-                      // textMessController.text = '';
-                      // bloc.isMess.add(true);
-                      // closeKey();todo
+                      bloc.textMess.add('');
+                      messageController.text = '';
+                      bloc.isMess.add(true);
+                      closeKey();
                     },
                     child: snapshot.data?.isNotEmpty ?? false
                         ? Image.asset(
@@ -613,7 +613,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                       controller: durationController,
                       maxLength: 50,
                       onChanged: (value) {
-                        //todo bloc.enableButtonRequest(value);
+                        bloc.enableButtonRequest(value);
                       },
                       cursorColor: AppTheme.getInstance().whiteColor(),
                       style: textNormal(
@@ -666,6 +666,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                           if (enable) {
                             setState(() {
                               duration = newValue!;
+                              bloc.textRecurringInterest.add(duration);
                               bloc.enableButtonRequest(
                                 bloc.textDuration.value,
                               );
