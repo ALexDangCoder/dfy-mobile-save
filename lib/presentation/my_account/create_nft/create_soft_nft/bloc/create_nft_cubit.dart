@@ -1,11 +1,13 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/base/base_state.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/market_place/type_nft_model.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -46,7 +48,7 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   String selectedId = '';
   int selectedNftType = 0;
   String walletAddress = PrefsService.getCurrentBEWallet();
-
+  double balanceCheck = 0;
   String nftIPFS = '';
   String transactionData = '';
   String tokenAddress = '';
@@ -113,6 +115,22 @@ class CreateNftCubit extends BaseCubit<CreateNftState> {
   List<Map<String, String>> listProperty = [];
   List<bool> boolProperties = [];
   BehaviorSubject<String> textRoyalties = BehaviorSubject.seeded('');
+
+  Future<void> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    late final double balance;
+    try {
+      balance = await web3utils.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      balanceCheck = balance;
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 
   Map<String, bool> createNftMapCheck = {
     MEDIA_KEY: false,

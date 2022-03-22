@@ -1,6 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/create_nft_cubit.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/call_api.dart';
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/pick_file_extension.dart';
@@ -22,6 +25,7 @@ import 'package:Dfy/widgets/text/text_from_field_group/form_group.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class CreateDetailNFT extends StatefulWidget {
@@ -43,6 +47,10 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
   void initState() {
     super.initState();
     widget.cubit.getListCollection();
+    widget.cubit.getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress: Get.find<AppConstants>().contract_defy,
+    );
     textRoyalties = TextEditingController();
     widget.cubit.textRoyalties.listen((value) {
       final List<String> valueRoyalties = value.split('.');
@@ -201,14 +209,22 @@ class _CreateDetailNFTState extends State<CreateDetailNFT> {
                       fontSize: 20,
                       onTap: () {
                         if (statusButton) {
-                          widget.cubit.uploadFileToIFPS(context);
-                          widget.cubit.controlAudio(needStop: true);
-                          showDialog(
-                            context: context,
-                            builder: (context) => CreateNftUploadProgress(
-                              cubit: widget.cubit,
-                            ),
-                          );
+                          if (widget.cubit.balanceCheck >= 10) {
+                            widget.cubit.uploadFileToIFPS(context);
+                            widget.cubit.controlAudio(needStop: true);
+                            showDialog(
+                              context: context,
+                              builder: (context) => CreateNftUploadProgress(
+                                cubit: widget.cubit,
+                              ),
+                            );
+                          } else {
+                            showErrDialog(
+                              content: S.current.you_must_have_ten,
+                              title: S.current.warning,
+                              context: context,
+                            );
+                          }
                         } else {}
                       },
                     );
