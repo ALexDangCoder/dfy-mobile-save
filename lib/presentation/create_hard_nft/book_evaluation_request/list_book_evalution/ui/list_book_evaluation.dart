@@ -59,7 +59,9 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
             isCustomLeftClick: true,
             onLeftClick: () {
               if (widget.pageRouter == PageRouterHardNFT.CREATE_HARD_NFT) {
-                Navigator.of(context).pop();
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.step1WhenSubmit,
+                );
               } else {
                 Navigator.of(context).popUntil(
                   (route) => route.settings.name == AppRouter.list_hard_mint,
