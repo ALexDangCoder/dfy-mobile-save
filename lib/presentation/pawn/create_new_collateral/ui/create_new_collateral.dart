@@ -249,9 +249,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                         description: bloc.textMess.value,
                                         walletAddress:
                                             PrefsService.getCurrentWalletCore(),
-                                        status: 1.toString()
-                                        //todo status
-                                        ,
+                                        status: 1.toString(), //todo status
                                         amount: bloc.amountCollateral.value,
                                         supplyCurrency: bloc.textToken.value,
                                         collateral: bloc.item.nameShortToken,
