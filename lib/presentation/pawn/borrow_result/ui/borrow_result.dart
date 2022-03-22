@@ -93,7 +93,13 @@ class _BorrowResultState extends State<BorrowResult> {
       },
       builder: (context, state) {
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            cubit.callApi(
+              collateralSymbols:
+              widget.nameToken != S.current.all ? widget.nameToken : '',
+              collateralAmount: widget.amount,
+            );
+          },
           textEmpty: cubit.message,
           error: AppException(S.current.error, cubit.message),
           stream: cubit.stateStream,

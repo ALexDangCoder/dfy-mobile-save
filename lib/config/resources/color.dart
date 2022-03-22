@@ -47,6 +47,7 @@ const btnGold4Colors = [
 const purple = Color(0xff9997FF);
 const itemPawnBank = Color(0xff576C96);
 const grey3 = Color(0xffA2A3A7);
+const grey2 = Color(0xff74767b);
 const successTransactionColor = Color(0xFF61C777);
 const failTransactionColor = Color(0xFFFF6C6C);
 const listButtonColor = [Color(0xFFFFE284), Color(0xFFE4AC1A)];
