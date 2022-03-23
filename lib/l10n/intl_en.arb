@@ -904,7 +904,11 @@
   "date": "Date",
   "transaction_hash": "Transaction hash",
   "estimate": "Estimate",
-  "added_collateral": "Added collateral"
+  "added_collateral": "Added collateral",
+  "offer_id": "Offer ID",
+  "collateral_information": "collateral information",
+  "offer_create_day": "Offer created day",
+  "cancel_offer": "Cancel offer"
 
 
 }

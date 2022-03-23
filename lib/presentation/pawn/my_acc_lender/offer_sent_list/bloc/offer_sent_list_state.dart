@@ -24,3 +24,22 @@ class LoadMoreCrypto extends OfferSentListState {
   @override
   List<Object> get props => [];
 }
+
+///detail crypto
+class GetApiDetalOfferSentCrypto extends OfferSentListState {
+  final OfferSentDetailCryptoModel? detailCrypto;
+  final OfferSentDetailCryptoCollateralModel? detailCryptoCollateral;
+  final CompleteType completeType;
+  final String? message;
+
+  GetApiDetalOfferSentCrypto(
+    this.completeType, {
+    this.detailCrypto,
+    this.detailCryptoCollateral,
+    this.message,
+  });
+
+  @override
+  List<Object?> get props =>
+      [detailCrypto, detailCryptoCollateral, message, completeType];
+}

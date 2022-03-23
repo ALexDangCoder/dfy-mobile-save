@@ -1,21 +1,25 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_crypto_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 part 'offer_sent_list_state.dart';
 
 class OfferSentListCubit extends BaseCubit<OfferSentListState> {
   OfferSentListCubit() : super(OfferSentListInitial());
 
-  //DI
+  ///DI
   OfferSentRepository get _offerSentService => Get.find();
 
-  //need for call api
+  ///need for call api
+  ///1.Api tab crypto
   String message = '';
   int page = 0;
   bool loadMore = false;
@@ -103,6 +107,62 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     }
   }
 
+  bool refreshDetailCrypto = false;
+  String messageDetailCrypto = '';
+
+  ///api detail crypto
+  OfferSentDetailCryptoModel offerSentDetailCrypto =
+      OfferSentDetailCryptoModel();
+  OfferSentDetailCryptoCollateralModel offerSentDetailCryptoCollateral =
+      OfferSentDetailCryptoCollateralModel();
+
+  Future<void> callApiDetailCrypto({required String id}) async {
+    await getOfferSentDetailCrypto(id: id);
+    await getOfferSentDetailCryptoCollateral();
+  }
+
+  Future<void> getOfferSentDetailCrypto({String? id}) async {
+    showLoading();
+    final Result<OfferSentDetailCryptoModel> result =
+        await _offerSentService.getOfferSentDetailCrypto(id: id);
+    result.when(
+      success: (response) {
+        offerSentDetailCrypto = response;
+      },
+      error: (err) {
+        GetApiDetalOfferSentCrypto(
+          CompleteType.ERROR,
+          message: err.message,
+        );
+      },
+    );
+  }
+
+  Future<void> getOfferSentDetailCryptoCollateral({String? id}) async {
+    final Result<OfferSentDetailCryptoCollateralModel> result =
+        await _offerSentService.getOfferSentDetailCryptoCollateral(
+      id: offerSentDetailCrypto.collateralId.toString(),
+    );
+    result.when(
+      success: (response) {
+        offerSentDetailCryptoCollateral = response;
+        emit(
+          GetApiDetalOfferSentCrypto(
+            CompleteType.SUCCESS,
+            detailCrypto: offerSentDetailCrypto,
+            detailCryptoCollateral: offerSentDetailCryptoCollateral,
+          ),
+        );
+      },
+      error: (error) {
+        GetApiDetalOfferSentCrypto(
+          CompleteType.ERROR,
+          message: error.message,
+        );
+      },
+    );
+  }
+
   ///extension string
   String categoryOneOrMany({
     required int durationQty,
@@ -123,5 +183,11 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
         return '$durationQty ${S.current.month_1}';
       }
     }
+  }
+
+  String convertMilisecondsToString(int createAt) {
+    final dt = DateTime.fromMillisecondsSinceEpoch(createAt);
+    final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
+    return d24;
   }
 }
