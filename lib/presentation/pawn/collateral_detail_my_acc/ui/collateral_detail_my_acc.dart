@@ -541,7 +541,10 @@ class _CollateralDetailMyAccScreenState
                                           obj: obj,
                                         ),
                                       ),
-                                    );
+                                    ).whenComplete(() =>
+                                        bloc.getDetailCollateralMyAcc(
+                                      collateralId: widget.id,
+                                    ),);
                                   } else {
                                     showAlert(
                                       context,
