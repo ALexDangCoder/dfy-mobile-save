@@ -900,5 +900,9 @@
   "date": "Date",
   "transaction_hash": "Transaction hash",
   "estimate": "Estimate",
-  "added_collateral": "Added collateral"
+  "added_collateral": "Added collateral",
+  "pending": "Pending",
+  "negotiation": "Negotiation",
+  "p2p_lender": "P2P lender package",
+  "success_pawn": "Success"
 }

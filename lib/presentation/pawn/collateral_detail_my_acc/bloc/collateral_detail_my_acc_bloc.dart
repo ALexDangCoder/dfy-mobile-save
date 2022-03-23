@@ -28,16 +28,10 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
   static const int FAILED = 8;
 
   //to loan_SEND_TO
-  static const int FAIL_CREATE_TO_SEND_TO = -1;
-  static const int PROCESSING_OPEN_SEND_TO = 0;
-  static const int OPEN_SEND_TO = 1;
-  static const int PROCESSING_CANCEL_SEND_TO = 2;
-  static const int CANCELLED_SEND_TO = 3;
-
-  //history
-  static const int PENDING_HISTORY = 0;
-  static const int SUCCESS_HISTORY = 1;
-  static const int FAILED_HISTORY = 2;
+  static const int AUTO_SEND_TO = 0;
+  static const int SEMI_AUTO_SEND_TO = 1;
+  static const int NEGOTIATION_SEND_TO = 2;
+  static const int P2P_LENDER_PACKAGE_SEND_TO = 3;
 
   //offer
   static const int WAITING_OFFER = 0;
@@ -71,7 +65,6 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
         );
         getListReceived(collateralId: 521.toString()); //521
         getListSendToLoanPackage(collateralId: 525.toString()); //525
-        getHistoryDetailCollateralMyAcc(collateralId: collateralId);
       },
       error: (error) {
         emit(
@@ -107,6 +100,66 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
     }
   }
 
+  String getStatusPackageSendTo(int type) {
+    switch (type) {
+      case AUTO_SEND_TO:
+        return S.current.auto;
+      case SEMI_AUTO_SEND_TO:
+        return S.current.semi_auto;
+      case NEGOTIATION_SEND_TO:
+        return S.current.negotiation;
+      case P2P_LENDER_PACKAGE_SEND_TO:
+        return S.current.p2p_lender;
+      default:
+        return '';
+    }
+  }
+
+  Color getColorPackageSendTo(int type) {
+    switch (type) {
+      case AUTO_SEND_TO:
+        return AppTheme.getInstance().blueMarketColors();
+      case SEMI_AUTO_SEND_TO:
+        return AppTheme.getInstance().orangeMarketColors();
+      case NEGOTIATION_SEND_TO:
+        return AppTheme.getInstance().greenMarketColors();
+      case P2P_LENDER_PACKAGE_SEND_TO:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
+  }
+
+  String getStatusOffer(int status) {
+    switch (status) {
+      case WAITING_OFFER:
+        return S.current.pending;
+      case ACCEPT_OFFER:
+        return S.current.accepted;
+      case REJECT_OFFER:
+        return S.current.rejected;
+      case CANCEL_OFFER:
+        return S.current.canceled;
+      default:
+        return '';
+    }
+  }
+
+  Color getColorOffer(int status) {
+    switch (status) {
+      case WAITING_OFFER:
+        return AppTheme.getInstance().orangeMarketColors();
+      case ACCEPT_OFFER:
+        return AppTheme.getInstance().greenMarketColors();
+      case REJECT_OFFER:
+        return AppTheme.getInstance().redColor();
+      case CANCEL_OFFER:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
+  }
+
   Color getColor(int status) {
     switch (status) {
       case PROCESSING_CREATE:
@@ -130,25 +183,6 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
     }
   }
 
-  Future<void> getHistoryDetailCollateralMyAcc({
-    String? collateralId,
-    String? page,
-    String? size,
-  }) async {
-    final Result<List<HistoryCollateralModel>> response =
-        await _pawnService.getHistoryDetailCollateralMyAcc(
-      collateralId: collateralId,
-      page: '0', //todo
-      size: '12',
-    );
-    response.when(
-      success: (response) {
-        listHistoryCollateral.addAll(response);
-      },
-      error: (error) {},
-    );
-  }
-
   Future<void> getListReceived({
     String? collateralId,
     String? page,
@@ -156,11 +190,12 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
   }) async {
     final Result<List<OffersReceivedModel>> response =
         await _pawnService.getListReceived(
-      collateralId: collateralId, //todo
+      collateralId: collateralId,
     );
     response.when(
       success: (response) {
         listOffersReceived.addAll(response);
+        isAdd.add(isAdd.value);
       },
       error: (error) {},
     );
@@ -173,11 +208,12 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
   }) async {
     final Result<List<SendToLoanPackageModel>> response =
         await _pawnService.getListSendToLoanPackage(
-      collateralId: collateralId, //todo
+      collateralId: collateralId,
     );
     response.when(
       success: (response) {
         listSendToLoanPackageModel.addAll(response);
+        isAddSend.add(isAddSend.value);
       },
       error: (error) {},
     );

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +11,10 @@ class ItemSendTo extends StatelessWidget {
   const ItemSendTo({
     Key? key,
     required this.obj,
+    required this.bloc,
   }) : super(key: key);
   final SendToLoanPackageModel obj;
+  final CollateralDetailMyAccBloc bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +92,9 @@ class ItemSendTo extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      "obj.description.toString()", //todo
+                      bloc.getStatusPackageSendTo(obj.type ?? 0),
                       style: textNormalCustom(
-                        null,
+                        bloc.getColorPackageSendTo(obj.type ?? 0),
                         16,
                         FontWeight.w400,
                       ),

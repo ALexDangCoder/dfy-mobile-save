@@ -851,5 +851,8 @@
   "date": "Ngày",
   "transaction_hash": "Transaction hash",
   "estimate": "Ước tính",
-  "added_collateral": "Đã thêm tài sản thế chấp"
+  "added_collateral": "Đã thêm tài sản thế chấp",
+  "negotiation": "Thương lượng",
+  "p2p_lender": "P2P lender package",
+  "success_pawn": "Thành công"
 }

@@ -1,12 +1,26 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/add_collateral_list/bloc/add_collateral_bloc.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/common_ext.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ItemAddCollateral extends StatelessWidget {
-  const ItemAddCollateral({Key? key}) : super(key: key);
+  const ItemAddCollateral({
+    Key? key,
+    required this.obj,
+    required this.bloc,
+  }) : super(key: key);
+  final HistoryCollateralModel obj;
+  final AddCollateralBloc bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +81,7 @@ class ItemAddCollateral extends StatelessWidget {
                             alignment: PlaceholderAlignment.middle,
                             child: Image.network(
                               ImageAssets.getSymbolAsset(
-                                'DFY', //todo
+                                obj.symbol.toString(),
                               ),
                               width: 16.sp,
                               height: 16.sp,
@@ -88,7 +102,8 @@ class ItemAddCollateral extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Text(
-                              '100000 dfy',
+                              '${formatPrice.format(obj.amount ?? 0)}'
+                              ' ${obj.symbol.toString().toUpperCase()}',
                               style: textNormal(
                                 null,
                                 16,
@@ -121,7 +136,7 @@ class ItemAddCollateral extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      '100000 dfy',
+                      '~\$${bloc.estimate}',
                       style: textNormalCustom(
                         null,
                         16,
@@ -150,12 +165,25 @@ class ItemAddCollateral extends StatelessWidget {
                   spaceW4,
                   Expanded(
                     flex: 6,
-                    child: Text(
-                      'k : S.current.month}',
-                      style: textNormalCustom(
-                        null,
-                        16,
-                        FontWeight.w400,
+                    child: GestureDetector(
+                      onTap: () {
+                        launchURL(
+                          Get.find<AppConstants>().bscScan +
+                              ApiConstants.BSC_SCAN_ADDRESS +
+                              obj.txnHash.toString(),
+                        );
+                      },
+                      child: Text(
+                        (obj.txnHash?.length ?? 0) > 20
+                            ? obj.txnHash.toString().formatAddressWalletConfirm()
+                            : obj.txnHash.toString(),
+                        style: textNormalCustom(
+                          null,
+                          16,
+                          FontWeight.w400,
+                        ).copyWith(
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
@@ -181,9 +209,9 @@ class ItemAddCollateral extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      "fgsadfsdafsdafsdafsdafasfgsadfsdafsdafsdafsdafasdfsadffgsadfsdafsdafsdafsdafasdfsadfdfsadf",
+                      bloc.getStatus(obj.status ?? 0),
                       style: textNormalCustom(
-                        null,
+                        bloc.getColor(obj.status ?? 0),
                         16,
                         FontWeight.w400,
                       ),
