@@ -279,4 +279,11 @@ class ApiConstants {
 
   static const String OFFER_DETAIL_MY_ACC =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
+
+  //Pawn Offer Sent
+  static const String GET_LIST_OFFER_SENT_CRYPTO =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer';
+
+  static const String GET_USER_ID_PAWN =
+      '/defi-user-service/public-api/v1.0.0/users/check-validate';
 }

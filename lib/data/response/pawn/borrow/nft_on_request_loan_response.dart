@@ -1,6 +1,7 @@
 import 'package:Dfy/data/response/nft/nft_on_pawn_response.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -206,6 +207,28 @@ class NftOnRequestLoanContentResponse extends Equatable {
           loanSymbol: loanSymbol ?? '',
         ),
         nftCollateralDetailDTO: nftCollateralDetailDTO?.toDomain(),
+      );
+
+  OfferSentDetailCryptoCollateralModel toOfferDetailCryptoCollateral() =>
+      OfferSentDetailCryptoCollateralModel(
+        latestBlockchainTxn: latestBlockchainTxn,
+        description: description,
+        bcCollateralId: bcCollateralId,
+        durationQty: durationQty,
+        durationType: durationType,
+        id: id,
+        userId: userId,
+        walletAddress: walletAddress,
+        status: status,
+        type: type,
+        loanSymbol: loanSymbol,
+        completedContracts: completedContracts,
+        reputation: reputation,
+        expectedCollateralSymbol: expectedCollateralSymbol,
+        estimatePrice: estimatePrice,
+        numberOfferReceived: numberOfferReceived,
+        collateralAmount: collateralAmount,
+        collateralSymbol: collateralSymbol,
       );
 
   factory NftOnRequestLoanContentResponse.fromJson(Map<String, dynamic> json) =>
