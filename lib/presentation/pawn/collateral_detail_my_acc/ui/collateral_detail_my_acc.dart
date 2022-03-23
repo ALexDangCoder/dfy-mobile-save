@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../add_collateral_list/ui/add_collateral.dart';
+import 'confirm_withdraw_collateral.dart';
 import 'item_offes_received.dart';
 import 'item_wiget_collateral_myacc.dart';
 
@@ -78,7 +79,7 @@ class _CollateralDetailMyAccScreenState
             child: state is CollateralDetailMyAccSuccess?Stack(
                     children: [
                       Container(
-                        height: 764.h,
+                        height: 812.h,
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.w,
                         ),
@@ -529,10 +530,11 @@ class _CollateralDetailMyAccScreenState
                       Positioned(
                         bottom: 0,
                         child:bloc.checkBtn(obj.status ??0)? GestureDetector(
-                          onTap: () async {//todo
+                          onTap: () async {
                             if(PrefsService.getCurrentWalletCore().toLowerCase()
                             ==obj.walletAddress){
-
+                            Navigator.push(context, MaterialPageRoute(builder:
+                                (context) => ConfirmWithDrawCollateral(),));
                             }else{
                               showAlert(
                                 context,

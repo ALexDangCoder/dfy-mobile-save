@@ -904,5 +904,7 @@
   "pending": "Pending",
   "negotiation": "Negotiation",
   "p2p_lender": "P2P lender package",
-  "success_pawn": "Success"
+  "success_pawn": "Success",
+  "confirm_withdraw_collateral": "Confirm withdraw collateral"
+
 }

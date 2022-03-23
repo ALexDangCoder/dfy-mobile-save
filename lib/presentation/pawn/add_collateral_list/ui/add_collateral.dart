@@ -75,7 +75,7 @@ class _AddCollateralState extends State<AddCollateral> {
             body: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 764.h,
+                height: 812.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().bgBtsColor(),
                   borderRadius: BorderRadius.only(

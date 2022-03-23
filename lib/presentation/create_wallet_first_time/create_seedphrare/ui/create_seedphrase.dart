@@ -105,7 +105,7 @@ class _BodyState extends State<_Body> {
               }
             },
             child: Container(
-              height: 764.h,
+              height: 812.h,
               width: 375.w,
               decoration: BoxDecoration(
                 color: const Color(0xff3e3d5c),

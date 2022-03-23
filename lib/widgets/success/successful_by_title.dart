@@ -17,7 +17,7 @@ void showSuccessfulByTitle({
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Container(
-        height: 764.h,
+        height: 812.h,
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,

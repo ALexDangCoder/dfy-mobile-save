@@ -854,5 +854,6 @@
   "added_collateral": "Đã thêm tài sản thế chấp",
   "negotiation": "Thương lượng",
   "p2p_lender": "P2P lender package",
-  "success_pawn": "Thành công"
+  "success_pawn": "Thành công",
+  "confirm_withdraw_collateral": "Xác nhận rút tài sản thế chấp"
 }
