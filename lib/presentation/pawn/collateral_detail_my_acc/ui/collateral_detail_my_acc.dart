@@ -8,6 +8,7 @@ import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_state.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/ui/item_send_to.dart';
+import 'package:Dfy/presentation/pawn/offer_detail/ui/offer_detail_my_acc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -462,7 +463,18 @@ class _CollateralDetailMyAccScreenState
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
-                                            //todo
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      OfferDetailMyAccScreen(
+                                                    id: bloc
+                                                        .listOffersReceived[
+                                                            index]
+                                                        .id
+                                                        .toString(),
+                                                  ),
+                                                ),
+                                              );
                                           },
                                           child: ItemOfferReceived(
                                             obj: bloc.listOffersReceived[index],
@@ -505,7 +517,15 @@ class _CollateralDetailMyAccScreenState
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
-                                            //todo
+                                            if (bloc.checkPackage(
+                                              bloc
+                                                      .listSendToLoanPackageModel[
+                                                          index]
+                                                      .status ??
+                                                  0,
+                                            )) {
+                                              //todo
+                                            }
                                           },
                                           child: ItemSendTo(
                                             obj:
@@ -541,10 +561,11 @@ class _CollateralDetailMyAccScreenState
                                           obj: obj,
                                         ),
                                       ),
-                                    ).whenComplete(() =>
-                                        bloc.getDetailCollateralMyAcc(
-                                      collateralId: widget.id,
-                                    ),);
+                                    ).whenComplete(
+                                      () => bloc.getDetailCollateralMyAcc(
+                                        collateralId: widget.id,
+                                      ),
+                                    );
                                   } else {
                                     showAlert(
                                       context,

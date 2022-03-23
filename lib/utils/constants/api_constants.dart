@@ -277,5 +277,6 @@ class ApiConstants {
   static const String COLLATERAL_WITHDRAW =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/withdraw';
 
-
+  static const String OFFER_DETAIL_MY_ACC =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
 }

@@ -906,7 +906,12 @@
   "p2p_lender": "P2P lender package",
   "success_pawn": "Success",
   "confirm_withdraw_collateral": "Confirm withdraw collateral",
-"your_collateral": "Your collateral",
-  "your_collateral_will": "Your collateral will be withdrawn back to your wallet address. You will no longer receive any loan offer. Would you like to continue?"
+  "your_collateral": "Your collateral",
+  "your_collateral_will": "Your collateral will be withdrawn back to your wallet address. You will no longer receive any loan offer. Would you like to continue?",
+  "offer_create_day": "Offer created day",
+  "confirm_accept_offer": "Confirm accept offer",
+  "confirm_reject_offer": "Confirm reject offer",
+  "by_accept_offer": "By clicking on Accept, the smart contract will be executed automatically with the Terms in the offer. Would you like to accept this offer?",
+  "by_reject_offer": "By clicking on Reject, the smart contract will be executed automatically with the Terms in the offer. Would you like to reject this offer?"
 
 }

@@ -208,7 +208,7 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                                 name: AppRouter.collateral_detail_myacc,
                                               ),
                                             ),
-                                          ).whenComplete(() => _bloc.refreshPosts());
+                                          );
                                         },
                                         child: ItemCollateralMyAcc(
                                           bloc: _bloc,

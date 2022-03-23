@@ -12,6 +12,7 @@ import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/data/response/home_pawn/offer_received_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -227,6 +228,11 @@ abstract class BorrowService {
 
   @POST(ApiConstants.COLLATERAL_WITHDRAW)
   Future<CollateralWithDrawResponse> postCollateralWithdraw(
-      @Field('id') String? id,
-      );
+    @Field('id') String? id,
+  );
+
+  @GET('${ApiConstants.OFFER_DETAIL_MY_ACC}{id}')
+  Future<OfferDetailMyAccResponse> getOfferDetailMyAcc(
+    @Path('id') String? id,
+  );
 }

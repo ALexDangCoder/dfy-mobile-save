@@ -35,8 +35,7 @@ class _AddCollateralState extends State<AddCollateral> {
   void initState() {
     super.initState();
     bloc = AddCollateralBloc(widget.id);
-    bloc.estimate=widget.estimate;
-
+    bloc.estimate = widget.estimate;
   }
 
   @override
@@ -139,19 +138,46 @@ class _AddCollateralState extends State<AddCollateral> {
                         },
                         child: RefreshIndicator(
                           onRefresh: bloc.refreshPosts,
-                          child: ListView.builder(
-                            itemCount: bloc.list.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(
-                              top: 16.h,
-                            ),
-                            itemBuilder: (context, index) {
-                              return ItemAddCollateral(
-                                obj: bloc.list[index],
-                                bloc: bloc,
-                              );
-                            },
-                          ),
+                          child: bloc.list.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: bloc.list.length,
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.only(
+                                    top: 16.h,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return ItemAddCollateral(
+                                      obj: bloc.list[index],
+                                      bloc: bloc,
+                                    );
+                                  },
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Image(
+                                        image: const AssetImage(
+                                          ImageAssets.img_search_empty,
+                                        ),
+                                        height: 120.h,
+                                        width: 120.w,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 17.7.h,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        S.current.no_result_found,
+                                        style: textNormal(
+                                          Colors.white54,
+                                          20.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ),
                     ),

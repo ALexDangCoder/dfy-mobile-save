@@ -857,5 +857,10 @@
   "success_pawn": "Thành công",
   "confirm_withdraw_collateral": "Xác nhận rút tài sản thế chấp",
   "your_collateral": "Tài sản thế chấp của bạn",
-  "your_collateral_will": "Tài sản thế chấp của bạn sẽ được rút về địa chỉ ví của bạn. Bạn sẽ không còn nhận được bất kỳ đề nghị cho vay nào nữa. Bạn có muốn tiếp tục không?"
+  "your_collateral_will": "Tài sản thế chấp của bạn sẽ được rút về địa chỉ ví của bạn. Bạn sẽ không còn nhận được bất kỳ đề nghị cho vay nào nữa. Bạn có muốn tiếp tục không?",
+  "offer_create_day": "Ngày tạo lời đề nghị",
+  "confirm_accept_offer": "Xác nhận chấp nhận đề nghị",
+  "confirm_reject_offer": "Xác nhận từ chối đề nghị",
+  "by_accept_offer": "Bằng cách nhấp vào Chấp nhận, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong phiếu mua hàng. Bạn có muốn chấp nhận phiếu mua hàng này không?",
+  "by_reject_offer": "Bằng cách nhấp vào Từ chối, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong ưu đãi. Bạn có muốn từ chối đề nghị này không?"
 }

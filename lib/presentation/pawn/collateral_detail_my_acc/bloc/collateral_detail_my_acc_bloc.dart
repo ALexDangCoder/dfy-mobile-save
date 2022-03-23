@@ -34,12 +34,13 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
   static const int SEMI_AUTO_SEND_TO = 1;
   static const int NEGOTIATION_SEND_TO = 2;
   static const int P2P_LENDER_PACKAGE_SEND_TO = 3;
+  static const int CANCEL_PACKAGE_SEND_TO = 3;
 
   //offer
-  static const int WAITING_OFFER = 0;
-  static const int ACCEPT_OFFER = 1;
-  static const int REJECT_OFFER = 2;
-  static const int CANCEL_OFFER = 3;
+  static const int ACCEPT_OFFER = 7;
+  static const int REJECT_OFFER = 8;
+  static const int CANCEL_OFFER = 9;
+  static const int OPEN_OFFER = 3;
 
   BehaviorSubject<bool> isAddSend = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isAdd = BehaviorSubject.seeded(false);
@@ -140,6 +141,15 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
     }
   }
 
+  bool checkPackage(int status) {
+    switch (status) {
+      case CANCEL_PACKAGE_SEND_TO:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   Color getColorPackageSendTo(int type) {
     switch (type) {
       case AUTO_SEND_TO:
@@ -157,31 +167,31 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
 
   String getStatusOffer(int status) {
     switch (status) {
-      case WAITING_OFFER:
-        return S.current.pending;
       case ACCEPT_OFFER:
         return S.current.accepted;
       case REJECT_OFFER:
-        return S.current.rejected;
+        return S.current.reject_ed;
       case CANCEL_OFFER:
         return S.current.canceled;
+      case OPEN_OFFER:
+        return S.current.open;
       default:
-        return '';
+        return S.current.pending;
     }
   }
 
   Color getColorOffer(int status) {
     switch (status) {
-      case WAITING_OFFER:
-        return AppTheme.getInstance().orangeMarketColors();
       case ACCEPT_OFFER:
-        return AppTheme.getInstance().greenMarketColors();
+        return AppTheme.getInstance().yellowColor();
       case REJECT_OFFER:
         return AppTheme.getInstance().redColor();
       case CANCEL_OFFER:
         return AppTheme.getInstance().redColor();
+      case OPEN_OFFER:
+        return AppTheme.getInstance().greenMarketColors();
       default:
-        return AppTheme.getInstance().redColor();
+        return AppTheme.getInstance().orangeMarketColors();
     }
   }
 
