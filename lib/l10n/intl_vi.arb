@@ -864,7 +864,7 @@
   "confirm_accept_offer": "Xác nhận chấp nhận đề nghị",
   "confirm_reject_offer": "Xác nhận từ chối đề nghị",
   "by_accept_offer": "Bằng cách nhấp vào Chấp nhận, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong phiếu mua hàng. Bạn có muốn chấp nhận phiếu mua hàng này không?",
-  "by_reject_offer": "Bằng cách nhấp vào Từ chối, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong ưu đãi. Bạn có muốn từ chối đề nghị này không?"
+  "by_reject_offer": "Bằng cách nhấp vào Từ chối, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong ưu đãi. Bạn có muốn từ chối đề nghị này không?",
   "added_collateral": "Đã thêm tài sản thế chấp",
   "offer_id": "Offer ID",
   "collateral_information": "thông tin collateral",

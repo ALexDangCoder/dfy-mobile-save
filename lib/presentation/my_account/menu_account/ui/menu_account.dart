@@ -16,6 +16,7 @@ import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubi
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -318,6 +319,34 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+      case 'user_profile':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) =>  const ConnectWalletDialog(
+                navigationTo: OtherProfile(
+                  userId: '',
+                  pageRouter: PageRouter.MY_ACC,
+                  index: 0,
+                ),
+                isRequireLoginEmail: true,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  const OtherProfile(
+                  userId: '',
+                  pageRouter: PageRouter.MY_ACC,
+                  index: 0,
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
     }
   }
 
@@ -326,7 +355,16 @@ class _MenuAccountState extends State<MenuAccount> {
       routeName: 'about_us',
       title: S.current.profile_setting,
       icon: ImageAssets.ic_profile,
-      children: [],
+      children: [
+        ItemMenuModel.createChild(
+          routeName: 'user_profile',
+          title: 'User Profile',
+        ),
+        ItemMenuModel.createChild(
+          routeName: 'verification',
+          title: 'Verification',
+        ),
+      ],
     ),
     ItemMenuModel.createParent(
       routeName: 'about_us',

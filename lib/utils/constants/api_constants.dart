@@ -253,6 +253,27 @@ class ApiConstants {
       '/defi-pawn-crypto-service/api/v1.0.0/crypto-offer';
   static const String GET_PAWNSHOP_PACKAGE_DETAIL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop-package/';
+  static const String GET_LENDING_SETTING =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/lending-setting';
+  static const String GET_PROFILE_USER =
+      '/defi-user-service/public-api/v1.0.0/users/';
+  static const String GET_REPUTATION =
+      '/defi-user-service/public-api/v1.0.0/users/reputation';
+  static const String GET_BORROW_USER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/collaterals/borrow-available-collateral';
+  static const String GET_BORROW_SIGN_CONTRACT_USER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-signed-contracts';
+  static const String GET_LENDER_SIGN_CONTRACT_USER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/lender-signed-contracts';
+  static const String GET_LIST_CONTRACT_USER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts';
+  static const String GET_LIST_LOAN_CONTRACT_USER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/loan-contracts';
+  static const String GET_LIST_COMMENT =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/review';
+  static const String GET_LIST_LOAN_PACKAGE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/';
+
 
   //myacc
   static const String COLLATERAL_MY_ACC =

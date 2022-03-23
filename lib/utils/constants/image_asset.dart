@@ -78,7 +78,9 @@ class ImageAssets {
   static const String bgLendingPawn = '$baseImg/lending_pawn.png';
   static const String blueArrow = '$baseImg/arrow_blue.png';
   static const String bgBecomePawnShop = '$baseImg/bg_become_pawnshop.png';
-
+  static const String ic_about_2 = '$baseImg/ic_about_2.png';
+  static const String ic_view_more = '$baseImg/ic_viewmore.png';
+  static const String ic_view_less = '$baseImg/ic_view_less.png';
   // menu icon
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
@@ -139,6 +141,7 @@ class ImageAssets {
   static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
   static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
   static const String img_star = '$baseImg/star.png';
+  static const String img_star_not_fill = '$baseImg/img_star_unfill.png';
   static const String ic_calendar_create_book =
       '$baseImg/calendar_create_book.png';
   static const String ic_edit_square = '$baseImg/edit_square.png';
