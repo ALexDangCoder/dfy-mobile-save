@@ -885,7 +885,11 @@
   "processing_create": "Processing create",
   "processing_withdraw": "Processing withdraw",
   "withdraw": "Withdraw",
-  "collateral_list": "Danh sách Collateral",
+  "collateral_list": "Collateral List",
+  "month_1": "month",
+  "week_1": "week",
+  "week_many": "weeks",
+  "month_many": "months",
   "create_new_collateral": "Create new collateral",
   "collateral_amount": "Collateral amount",
   "login_to_receive_email_notifications": "Login to receive email notifications",
@@ -901,4 +905,6 @@
   "transaction_hash": "Transaction hash",
   "estimate": "Estimate",
   "added_collateral": "Added collateral"
+
+
 }
