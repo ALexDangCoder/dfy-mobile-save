@@ -83,7 +83,8 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
                   }
                   return true;
                 },
-                child: (state is GetApiSuccess) ? RefreshIndicator(
+                child: (state is GetApiSuccess) ?
+                RefreshIndicator(
                   onRefresh: () async {
                     await cubit.refreshPosts(
                       widget.walletAddress,

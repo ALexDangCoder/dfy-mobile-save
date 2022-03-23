@@ -34,7 +34,7 @@ class ImportTokenScreen extends StatelessWidget {
         child:   DefaultTabController(
           length: 2,
           child: Container(
-            height: 764.h,
+            height: 812.h,
             width: 375.w,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),

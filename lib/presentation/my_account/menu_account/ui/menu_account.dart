@@ -15,6 +15,7 @@ import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.d
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
@@ -197,6 +198,28 @@ class _MenuAccountState extends State<MenuAccount> {
               builder: (context) => const AboutUs(),
             ),
           ).then((_) => cubit.getLoginState());
+        }
+        break;
+      case 'sent_list':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: OfferSentList(
+                ),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OfferSentList(
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
         }
         break;
       case 'collection_list':
@@ -407,8 +430,9 @@ class _MenuAccountState extends State<MenuAccount> {
         ),
       ],
     ),
+    //todo đang mượn tạm để test màn sent list
     ItemMenuModel.createParent(
-      routeName: 'about_us',
+      routeName: 'sent_list',
       title: S.current.lender_profile,
       icon: ImageAssets.ic_card,
       children: [],

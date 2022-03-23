@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
+import 'package:Dfy/data/response/home_pawn/collateral_widraw_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/data/response/home_pawn/offer_received_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
@@ -222,5 +224,15 @@ abstract class BorrowService {
     @Query('collateral-id') String? collateralId,
     @Query('page') String? page,
     @Query('size') String? size,
+  );
+
+  @POST(ApiConstants.COLLATERAL_WITHDRAW)
+  Future<CollateralWithDrawResponse> postCollateralWithdraw(
+    @Field('id') String? id,
+  );
+
+  @GET('${ApiConstants.OFFER_DETAIL_MY_ACC}{id}')
+  Future<OfferDetailMyAccResponse> getOfferDetailMyAcc(
+    @Path('id') String? id,
   );
 }

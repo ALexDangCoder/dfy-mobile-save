@@ -31,7 +31,7 @@ class CreateSuccessfullyHaveWallet extends StatelessWidget {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 764.h,
+          height: 812.h,
           width: 375.w,
           decoration: BoxDecoration(
             color: const Color(0xff3e3d5c),

@@ -145,7 +145,7 @@ class _BodyState extends State<_Body> {
       },
       builder: (ctx, _) {
         return Container(
-          height: 764.h,
+          height: 812.h,
           width: 375.w,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),

@@ -13,6 +13,7 @@ import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
+import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
@@ -181,5 +182,13 @@ mixin BorrowRepository {
     String? collateralId,
     String? page,
     String? size,
+  });
+
+  Future<Result<String>> postCollateralWithdraw({
+    required String id,
+  });
+
+  Future<Result<OfferDetailMyAcc>> getOfferDetailMyAcc({
+    String? id,
   });
 }

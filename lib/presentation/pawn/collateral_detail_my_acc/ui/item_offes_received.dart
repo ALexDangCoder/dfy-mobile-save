@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -12,8 +13,10 @@ class ItemOfferReceived extends StatelessWidget {
   const ItemOfferReceived({
     Key? key,
     required this.obj,
+    required this.bloc,
   }) : super(key: key);
   final OffersReceivedModel obj;
+  final CollateralDetailMyAccBloc bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +182,7 @@ class ItemOfferReceived extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Text(
-                      '${S.current.interest_rate}:',
+                      '${S.current.interest_rate_pawn}:',
                       style: textNormalCustom(
                         AppTheme.getInstance().pawnItemGray(),
                         16,
@@ -221,9 +224,9 @@ class ItemOfferReceived extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      "obj.numberOfferReceived.toString()", //todo
+                      bloc.getStatusOffer(obj.status ?? 0),
                       style: textNormalCustom(
-                        null,
+                        bloc.getColorOffer(obj.status ?? 0),
                         16,
                         FontWeight.w400,
                       ),

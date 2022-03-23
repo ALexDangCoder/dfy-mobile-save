@@ -67,7 +67,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
           child: Stack(
             children: [
               Container(
-                height: 764.h,
+                height: 812.h,
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().bgBtsColor(),
                   borderRadius: BorderRadius.only(
