@@ -1,8 +1,12 @@
 import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_crypto_response.dart';
+import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_detail_crypto_collateral_response.dart';
+import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_detail_crypto_response.dart';
 import 'package:Dfy/data/response/pawn/offer_sent/user_infor_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/pawn/offer_sent_list/offer_sent_service.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_crypto_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 
@@ -47,6 +51,26 @@ class OfferSentRepositoryImplement implements OfferSentRepository {
         walletAddress,
       ),
       (response) => response.toModel(),
+    );
+  }
+
+  @override
+  Future<Result<OfferSentDetailCryptoModel>> getOfferSentDetailCrypto(
+      {String? id}) {
+    return runCatchingAsync<OfferSentDetailCryptoTotalResponse,
+        OfferSentDetailCryptoModel>(
+      () => _client.getOfferSentDetailCrypto(id),
+      (response) => response.data.toModel(),
+    );
+  }
+
+  @override
+  Future<Result<OfferSentDetailCryptoCollateralModel>>
+      getOfferSentDetailCryptoCollateral({String? id}) {
+    return runCatchingAsync<OfferSentDetailCryptoCollateralTotalResponse,
+        OfferSentDetailCryptoCollateralModel>(
+      () => _client.getOfferSentDetailCryptoCollateral(id),
+      (response) => response.data.toOfferDetailCryptoCollateral(),
     );
   }
 }

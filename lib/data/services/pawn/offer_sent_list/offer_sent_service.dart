@@ -1,5 +1,6 @@
 import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_crypto_response.dart';
-import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_nft_response.dart';
+import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_detail_crypto_collateral_response.dart';
+import 'package:Dfy/data/response/pawn/offer_sent/offer_sent_detail_crypto_response.dart';
 import 'package:Dfy/data/response/pawn/offer_sent/user_infor_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
@@ -29,5 +30,16 @@ abstract class OfferSentService {
     @Query('email') String? email,
     @Query('type') String? type,
     @Query('walletAddress') String? walletAddress,
+  );
+
+  @GET('${ApiConstants.OFFER_DETAIL}{id}')
+  Future<OfferSentDetailCryptoTotalResponse> getOfferSentDetailCrypto(
+    @Path('id') String? id,
+  );
+
+  @GET('${ApiConstants.GET_DETAIL_COLLATERAL}{id}')
+  Future<OfferSentDetailCryptoCollateralTotalResponse>
+      getOfferSentDetailCryptoCollateral(
+    @Path('id') String? id,
   );
 }

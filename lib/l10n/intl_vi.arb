@@ -855,5 +855,9 @@
   "date": "Ngày",
   "transaction_hash": "Transaction hash",
   "estimate": "Ước tính",
-  "added_collateral": "Đã thêm tài sản thế chấp"
+  "added_collateral": "Đã thêm tài sản thế chấp",
+  "offer_id": "Offer ID",
+  "collateral_information": "thông tin collateral",
+  "offer_create_day": "Offer tạo ngày",
+  "cancel_offer": "Huỷ offer"
 }
