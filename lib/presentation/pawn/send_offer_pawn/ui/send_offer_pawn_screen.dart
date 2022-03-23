@@ -97,7 +97,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 764.h,
+          height: 812.h,
           clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.only(top: 26.h),
           decoration: BoxDecoration(

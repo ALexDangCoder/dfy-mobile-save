@@ -72,7 +72,7 @@ class _DetailCollectionState extends State<DetailCollection>
                       topRight: Radius.circular(30.r),
                     ),
                   ),
-                  height: 764.h,
+                  height: 812.h,
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
@@ -185,7 +185,7 @@ class _DetailCollectionState extends State<DetailCollection>
                     topRight: Radius.circular(30.r),
                   ),
                 ),
-                height: 764.h,
+                height: 812.h,
                 child: CollectionDetailError(
                   collectionAddress: widget.collectionAddress,
                   cubit: detailCollectionBloc,
