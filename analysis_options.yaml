@@ -59,7 +59,7 @@ linter:
     use_key_in_widget_constructors: true
 
     # Avoid lines longer than 80 characters.
-    lines_longer_than_80_chars: true
+    lines_longer_than_80_chars: false
 
     # Don't use more than one case with same value.
     no_duplicate_case_values: true

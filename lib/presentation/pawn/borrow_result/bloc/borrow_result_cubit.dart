@@ -7,7 +7,6 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';

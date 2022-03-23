@@ -42,12 +42,23 @@ class AvailableCollateralItem extends StatelessWidget {
                 child: Row(
                   children: [
                     if (collateralUser.nftCollateral == null) ...[
-                      Image.asset(
-                        ImageAssets.getUrlToken(
-                          collateralUser.collateralSymbol ?? '',
+                      SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: '',
+                          image: ImageAssets.getUrlToken(
+                            collateralUser.collateralSymbol ?? '',
+                          ),
+                          placeholderErrorBuilder: (ctx,obj,st){
+                            return const SizedBox();
+                          },
+                          imageErrorBuilder: (ctx,obj,st){
+                            return const SizedBox();
+                          },
                         ),
                       ),
-                      spaceH8,
+                      spaceW8,
                     ],
                     Text(
                       collateralUser.nftCollateral != null
@@ -69,16 +80,27 @@ class AvailableCollateralItem extends StatelessWidget {
                   style: textNormal(grey3, 16),
                 ),
               ),
-              spaceH8,
               Expanded(
                 flex: 2,
                 child: Row(
                   children: [
-                    Image.asset(
-                      ImageAssets.getUrlToken(
-                        collateralUser.loanSymbol ?? '',
+                    SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: '',
+                        image: ImageAssets.getUrlToken(
+                          collateralUser.loanSymbol ?? '',
+                        ),
+                        placeholderErrorBuilder: (ctx,obj,st){
+                          return const SizedBox();
+                        },
+                        imageErrorBuilder: (ctx,obj,st){
+                          return const SizedBox();
+                        },
                       ),
                     ),
+                    spaceW8,
                     Text(
                       '${collateralUser.collateralSymbol}',
                       style: textNormal(Colors.white, 16),
@@ -97,12 +119,11 @@ class AvailableCollateralItem extends StatelessWidget {
                   style: textNormal(grey3, 16),
                 ),
               ),
-              spaceH8,
               Expanded(
                 flex: 2,
                 child: Text(
                   '${collateralUser.durationQty} '
-                      '${collateralUser.durationQty == 0 ? S.current.week : S.current.month}',
+                  '${collateralUser.durationQty == 0 ? S.current.week : S.current.month}',
                   style: textNormal(Colors.white, 16),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/borrow_available_collateral.dart';
+import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/reputation.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/domain/repository/home_pawn/user_repository.dart';
@@ -22,9 +23,19 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   BehaviorSubject<String> reputationBorrowStream = BehaviorSubject.seeded('');
   BehaviorSubject<String> reputationLenderStream = BehaviorSubject.seeded('');
   BehaviorSubject<bool> getDataBorrow = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> getDataLender = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> seeMoreCollateral = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> viewMoreCollateral = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> seeMoreSignContract = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> viewMoreSignContract = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> seeMoreMessage = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> viewMoreMessage = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> seeMoreLendingSetting = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> viewMoreLendingSetting = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> seeMoreLenderSignContract =
+      BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> viewMoreLenderSignContract =
+      BehaviorSubject.seeded(false);
   UserProfile userProfile = UserProfile();
   List<Reputation> reputation = [];
   List<String> walletAddress = [
@@ -32,8 +43,73 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   ];
   String message = '';
   String userId = '';
+  String pawnshopId = '';
   int totalReputationBorrow = 0;
   int totalReputationLender = 0;
+
+  void selectWalletBorrow(String? walletAddress) {
+    getDataBorrow.add(false);
+    seeMoreCollateral.add(false);
+    viewMoreCollateral.add(false);
+    seeMoreSignContract.add(false);
+    viewMoreSignContract.add(false);
+    seeMoreMessage.add(false);
+    viewMoreMessage.add(false);
+    if (walletAddress != 'All Wallet') {
+      getBorrowUser(walletAddress: walletAddress);
+      getSignedContract(walletAddress: walletAddress);
+      getListCollateral(walletAddress: walletAddress);
+      getListSignedContract(walletAddress: walletAddress);
+      getListComment(walletAddress: walletAddress);
+    } else {
+      getBorrowUser();
+      getSignedContract();
+      getListCollateral();
+      getListSignedContract();
+      getListComment();
+    }
+  }
+
+  void selectWalletLender(String? walletAddress) {
+    getDataLender.add(false);
+    seeMoreLendingSetting.add(false);
+    viewMoreLendingSetting.add(false);
+    seeMoreLenderSignContract.add(false);
+    viewMoreLenderSignContract.add(false);
+    if (walletAddress != 'All Wallet') {
+      getSignedContractLender(walletAddress: walletAddress);
+      getLendingSetting();
+      getListLenderSignedContract(walletAddress: walletAddress);
+      getListLoanPage(pawnshopId, walletAddress: walletAddress);
+    } else {
+      getSignedContractLender();
+      getLendingSetting();
+      getListLenderSignedContract();
+      getListLoanPage(pawnshopId);
+    }
+  }
+
+  Future<void> getMyUserProfile() async {
+    showLoading();
+    final Result<UserProfile> result = await _repo.getMyUserProfile();
+    result.when(success: (res) {
+      getReputation(userId: res.pawnshop?.userId.toString() ?? '');
+      emit(
+        OtherProfileSuccess(
+          CompleteType.SUCCESS,
+          userProfile: res,
+        ),
+      );
+
+    }, error: (err) {
+      emit(
+        OtherProfileSuccess(
+          CompleteType.SUCCESS,
+          message: err.message,
+        ),
+      );
+    });
+  }
 
   Future<void> getUserProfile({String? userId}) async {
     showLoading();
@@ -41,21 +117,98 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
         await _repo.getUserProfile(userId: userId);
     result.when(
       success: (res) {
+        pawnshopId = res.pawnshop?.id.toString() ?? '';
         getBorrowUser();
         getSignedContract();
         getListCollateral();
         getListSignedContract();
-        emit(OtherProfileSuccess(
-          CompleteType.SUCCESS,
-          userProfile: res,
-        ));
+        getListComment();
+        getSignedContractLender();
+        getLendingSetting();
+        getListLenderSignedContract();
+        getListLoanPage(pawnshopId);
+        emit(
+          OtherProfileSuccess(
+            CompleteType.SUCCESS,
+            userProfile: res,
+          ),
+        );
       },
       error: (error) {
-        emit(OtherProfileSuccess(
-          CompleteType.SUCCESS,
-          message: error.message,
-        ));
+        emit(
+          OtherProfileSuccess(
+            CompleteType.SUCCESS,
+            message: error.message,
+          ),
+        );
       },
+    );
+  }
+
+  /// Detail Lender
+
+  BorrowAvailableCollateral lenderSignedContract = BorrowAvailableCollateral();
+  LendingSetting lendingSetting = LendingSetting();
+  List<SignedContractUser> listLenderSignedContract = [];
+
+  List<PawnshopPackage> listLoanPackage = [];
+
+  Future<void> getSignedContractLender({String? walletAddress}) async {
+    final Result<BorrowAvailableCollateral> result =
+        await _repo.getLenderSignContractUser(
+      userId: userId,
+      walletAddress: walletAddress,
+    );
+    result.when(
+      success: (res) {
+        lenderSignedContract = res;
+        getDataLender.add(true);
+      },
+      error: (err) {},
+    );
+  }
+
+  Future<void> getLendingSetting() async {
+    final Result<LendingSetting> result = await _repo.getLendingSetting(
+      userId: userId,
+    );
+    result.when(
+      success: (res) {
+        lendingSetting = res;
+        getDataLender.add(true);
+      },
+      error: (err) {},
+    );
+  }
+
+  Future<void> getListLenderSignedContract({String? walletAddress}) async {
+    final Result<List<SignedContractUser>> result =
+        await _repo.getListLoanSignedContract(
+      userId: userId,
+      walletAddress: walletAddress,
+    );
+    result.when(
+      success: (res) {
+        listLenderSignedContract = res;
+        getDataLender.add(true);
+      },
+      error: (err) {},
+    );
+  }
+
+  Future<void> getListLoanPage(String pawnShopId,
+      {String? walletAddress}) async {
+    final Result<List<PawnshopPackage>> result = await _repo.getListLoanPackage(
+      pawnShopId,
+      userId: userId,
+      walletAddress: walletAddress,
+    );
+    result.when(
+      success: (res) {
+        listLoanPackage = res;
+        getDataLender.add(true);
+      },
+      error: (err) {},
     );
   }
 
@@ -64,6 +217,21 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   BorrowAvailableCollateral signedContract = BorrowAvailableCollateral();
   List<CollateralUser> listCollateral = [];
   List<SignedContractUser> listSignedContract = [];
+  List<CommentBorrow> listComment = [];
+
+  Future<void> getListComment({String? walletAddress}) async {
+    final Result<List<CommentBorrow>> result = await _repo.getListComment(
+      userId: userId,
+      walletAddress: walletAddress,
+    );
+    result.when(
+      success: (res) {
+        listComment = res;
+        getDataBorrow.add(true);
+      },
+      error: (err) {},
+    );
+  }
 
   Future<void> getListCollateral({String? walletAddress}) async {
     final Result<List<CollateralUser>> result = await _repo.getListCollateral(

@@ -141,6 +141,7 @@ class ImageAssets {
   static const String imgCancelMarket = '$baseImg/cancel_market_img.png';
   static const String ic_calendar_market = '$baseImg/ic_calendar_market.png';
   static const String img_star = '$baseImg/star.png';
+  static const String img_star_not_fill = '$baseImg/img_star_unfill.png';
   static const String ic_calendar_create_book =
       '$baseImg/calendar_create_book.png';
   static const String ic_edit_square = '$baseImg/edit_square.png';

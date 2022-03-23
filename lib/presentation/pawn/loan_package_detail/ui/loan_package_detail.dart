@@ -431,6 +431,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                   OtherProfile(
                     userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
                     index: 0,
+                    pageRouter: PageRouter.MARKET,
                   ),
                 );
               },

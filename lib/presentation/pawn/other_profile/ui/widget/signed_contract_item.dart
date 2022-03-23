@@ -40,12 +40,23 @@ class SignedContractItem extends StatelessWidget {
                 child: Row(
                   children: [
                     if (signedContractUser.nftCollateral == null) ...[
-                      Image.asset(
-                        ImageAssets.getUrlToken(
-                          signedContractUser.collateralSymbol ?? '',
+                      SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: '',
+                          image: ImageAssets.getUrlToken(
+                            signedContractUser.collateralSymbol ?? '',
+                          ),
+                          placeholderErrorBuilder: (ctx,obj,st){
+                            return const SizedBox();
+                          },
+                          imageErrorBuilder: (ctx,obj,st){
+                            return const SizedBox();
+                          },
                         ),
                       ),
-                      spaceH8,
+                      spaceW8,
                     ],
                     Text(
                       signedContractUser.nftCollateral != null
@@ -67,16 +78,27 @@ class SignedContractItem extends StatelessWidget {
                   style: textNormal(grey3, 16),
                 ),
               ),
-              spaceH8,
               Expanded(
                 flex: 2,
                 child: Row(
                   children: [
-                    Image.asset(
-                      ImageAssets.getUrlToken(
-                        signedContractUser.loanSymbol ?? '',
+                    SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: '',
+                        image: ImageAssets.getUrlToken(
+                          signedContractUser.loanSymbol ?? '',
+                        ),
+                        placeholderErrorBuilder: (ctx,obj,st){
+                          return const SizedBox();
+                        },
+                        imageErrorBuilder: (ctx,obj,st){
+                          return const SizedBox();
+                        },
                       ),
                     ),
+                    spaceW8,
                     Text(
                       '${signedContractUser.collateralSymbol}',
                       style: textNormal(Colors.white, 16),
@@ -89,19 +111,14 @@ class SignedContractItem extends StatelessWidget {
           spaceH16,
           Row(
             children: [
-              Expanded(
-                child: Text(
-                  '${S.current.interest_rate_apr}:',
-                  style: textNormal(grey3, 16),
-                ),
+              Text(
+                '${S.current.interest_rate_apr}:',
+                style: textNormal(grey3, 16),
               ),
-              spaceH8,
-              Expanded(
-                flex: 2,
-                child: Text(
-                  '${signedContractUser.interestRate}%',
-                  style: textNormal(Colors.white, 16),
-                ),
+              spaceW8,
+              Text(
+                '${signedContractUser.interestRate}%',
+                style: textNormal(Colors.white, 16),
               ),
             ],
           ),
@@ -114,7 +131,6 @@ class SignedContractItem extends StatelessWidget {
                   style: textNormal(grey3, 16),
                 ),
               ),
-              spaceH8,
               Expanded(
                 flex: 2,
                 child: Text(

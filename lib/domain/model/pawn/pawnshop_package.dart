@@ -2,17 +2,17 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 
 class PawnshopPackage {
   List<AcceptableAssetsAsCollateral>? acceptableAssetsAsCollateral;
-  int? id; //
-  num? interest; //
-  num? interestMax; //
-  num? interestMin; //
-  bool? isFavourite; //
-  num? loanToValue; //
-  int? durationQtyType; //
+  int? id;
+  num? interest;
+  num? interestMax;
+  num? interestMin;
+  bool? isFavourite;
+  num? loanToValue;
+  int? durationQtyType;
   int? durationQtyTypeMin;
   int? durationQtyTypeMax;
-  Pawnshop? pawnshop; //
-  int? type; //
+  Pawnshop? pawnshop;
+  int? type;
   int? signContracts;
   List<RepaymentToken>? repaymentToken;
   List<LoanToken>? loanToken;

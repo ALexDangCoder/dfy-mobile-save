@@ -19,4 +19,3 @@ class OtherProfileSuccess extends OtherProfileState {
   // TODO: implement props
   List<Object?> get props => [id,completeType,userProfile,message];
 }
-

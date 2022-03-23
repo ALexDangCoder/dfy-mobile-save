@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -24,11 +23,16 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OtherProfile extends StatefulWidget {
-  const OtherProfile({Key? key, required this.userId, required this.index})
+  const OtherProfile(
+      {Key? key,
+      required this.userId,
+      required this.index,
+      required this.pageRouter})
       : super(key: key);
 
   final String userId;
   final int index;
+  final PageRouter pageRouter;
 
   @override
   _OtherProfileState createState() => _OtherProfileState();
@@ -45,10 +49,15 @@ class _OtherProfileState extends State<OtherProfile>
     // TODO: implement initState
     super.initState();
     cubit = OtherProfileCubit();
-    cubit.userId = widget.userId;
     cubit.setTitle(widget.index);
-    cubit.getUserProfile(userId: widget.userId);
-    cubit.getReputation(userId: widget.userId);
+    if(widget.pageRouter == PageRouter.MARKET){
+      cubit.userId = widget.userId;
+      cubit.getUserProfile(userId: widget.userId);
+      cubit.getReputation(userId: widget.userId);
+    }
+    else {
+      cubit.getMyUserProfile();
+    }
     _tabController =
         TabController(initialIndex: widget.index, length: 2, vsync: this);
     scrollController = ScrollController();
@@ -138,7 +147,8 @@ class _OtherProfileState extends State<OtherProfile>
                                         spaceH4,
                                         if (cubit.userProfile.kyc != null)
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               sizedSvgImage(
                                                 w: 14,
@@ -237,8 +247,10 @@ class _OtherProfileState extends State<OtherProfile>
                                             itemCount: cubit.userProfile.links
                                                     ?.length ??
                                                 0,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
+                                            itemBuilder: (
+                                              BuildContext context,
+                                              int index,
+                                            ) {
                                               return Row(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -285,7 +297,6 @@ class _OtherProfileState extends State<OtherProfile>
                               delegate: SliverHeader(
                                 TabBar(
                                   unselectedLabelColor: purple,
-
                                   labelColor: Colors.white,
                                   onTap: (int i) {
                                     cubit.setTitle(i);
@@ -348,10 +359,18 @@ class _OtherProfileState extends State<OtherProfile>
               placeholder: '',
               image: cubit.userProfile.pawnshop?.cover ?? '',
               placeholderErrorBuilder: (ctx, obj, st) {
-                return const SizedBox();
+                return Container(
+                  height: 145.h,
+                  width: double.infinity,
+                  color: borderItemColors,
+                );
               },
               imageErrorBuilder: (ctx, obj, st) {
-                return const SizedBox();
+                return Container(
+                  height: 145.h,
+                  width: double.infinity,
+                  color: borderItemColors,
+                );
               },
               placeholderCacheHeight: 400,
               fit: BoxFit.fill,
@@ -382,7 +401,11 @@ class _OtherProfileState extends State<OtherProfile>
                       return const SizedBox();
                     },
                     imageErrorBuilder: (ctx, obj, st) {
-                      return const SizedBox();
+                      return Container(
+                        height: 145.h,
+                        width: double.infinity,
+                        color: borderItemColors,
+                      );
                     },
                     placeholderCacheHeight: 400,
                     fit: BoxFit.cover,
