@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
+import 'package:Dfy/data/response/home_pawn/collateral_widraw_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
@@ -223,4 +224,9 @@ abstract class BorrowService {
     @Query('page') String? page,
     @Query('size') String? size,
   );
+
+  @POST(ApiConstants.COLLATERAL_WITHDRAW)
+  Future<CollateralWithDrawResponse> postCollateralWithdraw(
+      @Field('id') String? id,
+      );
 }

@@ -76,7 +76,8 @@ class _CollateralDetailMyAccScreenState
             },
             error: AppException(S.current.error, mes),
             textEmpty: mes,
-            child: state is CollateralDetailMyAccSuccess?Stack(
+            child: state is CollateralDetailMyAccSuccess
+                ? Stack(
                     children: [
                       Container(
                         height: 812.h,
@@ -216,10 +217,12 @@ class _CollateralDetailMyAccScreenState
                                               ),
                                               width: 16.sp,
                                               height: 16.sp,
-                                              errorBuilder:
-                                                  (context, error,
-                                                  stackTrace,) =>
-                                                      Container(
+                                              errorBuilder: (
+                                                context,
+                                                error,
+                                                stackTrace,
+                                              ) =>
+                                                  Container(
                                                 color: AppTheme.getInstance()
                                                     .bgBtsColor(),
                                                 width: 16.sp,
@@ -241,9 +244,7 @@ class _CollateralDetailMyAccScreenState
                                               '${formatPrice.format(
                                                 obj.collateralAmount ?? 0,
                                               )}'
-                                              ' ${obj.collateralSymbol
-                                                  .toString()
-                                                  .toUpperCase()}',
+                                              ' ${obj.collateralSymbol.toString().toUpperCase()}',
                                               style: textNormalCustom(
                                                 null,
                                                 16,
@@ -268,13 +269,12 @@ class _CollateralDetailMyAccScreenState
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         AddCollateral(
-                                                          estimate:
-                                                          formatPrice
-                                                              .format(obj
-                                                              .estimatePrice
-                                                              ?? 0,),
-                                                          id: widget.id,
-                                                        ),
+                                                      estimate:
+                                                          formatPrice.format(
+                                                        obj.estimatePrice ?? 0,
+                                                      ),
+                                                      id: widget.id,
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -315,8 +315,9 @@ class _CollateralDetailMyAccScreenState
                                   Expanded(
                                     flex: 6,
                                     child: Text(
-                                      '\$${formatPrice.format(obj
-                                          .estimatePrice ?? 0,)}',
+                                      '\$${formatPrice.format(
+                                        obj.estimatePrice ?? 0,
+                                      )}',
                                       style: textNormalCustom(
                                         null,
                                         16,
@@ -362,10 +363,12 @@ class _CollateralDetailMyAccScreenState
                                               ),
                                               width: 16.sp,
                                               height: 16.sp,
-                                              errorBuilder:
-                                                  (context, error,
-                                                  stackTrace,) =>
-                                                      Container(
+                                              errorBuilder: (
+                                                context,
+                                                error,
+                                                stackTrace,
+                                              ) =>
+                                                  Container(
                                                 color: AppTheme.getInstance()
                                                     .bgBtsColor(),
                                                 width: 16.sp,
@@ -420,9 +423,7 @@ class _CollateralDetailMyAccScreenState
                                   Expanded(
                                     flex: 6,
                                     child: Text(
-                                      '${obj.durationQty} ${obj.durationType
-                                          == WEEK ? S.current.weeks_pawn
-                                          : S.current.months_pawn}',
+                                      '${obj.durationQty} ${obj.durationType == WEEK ? S.current.weeks_pawn : S.current.months_pawn}',
                                       style: textNormalCustom(
                                         null,
                                         16,
@@ -440,11 +441,10 @@ class _CollateralDetailMyAccScreenState
                                     title: [
                                       Text(
                                         '${bloc.listOffersReceived.length} '
-                                        '${S.current.offer_received
-                                            .toUpperCase()}',
+                                        '${S.current.offer_received.toUpperCase()}',
                                         style: textNormalCustom(
-                                          AppTheme.getInstance().
-                                          titleTabColor(),
+                                          AppTheme.getInstance()
+                                              .titleTabColor(),
                                           16,
                                           FontWeight.w400,
                                         ),
@@ -482,10 +482,8 @@ class _CollateralDetailMyAccScreenState
                                     title: [
                                       Text(
                                         '${S.current.send_to.toUpperCase()} '
-                                        '${bloc.listSendToLoanPackageModel
-                                            .length} '
-                                        '${S.current.loan_package
-                                            .toUpperCase()}',
+                                        '${bloc.listSendToLoanPackageModel.length} '
+                                        '${S.current.loan_package.toUpperCase()}',
                                         style: textNormalCustom(
                                           AppTheme.getInstance()
                                               .titleTabColor(),
@@ -498,9 +496,8 @@ class _CollateralDetailMyAccScreenState
                                     child: ListView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                      itemCount:
-                                          bloc.listSendToLoanPackageModel
-                                              .length,
+                                      itemCount: bloc
+                                          .listSendToLoanPackageModel.length,
                                       shrinkWrap: true,
                                       padding: EdgeInsets.only(
                                         top: 16.h,
@@ -511,9 +508,9 @@ class _CollateralDetailMyAccScreenState
                                             //todo
                                           },
                                           child: ItemSendTo(
-                                            obj: bloc
-                                                .listSendToLoanPackageModel[
-                                                index],
+                                            obj:
+                                                bloc.listSendToLoanPackageModel[
+                                                    index],
                                             bloc: bloc,
                                           ),
                                         );
@@ -529,35 +526,46 @@ class _CollateralDetailMyAccScreenState
                       ),
                       Positioned(
                         bottom: 0,
-                        child:bloc.checkBtn(obj.status ??0)? GestureDetector(
-                          onTap: () async {
-                            if(PrefsService.getCurrentWalletCore().toLowerCase()
-                            ==obj.walletAddress){
-                            Navigator.push(context, MaterialPageRoute(builder:
-                                (context) => ConfirmWithDrawCollateral(),));
-                            }else{
-                              showAlert(
-                                context,
-                                  obj.walletAddress.toString(),
-                              );
-                            }
-                          },
-                          child: Container(
-                            color: AppTheme.getInstance().bgBtsColor(),
-                            padding: EdgeInsets.only(
-                              bottom: 38.h,
-                            ),
-                            child: ButtonGold(
-                              isEnable: true,
-                              title: S.current.withdraw,
-                            ),
-                          ),
-                        ):const SizedBox.shrink(),
+                        child: bloc.checkBtn(obj.status ?? 0)
+                            ? GestureDetector(
+                                onTap: () {
+                                  if (PrefsService.getCurrentWalletCore()
+                                          .toLowerCase() ==
+                                      obj.walletAddress) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ConfirmWithDrawCollateral(
+                                          bloc: bloc,
+                                          obj: obj,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    showAlert(
+                                      context,
+                                      obj.walletAddress.toString(),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  color: AppTheme.getInstance().bgBtsColor(),
+                                  padding: EdgeInsets.only(
+                                    bottom: 38.h,
+                                  ),
+                                  child: ButtonGold(
+                                    isEnable: true,
+                                    title: S.current.withdraw,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                       ),
                     ],
-                  ):const SizedBox.shrink(),
+                  )
+                : const SizedBox.shrink(),
           );
-
         },
       ),
     );

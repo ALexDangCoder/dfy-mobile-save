@@ -182,4 +182,8 @@ mixin BorrowRepository {
     String? page,
     String? size,
   });
+
+  Future<Result<String>> postCollateralWithdraw({
+    required String id,
+  });
 }

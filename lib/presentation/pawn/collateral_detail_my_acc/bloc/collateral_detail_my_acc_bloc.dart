@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
 import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
@@ -44,8 +46,22 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
   List<OffersReceivedModel> listOffersReceived = [];
   List<HistoryCollateralModel> listHistoryCollateral = [];
   List<SendToLoanPackageModel> listSendToLoanPackageModel = [];
+  String hexString = '';
 
   BorrowRepository get _pawnService => Get.find();
+  final Web3Utils web3Client = Web3Utils();
+
+  Future<void> getWithdrawCryptoCollateralData({
+    required String wad,
+  }) async {
+    try {
+      hexString = await web3Client.getWithdrawCryptoCollateralData(
+        wad: wad,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 
   Future<void> getDetailCollateralMyAcc({
     String? collateralId,
@@ -224,6 +240,18 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
         listSendToLoanPackageModel.addAll(response);
         isAddSend.add(isAddSend.value);
       },
+      error: (error) {},
+    );
+  }
+
+  Future<void> postCollateralWithdraw({
+    String? id,
+  }) async {
+    final Result<String> response = await _pawnService.postCollateralWithdraw(
+      id: id.toString(),
+    );
+    response.when(
+      success: (response) {},
       error: (error) {},
     );
   }

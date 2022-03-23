@@ -905,6 +905,8 @@
   "negotiation": "Negotiation",
   "p2p_lender": "P2P lender package",
   "success_pawn": "Success",
-  "confirm_withdraw_collateral": "Confirm withdraw collateral"
+  "confirm_withdraw_collateral": "Confirm withdraw collateral",
+"your_collateral": "Your collateral",
+  "your_collateral_will": "Your collateral will be withdrawn back to your wallet address. You will no longer receive any loan offer. Would you like to continue?"
 
 }
