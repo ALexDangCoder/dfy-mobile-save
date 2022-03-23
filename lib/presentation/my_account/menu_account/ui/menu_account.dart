@@ -300,6 +300,9 @@ class _MenuAccountState extends State<MenuAccount> {
               builder: (context) => const ConnectWalletDialog(
                 navigationTo: CollateralMyAcc(),
                 isRequireLoginEmail: false,
+                settings: RouteSettings(
+                  name: AppRouter.collateral_list_myacc,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           } else {
@@ -307,6 +310,9 @@ class _MenuAccountState extends State<MenuAccount> {
               context,
               MaterialPageRoute(
                 builder: (context) => const CollateralMyAcc(),
+                settings: const RouteSettings(
+                  name: AppRouter.collateral_list_myacc,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           }

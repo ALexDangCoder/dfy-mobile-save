@@ -450,14 +450,12 @@ class ImageAssets {
     List<TokenInf> listTokenSupport = [];
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
-    String address = '';
     for (final item in listTokenSupport) {
       if (symbol.toLowerCase() == item.symbol?.toLowerCase()) {
-        address = item.address ?? '';
-        break;
+        return item.address ?? '';
       }
     }
-    return address;
+    return '';
   }
 
   static String getSymbolAsset(String shortName) {

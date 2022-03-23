@@ -3,8 +3,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/ui/collateral_detail_my_acc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_state.dart';
+import 'package:Dfy/presentation/pawn/create_new_collateral/ui/create_new_collateral.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -66,7 +68,14 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
           child: Scaffold(
             floatingActionButton: GestureDetector(
               onTap: () {
-                //todo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateNewCollateral(),
+                  ),
+                ).whenComplete(
+                  () => _bloc.refreshPosts(),
+                );
               },
               child: Container(
                 width: 50.w,
@@ -186,9 +195,21 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                       padding: EdgeInsets.zero,
                                       itemCount: list.length,
                                       itemBuilder: (context, index) =>
-                                          ItemCollateralMyAcc(
-                                        bloc: _bloc,
-                                        index: index,
+                                          GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CollateralDetailMyAccScreen(
+                                                    id: list[index].id.toString(),
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: ItemCollateralMyAcc(
+                                          bloc: _bloc,
+                                          index: index,
+                                        ),
                                       ),
                                     )
                                   : Column(

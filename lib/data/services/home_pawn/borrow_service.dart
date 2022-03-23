@@ -1,18 +1,23 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
+import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/detail_pawnshop_response.dart';
+import 'package:Dfy/data/response/home_pawn/history_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_collection_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/list_reputation_borrower_response.dart';
 import 'package:Dfy/data/response/home_pawn/nft_collateral_response.dart';
+import 'package:Dfy/data/response/home_pawn/offer_received_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
+import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -177,5 +182,45 @@ abstract class BorrowService {
     @Query('walletAddress') String? walletAddress,
     @Query('sort') String? sort,
     @Query('supplyCurrencySymbol') String? supplyCurrencySymbol,
+  );
+
+  @POST(ApiConstants.CREATE_NEW_COLLATERAL)
+  Future<CreateNewCollateralResponse> postCreateNewCollateral(
+    @Field('amount') String? amount,
+    @Field('collateral') String? collateral,
+    @Field('description') String? description,
+    @Field('expected_loan_duration_time') String? expectedLoanDurationTime,
+    @Field('expected_loan_duration_type') String? expectedLoanDurationType,
+    @Field('status') String? status,
+    @Field('supply_currency') String? supplyCurrency,
+    @Field('txid') String? txid,
+    @Field('wallet_address') String? walletAddress,
+  );
+
+  @GET('${ApiConstants.DETAIL_COLLATERAL_MY_ACC}{collateral_id}')
+  Future<CollateralDetailMyAccResponse> getDetailCollateralMyAcc(
+    @Path('collateral_id') String? collateralId,
+  );
+
+  @GET(
+      '${ApiConstants.DETAIL_COLLATERAL_MY_ACC}{collateral_id}${ApiConstants.HISTORY_MY_ACC}')
+  Future<HistoryCollateralResponse> getHistoryDetailCollateralMyAcc(
+    @Path('collateral_id') String? collateralId,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.OFFERS_RECEIVED_MY_ACC)
+  Future<OfferReceivedResponse> getListReceived(
+    @Query('collateralId') String? collateralId,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.SEND_TO_LOAN_PACKAGE_MY_ACC)
+  Future<SendToLoanPackageResponse> getListSendToLoanPackage(
+    @Query('collateral-id') String? collateralId,
+    @Query('page') String? page,
+    @Query('size') String? size,
   );
 }
