@@ -18,7 +18,6 @@ import 'package:Dfy/utils/text_helper.dart';
 import 'package:intl/intl.dart';
 
 //todo màn này trường LTV và liquidation threshold chỉ show với crypto
-final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class DetailOfferSent extends StatefulWidget {
   const DetailOfferSent(
@@ -32,11 +31,19 @@ class DetailOfferSent extends StatefulWidget {
 }
 
 class _DetailOfferSentState extends State<DetailOfferSent> {
+  final formatValue = NumberFormat('###,###,###.###', 'en_US');
+
   @override
   void initState() {
-    super.initState();
     widget.cubit.callApiDetailCrypto(id: widget.idGetDetail.toString());
+    super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   widget.cubit.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,189 +61,197 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
       bloc: widget.cubit,
       builder: (context, state) {
         return StateStreamLayout(
-          stream: widget.cubit.stateStream,
-          retry: () {
-            widget.cubit.callApiDetailCrypto(id: widget.idGetDetail.toString());
-          },
-          textEmpty: widget.cubit.messageDetailCrypto,
-          error:
-              AppException(S.current.error, widget.cubit.messageDetailCrypto),
-          child: RefreshIndicator(
-            onRefresh: () async {
-              await widget.cubit
+            stream: widget.cubit.stateStream,
+            retry: () {
+              widget.cubit
                   .callApiDetailCrypto(id: widget.idGetDetail.toString());
             },
-            child: BaseDesignScreen(
-              bottomBar: _btnCancelOffer(),
-              title: S.current.offer_detail.capitalize(),
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 24.h,
-                    left: 16.w,
-                    right: 16.w,
+            textEmpty: widget.cubit.messageDetailCrypto,
+            error:
+                AppException(S.current.error, widget.cubit.messageDetailCrypto),
+            child: _content(state));
+      },
+    );
+  }
+
+  Widget _content(OfferSentListState state) {
+    if (state is GetApiDetalOfferSentCrypto &&
+        state.completeType == CompleteType.SUCCESS) {
+      return RefreshIndicator(
+        onRefresh: () async {
+          await widget.cubit
+              .callApiDetailCrypto(id: widget.idGetDetail.toString());
+        },
+        child: BaseDesignScreen(
+          bottomBar: _btnCancelOffer(),
+          title: S.current.offer_detail.capitalize(),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 24.h,
+                left: 16.w,
+                right: 16.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.current.offer_detail.toUpperCase(),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.current.offer_detail.toUpperCase(),
-                        style: textNormalCustom(
-                          AppTheme.getInstance().unselectedTabLabelColor(),
-                          14,
-                          FontWeight.w400,
-                        ),
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.offer_id.capitalize().withColon(),
-                        description: widget.cubit.offerSentDetailCrypto.offerId
-                            .toString(),
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.status.capitalize().withColon(),
-                        description: '',
-                        isStatus: true,
-                        status: widget.cubit.offerSentDetailCrypto.status,
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.message.capitalize().withColon(),
-                        description:
-                            widget.cubit.offerSentDetailCrypto.description ??
-                                '',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.loan_amount.capitalize(),
-                        description: formatUSD.format(
-                          widget.cubit.offerSentDetailCrypto.loanAmount,
-                        ),
-                        isLoanAmount: true,
-                        urlToken: widget
-                            .cubit.offerSentDetailCrypto.supplyCurrencySymbol,
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.loan_to_value.capitalize().withColon(),
-                        description:
-                            '${widget.cubit.offerSentDetailCrypto.loanToValue}%',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.interest_rate.capitalize(),
-                        description:
-                            '${widget.cubit.offerSentDetailCrypto.interestRate}%',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.liquidation_threshold
-                            .capitalize()
-                            .withColon(),
-                        description:
-                            '${widget.cubit.offerSentDetailCrypto.liquidationThreshold}%',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.recurring_interest.capitalize(),
-                        description:
-                            widget.cubit.offerSentDetailCrypto.durationType == 0
-                                ? S.current.week
-                                : S.current.monday,
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title:
-                            S.current.repayment_token.capitalize().withColon(),
-                        description: '',
-                        isLoanAmountNoAmount: true,
-                        urlToken:
-                            widget.cubit.offerSentDetailCrypto.repaymentToken,
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.duration.capitalize().withColon(),
-                        description: widget.cubit.categoryOneOrMany(
-                            durationQty: widget
-                                    .cubit.offerSentDetailCrypto.durationQty ??
-                                0,
-                            durationType: widget
-                                    .cubit.offerSentDetailCrypto.durationType ??
-                                0),
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title:
-                            S.current.offer_create_day.capitalize().withColon(),
-                        description: widget.cubit.convertMilisecondsToString(
-                            widget.cubit.offerSentDetailCrypto.createdAt ?? 0),
-                      ),
-                      spaceH32,
-                      Text(
-                        S.current.collateral_information.toUpperCase(),
-                        style: textNormalCustom(
-                          AppTheme.getInstance().unselectedTabLabelColor(),
-                          14,
-                          FontWeight.w400,
-                        ),
-                      ),
-                      spaceH16,
-                      _borrowerInformation(widget.cubit),
-                      spaceH32,
-                      _rowItem(
-                        title: S.current.message.capitalize().withColon(),
-                        description: widget.cubit
-                                .offerSentDetailCryptoCollateral.description ??
-                            '',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.collateral.capitalize().withColon(),
-                        description: formatValue.format(widget.cubit
-                            .offerSentDetailCryptoCollateral.collateralAmount),
-                        urlToken: widget.cubit.offerSentDetailCryptoCollateral
-                            .collateralSymbol,
-                        isLoanAmount: true,
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.estimate.capitalize().withColon(),
-                        description:
-                            '~ ${widget.cubit.offerSentDetailCryptoCollateral.estimatePrice}',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.loan_token.capitalize().withColon(),
-                        isLoanAmountNoAmount: true,
-                        urlToken: widget
-                            .cubit.offerSentDetailCryptoCollateral.loanSymbol,
-                        description: '',
-                      ),
-                      spaceH16,
-                      _rowItem(
-                        title: S.current.duration.capitalize().withColon(),
-                        description: widget.cubit.categoryOneOrMany(
-                            durationQty: widget
-                                    .cubit
-                                    .offerSentDetailCryptoCollateral
-                                    .durationQty ??
-                                0,
-                            durationType: widget
-                                    .cubit
-                                    .offerSentDetailCryptoCollateral
-                                    .durationType ??
-                                0),
-                      )
-                    ],
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.offer_id.capitalize().withColon(),
+                    description:
+                        widget.cubit.offerSentDetailCrypto.offerId.toString(),
                   ),
-                ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.status.capitalize().withColon(),
+                    description: '',
+                    isStatus: true,
+                    status: widget.cubit.offerSentDetailCrypto.status,
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.message.capitalize().withColon(),
+                    description:
+                        widget.cubit.offerSentDetailCrypto.description ?? '',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.loan_amount.capitalize(),
+                    description: formatUSD.format(
+                      widget.cubit.offerSentDetailCrypto.loanAmount,
+                    ),
+                    isLoanAmount: true,
+                    urlToken:
+                        widget.cubit.offerSentDetailCrypto.supplyCurrencySymbol,
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.loan_to_value.capitalize().withColon(),
+                    description:
+                        '${widget.cubit.offerSentDetailCrypto.loanToValue}%',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.interest_rate.capitalize(),
+                    description:
+                        '${widget.cubit.offerSentDetailCrypto.interestRate}%',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.liquidation_threshold
+                        .capitalize()
+                        .withColon(),
+                    description:
+                        '${widget.cubit.offerSentDetailCrypto.liquidationThreshold}%',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.recurring_interest.capitalize(),
+                    description:
+                        widget.cubit.offerSentDetailCrypto.durationType == 0
+                            ? S.current.week
+                            : S.current.monday,
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.repayment_token.capitalize().withColon(),
+                    description: '',
+                    isLoanAmountNoAmount: true,
+                    urlToken: widget.cubit.offerSentDetailCrypto.repaymentToken,
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.duration.capitalize().withColon(),
+                    description: widget.cubit.categoryOneOrMany(
+                        durationQty:
+                            widget.cubit.offerSentDetailCrypto.durationQty ?? 0,
+                        durationType:
+                            widget.cubit.offerSentDetailCrypto.durationType ??
+                                0),
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.offer_create_day.capitalize().withColon(),
+                    description: widget.cubit.convertMilisecondsToString(
+                        widget.cubit.offerSentDetailCrypto.createdAt ?? 0),
+                  ),
+                  spaceH32,
+                  Text(
+                    S.current.collateral_information.toUpperCase(),
+                    style: textNormalCustom(
+                      AppTheme.getInstance().unselectedTabLabelColor(),
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  spaceH16,
+                  _borrowerInformation(widget.cubit),
+                  spaceH32,
+                  _rowItem(
+                    title: S.current.message.capitalize().withColon(),
+                    description: widget.cubit.offerSentDetailCryptoCollateral
+                            .description ??
+                        '',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.collateral.capitalize().withColon(),
+                    description: formatValue.format(widget.cubit
+                        .offerSentDetailCryptoCollateral.collateralAmount),
+                    urlToken: widget
+                        .cubit.offerSentDetailCryptoCollateral.collateralSymbol,
+                    isLoanAmount: true,
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.estimate.capitalize().withColon(),
+                    description:
+                        '~ ${widget.cubit.offerSentDetailCryptoCollateral.estimatePrice}',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.loan_token.capitalize().withColon(),
+                    isLoanAmountNoAmount: true,
+                    urlToken:
+                        widget.cubit.offerSentDetailCryptoCollateral.loanSymbol,
+                    description: '',
+                  ),
+                  spaceH16,
+                  _rowItem(
+                    title: S.current.duration.capitalize().withColon(),
+                    description: widget.cubit.categoryOneOrMany(
+                        durationQty: widget.cubit
+                                .offerSentDetailCryptoCollateral.durationQty ??
+                            0,
+                        durationType: widget.cubit
+                                .offerSentDetailCryptoCollateral.durationType ??
+                            0),
+                  )
+                ],
               ),
             ),
           ),
-        );
-      },
-    );
+        ),
+      );
+    } else {
+      return Container(
+        color: AppTheme.getInstance().bgBtsColor(),
+        child: Center(
+          child: CircularProgressIndicator(
+            color: AppTheme.getInstance().whiteColor(),
+            strokeWidth: 2,
+          ),
+        ),
+      );
+    }
   }
 
   Container _btnCancelOffer() {
