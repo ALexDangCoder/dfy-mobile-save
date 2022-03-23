@@ -869,5 +869,6 @@
   "offer_id": "Offer ID",
   "collateral_information": "thông tin collateral",
   "offer_create_day": "Offer tạo ngày",
-  "cancel_offer": "Huỷ offer"
+  "cancel_offer": "Huỷ offer",
+  "borrow_contract_list": "Danh sách hợp đồng mượn"
 }
