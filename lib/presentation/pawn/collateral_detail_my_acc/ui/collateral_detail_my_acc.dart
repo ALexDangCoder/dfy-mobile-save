@@ -1,8 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_state.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/ui/item_send_to.dart';
@@ -361,7 +363,7 @@ class _CollateralDetailMyAccScreenState
                                               height: 16.sp,
                                               errorBuilder:
                                                   (context, error,
-                                                  stackTrace) =>
+                                                  stackTrace,) =>
                                                       Container(
                                                 color: AppTheme.getInstance()
                                                     .bgBtsColor(),
@@ -526,9 +528,17 @@ class _CollateralDetailMyAccScreenState
                       ),
                       Positioned(
                         bottom: 0,
-                        child: GestureDetector(
-                          onTap: () async {
-                            //todo
+                        child:bloc.checkBtn(obj.status ??0)? GestureDetector(
+                          onTap: () async {//todo
+                            if(PrefsService.getCurrentWalletCore().toLowerCase()
+                            ==obj.walletAddress){
+
+                            }else{
+                              showAlert(
+                                context,
+                                  obj.walletAddress.toString(),
+                              );
+                            }
                           },
                           child: Container(
                             color: AppTheme.getInstance().bgBtsColor(),
@@ -540,7 +550,7 @@ class _CollateralDetailMyAccScreenState
                               title: S.current.withdraw,
                             ),
                           ),
-                        ),
+                        ):const SizedBox.shrink(),
                       ),
                     ],
                   ):const SizedBox.shrink(),

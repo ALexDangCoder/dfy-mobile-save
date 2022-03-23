@@ -63,8 +63,8 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
             obj: response,
           ),
         );
-        getListReceived(collateralId: 521.toString()); //521
-        getListSendToLoanPackage(collateralId: 525.toString()); //525
+        getListReceived(collateralId: collateralId); //521
+        getListSendToLoanPackage(collateralId: collateralId); //525
       },
       error: (error) {
         emit(
@@ -75,6 +75,15 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
         );
       },
     );
+  }
+
+  bool checkBtn(int status) {
+    switch (status) {
+      case OPEN:
+        return true;
+      default:
+        return false;
+    }
   }
 
   String getStatus(int status) {
