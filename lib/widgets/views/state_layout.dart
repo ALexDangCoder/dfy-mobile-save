@@ -11,10 +11,10 @@ enum StateLayout { showContent, showLoading, showError, showEmpty }
 class StateFullLayout extends StatelessWidget {
   final StateLayout _stateLayout;
   final Widget _child;
-
   final AppException _error;
   final Function() _retry;
   final dynamic _textEmpty;
+
 
   const StateFullLayout(
       {Key? key,

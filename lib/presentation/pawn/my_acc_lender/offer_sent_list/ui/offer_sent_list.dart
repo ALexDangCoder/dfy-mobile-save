@@ -1,5 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/filter_offer_sent.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,11 +17,13 @@ class OfferSentList extends StatefulWidget {
 class _OfferSentListState extends State<OfferSentList>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late OfferSentListCubit cubit;
   int initIndexTab = 0;
 
   @override
   void initState() {
     super.initState();
+    cubit = OfferSentListCubit();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
   }
@@ -109,9 +114,14 @@ class _OfferSentListState extends State<OfferSentList>
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             ///Tab crypto
-                            Container(color: Colors.white,),
+                            OfferSentListCrypto(
+                              cubit: cubit,
+                            ),
+
                             ///Tab Nft
-                            Container(color: Colors.green,),
+                            Container(
+                              color: Colors.green,
+                            ),
                           ],
                         ),
                       )
@@ -159,7 +169,14 @@ class _OfferSentListState extends State<OfferSentList>
             ),
             Flexible(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (ctx) => FilerOfferSent(cubit: cubit),
+                  );
+                },
                 child: Image.asset(ImageAssets.ic_filter),
               ),
             ),
