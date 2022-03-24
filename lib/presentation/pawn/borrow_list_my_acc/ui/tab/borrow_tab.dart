@@ -27,7 +27,6 @@ class _NFTTabState extends State<NFTTab> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.list.clear();
     widget.bloc.refreshPosts(
       type: BorrowListMyAccBloc.NFT_TYPE,
     );
@@ -39,7 +38,7 @@ class _NFTTabState extends State<NFTTab> {
     return BlocConsumer<BorrowListMyAccBloc, BorrowListMyAccState>(
       bloc: bloc,
       listener: (context, state) {
-        if (state is BorrowListMyAccSuccess) {
+        if (state is BorrowListMyAccNFTSuccess) {
           if (state.completeType == CompleteType.SUCCESS) {
             if (bloc.loadMoreRefresh) {}
             bloc.showContent();
@@ -49,11 +48,11 @@ class _NFTTabState extends State<NFTTab> {
           }
           bloc.loadMoreLoading = false;
           if (bloc.isRefresh) {
-            bloc.list.clear();
+            bloc.listNFT.clear();
           }
-          bloc.list.addAll(state.list ?? []);
+          bloc.listNFT.addAll(state.listNFT ?? []);
           bloc.canLoadMoreMy =
-              bloc.list.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+              bloc.listNFT.length >= ApiConstants.DEFAULT_PAGE_SIZE;
         }
       },
       builder: (context, state) {
@@ -83,13 +82,13 @@ class _NFTTabState extends State<NFTTab> {
                   type: BorrowListMyAccBloc.NFT_TYPE,
                 );
               },
-              child: bloc.list.isNotEmpty
+              child: bloc.listNFT.isNotEmpty
                   ? GridView.builder(
                       physics: const ClampingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics(),
                       ),
                       shrinkWrap: true,
-                      itemCount: bloc.list.length,
+                      itemCount: bloc.listNFT.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 170.w / 231.h,
@@ -98,12 +97,11 @@ class _NFTTabState extends State<NFTTab> {
                         return GestureDetector(
                           onTap: () {
                             //todo
-
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 16.w),
                             child: NFTItemPawn(
-                              cryptoPawnModel: bloc.list[index],
+                              cryptoPawnModel: bloc.listNFT[index],
                               bloc: bloc,
                             ),
                           ),

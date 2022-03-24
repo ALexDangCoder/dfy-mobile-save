@@ -25,6 +25,7 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
   bool _isLoading = false;
   int page = 0;
   List<CryptoPawnModel> list = [];
+  List<CryptoPawnModel> listNFT = [];
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -92,7 +93,11 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
     String? borrowerWalletAddress,
   }) async {
     showLoading();
-    emit(BorrowListMyAccLoading());
+    if (type == NFT_TYPE) {
+      emit(BorrowListMyAccLoading());
+    } else {
+      emit(BorrowListMyAccNFTLoading());
+    }
     final Result<List<CryptoPawnModel>> response =
         await _pawnService.getBorrowContract(
       size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
@@ -109,20 +114,38 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
           canLoadMoreMy = false;
         }
         _isLoading = false;
-        emit(
-          BorrowListMyAccSuccess(
-            CompleteType.SUCCESS,
-            list: response,
-          ),
-        );
+        if (type == NFT_TYPE) {
+          emit(
+            BorrowListMyAccNFTSuccess(
+              CompleteType.SUCCESS,
+              listNFT: response,
+            ),
+          );
+        } else {
+          emit(
+            BorrowListMyAccSuccess(
+              CompleteType.SUCCESS,
+              list: response,
+            ),
+          );
+        }
       },
       error: (error) {
-        emit(
-          BorrowListMyAccSuccess(
-            CompleteType.ERROR,
-            message: error.message,
-          ),
-        );
+        if (type == NFT_TYPE) {
+          emit(
+            BorrowListMyAccNFTSuccess(
+              CompleteType.ERROR,
+              message: error.message,
+            ),
+          );
+        } else {
+          emit(
+            BorrowListMyAccSuccess(
+              CompleteType.ERROR,
+              message: error.message,
+            ),
+          );
+        }
         _isLoading = false;
       },
     );
