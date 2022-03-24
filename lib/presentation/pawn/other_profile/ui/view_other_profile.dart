@@ -23,12 +23,12 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OtherProfile extends StatefulWidget {
-  const OtherProfile(
-      {Key? key,
-      required this.userId,
-      required this.index,
-      required this.pageRouter})
-      : super(key: key);
+  const OtherProfile({
+    Key? key,
+    required this.userId,
+    required this.index,
+    required this.pageRouter,
+  }) : super(key: key);
 
   final String userId;
   final int index;
@@ -50,17 +50,21 @@ class _OtherProfileState extends State<OtherProfile>
     super.initState();
     cubit = OtherProfileCubit();
     cubit.setTitle(widget.index);
-    if(widget.pageRouter == PageRouter.MARKET){
+    if (widget.pageRouter == PageRouter.MARKET) {
       cubit.userId = widget.userId;
       cubit.getUserProfile(userId: widget.userId);
       cubit.getReputation(userId: widget.userId);
-    }
-    else {
+    } else {
       cubit.getMyUserProfile();
     }
     _tabController =
         TabController(initialIndex: widget.index, length: 2, vsync: this);
     scrollController = ScrollController();
+  }
+  @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
   }
 
   @override
@@ -83,8 +87,13 @@ class _OtherProfileState extends State<OtherProfile>
           stream: cubit.stateStream,
           error: AppException(S.current.error, cubit.message),
           retry: () async {
-            await cubit.getUserProfile(userId: widget.userId);
-            await cubit.getReputation(userId: widget.userId);
+            if (widget.pageRouter == PageRouter.MARKET) {
+              cubit.userId = widget.userId;
+              await cubit.getUserProfile(userId: widget.userId);
+              await cubit.getReputation(userId: widget.userId);
+            } else {
+              await cubit.getMyUserProfile();
+            }
           },
           textEmpty: 'Pawnshop not found',
           child: StreamBuilder<String>(
@@ -105,9 +114,11 @@ class _OtherProfileState extends State<OtherProfile>
                               BorrowTab(
                                 cubit: cubit,
                                 listReputation: cubit.reputation,
+                                pageRouter: widget.pageRouter,
                               ),
                               LenderTab(
                                 cubit: cubit,
+                                pageRouter: widget.pageRouter,
                                 listReputation: cubit.reputation,
                               ),
                             ],
@@ -119,7 +130,28 @@ class _OtherProfileState extends State<OtherProfile>
                             SliverList(
                               delegate: SliverChildListDelegate(
                                 [
-                                  title('PAWNSHOP INFORMATION'),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 12.w,),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        title('PAWNSHOP INFORMATION'),
+                                        if (widget.pageRouter ==
+                                            PageRouter.MY_ACC)
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Image.asset(
+                                              ImageAssets.ic_edit_profile,
+                                              height: 28.h,
+                                              width: 28.w,
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                      ],
+                                    ),
+                                  ),
                                   spaceH20,
                                   boxCover(),
                                   spaceH12,
@@ -196,7 +228,28 @@ class _OtherProfileState extends State<OtherProfile>
                                     moreValue: true,
                                   ),
                                   spaceH32,
-                                  title('PERSONAL INFORMATION'),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 12.w,),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        title('PERSONAL INFORMATION'),
+                                        if (widget.pageRouter ==
+                                            PageRouter.MY_ACC)
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Image.asset(
+                                              ImageAssets.ic_edit_profile,
+                                              height: 28.h,
+                                              width: 28.w,
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                      ],
+                                    ),
+                                  ),
                                   spaceH16,
                                   rowItem(
                                     'Name:',

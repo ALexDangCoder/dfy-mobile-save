@@ -150,6 +150,7 @@ class ImageAssets {
   static const String ic_time = '$baseImg/time.png';
   static const String ic_global_market = '$baseImg/ic_global_market.png';
   static const String ic_phone = '$baseImg/phone.png';
+  static const String ic_edit_profile = '$baseImg/ic_edit_profile.png';
 
 //pawn
   static const String img_nft = '$baseImg/nft_img.png';

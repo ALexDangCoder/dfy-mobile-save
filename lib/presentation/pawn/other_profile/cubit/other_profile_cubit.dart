@@ -94,6 +94,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
     final Result<UserProfile> result = await _repo.getMyUserProfile();
     result.when(success: (res) {
       getReputation(userId: res.pawnshop?.userId.toString() ?? '');
+      getListComment();
       emit(
         OtherProfileSuccess(
           CompleteType.SUCCESS,
@@ -104,7 +105,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
     }, error: (err) {
       emit(
         OtherProfileSuccess(
-          CompleteType.SUCCESS,
+          CompleteType.ERROR,
           message: err.message,
         ),
       );
@@ -137,7 +138,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
       error: (error) {
         emit(
           OtherProfileSuccess(
-            CompleteType.SUCCESS,
+            CompleteType.ERROR,
             message: error.message,
           ),
         );
@@ -222,7 +223,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   Future<void> getListComment({String? walletAddress}) async {
     final Result<List<CommentBorrow>> result = await _repo.getListComment(
       userId: userId,
-      walletAddress: walletAddress,
+      walletAddress: walletAddress !='All Wallet' ? walletAddress : '',
     );
     result.when(
       success: (res) {
