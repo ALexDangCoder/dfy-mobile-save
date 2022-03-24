@@ -364,7 +364,7 @@ class _SendNftState extends State<SendNft> {
     Function()? callBack,
     bool? readOnly = false,
   }) {
-    print('readonyly $readOnly');
+
     return Container(
       height: 64.h,
       // width: 323.w,
