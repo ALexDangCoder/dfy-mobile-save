@@ -122,8 +122,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     name: AppRouter.step1WhenSubmit,
                   ),
                 ),
-              ),
-              Navigator.pop(context),
+              ).then((value) {
+                Navigator.pop(context);
+                return true;
+              })
             },
           );
         } else if (state is SubmittingFileFail) {
