@@ -156,7 +156,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       contact_name: dataStep1.nameContact,
       expecting_price: dataStep1.amountToken,
       expecting_price_symbol: dataStep1.tokenInfo.symbol,
-      contact_phone: dataStep1.phoneContact.trim().substring(1),
+      contact_phone: dataStep1.phoneContact,
       document_list: documentsRequest,
       collection_address: dataStep1.addressCollection,
       asset_type_id: dataStep1.hardNftType.id,
@@ -456,11 +456,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   String? validateMobile(String value) {
-    const String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    const String pattern = r'(^\+?[0-9]{3}-?[0-9]{6,12}$)';
     final RegExp regExp = RegExp(pattern);
     if (value.isEmpty) {
       return S.current.phone_required;
-    } else if (!regExp.hasMatch(value) || !regexPhoneVietNam.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value)) {
       return S.current.invalid_phone;
     }
     return null;
@@ -748,14 +748,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     return false;
   }
 
-  void checkAllValidate() {
-    if (inputFormValidate) {
-      nextBtnBHVSJ.sink.add(true);
-    } else {
-      nextBtnBHVSJ.sink.add(false);
-    }
-  }
-
   Future<void> getCitiesApi(dynamic id) async {
     cities.clear();
     cities.add({'label': 'loading'});
@@ -819,6 +811,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
@@ -827,22 +820,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   }
 
   BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(false);
-
-  bool validateAllDataBeforeSubmit() {
-    if ((dataStep1.conditionNft.name ?? '').isEmpty ||
-        dataStep1.amountToken == 0 ||
-        dataStep1.nameContact.isEmpty ||
-        dataStep1.phoneContact.isEmpty ||
-        (dataStep1.country.name ?? '').isEmpty ||
-        (dataStep1.city.name ?? '').isEmpty ||
-        dataStep1.addressContact.isEmpty) {
-      nextBtnBHVSJ.sink.add(true);
-      return true;
-    } else {
-      nextBtnBHVSJ.sink.add(false);
-      return false;
-    }
-  }
 
   Future<void> getDataFromStep1ToModelToSave() async {
     final UserInfoCreateHardNft userInfo = UserInfoCreateHardNft(
