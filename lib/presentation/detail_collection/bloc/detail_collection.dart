@@ -494,7 +494,16 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
             }
             listNft.add(listNftMyAcc);
           } else {
-            listNft.add(res);
+            final List<NftMarket> listNftMyAcc = [];
+            for (final NftMarket value in res) {
+              if (value.marketType == MarketType.NOT_ON_MARKET) {
+                value.price = 0;
+                listNftMyAcc.add(value);
+              } else {
+                listNftMyAcc.add(value);
+              }
+            }
+            listNft.add(listNftMyAcc);
           }
           statusNft.add(SUCCESS);
         }
