@@ -865,9 +865,16 @@
   "confirm_reject_offer": "Xác nhận từ chối đề nghị",
   "by_accept_offer": "Bằng cách nhấp vào Chấp nhận, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong phiếu mua hàng. Bạn có muốn chấp nhận phiếu mua hàng này không?",
   "by_reject_offer": "Bằng cách nhấp vào Từ chối, hợp đồng thông minh sẽ được thực thi tự động với các Điều khoản trong ưu đãi. Bạn có muốn từ chối đề nghị này không?",
+  "confirm_cancel_offer": "Xác nhận huỷ offer",
   "added_collateral": "Đã thêm tài sản thế chấp",
   "offer_id": "Offer ID",
   "collateral_information": "thông tin collateral",
   "offer_create_day": "Offer tạo ngày",
-  "cancel_offer": "Huỷ offer"
+  "cancel_offer": "Huỷ offer",
+  "contract_detail": "Chi tiết hợp đồng",
+  "review": "Đánh giá",
+  "description_cancel_offer_sent": "Offer bạn gửi cho người vay sẽ\nbị huỷ, bạn có muốn tiếp tục?",
+  "contract_id": "ID Hợp đồng",
+  "default_date": "Ngày mặc định"
+
 }

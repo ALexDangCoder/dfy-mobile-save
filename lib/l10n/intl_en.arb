@@ -919,5 +919,11 @@
   "confirm_accept_offer": "Confirm accept offer",
   "confirm_reject_offer": "Confirm reject offer",
   "by_accept_offer": "By clicking on Accept, the smart contract will be executed automatically with the Terms in the offer. Would you like to accept this offer?",
-  "by_reject_offer": "By clicking on Reject, the smart contract will be executed automatically with the Terms in the offer. Would you like to reject this offer?"
+  "by_reject_offer": "By clicking on Reject, the smart contract will be executed automatically with the Terms in the offer. Would you like to reject this offer?",
+  "confirm_cancel_offer": "Confirm cancel offer",
+  "description_cancel_offer_sent": "Offer you have sent to the borrower will be \ncancelled, do you want to continue?",
+  "contract_detail": "Contract detail",
+  "review": "Review",
+  "contract_id": "Contract ID",
+  "default_date": "Default date"
 }

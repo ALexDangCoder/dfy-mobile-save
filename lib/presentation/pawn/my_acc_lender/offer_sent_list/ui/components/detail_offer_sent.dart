@@ -4,6 +4,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/extension/offer_sent_crypto_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/cancel_offer_sent.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -83,7 +84,7 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
               .callApiDetailCrypto(id: widget.idGetDetail.toString());
         },
         child: BaseDesignScreen(
-          bottomBar: _btnCancelOffer(),
+          bottomBar: _btnCancelOffer(context),
           title: S.current.offer_detail.capitalize(),
           child: SingleChildScrollView(
             child: Container(
@@ -254,32 +255,43 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
     }
   }
 
-  Container _btnCancelOffer() {
-    return Container(
-      color: AppTheme.getInstance().bgBtsColor(),
-      padding: EdgeInsets.only(
-        bottom: 38.h,
-        left: 16.w,
-        right: 16.w,
-      ),
+  Widget _btnCancelOffer(BuildContext ctx) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => CancelOfferSent(),
+          ),
+        );
+      },
       child: Container(
-        height: 64.h,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-          // color: AppTheme.getInstance().bgBtsColor(),
-          border: Border.all(color: AppTheme.getInstance().fillColor()),
+        color: AppTheme.getInstance().bgBtsColor(),
+        padding: EdgeInsets.only(
+          bottom: 38.h,
+          left: 16.w,
+          right: 16.w,
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: Center(
+        child: Container(
+          height: 64.h,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+            // color: AppTheme.getInstance().bgBtsColor(),
+            border: Border.all(color: AppTheme.getInstance().fillColor()),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: Center(
               child: Text(
-            S.current.cancel_offer,
-            style: textNormalCustom(
-              AppTheme.getInstance().fillColor(),
-              20,
-              FontWeight.w700,
+                S.current.cancel_offer,
+                style: textNormalCustom(
+                  AppTheme.getInstance().fillColor(),
+                  20,
+                  FontWeight.w700,
+                ),
+              ),
             ),
-          )),
+          ),
         ),
       ),
     );
