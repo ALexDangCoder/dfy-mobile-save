@@ -855,9 +855,16 @@
   "date": "Ngày",
   "transaction_hash": "Transaction hash",
   "estimate": "Ước tính",
+  "confirm_cancel_offer": "Xác nhận huỷ offer",
   "added_collateral": "Đã thêm tài sản thế chấp",
   "offer_id": "Offer ID",
   "collateral_information": "thông tin collateral",
   "offer_create_day": "Offer tạo ngày",
-  "cancel_offer": "Huỷ offer"
+  "cancel_offer": "Huỷ offer",
+  "contract_detail": "Chi tiết hợp đồng",
+  "review": "Đánh giá",
+  "description_cancel_offer_sent": "Offer bạn gửi cho người vay sẽ\nbị huỷ, bạn có muốn tiếp tục?",
+  "contract_id": "ID Hợp đồng",
+  "default_date": "Ngày mặc định"
+
 }

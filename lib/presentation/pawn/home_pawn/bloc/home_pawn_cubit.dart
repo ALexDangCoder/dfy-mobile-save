@@ -6,6 +6,7 @@ import 'package:Dfy/domain/model/home_pawn/top_rate_model.dart';
 import 'package:Dfy/domain/model/home_pawn/top_sale_pawnshop_item_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
       listOfficialPawnShopWithToken = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
-      showError();
+      emit(HomePawnLoadSuccess(completeType: CompleteType.ERROR));
     });
   }
 
@@ -52,7 +53,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
       },
       error: (error) {
         _flagGetDataSuccess = false;
-        showError();
+        emit(HomePawnLoadSuccess(completeType: CompleteType.ERROR));
       },
     );
   }
@@ -66,7 +67,7 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
       topSalePawnShop = res;
     }, error: (error) {
       _flagGetDataSuccess = false;
-      showError();
+      emit(HomePawnLoadSuccess(completeType: CompleteType.ERROR));
     });
   }
 
@@ -81,14 +82,16 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
       },
       error: (error) {
         _flagGetDataSuccess = false;
-        showError();
+        emit(HomePawnLoadSuccess(completeType: CompleteType.ERROR));
       },
     );
   }
 
+  bool get getFlagGetDataSuccess => _flagGetDataSuccess;
+
   Future<void> callAllApi({bool isRefresh = false}) async {
     if (isRefresh) {
-      showLoading();
+      emit(HomePawnLoading());
     }
     await getOfficialPawnShopWithToken();
     await getTopRatedLenders();
@@ -96,10 +99,11 @@ class HomePawnCubit extends BaseCubit<HomePawnState> {
     await getNftsCollateralPawn();
     if (_flagGetDataSuccess) {
       emit(
-        HomePawnLoadSuccess(),
+        HomePawnLoadSuccess(completeType: CompleteType.SUCCESS),
       );
-      showContent();
-    } else {}
+    } else {
+      emit(HomePawnLoadSuccess(completeType: CompleteType.ERROR));
+    }
   }
 
   List<BorrowOrLend> borrowFeatLend = [

@@ -908,7 +908,11 @@
   "offer_id": "Offer ID",
   "collateral_information": "collateral information",
   "offer_create_day": "Offer created day",
-  "cancel_offer": "Cancel offer"
-
-
+  "cancel_offer": "Cancel offer",
+  "confirm_cancel_offer": "Confirm cancel offer",
+  "description_cancel_offer_sent": "Offer you have sent to the borrower will be \ncancelled, do you want to continue?",
+  "contract_detail": "Contract detail",
+  "review": "Review",
+  "contract_id": "Contract ID",
+  "default_date": "Default date"
 }
