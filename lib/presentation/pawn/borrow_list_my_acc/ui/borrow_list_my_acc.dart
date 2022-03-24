@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'filter_borrow.dart';
+
 class BorrowListMyAccScreen extends StatefulWidget {
   const BorrowListMyAccScreen({Key? key}) : super(key: key);
 
@@ -89,14 +91,14 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                     ),
                     GestureDetector(
                       onTap: () {
-                        // showModalBottomSheet(
-                        //   isScrollControlled: true,
-                        //   backgroundColor: Colors.transparent,
-                        //   context: context,
-                        //   builder: (context) => FilterCollateralMyAcc(
-                        //     bloc: _bloc,
-                        //   ),
-                        // );//todo
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => FilterBorrowMyAcc(
+                            bloc: bloc,
+                          ),
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 16.w),
