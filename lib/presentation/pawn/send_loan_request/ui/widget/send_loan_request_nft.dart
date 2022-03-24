@@ -332,11 +332,6 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                   widget.cubit.emit(GetWalletSuccess());
                   if (value != null) {
                     value as NftMarket;
-                    print('nft loan amout ${value.price}');
-                    print(
-                        'nft loan symbol ${value.expectedCollateralSymbol}');
-                    print('nft loan durationType ${value.durationType}');
-                    print('nft loan durationTime ${value.durationQty}');
                     widget.cubit.nftMarketFill.sink.add(value);
                     widget.cubit.mapValidate['formDuration'] = true;
                     widget.cubit.mapValidate['formLoan'] = true;

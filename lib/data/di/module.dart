@@ -3,6 +3,7 @@ import 'package:Dfy/data/repository_impl/category_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/hard_nft_my_account/step1/step_1_repositoy_impl.dart';
 import 'package:Dfy/data/repository_impl/home_pawn/borrow_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/home_pawn/home_pawn_impl.dart';
+import 'package:Dfy/data/repository_impl/home_pawn/user_profile_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_detail_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/collection_filter_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/confirm_impl.dart';
@@ -13,12 +14,14 @@ import 'package:Dfy/data/repository_impl/market_place/marketplace_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/nft_market_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/market_place/wallet_address_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
+import 'package:Dfy/data/repository_impl/pawn/offer_sent/offer_sent_repo_impl.dart';
 import 'package:Dfy/data/repository_impl/pinata/pinata_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
 import 'package:Dfy/data/repository_impl/token_repository_impl.dart';
 import 'package:Dfy/data/services/hard_nft_my_account/step1/step_1_service.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/data/services/home_pawn/home_pawn_service.dart';
+import 'package:Dfy/data/services/home_pawn/user_profile_service.dart';
 import 'package:Dfy/data/services/market_place/category_service.dart';
 import 'package:Dfy/data/services/market_place/collection_detail_service.dart';
 import 'package:Dfy/data/services/market_place/collection_filter_service.dart';
@@ -30,6 +33,7 @@ import 'package:Dfy/data/services/market_place/marketplace_client.dart';
 import 'package:Dfy/data/services/market_place/nft_market_services.dart';
 import 'package:Dfy/data/services/market_place/wallet_address_client.dart';
 import 'package:Dfy/data/services/nft_service.dart';
+import 'package:Dfy/data/services/pawn/offer_sent_list/offer_sent_service.dart';
 import 'package:Dfy/data/services/pinata/pinata_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
 import 'package:Dfy/data/services/token_service.dart';
@@ -39,6 +43,7 @@ import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/domain/repository/home_pawn/home_pawn_repository.dart';
+import 'package:Dfy/domain/repository/home_pawn/user_repository.dart';
 import 'package:Dfy/domain/repository/market_place/category_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/domain/repository/market_place/collection_filter_repo.dart';
@@ -50,6 +55,7 @@ import 'package:Dfy/domain/repository/market_place/login_repository.dart';
 import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
+import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
 import 'package:Dfy/domain/repository/token_repository.dart';
@@ -120,6 +126,11 @@ void configureDependencies() {
 
   Get.put(BorrowService(provideDioDFY()));
   Get.put<BorrowRepository>(BorrowRepositoryImpl(Get.find()));
+
+  Get.put(OfferSentService(provideDioDFY()));
+  Get.put<OfferSentRepository>(OfferSentRepositoryImplement(Get.find()));
+  Get.put(UserProfileService(provideDioDFY()));
+  Get.put<UsersRepository>(UserProfileRepositoryImpl(Get.find()));
 }
 
 Dio provideDioDFY({int connectionTimeOut = 60000}) {

@@ -93,7 +93,13 @@ class _BorrowResultState extends State<BorrowResult> {
       },
       builder: (context, state) {
         return StateStreamLayout(
-          retry: () {},
+          retry: () {
+            cubit.callApi(
+              collateralSymbols:
+              widget.nameToken != S.current.all ? widget.nameToken : '',
+              collateralAmount: widget.amount,
+            );
+          },
           textEmpty: cubit.message,
           error: AppException(S.current.error, cubit.message),
           stream: cubit.stateStream,
@@ -114,7 +120,6 @@ class _BorrowResultState extends State<BorrowResult> {
             title: 'Borrow result',
             text: ImageAssets.ic_filter,
             child: SizedBox(
-              height: 699.h,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
                   if (cubit.canLoadMoreList &&
@@ -239,7 +244,7 @@ class _BorrowResultState extends State<BorrowResult> {
                               ),
                             ),
                           ),
-                        spaceH16,
+                       // spaceH16,
                       ],
                     ),
                   ),

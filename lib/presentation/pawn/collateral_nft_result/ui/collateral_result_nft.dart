@@ -78,7 +78,7 @@ class _CollateralResultNFTScreenState extends State<CollateralResultNFTScreen> {
                   }
                 },
                 child: Container(
-                  height: 764.h,
+                  height: 812.h,
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: BorderRadius.only(

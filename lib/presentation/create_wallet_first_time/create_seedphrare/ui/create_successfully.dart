@@ -5,11 +5,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/bloc_creare_seedphrase.dart';
-import 'package:Dfy/presentation/create_wallet_first_time/create_seedphrare/bloc/create_seed_phrare_for_market_place.dart';
 import 'package:Dfy/presentation/main_screen/bloc/main_cubit.dart';
 import 'package:Dfy/presentation/main_screen/ui/main_screen.dart';
-import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
-import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/form/form_switch_applock.dart';
@@ -18,7 +15,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../main.dart';
 
 enum KeyType { IMPORT, CREATE, IMPORT_HAVE_WALLET, CREATE_HAVE_WALLET }
 
@@ -130,7 +126,7 @@ class _BodyState extends State<_Body> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 764.h,
+      height: 812.h,
       width: 375.w,
       decoration: BoxDecoration(
         // shape: BoxShape.circle,

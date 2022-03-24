@@ -5,11 +5,12 @@ class ButtonRadial extends StatelessWidget {
   final Widget child;
   final double? height;
   final double? width;
+  final double? radius;
 
   const ButtonRadial({
     Key? key,
     required this.child,
-    this.height, this.width,
+    this.height, this.width, this.radius,
   }) : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class ButtonRadial extends StatelessWidget {
           radius: 4,
           colors: AppTheme.getInstance().gradientButtonColor(),
         ),
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(radius ?? 22.r),
       ),
       child: child,
     );

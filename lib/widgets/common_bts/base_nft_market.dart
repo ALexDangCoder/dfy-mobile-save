@@ -32,7 +32,7 @@ class BaseNFTMarket extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.hardEdge,
-      height: 764.h,
+      height: 812.h,
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(

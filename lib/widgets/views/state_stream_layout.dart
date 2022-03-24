@@ -8,6 +8,7 @@ class StateStreamLayout extends StatelessWidget {
   final AppException error;
   final Function() retry;
   final dynamic textEmpty;
+  final bool? isBack;
 
   const StateStreamLayout({
     required this.stream,
@@ -16,6 +17,7 @@ class StateStreamLayout extends StatelessWidget {
     required this.retry,
     required this.textEmpty,
     Key? key,
+    this.isBack,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class StateStreamLayout extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         return StateFullLayout(
+          isBack: isBack,
           retry: retry,
           textEmpty: textEmpty,
           stateLayout: snapshot.data ?? StateLayout.showLoading,

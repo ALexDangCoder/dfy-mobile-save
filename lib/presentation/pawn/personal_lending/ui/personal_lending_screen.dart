@@ -80,7 +80,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                   }
                 },
                 child: Container(
-                  height: 764.h,
+                  height: 812.h,
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: BorderRadius.only(

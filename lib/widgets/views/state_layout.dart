@@ -11,19 +11,20 @@ enum StateLayout { showContent, showLoading, showError, showEmpty }
 class StateFullLayout extends StatelessWidget {
   final StateLayout _stateLayout;
   final Widget _child;
-
   final AppException _error;
   final Function() _retry;
   final dynamic _textEmpty;
+  final bool? isBack;
 
-  const StateFullLayout(
-      {Key? key,
-      required StateLayout stateLayout,
-      required Widget child,
-      required AppException error,
-      required Function() retry,
-      required dynamic textEmpty,})
-      : _stateLayout = stateLayout,
+  const StateFullLayout({
+    Key? key,
+    required StateLayout stateLayout,
+    required Widget child,
+    required AppException error,
+    required Function() retry,
+    required dynamic textEmpty,
+    this.isBack,
+  })  : _stateLayout = stateLayout,
         _error = error,
         _child = child,
         _retry = retry,
@@ -33,7 +34,11 @@ class StateFullLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_stateLayout == StateLayout.showError) {
-      return StateErrorView(_error.message, _retry);
+      return StateErrorView(
+        _error.message,
+        _retry,
+        isHaveBackBtn: isBack ?? true,
+      );
     }
     if (_stateLayout == StateLayout.showEmpty) {
       if (_textEmpty is Widget) return _textEmpty as Widget;

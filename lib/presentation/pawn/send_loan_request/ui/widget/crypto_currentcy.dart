@@ -19,6 +19,7 @@ import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -112,6 +113,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     Expanded(
                       flex: 2,
                       child: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,5}'),
+                          ),
+                        ],
                         enabled: enable,
                         controller: collateralAmount,
                         maxLength: 50,
@@ -370,19 +376,17 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                     Expanded(
                       flex: 3,
                       child: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d{0,4}'),
+                          ),
+                        ],
                         enabled: enable,
                         controller: durationController,
                         maxLength: 50,
                         onChanged: (value) {
                           if (value == '') {
                             widget.cubit.errorDuration.add('Duration not null');
-                          } else if (value.contains(',') ||
-                              value.contains('.')) {
-                            widget.cubit.errorDuration
-                                .add('Duration must be integer');
-                          } else if (double.parse(value.replaceAll(',', '')) <=
-                              0) {
-                            widget.cubit.errorDuration.add('Invalid amount');
                           } else {
                             widget.cubit.durationCached = value;
                             widget.cubit.errorDuration.add('');
