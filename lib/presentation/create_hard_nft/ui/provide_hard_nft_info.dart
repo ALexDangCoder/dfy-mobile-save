@@ -87,7 +87,8 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       cubit.dataStep1.addressContact = currentInfo?.address ?? '';
       txtAddress.text = (currentInfo ?? UserInfoCreateHardNft()).address ?? '';
       txtEmail.text = (currentInfo ?? UserInfoCreateHardNft()).email ?? '';
-      txtPhone.text = (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
+      txtPhone.text =
+          (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
       txtName.text = (currentInfo ?? UserInfoCreateHardNft()).name ?? '';
     } else {
       currentInfo = null;
@@ -135,10 +136,14 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
               ).then((value) {
                 Navigator.pop(context);
                 final currentInfo = cubit.getInfoUserIsCreatedNft();
-                txtAddress.text = (currentInfo ?? UserInfoCreateHardNft()).address ?? '';
-                txtEmail.text = (currentInfo ?? UserInfoCreateHardNft()).email ?? '';
-                txtPhone.text = (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
-                txtName.text = (currentInfo ?? UserInfoCreateHardNft()).name ?? '';
+                txtAddress.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).address ?? '';
+                txtEmail.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).email ?? '';
+                txtPhone.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
+                txtName.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).name ?? '';
                 return true;
               })
             },
@@ -642,16 +647,24 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             divider,
             spaceH20,
             InkWell(
-              onTap: () => showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (_) => Dialog(
-                  backgroundColor: Colors.transparent,
-                  child: FormAddProperties(
-                    cubit: cubit,
-                  ),
-                ),
-              ),
+              onTap: () {
+                ((snapshot.data ?? []).length <= 10)
+                    ? showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: FormAddProperties(
+                            cubit: cubit,
+                          ),
+                        ),
+                      )
+                    : ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Can't add more than 10 properties"),
+                        ),
+                      );
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
