@@ -27,6 +27,7 @@ class _NFTTabState extends State<NFTTab> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.list.clear();
     widget.bloc.refreshPosts(
       type: BorrowListMyAccBloc.NFT_TYPE,
     );

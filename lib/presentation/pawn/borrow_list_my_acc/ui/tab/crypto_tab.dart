@@ -28,6 +28,7 @@ class _CryptoTabState extends State<CryptoTab> {
   @override
   void initState() {
     super.initState();
+    widget.bloc.list.clear();
     widget.bloc.refreshPosts(
       type: BorrowListMyAccBloc.BORROW_TYPE,
     );
