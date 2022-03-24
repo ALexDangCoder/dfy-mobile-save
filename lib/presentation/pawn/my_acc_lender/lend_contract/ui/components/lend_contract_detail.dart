@@ -182,7 +182,7 @@ class _LendContractDetailState extends State<LendContractDetail>
                   child: Row(
                     children: [
                       Container(
-                        height: 40.h,
+                        // height: 40.h,
                         padding: EdgeInsets.only(
                           left: 16.w,
                           right: 16.w,
@@ -217,7 +217,7 @@ class _LendContractDetailState extends State<LendContractDetail>
                       spaceW30,
                       spaceW6,
                       Container(
-                        height: 40.h,
+                        // height: 40.h,
                         padding: EdgeInsets.only(
                           left: 16.w,
                           right: 16.w,
