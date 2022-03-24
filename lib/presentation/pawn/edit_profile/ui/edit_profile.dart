@@ -30,7 +30,14 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
     cubit = EditProfileCubit();
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+    addressController = TextEditingController();
+    descriptionController = TextEditingController();
     nameController.text = widget.userProfile.pawnshop?.name ?? '';
+    phoneController.text = widget.userProfile.pawnshop?.phoneNumber ?? '';
+    addressController.text = widget.userProfile.pawnshop?.address ?? '';
+    descriptionController.text = widget.userProfile.pawnshop?.description ?? '';
     cubit.coverCid = widget.userProfile.pawnshop?.cover ?? '';
     cubit.mediaFileCid = widget.userProfile.pawnshop?.avatar ?? '';
   }
@@ -44,7 +51,13 @@ class _EditProfileState extends State<EditProfile> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            boxCover(),
+            spaceH12,
+            StreamBuilder<bool>(
+              stream: cubit.selectImage,
+              builder: (context, AsyncSnapshot<bool> snapshot) {
+                return boxCover();
+              },
+            ),
             spaceH12,
             Center(
               child: Column(
@@ -99,6 +112,7 @@ class _EditProfileState extends State<EditProfile> {
                 top: 24.h,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Name',
@@ -118,13 +132,10 @@ class _EditProfileState extends State<EditProfile> {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 5,
                           child: TextFormField(
                             controller: nameController,
                             maxLength: 100,
-                            onChanged: (value) {
-
-                            },
+                            onChanged: (value) {},
                             cursorColor: AppTheme.getInstance().whiteColor(),
                             style: textNormal(
                               AppTheme.getInstance().whiteColor(),
@@ -150,7 +161,7 @@ class _EditProfileState extends State<EditProfile> {
                     stream: cubit.errorName,
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      if(snapshot.data != ''){
+                      if (snapshot.data != '') {
                         return SizedBox(
                           child: Text(
                             snapshot.data ?? '',
@@ -160,15 +171,43 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         );
-                      }
-                      else {
+                      } else {
                         return const SizedBox();
                       }
                     },
                   ),
                   spaceH16,
                   Text(
-                    'Name',
+                    'Email',
+                    style: textNormal(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                    ),
+                  ),
+                  spaceH4,
+                  Container(
+                    height: 64.h,
+                    padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().backgroundBTSColor(),
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.userProfile.pawnshop?.email ?? '',
+                          style: textNormalCustom(
+                            Colors.white,
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  spaceH16,
+                  Text(
+                    'Phone number',
                     style: textNormal(
                       AppTheme.getInstance().whiteColor(),
                       16,
@@ -185,13 +224,10 @@ class _EditProfileState extends State<EditProfile> {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 5,
                           child: TextFormField(
-                            controller: nameController,
+                            controller: phoneController,
                             maxLength: 100,
-                            onChanged: (value) {
-
-                            },
+                            onChanged: (value) {},
                             cursorColor: AppTheme.getInstance().whiteColor(),
                             style: textNormal(
                               AppTheme.getInstance().whiteColor(),
@@ -201,7 +237,7 @@ class _EditProfileState extends State<EditProfile> {
                               contentPadding: EdgeInsets.zero,
                               isCollapsed: true,
                               counterText: '',
-                              hintText: S.current.enter_name,
+                              hintText: S.current.enter_phone_num,
                               hintStyle: textNormal(
                                 Colors.white.withOpacity(0.5),
                                 16,
@@ -217,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                     stream: cubit.errorName,
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      if(snapshot.data != ''){
+                      if (snapshot.data != '') {
                         return SizedBox(
                           child: Text(
                             snapshot.data ?? '',
@@ -227,14 +263,138 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         );
-                      }
-                      else {
+                      } else {
                         return const SizedBox();
                       }
                     },
                   ),
                   spaceH16,
-
+                  Text(
+                    'Address',
+                    style: textNormal(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                    ),
+                  ),
+                  spaceH4,
+                  Container(
+                    height: 64.h,
+                    padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().backgroundBTSColor(),
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: addressController,
+                            maxLength: 100,
+                            onChanged: (value) {},
+                            cursorColor: AppTheme.getInstance().whiteColor(),
+                            style: textNormal(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.zero,
+                              isCollapsed: true,
+                              counterText: '',
+                              hintText: S.current.enter_add,
+                              hintStyle: textNormal(
+                                Colors.white.withOpacity(0.5),
+                                16,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  StreamBuilder<String>(
+                    stream: cubit.errorName,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.data != '') {
+                        return SizedBox(
+                          child: Text(
+                            snapshot.data ?? '',
+                            style: textNormal(
+                              Colors.red,
+                              12,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                  spaceH16,
+                  Text(
+                    'Description',
+                    style: textNormal(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                    ),
+                  ),
+                  spaceH4,
+                  Container(
+                    height: 64.h,
+                    padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().backgroundBTSColor(),
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: descriptionController,
+                            maxLength: 100,
+                            onChanged: (value) {},
+                            cursorColor: AppTheme.getInstance().whiteColor(),
+                            style: textNormal(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.zero,
+                              isCollapsed: true,
+                              counterText: '',
+                              hintText: 'Enter description',
+                              hintStyle: textNormal(
+                                Colors.white.withOpacity(0.5),
+                                16,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  StreamBuilder<String>(
+                    stream: cubit.errorName,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.data != '') {
+                        return SizedBox(
+                          child: Text(
+                            snapshot.data ?? '',
+                            style: textNormal(
+                              Colors.red,
+                              12,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                  spaceH16,
                 ],
               ),
             )
@@ -255,7 +415,7 @@ class _EditProfileState extends State<EditProfile> {
             width: double.infinity,
             child: FadeInImage.assetNetwork(
               placeholder: '',
-              image: widget.userProfile.pawnshop?.cover ?? '',
+              image: cubit.coverCid,
               placeholderErrorBuilder: (ctx, obj, st) {
                 return Container(
                   height: 145.h,
@@ -283,31 +443,67 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppTheme.getInstance().bgBtsColor(),
                 shape: BoxShape.circle,
               ),
-              child: Center(
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  height: 68.h,
-                  width: 68.w,
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      height: 68.h,
+                      width: 68.w,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: '',
+                        image: cubit.mediaFileCid,
+                        placeholderErrorBuilder: (ctx, obj, st) {
+                          return const SizedBox();
+                        },
+                        imageErrorBuilder: (ctx, obj, st) {
+                          return Container(
+                            height: 145.h,
+                            width: double.infinity,
+                            color: borderItemColors,
+                          );
+                        },
+                        placeholderCacheHeight: 400,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: '',
-                    image: widget.userProfile.pawnshop?.avatar ?? '',
-                    placeholderErrorBuilder: (ctx, obj, st) {
-                      return const SizedBox();
+                  InkWell(
+                    onTap: () async {
+                      await cubit.pickImage(isMainMedia: true);
                     },
-                    imageErrorBuilder: (ctx, obj, st) {
-                      return Container(
-                        height: 145.h,
-                        width: double.infinity,
-                        color: borderItemColors,
-                      );
-                    },
-                    placeholderCacheHeight: 400,
-                    fit: BoxFit.cover,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 2.w,bottom: 6.h,),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: sizedSvgImage(
+                          w: 28,
+                          h: 28,
+                          image: ImageAssets.ic_camera_svg,
+                        ),
+                      ),
+                    ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 12.w,top: 8.h,),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () async {
+                  await cubit.pickImage();
+                },
+                child: sizedSvgImage(
+                  w: 28,
+                  h: 28,
+                  image: ImageAssets.ic_camera_svg,
                 ),
               ),
             ),

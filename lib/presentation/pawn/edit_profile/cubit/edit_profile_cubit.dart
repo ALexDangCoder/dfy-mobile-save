@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
@@ -13,7 +14,10 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   EditProfileCubit() : super(EditProfileInitial());
 
   BehaviorSubject<String> errorName = BehaviorSubject.seeded('');
-
+  BehaviorSubject<String> errorPhone = BehaviorSubject.seeded('');
+  BehaviorSubject<String> errorAddress = BehaviorSubject.seeded('');
+  BehaviorSubject<String> errorDescription = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> selectImage = BehaviorSubject.seeded(false);
 
   String mediaFileCid = '';
   String coverCid = '';
@@ -24,6 +28,7 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   final PinToIPFS ipfsService = PinToIPFS();
 
   Future<void> pickImage({bool isMainMedia = false}) async {
+    showLoading();
     final _fileMap = await pickImageFunc(
       imageType: FEATURE_PHOTO,
       tittle: 'Pick Image',
@@ -37,19 +42,18 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
         if (_imageSize / 1048576 < 50) {
           fileType = '$MEDIA_IMAGE_FILE/$_extension';
           mediaFilePath = _path;
-          showLoading();
-          mediaFileCid =
+          mediaFileCid = ApiConstants.BASE_URL_IMAGE +
               await ipfsService.pinFileToIPFS(pathFile: mediaFilePath);
-          showContent();
+          selectImage.add(true);
         } else {
           //collectionMessSubject.sink.add(S.current.maximum_file_size);
         }
       } else {
         if (_imageSize / 1048576 < 50) {
           coverPhotoPath = _path;
-          showLoading();
-          coverCid = await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
-          showContent();
+          coverCid = ApiConstants.BASE_URL_IMAGE +
+              await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
+          selectImage.add(true);
         } else {
           //coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
         }

@@ -288,16 +288,19 @@ class _LenderTabState extends State<LenderTab> {
                       ),
                       spaceH24,
                       Center(
-                        child: ButtonRadial(
-                          height: 40.h,
-                          width: 122.w,
-                          child: Center(
-                            child: Text(
-                              'Request loan',
-                              style: textNormalCustom(
-                                Colors.white,
-                                16,
-                                FontWeight.w600,
+                        child: InkWell(
+                          onTap: (){},
+                          child: ButtonRadial(
+                            height: 40.h,
+                            width: 122.w,
+                            child: Center(
+                              child: Text(
+                                'Request loan',
+                                style: textNormalCustom(
+                                  Colors.white,
+                                  16,
+                                  FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
