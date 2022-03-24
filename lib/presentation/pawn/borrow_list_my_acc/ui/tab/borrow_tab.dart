@@ -4,6 +4,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_state.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/item_nft_pawn.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -97,7 +98,13 @@ class _NFTTabState extends State<NFTTab> with AutomaticKeepAliveClientMixin {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            //todo
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ContractDetail(
+                                  type: TypeBorrow.NFT_TYPE,
+                                ),
+                              ),
+                            );
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 16.w),

@@ -873,5 +873,7 @@
   "borrow_contract_list": "Danh sách hợp đồng mượn",
   "defaults": "Default",
   "completed": "Completed",
-  "active": "Active"
+  "active": "Active",
+  "contract_details": "Contract detail",
+  "review": "Xem lại"
 }
