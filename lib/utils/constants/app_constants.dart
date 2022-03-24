@@ -45,6 +45,7 @@ String checkNullAddressWallet(String address) {
 
 const int CODE_ERROR_AUTH = 401;
 const int CODE_ERROR_NOT_FOUND = 400;
+const int CODE_USER_NOT_FOUND = 404;
 const int CODE_ERROR_MAINTAIN = 503;
 const int CODE_ERROR_NETWORK = 0;
 //filter

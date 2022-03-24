@@ -257,6 +257,8 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/lending-setting';
   static const String GET_PROFILE_USER =
       '/defi-user-service/public-api/v1.0.0/users/';
+  static const String GET_MY_PROFILE_USER =
+      '/defi-user-service/api/v1.0.0/users/';
   static const String GET_REPUTATION =
       '/defi-user-service/public-api/v1.0.0/users/reputation';
   static const String GET_BORROW_USER =

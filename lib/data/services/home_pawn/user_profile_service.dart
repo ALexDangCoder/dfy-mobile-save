@@ -22,7 +22,7 @@ abstract class UserProfileService {
   Future<UserProfileResponse> getUserProfile(
     @Path('userId') String userId,
   );
-  @GET('${ApiConstants.GET_PROFILE_USER}profile')
+  @GET('${ApiConstants.GET_MY_PROFILE_USER}profile')
   Future<UserProfileResponse> getMyUserProfile(
 
       );

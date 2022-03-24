@@ -925,5 +925,10 @@
   "completed": "Completed",
   "active": "Active",
   "contract_details": "Contract detail",
-  "review": "Review"
+  "confirm_cancel_offer": "Confirm cancel offer",
+  "description_cancel_offer_sent": "Offer you have sent to the borrower will be \ncancelled, do you want to continue?",
+  "contract_detail": "Contract detail",
+  "review": "Review",
+  "contract_id": "Contract ID",
+  "default_date": "Default date"
 }

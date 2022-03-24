@@ -355,7 +355,7 @@ class _MenuAccountState extends State<MenuAccount> {
                   pageRouter: PageRouter.MY_ACC,
                   index: 0,
                 ),
-                isRequireLoginEmail: true,
+                isRequireLoginEmail: false,
               ),
             ).then((_) => cubit.getLoginState());
           } else {
