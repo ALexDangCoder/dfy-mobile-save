@@ -20,8 +20,8 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   UsersRepository get _repo => Get.find();
 
   BehaviorSubject<String> titleStream = BehaviorSubject.seeded('');
-  BehaviorSubject<String> reputationBorrowStream = BehaviorSubject.seeded('');
-  BehaviorSubject<String> reputationLenderStream = BehaviorSubject.seeded('');
+  BehaviorSubject<String> reputationBorrowStream = BehaviorSubject.seeded('0');
+  BehaviorSubject<String> reputationLenderStream = BehaviorSubject.seeded('0');
   BehaviorSubject<bool> getDataBorrow = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> getDataLender = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> seeMoreCollateral = BehaviorSubject.seeded(false);
@@ -92,24 +92,38 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   Future<void> getMyUserProfile() async {
     showLoading();
     final Result<UserProfile> result = await _repo.getMyUserProfile();
-    result.when(success: (res) {
-      getReputation(userId: res.pawnshop?.userId.toString() ?? '');
-      getListComment();
-      emit(
-        OtherProfileSuccess(
-          CompleteType.SUCCESS,
-          userProfile: res,
-        ),
-      );
-
-    }, error: (err) {
-      emit(
-        OtherProfileSuccess(
-          CompleteType.ERROR,
-          message: err.message,
-        ),
-      );
-    });
+    result.when(
+      success: (res) {
+        if (res.pawnshop != null) {
+          userId = res.pawnshop?.userId.toString() ?? '';
+          getReputation(userId: res.pawnshop?.userId.toString() ?? '');
+          getListComment();
+        }
+        emit(
+          OtherProfileSuccess(
+            CompleteType.SUCCESS,
+            userProfile: res,
+          ),
+        );
+      },
+      error: (err) {
+        if (err.code == CODE_USER_NOT_FOUND) {
+          emit(
+            OtherProfileSuccess(
+              CompleteType.SUCCESS,
+              userProfile: userProfile,
+            ),
+          );
+        } else {
+          emit(
+            OtherProfileSuccess(
+              CompleteType.ERROR,
+              message: err.message,
+            ),
+          );
+        }
+      },
+    );
   }
 
   Future<void> getUserProfile({String? userId}) async {
@@ -223,7 +237,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   Future<void> getListComment({String? walletAddress}) async {
     final Result<List<CommentBorrow>> result = await _repo.getListComment(
       userId: userId,
-      walletAddress: walletAddress !='All Wallet' ? walletAddress : '',
+      walletAddress: walletAddress != 'All Wallet' ? walletAddress : '',
     );
     result.when(
       success: (res) {
