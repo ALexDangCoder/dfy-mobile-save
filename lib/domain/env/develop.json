@@ -7,6 +7,7 @@
   "bsc_scan": "https://testnet.bscscan.com/",
   "base_url_pinata": "https://api.pinata.cloud/",
   "base_custom_url" : "https://dev2-marketplace.defiforyou.uk/",
+  "base_pawn_url" : "https://dev2.app.defiforyou.uk/",
   "nft_sales_address": "0xcE80f7DFEC1589D6cf9a0586446618aAbBC711E7",
   "nft_factory": "0x0bcA4DCddE35d2F2aC5a3fAF0baD966639e6EB41",
   "nft_auction": "0xde92a451d22c1d84e874b6b8a5a70ac5f91b6d86",
