@@ -574,8 +574,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context: context,
                 title: objSale.name ?? '',
                 quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
+                url: widget.nftId ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                type: MarketType.NOT_ON_MARKET,
               ),
               _priceNotOnMarket(),
               divide,
@@ -747,9 +748,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               _nameNFT(
                 title: objSale.name ?? '',
                 quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
+                url: '${widget.nftId}?market_id=${objSale.marketId}',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
                 context: context,
+                type: MarketType.SALE,
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
@@ -914,9 +916,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
-                url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
+                url: nftOnPawn.bcCollateralId.toString(),
                 context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
+                type: MarketType.PAWN,
               ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
@@ -1124,9 +1127,9 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context: context,
                 title: nftOnAuction.name ?? '',
                 quantity: nftOnAuction.numberOfCopies ?? 1,
-                url: nftOnAuction.fileCid ?? '',
+                url: '${widget.nftId}?auction_id=${widget.marketId}',
                 price: (nftOnAuction.reservePrice ?? 0) *
-                    (nftOnAuction.usdExchange ?? 1),
+                    (nftOnAuction.usdExchange ?? 1), type: MarketType.AUCTION,
               ),
               _priceContainerOnAuction(
                 nftOnAuction: nftOnAuction,
