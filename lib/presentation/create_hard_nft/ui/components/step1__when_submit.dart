@@ -119,7 +119,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                       ],
                       onErrorSign: (context) async {
                         final nav = Navigator.of(context);
-                        nav.pop();
+                        nav.pop(true);
                         await showLoadFail(context);
                       },
                       onSuccessSign: (context, data) {
@@ -148,7 +148,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                 )
                 .then(
                   (value) async => {
-                    Navigator.pop(context),
+                    Navigator.pop(context, true),
                     if (widget.assetId != null)
                       await cubit.checkStatusBeHandle(
                           assetId: widget.assetId ?? '')
@@ -168,7 +168,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
           );
           Future.delayed(const Duration(seconds: 2), () {
             Navigator.pop(context);
-          }).then((value) => Navigator.pop(context));
+          }).then((value) => Navigator.pop(context, true));
         }
       },
       bloc: cubit,

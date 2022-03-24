@@ -50,26 +50,29 @@ class _TextFormFieldWidgetState extends State<TextFieldValidator> {
   final key = GlobalKey<FormState>();
   FormProvider? formProvider;
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    formProvider = FormProvider.of(context);
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (formProvider != null) {
-        if (widget.validator != null) {
-          final validator =
-              widget.validator!(widget.controller?.text ?? '') == null;
-          formProvider?.validator.addAll({key: validator});
-        } else {
-          formProvider?.validator.addAll({key: true});
+      formProvider = FormProvider.of(context);
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        if (formProvider != null) {
+          if (widget.validator != null) {
+            final validator =
+                widget.validator!(widget.controller?.text ?? '') == null;
+            formProvider?.validator.addAll({key: validator});
+          } else {
+            formProvider?.validator.addAll({key: true});
+          }
         }
+      });
+      if (formProvider != null) {
+        formProvider?.validator.addAll({key: true});
       }
     });
-    if (formProvider != null) {
-      formProvider?.validator.addAll({key: true});
-    }
   }
+
 
   @override
   Widget build(BuildContext context) {
