@@ -19,9 +19,11 @@ class HomePawnLoadSuccess extends HomePawnState {
   final List<TopRateLenderModel>? topRatedLenders;
   final List<TopSalePawnShopItemModel>? topSalePawnShopPackage;
   final List<NftsCollateralPawnModel>? nftsCollateralPawn;
+  final CompleteType completeType;
 
-   HomePawnLoadSuccess({
+  HomePawnLoadSuccess({
     this.listOfficialPawnItemModel,
+    required this.completeType,
     this.topRatedLenders,
     this.topSalePawnShopPackage,
     this.nftsCollateralPawn,
@@ -33,5 +35,6 @@ class HomePawnLoadSuccess extends HomePawnState {
         topRatedLenders,
         topSalePawnShopPackage,
         nftsCollateralPawn,
+        completeType,
       ];
 }

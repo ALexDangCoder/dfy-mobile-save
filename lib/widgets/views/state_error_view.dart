@@ -8,8 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class StateErrorView extends StatelessWidget {
   final String? _message;
   final Function() _retry;
+  final bool? isHaveBackBtn;
 
-  const StateErrorView(this._message, this._retry, {Key? key})
+  const StateErrorView(this._message, this._retry,
+      {this.isHaveBackBtn = true, Key? key})
       : super(key: key);
 
   @override
@@ -20,12 +22,14 @@ class StateErrorView extends StatelessWidget {
         bottomOpacity: 0.0,
         elevation: 0.0,
         backgroundColor: AppTheme.getInstance().bgBtsColor(),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(ImageAssets.ic_back),
-        ),
+        leading: (isHaveBackBtn ?? true)
+            ? GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(ImageAssets.ic_back),
+              )
+            : Container(),
       ),
       body: Center(
         child: Column(
