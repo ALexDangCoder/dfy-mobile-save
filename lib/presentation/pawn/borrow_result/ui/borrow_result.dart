@@ -120,7 +120,6 @@ class _BorrowResultState extends State<BorrowResult> {
             title: 'Borrow result',
             text: ImageAssets.ic_filter,
             child: SizedBox(
-              height: 699.h,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
                   if (cubit.canLoadMoreList &&
@@ -245,7 +244,7 @@ class _BorrowResultState extends State<BorrowResult> {
                               ),
                             ),
                           ),
-                        spaceH16,
+                       // spaceH16,
                       ],
                     ),
                   ),
