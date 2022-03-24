@@ -1,4 +1,6 @@
 import 'package:Dfy/config/resources/images.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -409,6 +411,20 @@ class ImageAssets {
     icMenu: [18, 16],
     icBack: [6, 12.25],
   };
+
+  static String getUrlToken(String symbol) {
+    List<TokenInf> listTokenSupport = [];
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    String urlToken = '';
+    for (final item in listTokenSupport) {
+      if (symbol.toLowerCase() == item.symbol?.toLowerCase()) {
+        urlToken = item.iconUrl ?? '';
+        break;
+      }
+    }
+    return urlToken;
+  }
 
   static String getSymbolAsset(String shortName) {
     switch (shortName.toUpperCase()) {
