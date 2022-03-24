@@ -30,6 +30,7 @@ Widget action(
     collectionSymbol: 'DFY-NFT',
     collectionId: nftMarket.collectionID?.toLowerCase(),
     collectionName: nftMarket.collectionName,
+    standard: nftMarket.nftStandard == '0'? ERC_721 : ERC_1155,
   );
   return InkWell(
     onTap: () {
