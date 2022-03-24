@@ -57,8 +57,10 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
               if (state is CollateralDetailSuccess) {
                 if (state.completeType == CompleteType.SUCCESS) {
                   obj = state.obj ?? obj;
+                  bloc.showContent();
                 } else {
                   mes = state.message ?? '';
+                  bloc.showError();
                 }
               }
             },
