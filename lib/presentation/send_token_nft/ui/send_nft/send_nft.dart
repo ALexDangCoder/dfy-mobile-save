@@ -60,7 +60,6 @@ class _SendNftState extends State<SendNft> {
     txtToAddressNft = TextEditingController();
     txtQuantity = TextEditingController();
     txtQuantity.text = '1';
-    print('standart ${widget.nftInfo.standard}');
   }
 
   @override
@@ -195,7 +194,7 @@ class _SendNftState extends State<SendNft> {
                               ),
                               formAmountFtQuantity(
                                 readOnly: ((widget.nftInfo.standard ?? '') ==
-                                    ERC721.toString()) ? true : false,
+                                    ERC_721) ? true : false,
                                 hintText: S.current.quantity,
                                 isAmount: true,
                                 isQuantity: true,
