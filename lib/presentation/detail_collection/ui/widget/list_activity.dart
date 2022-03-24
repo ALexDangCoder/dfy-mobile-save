@@ -89,10 +89,10 @@ class ListActivity extends StatelessWidget {
                     text: myCopy.isEmpty
                         ? ''
                         : '${S.current.activity_copied} '
-                            '$myCopy ${S.current.activity_on} ',
+                            '$myCopy',
                   ),
                   TextSpan(
-                    text: '$market ${S.current.activity_by} ',
+                    text: ' ${S.current.activity_on} $market ${S.current.activity_by} ',
                   ),
                   baseTextBSC(nftOwner),
                   TextSpan(

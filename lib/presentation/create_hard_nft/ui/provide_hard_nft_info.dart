@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -53,6 +55,10 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
   String hardNftName = '';
   String additionalInfo = '';
   bool isEdit = false; //this var checkWhenUserCombackToEdit
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtPhone = TextEditingController();
+  TextEditingController txtAddress = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
 
   @override
   void initState() {
@@ -79,6 +85,11 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
       cubit.dataStep1.phoneContact = currentInfo?.phoneContact ?? '';
       cubit.dataStep1.emailContact = currentInfo?.email ?? '';
       cubit.dataStep1.addressContact = currentInfo?.address ?? '';
+      txtAddress.text = (currentInfo ?? UserInfoCreateHardNft()).address ?? '';
+      txtEmail.text = (currentInfo ?? UserInfoCreateHardNft()).email ?? '';
+      txtPhone.text =
+          (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
+      txtName.text = (currentInfo ?? UserInfoCreateHardNft()).name ?? '';
     } else {
       currentInfo = null;
     }
@@ -122,10 +133,22 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     name: AppRouter.step1WhenSubmit,
                   ),
                 ),
-              ),
-              Navigator.pop(context),
+              ).then((value) {
+                Navigator.pop(context);
+                final currentInfo = cubit.getInfoUserIsCreatedNft();
+                txtAddress.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).address ?? '';
+                txtEmail.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).email ?? '';
+                txtPhone.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).phoneContact ?? '';
+                txtName.text =
+                    (currentInfo ?? UserInfoCreateHardNft()).name ?? '';
+                return true;
+              })
             },
           );
+          cubit.validateAll();
         } else if (state is SubmittingFileFail) {
           showDialog(
             context: context,
@@ -371,9 +394,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           horizontal: 16.w,
                         ),
                         child: TextFieldValidator(
-                          controller: TextEditingController(
-                            text: (currentInfo ?? UserInfoCreateHardNft()).name,
-                          ),
+                          controller: txtName,
                           onChange: (value) {
                             cubit.dataStep1.nameContact = value;
                             cubit.mapValidate['inputForm'] =
@@ -404,10 +425,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           horizontal: 16.w,
                         ),
                         child: TextFieldValidator(
-                          controller: TextEditingController(
-                              text: (currentInfo ?? UserInfoCreateHardNft())
-                                      .email ??
-                                  ''),
+                          controller: txtEmail,
                           onChange: (value) {
                             cubit.dataStep1.emailContact = value;
                             cubit.mapValidate['inputForm'] =
@@ -439,10 +457,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           horizontal: 16.w,
                         ),
                         child: TextFieldValidator(
-                          controller: TextEditingController(
-                            text: (currentInfo ?? UserInfoCreateHardNft())
-                                .phoneContact,
-                          ),
+                          controller: txtPhone,
                           textInputType: TextInputType.number,
                           prefixIcon: FormDropDown(
                             currentInfo: currentInfo,
@@ -512,11 +527,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                           horizontal: 16.w,
                         ),
                         child: TextFieldValidator(
-                          controller: TextEditingController(
-                            text: (currentInfo ?? UserInfoCreateHardNft())
-                                    .address ??
-                                '',
-                          ),
+                          controller: txtAddress,
                           onChange: (value) {
                             cubit.dataStep1.addressContact = value;
                             cubit.mapValidate['inputForm'] =
@@ -579,6 +590,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
                     return GestureDetector(
                       onTap: () async {
                         if (snapshot.data ?? false) {
+                          await cubit.getDataFromStep1ToModelToSave();
                           await cubit.postFileMediaFeatDocToBe(isEdit: isEdit);
                         } else {
                           //nothing
@@ -635,16 +647,24 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             divider,
             spaceH20,
             InkWell(
-              onTap: () => showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (_) => Dialog(
-                  backgroundColor: Colors.transparent,
-                  child: FormAddProperties(
-                    cubit: cubit,
-                  ),
-                ),
-              ),
+              onTap: () {
+                ((snapshot.data ?? []).length <= 10)
+                    ? showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: FormAddProperties(
+                            cubit: cubit,
+                          ),
+                        ),
+                      )
+                    : ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Can't add more than 10 properties"),
+                        ),
+                      );
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
