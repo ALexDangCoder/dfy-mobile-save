@@ -59,7 +59,7 @@ class _SetupPassWordState extends State<SetupPassWord> {
           },
           child: Container(
             width: 375.w,
-            height: 764.h,
+            height: 812.h,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(

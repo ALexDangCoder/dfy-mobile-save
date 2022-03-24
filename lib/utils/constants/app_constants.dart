@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:intl/intl.dart';
 
 enum AppMode { LIGHT, DARK }
@@ -20,7 +21,7 @@ enum MarketType { SALE, AUCTION, PAWN, NOT_ON_MARKET }
 enum PageRouter { MARKET, MY_ACC }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
-enum PackageType {AUTO,SEMI_AUTO,NEGOTIATION,P2P}
+enum PackageType { AUTO, SEMI_AUTO, NEGOTIATION, P2P }
 
 enum PageTransitionType {
   FADE,
@@ -32,6 +33,15 @@ enum PageTransitionType {
 //   IS_CREATING,
 //   IS_NOT_CREATE,
 // }
+String checkNullAddressWallet(String address) {
+  String addressWallet = '';
+  if (address.length < 20) {
+    addressWallet = address;
+  } else {
+    addressWallet = address.formatAddressWalletConfirm();
+  }
+  return addressWallet;
+}
 
 const int CODE_ERROR_AUTH = 401;
 const int CODE_ERROR_NOT_FOUND = 400;

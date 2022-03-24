@@ -29,7 +29,7 @@ class BaseSuccess extends StatelessWidget {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 764.h,
+          height: 812.h,
           width: 375.w,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),

@@ -51,7 +51,8 @@ class BaseDesignScreen extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: 375.w,
-            margin: EdgeInsets.only(top: 26.h),
+            height: 812.h,
+            //margin: EdgeInsets.only(top: 26.h),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: const BorderRadius.only(
