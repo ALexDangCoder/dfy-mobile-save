@@ -29,6 +29,13 @@ class NetworkHandler {
         code: error.response?.statusCode,
       );
     }
+    if(errorCode == CODE_USER_NOT_FOUND){
+      return AppException(
+        S.current.error,
+        S.current.something_went_wrong,
+        code: error.response?.statusCode,
+      );
+    }
     if (errorCode == CODE_ERROR_AUTH) {
       return UnauthorizedException();
     }

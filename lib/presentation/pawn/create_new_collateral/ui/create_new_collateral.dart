@@ -272,7 +272,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                           color: AppTheme.getInstance().bgBtsColor(),
                           child: ButtonGold(
                             isEnable: snapshot.data ?? false,
-                            title: S.current.book_appointment,
+                            title: S.current.create_collateral,
                           ),
                         ),
                       );

@@ -14,6 +14,7 @@ import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/con
 import 'package:Dfy/presentation/my_account/menu_account/cubit/item_menu_model.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubit.dart';
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/borrow_list_my_acc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
@@ -206,8 +207,7 @@ class _MenuAccountState extends State<MenuAccount> {
             showDialog(
               context: context,
               builder: (context) => const ConnectWalletDialog(
-                navigationTo: OfferSentList(
-                ),
+                navigationTo: OfferSentList(),
                 isRequireLoginEmail: false,
               ),
             ).then((_) => cubit.getLoginState());
@@ -215,8 +215,7 @@ class _MenuAccountState extends State<MenuAccount> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const OfferSentList(
-                ),
+                builder: (context) => const OfferSentList(),
               ),
             ).then((_) => cubit.getLoginState());
           }
@@ -319,25 +318,51 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
-      case 'user_profile':
+      case 'contracts':
         {
           if (state is NoLoginState) {
             showDialog(
               context: context,
-              builder: (context) =>  const ConnectWalletDialog(
-                navigationTo: OtherProfile(
-                  userId: '',
-                  pageRouter: PageRouter.MY_ACC,
-                  index: 0,
-                ),
-                isRequireLoginEmail: true,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: BorrowListMyAccScreen(),
+                isRequireLoginEmail: false,
+                // settings: RouteSettings(
+                //   name: AppRouter.collateral_list_myacc,
+                // ),
               ),
             ).then((_) => cubit.getLoginState());
           } else {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>  const OtherProfile(
+                builder: (context) => const BorrowListMyAccScreen(),
+                // settings: const RouteSettings(
+                //   name: AppRouter.collateral_list_myacc,
+                // ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
+      case 'user_profile':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: OtherProfile(
+                  userId: '',
+                  pageRouter: PageRouter.MY_ACC,
+                  index: 0,
+                ),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OtherProfile(
                   userId: '',
                   pageRouter: PageRouter.MY_ACC,
                   index: 0,
