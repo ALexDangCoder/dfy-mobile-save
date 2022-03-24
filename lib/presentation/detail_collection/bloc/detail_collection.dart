@@ -487,6 +487,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           if (typeScreen == PageRouter.MARKET) {
             final List<NftMarket> listNftMyAcc = [];
             for (final NftMarket value in res) {
+              value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
               if (value.marketType == MarketType.NOT_ON_MARKET) {
               } else {
                 listNftMyAcc.add(value);
@@ -496,6 +497,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           } else {
             final List<NftMarket> listNftMyAcc = [];
             for (final NftMarket value in res) {
+              value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
               if (value.marketType == MarketType.NOT_ON_MARKET) {
                 value.price = 0;
                 listNftMyAcc.add(value);
