@@ -31,6 +31,13 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
     bloc = BorrowListMyAccBloc();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+        bloc.type = BorrowListMyAccBloc.CRYPTO_TYPE;
+      } else {
+        bloc.type = BorrowListMyAccBloc.NFT_TYPE;
+      }
+    });
   }
 
   @override

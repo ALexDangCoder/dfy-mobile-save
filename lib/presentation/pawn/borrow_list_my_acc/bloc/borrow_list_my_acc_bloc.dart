@@ -22,7 +22,7 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
   }
 
   BorrowRepository get _pawnService => Get.find();
-  static const String BORROW_TYPE = '0';
+  static const String CRYPTO_TYPE = '0';
   static const String NFT_TYPE = '1';
   bool checkWalletAddress = false;
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
@@ -46,6 +46,7 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
   bool get isRefresh => _isRefresh;
 
   WalletAddressRepository get _walletAddressRepository => Get.find();
+  String type = CRYPTO_TYPE;
 
   //history
   static const int ACTIVE = 1;
@@ -54,11 +55,99 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
 
 //statusWallet
   String? statusWallet;
+  String? statusWalletNFT;
   List<String> listAcc = [
     S.current.all,
   ];
-
+  String? checkStatus;
   String textAddress = 'all';
+  String textAddressNFT = 'all';
+  bool statusAllFilter = false;
+  bool statusCompletedFilter = false;
+  bool statusDefaultFilter = false;
+  bool statusActiveFilter = false;
+  String? status;
+  bool statusAllFilterNFT = false;
+  bool statusCompletedFilterNFT = false;
+  bool statusDefaultFilterNFT = false;
+  bool statusActiveFilterNFT = false;
+  String? statusNFT;
+
+  void funFilter() {
+    if (type == CRYPTO_TYPE) {
+      statusAllFilter = isAll.value;
+      statusCompletedFilter = isCompleted.value;
+      statusDefaultFilter = isDefault.value;
+      statusActiveFilter = isActive.value;
+      statusWallet = textAddressFilter.value;
+      status = '';
+    } else {
+      statusAllFilterNFT = isAll.value;
+      statusCompletedFilterNFT = isCompleted.value;
+      statusDefaultFilterNFT = isDefault.value;
+      statusActiveFilterNFT = isActive.value;
+      statusWalletNFT = textAddressFilter.value;
+      statusNFT = '';
+    }
+
+    if (isCompleted.value) {
+      status = COMPLETED.toString();
+      statusNFT = COMPLETED.toString();
+    } else if (isDefault.value) {
+      status = DEFAULT.toString();
+      statusNFT = DEFAULT.toString();
+    } else if (isActive.value) {
+      status = ACTIVE.toString();
+      statusNFT = ACTIVE.toString();
+    } else if (isAll.value) {
+      status = null;
+      statusNFT = null;
+    } else {
+      status = null;
+      statusNFT = null;
+    }
+
+    if (textAddressFilter.value == S.current.all) {
+      textAddress = 'all';
+      textAddress = 'all';
+    } else {
+      textAddress = textAddressFilter.value.toLowerCase();
+      textAddressNFT = textAddressFilter.value.toLowerCase();
+    }
+    getBorrowContract(
+      type: type,
+    );
+  }
+
+  void statusFilterFirst() {
+    if (checkStatus == null) {
+      checkStatus = 'have';
+    } else {
+     if(type==CRYPTO_TYPE){
+       textAddressFilter.add(statusWallet ?? '');
+       isAll.add(statusAllFilter);
+       isDefault.add(statusDefaultFilter);
+       isCompleted.add(statusCompletedFilter);
+       isActive.add(statusActiveFilter);
+     }else{
+       textAddressFilter.add(statusWalletNFT ?? '');
+       isAll.add(statusAllFilterNFT);
+       isDefault.add(statusDefaultFilterNFT);
+       isCompleted.add(statusCompletedFilterNFT);
+       isActive.add(statusActiveFilterNFT);
+     }
+    }
+  }
+
+  void funReset() {
+    if (listAcc.length > 2) {
+      textAddressFilter.add(S.current.all);
+    }
+    isActive.add(false);
+    isCompleted.add(false);
+    isDefault.add(false);
+    isAll.add(false);
+  }
 
   void check(String title) {
     if (title == S.current.all) {
@@ -220,8 +309,8 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
       size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       page: page.toString(),
       type: type,
-      borrowerWalletAddress: '0xa2E3Db206948b93201a8c732bdA8385B77D48002',
-      status: '',
+      borrowerWalletAddress: textAddress,
+      status: status,
     );
     response.when(
       success: (response) {

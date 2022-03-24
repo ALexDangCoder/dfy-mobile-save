@@ -94,6 +94,10 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                   children: [
                     GestureDetector(
                       onTap: () {
+                          final FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
                         _bloc.isChooseToken.add(false);
                       },
                       child: SingleChildScrollView(

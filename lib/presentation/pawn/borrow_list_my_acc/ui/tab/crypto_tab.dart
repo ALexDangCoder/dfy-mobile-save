@@ -24,12 +24,13 @@ class CryptoTab extends StatefulWidget {
   _CryptoTabState createState() => _CryptoTabState();
 }
 
-class _CryptoTabState extends State<CryptoTab> {
+class _CryptoTabState extends State<CryptoTab>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
     widget.bloc.refreshPosts(
-      type: BorrowListMyAccBloc.BORROW_TYPE,
+      type: BorrowListMyAccBloc.CRYPTO_TYPE,
     );
   }
 
@@ -58,9 +59,10 @@ class _CryptoTabState extends State<CryptoTab> {
       },
       builder: (context, state) {
         return StateStreamLayout(
+          isBack: false,
           retry: () {
             widget.bloc.refreshPosts(
-              type: BorrowListMyAccBloc.BORROW_TYPE,
+              type: BorrowListMyAccBloc.CRYPTO_TYPE,
             );
           },
           error: AppException(S.current.error, bloc.mess),
@@ -72,7 +74,7 @@ class _CryptoTabState extends State<CryptoTab> {
                   scrollInfo.metrics.pixels ==
                       scrollInfo.metrics.maxScrollExtent) {
                 bloc.loadMorePosts(
-                  type: BorrowListMyAccBloc.BORROW_TYPE,
+                  type: BorrowListMyAccBloc.CRYPTO_TYPE,
                 );
               }
               return true;
@@ -80,7 +82,7 @@ class _CryptoTabState extends State<CryptoTab> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await widget.bloc.refreshPosts(
-                  type: BorrowListMyAccBloc.BORROW_TYPE,
+                  type: BorrowListMyAccBloc.CRYPTO_TYPE,
                 );
               },
               child: bloc.list.isNotEmpty
@@ -133,4 +135,7 @@ class _CryptoTabState extends State<CryptoTab> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

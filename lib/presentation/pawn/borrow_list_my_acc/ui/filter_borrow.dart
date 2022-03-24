@@ -25,8 +25,7 @@ class _FilterBorrowMyAccState extends State<FilterBorrowMyAcc> {
   @override
   void initState() {
     super.initState();
-
-    //todo widget.bloc.statusFilterFirst();
+   widget.bloc.statusFilterFirst();
   }
 
   @override
@@ -96,8 +95,7 @@ class _FilterBorrowMyAccState extends State<FilterBorrowMyAcc> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              //todo widget.bloc.funReset();
-                              setState(() {});
+                              widget.bloc.funReset();
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -291,7 +289,7 @@ class _FilterBorrowMyAccState extends State<FilterBorrowMyAcc> {
               color: AppTheme.getInstance().bgBtsColor(),
               child: GestureDetector(
                 onTap: () {
-                  //todo bloc.funFilter();
+                   bloc.funFilter();
                   Navigator.pop(context);
                 },
                 child: ButtonLuxury(

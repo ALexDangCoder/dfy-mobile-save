@@ -23,7 +23,7 @@ class NFTTab extends StatefulWidget {
   _NFTTabState createState() => _NFTTabState();
 }
 
-class _NFTTabState extends State<NFTTab> {
+class _NFTTabState extends State<NFTTab> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
@@ -57,6 +57,7 @@ class _NFTTabState extends State<NFTTab> {
       },
       builder: (context, state) {
         return StateStreamLayout(
+          isBack: false,
           retry: () {
             widget.bloc.refreshPosts(
               type: BorrowListMyAccBloc.NFT_TYPE,
@@ -140,4 +141,7 @@ class _NFTTabState extends State<NFTTab> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

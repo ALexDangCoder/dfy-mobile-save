@@ -8,25 +8,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class StateErrorView extends StatelessWidget {
   final String? _message;
   final Function() _retry;
+  final bool isBack;
 
-  const StateErrorView(this._message, this._retry, {Key? key})
-      : super(key: key);
+  const StateErrorView(
+    this._message,
+    this._retry, {
+    Key? key,
+    this.isBack = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.getInstance().bgBtsColor(),
-      appBar: AppBar(
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        backgroundColor: AppTheme.getInstance().bgBtsColor(),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset(ImageAssets.ic_back),
-        ),
-      ),
+      appBar: isBack
+          ? AppBar(
+              bottomOpacity: 0.0,
+              elevation: 0.0,
+              backgroundColor: AppTheme.getInstance().bgBtsColor(),
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(ImageAssets.ic_back),
+              ),
+            )
+          : AppBar(
+              bottomOpacity: 0.0,
+              elevation: 0.0,
+              backgroundColor: AppTheme.getInstance().bgBtsColor(),
+              leading: Image.asset(
+                ImageAssets.ic_back,
+                color: AppTheme.getInstance().bgBtsColor(),
+              ),
+            ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
