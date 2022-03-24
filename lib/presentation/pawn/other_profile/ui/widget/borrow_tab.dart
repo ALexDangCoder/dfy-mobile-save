@@ -20,11 +20,12 @@ class BorrowTab extends StatefulWidget {
   const BorrowTab({
     Key? key,
     required this.cubit,
-    required this.listReputation,
+    required this.listReputation, required this.pageRouter,
   }) : super(key: key);
 
   final OtherProfileCubit cubit;
   final List<Reputation> listReputation;
+  final PageRouter pageRouter;
 
   @override
   _BorrowTabState createState() => _BorrowTabState();
@@ -101,8 +102,14 @@ class _BorrowTabState extends State<BorrowTab>
                             setState(() {
                               walletAddress = newValue!;
                             });
-                            widget.cubit.getPoint(newValue!);
-                            widget.cubit.selectWalletBorrow(newValue);
+                            if(widget.pageRouter == PageRouter.MARKET){
+                              widget.cubit.getPoint(newValue!);
+                              widget.cubit.selectWalletBorrow(newValue);
+                            } else {
+                              widget.cubit.getPoint(newValue!);
+                              widget.cubit.getDataBorrow.add(false);
+                              widget.cubit.getListComment(walletAddress: newValue);
+                            }
                           },
                           dropdownMaxHeight: 150.h,
                           dropdownWidth:
@@ -189,307 +196,309 @@ class _BorrowTabState extends State<BorrowTab>
               if (snapshot.data == true) {
                 return Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        title('AVAILABLE COLLATERAL'),
-                        StreamBuilder<bool>(
-                          stream: widget.cubit.seeMoreCollateral,
-                          builder: (context, snapshot) {
-                            return InkWell(
-                              onTap: () {
-                                if (widget.cubit.available
-                                            .totalAvailableCollateral !=
-                                        0 &&
-                                    widget.cubit.available
-                                            .totalAvailableCollateral !=
-                                        null) {
-                                  widget.cubit.seeMoreCollateral
-                                      .add(!(snapshot.data ?? false));
-                                }
-                              },
-                              child: Image.asset(
-                                snapshot.data == true
-                                    ? ImageAssets.ic_view_less
-                                    : ImageAssets.ic_view_more,
-                                height: 20.h,
-                                width: 20.w,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    spaceH10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${widget.cubit.available.totalAvailableCollateral ?? 0} available collaterals',
-                          style: textNormal(textPawnGray, 16),
-                        ),
-                        Container(
-                          height: 11.h,
-                          width: 1.w,
-                          color: grey2,
-                        ),
-                        Text(
-                          '${formatUSD.format(widget.cubit.available.totalValue ?? 0)} in value',
-                          style: textNormal(textPawnGray, 16),
-                        ),
-                      ],
-                    ),
-                    spaceH16,
-                    SizedBox(
-                      height: 30.h,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: widget.cubit.available.symbol?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            children: [
-                              SizedBox(
-                                height: 24.h,
-                                width: 24.w,
-                                child: Image.network(
-                                  ImageAssets.getUrlToken(
-                                    widget.cubit.available.symbol?[index] ?? '',
+                    if(widget.pageRouter == PageRouter.MARKET)...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          title('AVAILABLE COLLATERAL'),
+                          StreamBuilder<bool>(
+                            stream: widget.cubit.seeMoreCollateral,
+                            builder: (context, snapshot) {
+                              return InkWell(
+                                onTap: () {
+                                  if (widget.cubit.available
+                                      .totalAvailableCollateral !=
+                                      0 &&
+                                      widget.cubit.available
+                                          .totalAvailableCollateral !=
+                                          null) {
+                                    widget.cubit.seeMoreCollateral
+                                        .add(!(snapshot.data ?? false));
+                                  }
+                                },
+                                child: Image.asset(
+                                  snapshot.data == true
+                                      ? ImageAssets.ic_view_less
+                                      : ImageAssets.ic_view_more,
+                                  height: 20.h,
+                                  width: 20.w,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      spaceH10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.cubit.available.totalAvailableCollateral ?? 0} available collaterals',
+                            style: textNormal(textPawnGray, 16),
+                          ),
+                          Container(
+                            height: 11.h,
+                            width: 1.w,
+                            color: grey2,
+                          ),
+                          Text(
+                            '${formatUSD.format(widget.cubit.available.totalValue ?? 0)} in value',
+                            style: textNormal(textPawnGray, 16),
+                          ),
+                        ],
+                      ),
+                      spaceH16,
+                      SizedBox(
+                        height: 30.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: widget.cubit.available.symbol?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Row(
+                              children: [
+                                SizedBox(
+                                  height: 24.h,
+                                  width: 24.w,
+                                  child: Image.network(
+                                    ImageAssets.getUrlToken(
+                                      widget.cubit.available.symbol?[index] ?? '',
+                                    ),
                                   ),
                                 ),
-                              ),
-                              spaceW12,
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    spaceH20,
-                    StreamBuilder<bool>(
-                      stream: widget.cubit.seeMoreCollateral,
-                      builder: (context, AsyncSnapshot<bool> snapshot) {
-                        if (snapshot.data == true) {
-                          return StreamBuilder<bool>(
-                            stream: widget.cubit.viewMoreCollateral,
-                            builder: (context, AsyncSnapshot<bool> snapshot2) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    child: ListView.builder(
-                                      itemCount: snapshot2.data == false
-                                          ? (widget.cubit.listCollateral
-                                                      .length >
-                                                  3
-                                              ? 3
-                                              : widget
-                                                  .cubit.listCollateral.length)
-                                          : widget.cubit.listCollateral.length,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Column(
-                                          children: [
-                                            AvailableCollateralItem(
-                                              collateralUser: widget
-                                                  .cubit.listCollateral[index],
-                                            ),
-                                            spaceH20,
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  if (widget.cubit.listCollateral.length >
-                                      3) ...[
-                                    divider,
-                                    spaceH20,
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        sizedSvgImage(
-                                          w: 14,
-                                          h: 14,
-                                          image: snapshot2.data == true
-                                              ? ImageAssets.ic_collapse_svg
-                                              : ImageAssets.ic_expand_svg,
-                                        ),
-                                        SizedBox(
-                                          width: 13.15.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            widget.cubit.viewMoreCollateral.add(
-                                              !(snapshot2.data ?? false),
-                                            );
-                                          },
-                                          child: Text(
-                                            snapshot2.data == true
-                                                ? S.current.see_less
-                                                : S.current.see_more,
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              16,
-                                              FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    spaceH20,
-                                    divider,
-                                  ],
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
-                    spaceH35,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        title('SIGNED CONTRACT'),
-                        StreamBuilder<bool>(
-                          stream: widget.cubit.seeMoreSignContract,
-                          builder: (context, snapshot) {
-                            return InkWell(
-                              onTap: () {
-                                if (widget.cubit.signedContract.totalContract !=
-                                        0 &&
-                                    widget.cubit.signedContract.totalContract !=
-                                        null) {
-                                  widget.cubit.seeMoreSignContract
-                                      .add(!(snapshot.data ?? false));
-                                }
-                              },
-                              child: Image.asset(
-                                snapshot.data == true
-                                    ? ImageAssets.ic_view_less
-                                    : ImageAssets.ic_view_more,
-                                height: 20.h,
-                                width: 20.w,
-                              ),
+                                spaceW12,
+                              ],
                             );
                           },
                         ),
-                      ],
-                    ),
-                    spaceH16,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${widget.cubit.signedContract.totalContract ?? 0} signed contracts',
-                          style: textNormal(textPawnGray, 16),
-                        ),
-                        Container(
-                          height: 11.h,
-                          width: 1.w,
-                          color: grey2,
-                        ),
-                        Text(
-                          '${formatUSD.format(widget.cubit.signedContract.totalValue ?? 0)} in value',
-                          style: textNormal(textPawnGray, 16),
-                        ),
-                      ],
-                    ),
-                    spaceH20,
-                    StreamBuilder<bool>(
-                      stream: widget.cubit.seeMoreSignContract,
-                      builder: (context, AsyncSnapshot<bool> snapshot) {
-                        if (snapshot.data == true) {
-                          return StreamBuilder<bool>(
-                            stream: widget.cubit.viewMoreSignContract,
-                            builder: (context, AsyncSnapshot<bool> snapshot2) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    child: ListView.builder(
-                                      itemCount: snapshot2.data == false
-                                          ? (widget.cubit.listSignedContract
-                                                      .length >
-                                                  3
-                                              ? 3
-                                              : widget.cubit.listSignedContract
-                                                  .length)
-                                          : widget
-                                              .cubit.listSignedContract.length,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Column(
-                                          children: [
-                                            SignedContractItem(
-                                              signedContractUser: widget.cubit
-                                                  .listSignedContract[index],
-                                            ),
-                                            spaceH20,
-                                          ],
-                                        );
-                                      },
+                      ),
+                      spaceH20,
+                      StreamBuilder<bool>(
+                        stream: widget.cubit.seeMoreCollateral,
+                        builder: (context, AsyncSnapshot<bool> snapshot) {
+                          if (snapshot.data == true) {
+                            return StreamBuilder<bool>(
+                              stream: widget.cubit.viewMoreCollateral,
+                              builder: (context, AsyncSnapshot<bool> snapshot2) {
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      child: ListView.builder(
+                                        itemCount: snapshot2.data == false
+                                            ? (widget.cubit.listCollateral
+                                            .length >
+                                            3
+                                            ? 3
+                                            : widget
+                                            .cubit.listCollateral.length)
+                                            : widget.cubit.listCollateral.length,
+                                        shrinkWrap: true,
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Column(
+                                            children: [
+                                              AvailableCollateralItem(
+                                                collateralUser: widget
+                                                    .cubit.listCollateral[index],
+                                              ),
+                                              spaceH20,
+                                            ],
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  if (widget.cubit.listSignedContract.length >
-                                      3) ...[
-                                    divider,
-                                    spaceH20,
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        sizedSvgImage(
-                                          w: 14,
-                                          h: 14,
-                                          image: snapshot2.data == true
-                                              ? ImageAssets.ic_collapse_svg
-                                              : ImageAssets.ic_expand_svg,
-                                        ),
-                                        SizedBox(
-                                          width: 13.15.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            widget.cubit.viewMoreSignContract
-                                                .add(
-                                              !(snapshot2.data ?? false),
-                                            );
-                                          },
-                                          child: Text(
-                                            snapshot2.data == true
-                                                ? S.current.see_less
-                                                : S.current.see_more,
-                                            style: textNormalCustom(
-                                              AppTheme.getInstance()
-                                                  .fillColor(),
-                                              16,
-                                              FontWeight.w400,
+                                    if (widget.cubit.listCollateral.length >
+                                        3) ...[
+                                      divider,
+                                      spaceH20,
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          sizedSvgImage(
+                                            w: 14,
+                                            h: 14,
+                                            image: snapshot2.data == true
+                                                ? ImageAssets.ic_collapse_svg
+                                                : ImageAssets.ic_expand_svg,
+                                          ),
+                                          SizedBox(
+                                            width: 13.15.w,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              widget.cubit.viewMoreCollateral.add(
+                                                !(snapshot2.data ?? false),
+                                              );
+                                            },
+                                            child: Text(
+                                              snapshot2.data == true
+                                                  ? S.current.see_less
+                                                  : S.current.see_more,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .fillColor(),
+                                                16,
+                                                FontWeight.w400,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    spaceH20,
-                                    divider,
+                                        ],
+                                      ),
+                                      spaceH20,
+                                      divider,
+                                    ],
                                   ],
-                                ],
+                                );
+                              },
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+                      spaceH35,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          title('SIGNED CONTRACT'),
+                          StreamBuilder<bool>(
+                            stream: widget.cubit.seeMoreSignContract,
+                            builder: (context, snapshot) {
+                              return InkWell(
+                                onTap: () {
+                                  if (widget.cubit.signedContract.totalContract !=
+                                      0 &&
+                                      widget.cubit.signedContract.totalContract !=
+                                          null) {
+                                    widget.cubit.seeMoreSignContract
+                                        .add(!(snapshot.data ?? false));
+                                  }
+                                },
+                                child: Image.asset(
+                                  snapshot.data == true
+                                      ? ImageAssets.ic_view_less
+                                      : ImageAssets.ic_view_more,
+                                  height: 20.h,
+                                  width: 20.w,
+                                ),
                               );
                             },
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
-                    spaceH32,
+                          ),
+                        ],
+                      ),
+                      spaceH16,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.cubit.signedContract.totalContract ?? 0} signed contracts',
+                            style: textNormal(textPawnGray, 16),
+                          ),
+                          Container(
+                            height: 11.h,
+                            width: 1.w,
+                            color: grey2,
+                          ),
+                          Text(
+                            '${formatUSD.format(widget.cubit.signedContract.totalValue ?? 0)} in value',
+                            style: textNormal(textPawnGray, 16),
+                          ),
+                        ],
+                      ),
+                      spaceH20,
+                      StreamBuilder<bool>(
+                        stream: widget.cubit.seeMoreSignContract,
+                        builder: (context, AsyncSnapshot<bool> snapshot) {
+                          if (snapshot.data == true) {
+                            return StreamBuilder<bool>(
+                              stream: widget.cubit.viewMoreSignContract,
+                              builder: (context, AsyncSnapshot<bool> snapshot2) {
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      child: ListView.builder(
+                                        itemCount: snapshot2.data == false
+                                            ? (widget.cubit.listSignedContract
+                                            .length >
+                                            3
+                                            ? 3
+                                            : widget.cubit.listSignedContract
+                                            .length)
+                                            : widget
+                                            .cubit.listSignedContract.length,
+                                        shrinkWrap: true,
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Column(
+                                            children: [
+                                              SignedContractItem(
+                                                signedContractUser: widget.cubit
+                                                    .listSignedContract[index],
+                                              ),
+                                              spaceH20,
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    if (widget.cubit.listSignedContract.length >
+                                        3) ...[
+                                      divider,
+                                      spaceH20,
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          sizedSvgImage(
+                                            w: 14,
+                                            h: 14,
+                                            image: snapshot2.data == true
+                                                ? ImageAssets.ic_collapse_svg
+                                                : ImageAssets.ic_expand_svg,
+                                          ),
+                                          SizedBox(
+                                            width: 13.15.w,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              widget.cubit.viewMoreSignContract
+                                                  .add(
+                                                !(snapshot2.data ?? false),
+                                              );
+                                            },
+                                            child: Text(
+                                              snapshot2.data == true
+                                                  ? S.current.see_less
+                                                  : S.current.see_more,
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .fillColor(),
+                                                16,
+                                                FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      spaceH20,
+                                      divider,
+                                    ],
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+                      spaceH32,
+                    ],
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
