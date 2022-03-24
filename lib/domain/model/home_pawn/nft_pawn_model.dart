@@ -21,7 +21,7 @@ class NFTPawnModel {
   String? numberOfCopies;
   String? totalOfCopies;
 
-  NFTPawnModel(
+  NFTPawnModel({
     this.nftId,
     this.nftType,
     this.nftAddress,
@@ -43,5 +43,5 @@ class NFTPawnModel {
     this.fileType,
     this.numberOfCopies,
     this.totalOfCopies,
-  );
+  });
 }

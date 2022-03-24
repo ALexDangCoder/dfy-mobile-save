@@ -1,13 +1,22 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/ui/offer_detail_my_acc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemCrypto extends StatelessWidget {
-  const ItemCrypto({Key? key}) : super(key: key);
+  const ItemCrypto({
+    Key? key,
+    required this.obj,
+    required this.bloc,
+  }) : super(key: key);
+  final CryptoPawnModel obj;
+  final BorrowListMyAccBloc bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +44,36 @@ class ItemCrypto extends StatelessWidget {
         children: [
           richText(
             title: '${S.current.collateral}:',
-            value: '10 DFY',
-            url: ImageAssets.getUrlToken('DFY'),
+            value: '${formatPrice.format(obj.collateralAmount)}'
+                ' ${obj.collateral?.toUpperCase()}',
+            url: ImageAssets.getUrlToken(obj.collateral.toString()),
             isIcon: true,
           ),
           spaceH16,
           richText(
             title: '${S.current.loan_amount}:',
-            value: '10 DFY',
-            url: ImageAssets.getUrlToken('DFY'),
+            value: '${formatPrice.format(obj.supplyCurrencyAmount)}'
+                ' ${obj.supplyCurrency?.toUpperCase()}',
+            url: ImageAssets.getUrlToken('${obj.supplyCurrency}'),
             isIcon: true,
           ),
           spaceH16,
           richText(
             title: '${S.current.interest_rate_apr}:',
-            value: '10%',
+            value: '${obj.interestPerYear}%',
           ),
           spaceH16,
           richText(
             title: '${S.current.duration_pawn}:',
-            value: '12 months',
+            value:
+                '${obj.duration} ${obj.durationType == WEEK ? S.current.weeks_pawn : S.current.months_pawn}',
           ),
           spaceH16,
           richText(
             title: '${S.current.status}:',
-            value: 'Active',
+            value: bloc.getStatus(obj.status ?? 0),
             fontW: FontWeight.w600,
-            myColor: Colors.red,
+            myColor: bloc.getColor(obj.status ?? 0),
           ),
         ],
       ),
