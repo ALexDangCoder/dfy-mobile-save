@@ -37,7 +37,7 @@ class StateFullLayout extends StatelessWidget {
       return StateErrorView(
         _error.message,
         _retry,
-        isBack: isBack ?? true,
+        isHaveBackBtn: isBack ?? true,
       );
     }
     if (_stateLayout == StateLayout.showEmpty) {
