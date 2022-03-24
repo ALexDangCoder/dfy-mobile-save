@@ -880,6 +880,9 @@
   "review": "Đánh giá",
   "description_cancel_offer_sent": "Offer bạn gửi cho người vay sẽ\nbị huỷ, bạn có muốn tiếp tục?",
   "contract_id": "ID Hợp đồng",
-  "default_date": "Ngày mặc định"
+  "default_date": "Ngày mặc định",
+  "repayment_history": "Lịch sử trả nợ",
+  "sys_risk": "System risk",
+  "default_reason": "Default reason"
 
 }
