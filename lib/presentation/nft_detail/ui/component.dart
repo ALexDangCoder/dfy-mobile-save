@@ -20,7 +20,7 @@ Widget action(
   String walletAddress,
   String nftId,
   NFTDetailBloc bloc,
-    NftMarket nftMarket,
+  NftMarket nftMarket,
   Function reload,
 ) {
   final NftInfo nftInfo = NftInfo(
@@ -81,8 +81,24 @@ Widget _nameNFT({
   int quantity = 1,
   String url = '',
   double? price,
+  required MarketType type,
   required BuildContext context,
 }) {
+  String urlShare = '';
+  switch (type) {
+    case MarketType.AUCTION:
+      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+      break;
+    case MarketType.SALE:
+      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+      break;
+    case MarketType.PAWN:
+      urlShare = '${Get.find<AppConstants>().basePawnUrl}collateral-nft/$url';
+      break;
+    case MarketType.NOT_ON_MARKET:
+      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+      break;
+  }
   return Container(
     margin: EdgeInsets.only(
       top: 8.h,
@@ -124,7 +140,7 @@ Widget _nameNFT({
             ),
             InkWell(
               onTap: () {
-                Share.share(url, subject: 'Buy NFT with $price USD');
+                Share.share(urlShare, subject: 'Buy NFT with $price USD');
               },
               child: roundButton(
                 image: ImageAssets.ic_share_svg,
