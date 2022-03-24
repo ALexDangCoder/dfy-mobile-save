@@ -50,6 +50,9 @@ class _SendOfferState extends State<SendOffer> {
   @override
   void initState() {
     loanAmount = widget.nftOnPawn.expectedLoanAmount.toString();
+    loanDurationType = widget.nftOnPawn.durationType ?? 0;
+    duration = (widget.nftOnPawn.durationQuantity ?? 0).toString();
+    _cubit.sinkIndex.add(loanDurationType);
     super.initState();
   }
 
@@ -513,6 +516,8 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      initText:
+                          (widget.nftOnPawn.durationQuantity ?? 0).toString(),
                       maxLength: 4,
                       validator: validator,
                       validatorValue: (value) {
@@ -540,7 +545,7 @@ class _SendOfferState extends State<SendOffer> {
                         width: 100.w,
                         child: StreamBuilder<int>(
                           stream: _cubit.streamIndex,
-                          initialData: 1,
+                          initialData: 0,
                           builder: (context, snapshot) {
                             return Center(
                               child: CustomDropDown(
