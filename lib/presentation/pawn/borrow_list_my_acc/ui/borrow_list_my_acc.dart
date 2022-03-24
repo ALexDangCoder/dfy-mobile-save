@@ -2,8 +2,12 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_bloc.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/tab/borrow_tab.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/tab/crypto_tab.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BorrowListMyAccScreen extends StatefulWidget {
@@ -17,10 +21,12 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int initIndexTab = 0;
+  late BorrowListMyAccBloc bloc;
 
   @override
   void initState() {
     super.initState();
+    bloc = BorrowListMyAccBloc();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
   }
@@ -152,14 +158,11 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            ///Tab crypto
-                            Container(
-                              color: Colors.red,
+                            CryptoTab(
+                              bloc: bloc,
                             ),
-
-                            ///Tab Nft
-                            Container(
-                              color: Colors.green,
+                            NFTTab(
+                              bloc: bloc,
                             ),
                           ],
                         ),

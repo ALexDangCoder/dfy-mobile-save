@@ -1,6 +1,7 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
+import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_widraw_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
@@ -26,6 +27,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
@@ -486,6 +488,27 @@ class BorrowRepositoryImpl implements BorrowRepository {
         id,
       ),
       (response) => response.data?.toDomain() ?? OfferDetailMyAcc(),
+    );
+  }
+
+  @override
+  Future<Result<List<CryptoPawnModel>>> getBorrowContract({
+    String? borrowerWalletAddress,
+    String? status,
+    String? type,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<BorrowListMyAccResponse, List<CryptoPawnModel>>(
+      () => _client.getBorrowContract(
+        borrowerWalletAddress,
+        status,
+        type,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

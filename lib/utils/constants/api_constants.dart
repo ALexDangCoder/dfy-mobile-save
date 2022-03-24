@@ -274,7 +274,6 @@ class ApiConstants {
   static const String GET_LIST_LOAN_PACKAGE =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/';
 
-
   //myacc
   static const String COLLATERAL_MY_ACC =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals';
@@ -307,4 +306,7 @@ class ApiConstants {
 
   static const String GET_USER_ID_PAWN =
       '/defi-user-service/public-api/v1.0.0/users/check-validate';
+
+  static const String GET_BORROW_CONTRACT =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts';
 }
