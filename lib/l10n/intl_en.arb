@@ -925,5 +925,8 @@
   "contract_detail": "Contract detail",
   "review": "Review",
   "contract_id": "Contract ID",
-  "default_date": "Default date"
+  "default_date": "Default date",
+  "repayment_history": "Repayment history",
+  "sys_risk": "Rủi ro hệ thống",
+  "default_reason": "Lý do mặc định"
 }
