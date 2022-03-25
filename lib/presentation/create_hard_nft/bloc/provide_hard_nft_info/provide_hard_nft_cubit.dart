@@ -105,6 +105,10 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     if (isEdit) {
       mediasRequest.clear();
       documentsRequest.clear();
+      List<AdditionalInfoListRequest> tempAdditionInfoList = [];
+      tempAdditionInfoList = listAddtional;
+      listAddtional.clear();
+      listAddtional = tempAdditionInfoList;
     } else {}
     emit(SubmittingFileLoading());
     final listCidMedia = [];
@@ -314,7 +318,7 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
     }
   }
 
-  final List<AdditionalInfoListRequest> listAddtional = [];
+   List<AdditionalInfoListRequest> listAddtional = [];
 
   void convertPropertiesToAdditionalInfo() {
     for (final element in dataStep1.properties) {

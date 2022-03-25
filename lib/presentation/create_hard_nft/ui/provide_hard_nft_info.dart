@@ -648,7 +648,7 @@ class _ProvideHardNftInfoState extends State<ProvideHardNftInfo> {
             spaceH20,
             InkWell(
               onTap: () {
-                ((snapshot.data ?? []).length <= 10)
+                ((snapshot.data ?? []).length <= 9)
                     ? showDialog(
                         context: context,
                         barrierDismissible: false,
