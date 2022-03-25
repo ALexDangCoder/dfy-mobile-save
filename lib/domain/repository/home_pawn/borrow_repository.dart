@@ -3,6 +3,7 @@ import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.da
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
@@ -190,5 +191,13 @@ mixin BorrowRepository {
 
   Future<Result<OfferDetailMyAcc>> getOfferDetailMyAcc({
     String? id,
+  });
+
+  Future<Result<List<CryptoPawnModel>>> getBorrowContract({
+    String? borrowerWalletAddress,
+    String? status,
+    String? type,
+    String? page,
+    String? size,
   });
 }

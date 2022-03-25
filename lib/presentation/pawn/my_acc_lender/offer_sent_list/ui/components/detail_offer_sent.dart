@@ -459,7 +459,7 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
           Expanded(
             flex: 6,
             child: Text(
-              '~ \$$description', //todo
+              '~ \$$description',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 16,

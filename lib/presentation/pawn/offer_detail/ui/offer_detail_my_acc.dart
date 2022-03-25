@@ -506,6 +506,16 @@ Widget richText({
                   url ?? '',
                   height: 20.h,
                   width: 20.w,
+                  errorBuilder: (
+                    context,
+                    error,
+                    stackTrace,
+                  ) =>
+                      Container(
+                    height: 20.h,
+                    width: 20.w,
+                    color: AppTheme.getInstance().backgroundBTSColor(),
+                  ),
                 )
               : const SizedBox.shrink(),
         ),

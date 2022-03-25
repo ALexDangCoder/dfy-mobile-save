@@ -2,9 +2,9 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_contract_info.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,9 +54,15 @@ class _LendContractDetailState extends State<LendContractDetail>
               tabs: [
                 Tab(
                   text: S.current.contact_info.capitalize(),
+                  height: 50.h,
                 ),
                 Tab(
                   text: S.current.ltv_liquid_thres.capitalize(),
+                  height: 50.h,
+                ),
+                Tab(
+                  text: S.current.repayment_history.capitalize(),
+                  height: 50.h,
                 )
               ],
             ),
@@ -65,7 +71,13 @@ class _LendContractDetailState extends State<LendContractDetail>
             child: TabBarView(
               controller: _tabController,
               children: [
-
+                TabContractInfo(),
+                Container(
+                  color: Colors.red,
+                ),
+                Container(
+                  color: Colors.green,
+                )
               ],
             ),
           )
@@ -170,7 +182,7 @@ class _LendContractDetailState extends State<LendContractDetail>
                   child: Row(
                     children: [
                       Container(
-                        height: 40.h,
+                        // height: 40.h,
                         padding: EdgeInsets.only(
                           left: 16.w,
                           right: 16.w,
@@ -205,7 +217,7 @@ class _LendContractDetailState extends State<LendContractDetail>
                       spaceW30,
                       spaceW6,
                       Container(
-                        height: 40.h,
+                        // height: 40.h,
                         padding: EdgeInsets.only(
                           left: 16.w,
                           right: 16.w,
