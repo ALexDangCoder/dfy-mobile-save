@@ -880,13 +880,10 @@
   "review": "Đánh giá",
   "description_cancel_offer_sent": "Offer bạn gửi cho người vay sẽ\nbị huỷ, bạn có muốn tiếp tục?",
   "contract_id": "ID Hợp đồng",
-  "default_date": "Ngày mặc định",
   "repayment": "Repayment",
   "add_collateral": "Add collateral",
   "contract_info": "Contract info",
-  "repayment_history": "Repayment history",
   "lte_liquidation_threshold": "LTV Liquidation threshold",
-  "default_reason": "Default reason",
   "system_risk": "System risk",
   "do_date": "Ngày đến hạn (GMT + 0)",
   "cycle": "Chu kỳ",
@@ -897,5 +894,10 @@
   "risker": "Kẻ mạo hiểm",
   "ltv_liquidation_threshold": "Ngưỡng thanh lý LTV",
   "your_current_ltv": "LTV hiện tại của bạn",
-  "your_current_ltv_is": "LTV hiện tại của bạn sắp đạt đến ngưỡng thanh lý. Để tránh bị thanh lý, bạn có thể hoàn trả phần còn lại của khoản vay lãi / phạt."
+  "your_current_ltv_is": "LTV hiện tại của bạn sắp đạt đến ngưỡng thanh lý. Để tránh bị thanh lý, bạn có thể hoàn trả phần còn lại của khoản vay lãi / phạt.",
+  "default_date": "Ngày mặc định",
+  "repayment_history": "Lịch sử trả nợ",
+  "sys_risk": "System risk",
+  "default_reason": "Default reason"
+
 }

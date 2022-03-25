@@ -98,6 +98,7 @@ class ImageAssets {
   static const String ic_graph = '$baseImg/ic_graph.png';
   static const String ic_nft = '$baseImg/ic_nft.png';
   static const String ic_setting = '$baseImg/ic_setting.png';
+  static const String ic_warn_grey = '$baseImg/ic_warn_grey.png';
 
   static const String imgTokenADA = '$baseImg/ADA.png';
   static const String imgTokenATOM = '$baseImg/ATOM.png';

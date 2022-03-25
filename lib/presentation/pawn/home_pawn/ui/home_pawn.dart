@@ -83,156 +83,154 @@ class _HomePawnState extends State<HomePawn> {
             onRefresh: () async {
               await cubit.callAllApi(isRefresh: true);
             },
-            child: Expanded(
-              child: SizedBox(
-                height: 699.h,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      spaceH24,
-                      // Container(
-                      //   margin: EdgeInsets.only(left: 16.w),
-                      //   child: Text(
-                      //     S.current.header_title_pawn,
-                      //     style: textNormalCustom(
-                      //       AppTheme.getInstance().whiteColor(),
-                      //       20,
-                      //       FontWeight.w700,
-                      //     ),
-                      //   ),
-                      // ),
-                      spaceH16,
-                      // BannerPawnSlide(
-                      //   cubit: cubit,
-                      // ),
-                      // _buildBanner(),
-                      spaceH32,
-                      // ListItemHorizontal(
-                      //   title: S.current.top_rated_lenders,
-                      //   listItemWidget: SizedBox(
-                      //     height: 165.h,
-                      //     child: ListView.builder(
-                      //       itemCount: cubit.topRatedLenders.length,
-                      //       shrinkWrap: true,
-                      //       scrollDirection: Axis.horizontal,
-                      //       itemBuilder: (ctx, index) {
-                      //         return Row(
-                      //           children: [
-                      //             _itemTopRate(
-                      //               title: cubit.topRatedLenders[index].pawnShop
-                      //                       ?.name ??
-                      //                   '',
-                      //               img: cubit.topRatedLenders[index].pawnShop
-                      //                       ?.avatar ??
-                      //                   '',
-                      //             ),
-                      //             spaceW20,
-                      //           ],
-                      //         );
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      // spaceH32,
-                      ListItemHorizontal(
-                        title: S.current.what_you_can_pawn,
-                        isHaveArrow: false,
-                        listItemWidget: SizedBox(
-                          height: 161.h,
-                          child: ListView.builder(
-                            itemCount: cubit.borrowFeatLend.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (_, index) {
-                              return Row(
-                                children: [
-                                  _itemBorrowFtLend(
-                                    title: cubit.borrowFeatLend[index].title,
-                                    imageBg: cubit
-                                        .borrowFeatLend[index].imgBackGround,
-                                    suffixTitle:
-                                        cubit.borrowFeatLend[index].sufTitle,
-                                    type: cubit.borrowFeatLend[index].type,
-                                  ),
-                                  spaceW20,
-                                ],
-                              );
-                            },
-                          ),
+            child: SizedBox(
+              height: 699.h,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    spaceH24,
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 16.w),
+                    //   child: Text(
+                    //     S.current.header_title_pawn,
+                    //     style: textNormalCustom(
+                    //       AppTheme.getInstance().whiteColor(),
+                    //       20,
+                    //       FontWeight.w700,
+                    //     ),
+                    //   ),
+                    // ),
+                    spaceH16,
+                    // BannerPawnSlide(
+                    //   cubit: cubit,
+                    // ),
+                    // _buildBanner(),
+                    spaceH32,
+                    // ListItemHorizontal(
+                    //   title: S.current.top_rated_lenders,
+                    //   listItemWidget: SizedBox(
+                    //     height: 165.h,
+                    //     child: ListView.builder(
+                    //       itemCount: cubit.topRatedLenders.length,
+                    //       shrinkWrap: true,
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemBuilder: (ctx, index) {
+                    //         return Row(
+                    //           children: [
+                    //             _itemTopRate(
+                    //               title: cubit.topRatedLenders[index].pawnShop
+                    //                       ?.name ??
+                    //                   '',
+                    //               img: cubit.topRatedLenders[index].pawnShop
+                    //                       ?.avatar ??
+                    //                   '',
+                    //             ),
+                    //             spaceW20,
+                    //           ],
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.what_you_can_pawn,
+                      isHaveArrow: false,
+                      listItemWidget: SizedBox(
+                        height: 161.h,
+                        child: ListView.builder(
+                          itemCount: cubit.borrowFeatLend.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return Row(
+                              children: [
+                                _itemBorrowFtLend(
+                                  title: cubit.borrowFeatLend[index].title,
+                                  imageBg: cubit
+                                      .borrowFeatLend[index].imgBackGround,
+                                  suffixTitle:
+                                      cubit.borrowFeatLend[index].sufTitle,
+                                  type: cubit.borrowFeatLend[index].type,
+                                ),
+                                spaceW20,
+                              ],
+                            );
+                          },
                         ),
                       ),
-                      spaceH32,
-                      ListItemHorizontal(
-                        title: S.current.top_sale_pawn,
-                        listItemWidget: SizedBox(
-                          height: 267.h,
-                          child: ListView.builder(
-                            itemCount: cubit.topSalePawnShop.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (_, index) {
-                              return _itemPawnShopPackage(
-                                imgShop: cubit.topSalePawnShop[index]
-                                        .pawnShopPackage?.pawnShop?.avatar ??
-                                    '',
-                                iconTokenUrl: cubit.topSalePawnShop[index]
-                                        .pawnShopPackage?.loanToken?.iconUrl ??
-                                    '',
-                                signedContracts: cubit
-                                    .topSalePawnShop[index].signedContract
-                                    .toString(),
-                                nameShop: cubit.topSalePawnShop[index]
-                                        .pawnShopPackage?.name ??
-                                    '',
-                                reputation: cubit
-                                        .topSalePawnShop[index]
-                                        .pawnShopPackage
-                                        ?.pawnShop
-                                        ?.reputation ??
-                                    0,
-                                loan: cubit.topSalePawnShop[index]
-                                        .pawnShopPackage?.allowedLoanMax ??
-                                    0,
-                                interestRate: cubit.topSalePawnShop[index]
-                                        .pawnShopPackage?.interestRate ??
-                                    0,
-                              );
-                            },
-                          ),
+                    ),
+                    spaceH32,
+                    ListItemHorizontal(
+                      title: S.current.top_sale_pawn,
+                      listItemWidget: SizedBox(
+                        height: 267.h,
+                        child: ListView.builder(
+                          itemCount: cubit.topSalePawnShop.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return _itemPawnShopPackage(
+                              imgShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.avatar ??
+                                  '',
+                              iconTokenUrl: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.loanToken?.iconUrl ??
+                                  '',
+                              signedContracts: cubit
+                                  .topSalePawnShop[index].signedContract
+                                  .toString(),
+                              nameShop: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.name ??
+                                  '',
+                              reputation: cubit
+                                      .topSalePawnShop[index]
+                                      .pawnShopPackage
+                                      ?.pawnShop
+                                      ?.reputation ??
+                                  0,
+                              loan: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.allowedLoanMax ??
+                                  0,
+                              interestRate: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.interestRate ??
+                                  0,
+                            );
+                          },
                         ),
                       ),
-                      // spaceH32,
-                      // ListItemHorizontal(
-                      //   title: S.current.nft_collateral,
-                      //   listItemWidget: SizedBox(
-                      //     height: 231.h,
-                      //     child: ListView.builder(
-                      //       itemCount: cubit.nftsCollateralsPawn.length,
-                      //       shrinkWrap: true,
-                      //       scrollDirection: Axis.horizontal,
-                      //       itemBuilder: (_, index) {
-                      //         return Row(
-                      //           children: [
-                      //             NFTItemWidget(
-                      //               nftMarket: cubit.nftsCollateralsPawn[index]
-                      //                       .nftModel ??
-                      //                   NftMarket(),
-                      //             ),
-                      //             spaceW12,
-                      //           ],
-                      //         );
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      spaceH32,
-                      _buildBecomePawnShop(),
-                      SizedBox(
-                        height: 200.h,
-                      )
-                    ],
-                  ),
+                    ),
+                    // spaceH32,
+                    // ListItemHorizontal(
+                    //   title: S.current.nft_collateral,
+                    //   listItemWidget: SizedBox(
+                    //     height: 231.h,
+                    //     child: ListView.builder(
+                    //       itemCount: cubit.nftsCollateralsPawn.length,
+                    //       shrinkWrap: true,
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemBuilder: (_, index) {
+                    //         return Row(
+                    //           children: [
+                    //             NFTItemWidget(
+                    //               nftMarket: cubit.nftsCollateralsPawn[index]
+                    //                       .nftModel ??
+                    //                   NftMarket(),
+                    //             ),
+                    //             spaceW12,
+                    //           ],
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    spaceH32,
+                    _buildBecomePawnShop(),
+                    SizedBox(
+                      height: 200.h,
+                    )
+                  ],
                 ),
               ),
             ),
@@ -241,14 +239,21 @@ class _HomePawnState extends State<HomePawn> {
       );
     } else if (state is HomePawnLoadSuccess &&
         state.completeType == CompleteType.ERROR) {
-      return StateErrorView(S.current.something_went_wrong, () async {
-        await cubit.callAllApi(isRefresh: true);
-      }, isHaveBackBtn: false,);
+      return StateErrorView(
+        S.current.something_went_wrong,
+        () async {
+          await cubit.callAllApi(isRefresh: true);
+        },
+        isHaveBackBtn: false,
+      );
     } else {
-      return const ModalProgressHUD(
-        inAsyncCall: true,
-        progressIndicator: CupertinoLoading(),
-        child: SizedBox(),
+      return Container(
+        color: AppTheme.getInstance().bgBtsColor(),
+        child: const ModalProgressHUD(
+          inAsyncCall: true,
+          progressIndicator: CupertinoLoading(),
+          child: SizedBox(),
+        ),
       );
     }
   }
@@ -567,7 +572,7 @@ class _HomePawnState extends State<HomePawn> {
                     navigationTo: BorrowLendScreen(
                       type: type,
                     ),
-                    isRequireLoginEmail: true,
+                    isRequireLoginEmail: false,
                   ),
                 ).then((_) => null);
               },
@@ -630,7 +635,7 @@ class _HomePawnState extends State<HomePawn> {
                       navigationTo: BorrowLendScreen(
                         type: type,
                       ),
-                      isRequireLoginEmail: true,
+                      isRequireLoginEmail: false,
                     ),
                   ).then((_) => null);
                 },
