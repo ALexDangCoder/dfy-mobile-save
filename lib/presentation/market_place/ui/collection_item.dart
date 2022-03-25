@@ -1,5 +1,7 @@
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/presentation/detail_collection/ui/detail_collection.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,7 @@ class CollectionItem extends StatelessWidget {
                           image: urlBackGround.isEmpty
                               ? const AssetImage(ImageAssets.ic_search)
                                   as ImageProvider
-                              : NetworkImage(urlBackGround),
+                              : NetworkImage('$urlBackGround'),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(
