@@ -5,11 +5,15 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_state.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/contract_info.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/ltv_tab.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/repayment_history.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/common_bts/base_nft_market.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +33,9 @@ class ContractDetail extends StatefulWidget {
   _ContractDetailState createState() => _ContractDetailState();
 }
 
-class _ContractDetailState extends State<ContractDetail> {
+class _ContractDetailState extends State<ContractDetail>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   late ContractDetailBloc bloc;
   String mes = '';
 
@@ -37,12 +43,13 @@ class _ContractDetailState extends State<ContractDetail> {
   void initState() {
     super.initState();
     bloc = ContractDetailBloc();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
-      title: S.current.contract_details,//todo
+      title: S.current.contract_details, //todo
       child: BlocConsumer<ContractDetailBloc, ContractDetailState>(
         bloc: bloc,
         listener: (context, state) {
@@ -66,258 +73,625 @@ class _ContractDetailState extends State<ContractDetail> {
             error: AppException(S.current.error, mes),
             textEmpty: mes,
             child: !(state is ContractDetailSuccess)
-                ? Stack(
-                    children: [
-                      Container(
-                        height: 812.h,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Container(
-                                  width: 343.w,
-                                  margin: EdgeInsets.only(
-                                    bottom: 20.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getInstance()
-                                        .borderItemColor(),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.r),
-                                    ),
-                                    border: Border.all(
-                                      color:
-                                      AppTheme.getInstance().divideColor(),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                      right: 16.w,
-                                      left: 16.w,
-                                      top: 20.h,
-                                      bottom: 20.h,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                ? DefaultTabController(
+                    length: 3,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 812.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
+                          child: NestedScrollView(
+                            physics: const ScrollPhysics(),
+                            headerSliverBuilder: (
+                              BuildContext context,
+                              bool innerBoxIsScrolled,
+                            ) =>
+                                [
+                              SliverList(
+                                delegate: SliverChildListDelegate(
+                                  [
+                                    Column(
                                       children: [
-                                        Text(
-                                          S.current.lender,
-                                          style: textNormalCustom(
-                                            null,
-                                            20,
-                                            FontWeight.w700,
-                                          ),
-                                        ),
-                                        spaceH8,
-                                        RichText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            text: '',
-                                            style: textNormal(
-                                              null,
-                                              16,
+                                        Center(
+                                          child: Container(
+                                            width: 343.w,
+                                            margin: EdgeInsets.only(
+                                              bottom: 20.h,
                                             ),
-                                            children: [
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: Text(
-                                                  '${S.current.address}:',
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .pawnItemGray(),
-                                                    16,
-                                                    FontWeight.w400,
-                                                  ),
-                                                ),
+                                            decoration: BoxDecoration(
+                                              color: AppTheme.getInstance()
+                                                  .borderItemColor(),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.r),
                                               ),
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: SizedBox(
-                                                  width: 4.w,
-                                                ),
+                                              border: Border.all(
+                                                color: AppTheme.getInstance()
+                                                    .divideColor(),
                                               ),
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    launchURL(
-                                                      Get.find<
-                                                          AppConstants>()
-                                                          .bscScan +
-                                                          ApiConstants
-                                                              .BSC_SCAN_ADDRESS +
-                                                          (''),//todo
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    // checkNullAddressWallet(
-                                                    //   obj.walletAddress ?? '',
-                                                    // ),
-                                                    'adđress',
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.only(
+                                                right: 16.w,
+                                                left: 16.w,
+                                                top: 20.h,
+                                                bottom: 20.h,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    S.current.lender,
                                                     style: textNormalCustom(
-                                                      AppTheme.getInstance()
-                                                          .blueMarketColors(),
-                                                      16,
-                                                      FontWeight.w400,
-                                                    ).copyWith(
-                                                      decoration: TextDecoration
-                                                          .underline,
+                                                      null,
+                                                      20,
+                                                      FontWeight.w700,
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        spaceH8,
-                                        RichText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            text: '',
-                                            style: textNormal(
-                                              null,
-                                              16,
-                                            ),
-                                            children: [
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: Text(
-                                                  '${S.current.address}:',
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .borderItemColor(),
-                                                    16,
-                                                    FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ),
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: Image.asset(
-                                                  ImageAssets.ic_star,
-                                                  height: 20.h,
-                                                  width: 20.w,
-                                                ),
-                                              ),
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: SizedBox(
-                                                  width: 4.w,
-                                                ),
-                                              ),
-                                              WidgetSpan(
-                                                alignment:
-                                                PlaceholderAlignment.middle,
-                                                child: StreamBuilder<String>(
-                                                //  stream: bloc.rate,//todo
-                                                  builder: (context, snapshot) {
-                                                    return Text(
-                                                      snapshot.data.toString(),
-                                                      style: textNormalCustom(
+                                                  spaceH8,
+                                                  RichText(
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                      text: '',
+                                                      style: textNormal(
                                                         null,
                                                         16,
-                                                        FontWeight.w400,
                                                       ),
-                                                    );
-                                                  },
-                                                ),
+                                                      children: [
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            '${S.current.address}:',
+                                                            style:
+                                                                textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .pawnItemGray(),
+                                                              16,
+                                                              FontWeight.w400,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: SizedBox(
+                                                            width: 4.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              launchURL(
+                                                                Get.find<AppConstants>()
+                                                                        .bscScan +
+                                                                    ApiConstants
+                                                                        .BSC_SCAN_ADDRESS +
+                                                                    (''), //todo
+                                                              );
+                                                            },
+                                                            child: Text(
+                                                              // checkNullAddressWallet(
+                                                              //   obj.walletAddress ?? '',
+                                                              // ),
+                                                              'adđress',
+                                                              style:
+                                                                  textNormalCustom(
+                                                                AppTheme.getInstance()
+                                                                    .blueMarketColors(),
+                                                                16,
+                                                                FontWeight.w400,
+                                                              ).copyWith(
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  spaceH8,
+                                                  RichText(
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                      text: '',
+                                                      style: textNormal(
+                                                        null,
+                                                        16,
+                                                      ),
+                                                      children: [
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            '${S.current.address}:',
+                                                            style:
+                                                                textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .borderItemColor(),
+                                                              16,
+                                                              FontWeight.w400,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Image.asset(
+                                                            ImageAssets.ic_star,
+                                                            height: 20.h,
+                                                            width: 20.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: SizedBox(
+                                                            width: 4.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: StreamBuilder<
+                                                              String>(
+                                                            //  stream: bloc.rate,//todo
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              return Text(
+                                                                snapshot.data
+                                                                    .toString(),
+                                                                style:
+                                                                    textNormalCustom(
+                                                                  null,
+                                                                  16,
+                                                                  FontWeight
+                                                                      .w400,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  spaceH20,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          //todo
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 20.w,
+                                                            vertical: 10.h,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            gradient:
+                                                                RadialGradient(
+                                                              radius: 4.r,
+                                                              center:
+                                                                  const Alignment(
+                                                                0.5,
+                                                                -0.5,
+                                                              ),
+                                                              colors: AppTheme
+                                                                      .getInstance()
+                                                                  .gradientButtonColor(),
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  12.r),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            S.current
+                                                                .view_profile,
+                                                            style:
+                                                                textNormalCustom(
+                                                              null,
+                                                              16,
+                                                              FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      spaceW25,
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          //todo
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 20.w,
+                                                            vertical: 10.h,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: AppTheme
+                                                                    .getInstance()
+                                                                .borderItemColor(),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  12.r),
+                                                            ),
+                                                            border: Border.all(
+                                                              color: AppTheme
+                                                                      .getInstance()
+                                                                  .fillColor(),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            S.current.review,
+                                                            style:
+                                                                textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .fillColor(),
+                                                              16,
+                                                              FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                        spaceH20,
-                                        Row(
-                                          children: [
-
-                                            GestureDetector(
-                                              onTap: () {
-                                                //todo
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,
-                                                  vertical: 10.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: AppTheme.getInstance()
-                                                      .borderItemColor(),
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(12.r),
+                                        Center(
+                                          child: Container(
+                                            width: 343.w,
+                                            margin: EdgeInsets.only(
+                                              bottom: 36.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppTheme.getInstance()
+                                                  .borderItemColor(),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.r),
+                                              ),
+                                              border: Border.all(
+                                                color: AppTheme.getInstance()
+                                                    .divideColor(),
+                                              ),
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.only(
+                                                right: 16.w,
+                                                left: 16.w,
+                                                top: 20.h,
+                                                bottom: 20.h,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    S.current.borrower,
+                                                    style: textNormalCustom(
+                                                      null,
+                                                      20,
+                                                      FontWeight.w700,
+                                                    ),
                                                   ),
-                                                  border: Border.all(
-                                                    color: AppTheme.getInstance()
-                                                        .fillColor(),
+                                                  spaceH8,
+                                                  RichText(
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                      text: '',
+                                                      style: textNormal(
+                                                        null,
+                                                        16,
+                                                      ),
+                                                      children: [
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            '${S.current.address}:',
+                                                            style:
+                                                                textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .pawnItemGray(),
+                                                              16,
+                                                              FontWeight.w400,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: SizedBox(
+                                                            width: 4.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              launchURL(
+                                                                Get.find<AppConstants>()
+                                                                        .bscScan +
+                                                                    ApiConstants
+                                                                        .BSC_SCAN_ADDRESS +
+                                                                    (''), //todo
+                                                              );
+                                                            },
+                                                            child: Text(
+                                                              // checkNullAddressWallet(
+                                                              //   obj.walletAddress ?? '',
+                                                              // ),
+                                                              'adđress',
+                                                              style:
+                                                                  textNormalCustom(
+                                                                AppTheme.getInstance()
+                                                                    .blueMarketColors(),
+                                                                16,
+                                                                FontWeight.w400,
+                                                              ).copyWith(
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                child: Text(
-                                                  S.current.review,
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .fillColor(),
-                                                    16,
-                                                    FontWeight.w600,
+                                                  spaceH8,
+                                                  RichText(
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                      text: '',
+                                                      style: textNormal(
+                                                        null,
+                                                        16,
+                                                      ),
+                                                      children: [
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            '${S.current.address}:',
+                                                            style:
+                                                                textNormalCustom(
+                                                              AppTheme.getInstance()
+                                                                  .borderItemColor(),
+                                                              16,
+                                                              FontWeight.w400,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: Image.asset(
+                                                            ImageAssets.ic_star,
+                                                            height: 20.h,
+                                                            width: 20.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: SizedBox(
+                                                            width: 4.w,
+                                                          ),
+                                                        ),
+                                                        WidgetSpan(
+                                                          alignment:
+                                                              PlaceholderAlignment
+                                                                  .middle,
+                                                          child: StreamBuilder<
+                                                              String>(
+                                                            //  stream: bloc.rate,//todo
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              return Text(
+                                                                snapshot.data
+                                                                    .toString(),
+                                                                style:
+                                                                    textNormalCustom(
+                                                                  null,
+                                                                  16,
+                                                                  FontWeight
+                                                                      .w400,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SliverPersistentHeader(
+                                delegate: BaseSliverHeader(
+                                  TabBar(
+                                    unselectedLabelColor:
+                                        const Color(0xFF9997FF),
+                                    labelColor: Colors.white,
+                                    indicatorColor: const Color(0xFF6F6FC5),
+                                    controller: _tabController,
+                                    indicatorSize: TabBarIndicatorSize.tab,
+                                    labelStyle: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w600,
+                                    ),
+                                    tabs: [
+                                      Tab(
+                                        child: SizedBox(
+                                          height: 90.h,
+                                          child: Text(S.current.contract_info),
+                                        ),
+                                      ),
+                                      Tab(
+                                        child: SizedBox(
+                                          height: 90.h,
+                                          child: Text(S.current
+                                              .lte_liquidation_threshold),
+                                        ),
+                                      ),
+                                      Tab(
+                                        child: SizedBox(
+                                          height: 90.h,
+                                          child:
+                                              Text(S.current.repayment_history),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                pinned: true,
+                              ),
+                            ],
+                            body: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                ContractInfo(),
+                                LTVTAB(),
+                                RepaymentHistory(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: widget.type == TypeBorrow.CRYPTO_TYPE
+                              ? Center(
+                                  child: Container(
+                                    color: AppTheme.getInstance().bgBtsColor(),
+                                    padding: EdgeInsets.only(
+                                      bottom: 16.h,
+                                    ),
+                                    width: 343.w,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            // );//todo
+                                          },
+                                          child: Container(
+                                            height: 64.h,
+                                            width: 159.w,
+                                            decoration: BoxDecoration(
+                                              color: AppTheme.getInstance()
+                                                  .borderItemColor(),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.r),
+                                              ),
+                                              border: Border.all(
+                                                color: AppTheme.getInstance()
+                                                    .fillColor(),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                S.current.add_collateral,
+                                                style: textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .fillColor(),
+                                                  20,
+                                                  FontWeight.w600,
                                                 ),
                                               ),
                                             ),
-                                          ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            //todo
+                                          },
+                                          child: SizedBox(
+                                            width: 159.w,
+                                            child: ButtonGold(
+                                              isEnable: true,
+                                              fixSize: false,
+                                              haveMargin: false,
+                                              title: S.current.repayment,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: widget.type == TypeBorrow.CRYPTO_TYPE
-                            ? GestureDetector(
-                                onTap: () {
-                                  //todo
-                                },
-                                child: Container(
-                                  color: AppTheme.getInstance().bgBtsColor(),
-                                  padding: EdgeInsets.only(
-                                    bottom: 38.h,
-                                  ),
-                                  child: ButtonGold(
-                                    isEnable: true,
-                                    title: S.current.withdraw,
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    //todo
+                                  },
+                                  child: Container(
+                                    color: AppTheme.getInstance().bgBtsColor(),
+                                    padding: EdgeInsets.only(
+                                      bottom: 38.h,
+                                    ),
+                                    child: ButtonGold(
+                                      isEnable: true,
+                                      title: S.current.repayment,
+                                    ),
                                   ),
                                 ),
-                              )
-                            : GestureDetector(
-                          onTap: () {
-                            //todo
-                          },
-                          child: Container(
-                            color: AppTheme.getInstance().bgBtsColor(),
-                            padding: EdgeInsets.only(
-                              bottom: 38.h,
-                            ),
-                            child: ButtonGold(
-                              isEnable: true,
-                              title: S.current.withdraw,
-                            ),
-                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 : const SizedBox.shrink(),
           );

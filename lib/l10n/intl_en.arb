@@ -930,5 +930,22 @@
   "contract_detail": "Contract detail",
   "review": "Review",
   "contract_id": "Contract ID",
-  "default_date": "Default date"
+  "default_date": "Default date",
+  "repayment": "Repayment",
+  "add_collateral": "Add collateral",
+  "contract_info": "Contract info",
+  "repayment_history": "Repayment history",
+  "lte_liquidation_threshold": "LTV Liquidation threshold",
+  "default_reason": "Default reason",
+  "system_risk": "System risk",
+  "due_date": "Due date (GMT+0)",
+  "cycle": "Cycle",
+  "penalty": "Penalty",
+  "interest": "Interest",
+  "loan": "Loan",
+  "safer": "Safer",
+  "risker": "Risker",
+  "ltv_liquidation_threshold": "LTV liquidation threshold",
+  "your_current_ltv": "Your current LTV",
+  "your_current_ltv_is": "Your current LTV is about to reach to the liquidation threshold. To avoid liquidation, you can repay the remainder of the penalty/ interest loan."
 }
