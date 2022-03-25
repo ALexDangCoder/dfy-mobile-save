@@ -932,6 +932,14 @@
   "contract_id": "Contract ID",
   "default_date": "Default date",
   "repayment_history": "Repayment history",
-  "sys_risk": "Rủi ro hệ thống",
-  "default_reason": "Lý do mặc định"
+  "sys_risk": "System risk",
+  "default_reason": "Default reason",
+  "cycle": "Cycle",
+  "due_to_gmt": "Due date (GMT+0)",
+  "penalty": "Penalty",
+  "interest": "Interest",
+  "loan": "Loan",
+  "status": "Status",
+  "confirm_reject_loan_request": "Confirm reject loan request",
+  "confirm_reject_loan_descrip": "The loan request will be rejected and you can not\nsend offer to this collateral. Do you want to proceed\nthis action?"
 }

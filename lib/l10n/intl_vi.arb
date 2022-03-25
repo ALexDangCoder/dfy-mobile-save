@@ -882,7 +882,14 @@
   "contract_id": "ID Hợp đồng",
   "default_date": "Ngày mặc định",
   "repayment_history": "Lịch sử trả nợ",
-  "sys_risk": "System risk",
-  "default_reason": "Default reason"
-
+  "sys_risk": "Rủi ro hệ thống",
+  "default_reason": "Lý do mặc định",
+  "cycle": "Chu kỳ",
+  "due_to_gmt": "Ngày đáo hạn (GMT+0)",
+  "penalty": "Hình phạt",
+  "interest": "Lãi",
+  "loan": "Khoản vay",
+  "status": "Trạng thái",
+  "confirm_reject_loan_request": "Xác nhận từ chối yêu cầu cho vay",
+  "confirm_reject_loan_descrip": "Yêu cầu cho vay sẽ bị từ chối và bạn không thể\ngửi đề nghị cho tài sản thế chấp này. Bạn có muốn tiếp tục\nhành động này?"
 }

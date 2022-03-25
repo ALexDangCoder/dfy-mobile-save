@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/loan_send_offer.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/filter_offer_sent.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_list.dart';
@@ -177,7 +178,18 @@ class _OfferSentListState extends State<OfferSentList>
                     builder: (ctx) => FilerOfferSent(cubit: cubit),
                   );
                 },
-                child: Image.asset(ImageAssets.ic_filter),
+                child: InkWell(
+                  onTap: () {
+                    //todo push filter screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoanSendOffer(isCryptoElseNft: true),
+                      ),
+                    );
+                  },
+                  child: Image.asset(ImageAssets.ic_filter),
+                ),
               ),
             ),
           ],
