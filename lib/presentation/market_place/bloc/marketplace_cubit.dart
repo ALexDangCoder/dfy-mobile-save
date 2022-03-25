@@ -246,7 +246,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
               name: e.name,
               itemId: e.itemId,
               avatarCid: ApiConstants.BASE_URL_IMAGE + (e.avatarCid ?? ''),
-              coverCid: ApiConstants.BASE_URL_IMAGE + (e.coverCid ?? ''),
+              coverCid: ApiConstants.BASE_URL_IMAGE + (e.featureCid ?? ''),
               nftOwnerCount: e.nftOwnerCount,
               totalNft: e.totalNft,
             ),
