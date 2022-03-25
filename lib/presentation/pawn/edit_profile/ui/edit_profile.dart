@@ -5,6 +5,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -59,7 +60,11 @@ class _EditProfileState extends State<EditProfile> {
             if (nameController.text != '' &&
                 phoneController.text != '' &&
                 addressController.text != '' &&
-                descriptionController.text != '') {
+                descriptionController.text != '' &&
+                (cubit.selectImage.value == StatusPickFile.START ||
+                    cubit.selectImage.value == StatusPickFile.PICK_SUCCESS) &&
+                (cubit.selectCover.value == StatusPickFile.START ||
+                    cubit.selectCover.value == StatusPickFile.PICK_SUCCESS)) {
               unawaited(showLoadingDialog(context, showLoading: true));
               await cubit.saveInfoToBE(
                 name: nameController.text,
@@ -74,6 +79,16 @@ class _EditProfileState extends State<EditProfile> {
                 (value) => Navigator.of(context)
                   ..pop()
                   ..pop(true),
+              );
+            } else if (cubit.selectImage.value != StatusPickFile.START ||
+                cubit.selectImage.value != StatusPickFile.PICK_SUCCESS ||
+                cubit.selectCover.value != StatusPickFile.START ||
+                cubit.selectCover.value != StatusPickFile.PICK_SUCCESS) {
+              showDialogSuccess(
+                context,
+                alert: 'Waiting...',
+                text: 'Waiting some minutes to upload image to server.',
+                onlyPop: true,
               );
             } else {
               cubit.checkEmpty(
@@ -198,8 +213,10 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       StreamBuilder<String>(
                         stream: cubit.errorName,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<String> snapshot,
+                        ) {
                           if (snapshot.data != '') {
                             return SizedBox(
                               child: Text(
@@ -307,8 +324,10 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       StreamBuilder<String>(
                         stream: cubit.errorPhone,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<String> snapshot,
+                        ) {
                           if (snapshot.data != '') {
                             return SizedBox(
                               child: Text(
@@ -378,8 +397,10 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       StreamBuilder<String>(
                         stream: cubit.errorAddress,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<String> snapshot,
+                        ) {
                           if (snapshot.data != '') {
                             return SizedBox(
                               child: Text(
@@ -449,8 +470,10 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       StreamBuilder<String>(
                         stream: cubit.errorDescription,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<String> snapshot,
+                        ) {
                           if (snapshot.data != '') {
                             return SizedBox(
                               child: Text(
@@ -488,28 +511,44 @@ class _EditProfileState extends State<EditProfile> {
             height: 145.h,
             width: double.infinity,
             child: StreamBuilder<StatusPickFile>(
-              stream: cubit.selectImage,
+              stream: cubit.selectCover,
               builder: (context, AsyncSnapshot<StatusPickFile> snapshot) {
-                return FadeInImage.assetNetwork(
-                  placeholder: '',
-                  image: cubit.coverCid,
-                  placeholderErrorBuilder: (ctx, obj, st) {
-                    return Container(
-                      height: 145.h,
-                      width: double.infinity,
-                      color: borderItemColors,
-                    );
-                  },
-                  imageErrorBuilder: (ctx, obj, st) {
-                    return Container(
-                      height: 145.h,
-                      width: double.infinity,
-                      color: borderItemColors,
-                    );
-                  },
-                  placeholderCacheHeight: 400,
-                  fit: BoxFit.fill,
-                );
+                if (snapshot.data == StatusPickFile.START ||
+                    snapshot.data == StatusPickFile.PICK_SUCCESS) {
+                  return FadeInImage.assetNetwork(
+                    placeholder: ImageAssets.image_loading,
+                    image: cubit.coverCid,
+                    placeholderErrorBuilder: (ctx, obj, st) {
+                      return Container(
+                        height: 145.h,
+                        width: double.infinity,
+                        color: borderItemColors,
+                      );
+                    },
+                    imageErrorBuilder: (ctx, obj, st) {
+                      return Container(
+                        height: 145.h,
+                        width: double.infinity,
+                        color: borderItemColors,
+                      );
+                    },
+                    placeholderCacheHeight: 400,
+                    fit: BoxFit.fill,
+                  );
+                } else if (snapshot.data == StatusPickFile.PICK_ERROR) {
+                  return Center(
+                    child: Text(
+                      S.current.maximum_size,
+                      style: textNormalCustom(
+                        Colors.red,
+                        20,
+                        FontWeight.w600,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Image.asset(ImageAssets.image_loading);
+                }
               },
             ),
           ),
@@ -534,25 +573,48 @@ class _EditProfileState extends State<EditProfile> {
                         shape: BoxShape.circle,
                       ),
                       child: StreamBuilder<StatusPickFile>(
-                        stream: cubit.selectCover,
-                        builder: (context, AsyncSnapshot<StatusPickFile> snapshot) {
-                          return FadeInImage.assetNetwork(
-                            placeholder: '',
-                            image: cubit.mediaFileCid,
-                            placeholderErrorBuilder: (ctx, obj, st) {
-                              return const SizedBox();
-                            },
-                            imageErrorBuilder: (ctx, obj, st) {
-                              return Container(
-                                height: 145.h,
-                                width: double.infinity,
-                                color: borderItemColors,
-                              );
-                            },
-                            placeholderCacheHeight: 400,
-                            fit: BoxFit.cover,
-                          );
-                        }
+                        stream: cubit.selectImage,
+                        builder:
+                            (context, AsyncSnapshot<StatusPickFile> snapshot) {
+                          if (snapshot.data == StatusPickFile.START ||
+                              snapshot.data == StatusPickFile.PICK_SUCCESS) {
+                            return FadeInImage.assetNetwork(
+                              placeholder: ImageAssets.img_loading_transparent,
+                              image: cubit.mediaFileCid,
+                              placeholderErrorBuilder: (ctx, obj, st) {
+                                return Container(
+                                  height: 145.h,
+                                  width: double.infinity,
+                                  color: borderItemColors,
+                                );
+                              },
+                              imageErrorBuilder: (ctx, obj, st) {
+                                return Container(
+                                  height: 145.h,
+                                  width: double.infinity,
+                                  color: borderItemColors,
+                                );
+                              },
+                              placeholderCacheHeight: 400,
+                              fit: BoxFit.fill,
+                            );
+                          } else if (snapshot.data ==
+                              StatusPickFile.PICK_ERROR) {
+                            return Center(
+                              child: Text(
+                                S.current.maximum_size,
+                                style: textNormalCustom(
+                                  Colors.red,
+                                  10,
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Image.asset(
+                                ImageAssets.img_loading_transparent);
+                          }
+                        },
                       ),
                     ),
                   ),

@@ -62,7 +62,6 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   final PinToIPFS ipfsService = PinToIPFS();
 
   Future<void> pickImage({bool isMainMedia = false}) async {
-    selectImage.add(StatusPickFile.PICK_FILE);
     final _fileMap = await pickImageFunc(
       imageType: FEATURE_PHOTO,
       tittle: 'Pick Image',
@@ -73,6 +72,7 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
       final _imageSize = _fileMap.intValue(SIZE_OF_FILE);
       final _extension = _fileMap.getStringValue(EXTENSION_OF_FILE);
       if (isMainMedia) {
+        selectImage.add(StatusPickFile.PICK_FILE);
         if (_imageSize / 1048576 < 50) {
           fileType = '$MEDIA_IMAGE_FILE/$_extension';
           mediaFilePath = _path;
@@ -83,6 +83,7 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
           selectImage.add(StatusPickFile.PICK_ERROR);
         }
       } else {
+        selectCover.add(StatusPickFile.PICK_FILE);
         if (_imageSize / 1048576 < 50) {
           coverPhotoPath = _path;
           coverCid = ApiConstants.BASE_URL_IMAGE +
@@ -92,6 +93,10 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
           selectCover.add(StatusPickFile.PICK_ERROR);
         }
       }
+    }
+    else{
+      selectImage.add(StatusPickFile.START);
+      selectCover.add(StatusPickFile.START);
     }
   }
 

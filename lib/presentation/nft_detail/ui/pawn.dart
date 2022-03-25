@@ -254,7 +254,7 @@ Widget _buildButtonCancelOnPawn(
           ),
   );
 }
-void showDialogSuccess (BuildContext context ,{String? alert, String? text}) {
+void showDialogSuccess (BuildContext context ,{String? alert, String? text,bool? onlyPop}) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -308,9 +308,14 @@ void showDialogSuccess (BuildContext context ,{String? alert, String? text}) {
                 ),
               ),
               onPressed: () {
-                Navigator.of(ctx).pop();
-                Navigator.of(context).pop(true);
-                Navigator.pop(context);
+                if(onlyPop ?? false){
+                  Navigator.of(ctx).pop();
+                }
+                else {
+                  Navigator.of(ctx).pop();
+                  Navigator.of(context).pop(true);
+                  Navigator.pop(context);
+                }
               },
             ),
           ),
