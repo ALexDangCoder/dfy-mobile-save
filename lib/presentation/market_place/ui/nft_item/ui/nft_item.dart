@@ -246,29 +246,39 @@ class _NFTItemState extends State<NFTItemWidget> {
                               if (widget.nftMarket.urlToken?.isNotEmpty ??
                                   false)
                                 ClipRRect(
-                                  child: Image.network(
-                                    widget.nftMarket.urlToken ?? '',
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: widget.nftMarket.marketType ==
+                                          MarketType.NOT_ON_MARKET
+                                      ? null
+                                      : Image.network(
+                                          widget.nftMarket.urlToken ?? '',
+                                          fit: BoxFit.cover,
+                                        ),
                                 )
                               else
-                                const Image(
-                                  image: AssetImage(ImageAssets.symbol),
-                                ),
+                                widget.nftMarket.marketType ==
+                                        MarketType.NOT_ON_MARKET
+                                    ? const SizedBox.shrink()
+                                    : const Image(
+                                        image: AssetImage(ImageAssets.symbol),
+                                      ),
                               SizedBox(
                                 width: 4.18.h,
                               ),
                               SizedBox(
                                 width: 70.w,
-                                child: Text(
-                                  formatValue.format(widget.nftMarket.price),
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().yellowColor(),
-                                    13,
-                                    FontWeight.w600,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                child: widget.nftMarket.marketType ==
+                                        MarketType.NOT_ON_MARKET
+                                    ? null
+                                    : Text(
+                                        formatValue
+                                            .format(widget.nftMarket.price),
+                                        style: textNormalCustom(
+                                          AppTheme.getInstance().yellowColor(),
+                                          13,
+                                          FontWeight.w600,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                               ),
                             ],
                           ),
