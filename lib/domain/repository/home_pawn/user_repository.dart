@@ -52,4 +52,8 @@ mixin UsersRepository {
     String? userId,
     String? walletAddress,
   });
+  Future<Result<String>> saveDataPawnshopToBe({
+    required Map<String, String> map,
+  });
+
 }

@@ -10,6 +10,7 @@ import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/select_crypto_collateral/ui/select_crypto.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/check_tab_bar.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/bloc/sign_loan_contract_cubit.dart';
@@ -44,7 +45,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
   late ModelToken item;
   late ModelToken loanToken;
   late String duration;
-  bool checkEmail = true;
+  bool checkEmail = false;
   String txhChoseCollateral = '';
   String bcCollateralId = '';
 
@@ -58,6 +59,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
     } else {
       item = ModelToken.init();
     }
+    checkEmail = widget.cubit.hasEmail;
     collateralAmount.text = widget.cubit.collateralCached ?? '';
     message.text = widget.cubit.messageCached ?? '';
     durationController.text = widget.cubit.durationCached ?? '';
@@ -660,6 +662,11 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                     item = widget.cubit.listTokenCollateral[0];
                     loanToken = widget.cubit.checkShow[0];
                     widget.cubit.chooseExisting.add(false);
+                    widget.cubit.enableButtonRequest(
+                      message.text,
+                      collateralAmount.text,
+                      durationController.text,
+                    );
                   }
                 },
                 child: Container(
@@ -817,17 +824,22 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
             visible: !widget.cubit.hasEmail,
             child: InkWell(
               onTap: () {
-                checkEmail = !checkEmail;
-                widget.cubit.emailNotification.add(checkEmail);
-                showDialog(
-                  context: context,
-                  builder: (context) => ConnectWalletDialog(
-                    navigationTo: SignLoanContract(
-                      pawnshopPackage: widget.pawnshopPackage,
+                widget.cubit.emailNotification.add(!checkEmail);
+                if (!checkEmail) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConnectWalletDialog(
+                      navigationTo: SignLoanContract(
+                        pawnshopPackage: widget.pawnshopPackage,
+                      ),
+                      isRequireLoginEmail: true,
+                      hasFunction: true,
+                      function: () {
+                        checkEmail = true;
+                      },
                     ),
-                    isRequireLoginEmail: true,
-                  ),
-                );
+                  );
+                }
               },
               child: StreamBuilder<bool>(
                 stream: widget.cubit.emailNotification,
@@ -866,110 +878,121 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                         durationController.text,
                       );
                     } else {
-                      if (widget.cubit.chooseExisting.value) {
-                        unawaited(showLoadingDialog(context));
-                        await widget.cubit.pushSendNftToBE(
-                          amount: collateralAmount.text,
-                          bcPackageId:
-                              widget.pawnshopPackage.bcPackageId.toString(),
-                          collateral: item.nameShortToken,
-                          collateralId: bcCollateralId,
-                          description: message.text,
-                          duration: durationController.text,
-                          durationType: duration == S.current.week ? '0' : '1',
-                          packageId:
-                              widget.pawnshopPackage.pawnshop?.id.toString() ??
-                                  '',
-                          pawnshopType: widget.pawnshopPackage.type.toString(),
-                          txId: txhChoseCollateral,
-                          supplyCurrency: loanToken.nameShortToken,
-                          walletAddress: widget.cubit.wallet,
-                        );
-                        await showLoadSuccess(context).then(
-                          (value) => Navigator.of(context)
-                            ..pop()
-                            ..pop(),
-                        );
-                      } else {
-                        final nav = Navigator.of(context);
-                        final hexString =
-                            await widget.cubit.getCreateCryptoCollateral(
-                          collateralAddress: item.tokenAddress,
-                          packageID: '-1',
-                          amount: collateralAmount.text,
-                          loanToken: loanToken.tokenAddress,
-                          durationQty: durationController.text,
-                          durationType: duration == S.current.week ? 0 : 1,
-                        );
-                        unawaited(
-                          nav.push(
-                            MaterialPageRoute(
-                              builder: (context) => Approve(
-                                hexString: hexString,
-                                payValue: collateralAmount.text,
-                                tokenAddress: item.tokenAddress,
-                                needApprove: true,
-                                onSuccessSign: (context, data) async {
-                                  await widget.cubit.pushSendNftToBE(
-                                    amount: collateralAmount.text,
-                                    bcPackageId: widget
-                                        .pawnshopPackage.id
-                                        .toString(),
-                                    collateral: item.nameShortToken,
-                                    collateralId: '',
-                                    description: message.text,
-                                    duration: durationController.text,
-                                    durationType:
-                                        duration == S.current.week ? '0' : '1',
-                                    packageId: widget
-                                            .pawnshopPackage.pawnshop?.id
-                                            .toString() ??
-                                        '',
-                                    pawnshopType:
-                                        widget.pawnshopPackage.type.toString(),
-                                    txId: data,
-                                    supplyCurrency: loanToken.nameShortToken,
-                                    walletAddress: widget.cubit.wallet,
-                                  );
-                                  await showLoadSuccess(context).then(
-                                    (value) => Navigator.of(context)
-                                      ..pop()
-                                      ..pop()
-                                      ..pop(),
-                                  );
-                                },
-                                onErrorSign: (context) {
-                                  showLoadFail(context);
-                                },
-                                listDetail: [
-                                  DetailItemApproveModel(
-                                    title: S.current.message,
-                                    value: message.text,
-                                  ),
-                                  DetailItemApproveModel(
-                                    title: S.current.collateral,
-                                    urlToken: item.iconToken,
-                                    value:
-                                        '${collateralAmount.text} ${item.nameShortToken}',
-                                  ),
-                                  DetailItemApproveModel(
-                                    title: S.current.loan_token,
-                                    urlToken: loanToken.iconToken,
-                                    value: loanToken.nameShortToken,
-                                  ),
-                                  DetailItemApproveModel(
-                                    title: S.current.duration,
-                                    value:
-                                        '${durationController.text} $duration',
-                                  ),
-                                ],
-                                title: 'Confirm loan request',
-                                textActiveButton: S.current.send,
-                                spender: Get.find<AppConstants>()
-                                    .crypto_pawn_contract,
+                      if (checkEmail) {
+                        if (widget.cubit.chooseExisting.value) {
+                          unawaited(showLoadingDialog(context));
+                          await widget.cubit.pushSendNftToBE(
+                            amount: collateralAmount.text,
+                            bcPackageId:
+                                widget.pawnshopPackage.bcPackageId.toString(),
+                            collateral: item.nameShortToken,
+                            collateralId: bcCollateralId,
+                            description: message.text,
+                            duration: durationController.text,
+                            durationType:
+                                duration == S.current.week ? '0' : '1',
+                            packageId: widget.pawnshopPackage.pawnshop?.id
+                                    .toString() ??
+                                '',
+                            pawnshopType:
+                                widget.pawnshopPackage.type.toString(),
+                            txId: txhChoseCollateral,
+                            supplyCurrency: loanToken.nameShortToken,
+                            walletAddress: widget.cubit.wallet,
+                          );
+                          await showLoadSuccess(context).then(
+                            (value) => Navigator.of(context)
+                              ..pop()
+                              ..pop(),
+                          );
+                        } else {
+                          final nav = Navigator.of(context);
+                          final hexString =
+                              await widget.cubit.getCreateCryptoCollateral(
+                            collateralAddress: item.tokenAddress,
+                            packageID: '-1',
+                            amount: collateralAmount.text,
+                            loanToken: loanToken.tokenAddress,
+                            durationQty: durationController.text,
+                            durationType: duration == S.current.week ? 0 : 1,
+                          );
+                          unawaited(
+                            nav.push(
+                              MaterialPageRoute(
+                                builder: (context) => Approve(
+                                  hexString: hexString,
+                                  payValue: collateralAmount.text,
+                                  tokenAddress: item.tokenAddress,
+                                  needApprove: true,
+                                  onSuccessSign: (context, data) async {
+                                    await widget.cubit.pushSendNftToBE(
+                                      amount: collateralAmount.text,
+                                      bcPackageId:
+                                          widget.pawnshopPackage.id.toString(),
+                                      collateral: item.nameShortToken,
+                                      collateralId: '',
+                                      description: message.text,
+                                      duration: durationController.text,
+                                      durationType: duration == S.current.week
+                                          ? '0'
+                                          : '1',
+                                      packageId: widget
+                                              .pawnshopPackage.pawnshop?.id
+                                              .toString() ??
+                                          '',
+                                      pawnshopType: widget.pawnshopPackage.type
+                                          .toString(),
+                                      txId: data,
+                                      supplyCurrency: loanToken.nameShortToken,
+                                      walletAddress: widget.cubit.wallet,
+                                    );
+                                    await showLoadSuccess(context).then(
+                                      (value) => Navigator.of(context)
+                                        ..pop()
+                                        ..pop()
+                                        ..pop(),
+                                    );
+                                  },
+                                  onErrorSign: (context) {
+                                    showLoadFail(context);
+                                  },
+                                  listDetail: [
+                                    DetailItemApproveModel(
+                                      title: S.current.message,
+                                      value: message.text,
+                                    ),
+                                    DetailItemApproveModel(
+                                      title: S.current.collateral,
+                                      urlToken: item.iconToken,
+                                      value:
+                                          '${collateralAmount.text} ${item.nameShortToken}',
+                                    ),
+                                    DetailItemApproveModel(
+                                      title: S.current.loan_token,
+                                      urlToken: loanToken.iconToken,
+                                      value: loanToken.nameShortToken,
+                                    ),
+                                    DetailItemApproveModel(
+                                      title: S.current.duration,
+                                      value:
+                                          '${durationController.text} $duration',
+                                    ),
+                                  ],
+                                  title: 'Confirm loan request',
+                                  textActiveButton: S.current.send,
+                                  spender: Get.find<AppConstants>()
+                                      .crypto_pawn_contract,
+                                ),
                               ),
                             ),
-                          ),
+                          );
+                        }
+                      } else {
+                        showDialogSuccess(
+                          context,
+                          alert: 'Warning',
+                          text: 'You must be login by email to send loan request',
+                          onlyPop: true,
                         );
                       }
                     }

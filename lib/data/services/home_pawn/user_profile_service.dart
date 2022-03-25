@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/borrow_total_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/lending_setting_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_collateral_response.dart';
@@ -25,6 +26,10 @@ abstract class UserProfileService {
   @GET('${ApiConstants.GET_MY_PROFILE_USER}profile')
   Future<UserProfileResponse> getMyUserProfile(
 
+      );
+  @PUT(ApiConstants.PUT_PAWN_SHOP_PROFILE)
+  Future<ConfirmEvaluationResponse> updatePawnshopProfile(
+      @Body() Map<String,String> map,
       );
 
   @GET(ApiConstants.GET_REPUTATION)
