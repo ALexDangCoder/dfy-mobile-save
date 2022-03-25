@@ -489,6 +489,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
             for (final NftMarket value in res) {
               value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
               if (value.marketType == MarketType.NOT_ON_MARKET) {
+                 listNftMyAcc.add(value);
               } else {
                 listNftMyAcc.add(value);
               }
