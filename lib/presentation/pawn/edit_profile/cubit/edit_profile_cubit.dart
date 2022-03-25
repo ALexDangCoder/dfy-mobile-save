@@ -1,14 +1,25 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/repository/home_pawn/user_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pick_media_file.dart';
 import 'package:Dfy/utils/upload_ipfs/pin_to_ipfs.dart';
+import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'edit_profile_state.dart';
+
+enum StatusPickFile {
+  START,
+  PICK_FILE,
+  PICK_SUCCESS,
+  PICK_ERROR,
+}
 
 class EditProfileCubit extends BaseCubit<EditProfileState> {
   EditProfileCubit() : super(EditProfileInitial());
@@ -17,7 +28,8 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   BehaviorSubject<String> errorPhone = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorAddress = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorDescription = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> selectImage = BehaviorSubject.seeded(false);
+  BehaviorSubject<StatusPickFile> selectImage = BehaviorSubject.seeded(StatusPickFile.START);
+  BehaviorSubject<StatusPickFile> selectCover = BehaviorSubject.seeded(StatusPickFile.START);
 
   String mediaFileCid = '';
   String coverCid = '';
@@ -25,10 +37,32 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   String coverPhotoPath = '';
   String fileType = '';
 
+  UsersRepository get _repo => Get.find();
+
+  void checkEmpty({
+    String? name,
+    String? phoneNumber,
+    String? address,
+    String? description,
+  }) {
+    if (name == '') {
+      errorName.add('Name is not null');
+    }
+    if (phoneNumber == '') {
+      errorPhone.add('Phone is not null');
+    }
+    if (address == '') {
+      errorAddress.add('Address is not null');
+    }
+    if (description == '') {
+      errorDescription.add('Description is not null');
+    }
+  }
+
   final PinToIPFS ipfsService = PinToIPFS();
 
   Future<void> pickImage({bool isMainMedia = false}) async {
-    showLoading();
+    selectImage.add(StatusPickFile.PICK_FILE);
     final _fileMap = await pickImageFunc(
       imageType: FEATURE_PHOTO,
       tittle: 'Pick Image',
@@ -44,21 +78,54 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
           mediaFilePath = _path;
           mediaFileCid = ApiConstants.BASE_URL_IMAGE +
               await ipfsService.pinFileToIPFS(pathFile: mediaFilePath);
-          selectImage.add(true);
+          selectImage.add(StatusPickFile.PICK_SUCCESS);
         } else {
-          //collectionMessSubject.sink.add(S.current.maximum_file_size);
+          selectImage.add(StatusPickFile.PICK_ERROR);
         }
       } else {
         if (_imageSize / 1048576 < 50) {
           coverPhotoPath = _path;
           coverCid = ApiConstants.BASE_URL_IMAGE +
               await ipfsService.pinFileToIPFS(pathFile: coverPhotoPath);
-          selectImage.add(true);
+          selectCover.add(StatusPickFile.PICK_SUCCESS);
         } else {
-          //coverPhotoMessSubject.sink.add(S.current.maximum_file_size);
+          selectCover.add(StatusPickFile.PICK_ERROR);
         }
       }
     }
+  }
+
+  Future<void> saveInfoToBE({
+    String? address,
+    String? avatar,
+    String? cover,
+    String? description,
+    String? email,
+    String? name,
+    String? phoneNum,
+  }) async {
+    Map<String, String> data = {
+      'address': address ?? '',
+      'avatar': avatar ?? '',
+      'coverImage': cover ?? '',
+      'description': description ?? '',
+      'email': email ?? '',
+      'name': name ?? '',
+      'phoneNumber': phoneNum ?? '',
+    };
+    final Result<String> code = await _repo.saveDataPawnshopToBe(map: data);
+    code.when(
+      success: (res) {
+        if (res == '200') {
+          emit(EditSuccess());
+        } else {
+          emit(EditFail());
+        }
+      },
+      error: (error) {
+        emit(EditFail());
+      },
+    );
   }
 
   String date(int createAt) {

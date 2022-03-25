@@ -1,3 +1,4 @@
+import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/borrow_total_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/lending_setting_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_collateral_response.dart';
@@ -161,6 +162,14 @@ class UserProfileRepositoryImpl implements UsersRepository {
     return runCatchingAsync<UserProfileResponse, UserProfile>(
           () => _userService.getMyUserProfile(),
           (response) => response.data?.toDomain() ?? UserProfile(),
+    );
+  }
+
+  @override
+  Future<Result<String>> saveDataPawnshopToBe({required Map<String, String> map}) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _userService.updatePawnshopProfile(map),
+          (response) => response.code.toString(),
     );
   }
 }

@@ -11,7 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'constants/app_constants.dart';
 
 /// show dialog loading
-Future<void> showLoadingDialog(BuildContext context) async {
+Future<void> showLoadingDialog(BuildContext context,
+    {bool? showLoading}) async {
   final navigator = Navigator.of(context);
   await navigator.push(
     PageRouteBuilder(
@@ -23,7 +24,9 @@ Future<void> showLoadingDialog(BuildContext context) async {
           body: Center(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-              child: const TransactionSubmit(),
+              child: TransactionSubmit(
+                justLoading: showLoading,
+              ),
             ),
           ),
         );
@@ -64,7 +67,7 @@ Future<void> showLoadFail(BuildContext context) async {
 }
 
 /// show dialog success
-Future<void> showLoadSuccess(BuildContext context) async {
+Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess}) async {
   final navigator = Navigator.of(context);
   unawaited(
     navigator.push(
@@ -77,7 +80,9 @@ Future<void> showLoadSuccess(BuildContext context) async {
             body: Center(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                child: const TransactionSubmitSuccess(),
+                child: TransactionSubmitSuccess(
+                  onlySuccess: onlySuccess,
+                ),
               ),
             ),
           );
