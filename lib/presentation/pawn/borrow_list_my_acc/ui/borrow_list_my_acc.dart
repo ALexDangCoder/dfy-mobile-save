@@ -85,16 +85,19 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                         ),
                       ),
                     ),
-                    Text(
-                      S.current.borrow_contract_list,
-                      style: textNormalCustom(
-                        null,
-                        20.sp,
-                        FontWeight.w700,
-                      ).copyWith(
-                        overflow: TextOverflow.ellipsis,
+                    SizedBox(
+                      width: 270.w,
+                      child: Text(
+                        S.current.borrow_contract_list,
+                        style: textNormalCustom(
+                          null,
+                          20.sp,
+                          FontWeight.w700,
+                        ).copyWith(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        maxLines: 1,
                       ),
-                      maxLines: 1,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -140,24 +143,10 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                           },
                           tabs: [
                             Tab(
-                              child: Text(
-                                S.current.crypto,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().whiteColor(),
-                                  14,
-                                  FontWeight.w600,
-                                ),
-                              ),
+                              text: S.current.crypto,
                             ),
                             Tab(
-                              child: Text(
-                                S.current.nft,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().whiteColor(),
-                                  14,
-                                  FontWeight.w600,
-                                ),
-                              ),
+                              text: S.current.nft,
                             ),
                           ],
                         ),
