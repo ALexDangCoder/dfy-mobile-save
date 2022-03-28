@@ -26,14 +26,13 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
   @override
   void initState() {
     super.initState();
+    widget.cubit.getUserId();
     if (widget.cubit.listOfferSentCrypto.isNotEmpty) {
       widget.cubit.listOfferSentCrypto.clear();
     }
     widget.cubit.getListOfferSentCrypto(
-      userId: 5943.toString(),
-      // sort: 'createdAt,desc',
+      userId: widget.cubit.userID,
       type: 0.toString(),
-      walletAddress: '0x0103919f4084a836288e895143e4f031761fcfbe',
     );
   }
 
