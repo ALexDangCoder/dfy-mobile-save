@@ -55,5 +55,8 @@ mixin UsersRepository {
   Future<Result<String>> saveDataPawnshopToBe({
     required Map<String, String> map,
   });
+  Future<Result<String>> saveDataPersonalToBe({
+    required Map<String, dynamic> map,
+  });
 
 }

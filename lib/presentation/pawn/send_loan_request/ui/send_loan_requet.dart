@@ -64,7 +64,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
           },
           child: Container(
             height: 812.h,
-            margin: EdgeInsets.only(
+            padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
             ),
             decoration: BoxDecoration(

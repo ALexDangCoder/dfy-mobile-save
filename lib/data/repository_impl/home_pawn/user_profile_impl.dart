@@ -172,4 +172,12 @@ class UserProfileRepositoryImpl implements UsersRepository {
           (response) => response.code.toString(),
     );
   }
+
+  @override
+  Future<Result<String>> saveDataPersonalToBe({required Map<String, dynamic> map}) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _userService.updatePersonalProfile(map),
+          (response) => response.code.toString(),
+    );
+  }
 }

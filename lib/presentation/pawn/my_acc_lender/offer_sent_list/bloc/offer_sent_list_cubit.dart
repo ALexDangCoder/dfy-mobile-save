@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_crypto_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +24,43 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
   OfferSentRepository get _offerSentService => Get.find();
 
   ///need for call api
+  ///0.Api get UserID
+  String getEmailWallet() {
+    late String currentEmail = '';
+    final account = PrefsService.getWalletLogin();
+    final Map<String, dynamic> mapLoginState = jsonDecode(account);
+    if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
+      final userInfo = PrefsService.getUserProfile();
+      final String wallet = PrefsService.getCurrentBEWallet();
+      final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
+      if (mapProfileUser.stringValueOrEmpty('email') != '') {
+        currentEmail = mapProfileUser.stringValueOrEmpty('email');
+      } else {
+        currentEmail = '';
+      }
+    }
+    return currentEmail;
+  }
+
+  String userID = '';
+
+  Future<String> getUserId() async {
+    final Result<UserInfoModel> result = await _offerSentService.getUserId(
+      email: getEmailWallet(),
+      type: 1.toString(),
+      walletAddress: PrefsService.getCurrentBEWallet(),
+    );
+    result.when(
+      success: (success) {
+        userID = success.userId.toString();
+      },
+      error: (error) {
+        userID = '';
+      },
+    );
+    return userID;
+  }
+
   ///1.Api tab crypto
   String message = '';
   int page = 0;
@@ -42,9 +84,9 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
       status: status,
       size: size ?? defaultSize.toString(),
       page: page.toString(),
-      walletAddress: walletAddress,
+      walletAddress: PrefsService.getCurrentBEWallet(),
       type: type,
-      userId: userId,
+      userId: await getUserId(),
       sort: sort,
     );
     result.when(
@@ -190,4 +232,20 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
+
+  ///filter
+  List<Map<String, dynamic>> fakeDataWallet = [
+    {
+      'value': '1',
+      'label': 'wallet 1',
+    },
+    {
+      'value': '2',
+      'label': 'wallet 2',
+    },
+    {
+      'value': '3',
+      'label': 'wallet 3',
+    }
+  ];
 }
