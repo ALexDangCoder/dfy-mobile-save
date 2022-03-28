@@ -913,5 +913,8 @@
   "description_manage_loan_1": "Tham gia vào cuộc cách mạng\ntài chính phi tập trung.",
   "description_manage_loan_2": "Kiếm tiền điện tử\ntừ cho vay.",
   "add_lend_setting": "Thêm cài đặt cho vay",
-  "select_wallet_address": "Chọn địa chỉ ví"
+  "select_wallet_address": "Chọn địa chỉ ví",
+  "offer_sent": "Đề nghị được gửi",
+  "setting_and_package": "Cài đặt & Bưu kiện",
+  "loan_request": "Loan Requests"
 }

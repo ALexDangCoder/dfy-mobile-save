@@ -964,5 +964,8 @@
   "description_manage_loan_1": "Join the revolution in\ndecentralized finance.",
   "description_manage_loan_2": "Make money from crypto\nlending today.",
   "add_lend_setting": "Add lending setting",
-  "select_wallet_address": "Select wallet address"
+  "select_wallet_address": "Select wallet address",
+  "offer_sent": "Offer Sent",
+  "setting_and_package": "Setting & Package",
+  "loan_request": "Yêu cầu vay vốn"
 }

@@ -457,10 +457,26 @@ class _MenuAccountState extends State<MenuAccount> {
     ),
     //todo đang mượn tạm để test màn sent list
     ItemMenuModel.createParent(
-      routeName: 'sent_list',
       title: S.current.lender_profile,
       icon: ImageAssets.ic_card,
-      children: [],
+      children: [
+        ItemMenuModel.createChild(
+          routeName: 'sent_list',
+          title: S.current.offer_sent,
+        ),
+        ItemMenuModel.createChild(
+          routeName: 'contracts_lender',
+          title: S.current.contracts,
+        ),
+        ItemMenuModel.createChild(
+          routeName: 'setting_package_lender',
+          title: S.current.setting_and_package,
+        ),
+        ItemMenuModel.createChild(
+          routeName: 'loan_request_lender',
+          title: S.current.loan_request,
+        ),
+      ],
     ),
     ItemMenuModel.createParent(
       routeName: 'about_us',
