@@ -963,5 +963,7 @@
   "enter_your_comment": "Enter your comment",
   "review_borrower": "Review borrower",
   "tap_to_review": "Tap to review",
-  "repayment_history_detail": "Repayment History Detail"
+  "repayment_history_detail": "Repayment History Detail",
+  "next_ltv": "Next LTV",
+  "current_ltv": "Current LTV"
 }
