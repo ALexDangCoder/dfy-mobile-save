@@ -62,6 +62,10 @@ class ImageAssets {
   static const String collectionStep1 = '$baseImg/collection_step1.png';
   static const String locationStep1 = '$baseImg/Location.png';
   static const String callStep1 = '$baseImg/call.png';
+  static const String imgMoneyPawn = '$baseImg/img_money_pawn.png';
+  static const String imgLtv = '$baseImg/img_ltv.png';
+  static const String imgLtv2 = '$baseImg/img_ltv2.png';
+  static const String imgVectorPawn = '$baseImg/vector_pawn.png';
 
   // static const String fabCancel = '$baseImg/float_btn_cancel.png';
   //urltoken

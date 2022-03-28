@@ -36,7 +36,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorMessage = BehaviorSubject.seeded('');
   BehaviorSubject<String> errorDuration = BehaviorSubject.seeded('');
-  BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(true);
+  BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> enableButton = BehaviorSubject.seeded(false);
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);

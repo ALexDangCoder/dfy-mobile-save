@@ -930,8 +930,25 @@
   "contract_detail": "Contract detail",
   "review": "Review",
   "contract_id": "Contract ID",
+  "sys_risk": "Rủi ro hệ thống",
+  "upload_success":"Upload success",
   "default_date": "Default date",
+  "repayment": "Repayment",
+  "add_collateral": "Add collateral",
+  "contract_info": "Contract info",
   "repayment_history": "Repayment history",
+  "lte_liquidation_threshold": "LTV Liquidation threshold",
+  "system_risk": "System risk",
+  "due_date": "Due date (GMT+0)",
+  "cycle": "Cycle",
+  "penalty": "Penalty",
+  "interest": "Interest",
+  "loan": "Loan",
+  "safer": "Safer",
+  "risker": "Risker",
+  "ltv_liquidation_threshold": "LTV liquidation threshold",
+  "your_current_ltv": "Your current LTV",
+  "your_current_ltv_is": "Your current LTV is about to reach to the liquidation threshold. To avoid liquidation, you can repay the remainder of the penalty/ interest loan."
   "sys_risk": "System risk",
   "default_reason": "Default reason",
   "cycle": "Cycle",
@@ -952,5 +969,5 @@
   "description_manage_loan_1": "Join the revolution in\ndecentralized finance.",
   "description_manage_loan_2": "Make money from crypto\nlending today.",
   "add_lend_setting": "Add lending setting",
-  "select_wallet_address": "Chọn địa chỉ ví"
+  "select_wallet_address": "Select wallet address"
 }

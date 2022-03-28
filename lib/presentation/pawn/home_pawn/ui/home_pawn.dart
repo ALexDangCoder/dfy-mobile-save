@@ -572,7 +572,7 @@ class _HomePawnState extends State<HomePawn> {
                     navigationTo: BorrowLendScreen(
                       type: type,
                     ),
-                    isRequireLoginEmail: true,
+                    isRequireLoginEmail: false,
                   ),
                 ).then((_) => null);
               },
@@ -635,7 +635,7 @@ class _HomePawnState extends State<HomePawn> {
                       navigationTo: BorrowLendScreen(
                         type: type,
                       ),
-                      isRequireLoginEmail: true,
+                      isRequireLoginEmail: false,
                     ),
                   ).then((_) => null);
                 },

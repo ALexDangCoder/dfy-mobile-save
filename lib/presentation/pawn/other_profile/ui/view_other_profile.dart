@@ -111,8 +111,7 @@ class _OtherProfileState extends State<OtherProfile>
                 child: state is OtherProfileSuccess
                     ? NestedScrollView(
                         controller: scrollController,
-                        physics:
-                            const ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         body: DefaultTabController(
                           length: 2,
                           child: TabBarView(
@@ -151,13 +150,19 @@ class _OtherProfileState extends State<OtherProfile>
                                             cubit.userProfile.pawnshop != null)
                                           InkWell(
                                             onTap: () {
-                                              goTo(
-                                                context,
-                                                EditProfile(
-                                                  userProfile:
-                                                      cubit.userProfile,
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditProfile(
+                                                    userProfile:
+                                                        cubit.userProfile,
+                                                  ),
                                                 ),
-                                              );
+                                              ).then((value) async {
+                                                if(value != null) {
+                                                  await cubit.getMyUserProfile();
+                                                }
+                                              });
                                             },
                                             child: Image.asset(
                                               ImageAssets.ic_edit_profile,
@@ -191,7 +196,7 @@ class _OtherProfileState extends State<OtherProfile>
                                     spaceH24,
                                     Center(
                                       child: InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           goTo(context, const ComingSoon());
                                         },
                                         child: ButtonRadial(
@@ -302,9 +307,7 @@ class _OtherProfileState extends State<OtherProfile>
                                                 PageRouter.MY_ACC &&
                                             cubit.userProfile.id != null)
                                           InkWell(
-                                            onTap: () {
-
-                                            },
+                                            onTap: () {},
                                             child: Image.asset(
                                               ImageAssets.ic_edit_profile,
                                               height: 28.h,
@@ -319,7 +322,7 @@ class _OtherProfileState extends State<OtherProfile>
                                   if (cubit.userProfile.id == null &&
                                       widget.pageRouter ==
                                           PageRouter.MY_ACC) ...[
-                                            spaceH32,
+                                    spaceH32,
                                     Image.asset(
                                       ImageAssets.img_login_user,
                                       height: 142.h,
@@ -327,10 +330,11 @@ class _OtherProfileState extends State<OtherProfile>
                                     spaceH24,
                                     Center(
                                       child: InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           showDialog(
                                             context: context,
-                                            builder: (context) =>  const ConnectWalletDialog(
+                                            builder: (context) =>
+                                                const ConnectWalletDialog(
                                               navigationTo: OtherProfile(
                                                 userId: '',
                                                 pageRouter: PageRouter.MY_ACC,
