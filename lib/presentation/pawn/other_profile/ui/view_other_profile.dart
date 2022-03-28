@@ -6,6 +6,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
+import 'package:Dfy/presentation/pawn/edit_peronal_info/ui/edit_personal_infor.dart';
 import 'package:Dfy/presentation/pawn/edit_profile/ui/edit_profile.dart';
 import 'package:Dfy/presentation/pawn/other_profile/cubit/other_profile_cubit.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/borrow_tab.dart';
@@ -139,6 +140,7 @@ class _OtherProfileState extends State<OtherProfile>
                                   Padding(
                                     padding: EdgeInsets.only(
                                       right: 12.w,
+                                      top: 24.h,
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -287,6 +289,12 @@ class _OtherProfileState extends State<OtherProfile>
                                     ),
                                     spaceH16,
                                     rowItem(
+                                      'Address:',
+                                      cubit.userProfile.pawnshop?.address ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
                                       'Description:',
                                       cubit.userProfile.pawnshop?.description ??
                                           '',
@@ -307,7 +315,21 @@ class _OtherProfileState extends State<OtherProfile>
                                                 PageRouter.MY_ACC &&
                                             cubit.userProfile.id != null)
                                           InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditPersonalInfo(
+                                                        userProfile:
+                                                        cubit.userProfile,
+                                                      ),
+                                                ),
+                                              ).then((value) async {
+                                                if(value != null) {
+                                                  await cubit.getMyUserProfile();
+                                                }
+                                              });
+                                            },
                                             child: Image.asset(
                                               ImageAssets.ic_edit_profile,
                                               height: 28.h,
