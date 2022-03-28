@@ -40,7 +40,8 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       bottomBar: InkWell(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ConfirmRejectLoanRequest())),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => ConfirmRejectLoanRequest())),
         child: Container(
           color: AppTheme.getInstance().bgBtsColor(),
           padding: EdgeInsets.only(bottom: 38.h),
@@ -156,7 +157,9 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                     onChange: (value) {}),
               ),
               spaceH16,
-              _textTitle(title: S.current.recurring_interest,),
+              _textTitle(
+                title: S.current.recurring_interest,
+              ),
               TextFieldValidator(
                 hint: S.current.recurring_interest,
                 suffixIcon: IconButton(

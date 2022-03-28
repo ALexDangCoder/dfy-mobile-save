@@ -1,10 +1,14 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/filter/filter_loan_request_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/loan_send_offer.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/filter_offer_sent.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -76,18 +80,13 @@ class _OfferSentListState extends State<OfferSentList>
                           indicatorColor: const Color(0xFF6F6FC5),
                           controller: _tabController,
                           indicatorSize: TabBarIndicatorSize.tab,
-                          labelStyle: textNormalCustom(
-                            Colors.red,
-                            14,
-                            FontWeight.w600,
-                          ),
                           onTap: (index) {
                             //todo
                           },
                           tabs: [
                             Tab(
                               child: Text(
-                                'Crypto',
+                                S.current.crypto.capitalize(),
                                 style: textNormalCustom(
                                   AppTheme.getInstance().whiteColor(),
                                   14,
@@ -120,9 +119,7 @@ class _OfferSentListState extends State<OfferSentList>
                             ),
 
                             ///Tab Nft
-                            Container(
-                              color: Colors.green,
-                            ),
+                            OfferSentNftList(),
                           ],
                         ),
                       )
@@ -181,12 +178,21 @@ class _OfferSentListState extends State<OfferSentList>
                 child: InkWell(
                   onTap: () {
                     //todo push filter screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const LoanSendOffer(isCryptoElseNft: true),
-                      ),
+                    showModalBottomSheet(
+                      backgroundColor: Colors.black,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) {
+                        return FilterLoanRequestList();
+                        // return FilerOfferSent(cubit: cubit);
+                      },
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => const LoanSendOffer(isCryptoElseNft: true),
+                    //   ),
+                    // );
                   },
                   child: Image.asset(ImageAssets.ic_filter),
                 ),

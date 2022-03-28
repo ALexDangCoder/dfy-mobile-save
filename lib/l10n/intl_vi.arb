@@ -889,7 +889,18 @@
   "penalty": "Hình phạt",
   "interest": "Lãi",
   "loan": "Khoản vay",
-  "status": "Trạng thái",
   "confirm_reject_loan_request": "Xác nhận từ chối yêu cầu cho vay",
-  "confirm_reject_loan_descrip": "Yêu cầu cho vay sẽ bị từ chối và bạn không thể\ngửi đề nghị cho tài sản thế chấp này. Bạn có muốn tiếp tục\nhành động này?"
+  "confirm_reject_loan_descrip": "Yêu cầu cho vay sẽ bị từ chối và bạn không thể\ngửi đề nghị cho tài sản thế chấp này. Bạn có muốn tiếp tục\nhành động này?",
+  "asset_location": "Vị trí vật",
+  "new_loan_package": "Gói vay mới",
+  "description_confirm_accept_manage_loan": "Một hợp đồng mới sẽ được tạo ra. Bạn có muốn\nchấp nhận tài sản thế chấp này không?",
+  "description_confirm_reject_manage_loan": "Bạn sẽ từ chối tài sản thế chấp này. Bạn có muốn\ntiếp tục?",
+  "description_confirm_cancel_manage_loan": "Gói sẽ bị huỷ theo các điều khoản được\nđặt ra trong smart contract. Bạn có muốn\ntiếp tục?",
+  "confirm_accept_collateral": "Xác nhận đồng ý tài sản thế chấp",
+  "confirm_reject_collateral": "Xác nhận từ chối tài sản thế chấp",
+  "confirm_cancel_cancel_package": "Huỷ gói vay",
+  "description_manage_loan_1": "Tham gia vào cuộc cách mạng\ntài chính phi tập trung.",
+  "description_manage_loan_2": "Kiếm tiền điện tử\ntừ cho vay.",
+  "add_lend_setting": "Thêm cài đặt cho vay",
+  "select_wallet_address": "Select wallet address"
 }

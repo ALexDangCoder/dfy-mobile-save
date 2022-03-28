@@ -190,4 +190,20 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
+
+  ///filter
+  List<Map<String, dynamic>> fakeDataWallet = [
+    {
+      'value': '1',
+      'label': 'wallet 1',
+    },
+    {
+      'value': '2',
+      'label': 'wallet 2',
+    },
+    {
+      'value': '3',
+      'label': 'wallet 3',
+    }
+  ];
 }

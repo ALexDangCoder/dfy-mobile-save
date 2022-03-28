@@ -5,6 +5,7 @@ import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_s
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/widgets/views/state_error_view.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
           } else {
             widget.cubit.message = state.message ?? '';
             widget.cubit.listOfferSentCrypto.clear();
-            widget.cubit.showError();
+            widget.cubit.emit(LoadCryptoFail());
           }
           widget.cubit.listOfferSentCrypto =
               widget.cubit.listOfferSentCrypto + (state.list ?? []);
@@ -81,67 +82,82 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
               },
               child: RefreshIndicator(
                 onRefresh: () async {
-                  await widget.cubit.refreshGetListOfferSentCrypto(
-                  );
+                  await widget.cubit.refreshGetListOfferSentCrypto();
                 },
-                child: (widget.cubit.listOfferSentCrypto.isNotEmpty)
-                    ? Column(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: widget.cubit.listOfferSentCrypto.length,
-                              itemBuilder: (context, index) {
-                                return OfferSentCryptoItem(
-                                  index: index,
-                                  model: widget.cubit.listOfferSentCrypto[index],
-                                  cubit: widget.cubit,
-                                );
-                              },
-                            ),
-                        ),
-                        if(state is LoadMoreCrypto)
-                          Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.r,
-                              color: Colors.white,
-                            ),
-                          )
-                        else
-                          SizedBox()
-                      ],
-                    )
-                    : Center(
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 150.h,),
-                          child: Column(
-                            children: [
-                              Image(
-                                image: const AssetImage(
-                                  ImageAssets.img_search_empty,
-                                ),
-                                height: 120.h,
-                                width: 120.w,
-                              ),
-                              SizedBox(
-                                height: 17.7.h,
-                              ),
-                              Text(
-                                S.current.no_result_found,
-                                style: textNormal(
-                                  Colors.white54,
-                                  20.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ),
+                child: _content(state),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  Widget _content(OfferSentListState state) {
+    if (state is LoadCryptoFail) {
+      return StateErrorView(
+        widget.cubit.message,
+        () {
+          widget.cubit.refreshGetListOfferSentCrypto();
+        },
+        isHaveBackBtn: false,
+      );
+    } else {
+      return (widget.cubit.listOfferSentCrypto.isNotEmpty)
+          ? Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: widget.cubit.listOfferSentCrypto.length,
+                    itemBuilder: (context, index) {
+                      return OfferSentCryptoItem(
+                        index: index,
+                        model: widget.cubit.listOfferSentCrypto[index],
+                        cubit: widget.cubit,
+                      );
+                    },
+                  ),
+                ),
+                if (state is LoadMoreCrypto)
+                  Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.r,
+                      color: Colors.white,
+                    ),
+                  )
+                else
+                  SizedBox()
+              ],
+            )
+          : Center(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 150.h,
+                ),
+                child: Column(
+                  children: [
+                    Image(
+                      image: const AssetImage(
+                        ImageAssets.img_search_empty,
+                      ),
+                      height: 120.h,
+                      width: 120.w,
+                    ),
+                    SizedBox(
+                      height: 17.7.h,
+                    ),
+                    Text(
+                      S.current.no_result_found,
+                      style: textNormal(
+                        Colors.white54,
+                        20.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+    }
   }
 }
