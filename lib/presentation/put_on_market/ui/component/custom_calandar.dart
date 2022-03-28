@@ -173,9 +173,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
                         //attribute
                         locale: Localizations.localeOf(context).languageCode,
                         focusedDay: _selectedDay,
-                        firstDay: DateTime(DateTime.now().year - 10),
+                        firstDay: DateTime(DateTime.now().year - 100),
                         lastDay: DateTime(
-                          DateTime.now().year + 10,
+                          DateTime.now().year + 100,
                         ),
 
                         //action

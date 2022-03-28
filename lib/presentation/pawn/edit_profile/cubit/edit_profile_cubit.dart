@@ -109,7 +109,7 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
     String? name,
     String? phoneNum,
   }) async {
-    Map<String, String> data = {
+    final Map<String, String> data = {
       'address': address ?? '',
       'avatar': avatar ?? '',
       'coverImage': cover ?? '',
