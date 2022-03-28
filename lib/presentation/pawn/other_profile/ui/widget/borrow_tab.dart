@@ -51,107 +51,112 @@ class _BorrowTabState extends State<BorrowTab>
       ),
       child: Column(
         children: [
-          Container(
-            height: 46.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(12.r)),
-            ),
-            child: Theme(
-              data: ThemeData(
-                hintColor: Colors.white24,
-                selectedRowColor: Colors.white24,
-              ),
-              child: Stack(
-                children: [
-                  Align(
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(
-                        right: 12.w,
-                        left: 45.w,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton2<String>(
-                          buttonDecoration: BoxDecoration(
-                            color: AppTheme.getInstance().backgroundBTSColor(),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20.r),
-                            ),
+          StreamBuilder<bool>(
+            stream: widget.cubit.getReputationStream,
+            builder: (context, snapshot) {
+              return Container(
+                height: 46.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    hintColor: Colors.white24,
+                    selectedRowColor: Colors.white24,
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(
+                            right: 12.w,
+                            left: 45.w,
                           ),
-                          items: widget.cubit.walletAddress.map((String model) {
-                            return DropdownMenuItem(
-                              value: model,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    model != 'All Wallet'
-                                        ? model.formatAddress(index: 5)
-                                        : model,
-                                    style: textNormal(
-                                      Colors.white,
-                                      16,
-                                    ),
-                                  ),
-                                ],
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              buttonDecoration: BoxDecoration(
+                                color: AppTheme.getInstance().backgroundBTSColor(),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.r),
+                                ),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              walletAddress = newValue!;
-                            });
-                            if(widget.pageRouter == PageRouter.MARKET){
-                              widget.cubit.getPoint(newValue!);
-                              widget.cubit.selectWalletBorrow(newValue);
-                            } else {
-                              widget.cubit.getPoint(newValue!);
-                              widget.cubit.getDataBorrow.add(false);
-                              widget.cubit.getListComment(walletAddress: newValue);
-                            }
-                          },
-                          dropdownMaxHeight: 150.h,
-                          dropdownWidth:
-                              MediaQuery.of(context).size.width - 32.w,
-                          dropdownDecoration: BoxDecoration(
-                            color: AppTheme.getInstance().backgroundBTSColor(),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12.r)),
-                          ),
-                          scrollbarThickness: 0,
-                          scrollbarAlwaysShow: false,
-                          offset: Offset(-45.w, 0),
-                          value: walletAddress,
-                          icon: Image.asset(
-                            ImageAssets.ic_line_down,
-                            height: 24.h,
-                            width: 24.w,
+                              items: widget.cubit.walletAddress.map((String model) {
+                                return DropdownMenuItem(
+                                  value: model,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        model != 'All Wallet'
+                                            ? model.formatAddress(index: 5)
+                                            : model,
+                                        style: textNormal(
+                                          Colors.white,
+                                          16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  walletAddress = newValue!;
+                                });
+                                if(widget.pageRouter == PageRouter.MARKET){
+                                  widget.cubit.getPoint(newValue!);
+                                  widget.cubit.selectWalletBorrow(newValue);
+                                } else {
+                                  widget.cubit.getPoint(newValue!);
+                                  widget.cubit.getDataBorrow.add(false);
+                                  widget.cubit.getListComment(walletAddress: newValue);
+                                }
+                              },
+                              dropdownMaxHeight: 150.h,
+                              dropdownWidth:
+                                  MediaQuery.of(context).size.width - 32.w,
+                              dropdownDecoration: BoxDecoration(
+                                color: AppTheme.getInstance().backgroundBTSColor(),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.r)),
+                              ),
+                              scrollbarThickness: 0,
+                              scrollbarAlwaysShow: false,
+                              offset: Offset(-45.w, 0),
+                              value: walletAddress,
+                              icon: Image.asset(
+                                ImageAssets.ic_line_down,
+                                height: 24.h,
+                                width: 24.w,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 12.w),
-                      child: Image.asset(ImageAssets.ic_wallet),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 48.w),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Image.asset(ImageAssets.ic_copy),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12.w),
+                          child: Image.asset(ImageAssets.ic_wallet),
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 48.w),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Image.asset(ImageAssets.ic_copy),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }
           ),
           spaceH15,
           Row(

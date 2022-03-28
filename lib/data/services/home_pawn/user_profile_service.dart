@@ -31,6 +31,10 @@ abstract class UserProfileService {
   Future<ConfirmEvaluationResponse> updatePawnshopProfile(
       @Body() Map<String,String> map,
       );
+  @PUT(ApiConstants.PUT_PROFILE_USER)
+  Future<ConfirmEvaluationResponse> updatePersonalProfile(
+      @Body() Map<String,dynamic> map,
+      );
 
   @GET(ApiConstants.GET_REPUTATION)
   Future<List<ReputationResponse>> getReputation(

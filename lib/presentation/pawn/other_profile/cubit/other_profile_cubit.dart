@@ -23,6 +23,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   BehaviorSubject<String> reputationBorrowStream = BehaviorSubject.seeded('0');
   BehaviorSubject<String> reputationLenderStream = BehaviorSubject.seeded('0');
   BehaviorSubject<bool> getDataBorrow = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> getReputationStream = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> getDataLender = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> seeMoreCollateral = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> viewMoreCollateral = BehaviorSubject.seeded(false);
@@ -307,6 +308,10 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
   }
 
   Future<void> getReputation({String? userId}) async {
+    reputation.clear();
+    totalReputationLender = 0;
+    totalReputationBorrow = 0;
+    walletAddress.removeWhere((element) => element !='All Wallet');
     final Result<List<Reputation>> result =
         await _repo.getListReputation(userId: userId);
     result.when(
@@ -328,6 +333,7 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
           }
           getPoint(walletAddress[0]);
           getPointLender(walletAddress[0]);
+          getReputationStream.add(true);
         }
       },
       error: (error) {

@@ -46,13 +46,13 @@ class BaseDesignScreen extends StatelessWidget {
       child: Scaffold(
         bottomNavigationBar: bottomBar,
         resizeToAvoidBottomInset: resizeBottomInset,
-        backgroundColor: Colors.black,
+        backgroundColor: AppTheme.getInstance().bgBtsColor(),
         body: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
             width: 375.w,
             height: 812.h,
-            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: const BorderRadius.only(
