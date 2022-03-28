@@ -40,95 +40,95 @@ class FormDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     if (typeDrop == TYPE_FORM_DROPDOWN.CONDITION) {
       return StreamBuilder<List<Map<String, dynamic>>>(
-          stream: cubit.conditionBHVSJ,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  AppTheme.getInstance().whiteColor(),
+        stream: cubit.conditionBHVSJ,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppTheme.getInstance().whiteColor(),
+              ),
+            );
+          } else if ((snapshot.data ?? []).isEmpty) {
+            return InkWell(
+              onTap: () {
+                cubit.getAllApiExceptCity();
+              },
+              child: SizedBox(
+                height: 54.h,
+                width: 54.w,
+                child: Image.asset(ImageAssets.reload_nft),
+              ),
+            );
+          } else {
+            return Stack(
+              children: [
+                CoolDropdown(
+                  // gap: 8.h,
+                  dropdownItemMainAxis: MainAxisAlignment.start,
+                  resultMainAxis: MainAxisAlignment.start,
+                  dropdownList: cubit.conditions,
+                  onChange: (value) {
+                    value as Map<String, dynamic>;
+                    cubit.dataStep1.conditionNft.id =
+                        int.tryParse(value['value']);
+                    cubit.dataStep1.conditionNft.name = value['label'];
+                    cubit.mapValidate['condition'] = true;
+                    cubit.validateAll();
+                  },
+                  dropdownItemHeight: 54.h,
+                  dropdownHeight: 232.h,
+                  dropdownWidth: 343.w,
+                  resultAlign: Alignment.centerRight,
+                  resultWidth: 343.w,
+                  resultHeight: 64.h,
+                  dropdownPadding: EdgeInsets.only(right: 11.w),
+                  dropdownBD: BoxDecoration(
+                    color: AppTheme.getInstance().selectDialogColor(),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  resultBD: BoxDecoration(
+                    color: AppTheme.getInstance().backgroundBTSColor(),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  resultTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  placeholder: S.current.select_condition,
+                  resultIcon: const SizedBox.shrink(),
+                  selectedItemTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  unselectedItemTS: textNormal(
+                    AppTheme.getInstance().whiteColor(),
+                    16,
+                  ),
+                  placeholderTS: textNormal(
+                    Colors.white.withOpacity(0.5),
+                    16,
+                  ),
+                  isTriangle: false,
+                  selectedItemBD: BoxDecoration(
+                    color: AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                  ),
                 ),
-              );
-            } else if ((snapshot.data ?? []).isEmpty) {
-              return InkWell(
-                onTap: () {
-                  cubit.getAllApiExceptCity();
-                },
-                child: SizedBox(
-                  height: 54.h,
-                  width: 54.w,
-                  child: Image.asset(ImageAssets.reload_nft),
-                ),
-              );
-            } else {
-              return Stack(
-                children: [
-                  CoolDropdown(
-                    // gap: 8.h,
-                    dropdownItemMainAxis: MainAxisAlignment.start,
-                    resultMainAxis: MainAxisAlignment.start,
-                    dropdownList: cubit.conditions,
-                    onChange: (value) {
-                      value as Map<String, dynamic>;
-                      cubit.dataStep1.conditionNft.id =
-                          int.tryParse(value['value']);
-                      cubit.dataStep1.conditionNft.name = value['label'];
-                      cubit.mapValidate['condition'] = true;
-                      cubit.validateAll();
-                    },
-                    dropdownItemHeight: 54.h,
-                    dropdownHeight: 232.h,
-                    dropdownWidth: 343.w,
-                    resultAlign: Alignment.centerRight,
-                    resultWidth: 343.w,
-                    resultHeight: 64.h,
-                    dropdownPadding: EdgeInsets.only(right: 11.w),
-                    dropdownBD: BoxDecoration(
-                      color: AppTheme.getInstance().selectDialogColor(),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    resultBD: BoxDecoration(
-                      color: AppTheme.getInstance().backgroundBTSColor(),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    resultTS: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    placeholder: S.current.select_condition,
-                    resultIcon: const SizedBox.shrink(),
-                    selectedItemTS: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    unselectedItemTS: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    placeholderTS: textNormal(
-                      Colors.white.withOpacity(0.5),
-                      16,
-                    ),
-                    isTriangle: false,
-                    selectedItemBD: BoxDecoration(
-                      color:
-                          AppTheme.getInstance().whiteColor().withOpacity(0.1),
+                Positioned(
+                  right: 19.w,
+                  child: SizedBox(
+                    height: 64.h,
+                    child: sizedSvgImage(
+                      w: 13,
+                      h: 13,
+                      image: ImageAssets.ic_expand_white_svg,
                     ),
                   ),
-                  Positioned(
-                    right: 19.w,
-                    child: SizedBox(
-                      height: 64.h,
-                      child: sizedSvgImage(
-                        w: 13,
-                        h: 13,
-                        image: ImageAssets.ic_expand_white_svg,
-                      ),
-                    ),
-                  )
-                ],
-              );
-            }
-          });
+                )
+              ],
+            );
+          }
+        },
+      );
     } else if (typeDrop == TYPE_FORM_DROPDOWN.COUNTRY) {
       return StreamBuilder<List<Map<String, dynamic>>>(
         stream: cubit.countriesBHVSJ,

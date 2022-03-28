@@ -13,8 +13,8 @@ extension StringHandle on String {
 
 extension StringHandleTxtTooLong on String {
   String handleTitle() {
-    if (length > 16) {
-      return '${substring(0, 15)} ...';
+    if (length > 14) {
+      return '${substring(0, 13)} ...';
     }
     return this;
   }
@@ -109,6 +109,10 @@ extension StringExtension on String {
 
   String withColon() {
     return '$this :';
+  }
+
+  String removeColon() {
+    return replaceAll(':', '');
   }
 }
 

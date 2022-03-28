@@ -18,7 +18,9 @@ class _TabLtvLiquidThresState extends State<TabLtvLiquidThres> {
         right: 16.w,
         bottom: 30.h,
       ),
+      child: Column(
 
+      ),
     );
   }
 }

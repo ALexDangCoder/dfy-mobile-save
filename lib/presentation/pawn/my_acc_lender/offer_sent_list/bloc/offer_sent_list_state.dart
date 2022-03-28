@@ -25,6 +25,11 @@ class LoadMoreCrypto extends OfferSentListState {
   List<Object> get props => [];
 }
 
+class LoadCryptoFail extends OfferSentListState {
+  @override
+  List<Object> get props => [];
+}
+
 ///detail crypto
 class GetApiDetalOfferSentCrypto extends OfferSentListState {
   final OfferSentDetailCryptoModel? detailCrypto;
