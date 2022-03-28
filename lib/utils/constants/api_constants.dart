@@ -313,4 +313,22 @@ class ApiConstants {
 
   static const String GET_BORROW_CONTRACT =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts';
+
+  // contract detail
+
+  static const String GET_DETAIl_CONTRACT_LENDER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts/';
+
+  static const String GET_BORROW_REPAYMENT_HISTORY =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String REPAYMENT_STATS =
+      '/repayment-stats';
+
+  static const String GET_BORROW_REPAYMENT_REQUEST =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String REPAYMENT_REQUEST =
+      '/repayment-requests';
+
+  static const String GET_CHECK_RATE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/review/check';
 }

@@ -1,13 +1,20 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LTVTAB extends StatefulWidget {
-  const LTVTAB({Key? key}) : super(key: key);
+  const LTVTAB({
+    Key? key,
+    required this.bloc,
+  }) : super(key: key);
+
+  final ContractDetailBloc bloc;
 
   @override
   _LTVTABState createState() => _LTVTABState();
@@ -15,7 +22,8 @@ class LTVTAB extends StatefulWidget {
 
 class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  double decimal = 99;//todo %
+  late double decimal; // %
+  late double decimalTotal; // %
 
   @override
   void initState() {
@@ -27,6 +35,15 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
       ),
       // lowerBound: 0.25,
     );
+    decimalTotal =
+        (widget.bloc.objDetail?.contractTerm?.estimateUsdLoanAmount ?? 0) *
+            100 /
+            (widget.bloc.objDetail?.cryptoCollateral?.estimateUsdAmount ?? 0);
+    if (decimalTotal > 120) {
+      decimal = 120;
+    }else{
+      decimal=decimalTotal;
+    }
     _controller.forward();
   }
 
@@ -69,9 +86,9 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: 60,
+              top: 75,
               child: RotationTransition(
-                turns: Tween(begin: -0.25, end: -0.25 + (0.005 * decimal))
+                turns: Tween(begin: -0.25, end: -0.25 + (0.0041666 * decimal))
                     .animate(_controller),
                 child: Image.asset(
                   ImageAssets.imgLtv2,
@@ -203,8 +220,7 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
                                 child: Column(
                                   children: [
                                     Text(
-                                      '80 + 0000+0',
-                                      //todo +-x/
+                                      '${formatPrice.format(widget.bloc.objDetail?.contractTerm?.estimateUsdLoanAmount ?? 0)} x 100',
                                       style: textNormalCustom(
                                         null,
                                         14,
@@ -212,12 +228,26 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
                                       ),
                                     ),
                                     Container(
-                                      width: 7.w * '80 + 0000+0'.length.w,
+                                      width: 7.w *
+                                          ((formatPrice.format(
+                                                    widget
+                                                            .bloc
+                                                            .objDetail
+                                                            ?.contractTerm
+                                                            ?.estimateUsdLoanAmount ??
+                                                        0,
+                                                  )).length +
+                                                  5)
+                                              .w,
                                       height: 1.h,
                                       color: Colors.white,
                                     ),
                                     Text(
-                                      '100', //todo +-x/
+                                      formatPrice.format(
+                                        widget.bloc.objDetail?.contractTerm
+                                                ?.estimateUsdAmount ??
+                                            0,
+                                      ),
                                       style: textNormalCustom(
                                         null,
                                         14,
@@ -241,7 +271,9 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
                               WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
                                 child: Text(
-                                  ' 80% ',
+                                  ' ${formatPrice.format(
+                                    decimalTotal,
+                                  )}% ',
                                   style: textNormalCustom(
                                     null,
                                     14,

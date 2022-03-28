@@ -914,5 +914,11 @@
   "tap_to_review": "Tap to review",
   "repayment_history_detail": "Repayment History Detail",
   "next_ltv": "Next LTV",
-  "current_ltv": "Current LTV"
+  "current_ltv": "Current LTV",
+  "ltv_liquidation": "LTV Liquidation threshold has reached the limitation",
+  "borrower_can_only": "Borrower can only ",
+  "tow_times": " 2 times",
+  "late_payment_From": " late payment. From ",
+  "rd_time": "3rd time",
+  "the_collateral_will_be_liquidated": ", the collateral will be liquidated."
 }

@@ -102,6 +102,7 @@ class _NFTTabState extends State<NFTTab> with AutomaticKeepAliveClientMixin {
                               MaterialPageRoute(
                                 builder: (context) => ContractDetail(
                                   type: TypeBorrow.NFT_TYPE,
+                                  id: bloc.listNFT[index].id ?? 0,
                                 ),
                               ),
                             );
