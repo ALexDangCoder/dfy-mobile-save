@@ -1,4 +1,3 @@
-import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/widgets/views/coming_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,6 @@ class _StakingState extends State<StakingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const AddMoreCollateral();//todo doanh tesst
+    return const ComingScreen();
   }
 }
