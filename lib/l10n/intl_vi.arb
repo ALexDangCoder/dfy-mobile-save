@@ -541,7 +541,7 @@
   "open": "Mở",
   "processing_accept": "Đang xử lí chấp nhận",
   "processing_reject": "Đang xử lí từ chối",
-  "processing_cancel": "Đang sử lí huỷ",
+  "processing_cancel": "Đang xử lí huỷ",
   "accepted": "Đã chấp thuận",
   "canceled": "Đã huỷ",
   "loading": "Đang tải",
