@@ -45,6 +45,7 @@ final spaceH60 = SizedBox(height: 60.h);
 final spaceH70 = SizedBox(height: 70.h);
 final spaceH344 = SizedBox(height: 344.h);
 final spaceH152 = SizedBox(height: 152.h);
+final spaceH449 = SizedBox(height: 449.h);
 
 ///W
 final spaceW2 = SizedBox(width: 2.w);

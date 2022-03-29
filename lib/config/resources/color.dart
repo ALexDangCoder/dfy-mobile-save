@@ -100,6 +100,7 @@ const deliveredColor = Color(0xff19A865);
 const canceledColor = Color(0xffF94444);
 const subMenuColor = Color(0xff303742);
 const colorLineSearch = Color(0x80CACFD7);
+const colorSwitch = Color(0xff787880);
 const colorPressedItemMenu = Color(0xffE7F8F8);
 const fittingBg = Color(0xFFF2F2F2);
 const shadowTabIcon = Color(0xFF6C6CF4);

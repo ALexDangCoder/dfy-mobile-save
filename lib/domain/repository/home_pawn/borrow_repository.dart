@@ -2,6 +2,7 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/home_pawn/check_rate_model.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
@@ -12,12 +13,15 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
+import 'package:Dfy/domain/model/pawn/repayment_stats_model.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/model/pawn/result_create_new_collateral_model.dart';
 
@@ -199,5 +203,27 @@ mixin BorrowRepository {
     String? type,
     String? page,
     String? size,
+  });
+
+  Future<Result<ContractDetailPawn>> getLenderContract({
+    String? id,
+    String? walletAddress,
+    String? type,
+  });
+
+  Future<Result<RepaymentStatsModel>> getRepaymentHistory({
+    String? id,
+  });
+
+  Future<Result<List<RepaymentRequestModel>>> getRepaymentResquest({
+    String? id,
+    String? page,
+    String? size,
+  });
+
+  Future<Result<CheckRateModel>> getCheckRate({
+    String? contractId,
+    String? walletAddress,
+    String? type,
   });
 }

@@ -2,8 +2,10 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
+import 'package:Dfy/data/response/home_pawn/check_rate_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_widraw_response.dart';
+import 'package:Dfy/data/response/home_pawn/contract_detail_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
@@ -19,6 +21,8 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
@@ -244,5 +248,35 @@ abstract class BorrowService {
     @Query('type') String? type,
     @Query('page') String? page,
     @Query('size') String? size,
+  );
+
+  //
+
+  @GET('${ApiConstants.GET_DETAIl_CONTRACT_LENDER}{id}')
+  Future<ContractlDetailMyAccResponse> getLenderContract(
+    @Path('id') String? id,
+    @Query('walletAddress') String? walletAddress,
+    @Query('type') String? type,
+  );
+
+  @GET(
+      '${ApiConstants.GET_BORROW_REPAYMENT_HISTORY}{id}${ApiConstants.REPAYMENT_STATS}')
+  Future<RepaymentStatsResponse> getRepaymentHistory(
+    @Path('id') String? id,
+  );
+
+  @GET(
+      '${ApiConstants.GET_BORROW_REPAYMENT_REQUEST}{id}${ApiConstants.REPAYMENT_REQUEST}')
+  Future<RepaymentRequestResponse> getRepaymentResquest(
+    @Path('id') String? id,
+    @Query('page') String? page,
+    @Query('size') String? size,
+  );
+
+  @GET(ApiConstants.GET_CHECK_RATE)
+  Future<CheckRateResponse> getCheckRate(
+    @Query('contractId') String? contractId,
+    @Query('walletAddress') String? walletAddress,
+    @Query('type') String? type,
   );
 }

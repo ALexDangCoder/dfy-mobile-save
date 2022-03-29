@@ -259,10 +259,16 @@ class ApiConstants {
       '/defi-user-service/public-api/v1.0.0/users/';
   static const String PUT_PROFILE_USER =
       '/defi-user-service/api/v1.0.0/users/profile';
+  static const String DISCONNECT_WALLET =
+      '/defi-user-service/api/v1.0.0/users/disassociate';
   static const String PUT_PAWN_SHOP_PROFILE =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/shop-profile';
   static const String GET_MY_PROFILE_USER =
       '/defi-user-service/api/v1.0.0/users/';
+  static const String GET_MY_SETTING_EMAIL =
+      '/defi-user-service/api/v1.0.0/email-setting';
+  static const String GET_MY_SETTING_NOTI =
+      '/defi-user-service/api/v1.0.0/noti-setting';
   static const String GET_REPUTATION =
       '/defi-user-service/public-api/v1.0.0/users/reputation';
   static const String GET_BORROW_USER =
@@ -315,4 +321,22 @@ class ApiConstants {
 
   static const String GET_BORROW_CONTRACT =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts';
+
+  // contract detail
+
+  static const String GET_DETAIl_CONTRACT_LENDER =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts/';
+
+  static const String GET_BORROW_REPAYMENT_HISTORY =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String REPAYMENT_STATS =
+      '/repayment-stats';
+
+  static const String GET_BORROW_REPAYMENT_REQUEST =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String REPAYMENT_REQUEST =
+      '/repayment-requests';
+
+  static const String GET_CHECK_RATE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/review/check';
 }

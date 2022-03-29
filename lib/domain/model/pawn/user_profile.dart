@@ -83,3 +83,32 @@ class KYC {
     this.emailAdminVerify,
   });
 }
+
+class EmailSetting {
+  bool? activitiesEmail;
+  String? email;
+  bool? notificationEmail;
+  bool? otherUserEmail;
+
+  EmailSetting(
+      {this.activitiesEmail,
+      this.email,
+      this.notificationEmail,
+      this.otherUserEmail});
+}
+
+class NotiSetting {
+  bool? activitiesNoti;
+  String? email;
+  bool? hotNewNoti;
+  bool? newSystemNoti;
+  bool? warningNoti;
+
+  NotiSetting({
+    this.activitiesNoti,
+    this.email,
+    this.hotNewNoti,
+    this.newSystemNoti,
+    this.warningNoti,
+  });
+}

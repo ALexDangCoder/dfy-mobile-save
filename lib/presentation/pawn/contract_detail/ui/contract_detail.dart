@@ -2,13 +2,16 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_state.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/contract_info.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/ltv_tab.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/repayment_history.dart';
+import 'package:Dfy/presentation/pawn/review_borrower/ui/review_borrower.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -26,8 +29,10 @@ class ContractDetail extends StatefulWidget {
   const ContractDetail({
     Key? key,
     required this.type,
+    required this.id,
   }) : super(key: key);
   final TypeBorrow type;
+  final int id;
 
   @override
   _ContractDetailState createState() => _ContractDetailState();
@@ -42,46 +47,55 @@ class _ContractDetailState extends State<ContractDetail>
   @override
   void initState() {
     super.initState();
-    bloc = ContractDetailBloc();
+    bloc = ContractDetailBloc(
+      widget.id,
+      widget.type,
+    );
     _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
-      title: S.current.contract_details, //todo
+      title: S.current.contract_details,
       child: BlocConsumer<ContractDetailBloc, ContractDetailState>(
         bloc: bloc,
         listener: (context, state) {
-          // if (state is CollateralDetailMyAccSuccess) {
-          //   bloc.showContent();
-          //   if (state.completeType == CompleteType.SUCCESS) {
-          //     obj = state.obj ?? obj;
-          //   } else {
-          //     mes = state.message ?? '';
-          //   }
-          // }
+          if (state is ContractDetailSuccess) {
+            bloc.showContent();
+            if (state.completeType == CompleteType.SUCCESS) {
+              if (!(bloc.isShow.isBlank ?? false)) {
+                if (!(bloc.isRate ?? false) && (bloc.isShow ?? false)) {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) => ReviewBorrower(),
+                  );
+                }
+              }
+              bloc.objDetail = state.obj;
+            } else {
+              mes = state.message ?? '';
+            }
+          }
         },
         builder: (context, state) {
+          final obj = bloc.objDetail ?? ContractDetailPawn.name();
           return StateStreamLayout(
             stream: bloc.stateStream,
             retry: () {
-              // bloc.getDetailCollateralMyAcc(
-              //   collateralId: widget.id,
-              // );
+              bloc.getData();
             },
             error: AppException(S.current.error, mes),
             textEmpty: mes,
-            child: !(state is ContractDetailSuccess)
+            child: state is ContractDetailSuccess
                 ? DefaultTabController(
                     length: 3,
                     child: Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 812.h,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
                           child: NestedScrollView(
                             physics: const ScrollPhysics(),
                             headerSliverBuilder: (
@@ -173,18 +187,19 @@ class _ContractDetailState extends State<ContractDetail>
                                                               GestureDetector(
                                                             onTap: () {
                                                               launchURL(
-                                                                Get.find<AppConstants>()
+                                                                Get.find<
+                                                                            AppConstants>()
                                                                         .bscScan +
                                                                     ApiConstants
                                                                         .BSC_SCAN_ADDRESS +
-                                                                    (''), //todo
+                                                                    (obj.lenderWalletAddress
+                                                                        .toString()),
                                                               );
                                                             },
                                                             child: Text(
-                                                              // checkNullAddressWallet(
-                                                              //   obj.walletAddress ?? '',
-                                                              // ),
-                                                              'adđress',
+                                                              checkNullAddressWallet(obj
+                                                                  .lenderWalletAddress
+                                                                  .toString()),
                                                               style:
                                                                   textNormalCustom(
                                                                 AppTheme.getInstance()
@@ -253,7 +268,7 @@ class _ContractDetailState extends State<ContractDetail>
                                                                   .middle,
                                                           child: StreamBuilder<
                                                               String>(
-                                                            //  stream: bloc.rate,//todo
+                                                            stream: bloc.rate,
                                                             builder: (context,
                                                                 snapshot) {
                                                               return Text(
@@ -307,7 +322,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                                 BorderRadius
                                                                     .all(
                                                               Radius.circular(
-                                                                  12.r),
+                                                                12.r,
+                                                              ),
                                                             ),
                                                           ),
                                                           child: Text(
@@ -342,7 +358,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                                 BorderRadius
                                                                     .all(
                                                               Radius.circular(
-                                                                  12.r),
+                                                                12.r,
+                                                              ),
                                                             ),
                                                             border: Border.all(
                                                               color: AppTheme
@@ -448,18 +465,20 @@ class _ContractDetailState extends State<ContractDetail>
                                                               GestureDetector(
                                                             onTap: () {
                                                               launchURL(
-                                                                Get.find<AppConstants>()
+                                                                Get.find<
+                                                                            AppConstants>()
                                                                         .bscScan +
                                                                     ApiConstants
                                                                         .BSC_SCAN_ADDRESS +
-                                                                    (''), //todo
+                                                                    (obj.borrowerWalletAddress
+                                                                        .toString()),
                                                               );
                                                             },
                                                             child: Text(
-                                                              // checkNullAddressWallet(
-                                                              //   obj.walletAddress ?? '',
-                                                              // ),
-                                                              'adđress',
+                                                              checkNullAddressWallet(
+                                                                obj.borrowerWalletAddress
+                                                                    .toString(),
+                                                              ),
                                                               style:
                                                                   textNormalCustom(
                                                                 AppTheme.getInstance()
@@ -528,9 +547,11 @@ class _ContractDetailState extends State<ContractDetail>
                                                                   .middle,
                                                           child: StreamBuilder<
                                                               String>(
-                                                            //  stream: bloc.rate,//todo
-                                                            builder: (context,
-                                                                snapshot) {
+                                                            stream: bloc.rateMy,
+                                                            builder: (
+                                                              context,
+                                                              snapshot,
+                                                            ) {
                                                               return Text(
                                                                 snapshot.data
                                                                     .toString(),
@@ -574,37 +595,59 @@ class _ContractDetailState extends State<ContractDetail>
                                     ),
                                     tabs: [
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child: Text(S.current.contract_info),
+                                        child: Text(
+                                          S.current.contract_info,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child: Text(S.current
-                                              .lte_liquidation_threshold),
+                                        child: Text(
+                                          S.current.lte_liquidation_threshold,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child:
-                                              Text(S.current.repayment_history),
+                                        child: Text(
+                                          S.current.repayment_history,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                pinned: true,
+                                //pinned: true,
                               ),
                             ],
                             body: TabBarView(
                               controller: _tabController,
                               children: [
-                                ContractInfo(),
-                                LTVTAB(),
-                                RepaymentHistory(),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: ContractInfo(
+                                    bloc: bloc,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: LTVTAB(
+                                    bloc: bloc,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: RepaymentHistory(
+                                    bloc: bloc,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

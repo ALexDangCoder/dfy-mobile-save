@@ -132,10 +132,12 @@ class _EditPersonalInfoState extends State<EditPersonalInfo> {
                 await cubit.updateData(
                   name: nameController.text,
                   list: cubit.getListLink(
-                      personalLinkController.text, listPersonalLink),
+                    personalLinkController.text,
+                    listPersonalLink,
+                  ),
                 );
                 await showLoadSuccess(context, onlySuccess: true).then(
-                      (value) => Navigator.of(context)
+                  (value) => Navigator.of(context)
                     ..pop()
                     ..pop(true),
                 );
@@ -155,7 +157,9 @@ class _EditPersonalInfoState extends State<EditPersonalInfo> {
                   cityId: cubit.city.value.id.toString(),
                   countryId: cubit.country.value.id.toString(),
                   list: cubit.getListLink(
-                      personalLinkController.text, listPersonalLink),
+                    personalLinkController.text,
+                    listPersonalLink,
+                  ),
                 );
                 await showLoadSuccess(context, onlySuccess: true).then(
                   (value) => Navigator.of(context)
@@ -814,45 +818,46 @@ class _EditPersonalInfoState extends State<EditPersonalInfo> {
                 divider,
                 spaceH20,
                 StreamBuilder<int>(
-                    stream: cubit.personalLinkStream,
-                    builder: (context, snapshot) {
-                      return InkWell(
-                        onTap: () {
-                          if ((snapshot.data ?? 0) < 4) {
-                            if (listPersonalLink.length < 5) {
-                              listPersonalLink.add(TextEditingController());
-                              cubit.listErrorPersonalLink
-                                  .add(BehaviorSubject<String>());
-                            }
-                            cubit.personalLinkStream
-                                .add((snapshot.data ?? 0) + 1);
+                  stream: cubit.personalLinkStream,
+                  builder: (context, snapshot) {
+                    return InkWell(
+                      onTap: () {
+                        if ((snapshot.data ?? 0) < 4) {
+                          if (listPersonalLink.length < 5) {
+                            listPersonalLink.add(TextEditingController());
+                            cubit.listErrorPersonalLink
+                                .add(BehaviorSubject<String>());
                           }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              ImageAssets.addPropertiesNft,
-                              width: 24.w,
-                              height: 24.h,
-                              color: (snapshot.data ?? 0) < 4
+                          cubit.personalLinkStream
+                              .add((snapshot.data ?? 0) + 1);
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            ImageAssets.addPropertiesNft,
+                            width: 24.w,
+                            height: 24.h,
+                            color: (snapshot.data ?? 0) < 4
+                                ? fillYellowColor
+                                : grey3,
+                          ),
+                          spaceW8,
+                          Text(
+                            'Add more link',
+                            style: textNormal(
+                              (snapshot.data ?? 0) < 4
                                   ? fillYellowColor
                                   : grey3,
+                              16,
                             ),
-                            spaceW8,
-                            Text(
-                              'Add more link',
-                              style: textNormal(
-                                (snapshot.data ?? 0) < 4
-                                    ? fillYellowColor
-                                    : grey3,
-                                16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
                 spaceH20,
                 divider,
                 spaceH20,
@@ -1107,23 +1112,24 @@ class _EditPersonalInfoState extends State<EditPersonalInfo> {
             ),
             spaceW8,
             StreamBuilder<int>(
-                stream: cubit.personalLinkStream,
-                builder: (context, snapshot) {
-                  return InkWell(
-                    onTap: () {
-                      if ((snapshot.data ?? 0) > 0) {
-                        cubit.personalLinkStream.add((snapshot.data ?? 0) - 1);
-                        listPersonalLink.removeAt(index);
-                        cubit.listErrorPersonalLink.removeAt(index);
-                      }
-                    },
-                    child: sizedSvgImage(
-                      w: 24,
-                      h: 24,
-                      image: ImageAssets.delete_svg,
-                    ),
-                  );
-                }),
+              stream: cubit.personalLinkStream,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: () {
+                    if ((snapshot.data ?? 0) > 0) {
+                      cubit.personalLinkStream.add((snapshot.data ?? 0) - 1);
+                      listPersonalLink.removeAt(index);
+                      cubit.listErrorPersonalLink.removeAt(index);
+                    }
+                  },
+                  child: sizedSvgImage(
+                    w: 24,
+                    h: 24,
+                    image: ImageAssets.delete_svg,
+                  ),
+                );
+              },
+            ),
           ],
         ),
         StreamBuilder<String>(
