@@ -75,6 +75,7 @@ class ImageAssets {
   static const String logo_pawn = '$baseImg/logo_pawn.png';
   static const String ic_hard = '$baseImg/icon_hard.png';
   static const String alarm = '$baseImg/alarm.png';
+  static const String bg_manage_loan_package_list = '$baseImg/bg_manage_loan.png';
   static const String banner_pawn = '$baseImg/banner.png';
   static const String bgPawnShopToken = '$baseImg/bg_pawnshop_token.png';
   static const String bgAvatarPawn = '$baseImg/bg_avt_pawn.png';
@@ -85,6 +86,7 @@ class ImageAssets {
   static const String ic_about_2 = '$baseImg/ic_about_2.png';
   static const String ic_view_more = '$baseImg/ic_viewmore.png';
   static const String ic_view_less = '$baseImg/ic_view_less.png';
+
   // menu icon
 
   static const String ic_token_symbol = '$baseImg/ic_token_symbol.png';
@@ -162,6 +164,7 @@ class ImageAssets {
   static const String img_waning = '$baseImg/pawn_about.png';
   static const String img_crypto = '$baseImg/money_5_img.png';
   static const String img_money_increase = '$baseImg/frame_img.png';
+  static const String bg_repayment_history = '$baseImg/bg_repayment.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';
@@ -412,6 +415,8 @@ class ImageAssets {
 
   static const String categories_create_collection =
       '$baseImg/categories_svg.svg';
+  static const String img_rate = '$baseImg/img_rate.png';
+  static const String img_rate2 = '$baseImg/img_rate2.png';
 
   static SvgPicture svgAssets(
     String name, {

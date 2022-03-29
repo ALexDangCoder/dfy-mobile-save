@@ -21,6 +21,7 @@ class TextFieldValidator extends StatefulWidget {
   final Widget? suffixIcon;
   final int maxInputChar;
   final double? errorTextHeight;
+  final BoxConstraints? suffixIconConstraint;
   final bool readOnly;
 
   const TextFieldValidator({
@@ -28,6 +29,7 @@ class TextFieldValidator extends StatefulWidget {
     this.controller,
     this.isEnabled = true,
     this.onChange,
+    this.suffixIconConstraint,
     this.validator,
     this.initialValue,
     this.maxLine = 1,
@@ -98,6 +100,7 @@ class _TextFormFieldWidgetState extends State<TextFieldValidator> {
         readOnly: widget.readOnly,
         enabled: widget.isEnabled,
         decoration: InputDecoration(
+          suffixIconConstraints: widget.suffixIconConstraint,
           filled: true,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(

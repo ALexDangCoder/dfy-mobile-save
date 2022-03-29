@@ -1,18 +1,25 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemRepayment extends StatefulWidget {
-  const ItemRepayment({Key? key}) : super(key: key);
+class ItemRepayment extends StatelessWidget {
+  const ItemRepayment({
+    Key? key,
+    required this.obj,
+    required this.index,
+    required this.bloc,
+  }) : super(key: key);
+  final RepaymentRequestModel obj;
+  final int index;
+  final ContractDetailBloc bloc;
 
-  @override
-  _ItemRepaymentState createState() => _ItemRepaymentState();
-}
-
-class _ItemRepaymentState extends State<ItemRepayment> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,7 +58,7 @@ class _ItemRepaymentState extends State<ItemRepayment> {
               ),
               Expanded(
                 child: Text(
-                  '1', //todo
+                  index.toString(),
                   style: textNormalCustom(
                     null,
                     16,
@@ -76,7 +83,7 @@ class _ItemRepaymentState extends State<ItemRepayment> {
               ),
               Expanded(
                 child: Text(
-                  '1', //todo
+                  0.formatDateTimeMy(obj.dueDate ?? 0),
                   style: textNormalCustom(
                     null,
                     16,
@@ -113,20 +120,20 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                         alignment: PlaceholderAlignment.middle,
                         child: Image.network(
                           ImageAssets.getSymbolAsset(
-                            'DFY',
+                            obj.penalty?.symbol.toString() ?? '',
                           ),
                           width: 16.sp,
                           height: 16.sp,
                           errorBuilder: (
-                              context,
-                              error,
-                              stackTrace,
-                              ) =>
+                            context,
+                            error,
+                            stackTrace,
+                          ) =>
                               Container(
-                                color: AppTheme.getInstance().bgBtsColor(),
-                                width: 16.sp,
-                                height: 16.sp,
-                              ),
+                            color: AppTheme.getInstance().bgBtsColor(),
+                            width: 16.sp,
+                            height: 16.sp,
+                          ),
                         ),
                       ),
                       WidgetSpan(
@@ -138,7 +145,8 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: Text(
-                          '100 DFY',
+                          '${formatPrice.format(obj.penalty?.amountPaid ?? 0)}'
+                          '/${formatPrice.format(obj.penalty?.amount ?? 0)}',
                           style: textNormalCustom(
                             null,
                             16,
@@ -180,20 +188,20 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                         alignment: PlaceholderAlignment.middle,
                         child: Image.network(
                           ImageAssets.getSymbolAsset(
-                            'DFY',
+                            obj.interest?.symbol.toString() ?? '',
                           ),
                           width: 16.sp,
                           height: 16.sp,
                           errorBuilder: (
-                              context,
-                              error,
-                              stackTrace,
-                              ) =>
+                            context,
+                            error,
+                            stackTrace,
+                          ) =>
                               Container(
-                                color: AppTheme.getInstance().bgBtsColor(),
-                                width: 16.sp,
-                                height: 16.sp,
-                              ),
+                            color: AppTheme.getInstance().bgBtsColor(),
+                            width: 16.sp,
+                            height: 16.sp,
+                          ),
                         ),
                       ),
                       WidgetSpan(
@@ -205,7 +213,8 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: Text(
-                          '100 DFY',
+                          '${formatPrice.format(obj.interest?.amountPaid ?? 0)}'
+                          '/${formatPrice.format(obj.interest?.amount ?? 0)}',
                           style: textNormalCustom(
                             null,
                             16,
@@ -247,7 +256,7 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                         alignment: PlaceholderAlignment.middle,
                         child: Image.network(
                           ImageAssets.getSymbolAsset(
-                            'DFY',
+                            obj.loan?.symbol.toString() ?? '',
                           ),
                           width: 16.sp,
                           height: 16.sp,
@@ -272,7 +281,8 @@ class _ItemRepaymentState extends State<ItemRepayment> {
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: Text(
-                          '100 DFY',
+                          '${formatPrice.format(obj.loan?.amountPaid ?? 0)}'
+                          '/${formatPrice.format(obj.loan?.amount ?? 0)}',
                           style: textNormalCustom(
                             null,
                             16,
@@ -302,9 +312,9 @@ class _ItemRepaymentState extends State<ItemRepayment> {
               ),
               Expanded(
                 child: Text(
-                  '1', //todo
+                  bloc.getStatusHistory(obj.status ?? 0),
                   style: textNormalCustom(
-                    null,
+                    bloc.getColorHistory(obj.status ?? 0),
                     16,
                     FontWeight.w400,
                   ),

@@ -99,6 +99,7 @@ class _CryptoTabState extends State<CryptoTab>
                               MaterialPageRoute(
                                 builder: (context) => ContractDetail(
                                   type: TypeBorrow.CRYPTO_TYPE,
+                                  id: bloc.list[index].id ?? 0,
                                 ),
                               ),
                             );

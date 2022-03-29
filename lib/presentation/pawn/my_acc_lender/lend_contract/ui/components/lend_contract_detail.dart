@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_contract_info.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_repayment_history.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -29,61 +30,123 @@ class _LendContractDetailState extends State<LendContractDetail>
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
-      title: S.current.contract_detail,
-      child: Column(
-        children: [
-          spaceH24,
-          _lenderFtBorrowerInformation(),
-          spaceH20,
-          _lenderFtBorrowerInformation(isBorrower: true),
-          spaceH20,
-          spaceH25,
-          SizedBox(
-            width: 345.w,
-            child: TabBar(
-              controller: _tabController,
-              labelColor: AppTheme.getInstance().whiteColor(),
-              unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
-              indicatorColor: formColor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: textNormalCustom(
-                Colors.grey.shade400,
-                14,
-                FontWeight.w600,
-              ),
-              tabs: [
-                Tab(
-                  text: S.current.contact_info.capitalize(),
-                  height: 50.h,
+        title: S.current.contract_detail,
+        child: DefaultTabController(
+          length: 3,
+          child: NestedScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            headerSliverBuilder: (context, isScolled) {
+              return [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: AppTheme.getInstance().bgBtsColor(),
+                  collapsedHeight: 375.h,
+                  flexibleSpace: Column(
+                    children: [
+                      spaceH24,
+                      _lenderFtBorrowerInformation(),
+                      spaceH20,
+                      _lenderFtBorrowerInformation(isBorrower: true),
+                      spaceH20,
+                    ],
+                  ),
                 ),
-                Tab(
-                  text: S.current.ltv_liquid_thres.capitalize(),
-                  height: 50.h,
-                ),
-                Tab(
-                  text: S.current.repayment_history.capitalize(),
-                  height: 50.h,
+                SliverPersistentHeader(
+                  delegate: MyDelegate(
+                    TabBar(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _tabController,
+                      labelColor: AppTheme.getInstance().whiteColor(),
+                      unselectedLabelColor:
+                          AppTheme.getInstance().titleTabColor(),
+                      indicatorColor: formColor,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelStyle: textNormalCustom(
+                        Colors.grey.shade400,
+                        14,
+                        FontWeight.w600,
+                      ),
+                      tabs: [
+                        Tab(
+                          text: S.current.contact_info.capitalize(),
+                          height: 50.h,
+                        ),
+                        Tab(
+                          text: S.current.ltv_liquid_thres.capitalize(),
+                          height: 50.h,
+                        ),
+                        Tab(
+                          text: S.current.repayment_history.capitalize(),
+                          height: 50.h,
+                        )
+                      ],
+                    ),
+                  ),
+                  floating: true,
+                  pinned: true,
                 )
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
+              ];
+            },
+            body: TabBarView(
               controller: _tabController,
               children: [
                 TabContractInfo(),
                 Container(
                   color: Colors.red,
                 ),
-                Container(
-                  color: Colors.green,
-                )
+                TabRepaymentHistory()
               ],
             ),
-          )
-        ],
-      ),
-    );
+          ),
+        )
+        // Column(
+        //   children: [
+        //
+        //     SizedBox(
+        //       width: 345.w,
+        //       child: TabBar(
+        //         physics: const NeverScrollableScrollPhysics(),
+        //         controller: _tabController,
+        //         labelColor: AppTheme.getInstance().whiteColor(),
+        //         unselectedLabelColor: AppTheme.getInstance().titleTabColor(),
+        //         indicatorColor: formColor,
+        //         indicatorSize: TabBarIndicatorSize.tab,
+        //         labelStyle: textNormalCustom(
+        //           Colors.grey.shade400,
+        //           14,
+        //           FontWeight.w600,
+        //         ),
+        //         tabs: [
+        //           Tab(
+        //             text: S.current.contact_info.capitalize(),
+        //             height: 50.h,
+        //           ),
+        //           Tab(
+        //             text: S.current.ltv_liquid_thres.capitalize(),
+        //             height: 50.h,
+        //           ),
+        //           Tab(
+        //             text: S.current.repayment_history.capitalize(),
+        //             height: 50.h,
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //     Expanded(
+        //       child: TabBarView(
+        //         controller: _tabController,
+        //         children: [
+        //           TabContractInfo(),
+        //           Container(
+        //             color: Colors.red,
+        //           ),
+        //           TabRepaymentHistory()
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
+        );
   }
 
   Container _lenderFtBorrowerInformation({bool? isBorrower = false}) {
@@ -200,7 +263,7 @@ class _LendContractDetailState extends State<LendContractDetail>
                             center: const Alignment(0.5, -0.5),
                             radius: 4,
                             colors:
-                            AppTheme.getInstance().gradientButtonColor(),
+                                AppTheme.getInstance().gradientButtonColor(),
                           ),
                         ),
                         child: Center(
@@ -251,5 +314,32 @@ class _LendContractDetailState extends State<LendContractDetail>
         ],
       ),
     );
+  }
+}
+
+class MyDelegate extends SliverPersistentHeaderDelegate {
+  MyDelegate(this.tabBar);
+
+  final TabBar tabBar;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      width: 345.w,
+      color: AppTheme.getInstance().bgBtsColor(),
+      child: tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
