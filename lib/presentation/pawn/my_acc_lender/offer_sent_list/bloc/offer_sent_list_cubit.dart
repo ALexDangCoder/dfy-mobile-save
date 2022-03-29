@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_crypto_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
+import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -14,6 +16,9 @@ import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
+
+import 'package:Dfy/utils/extensions/string_extension.dart';
 
 part 'offer_sent_list_state.dart';
 
@@ -22,6 +27,17 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
 
   ///DI
   OfferSentRepository get _offerSentService => Get.find();
+
+  static const String PROCESSING_CREATE = '1';
+  static const String ALL = '';
+  static const String FAILED_CREATE = '2';
+  static const String OPEN = '3';
+  static const String PROCESSING_ACCEPT = '4';
+  static const String PROCESSING_REJECT = '5';
+  static const String PROCESSING_CANCEL = '6';
+  static const String ACCEPTED = '7';
+  static const String REJECTED = '8';
+  static const String CANCELED = '9';
 
   ///need for call api
   ///0.Api get UserID
@@ -61,14 +77,27 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     return userID;
   }
 
-  ///1.Api tab crypto
+  ///1.Api tab Crypto feat NFT
   String message = '';
   int page = 0;
   bool loadMore = false;
   bool canLoadMoreList = true;
   bool refresh = false;
   int defaultSize = 10;
+
+  ///because tab NFT & CRYPTO same Api #type
+  ///this func refresh var
+  void refreshVariableApi() {
+    message = '';
+    page = 0;
+    loadMore = false;
+    canLoadMoreList = true;
+    refresh = false;
+    defaultSize = 10;
+  }
+
   List<OfferSentCryptoModel> listOfferSentCrypto = [];
+  List<OfferSentCryptoModel> listOfferSentNFT = [];
 
   Future<void> getListOfferSentCrypto({
     String? type,
@@ -84,7 +113,7 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
       status: status,
       size: size ?? defaultSize.toString(),
       page: page.toString(),
-      walletAddress: PrefsService.getCurrentBEWallet(),
+      walletAddress: walletAddressFilter,
       type: type,
       userId: await getUserId(),
       sort: sort,
@@ -111,9 +140,8 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     );
   }
 
-  //todo need to fix parram
   Future<void> loadMoreGetListCrypto({
-    String? type,
+    String? type = '0',
     String? size,
     String? status,
     String? userId,
@@ -138,12 +166,12 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     }
   }
 
-  Future<void> refreshGetListOfferSentCrypto() async {
+  Future<void> refreshGetListOfferSentCrypto({String? type = '0'}) async {
     canLoadMoreList = true;
     if (refresh == false) {
       page = 0;
       refresh = true;
-      await getListOfferSentCrypto();
+      await getListOfferSentCrypto(type: type);
     } else {
       //nothing
     }
@@ -153,6 +181,7 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
   String messageDetailCrypto = '';
 
   ///api detail crypto
+  ///START
   OfferSentDetailCryptoModel offerSentDetailCrypto =
       OfferSentDetailCryptoModel();
   OfferSentDetailCryptoCollateralModel offerSentDetailCryptoCollateral =
@@ -205,6 +234,85 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     );
   }
 
+  ///end
+  ///For Filter OfferSent
+  ///start
+  final List<Map<String, dynamic>> filterOriginalList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': PROCESSING_CREATE},
+    {'isSelected': false, 'status': FAILED_CREATE},
+    {'isSelected': false, 'status': OPEN},
+    {'isSelected': false, 'status': PROCESSING_ACCEPT},
+    {'isSelected': false, 'status': PROCESSING_REJECT},
+    {'isSelected': false, 'status': PROCESSING_CANCEL},
+    {'isSelected': false, 'status': ACCEPTED},
+    {'isSelected': false, 'status': REJECTED},
+    {'isSelected': false, 'status': CANCELED}
+  ];
+
+  WalletAddressRepository get _walletAddressRepository => Get.find();
+
+  final List<Map<String, dynamic>> walletAddressDropDown = [];
+
+  Future<void> getListWallet() async {
+    final Result<List<WalletAddressModel>> result =
+        await _walletAddressRepository.getListWalletAddress();
+    result.when(
+      success: (res) {
+        for (final element in res) {
+          walletAddressDropDown.add(
+            {
+              'value': element.walletAddress ?? '',
+              'label': (element.walletAddress ?? '').formatAddressWallet(),
+            },
+          );
+        }
+      },
+      error: (error) {},
+    );
+
+    walletAddressDropDown.add(
+      {
+        'value': '1',
+        'label': '23',
+      },
+    );
+  }
+
+  String statusFilter = '';
+  String walletAddressFilter = PrefsService.getCurrentBEWallet();
+
+  final List<Map<String, dynamic>> filterTmpList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': PROCESSING_CREATE},
+    {'isSelected': false, 'status': FAILED_CREATE},
+    {'isSelected': false, 'status': OPEN},
+    {'isSelected': false, 'status': PROCESSING_ACCEPT},
+    {'isSelected': false, 'status': PROCESSING_REJECT},
+    {'isSelected': false, 'status': PROCESSING_CANCEL},
+    {'isSelected': false, 'status': ACCEPTED},
+    {'isSelected': false, 'status': REJECTED},
+    {'isSelected': false, 'status': CANCELED}
+  ];
+
+  void pickJustOneFilter(int index) {
+    for (final element in filterTmpList) {
+      element['isSelected'] = false;
+    }
+    filterTmpList[index]['isSelected'] = true;
+    statusFilter = filterTmpList[index]['status'];
+    filterListBHVSJ.sink.add(filterTmpList);
+  }
+
+  void resetFilter() {
+    filterListBHVSJ.sink.add(filterOriginalList);
+  }
+
+  BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
+      BehaviorSubject();
+
+  ///End
+
   ///extension string
   String categoryOneOrMany({
     required int durationQty,
@@ -232,20 +340,4 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
-
-  ///filter
-  List<Map<String, dynamic>> fakeDataWallet = [
-    {
-      'value': '1',
-      'label': 'wallet 1',
-    },
-    {
-      'value': '2',
-      'label': 'wallet 2',
-    },
-    {
-      'value': '3',
-      'label': 'wallet 3',
-    }
-  ];
 }

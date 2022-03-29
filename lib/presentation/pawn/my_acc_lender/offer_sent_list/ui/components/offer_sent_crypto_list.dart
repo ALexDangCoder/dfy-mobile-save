@@ -26,7 +26,8 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
   @override
   void initState() {
     super.initState();
-    widget.cubit.getUserId();
+    widget.cubit.refreshVariableApi();
+    widget.cubit.getListWallet();
     if (widget.cubit.listOfferSentCrypto.isNotEmpty) {
       widget.cubit.listOfferSentCrypto.clear();
     }
@@ -75,7 +76,9 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
                 if (widget.cubit.canLoadMoreList &&
                     scrollInfo.metrics.pixels ==
                         scrollInfo.metrics.maxScrollExtent) {
-                  widget.cubit.loadMoreGetListCrypto();
+                  widget.cubit.loadMoreGetListCrypto(
+                    status: widget.cubit.statusFilter,
+                  );
                 }
                 return true;
               },

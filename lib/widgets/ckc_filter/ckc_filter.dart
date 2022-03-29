@@ -18,32 +18,35 @@ class CheckBoxFilterWidget extends StatefulWidget {
     required this.typeCkc,
     required this.callBack,
     this.urlCover,
+    this.isSelected = false,
+    required this.index,
   }) : super(key: key);
   final String nameCkcFilter;
   final TYPE_CKC_FILTER typeCkc;
   final String? urlCover;
-  final Function() callBack;
+  final int index;
+  final void Function(int index) callBack;
+  final bool? isSelected;
 
   @override
   _CheckBoxFilterWidgetState createState() => _CheckBoxFilterWidgetState();
 }
 
 class _CheckBoxFilterWidgetState extends State<CheckBoxFilterWidget> {
-  late bool _isSelected;
 
   @override
   void initState() {
-    _isSelected = false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    bool _isSelected = widget.isSelected ?? false;
     return GestureDetector(
       onTap: () {
         setState(() {
           _isSelected = !_isSelected;
-          widget.callBack();
+          widget.callBack(widget.index);
         });
       },
       child: Row(
@@ -57,15 +60,15 @@ class _CheckBoxFilterWidgetState extends State<CheckBoxFilterWidget> {
               border: _isSelected
                   ? null
                   : Border.all(
-                color: const Color(0xffF2F2F2),
-                width: 1.w,
-              ),
+                      color: const Color(0xffF2F2F2),
+                      width: 1.w,
+                    ),
             ),
             child: _isSelected
                 ? const ImageIcon(
-              AssetImage(ImageAssets.ic_ckc),
-              color: Colors.white,
-            )
+                    AssetImage(ImageAssets.ic_ckc),
+                    color: Colors.white,
+                  )
                 : Container(),
           ),
           spaceW8,
@@ -106,6 +109,4 @@ class _CheckBoxFilterWidgetState extends State<CheckBoxFilterWidget> {
       return Container();
     }
   }
-
-
 }
