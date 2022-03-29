@@ -573,7 +573,7 @@
   "open": "Mở",
   "processing_accept": "Đang xử lí chấp nhận",
   "processing_reject": "Đang xử lí từ chối",
-  "processing_cancel": "Đang sử lí huỷ",
+  "processing_cancel": "Đang Xử lí huỷ",
   "accepted": "Đã chấp thuận",
   "canceled": "Đã huỷ",
   "reject": "Reject",
@@ -916,5 +916,5 @@
   "select_wallet_address": "Chọn địa chỉ ví",
   "offer_sent": "Đề nghị được gửi",
   "setting_and_package": "Cài đặt & Bưu kiện",
-  "loan_request": "Loan Requests"
+  "loan_request": "Yêu cầu vay vốn"
 }

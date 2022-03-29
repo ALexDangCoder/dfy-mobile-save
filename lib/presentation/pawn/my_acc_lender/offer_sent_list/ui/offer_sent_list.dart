@@ -5,7 +5,7 @@ import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_li
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/filter_offer_sent.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_list.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_nft_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/tab_nft/offer_sent_nft_list.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +30,7 @@ class _OfferSentListState extends State<OfferSentList>
     cubit = OfferSentListCubit();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
+    _tabController.index;
   }
 
   @override
@@ -118,7 +119,7 @@ class _OfferSentListState extends State<OfferSentList>
                             ),
 
                             ///Tab Nft
-                            OfferSentNftList(),
+                            OfferSentNftList(cubit: cubit),
                           ],
                         ),
                       )
@@ -171,30 +172,13 @@ class _OfferSentListState extends State<OfferSentList>
                     isScrollControlled: true,
                     context: context,
                     backgroundColor: Colors.transparent,
-                    builder: (ctx) => FilerOfferSent(cubit: cubit),
+                    builder: (ctx) => FilerOfferSent(
+                      cubit: cubit,
+                      indexTab: _tabController.index,
+                    ),
                   );
                 },
-                child: InkWell(
-                  onTap: () {
-                    //todo push filter screen
-                    showModalBottomSheet(
-                      backgroundColor: Colors.black,
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (_) {
-                        return FilterLoanRequestList();
-                        // return FilerOfferSent(cubit: cubit);
-                      },
-                    );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (_) => const LoanSendOffer(isCryptoElseNft: true),
-                    //   ),
-                    // );
-                  },
-                  child: Image.asset(ImageAssets.ic_filter),
-                ),
+                child: Image.asset(ImageAssets.ic_filter),
               ),
             ),
           ],
