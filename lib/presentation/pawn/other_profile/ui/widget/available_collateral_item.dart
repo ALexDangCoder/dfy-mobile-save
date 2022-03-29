@@ -102,7 +102,7 @@ class AvailableCollateralItem extends StatelessWidget {
                     ),
                     spaceW8,
                     Text(
-                      '${collateralUser.collateralSymbol}',
+                      '${collateralUser.loanSymbol}',
                       style: textNormal(Colors.white, 16),
                     ),
                   ],

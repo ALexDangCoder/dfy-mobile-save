@@ -7,6 +7,13 @@ import 'package:Dfy/domain/model/pawn/user_profile.dart';
 mixin UsersRepository {
   Future<Result<UserProfile>> getUserProfile({String? userId});
   Future<Result<UserProfile>> getMyUserProfile();
+  Future<Result<EmailSetting>> getEmailSetting();
+  Future<Result<EmailSetting>> putEmailSetting(Map<String,dynamic> setting);
+  Future<Result<NotiSetting>> getNotiSetting();
+  Future<Result<NotiSetting>> putNotiSetting(Map<String,dynamic> setting);
+  Future<Result<String>> disconnectWalletToBe({
+    required Map<String, String> map,
+  });
 
   Future<Result<List<Reputation>>> getListReputation({String? userId});
 

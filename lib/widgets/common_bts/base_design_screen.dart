@@ -46,7 +46,7 @@ class BaseDesignScreen extends StatelessWidget {
       child: Scaffold(
         bottomNavigationBar: bottomBar,
         resizeToAvoidBottomInset: resizeBottomInset,
-        backgroundColor: AppTheme.getInstance().bgBtsColor(),
+        backgroundColor: Colors.black,
         body: Align(
           alignment: Alignment.bottomCenter,
           child: Container(

@@ -6,6 +6,7 @@ import 'package:Dfy/data/response/pawn/user_profile/list_comment_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_signed_contract_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/reputation_response.dart';
+import 'package:Dfy/data/response/pawn/user_profile/setting_user_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/user_profile_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
@@ -35,6 +36,27 @@ abstract class UserProfileService {
   Future<ConfirmEvaluationResponse> updatePersonalProfile(
       @Body() Map<String,dynamic> map,
       );
+  @PUT(ApiConstants.DISCONNECT_WALLET)
+  Future<ConfirmEvaluationResponse> disconnectWallet(
+      @Body() Map<String,dynamic> map,
+      );
+
+  @GET(ApiConstants.GET_MY_SETTING_EMAIL)
+  Future<SettingUserResponse> getEmailSetting();
+
+  @GET(ApiConstants.GET_MY_SETTING_NOTI)
+  Future<SettingUserResponse> getNotiSetting();
+
+  @PUT(ApiConstants.GET_MY_SETTING_EMAIL)
+  Future<SettingUserResponse> putEmailSetting(
+      @Body() Map<String,dynamic>  emailSetting,
+      );
+
+  @PUT(ApiConstants.GET_MY_SETTING_NOTI)
+  Future<SettingUserResponse> putNotiSetting(
+      @Body() Map<String,dynamic>  notiSetting,
+      );
+
 
   @GET(ApiConstants.GET_REPUTATION)
   Future<List<ReputationResponse>> getReputation(
