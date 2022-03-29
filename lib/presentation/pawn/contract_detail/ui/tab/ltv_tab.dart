@@ -20,10 +20,13 @@ class LTVTAB extends StatefulWidget {
   _LTVTABState createState() => _LTVTABState();
 }
 
-class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
+class _LTVTABState extends State<LTVTAB>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late AnimationController _controller;
   late double decimal; // %
   late double decimalTotal; // %
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -41,8 +44,8 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
             (widget.bloc.objDetail?.cryptoCollateral?.estimateUsdAmount ?? 0);
     if (decimalTotal > 120) {
       decimal = 120;
-    }else{
-      decimal=decimalTotal;
+    } else {
+      decimal = decimalTotal;
     }
     _controller.forward();
   }
@@ -71,7 +74,7 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: 150.h,
+              top: 170,
               child: SizedBox(
                 width: 100.w,
                 child: Text(
@@ -86,7 +89,7 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: 75,
+              top: 70,
               child: RotationTransition(
                 turns: Tween(begin: -0.25, end: -0.25 + (0.0041666 * decimal))
                     .animate(_controller),
@@ -112,9 +115,9 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
             ),
             Positioned(
               top: 110,
-              right: -10,
+              right: 0,
               child: SizedBox(
-                width: 75.w,
+                width: 70,
                 child: Text(
                   S.current.risker,
                   style: textNormalCustom(
@@ -122,20 +125,24 @@ class _LTVTABState extends State<LTVTAB> with SingleTickerProviderStateMixin {
                     14,
                     FontWeight.w400,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
             Positioned(
               top: 110,
-              left: 10,
-              child: SizedBox(
-                width: 75.w,
-                child: Text(
-                  S.current.safer,
-                  style: textNormalCustom(
-                    null,
-                    14,
-                    FontWeight.w400,
+              left: 5,
+              child: Center(
+                child: SizedBox(
+                  width: 70,
+                  child: Text(
+                    S.current.safer,
+                    style: textNormalCustom(
+                      null,
+                      14,
+                      FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

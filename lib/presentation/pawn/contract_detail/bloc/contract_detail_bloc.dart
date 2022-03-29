@@ -33,9 +33,46 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   ContractDetailBloc(this.id, this.type) : super(ContractDetailInitial()) {
     getData();
   }
+
   static const int ACTIVE = 1;
   static const int COMPLETED = 2;
   static const int DEFAULT = 3;
+
+  static const int PROCESSING = 0;
+  static const int WAIT_PAYMENT = 1;
+  static const int COMPLETED_HISTORY = 3;
+  static const int LATE = 2;
+  static const int DEFAULT_HISTORY = 4;
+
+  String getStatusHistory(int type) {
+    switch (type) {
+      case LATE:
+        return S.current.late;
+      case COMPLETED_HISTORY:
+        return S.current.completed;
+      case WAIT_PAYMENT:
+        return S.current.wait_payment;
+      case DEFAULT_HISTORY:
+        return S.current.defaults;
+      case PROCESSING:
+        return S.current.processing;
+      default:
+        return '';
+    }
+  }
+
+  Color getColorHistory(int type) {
+    switch (type) {
+      case LATE:
+        return AppTheme.getInstance().redColor();
+      case COMPLETED_HISTORY:
+        return AppTheme.getInstance().blueColor();
+      case WAIT_PAYMENT:
+        return AppTheme.getInstance().orangeMarketColors();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
+  }
 
   String getStatus(int type) {
     switch (type) {

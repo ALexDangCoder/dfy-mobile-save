@@ -989,5 +989,10 @@
   "tow_times": " 2 times",
   "late_payment_From": " late payment. From ",
   "rd_time": "3rd time",
-  "the_collateral_will_be_liquidated": ", the collateral will be liquidated."
+  "the_collateral_will_be_liquidated": ", the collateral will be liquidated.",
+  "total_unpaid": "Total unpaid",
+  "total_paid": "Total paid",
+  "total_loan": "Total loan",
+  "late": "Late",
+  "wait_payment": "Wait payment"
 }

@@ -21,7 +21,11 @@ class ContractInfo extends StatefulWidget {
   _ContractInfoState createState() => _ContractInfoState();
 }
 
-class _ContractInfoState extends State<ContractInfo> {
+class _ContractInfoState extends State<ContractInfo>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     final obj = widget.bloc.objDetail ?? ContractDetailPawn.name();

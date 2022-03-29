@@ -94,11 +94,8 @@ class _ContractDetailState extends State<ContractDetail>
                     length: 3,
                     child: Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 812.h,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                          ),
                           child: NestedScrollView(
                             physics: const ScrollPhysics(),
                             headerSliverBuilder: (
@@ -598,43 +595,58 @@ class _ContractDetailState extends State<ContractDetail>
                                     ),
                                     tabs: [
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child: Text(S.current.contract_info),
+                                        child: Text(
+                                          S.current.contract_info,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child: Text(
-                                            S.current.lte_liquidation_threshold,
-                                          ),
+                                        child: Text(
+                                          S.current.lte_liquidation_threshold,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Tab(
-                                        child: SizedBox(
-                                          height: 90.h,
-                                          child:
-                                              Text(S.current.repayment_history),
+                                        child: Text(
+                                          S.current.repayment_history,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                pinned: true,
+                                //pinned: true,
                               ),
                             ],
                             body: TabBarView(
                               controller: _tabController,
                               children: [
-                                ContractInfo(
-                                  bloc: bloc,
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: ContractInfo(
+                                    bloc: bloc,
+                                  ),
                                 ),
-                                LTVTAB(
-                                  bloc: bloc,
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: LTVTAB(
+                                    bloc: bloc,
+                                  ),
                                 ),
-                                RepaymentHistory(
-                                  bloc: bloc,
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  child: RepaymentHistory(
+                                    bloc: bloc,
+                                  ),
                                 ),
                               ],
                             ),
