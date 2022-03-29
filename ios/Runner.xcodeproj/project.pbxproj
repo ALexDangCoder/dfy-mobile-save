@@ -3,14 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		403D759EC05A6AA01864AD6D /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD37C0441021027B19CF041 /* Pods_Runner.framework */; };
-		5228579B27DF23230088C3DD /* WalletCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5228579A27DF23230088C3DD /* WalletCore */; };
 		523C52FB276F900B009DFA3F /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C52FA276F900B009DFA3F /* WalletModel.swift */; };
 		523C52FD276F923B009DFA3F /* SharedPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C52FC276F923B009DFA3F /* SharedPreference.swift */; };
 		523C52FF277011D3009DFA3F /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C52FE277011D2009DFA3F /* TokenModel.swift */; };
@@ -41,7 +40,6 @@
 		1F492213EC7C7147C92905E8 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		47B23A5C678B5ED6A1B322EA /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		4B322F7D27E20BEA0017B8DD /* wallet-core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "wallet-core"; path = "../wallet-core"; sourceTree = "<group>"; };
 		521FDE4B27B64E4400B8B909 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		523C52FA276F900B009DFA3F /* WalletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModel.swift; sourceTree = "<group>"; };
 		523C52FC276F923B009DFA3F /* SharedPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreference.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5228579B27DF23230088C3DD /* WalletCore in Frameworks */,
 				403D759EC05A6AA01864AD6D /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,7 +83,6 @@
 		4B322F7C27E20BEA0017B8DD /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				4B322F7D27E20BEA0017B8DD /* wallet-core */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -198,11 +194,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				5228579D27DF232B0088C3DD /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
-				5228579A27DF23230088C3DD /* WalletCore */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Defi For You.app */;
@@ -358,13 +352,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		5228579D27DF232B0088C3DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 5228579C27DF232B0088C3DD;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -445,7 +432,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -454,7 +441,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -523,7 +510,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -532,7 +519,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -601,7 +588,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_staging.dart";
@@ -611,7 +598,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -680,7 +667,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_develop.dart";
@@ -690,7 +677,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -764,7 +751,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_develop.dart";
@@ -774,7 +761,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -849,7 +836,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -858,7 +845,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -930,7 +917,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_develop.dart";
@@ -940,7 +927,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1011,7 +998,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1020,7 +1007,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1094,7 +1081,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_staging.dart";
@@ -1104,7 +1091,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1176,7 +1163,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FLUTTER_TARGET = "/Volumes/DATA/EDSOLABS/dfy-mobile/lib/main_staging.dart";
@@ -1186,7 +1173,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1312,7 +1299,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1321,7 +1308,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1341,7 +1328,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 596BB292G4;
+				DEVELOPMENT_TEAM = 65MUWGJ9FF;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1350,7 +1337,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabb.dfymobile2023;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edsolabs.dfymobile2022;
 				PRODUCT_NAME = "Defi For You";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1401,13 +1388,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		5228579A27DF23230088C3DD /* WalletCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = WalletCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
