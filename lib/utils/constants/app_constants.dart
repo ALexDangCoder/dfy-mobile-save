@@ -22,7 +22,8 @@ enum PageRouter { MARKET, MY_ACC }
 enum TypeNFT { HARD_NFT, SOFT_NFT }
 enum TypeImage { IMAGE, VIDEO }
 enum PackageType { AUTO, SEMI_AUTO, NEGOTIATION, P2P }
-
+const int SOFT_NFT = 0;
+const int HARD_NFT = 1;
 enum PageTransitionType {
   FADE,
   RIGHT_TO_LEFT,

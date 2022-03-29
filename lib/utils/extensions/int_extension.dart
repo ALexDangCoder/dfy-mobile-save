@@ -8,6 +8,15 @@ extension formatInt on int {
     return d24;
   }
 
+  String formatDateTimeMyGTM(int date) {
+    var millis = date;
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    String d24 = DateFormat('HH:mm - dd/MM/yyyy').format(dt) +
+        " (GMT + ${DateTime.now().timeZoneOffset.inHours})";
+
+    return d24;
+  }
+
   String formatHourMy(int date) {
     var millis = date;
     var dt = DateTime.fromMillisecondsSinceEpoch(millis);

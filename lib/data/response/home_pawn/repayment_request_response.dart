@@ -57,6 +57,12 @@ class ContentResponse {
   RepaymentTokenResponse? loan;
   @JsonKey(name: 'smartContractType')
   int? smartContractType;
+  @JsonKey(name: 'txnHash')
+  String? txnHash;
+  @JsonKey(name: 'paymentDate')
+  int? paymentDate;
+  @JsonKey(name: 'txnId')
+  int? txnId;
 
   ContentResponse(
     this.id,
@@ -93,6 +99,9 @@ class ContentResponse {
         interest?.toDomain(),
         loan?.toDomain(),
         smartContractType,
+        txnHash,
+        paymentDate,
+        txnId,
       );
 }
 

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
+import 'package:Dfy/presentation/pawn/repayment_history_detail/ui/repayment_history_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class RepaymentHistory extends StatefulWidget {
   _RepaymentHistoryState createState() => _RepaymentHistoryState();
 }
 
-class _RepaymentHistoryState extends State<RepaymentHistory> with AutomaticKeepAliveClientMixin {
+class _RepaymentHistoryState extends State<RepaymentHistory>
+    with AutomaticKeepAliveClientMixin {
   Widget itemList(
     String title,
     String money,
@@ -122,10 +124,22 @@ class _RepaymentHistoryState extends State<RepaymentHistory> with AutomaticKeepA
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: widget.bloc.listRequest.length,
-            itemBuilder: (context, index) => ItemRepayment(
-              obj: widget.bloc.listRequest[index],
-              index: index + 1,
-              bloc: widget.bloc,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RepaymentHistoryDetail(
+                      id: widget.bloc.listRequest[index].id.toString(),
+                    ),
+                  ),
+                );
+              },
+              child: ItemRepayment(
+                obj: widget.bloc.listRequest[index],
+                index: index + 1,
+                bloc: widget.bloc,
+              ),
             ),
           ),
           spaceH152,

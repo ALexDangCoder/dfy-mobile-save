@@ -12,6 +12,9 @@ class RepaymentRequestModel {
   RepaymentTokenModel? interest;
   RepaymentTokenModel? loan;
   int? smartContractType;
+  String? txnHash;
+  int? paymentDate;
+  int? txnId;
 
   RepaymentRequestModel(
     this.id,
@@ -27,6 +30,9 @@ class RepaymentRequestModel {
     this.interest,
     this.loan,
     this.smartContractType,
+    this.txnHash,
+    this.paymentDate,
+    this.txnId,
   );
 }
 
@@ -42,5 +48,4 @@ class RepaymentTokenModel {
     this.symbol,
     this.address,
   );
-
 }

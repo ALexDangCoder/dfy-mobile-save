@@ -9,6 +9,7 @@ import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart'
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
+import 'package:Dfy/domain/model/home_pawn/total_repaymnent_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
@@ -225,5 +226,15 @@ mixin BorrowRepository {
     String? contractId,
     String? walletAddress,
     String? type,
+  });
+
+  Future<Result<List<RepaymentRequestModel>>> getListItemRepayment({
+    String? id,
+    String? page,
+    String? size,
+  });
+
+  Future<Result<TotalRepaymentModel>> getTotalRepayment({
+    String? id,
   });
 }
