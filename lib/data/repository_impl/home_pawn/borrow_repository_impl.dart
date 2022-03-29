@@ -2,8 +2,10 @@ import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
+import 'package:Dfy/data/response/home_pawn/check_rate_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_detail_my_acc_response.dart';
 import 'package:Dfy/data/response/home_pawn/collateral_widraw_response.dart';
+import 'package:Dfy/data/response/home_pawn/contract_detail_response.dart';
 import 'package:Dfy/data/response/home_pawn/create_new_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/crypto_collateral_res.dart';
 import 'package:Dfy/data/response/home_pawn/detail_collateral_response.dart';
@@ -19,6 +21,8 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
@@ -26,6 +30,7 @@ import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.da
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/borrow_service.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
+import 'package:Dfy/domain/model/home_pawn/check_rate_model.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart';
@@ -36,12 +41,15 @@ import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/domain/model/pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
+import 'package:Dfy/domain/model/pawn/repayment_stats_model.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/model/pawn/result_create_new_collateral_model.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -504,6 +512,56 @@ class BorrowRepositoryImpl implements BorrowRepository {
         borrowerWalletAddress,
         status,
         type,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<CheckRateModel>> getCheckRate(
+      {String? contractId, String? walletAddress, String? type}) {
+    return runCatchingAsync<CheckRateResponse, CheckRateModel>(
+      () => _client.getCheckRate(contractId, walletAddress, type),
+      (response) => response.data?.toDomain() ?? CheckRateModel.create(),
+    );
+  }
+
+  @override
+  Future<Result<ContractDetailPawn>> getLenderContract(
+      {String? id, String? walletAddress, String? type}) {
+    return runCatchingAsync<ContractlDetailMyAccResponse, ContractDetailPawn>(
+      () => _client.getLenderContract(
+        id,
+        walletAddress,
+        type,
+      ),
+      (response) => response.data?.toDomain() ??  ContractDetailPawn.name(),
+    );
+  }
+
+  @override
+  Future<Result<RepaymentStatsModel>> getRepaymentHistory({String? id}) {
+    return runCatchingAsync<RepaymentStatsResponse, RepaymentStatsModel>(
+      () => _client.getRepaymentHistory(
+        id,
+      ),
+      (response) => response.data?.toDomain() ??  RepaymentStatsModel.name(),
+    );
+  }
+
+  @override
+  Future<Result<List<RepaymentRequestModel>>> getRepaymentResquest({
+    String? id,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<RepaymentRequestResponse,
+        List<RepaymentRequestModel>>(
+      () => _client.getRepaymentResquest(
+        id,
         page,
         size,
       ),
