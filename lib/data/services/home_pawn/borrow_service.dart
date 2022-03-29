@@ -25,6 +25,7 @@ import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
+import 'package:Dfy/data/response/home_pawn/total_repayment_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -210,7 +211,7 @@ abstract class BorrowService {
   );
 
   @GET(
-      '${ApiConstants.DETAIL_COLLATERAL_MY_ACC}{collateral_id}${ApiConstants.HISTORY_MY_ACC}')
+      '${ApiConstants.HISTORY_DETAIL_COLLATERAL_MY_ACC}{collateral_id}${ApiConstants.HISTORY_MY_ACC}')
   Future<HistoryCollateralResponse> getHistoryDetailCollateralMyAcc(
     @Path('collateral_id') String? collateralId,
     @Query('page') String? page,
@@ -278,5 +279,17 @@ abstract class BorrowService {
     @Query('contractId') String? contractId,
     @Query('walletAddress') String? walletAddress,
     @Query('type') String? type,
+  );
+
+  @GET('${ApiConstants.GET_LIST_ITEM_REPAYMENT}{id}')
+  Future<RepaymentRequestResponse> getListItemRepayment(
+    @Path('id') String? id,
+    @Query('page') String? walletAddress,
+    @Query('size') String? type,
+  );
+
+  @GET('${ApiConstants.GET_TOTAL_REPAYMENT}{id}${ApiConstants.SUMMARY}')
+  Future<TotalRepaymentResponse> getTotalRepayment(
+    @Path('id') String? id,
   );
 }

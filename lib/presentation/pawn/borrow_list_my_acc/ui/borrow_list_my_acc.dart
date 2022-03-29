@@ -97,6 +97,7 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                           overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 1,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     GestureDetector(

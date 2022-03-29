@@ -44,6 +44,28 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   static const int LATE = 2;
   static const int DEFAULT_HISTORY = 4;
 
+  static const int LATE_TEXT = 0;
+  static const int RICK = 1;
+  static const int UNPAID = 2;
+
+  String getStatusDefault({
+    int max = 0,
+    required int status,
+  }) {
+    switch (status) {
+      case LATE_TEXT:
+        return S.current.maximum_late_payment +
+            max.toString() +
+            S.current.times;
+      case RICK:
+        return S.current.ltv_liquidation_threshold;
+      case UNPAID:
+        return S.current.loan_repayment;
+      default:
+        return '';
+    }
+  }
+
   String getStatusHistory(int type) {
     switch (type) {
       case LATE:
@@ -111,7 +133,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
       success: (response) {
         if (response.isNotEmpty) {
           if (rateType == 0) {
-            rate.add(response.first.reputationBorrower.toString());
+            rate.add(response.first.reputationLender.toString());
           } else {
             rateMy.add(response.first.reputationBorrower.toString());
           }
@@ -139,7 +161,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
     if (type == TypeBorrow.CRYPTO_TYPE) {
       typePawn = '0';
     } else {
-      typePawn = '1';
+      typePawn = '0';
     }
     final Result<ContractDetailPawn> response =
         await _pawnService.getLenderContract(

@@ -1,6 +1,8 @@
 import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'borrow_list_my_acc_response.dart';
+
 part 'contract_detail_response.g.dart';
 
 @JsonSerializable()
@@ -61,7 +63,7 @@ class DataResponse {
   @JsonKey(name: 'type')
   int? type;
   @JsonKey(name: 'nft')
-  int? nft;
+  NftResponse? nft;
   @JsonKey(name: 'smartContractType')
   int? smartContractType;
 
@@ -118,7 +120,7 @@ class DataResponse {
         defaultReason,
         loanToValue,
         type,
-        nft,
+        nft?.toDomain(),
         smartContractType,
       );
 }
@@ -172,7 +174,7 @@ class CryptoModelContractResponse {
   @JsonKey(name: 'riskDefault')
   int? riskDefault;
   @JsonKey(name: 'systemRisk')
-  String? systemRisk;
+  int? systemRisk;
   @JsonKey(name: 'penaltyRate')
   int? penaltyRate;
 

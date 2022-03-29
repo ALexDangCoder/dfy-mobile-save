@@ -22,6 +22,7 @@ class PrefsService {
   static const _PREF_IS_SHOW_CONNECT_MAIL_DIALOG = 'pref_is_show_connect_mail';
   static const _PREF_CREATE_HARD_NFT_USER_INFO =
       'pref_create_hard_nft_user_info';
+  static const _PREF_REVIEW = 'pref_review';
 
   static SharedPreferences? _prefsInstance;
 
@@ -50,6 +51,15 @@ class PrefsService {
 
   static String getFaceIDConfig() {
     return _prefsInstance?.getString(_PREF_FACE_ID) ?? 'false';
+  }
+
+  static Future<bool> savePleaseRate(String value) async {
+    final prefs = await _instance;
+    return prefs.setString(_PREF_REVIEW, value);
+  }
+
+  static String getPleaseRate() {
+    return _prefsInstance?.getString(_PREF_REVIEW) ?? 'false';
   }
 
   static String getFirstAppConfig() {
@@ -177,8 +187,6 @@ class PrefsService {
   static String getUserProfile() {
     return _prefsInstance?.getString(_PREF_USER_PROFILE) ?? userProfileEmpty();
   }
-
-
 
   static String userProfileEmpty() {
     return userProfileToJson(

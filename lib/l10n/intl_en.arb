@@ -986,13 +986,17 @@
   "current_ltv": "Current LTV",
   "ltv_liquidation": "LTV Liquidation threshold has reached the limitation",
   "borrower_can_only": "Borrower can only ",
-  "tow_times": " 2 times",
+  "tow_times": "times",
   "late_payment_From": " late payment. From ",
-  "rd_time": "3rd time",
+  "rd_time": "rd time",
   "the_collateral_will_be_liquidated": ", the collateral will be liquidated.",
   "total_unpaid": "Total unpaid",
   "total_paid": "Total paid",
   "total_loan": "Total loan",
   "late": "Late",
-  "wait_payment": "Wait payment"
+  "wait_payment": "Wait payment",
+  "the_current_ltv": "The current LTV has reached LTV liquidation threshold",
+  "loan_repayment": "Loan repayment is overdue",
+  "maximum_late_payment": "Maximum late payment has been made ",
+  "times": " times."
 }

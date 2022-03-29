@@ -2,18 +2,23 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/market_place/login/dialog/warrning_dialog.dart';
+import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_state.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/contract_info.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/ltv_tab.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/repayment_history.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/review_borrower/ui/review_borrower.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/common_bts/base_nft_market.dart';
@@ -65,13 +70,15 @@ class _ContractDetailState extends State<ContractDetail>
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               if (!(bloc.isShow.isBlank ?? false)) {
-                if (!(bloc.isRate ?? false) && (bloc.isShow ?? false)) {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) => ReviewBorrower(),
-                  );
+                if (PrefsService.getPleaseRate() == 'false') {
+                  if (!(bloc.isRate ?? false) && (bloc.isShow ?? false)) {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) => ReviewBorrower(),
+                    );
+                  }
                 }
               }
               bloc.objDetail = state.obj;
@@ -197,9 +204,10 @@ class _ContractDetailState extends State<ContractDetail>
                                                               );
                                                             },
                                                             child: Text(
-                                                              checkNullAddressWallet(obj
-                                                                  .lenderWalletAddress
-                                                                  .toString()),
+                                                              checkNullAddressWallet(
+                                                                obj.lenderWalletAddress
+                                                                    .toString(),
+                                                              ),
                                                               style:
                                                                   textNormalCustom(
                                                                 AppTheme.getInstance()
@@ -269,8 +277,10 @@ class _ContractDetailState extends State<ContractDetail>
                                                           child: StreamBuilder<
                                                               String>(
                                                             stream: bloc.rate,
-                                                            builder: (context,
-                                                                snapshot) {
+                                                            builder: (
+                                                              context,
+                                                              snapshot,
+                                                            ) {
                                                               return Text(
                                                                 snapshot.data
                                                                     .toString(),
@@ -296,7 +306,18 @@ class _ContractDetailState extends State<ContractDetail>
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () {
-                                                          //todo
+                                                          goTo(
+                                                            context,
+                                                            OtherProfile(
+                                                              index: 1,
+                                                              userId: obj
+                                                                  .lenderUserId
+                                                                  .toString(),
+                                                              pageRouter:
+                                                                  PageRouter
+                                                                      .MARKET,
+                                                            ),
+                                                          );
                                                         },
                                                         child: Container(
                                                           padding: EdgeInsets
@@ -338,47 +359,106 @@ class _ContractDetailState extends State<ContractDetail>
                                                           ),
                                                         ),
                                                       ),
-                                                      spaceW25,
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          //todo
-                                                        },
-                                                        child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                            horizontal: 20.w,
-                                                            vertical: 10.h,
+                                                      if (!(bloc.isRate ??
+                                                              false) &&
+                                                          ((bloc.objDetail?.status ??
+                                                                      0) ==
+                                                                  ContractDetailBloc
+                                                                      .DEFAULT ||
+                                                              (bloc.objDetail
+                                                                          ?.status ??
+                                                                      0) ==
+                                                                  ContractDetailBloc
+                                                                      .COMPLETED))
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            left: 25.w,
                                                           ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: AppTheme
-                                                                    .getInstance()
-                                                                .borderItemColor(),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                12.r,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              if (PrefsService
+                                                                          .getCurrentWalletCore()
+                                                                      .toLowerCase() !=
+                                                                  (obj.borrowerWalletAddress
+                                                                          ?.toLowerCase() ??
+                                                                      '')) {
+                                                                showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) =>
+                                                                          WarningDialog(
+                                                                    walletAddress:
+                                                                        PrefsService
+                                                                            .getCurrentWalletCore(),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ReviewBorrower(),
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal:
+                                                                    20.w,
+                                                                vertical: 10.h,
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: AppTheme
+                                                                        .getInstance()
+                                                                    .borderItemColor(),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                    12.r,
+                                                                  ),
+                                                                ),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: AppTheme
+                                                                          .getInstance()
+                                                                      .fillColor(),
+                                                                ),
+                                                              ),
+                                                              child: Text(
+                                                                S.current
+                                                                    .review,
+                                                                style:
+                                                                    textNormalCustom(
+                                                                  AppTheme.getInstance()
+                                                                      .fillColor(),
+                                                                  16,
+                                                                  FontWeight
+                                                                      .w600,
+                                                                ),
                                                               ),
                                                             ),
-                                                            border: Border.all(
-                                                              color: AppTheme
-                                                                      .getInstance()
-                                                                  .fillColor(),
-                                                            ),
                                                           ),
-                                                          child: Text(
-                                                            S.current.review,
-                                                            style:
-                                                                textNormalCustom(
-                                                              AppTheme.getInstance()
-                                                                  .fillColor(),
-                                                              16,
-                                                              FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
+                                                        )
+                                                      else
+                                                        const SizedBox.shrink(),
                                                     ],
                                                   ),
                                                 ],
@@ -668,51 +748,68 @@ class _ContractDetailState extends State<ContractDetail>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            // );//todo
-                                          },
-                                          child: Container(
-                                            height: 64.h,
-                                            width: 159.w,
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.getInstance()
-                                                  .borderItemColor(),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.r),
-                                              ),
-                                              border: Border.all(
+                                        if (obj.status ==
+                                            ContractDetailBloc.ACTIVE)
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return AddMoreCollateral();
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 64.h,
+                                              width: obj.status ==
+                                                      ContractDetailBloc.ACTIVE
+                                                  ? 343.w
+                                                  : 159.w,
+                                              decoration: BoxDecoration(
                                                 color: AppTheme.getInstance()
-                                                    .fillColor(),
-                                              ),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                S.current.add_collateral,
-                                                style: textNormalCustom(
-                                                  AppTheme.getInstance()
+                                                    .borderItemColor(),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(20.r),
+                                                ),
+                                                border: Border.all(
+                                                  color: AppTheme.getInstance()
                                                       .fillColor(),
-                                                  20,
-                                                  FontWeight.w600,
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  S.current.add_collateral,
+                                                  style: textNormalCustom(
+                                                    AppTheme.getInstance()
+                                                        .fillColor(),
+                                                    20,
+                                                    FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            //todo
-                                          },
-                                          child: SizedBox(
-                                            width: 159.w,
-                                            child: ButtonGold(
-                                              isEnable: true,
-                                              fixSize: false,
-                                              haveMargin: false,
-                                              title: S.current.repayment,
+                                        if (obj.status !=
+                                            ContractDetailBloc.ACTIVE)
+                                          GestureDetector(
+                                            onTap: () {
+                                              //todo
+                                            },
+                                            child: SizedBox(
+                                              width: obj.status !=
+                                                      ContractDetailBloc.ACTIVE
+                                                  ? 343.w
+                                                  : 159.w,
+                                              child: ButtonGold(
+                                                isEnable: true,
+                                                fixSize: false,
+                                                haveMargin: false,
+                                                title: S.current.repayment,
+                                              ),
                                             ),
                                           ),
-                                        ),
                                       ],
                                     ),
                                   ),
