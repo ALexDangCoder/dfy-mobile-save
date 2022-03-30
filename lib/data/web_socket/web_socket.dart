@@ -29,7 +29,7 @@ class WebSocket {
       final Map<String, dynamic> socketData = jsonDecode(event);
       print('map $socketData');
       if (socketData['cmd'] == 'bid_auction') {
-        _socketDataSubject.sink.add(socketData['data']);
+        _socketDataSubject.sink.add(socketData['data'].toString());
       }
     });
   }

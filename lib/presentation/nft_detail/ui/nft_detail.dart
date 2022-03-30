@@ -120,7 +120,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       webSocket =
           WebSocket(mapLoginState.stringValueOrEmpty('accessToken'), '');
       webSocket.socketDataStream.listen((event) {
-        print('Fuck data $event');
+        // print('Fuck data $event');
         onRefresh();
       });
     }
@@ -1132,6 +1132,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                               bloc,
                               nftOnAuction,
                               widget.marketId ?? '',
+                              onRefresh,
                             ),
                           ),
                         ],
@@ -1144,7 +1145,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 quantity: nftOnAuction.numberOfCopies ?? 1,
                 url: '${widget.nftId}?auction_id=${widget.marketId}',
                 price: (nftOnAuction.reservePrice ?? 0) *
-                    (nftOnAuction.usdExchange ?? 1), type: MarketType.AUCTION,
+                    (nftOnAuction.usdExchange ?? 1),
+                type: MarketType.AUCTION,
               ),
               _priceContainerOnAuction(
                 nftOnAuction: nftOnAuction,

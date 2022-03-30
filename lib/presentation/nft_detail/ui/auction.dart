@@ -7,35 +7,45 @@ Widget _buildButtonPlaceBid(
   NFTDetailBloc bloc,
   NFTOnAuction nftOnAuction,
   String marketId,
+  Function handle,
 ) {
   if (!start && end && (nftOnAuction.isBoughtByOther == false)) {
     return ButtonGradient(
       onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => ConnectWalletDialog(
-            navigationTo: PlaceBid(
-              nftOnAuction: nftOnAuction,
-              typeBid: TypeBid.PLACE_BID,
-              marketId: marketId,
+        if (nftOnAuction.isBidProcessing == false) {
+          showDialog(
+            context: context,
+            builder: (context) => ConnectWalletDialog(
+              navigationTo: PlaceBid(
+                nftOnAuction: nftOnAuction,
+                typeBid: TypeBid.PLACE_BID,
+                marketId: marketId,
+              ),
+              isRequireLoginEmail: false,
+              hasFunction: true,
+              function: () {
+                print('Hello mother fucker');
+                handle();
+              },
             ),
-            isRequireLoginEmail: false,
-          ),
-        );
+          );
+        }
       },
       gradient: RadialGradient(
         center: const Alignment(0.5, -0.5),
         radius: 4,
         colors: AppTheme.getInstance().gradientButtonColor(),
       ),
-      child: Text(
-        S.current.place_a_bid,
-        style: textNormalCustom(
-          AppTheme.getInstance().textThemeColor(),
-          16,
-          FontWeight.w700,
-        ),
-      ),
+      child: (nftOnAuction.isBidProcessing == false)
+          ? Text(
+              S.current.place_a_bid,
+              style: textNormalCustom(
+                AppTheme.getInstance().textThemeColor(),
+                16,
+                FontWeight.w700,
+              ),
+            )
+          : processing(),
     );
   } else {
     return ErrorButton(
@@ -101,6 +111,7 @@ Widget _buildButtonBuyOut(
             isRequireLoginEmail: false,
             hasFunction: true,
             function: () {
+              print('fuck auction');
               nftOnAuction.isBoughtByOther = true;
               nftOnAuction.marketStatus = 10;
               bloc.emit(NftOnAuctionSuccess(nftOnAuction));
