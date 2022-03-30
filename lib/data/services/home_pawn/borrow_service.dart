@@ -300,7 +300,7 @@ abstract class BorrowService {
     @Path('id') String? id,
   );
 
-  @GET('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
+  @POST('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
   Future<RepaymentPayResponse> postRepaymentPay(
     @Path('id') String? id,
     @Body() RepaymentPayRequest? repaymentPayRequest,
