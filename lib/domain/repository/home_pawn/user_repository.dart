@@ -1,5 +1,6 @@
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/pawn/borrow_available_collateral.dart';
+import 'package:Dfy/domain/model/pawn/notification.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/reputation.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
@@ -7,6 +8,8 @@ import 'package:Dfy/domain/model/pawn/user_profile.dart';
 mixin UsersRepository {
   Future<Result<UserProfile>> getUserProfile({String? userId});
   Future<Result<UserProfile>> getMyUserProfile();
+  Future<Result<List<NotificationData>>> getNotification({int? notiType,int? isRead,int?page});
+  Future<Result<List<NotificationDetail>>> getNotificationDetail({int? notiType,int? isRead,int?page});
   Future<Result<EmailSetting>> getEmailSetting();
   Future<Result<EmailSetting>> putEmailSetting(Map<String,dynamic> setting);
   Future<Result<NotiSetting>> getNotiSetting();
@@ -14,6 +17,13 @@ mixin UsersRepository {
   Future<Result<String>> disconnectWalletToBe({
     required Map<String, String> map,
   });
+  Future<Result<String>> updateNoti({
+    required String id,
+  });
+  Future<Result<String>> deleteNoti({
+    required String id,
+  });
+
 
   Future<Result<List<Reputation>>> getListReputation({String? userId});
 
