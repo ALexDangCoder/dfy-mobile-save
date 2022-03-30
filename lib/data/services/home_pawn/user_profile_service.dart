@@ -5,6 +5,7 @@ import 'package:Dfy/data/response/pawn/user_profile/list_collateral_response.dar
 import 'package:Dfy/data/response/pawn/user_profile/list_comment_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_signed_contract_response.dart';
+import 'package:Dfy/data/response/pawn/user_profile/notification_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/reputation_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/setting_user_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/user_profile_response.dart';
@@ -40,6 +41,26 @@ abstract class UserProfileService {
   Future<ConfirmEvaluationResponse> disconnectWallet(
       @Body() Map<String,dynamic> map,
       );
+  @PUT('${ApiConstants.GET_NOTIFICATION}/{id}')
+  Future<String> updateNoti(
+      @Path('id') String id,
+      );
+  @DELETE('${ApiConstants.GET_NOTIFICATION}/{id}')
+  Future<String> deleteNoti(
+      @Path('id') String id,
+      );
+
+
+
+
+  @GET(ApiConstants.GET_NOTIFICATION)
+  Future<NotificationResponse> getNotification(
+      @Query('notiType') String? notiType,
+      @Query('isReaded') String? isReaded,
+      @Query('page') String page,
+      @Query('size') String size,
+      );
+
 
   @GET(ApiConstants.GET_MY_SETTING_EMAIL)
   Future<SettingUserResponse> getEmailSetting();

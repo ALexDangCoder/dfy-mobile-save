@@ -1,20 +1,20 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/borrow_result.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/ui/components/list_item_horizontal.dart';
+import 'package:Dfy/presentation/pawn/notifications/ui/total_notification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/text/text_gradient.dart';
 import 'package:Dfy/widgets/views/state_error_view.dart';
-import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -778,6 +778,7 @@ class _HomePawnState extends State<HomePawn> {
         left: 24.w,
         right: 28.w,
         bottom: 14.h,
+        top: 14.h,
       ),
       height: 54.h,
       width: 323.w,
@@ -791,11 +792,16 @@ class _HomePawnState extends State<HomePawn> {
               ImageAssets.logo_pawn,
             ),
           ),
-          SizedBox(
-            height: 24.h,
-            width: 24.w,
-            child: Image.asset(
-              ImageAssets.alarm,
+          InkWell(
+            onTap: (){
+              goTo(context, const TotalNotification());
+            },
+            child: SizedBox(
+              height: 24.h,
+              width: 24.w,
+              child: Image.asset(
+                ImageAssets.alarm,
+              ),
             ),
           )
         ],
