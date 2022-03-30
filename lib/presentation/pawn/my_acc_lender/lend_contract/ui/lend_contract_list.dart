@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/bloc/lender_contract_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/filter_lender_contract.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_crypto/lender_contract_crypto.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_nft/lender_contract_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -167,15 +168,15 @@ class _LenderContractListState extends State<LenderContractList>
               child: InkWell(
                 onTap: () {
                   //todo filter màn lend contract list
-                  // showModalBottomSheet(
-                  //   isScrollControlled: true,
-                  //   context: context,
-                  //   backgroundColor: Colors.transparent,
-                  //   builder: (ctx) => FilerOfferSent(
-                  //     cubit: cubit,
-                  //     indexTab: _tabController.index,
-                  //   ),
-                  // );
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (ctx) => FilterLenderContract(
+                      cubit: cubit,
+                      indexTab: _tabController.index,
+                    ),
+                  );
                 },
                 child: Image.asset(ImageAssets.ic_filter),
               ),

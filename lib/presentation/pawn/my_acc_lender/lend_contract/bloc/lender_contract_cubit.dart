@@ -3,16 +3,21 @@ import 'dart:convert';
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
+import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/model/pawn/lender_contract/lender_contract_nft_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
+import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/pawn/lender_contract/lender_contract_repository.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_nft/lender_contract_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'lender_contract_state.dart';
 
@@ -24,9 +29,14 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
 
   LenderContractRepository get _lenderContractService => Get.find();
 
+  static const String ACTIVE = '1';
+  static const String ALL = '';
+  static const String COMPLETE = '2';
+  static const String DEFAULT = '3';
+
   ///get UserId
   String userID = '';
-  List<LenderContractNftModel> listNftLenderContract = [];
+  List<CryptoPawnModel> listNftLenderContract = [];
 
   String getEmailWallet() {
     late String currentEmail = '';
@@ -92,7 +102,7 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
     String? walletAddress,
   }) async {
     showLoading();
-    final Result<List<LenderContractNftModel>> result =
+    final Result<List<CryptoPawnModel>> result =
         await _lenderContractService.getListOfferSentCrypto(
       status: status,
       type: type,
@@ -139,9 +149,7 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
         walletAddress: walletAddress,
         status: status,
       );
-    } else {
-
-    }
+    } else {}
   }
 
   Future<void> refreshGetListNft({String? type = '1'}) async {
@@ -154,4 +162,83 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
       //nothing
     }
   }
+
+  ///for filter
+  String statusFilter = '';
+
+  WalletAddressRepository get _walletAddressRepository => Get.find();
+
+  final List<Map<String, dynamic>> walletAddressDropDown = [
+    {'value': '', 'label': 'All'}
+  ];
+  bool isGotWallet = false;
+
+  BehaviorSubject<List<Map<String, dynamic>>> listWalletBHVSJ =
+      BehaviorSubject();
+
+  final List<Map<String, dynamic>> filterTmpList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': ACTIVE},
+    {'isSelected': false, 'status': COMPLETE},
+    {'isSelected': false, 'status': DEFAULT},
+  ];
+
+  final List<Map<String, dynamic>> filterOriginalList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': ACTIVE},
+    {'isSelected': false, 'status': COMPLETE},
+    {'isSelected': false, 'status': DEFAULT},
+  ];
+
+  Future<void> getListWallet() async {
+    if (isGotWallet) {
+    } else {
+      final Result<List<WalletAddressModel>> result =
+          await _walletAddressRepository.getListWalletAddress();
+      result.when(
+        success: (res) {
+          for (final element in res) {
+            if ((element.walletAddress ?? '') ==
+                    PrefsService.getCurrentBEWallet() ||
+                (element.walletAddress ?? '').isEmpty) {
+            } else {
+              walletAddressDropDown.add(
+                {
+                  'value': element.walletAddress ?? '',
+                  'label': (element.walletAddress ?? '').formatAddressWallet(),
+                },
+              );
+            }
+          }
+          listWalletBHVSJ.sink.add(walletAddressDropDown);
+        },
+        error: (error) {
+          walletAddressDropDown.add(
+            {
+              'value': PrefsService.getCurrentBEWallet(),
+              'label': PrefsService.getCurrentBEWallet().formatAddressWallet(),
+            },
+          );
+          listWalletBHVSJ.sink.add(walletAddressDropDown);
+        },
+      );
+      isGotWallet = true;
+    }
+  }
+
+  void pickJustOneFilter(int index) {
+    for (final element in filterTmpList) {
+      element['isSelected'] = false;
+    }
+    filterTmpList[index]['isSelected'] = true;
+    statusFilter = filterTmpList[index]['status'];
+    filterListBHVSJ.sink.add(filterTmpList);
+  }
+
+  void resetFilter() {
+    filterListBHVSJ.sink.add(filterOriginalList);
+  }
+
+  BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
+      BehaviorSubject();
 }

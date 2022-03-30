@@ -33,13 +33,8 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
   void initState() {
     super.initState();
     initValueFilterList = widget.cubit.filterOriginalList;
+    widget.cubit.getListWallet();
     currentWallet = widget.cubit.walletAddressDropDown[0];
-    // if(widget.indexTab == 0) {
-    //   //this is crypto tab
-    // } else {
-    //   //this is nft tab
-    // }
-    // print(initValueFilterList);
   }
 
   @override
@@ -99,7 +94,7 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 0,
                                 isSelected: (snapshot.data ?? [])[0]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter: S.current.all.capitalize(),
                               ),
                             ),
@@ -111,7 +106,7 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 3,
                                 isSelected: (snapshot.data ?? [])[3]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter: S.current.open.capitalize(),
                               ),
                             )
@@ -128,7 +123,7 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 7,
                                 isSelected: (snapshot.data ?? [])[7]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter: S.current.accepted.capitalize(),
                               ),
                             ),
@@ -140,7 +135,7 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 8,
                                 isSelected: (snapshot.data ?? [])[8]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter: S.current.rejected.capitalize(),
                               ),
                             )
@@ -157,7 +152,7 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 9,
                                 isSelected: (snapshot.data ?? [])[9]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter: S.current.canceled.capitalize(),
                               ),
                             ),
@@ -169,9 +164,9 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 1,
                                 isSelected: (snapshot.data ?? [])[1]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter:
-                                    S.current.process_create.capitalize(),
+                                S.current.process_create.capitalize(),
                               ),
                             )
                           ],
@@ -187,9 +182,9 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 4,
                                 isSelected: (snapshot.data ?? [])[4]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter:
-                                    S.current.processing_accept.capitalize(),
+                                S.current.processing_accept.capitalize(),
                               ),
                             ),
                             Expanded(
@@ -200,9 +195,9 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 5,
                                 isSelected: (snapshot.data ?? [])[5]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter:
-                                    S.current.processing_reject.capitalize(),
+                                S.current.processing_reject.capitalize(),
                               ),
                             )
                           ],
@@ -218,9 +213,9 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 6,
                                 isSelected: (snapshot.data ?? [])[6]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter:
-                                    S.current.processing_cancel.capitalize(),
+                                S.current.processing_cancel.capitalize(),
                               ),
                             ),
                             Expanded(
@@ -231,9 +226,9 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                                 },
                                 index: 2,
                                 isSelected: (snapshot.data ?? [])[2]
-                                    ['isSelected'],
+                                ['isSelected'],
                                 nameCkcFilter:
-                                    S.current.failed_create.capitalize(),
+                                S.current.failed_create.capitalize(),
                               ),
                             )
                           ],
@@ -266,14 +261,16 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                     Navigator.pop(context);
                     widget.cubit.listOfferSentCrypto.clear();
                     if (widget.indexTab == 0) {
+                      widget.cubit.listOfferSentCrypto.clear();
                       widget.cubit.getListOfferSentCrypto(
-                        walletAddress: currentWallet['value'],
+                        walletAddress: widget.cubit.walletAddressFilter,
                         status: widget.cubit.statusFilter,
                         type: 0.toString(),
                       );
                     } else {
+                      widget.cubit.listOfferSentNFT.clear();
                       widget.cubit.getListOfferSentCrypto(
-                        walletAddress: currentWallet['value'],
+                        walletAddress: widget.cubit.walletAddressFilter,
                         status: widget.cubit.statusFilter,
                         type: 1.toString(),
                       );
@@ -302,52 +299,62 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
           hintColor: Colors.white24,
           selectedRowColor: Colors.white24,
         ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton2<Map<String, dynamic>>(
-            buttonDecoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            items: widget.cubit.walletAddressDropDown.map((element) {
-              return DropdownMenuItem(
-                value: element,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Text(
-                    element['label'],
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
+        child: StreamBuilder<List<Map<String, dynamic>>>(
+          initialData: widget.cubit.walletAddressDropDown,
+          stream: widget.cubit.listWalletBHVSJ,
+          builder: (context, snapshot) {
+            return DropdownButtonHideUnderline(
+              child: DropdownButton2<Map<String, dynamic>>(
+                buttonDecoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-              );
-            }).toList(),
-            onChanged: (Map<String, dynamic>? newValue) {
-              setState(() {
-                currentWallet = newValue!;
-              });
-            },
-            dropdownMaxHeight: 200,
-            dropdownWidth: MediaQuery.of(context).size.width - 32.w,
-            dropdownDecoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            scrollbarThickness: 0,
-            scrollbarAlwaysShow: false,
-            offset: Offset(-16.w, 0),
-            value: currentWallet,
-            icon: Image.asset(
-              ImageAssets.ic_line_down,
-              height: 24.h,
-              width: 24.w,
-            ),
-          ),
+                items: (snapshot.data ?? []).map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      child: Text(
+                        element['label'],
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (Map<String, dynamic>? newValue) {
+                  setState(() {
+                    currentWallet = newValue!;
+                    widget.cubit.walletAddressFilter = currentWallet['value'];
+                  });
+                },
+                dropdownMaxHeight: 200,
+                dropdownWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 32.w,
+                dropdownDecoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                ),
+                scrollbarThickness: 0,
+                scrollbarAlwaysShow: false,
+                offset: Offset(-16.w, 0),
+                value: currentWallet,
+                icon: Image.asset(
+                  ImageAssets.ic_line_down,
+                  height: 24.h,
+                  width: 24.w,
+                ),
+              ),
+            );
+          }
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/item_nft_pawn.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/bloc/lender_contract_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -113,22 +114,30 @@ class _LenderContractNftState extends State<LenderContractNft> {
       return (widget.cubit.listNftLenderContract.isNotEmpty)
           ? Column(
               children: [
-                Container(
-
+                GridView.builder(
+                  physics: const ClampingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
+                  shrinkWrap: true,
+                  itemCount: widget.cubit.listNftLenderContract.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 170.w / 231.h,
+                  ),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                      //  todo chuyeenr man
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16.w),
+                        child: NFTItemPawn(
+                          cryptoPawnModel: widget.cubit.listNftLenderContract[index],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                // Expanded(
-                //   child: ListView.builder(
-                //     shrinkWrap: true,
-                //     itemCount: widget.cubit.listOfferSentNFT.length,
-                //     itemBuilder: (context, index) {
-                //       return OfferSentCryptoItem(
-                //         index: index,
-                //         model: widget.cubit.listOfferSentNFT[index],
-                //         cubit: widget.cubit,
-                //       );
-                //     },
-                //   ),
-                // ),
                 if (state is LoadMoreNFT)
                   Center(
                     child: CircularProgressIndicator(

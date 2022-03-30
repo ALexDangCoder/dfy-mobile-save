@@ -20,7 +20,7 @@ class LoadCryptoFtNftFail extends LenderContractState {
 }
 
 class LoadCryptoFtNftResult extends LenderContractState {
-  final List<LenderContractNftModel>? list;
+  final List<CryptoPawnModel>? list;
   final CompleteType completeType;
 
   LoadCryptoFtNftResult(

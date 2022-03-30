@@ -29,6 +29,10 @@ class _OfferSentNftListState extends State<OfferSentNftList> {
   @override
   void initState() {
     super.initState();
+    // if(widget.cubit.walletAddressDropDown.isNotEmpty) {
+    //   widget.cubit.walletAddressDropDown.clear();
+    //   widget.cubit.getListWallet();
+    // }
     widget.cubit.refreshVariableApi();
     if (widget.cubit.listOfferSentNFT.isNotEmpty) {
       widget.cubit.listOfferSentNFT.clear();

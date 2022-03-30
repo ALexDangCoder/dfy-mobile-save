@@ -1,11 +1,10 @@
 
 
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/domain/model/pawn/lender_contract/lender_contract_nft_model.dart';
-import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 
 mixin LenderContractRepository {
-  Future<Result<List<LenderContractNftModel>>> getListOfferSentCrypto({
+  Future<Result<List<CryptoPawnModel>>> getListOfferSentCrypto({
     String? type,
     String? page,
     String? size,

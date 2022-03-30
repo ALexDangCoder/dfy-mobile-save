@@ -137,27 +137,6 @@ class DataResponse extends Equatable {
         nft?.toDomain(),
       );
 
-  LenderContractNftModel toModel() => LenderContractNftModel(
-        id,
-        supplyCurrency,
-        supplyCurrencyAmount,
-        estimateUsdSupplyCurrencyAmount,
-        collateral,
-        collateralAmount,
-        estimateUsdCollateralAmount,
-        interestPerYear,
-        duration,
-        durationType,
-        lenderWalletAddress,
-        lenderReputation,
-        borrowerWalletAddress,
-        borrowerReputation,
-        status,
-        isClaimed,
-        bcContractId,
-        type,
-        nft?.toDomain(),
-      );
 }
 
 @JsonSerializable()
