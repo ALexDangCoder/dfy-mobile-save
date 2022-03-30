@@ -277,7 +277,7 @@ class _ContractInfoState extends State<ContractInfo>
                 context: context,
                 builder: (_) => InfoPopup(
                   name: S.current.loan_to_value,
-                  content: S.current.mess_loan_to_value,
+                  content: S.current.learn_more_about,
                 ),
               );
             },
@@ -292,7 +292,7 @@ class _ContractInfoState extends State<ContractInfo>
                 context: context,
                 builder: (_) => InfoPopup(
                   name: S.current.ltv_liquidation_threshold,
-                  content: S.current.ltv_liquid_thres,
+                  content: S.current.learn_more_about_ltv,
                 ),
               ); //todo
             },

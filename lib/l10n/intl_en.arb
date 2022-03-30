@@ -998,5 +998,14 @@
   "the_current_ltv": "The current LTV has reached LTV liquidation threshold",
   "loan_repayment": "Loan repayment is overdue",
   "maximum_late_payment": "Maximum late payment has been made ",
-  "times": " times."
+  "times": " times.",
+  "penalty_interest": "Penalty & interest",
+  "in_order_to_repay_the_period_interest": "In order to repay the period’s interest, please click on button “",
+  "to_full_fill": "” to full fill exactly the interest and loan  amount.",
+  "confirm_repayment": "Confirm repayment",
+  "prepaid_fee:": "Prepaid fee",
+  "system_fee": "System fee",
+  "pay": "Pay",
+  "learn_more_about": "Learn more about  Loan to value",
+  "learn_more_about_ltv": "Learn more about LTV liquidation threshhold"
 }

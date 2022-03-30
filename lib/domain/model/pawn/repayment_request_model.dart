@@ -16,6 +16,8 @@ class RepaymentRequestModel {
   int? paymentDate;
   int? txnId;
 
+  RepaymentRequestModel.name({this.id});
+
   RepaymentRequestModel(
     this.id,
     this.startDate,

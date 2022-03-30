@@ -21,6 +21,7 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_pay_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
@@ -290,6 +291,11 @@ abstract class BorrowService {
 
   @GET('${ApiConstants.GET_TOTAL_REPAYMENT}{id}${ApiConstants.SUMMARY}')
   Future<TotalRepaymentResponse> getTotalRepayment(
+    @Path('id') String? id,
+  );
+
+  @GET('${ApiConstants.GET_REPAYMENT_PAY}{id}${ApiConstants.ACTIVE_REPAYMENT}')
+  Future<RepaymentPayResponse> getRepaymentPay(
     @Path('id') String? id,
   );
 }

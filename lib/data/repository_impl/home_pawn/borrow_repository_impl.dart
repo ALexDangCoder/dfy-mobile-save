@@ -21,6 +21,7 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_pay_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
@@ -597,6 +598,18 @@ class BorrowRepositoryImpl implements BorrowRepository {
         id,
       ),
       (response) => response.data?.toDomain() ?? TotalRepaymentModel.name(),
+    );
+  }
+
+  @override
+  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+    String? id,
+  }) {
+    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+      () => _client.getRepaymentPay(
+        id,
+      ),
+      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
     );
   }
 }

@@ -237,4 +237,8 @@ mixin BorrowRepository {
   Future<Result<TotalRepaymentModel>> getTotalRepayment({
     String? id,
   });
+
+  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+    String? id,
+  });
 }
