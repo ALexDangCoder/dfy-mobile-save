@@ -1,5 +1,6 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
@@ -28,6 +29,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   double balancePenalty = 0;
   double balanceInterest = 0;
   double balanceLoan = 0;
+  String id = '';
 
   void validatePenalty(String value) {
     if (value.isNotEmpty) {
@@ -88,9 +90,32 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     }
   }
 
+  Future<void> postRepaymentPay() async {
+    final Result<RepaymentRequestModel> response =
+        await _pawnService.postRepaymentPay(
+      id: id,
+      repaymentPayRequest: RepaymentPayRequest(
+        interest: AmountRequest(
+          amount: double.tryParse(interest.value),
+        ),
+        loan: AmountRequest(
+          amount: double.tryParse(loan.value),
+        ),
+        penalty: AmountRequest(
+          amount: double.tryParse(penalty.value),
+        ),
+      ),
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
+
   Future<void> getRepaymentPay({
     String? collateralId,
   }) async {
+    id = collateralId ?? '';
     showLoading();
     final Result<RepaymentRequestModel> response =
         await _pawnService.getRepaymentPay(

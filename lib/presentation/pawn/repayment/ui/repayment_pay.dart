@@ -43,7 +43,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
 
   RepaymentRequestModel obj = RepaymentRequestModel.name();
   String mes = '';
-  bool isChoose = true;
+  late bool isChoose;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
       title: S.current.repayment,
       text: ImageAssets.ic_close,
       isImage: true,
-      onRightClick: (){
+      onRightClick: () {
         Navigator.pop(context);
       },
       child: BlocConsumer<RepaymentPayBloc, RepaymentPayState>(
@@ -85,6 +85,16 @@ class _RepaymentPayState extends State<RepaymentPay> {
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               obj = state.obj ?? obj;
+              if ((obj.penalty?.address.toString().toUpperCase() ==
+                      obj.interest?.address.toString().toUpperCase()) &&
+                  (obj.penalty?.address.toString().toUpperCase() ==
+                      obj.loan?.address.toString().toUpperCase()) &&
+                  (obj.loan?.address.toString().toUpperCase() ==
+                      obj.interest?.address.toString().toUpperCase())) {
+                isChoose = true;
+              } else {
+                isChoose = false;
+              }
               bloc.getBalanceToken(
                 type: 0,
                 ofAddress: PrefsService.getCurrentBEWallet(),
@@ -371,6 +381,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                               print(
                                 '------${bloc.interest.value}${bloc.penalty.value}${bloc.loan.value}',
                               );
+                              bloc.postRepaymentPay();
                               // if (PrefsService.getCurrentWalletCore()
                               //         .toLowerCase() ==
                               //     obj.walletAddress) {
