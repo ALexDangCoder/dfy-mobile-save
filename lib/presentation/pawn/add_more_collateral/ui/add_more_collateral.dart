@@ -2,10 +2,12 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/bloc/add_more_collateral_bloc.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/bloc/add_more_collateral_state.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddMoreCollateral extends StatefulWidget {
-  const AddMoreCollateral({Key? key}) : super(key: key);
+  final ContractDetailPawn obj;
+
+  const AddMoreCollateral({
+    Key? key,
+    required this.obj,
+  }) : super(key: key);
 
   @override
   _AddMoreCollateralState createState() => _AddMoreCollateralState();
@@ -23,12 +30,23 @@ class AddMoreCollateral extends StatefulWidget {
 class _AddMoreCollateralState extends State<AddMoreCollateral> {
   late AddMoreCollateralBloc bloc;
   late TextEditingController collateralAmount;
+  double decimal = 0;
 
   @override
   void initState() {
     super.initState();
     bloc = AddMoreCollateralBloc();
     collateralAmount = TextEditingController();
+    collateralAmount.addListener(() {
+      bloc.validateAmount(collateralAmount.text);
+    });
+    bloc.getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress: widget.obj.cryptoCollateral?.cryptoAsset?.address ?? '',
+    );
+    decimal = (widget.obj.contractTerm?.estimateUsdLoanAmount ?? 0) *
+        100 /
+        (widget.obj.cryptoCollateral?.estimateUsdAmount ?? 0);
   }
 
   @override
@@ -120,151 +138,125 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                             padding: EdgeInsets.symmetric(
                               horizontal: 16.w,
                             ),
-                            child: StreamBuilder<bool>(
-                              stream: bloc.chooseExisting,
-                              builder: (context, snapshot) {
-                                bool enable;
-                                if (snapshot.hasData) {
-                                  enable = !(snapshot.data ?? false);
-                                } else {
-                                  enable = true;
-                                }
-                                return Container(
-                                  height: 64.h,
-                                  padding:
-                                      EdgeInsets.only(right: 15.w, left: 15.w),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.getInstance()
-                                        .backgroundBTSColor(),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.r)),
+                            child: Container(
+                              height: 64.h,
+                              padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                              decoration: BoxDecoration(
+                                color:
+                                    AppTheme.getInstance().backgroundBTSColor(),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.r)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextFormField(
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                          RegExp(r'^\d+\.?\d{0,5}'),
+                                        ),
+                                      ],
+                                      controller: collateralAmount,
+                                      maxLength: 50,
+                                      onChanged: (value) {
+                                        //todo
+                                      },
+                                      cursorColor:
+                                          AppTheme.getInstance().whiteColor(),
+                                      style: textNormal(
+                                        AppTheme.getInstance().whiteColor(),
+                                        16,
+                                      ),
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                        decimal: true,
+                                      ),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.zero,
+                                        isCollapsed: true,
+                                        counterText: '',
+                                        hintText: S.current.enter_amount,
+                                        hintStyle: textNormal(
+                                          Colors.white.withOpacity(0.5),
+                                          16,
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
                                   ),
-                                  child: Row(
+                                  Row(
                                     children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: TextFormField(
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                              RegExp(r'^\d+\.?\d{0,5}'),
-                                            ),
-                                          ],
-                                          enabled: enable,
-                                          controller: collateralAmount,
-                                          maxLength: 50,
-                                          onChanged: (value) {
-                                            //todo
-                                          },
-                                          cursorColor: AppTheme.getInstance()
-                                              .whiteColor(),
-                                          style: textNormal(
-                                            AppTheme.getInstance().whiteColor(),
+                                      InkWell(
+                                        onTap: () {
+                                          collateralAmount.text =
+                                              bloc.balanceToken.toString();
+                                          bloc.errorCollateral.add('');
+                                          closeKey(context);
+                                        },
+                                        child: Text(
+                                          S.current.max,
+                                          style: textNormalCustom(
+                                            fillYellowColor,
                                             16,
-                                          ),
-                                          keyboardType: const TextInputType
-                                              .numberWithOptions(
-                                            decimal: true,
-                                          ),
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            isCollapsed: true,
-                                            counterText: '',
-                                            hintText: S.current.enter_amount,
-                                            hintStyle: textNormal(
-                                              Colors.white.withOpacity(0.5),
-                                              16,
-                                            ),
-                                            border: InputBorder.none,
+                                            FontWeight.w400,
                                           ),
                                         ),
                                       ),
+                                      spaceW10,
                                       Row(
-                                        children: [
-                                          Visibility(
-                                            visible: enable,
-                                            child: InkWell(
-                                              onTap: () {
-                                                collateralAmount.text = bloc
-                                                    .getMax(
-                                                      bloc.item.nameShortToken,
-                                                    )
-                                                    .replaceAll(',', '');
-                                                bloc.errorCollateral.add('');
-                                              },
-                                              child: Text(
-                                                S.current.max,
-                                                style: textNormalCustom(
-                                                  fillYellowColor,
-                                                  16,
-                                                  FontWeight.w400,
-                                                ),
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 20.w,
+                                            height: 20.h,
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder: ImageAssets.symbol,
+                                              image: ImageAssets.getUrlToken(
+                                                widget.obj.cryptoCollateral
+                                                        ?.cryptoAsset?.symbol
+                                                        .toString() ??
+                                                    '',
                                               ),
                                             ),
                                           ),
-                                          spaceW10,
-                                          DropdownButtonHideUnderline(
-                                            child: DropdownButton<ModelToken>(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.r),
-                                              ),
-                                              dropdownColor:
-                                                  AppTheme.getInstance()
-                                                      .backgroundBTSColor(),
-                                              items: bloc.listTokenCollateral
-                                                  .map((ModelToken model) {
-                                                return DropdownMenuItem(
-                                                  value: model,
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 20.w,
-                                                        height: 20.h,
-                                                        child: FadeInImage
-                                                            .assetNetwork(
-                                                          placeholder:
-                                                              ImageAssets
-                                                                  .symbol,
-                                                          image:
-                                                              model.iconToken,
-                                                        ),
-                                                      ),
-                                                      spaceW5,
-                                                      Text(
-                                                        model.nameShortToken,
-                                                        style: textNormal(
-                                                          Colors.white
-                                                              .withOpacity(0.5),
-                                                          16,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged:
-                                                  (ModelToken? newValue) {
-                                                if (enable) {
-                                                  setState(() {
-                                                    bloc.item = newValue!;
-                                                  });
-                                                }
-                                              },
-                                              value: bloc.item,
-                                              icon: Image.asset(
-                                                ImageAssets.ic_line_down,
-                                                height: 24.h,
-                                                width: 24.w,
-                                              ),
+                                          spaceW5,
+                                          Text(
+                                            widget.obj.cryptoCollateral
+                                                    ?.cryptoAsset?.symbol ??
+                                                '',
+                                            style: textNormal(
+                                              null,
+                                              16,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                );
-                              },
+                                ],
+                              ),
                             ),
-                          ),//todo
+                          ),
+                          spaceH4,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            child: StreamBuilder<String>(
+                              stream: bloc.errorCollateral,
+                              builder: (context, snapshot) =>
+                                  snapshot.data?.isNotEmpty ?? false
+                                      ? Text(
+                                          snapshot.data ?? '',
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance().redColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                            ),
+                          ),
                           spaceH24,
                           Padding(
                             padding: EdgeInsets.symmetric(
@@ -284,7 +276,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                 Expanded(
                                   flex: 3,
                                   child: Text(
-                                    '20%',//todo
+                                    '${formatPrice.format(decimal)}%',
                                     style: textNormal(
                                       AppTheme.getInstance().whiteColor(),
                                       16,

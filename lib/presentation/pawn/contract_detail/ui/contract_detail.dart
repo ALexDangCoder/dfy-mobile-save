@@ -757,7 +757,9 @@ class _ContractDetailState extends State<ContractDetail>
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) {
-                                                    return AddMoreCollateral();
+                                                    return AddMoreCollateral(
+                                                      obj: obj,
+                                                    );
                                                   },
                                                 ),
                                               );
