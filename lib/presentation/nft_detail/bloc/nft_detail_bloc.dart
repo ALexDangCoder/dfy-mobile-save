@@ -41,6 +41,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   int quantity = 0;
   double totalPayment = 0;
   double bidValue = 0;
+  bool isBiding = false;
 
   NFTRepository get _nftRepo => Get.find();
 
@@ -184,7 +185,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   }
 
   ///GetInfoNft
-
 
   Future<void> getInForNFT({
     required String marketId,

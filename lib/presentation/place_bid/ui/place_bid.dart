@@ -470,7 +470,7 @@ class _PlaceBidState extends State<PlaceBid> {
                                           content: S.current.congratulation,
                                           callback: () {
                                             Navigator.pop(context);
-                                            Navigator.pop(context,true);
+                                            Navigator.pop(context, true);
                                           },
                                         ),
                                       ),
