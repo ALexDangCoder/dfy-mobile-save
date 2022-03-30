@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -21,10 +22,12 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_pay_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
+import 'package:Dfy/data/response/home_pawn/total_repayment_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
@@ -37,6 +40,7 @@ import 'package:Dfy/domain/model/home_pawn/history_detail_collateral_model.dart'
 import 'package:Dfy/domain/model/home_pawn/offers_received_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_offer_lend_crypto_model.dart';
 import 'package:Dfy/domain/model/home_pawn/send_to_loan_package_model.dart';
+import 'package:Dfy/domain/model/home_pawn/total_repaymnent_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
@@ -538,7 +542,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
         walletAddress,
         type,
       ),
-      (response) => response.data?.toDomain() ??  ContractDetailPawn.name(),
+      (response) => response.data?.toDomain() ?? ContractDetailPawn.name(),
     );
   }
 
@@ -548,7 +552,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
       () => _client.getRepaymentHistory(
         id,
       ),
-      (response) => response.data?.toDomain() ??  RepaymentStatsModel.name(),
+      (response) => response.data?.toDomain() ?? RepaymentStatsModel.name(),
     );
   }
 
@@ -567,6 +571,60 @@ class BorrowRepositoryImpl implements BorrowRepository {
       ),
       (response) =>
           response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<List<RepaymentRequestModel>>> getListItemRepayment({
+    String? id,
+    String? page,
+    String? size,
+  }) {
+    return runCatchingAsync<RepaymentRequestResponse,
+        List<RepaymentRequestModel>>(
+      () => _client.getListItemRepayment(
+        id,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<TotalRepaymentModel>> getTotalRepayment({String? id}) {
+    return runCatchingAsync<TotalRepaymentResponse, TotalRepaymentModel>(
+      () => _client.getTotalRepayment(
+        id,
+      ),
+      (response) => response.data?.toDomain() ?? TotalRepaymentModel.name(),
+    );
+  }
+
+  @override
+  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+    String? id,
+  }) {
+    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+      () => _client.getRepaymentPay(
+        id,
+      ),
+      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
+    );
+  }
+
+  @override
+  Future<Result<RepaymentRequestModel>> postRepaymentPay({
+    String? id,
+    RepaymentPayRequest? repaymentPayRequest,
+  }) {
+    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+      () => _client.postRepaymentPay(
+        id,
+        repaymentPayRequest,
+      ),
+      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
     );
   }
 }

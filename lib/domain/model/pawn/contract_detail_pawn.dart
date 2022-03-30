@@ -1,3 +1,5 @@
+import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
+
 class ContractDetailPawn {
   int? id;
   int? borrowerReputation;
@@ -20,7 +22,7 @@ class ContractDetailPawn {
   String? defaultReason;
   int? loanToValue;
   int? type;
-  int? nft;
+  NFTPawnModel? nft;
   int? smartContractType;
 
   ContractDetailPawn.name({this.id});
@@ -76,7 +78,7 @@ class CryptoModelContract {
   int? durationType;
   int? interestRate;
   int? riskDefault;
-  String? systemRisk;
+  int? systemRisk;
   int? penaltyRate;
 
   CryptoModelContract(

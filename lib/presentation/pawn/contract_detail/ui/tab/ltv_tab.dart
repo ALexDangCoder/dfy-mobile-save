@@ -296,7 +296,7 @@ class _LTVTABState extends State<LTVTAB>
                   ),
                   spaceH32,
                   SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: 343.w,
                     child: Text(
                       S.current.your_current_ltv_is,
                       style: textNormalCustom(
