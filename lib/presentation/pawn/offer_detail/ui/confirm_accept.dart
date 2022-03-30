@@ -88,7 +88,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
                       horizontal: 16.w,
                     ),
                     child: Text(
-                      '${S.current.by_accept_offer}:',
+                      S.current.by_accept_offer,
                       style: textNormalCustom(
                         null,
                         16,
