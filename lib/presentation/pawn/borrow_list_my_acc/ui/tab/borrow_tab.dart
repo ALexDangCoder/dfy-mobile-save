@@ -111,7 +111,6 @@ class _NFTTabState extends State<NFTTab> with AutomaticKeepAliveClientMixin {
                             padding: EdgeInsets.only(left: 16.w),
                             child: NFTItemPawn(
                               cryptoPawnModel: bloc.listNFT[index],
-                              bloc: bloc,
                             ),
                           ),
                         );

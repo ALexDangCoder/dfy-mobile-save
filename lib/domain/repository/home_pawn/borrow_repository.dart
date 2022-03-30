@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
@@ -236,5 +237,14 @@ mixin BorrowRepository {
 
   Future<Result<TotalRepaymentModel>> getTotalRepayment({
     String? id,
+  });
+
+  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+    String? id,
+  });
+
+  Future<Result<RepaymentRequestModel>> postRepaymentPay({
+    String? id,
+    RepaymentPayRequest? repaymentPayRequest,
   });
 }

@@ -13,6 +13,7 @@ import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/contract_info.dart'
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/ltv_tab.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/tab/repayment_history.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
+import 'package:Dfy/presentation/pawn/repayment/ui/repayment_pay.dart';
 import 'package:Dfy/presentation/pawn/review_borrower/ui/review_borrower.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -763,7 +764,7 @@ class _ContractDetailState extends State<ContractDetail>
                                             },
                                             child: Container(
                                               height: 64.h,
-                                              width: obj.status ==
+                                              width: obj.status !=
                                                       ContractDetailBloc.ACTIVE
                                                   ? 343.w
                                                   : 159.w,
@@ -791,11 +792,16 @@ class _ContractDetailState extends State<ContractDetail>
                                               ),
                                             ),
                                           ),
-                                        if (obj.status !=
+                                        if (obj.status ==
                                             ContractDetailBloc.ACTIVE)
                                           GestureDetector(
                                             onTap: () {
-                                              //todo
+                                              goTo(
+                                                context,
+                                                RepaymentPay(
+                                                  id: obj.id.toString(),
+                                                ),
+                                              );
                                             },
                                             child: SizedBox(
                                               width: obj.status !=
@@ -814,20 +820,25 @@ class _ContractDetailState extends State<ContractDetail>
                                     ),
                                   ),
                                 )
-                              : GestureDetector(
-                                  onTap: () {
-                                    //todo
-                                  },
-                                  child: Container(
-                                    color: AppTheme.getInstance().bgBtsColor(),
-                                    padding: EdgeInsets.only(
-                                      bottom: 38.h,
-                                    ),
-                                    child: ButtonGold(
-                                      isEnable: true,
-                                      title: S.current.repayment,
-                                    ),
-                                  ),
+                              : SizedBox(
+                                  child: obj.status == ContractDetailBloc.ACTIVE
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            //todo
+                                          },
+                                          child: Container(
+                                            color: AppTheme.getInstance()
+                                                .bgBtsColor(),
+                                            padding: EdgeInsets.only(
+                                              bottom: 38.h,
+                                            ),
+                                            child: ButtonGold(
+                                              isEnable: true,
+                                              title: S.current.repayment,
+                                            ),
+                                          ),
+                                        )
+                                      : null,
                                 ),
                         ),
                       ],

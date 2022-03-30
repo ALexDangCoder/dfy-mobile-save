@@ -344,4 +344,12 @@ class ApiConstants {
   static const String GET_TOTAL_REPAYMENT =
       '/defi-pawn-crypto-service/public-api/v1.0.0/repayment-request/';
   static const String SUMMARY = '/summary';
+
+  static const String GET_REPAYMENT_PAY =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String ACTIVE_REPAYMENT = '/active-repayment-request';
+
+  static const String POST_REPAYMENT_PAY =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String CALCULATE = '/calculate-repayment-fee';
 }
