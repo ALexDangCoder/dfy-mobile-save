@@ -87,9 +87,6 @@ dependencies:
   dart_ipify: ^1.1.0
   crypto: ^3.0.1
   #  vibration: ^1.7.3
-  #  flutter_slidable: ^0.6.0
-
-
   shimmer: ^2.0.0
   local_auth:
 

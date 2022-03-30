@@ -71,7 +71,8 @@ NumberFormat formatUSD = NumberFormat('\$ ###,###,###.###', 'en_US');
 NumberFormat formatPrice = NumberFormat('###,###,###.#####', 'en_US');
 NumberFormat formatPricePawn = NumberFormat('#.#####', 'en_US');
 DateFormat formatDateTime = DateFormat('HH:mm - dd/MM/yyyy');
-DateFormat formatDateTime2 = DateFormat('dd/MM/yyyy');
+DateFormat formatDateTime2 = DateFormat(_dtFormat12);
+DateFormat formatDateTime3 = DateFormat(_dtFormat15);
 
 const String STATUS_TRANSACTION_FAIL = '0';
 const String STATUS_TRANSACTION_SUCCESS = '1';

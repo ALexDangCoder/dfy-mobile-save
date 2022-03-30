@@ -5,12 +5,14 @@ import 'package:Dfy/data/response/pawn/user_profile/list_collateral_response.dar
 import 'package:Dfy/data/response/pawn/user_profile/list_comment_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/list_signed_contract_response.dart';
+import 'package:Dfy/data/response/pawn/user_profile/notification_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/reputation_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/setting_user_response.dart';
 import 'package:Dfy/data/response/pawn/user_profile/user_profile_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/home_pawn/user_profile_service.dart';
 import 'package:Dfy/domain/model/pawn/borrow_available_collateral.dart';
+import 'package:Dfy/domain/model/pawn/notification.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/reputation.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
@@ -161,64 +163,113 @@ class UserProfileRepositoryImpl implements UsersRepository {
   @override
   Future<Result<UserProfile>> getMyUserProfile() {
     return runCatchingAsync<UserProfileResponse, UserProfile>(
-          () => _userService.getMyUserProfile(),
-          (response) => response.data?.toDomain() ?? UserProfile(),
+      () => _userService.getMyUserProfile(),
+      (response) => response.data?.toDomain() ?? UserProfile(),
     );
   }
 
   @override
-  Future<Result<String>> saveDataPawnshopToBe({required Map<String, String> map}) {
+  Future<Result<String>> saveDataPawnshopToBe(
+      {required Map<String, String> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _userService.updatePawnshopProfile(map),
-          (response) => response.code.toString(),
+      () => _userService.updatePawnshopProfile(map),
+      (response) => response.code.toString(),
     );
   }
 
   @override
-  Future<Result<String>> saveDataPersonalToBe({required Map<String, dynamic> map}) {
+  Future<Result<String>> saveDataPersonalToBe(
+      {required Map<String, dynamic> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _userService.updatePersonalProfile(map),
-          (response) => response.code.toString(),
+      () => _userService.updatePersonalProfile(map),
+      (response) => response.code.toString(),
     );
   }
 
   @override
   Future<Result<EmailSetting>> getEmailSetting() {
     return runCatchingAsync<SettingUserResponse, EmailSetting>(
-          () => _userService.getEmailSetting(),
-          (response) => response.data?.toEmailSetting() ?? EmailSetting(),
+      () => _userService.getEmailSetting(),
+      (response) => response.data?.toEmailSetting() ?? EmailSetting(),
     );
   }
 
   @override
   Future<Result<NotiSetting>> getNotiSetting() {
     return runCatchingAsync<SettingUserResponse, NotiSetting>(
-          () => _userService.getNotiSetting(),
-          (response) => response.data?.toNotiSetting() ?? NotiSetting(),
+      () => _userService.getNotiSetting(),
+      (response) => response.data?.toNotiSetting() ?? NotiSetting(),
     );
   }
 
   @override
-  Future<Result<EmailSetting>> putEmailSetting(Map<String,dynamic>  setting) {
+  Future<Result<EmailSetting>> putEmailSetting(Map<String, dynamic> setting) {
     return runCatchingAsync<SettingUserResponse, EmailSetting>(
-          () => _userService.putEmailSetting(setting),
-          (response) => response.data?.toEmailSetting() ?? EmailSetting(),
+      () => _userService.putEmailSetting(setting),
+      (response) => response.data?.toEmailSetting() ?? EmailSetting(),
     );
   }
 
   @override
-  Future<Result<NotiSetting>> putNotiSetting(Map<String,dynamic>  setting) {
+  Future<Result<NotiSetting>> putNotiSetting(Map<String, dynamic> setting) {
     return runCatchingAsync<SettingUserResponse, NotiSetting>(
-          () => _userService.putNotiSetting(setting),
-          (response) => response.data?.toNotiSetting() ?? NotiSetting(),
+      () => _userService.putNotiSetting(setting),
+      (response) => response.data?.toNotiSetting() ?? NotiSetting(),
     );
   }
 
   @override
-  Future<Result<String>> disconnectWalletToBe({required Map<String, String> map}) {
+  Future<Result<String>> disconnectWalletToBe(
+      {required Map<String, String> map}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _userService.disconnectWallet(map),
-          (response) => response.code.toString(),
+      () => _userService.disconnectWallet(map),
+      (response) => response.code.toString(),
+    );
+  }
+
+  @override
+  Future<Result<List<NotificationData>>> getNotification({
+    int? notiType,
+    int? isRead,
+    int? page,
+  }) {
+    return runCatchingAsync<NotificationResponse, List<NotificationData>>(
+      () => _userService.getNotification(
+        notiType.toString(),
+        isRead.toString(),
+        page.toString(),
+        ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      ),
+      (response) => response.toDomain(),
+    );
+  }
+
+  @override
+  Future<Result<List<NotificationDetail>>> getNotificationDetail({int? notiType, int? isRead, int? page}) {
+    return runCatchingAsync<NotificationResponse, List<NotificationDetail>>(
+          () => _userService.getNotification(
+        notiType.toString(),
+        isRead.toString(),
+        page.toString(),
+        ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      ),
+          (response) => response.toNotificationDetail() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> deleteNoti({required String id}) {
+    return runCatchingAsync<String, String>(
+          () => _userService.deleteNoti(id),
+          (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> updateNoti({required String id}) {
+    return runCatchingAsync<String, String>(
+          () => _userService.updateNoti(id),
+          (response) => response,
     );
   }
 }
