@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/review_borrower/bloc/review_borrower_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -148,6 +149,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                         AppTheme.getInstance().whiteColor(),
                         16,
                       ),
+                      maxLines: 8,
+                      maxLength: 150,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         isCollapsed: true,
@@ -174,7 +177,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                           alignment: PlaceholderAlignment.middle,
                           child: StreamBuilder<bool>(
                             initialData: true,
-                            //todo  stream: bloc.isCheckBox,
+                            stream: bloc.isCheckBox,
                             builder: (context, snapshot) {
                               return SizedBox(
                                 width: 24.w,
@@ -192,8 +195,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                                         AppTheme.getInstance().activeColor(),
                                     // checkColor: const Colors,
                                     onChanged: (value) {
-                                      // bloc.isCheckBox.sink.add(value ?? false);
-                                      // bloc.checkButton();//todo
+                                      bloc.isCheckBox.sink.add(value ?? false);
                                     },
                                     value: snapshot.data ?? false,
                                   ),
@@ -231,6 +233,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                   children: [
                     GestureDetector(
                       onTap: () {
+
+                        PrefsService.savePleaseRate(bloc.isCheckBox.value.toString());
                         // );//todo
                       },
                       child: Container(
@@ -259,6 +263,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        PrefsService.savePleaseRate(bloc.isCheckBox.value.toString());
                         //todo
                       },
                       child: SizedBox(

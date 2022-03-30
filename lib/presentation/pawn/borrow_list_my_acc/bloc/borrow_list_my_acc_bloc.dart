@@ -123,19 +123,19 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
     if (checkStatus == null) {
       checkStatus = 'have';
     } else {
-     if(type==CRYPTO_TYPE){
-       textAddressFilter.add(statusWallet ?? '');
-       isAll.add(statusAllFilter);
-       isDefault.add(statusDefaultFilter);
-       isCompleted.add(statusCompletedFilter);
-       isActive.add(statusActiveFilter);
-     }else{
-       textAddressFilter.add(statusWalletNFT ?? '');
-       isAll.add(statusAllFilterNFT);
-       isDefault.add(statusDefaultFilterNFT);
-       isCompleted.add(statusCompletedFilterNFT);
-       isActive.add(statusActiveFilterNFT);
-     }
+      if (type == CRYPTO_TYPE) {
+        textAddressFilter.add(statusWallet ?? '');
+        isAll.add(statusAllFilter);
+        isDefault.add(statusDefaultFilter);
+        isCompleted.add(statusCompletedFilter);
+        isActive.add(statusActiveFilter);
+      } else {
+        textAddressFilter.add(statusWalletNFT ?? '');
+        isAll.add(statusAllFilterNFT);
+        isDefault.add(statusDefaultFilterNFT);
+        isCompleted.add(statusCompletedFilterNFT);
+        isActive.add(statusActiveFilterNFT);
+      }
     }
   }
 
@@ -337,6 +337,9 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
         }
       },
       error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getBorrowContract(type: type, borrowerWalletAddress: textAddress);
+        }
         if (type == NFT_TYPE) {
           emit(
             BorrowListMyAccNFTSuccess(

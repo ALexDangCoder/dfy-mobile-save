@@ -17,6 +17,9 @@ class ItemCrypto extends StatelessWidget {
   }) : super(key: key);
   final CryptoPawnModel obj;
   final BorrowListMyAccBloc bloc;
+  static const int ACTIVE = 1;
+  static const int COMPLETED = 2;
+  static const int DEFAULT = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class ItemCrypto extends StatelessWidget {
           ),
           spaceH16,
           richText(
-            title: '${S.current.loan_amount}:',
+            title: '${S.current.loan_amount}',
             value: '${formatPrice.format(obj.supplyCurrencyAmount)}'
                 ' ${obj.supplyCurrency?.toUpperCase()}',
             url: ImageAssets.getUrlToken('${obj.supplyCurrency}'),

@@ -1,32 +1,19 @@
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'repayment_request_response.g.dart';
+part 'repayment_pay_response.g.dart';
 
 @JsonSerializable()
-class RepaymentRequestResponse {
+class RepaymentPayResponse {
   @JsonKey(name: 'data')
-  DataResponse? data;
+  ContentResponse? data;
 
-  RepaymentRequestResponse(this.data);
+  RepaymentPayResponse(this.data);
 
-  factory RepaymentRequestResponse.fromJson(Map<String, dynamic> json) =>
-      _$RepaymentRequestResponseFromJson(json);
+  factory RepaymentPayResponse.fromJson(Map<String, dynamic> json) =>
+      _$RepaymentPayResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RepaymentRequestResponseToJson(this);
-}
-
-@JsonSerializable()
-class DataResponse {
-  @JsonKey(name: 'content')
-  List<ContentResponse>? content;
-
-  DataResponse(this.content);
-
-  factory DataResponse.fromJson(Map<String, dynamic> json) =>
-      _$DataResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DataResponseToJson(this);
+  Map<String, dynamic> toJson() => _$RepaymentPayResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -63,8 +50,6 @@ class ContentResponse {
   int? paymentDate;
   @JsonKey(name: 'txnId')
   int? txnId;
-  @JsonKey(name: 'lastCycle')
-  bool? lastCycle;
 
   ContentResponse(
     this.id,
@@ -104,7 +89,7 @@ class ContentResponse {
         txnHash,
         paymentDate,
         txnId,
-        lastCycle,
+        false,
       );
 }
 

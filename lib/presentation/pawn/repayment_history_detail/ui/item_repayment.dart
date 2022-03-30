@@ -1,13 +1,25 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/ui/offer_detail_my_acc.dart';
+import 'package:Dfy/presentation/pawn/repayment_history_detail/bloc/repayment_history_detail_bloc.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/int_extension.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemRepaymentHistory extends StatelessWidget {
-  const ItemRepaymentHistory({Key? key}) : super(key: key);
+  final RepaymentRequestModel obj;
+  final RepaymentHistoryDetailBloc bloc;
+
+  const ItemRepaymentHistory({
+    Key? key,
+    required this.obj,
+    required this.bloc,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,37 +47,51 @@ class ItemRepaymentHistory extends StatelessWidget {
         children: [
           richText(
             title: '${S.current.repayment_date}:',
-            value: '12:00  01/05/2021 ',
+            value: 0.formatDateTimeMy(obj.paymentDate ?? 0),
           ),
           spaceH16,
           richText(
             title: '${S.current.txn_hash}:',
-            value: '12:00  01/05/2021 ',
+            value: obj.txnHash.toString().formatAddressActivityFire(),
           ),
           spaceH16,
           richText(
             title: '${S.current.penalty}:',
-            value: '60/100 DFY',
+            value: '${formatPrice.format(
+              obj.penalty?.amountPaid ?? 0,
+            )}/${formatPrice.format(
+              obj.penalty?.amount ?? 0,
+            )} ${obj.penalty?.symbol ?? ''}',
             isIcon: true,
-            url: ImageAssets.getUrlToken('DFY'),
+            url: ImageAssets.getUrlToken(obj.penalty?.symbol ?? ''),
           ),
           spaceH16,
           richText(
             title: '${S.current.interest}:',
-            value: 'DFY 6.1',
+            value: '${formatPrice.format(
+              obj.interest?.amountPaid ?? 0,
+            )}/${formatPrice.format(
+              obj.interest?.amount ?? 0,
+            )} ${obj.interest?.symbol ?? ''}',
             isIcon: true,
-            url: ImageAssets.getUrlToken('DFY'),
+            url: ImageAssets.getUrlToken(obj.interest?.symbol ?? ''),
           ),
           spaceH16,
           richText(
             title: '${S.current.loan}:',
-            value: '0',
+            value: '${formatPrice.format(
+              obj.loan?.amountPaid ?? 0,
+            )}/${formatPrice.format(
+              obj.loan?.amount ?? 0,
+            )} ${obj.loan?.symbol ?? ''}',
+            isIcon: true,
+            url: ImageAssets.getUrlToken(obj.loan?.symbol ?? ''),
           ),
           spaceH16,
           richText(
             title: '${S.current.status}:',
-            value: '12:00  01/05/2021 ',
-            myColor: Colors.red,
+            value: bloc.getStatusHistory(obj.status ?? 0),
+            myColor: bloc.getColorHistory(obj.status ?? 0),
           ),
         ],
       ),

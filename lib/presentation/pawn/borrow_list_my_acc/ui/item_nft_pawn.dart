@@ -5,7 +5,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -17,11 +16,9 @@ class NFTItemPawn extends StatefulWidget {
   const NFTItemPawn({
     Key? key,
     required this.cryptoPawnModel,
-    required this.bloc,
   }) : super(key: key);
 
   final CryptoPawnModel cryptoPawnModel;
-  final BorrowListMyAccBloc bloc;
 
   @override
   _NFTItemPawnState createState() => _NFTItemPawnState();
@@ -29,6 +26,9 @@ class NFTItemPawn extends StatefulWidget {
 
 class _NFTItemPawnState extends State<NFTItemPawn> {
   final formatValue = NumberFormat('###,###,###.###', 'en_US');
+  static const int ACTIVE = 1;
+  static const int COMPLETED = 2;
+  static const int DEFAULT = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +132,9 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
                   height: 2.h,
                 ),
                 Text(
-                  widget.bloc.getStatus(widget.cryptoPawnModel.status ?? 0),
+                  getStatus(widget.cryptoPawnModel.status ?? 0),
                   style: textNormalCustom(
-                    widget.bloc.getColor(widget.cryptoPawnModel.status ?? 0),
+                    getColor(widget.cryptoPawnModel.status ?? 0),
                     13,
                     FontWeight.w600,
                   ),
@@ -186,7 +186,7 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
                             ),
                           ],
                         ),
-                      ),//todo 1of1
+                      ), //todo 1of1
                       // Text(
                       //   '${nftPawnModel.numberOfCopies ?? 1} '
                       //   '${S.current.of_all} '
@@ -207,6 +207,32 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
         ),
       ],
     );
+  }
+
+  String getStatus(int type) {
+    switch (type) {
+      case ACTIVE:
+        return S.current.active;
+      case COMPLETED:
+        return S.current.completed;
+      case DEFAULT:
+        return S.current.defaults;
+      default:
+        return '';
+    }
+  }
+
+  Color getColor(int type) {
+    switch (type) {
+      case ACTIVE:
+        return AppTheme.getInstance().greenMarketColors();
+      case COMPLETED:
+        return AppTheme.getInstance().blueMarketColors();
+      case DEFAULT:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
   }
 
   Widget hardNft(TypeNFT? type) {

@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -21,10 +22,12 @@ import 'package:Dfy/data/response/home_pawn/pawn_list_response.dart';
 import 'package:Dfy/data/response/home_pawn/pawnshop_packgae_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_hard_response.dart';
 import 'package:Dfy/data/response/home_pawn/personal_lending_response.dart';
+import 'package:Dfy/data/response/home_pawn/repayment_pay_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_request_response.dart';
 import 'package:Dfy/data/response/home_pawn/repayment_stats_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
 import 'package:Dfy/data/response/home_pawn/send_to_loan_package_response.dart';
+import 'package:Dfy/data/response/home_pawn/total_repayment_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_on_request_loan_response.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -210,7 +213,7 @@ abstract class BorrowService {
   );
 
   @GET(
-      '${ApiConstants.DETAIL_COLLATERAL_MY_ACC}{collateral_id}${ApiConstants.HISTORY_MY_ACC}')
+      '${ApiConstants.HISTORY_DETAIL_COLLATERAL_MY_ACC}{collateral_id}${ApiConstants.HISTORY_MY_ACC}')
   Future<HistoryCollateralResponse> getHistoryDetailCollateralMyAcc(
     @Path('collateral_id') String? collateralId,
     @Query('page') String? page,
@@ -278,5 +281,28 @@ abstract class BorrowService {
     @Query('contractId') String? contractId,
     @Query('walletAddress') String? walletAddress,
     @Query('type') String? type,
+  );
+
+  @GET('${ApiConstants.GET_LIST_ITEM_REPAYMENT}{id}')
+  Future<RepaymentRequestResponse> getListItemRepayment(
+    @Path('id') String? id,
+    @Query('page') String? walletAddress,
+    @Query('size') String? type,
+  );
+
+  @GET('${ApiConstants.GET_TOTAL_REPAYMENT}{id}${ApiConstants.SUMMARY}')
+  Future<TotalRepaymentResponse> getTotalRepayment(
+    @Path('id') String? id,
+  );
+
+  @GET('${ApiConstants.GET_REPAYMENT_PAY}{id}${ApiConstants.ACTIVE_REPAYMENT}')
+  Future<RepaymentPayResponse> getRepaymentPay(
+    @Path('id') String? id,
+  );
+
+  @GET('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
+  Future<RepaymentPayResponse> postRepaymentPay(
+    @Path('id') String? id,
+    @Body() RepaymentPayRequest? repaymentPayRequest,
   );
 }
