@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -608,6 +609,20 @@ class BorrowRepositoryImpl implements BorrowRepository {
     return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
       () => _client.getRepaymentPay(
         id,
+      ),
+      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
+    );
+  }
+
+  @override
+  Future<Result<RepaymentRequestModel>> postRepaymentPay({
+    String? id,
+    RepaymentPayRequest? repaymentPayRequest,
+  }) {
+    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+      () => _client.postRepaymentPay(
+        id,
+        repaymentPayRequest,
       ),
       (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
     );

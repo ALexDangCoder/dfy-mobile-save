@@ -1,4 +1,5 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -297,5 +298,11 @@ abstract class BorrowService {
   @GET('${ApiConstants.GET_REPAYMENT_PAY}{id}${ApiConstants.ACTIVE_REPAYMENT}')
   Future<RepaymentPayResponse> getRepaymentPay(
     @Path('id') String? id,
+  );
+
+  @GET('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
+  Future<RepaymentPayResponse> postRepaymentPay(
+    @Path('id') String? id,
+    @Body() RepaymentPayRequest? repaymentPayRequest,
   );
 }

@@ -15,6 +15,7 @@ class RepaymentRequestModel {
   String? txnHash;
   int? paymentDate;
   int? txnId;
+  bool? lastCycle;
 
   RepaymentRequestModel.name({this.id});
 
@@ -35,6 +36,7 @@ class RepaymentRequestModel {
     this.txnHash,
     this.paymentDate,
     this.txnId,
+    this.lastCycle,
   );
 }
 

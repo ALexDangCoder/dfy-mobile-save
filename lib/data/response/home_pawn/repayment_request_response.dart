@@ -63,6 +63,8 @@ class ContentResponse {
   int? paymentDate;
   @JsonKey(name: 'txnId')
   int? txnId;
+  @JsonKey(name: 'lastCycle')
+  bool? lastCycle;
 
   ContentResponse(
     this.id,
@@ -102,6 +104,7 @@ class ContentResponse {
         txnHash,
         paymentDate,
         txnId,
+        lastCycle,
       );
 }
 

@@ -89,6 +89,7 @@ class ContentResponse {
         txnHash,
         paymentDate,
         txnId,
+        false,
       );
 }
 

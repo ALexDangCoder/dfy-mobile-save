@@ -73,6 +73,11 @@ class _RepaymentPayState extends State<RepaymentPay> {
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       title: S.current.repayment,
+      text: ImageAssets.ic_close,
+      isImage: true,
+      onRightClick: (){
+        Navigator.pop(context);
+      },
       child: BlocConsumer<RepaymentPayBloc, RepaymentPayState>(
         bloc: bloc,
         listener: (context, state) {

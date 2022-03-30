@@ -106,6 +106,9 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
         );
       },
       error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getRepaymentPay(collateralId: collateralId);
+        }
         emit(
           RepaymentPaySuccess(
             CompleteType.ERROR,
