@@ -1,5 +1,7 @@
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
+import 'package:Dfy/domain/model/pawn/lender_contract/lender_contract_nft_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -134,6 +136,28 @@ class DataResponse extends Equatable {
         type,
         nft?.toDomain(),
       );
+
+  LenderContractNftModel toModel() => LenderContractNftModel(
+        id,
+        supplyCurrency,
+        supplyCurrencyAmount,
+        estimateUsdSupplyCurrencyAmount,
+        collateral,
+        collateralAmount,
+        estimateUsdCollateralAmount,
+        interestPerYear,
+        duration,
+        durationType,
+        lenderWalletAddress,
+        lenderReputation,
+        borrowerWalletAddress,
+        borrowerReputation,
+        status,
+        isClaimed,
+        bcContractId,
+        type,
+        nft?.toDomain(),
+      );
 }
 
 @JsonSerializable()
@@ -237,4 +261,5 @@ class NftResponse extends Equatable {
         numberOfCopies: numberOfCopies,
         totalOfCopies: totalOfCopies,
       );
+
 }

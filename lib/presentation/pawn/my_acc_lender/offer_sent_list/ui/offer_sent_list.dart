@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/filter/filter_loan_request_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/filter_offer_sent.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_list.dart';

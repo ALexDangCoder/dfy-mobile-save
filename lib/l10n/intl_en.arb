@@ -994,5 +994,6 @@
   "total_paid": "Total paid",
   "total_loan": "Total loan",
   "late": "Late",
-  "wait_payment": "Wait payment"
+  "wait_payment": "Wait payment",
+  "lender_contract_list": "Lend contract list"
 }
