@@ -54,42 +54,47 @@ class ListNftHome extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                isLoading && !isLoadFail
-                    ? S.current.loading_text
-                    : (isLoadFail ? S.current.error_text : title),
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  20.sp,
-                  FontWeight.w700,
+              Expanded(
+                flex: 6,
+                child: Text(
+                  isLoading && !isLoadFail
+                      ? S.current.loading_text
+                      : (isLoadFail ? S.current.error_text : title),
+                  style: textNormalCustom(
+                    AppTheme.getInstance().whiteColor(),
+                    20.sp,
+                    FontWeight.w700,
+                  ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  isLoading
-                      ? () {}
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            settings: const RouteSettings(
-                              name: AppRouter.listNft,
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    isLoading
+                        ? () {}
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: AppRouter.listNft,
+                              ),
+                              builder: (context) => ListNft(
+                                marketType: marketTypeEnum,
+                                pageRouter: PageRouter.MARKET,
+                              ),
                             ),
-                            builder: (context) => ListNft(
-                              marketType: marketTypeEnum,
-                              pageRouter: PageRouter.MARKET,
-                            ),
-                          ),
-                        );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 16.w,
-                  ),
-                  child: Image(
-                    height: 32.h,
-                    width: 32.w,
-                    image: const AssetImage(
-                      ImageAssets.img_push,
+                          );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 16.w,
+                    ),
+                    child: Image(
+                      height: 32.h,
+                      width: 32.w,
+                      image: const AssetImage(
+                        ImageAssets.img_push,
+                      ),
                     ),
                   ),
                 ),
