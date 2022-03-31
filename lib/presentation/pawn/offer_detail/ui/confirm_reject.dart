@@ -95,7 +95,7 @@ class _ConfirmRejectState extends State<ConfirmReject> {
                       horizontal: 16.w,
                     ),
                     child: Text(
-                      '${S.current.by_reject_offer}:',
+                      S.current.by_reject_offer,
                       style: textNormalCustom(
                         null,
                         16,
@@ -111,9 +111,11 @@ class _ConfirmRejectState extends State<ConfirmReject> {
               child: GestureDetector(
                 onTap: () async {
                   final NavigatorState navigator = Navigator.of(context);
-                  // await widget.bloc.getWithdrawCryptoCollateralData(
-                  //   wad: obj.bcCollateralId.toString(),
-                  // );//todo bloc
+                  await widget.bloc.getCancelCryptoOfferData(
+                    bcOfferId: widget.bloc.obj?.bcOfferId.toString() ?? '',
+                    bcCollateralId:
+                        widget.bloc.obj?.bcCollateralId.toString() ?? '',
+                  );
                   unawaited(
                     navigator.push(
                       MaterialPageRoute(

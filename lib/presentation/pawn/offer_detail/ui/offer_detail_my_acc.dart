@@ -384,13 +384,13 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         if (PrefsService.getCurrentWalletCore()
-                                                .toLowerCase() ==
-                                            obj.walletAddress) {
+                                                .toLowerCase() !=
+                                            obj.walletAddress?.toUpperCase()) {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) {
-                                                return ConfirmAccept(
+                                                return ConfirmReject(
                                                   bloc: bloc,
                                                 );
                                               },
@@ -434,12 +434,12 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                       onTap: () {
                                         if (PrefsService.getCurrentWalletCore()
                                                 .toLowerCase() ==
-                                            obj.walletAddress) {
+                                            obj.walletAddress?.toUpperCase()) {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) {
-                                                return ConfirmReject(
+                                                return ConfirmAccept(
                                                   bloc: bloc,
                                                 );
                                               },
