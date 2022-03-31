@@ -165,6 +165,8 @@ class ImageAssets {
   static const String img_crypto = '$baseImg/money_5_img.png';
   static const String img_money_increase = '$baseImg/frame_img.png';
   static const String bg_repayment_history = '$baseImg/bg_repayment.png';
+  static const String img_verification = '$baseImg/img_verification.png';
+  static const String img_pending = '$baseImg/img_pending.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';

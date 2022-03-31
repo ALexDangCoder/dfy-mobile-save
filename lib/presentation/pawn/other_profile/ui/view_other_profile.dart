@@ -244,7 +244,7 @@ class _OtherProfileState extends State<OtherProfile>
                                         ),
                                       ),
                                       spaceH4,
-                                      if (cubit.userProfile.kyc != null)
+                                      if (cubit.userProfile.kyc?.status == 2)
                                         Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,
