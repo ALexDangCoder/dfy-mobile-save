@@ -24,6 +24,7 @@ class BaseDetailNFT extends StatelessWidget {
     return SafeArea(
       child: Container(
         height: 812.h,
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         width: 375.w,
         decoration: BoxDecoration(
           color: AppTheme.getInstance().bgBtsColor(),

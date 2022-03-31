@@ -38,6 +38,7 @@ class ConfirmWithDrawCollateral extends StatelessWidget {
           children: [
             Container(
               height: 812.h,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
