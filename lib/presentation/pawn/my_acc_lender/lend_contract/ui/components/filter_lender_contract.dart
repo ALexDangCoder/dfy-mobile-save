@@ -33,9 +33,9 @@ class _FilterLenderContractState extends State<FilterLenderContract> {
   @override
   void initState() {
     super.initState();
-    // initValueFilterList = widget.cubit.filterOriginalList;
-    // widget.cubit.getListWallet();
-    // currentWallet = widget.cubit.walletAddressDropDown[0];
+    initValueFilterList = widget.cubit.filterOriginalList;
+    widget.cubit.getListWallet();
+    currentWallet = widget.cubit.walletAddressDropDown[0];
   }
 
   @override

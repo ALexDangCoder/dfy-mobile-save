@@ -24,18 +24,17 @@ class LenderContractNft extends StatefulWidget {
 }
 
 class _LenderContractNftState extends State<LenderContractNft> {
-
   @override
   void initState() {
     super.initState();
-    print('current wallet filter ${widget.cubit.walletAddressFilter}');
-    print('current wallet filter ${PrefsService.getCurrentBEWallet()}');
     widget.cubit.refreshVariableApi();
-    if(widget.cubit.listNftLenderContract.isNotEmpty) {
+    if (widget.cubit.listNftLenderContract.isNotEmpty) {
       widget.cubit.listNftLenderContract.clear();
     }
     widget.cubit.getListNft(
       type: 1.toString(),
+      userId: widget.cubit.userID,
+      status: widget.cubit.statusFilter,
     );
   }
 
@@ -127,12 +126,13 @@ class _LenderContractNftState extends State<LenderContractNft> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                      //  todo chuyeenr man
+                        //  todo chuyeenr man
                       },
                       child: Padding(
                         padding: EdgeInsets.only(left: 16.w),
                         child: NFTItemPawn(
-                          cryptoPawnModel: widget.cubit.listNftLenderContract[index],
+                          cryptoPawnModel:
+                              widget.cubit.listNftLenderContract[index],
                         ),
                       ),
                     );

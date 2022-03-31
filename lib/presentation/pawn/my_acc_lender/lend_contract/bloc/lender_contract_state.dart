@@ -19,6 +19,8 @@ class LoadCryptoFtNftFail extends LenderContractState {
   List<Object> get props => [];
 }
 
+
+
 class LoadCryptoFtNftResult extends LenderContractState {
   final List<CryptoPawnModel>? list;
   final CompleteType completeType;

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
@@ -10,6 +12,7 @@ import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/pawn/lender_contract/lender_contract_repository.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_nft/lender_contract_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
@@ -37,6 +40,7 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
   ///get UserId
   String userID = '';
   List<CryptoPawnModel> listNftLenderContract = [];
+  List<CryptoPawnModel> listCryptoLenderContract = [];
 
   String getEmailWallet() {
     late String currentEmail = '';
@@ -241,4 +245,56 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
 
   BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
       BehaviorSubject();
+
+
+  ///extension string
+  String categoryOneOrMany({
+    required int durationQty,
+    required int durationType,
+  }) {
+    //0 is week
+    //1 month
+    if (durationType == 0) {
+      if (durationQty > 1) {
+        return '$durationQty ${S.current.week_many}';
+      } else {
+        return '$durationQty ${S.current.week_1}';
+      }
+    } else {
+      if (durationQty > 1) {
+        return '$durationQty ${S.current.month_many}';
+      } else {
+        return '$durationQty ${S.current.month_1}';
+      }
+    }
+  }
+
+
+
+
+  String getStatus(String type) {
+    switch (type) {
+      case ACTIVE:
+        return S.current.active;
+      case COMPLETE:
+        return S.current.completed;
+      case DEFAULT:
+        return S.current.defaults;
+      default:
+        return '';
+    }
+  }
+
+  Color getColor(String type) {
+    switch (type) {
+      case ACTIVE:
+        return AppTheme.getInstance().greenMarketColors();
+      case COMPLETE:
+        return AppTheme.getInstance().blueMarketColors();
+      case DEFAULT:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
+  }
 }

@@ -113,7 +113,9 @@ class _LenderContractListState extends State<LenderContractList>
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             ///Tab crypto
-                            LenderContractCrypto(),
+                            LenderContractCrypto(
+                              cubit: cubit,
+                            ),
 
                             ///Tab Nft
                             LenderContractNft(
@@ -167,7 +169,6 @@ class _LenderContractListState extends State<LenderContractList>
             Flexible(
               child: InkWell(
                 onTap: () {
-                  //todo filter màn lend contract list
                   showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
