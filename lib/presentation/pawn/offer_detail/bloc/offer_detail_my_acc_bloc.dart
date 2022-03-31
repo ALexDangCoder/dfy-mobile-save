@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
@@ -23,13 +24,30 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   static const int CANCEL_OFFER = 9;
   static const int OPEN_OFFER = 3;
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
-
+  String? hexStringAccept;
+  String? hexStringReject;
+  OfferDetailMyAcc? obj;
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
     getOfferDetailMyAcc(id: id);
   }
 
   BorrowRepository get _pawnService => Get.find();
   final Web3Utils web3Client = Web3Utils();
+
+  Future<void> getCancelCryptoOfferData({
+    required String bcCollateralId,
+    required String bcOfferId,
+  }) async {
+    try {
+      showLoading();
+      hexStringReject = await web3Client.getCancelCryptoOfferData(
+        nftCollateralId: bcCollateralId,
+        offerId: bcOfferId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 
   Future<void> getOfferDetailMyAcc({
     String? id,
@@ -41,6 +59,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     );
     response.when(
       success: (response) {
+        obj=response;
         emit(
           OfferDetailMyAccSuccess(
             CompleteType.SUCCESS,

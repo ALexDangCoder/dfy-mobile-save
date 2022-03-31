@@ -43,11 +43,8 @@ class _SettingMyAccState extends State<SettingMyAcc> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SettingMyAccCubit, SettingMyAccState>(
+    return BlocBuilder<SettingMyAccCubit, SettingMyAccState>(
       bloc: cubit,
-      listener: (context, state) {
-        // TODO: implement listener
-      },
       builder: (context, state) {
         return StateStreamLayout(
           stream: cubit.stateStream,
@@ -72,7 +69,7 @@ class _SettingMyAccState extends State<SettingMyAcc> {
                     padding: EdgeInsets.only(
                       left: 12.w,
                       top: 16.h,
-                      right: 16.w,
+                      right: 10.w,
                       bottom: 20.h,
                     ),
                     decoration: BoxDecoration(

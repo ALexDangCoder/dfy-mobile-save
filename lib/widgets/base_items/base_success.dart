@@ -31,6 +31,7 @@ class BaseSuccess extends StatelessWidget {
         child: Container(
           height: 812.h,
           width: 375.w,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(

@@ -98,6 +98,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.only(top: 26.h),
           decoration: BoxDecoration(
@@ -143,7 +144,8 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                                   S.current.send_offer,
                                   textAlign: TextAlign.center,
                                   style: titleText(
-                                    color: AppTheme.getInstance().textThemeColor(),
+                                    color:
+                                        AppTheme.getInstance().textThemeColor(),
                                   ),
                                 ),
                               ),
@@ -209,14 +211,15 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                       final NavigatorState navigator = Navigator.of(context);
                       await bloc.getCreateCryptoOfferDataHexString(
                         duration: bloc.textDuration.value,
-                        collateralId:
-                            widget.objCollateralDetail.bcCollateralId.toString(),
+                        collateralId: widget.objCollateralDetail.bcCollateralId
+                            .toString(),
                         loanAmount: bloc.textAmount.value,
                         repaymentCycleType:
                             duration == S.current.weeks_pawn ? 0 : 1,
                         interest: bloc.textInterestRate.value,
                         liquidityThreshold: bloc.textLiquidationThreshold.value,
-                        loanDurationType: duration == S.current.weeks_pawn ? 0 : 1,
+                        loanDurationType:
+                            duration == S.current.weeks_pawn ? 0 : 1,
                         repaymentAssetAddress:
                             ImageAssets.getAddressToken(symbolAmount),
                       );
@@ -230,7 +233,8 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                               needApprove: true,
                               hexString: bloc.hexString,
                               payValue: bloc.textAmount.value,
-                              tokenAddress: Get.find<AppConstants>().contract_defy,
+                              tokenAddress:
+                                  Get.find<AppConstants>().contract_defy,
                               title: S.current.confirm_send_offer,
                               listDetail: [
                                 DetailItemApproveModel(
@@ -247,7 +251,8 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                                 ),
                                 DetailItemApproveModel(
                                   title: '${S.current.loan_amount}: ',
-                                  value: '$symbolAmount ${bloc.textAmount.value}',
+                                  value:
+                                      '$symbolAmount ${bloc.textAmount.value}',
                                   urlToken:
                                       ImageAssets.getSymbolAsset(symbolAmount),
                                 ),
@@ -267,8 +272,9 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                                   //todo
                                   walletAddress:
                                       PrefsService.getCurrentWalletCore(),
-                                  durationType:
-                                      duration == S.current.weeks_pawn ? '0' : '1',
+                                  durationType: duration == S.current.weeks_pawn
+                                      ? '0'
+                                      : '1',
                                   latestBlockchainTxn: data,
                                   interestRate: bloc.textInterestRate.value,
                                   liquidationThreshold:

@@ -236,7 +236,7 @@ abstract class BorrowService {
 
   @POST(ApiConstants.COLLATERAL_WITHDRAW)
   Future<CollateralWithDrawResponse> postCollateralWithdraw(
-    @Field('id') String? id,
+    @Query('id') String? id,
   );
 
   @GET('${ApiConstants.OFFER_DETAIL_MY_ACC}{id}')
@@ -300,7 +300,7 @@ abstract class BorrowService {
     @Path('id') String? id,
   );
 
-  @GET('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
+  @POST('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
   Future<RepaymentPayResponse> postRepaymentPay(
     @Path('id') String? id,
     @Body() RepaymentPayRequest? repaymentPayRequest,

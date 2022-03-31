@@ -33,6 +33,7 @@ class BaseNFTMarket extends StatelessWidget {
     return Container(
       clipBehavior: Clip.hardEdge,
       height: 812.h,
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       decoration: BoxDecoration(
         color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(

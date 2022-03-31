@@ -177,6 +177,12 @@ class ImageAssets {
       '$baseImg/ic_tab_staking_unselected.svg';
   static const String icBack = '$baseImg/ic_back.svg';
   static const String icMenu = '$baseImg/ic_menu.svg';
+  static const String ic_noti_hot = '$baseImg/ic_noti_hot.svg';
+  static const String ic_noti_all = '$baseImg/ic_noti_all.svg';
+  static const String ic_noti_activities = '$baseImg/ic_noti_activities.svg';
+  static const String ic_noti_new_system = '$baseImg/ic_noti_newsystem.svg';
+  static const String ic_noti_warning = '$baseImg/ic_noti_warning.svg';
+  static const String img_no_noti = '$baseImg/img_no_noti.png';
   static const String ic_back = '$baseImg/ic_back.png';
   static const String ic_security = '$baseImg/ic_security.png';
   static const String ic_lock = '$baseImg/ic_lock.png';

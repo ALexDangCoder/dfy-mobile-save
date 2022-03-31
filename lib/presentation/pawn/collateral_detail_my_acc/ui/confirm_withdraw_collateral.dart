@@ -38,6 +38,7 @@ class ConfirmWithDrawCollateral extends StatelessWidget {
           children: [
             Container(
               height: 812.h,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
@@ -195,12 +196,12 @@ class ConfirmWithDrawCollateral extends StatelessWidget {
                     navigator.push(
                       MaterialPageRoute(
                         builder: (context) => Approve(
-                          textActiveButton: S.current.send,
+                          textActiveButton: S.current.withdraw,
                           spender:
                               Get.find<AppConstants>().crypto_pawn_contract,
                           hexString: bloc.hexString,
                           tokenAddress: Get.find<AppConstants>().contract_defy,
-                          title: S.current.confirm_send_offer,
+                          title: S.current.confirm_withdraw_collateral,
                           listDetail: [
                             DetailItemApproveModel(
                               title: '${S.current.your_collateral}: ',

@@ -321,7 +321,7 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                               ],
                             ),
                           ),
-                          spaceH24,
+                          spaceH60,
                         ],
                       ),
                     ),

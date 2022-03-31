@@ -127,9 +127,9 @@ class _BodyState extends State<_Body> {
   Widget build(BuildContext context) {
     return Container(
       height: 812.h,
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       width: 375.w,
       decoration: BoxDecoration(
-        // shape: BoxShape.circle,
         color: AppTheme.getInstance().bgBtsColor(),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.r),

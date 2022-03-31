@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: S.delegate.supportedLocales,
+        //supportedLocales: S.delegate.supportedLocales,
         onGenerateRoute: AppRouter.generateRoute,
         initialRoute: AppRouter.splash,
       ),
