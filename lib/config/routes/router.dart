@@ -34,6 +34,8 @@ class AppRouter {
   static const collateral_result = '/collateral_result';
   static const collateral_detail_myacc = '/collateral_detail_myacc';
   static const collateral_list_myacc = '/collateral_list_myacc';
+  static const offer_detail_myacc = '/offer_detail_myacc';
+  static const contract_detail_my_acc = '/contract_detail_my_acc';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

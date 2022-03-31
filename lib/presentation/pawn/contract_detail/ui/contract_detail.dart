@@ -6,6 +6,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/dialog/warrning_dialog.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_state.dart';
@@ -804,6 +805,22 @@ class _ContractDetailState extends State<ContractDetail>
                                                   id: obj.id.toString(),
                                                 ),
                                               );
+                                              if (obj.lenderWalletAddress ==
+                                                  PrefsService
+                                                      .getCurrentWalletCore()) {
+                                                goTo(
+                                                  context,
+                                                  RepaymentPay(
+                                                    id: obj.id.toString(),
+                                                  ),
+                                                );
+                                              } else {
+                                                showAlert(
+                                                  context,
+                                                  PrefsService
+                                                      .getCurrentWalletCore(),
+                                                );
+                                              }
                                             },
                                             child: SizedBox(
                                               width: obj.status !=
@@ -826,7 +843,22 @@ class _ContractDetailState extends State<ContractDetail>
                                   child: obj.status == ContractDetailBloc.ACTIVE
                                       ? GestureDetector(
                                           onTap: () {
-                                            //todo
+                                            if (obj.lenderWalletAddress ==
+                                                PrefsService
+                                                    .getCurrentWalletCore()) {
+                                              goTo(
+                                                context,
+                                                RepaymentPay(
+                                                  id: obj.id.toString(),
+                                                ),
+                                              );
+                                            } else {
+                                              showAlert(
+                                                context,
+                                                PrefsService
+                                                    .getCurrentWalletCore(),
+                                              );
+                                            }
                                           },
                                           child: Container(
                                             color: AppTheme.getInstance()

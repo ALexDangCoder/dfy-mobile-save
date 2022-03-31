@@ -23,7 +23,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   static const int CANCEL_OFFER = 9;
   static const int OPEN_OFFER = 3;
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
-
+  String? hexStringAccept;
+  String? hexStringReject;
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
     getOfferDetailMyAcc(id: id);
   }

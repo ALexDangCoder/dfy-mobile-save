@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
@@ -12,6 +16,8 @@ import 'package:Dfy/presentation/pawn/repayment/bloc/repayment_pay_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -19,6 +25,7 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'item_repayment.dart';
 
@@ -52,16 +59,16 @@ class _RepaymentPayState extends State<RepaymentPay> {
     penalty = TextEditingController();
     interest = TextEditingController();
     loan = TextEditingController();
+    bloc.maxInterest = obj.interest?.amount ?? 0;
+    bloc.maxLoan = obj.loan?.amount ?? 0;
+    bloc.maxPenalty = obj.penalty?.amount ?? 0;
     penalty.addListener(() {
-      bloc.penalty.add(penalty.text);
       bloc.validatePenalty(penalty.text);
     });
     interest.addListener(() {
-      bloc.interest.add(interest.text);
       bloc.validateInterest(interest.text);
     });
     loan.addListener(() {
-      bloc.loan.add(loan.text);
       bloc.validateLoan(loan.text);
     });
     bloc.getRepaymentPay(
@@ -92,8 +99,10 @@ class _RepaymentPayState extends State<RepaymentPay> {
                   (obj.loan?.address.toString().toUpperCase() ==
                       obj.interest?.address.toString().toUpperCase())) {
                 isChoose = true;
+                bloc.isChoose = isChoose;
               } else {
                 isChoose = false;
+                bloc.isChoose = isChoose;
               }
               bloc.getBalanceToken(
                 type: 0,
@@ -376,46 +385,141 @@ class _RepaymentPayState extends State<RepaymentPay> {
                         ),
                         Positioned(
                           bottom: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              print(
-                                '------${bloc.interest.value}${bloc.penalty.value}${bloc.loan.value}',
+                          child: StreamBuilder<bool>(
+                            stream: bloc.isBtn,
+                            builder: (context, snapshot) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  if (snapshot.data ?? false) {
+                                    await bloc.postRepaymentPay();
+                                    final NavigatorState navigator =
+                                        Navigator.of(context);
+                                    // await bloc.getWithdrawCryptoCollateralData(
+                                    //   wad: obj.bcCollateralId.toString(),
+                                    // );..//todo bloc
+                                    unawaited(
+                                      navigator.push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Approve(
+                                            textActiveButton:
+                                                '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
+                                            spender: Get.find<AppConstants>()
+                                                .crypto_pawn_contract,
+                                            hexString: bloc.hexString,
+                                            tokenAddress:
+                                                Get.find<AppConstants>()
+                                                    .contract_defy,
+                                            title: S.current.confirm_send_offer,
+                                            listDetail: [
+                                              DetailItemApproveModel(
+                                                title: '${S.current.penalty}: ',
+                                                value: '${formatPrice.format(
+                                                  bloc.objRepayment.penalty
+                                                          ?.amount ??
+                                                      0,
+                                                )}'
+                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                urlToken:
+                                                    ImageAssets.getUrlToken(
+                                                  bloc.objRepayment.penalty
+                                                          ?.symbol ??
+                                                      '',
+                                                ),
+                                              ),
+                                              DetailItemApproveModel(
+                                                title:
+                                                    '${S.current.interest}: ',
+                                                value: '${formatPrice.format(
+                                                  bloc.objRepayment.interest
+                                                          ?.amount ??
+                                                      0,
+                                                )}'
+                                                    ' ${bloc.objRepayment.interest?.symbol ?? ''}',
+                                                urlToken:
+                                                    ImageAssets.getUrlToken(
+                                                  bloc.objRepayment.interest
+                                                          ?.symbol ??
+                                                      '',
+                                                ),
+                                              ),
+                                              DetailItemApproveModel(
+                                                title:
+                                                    '${S.current.system_fee}: ',
+                                                value: '${formatPrice.format(
+                                                  bloc.objRepayment.systemFee ??
+                                                      0,
+                                                )}'
+                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                urlToken:
+                                                    ImageAssets.getUrlToken(
+                                                  bloc.objRepayment.penalty
+                                                          ?.symbol ??
+                                                      '',
+                                                ),
+                                              ),
+                                              DetailItemApproveModel(
+                                                title: '${S.current.loan}: ',
+                                                value: '${formatPrice.format(
+                                                  bloc.objRepayment.loan
+                                                          ?.amount ??
+                                                      0,
+                                                )}'
+                                                    ' ${bloc.objRepayment.loan?.symbol ?? ''}',
+                                                urlToken:
+                                                    ImageAssets.getUrlToken(
+                                                  bloc.objRepayment.loan
+                                                          ?.symbol ??
+                                                      '',
+                                                ),
+                                              ),
+                                              DetailItemApproveModel(
+                                                title:
+                                                    '${S.current.prepaid_fee}: ',
+                                                value: '${formatPrice.format(
+                                                  bloc.objRepayment
+                                                          .prepaidFee ??
+                                                      0,
+                                                )}'
+                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                urlToken:
+                                                    ImageAssets.getUrlToken(
+                                                  bloc.objRepayment.penalty
+                                                          ?.symbol ??
+                                                      '',
+                                                ),
+                                              ),
+                                            ],
+                                            onErrorSign: (context) {},
+                                            onSuccessSign: (context, data) {
+                                              //BE todo
+                                              showLoadSuccess(context)
+                                                  .then((value) {
+                                                Navigator.of(context)
+                                                    .popUntil((route) {
+                                                  return route.settings.name ==
+                                                      AppRouter
+                                                          .contract_detail_my_acc;
+                                                });
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  color: AppTheme.getInstance().bgBtsColor(),
+                                  padding: EdgeInsets.only(
+                                    bottom: 38.h,
+                                  ),
+                                  child: ButtonGold(
+                                    isEnable: snapshot.data ?? false,
+                                    title: S.current.pay,
+                                  ),
+                                ),
                               );
-                              bloc.postRepaymentPay();
-                              // if (PrefsService.getCurrentWalletCore()
-                              //         .toLowerCase() ==
-                              //     obj.walletAddress) {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           ConfirmWithDrawCollateral(
-                              //         bloc: bloc,
-                              //         obj: obj,
-                              //       ),
-                              //     ),
-                              //   ).whenComplete(
-                              //     () => bloc.getDetailCollateralMyAcc(
-                              //       collateralId: widget.id,
-                              //     ),
-                              //   );
-                              // } else {
-                              //   showAlert(
-                              //     context,
-                              //     obj.walletAddress.toString(),
-                              //   );
-                              // }
                             },
-                            child: Container(
-                              color: AppTheme.getInstance().bgBtsColor(),
-                              padding: EdgeInsets.only(
-                                bottom: 38.h,
-                              ),
-                              child: ButtonGold(
-                                isEnable: true,
-                                title: S.current.pay,
-                              ),
-                            ),
                           ),
                         ),
                       ],

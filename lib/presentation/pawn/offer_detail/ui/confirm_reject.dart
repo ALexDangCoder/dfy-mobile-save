@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ConfirmReject extends StatefulWidget {
   const ConfirmReject({
@@ -103,48 +110,37 @@ class _ConfirmRejectState extends State<ConfirmReject> {
               bottom: 0,
               child: GestureDetector(
                 onTap: () async {
-                  // final NavigatorState navigator = Navigator.of(context);
-                  // await bloc.getWithdrawCryptoCollateralData(
+                  final NavigatorState navigator = Navigator.of(context);
+                  // await widget.bloc.getWithdrawCryptoCollateralData(
                   //   wad: obj.bcCollateralId.toString(),
-                  // );
-                  // unawaited(
-                  //   navigator.push(
-                  //     MaterialPageRoute(
-                  //       builder: (context) => Approve(
-                  //         textActiveButton: S.current.send,
-                  //         spender:
-                  //         Get.find<AppConstants>().crypto_pawn_contract,
-                  //         hexString: bloc.hexString,
-                  //         tokenAddress: Get.find<AppConstants>().contract_defy,
-                  //         title: S.current.confirm_send_offer,
-                  //         listDetail: [
-                  //           DetailItemApproveModel(
-                  //             title: '${S.current.your_collateral}: ',
-                  //             value: '${formatPrice.format(
-                  //               obj.collateralAmount ?? 0,
-                  //             )}'
-                  //                 ' ${obj.collateralSymbol.toString().toUpperCase()}',
-                  //             urlToken: ImageAssets.getSymbolAsset(
-                  //               obj.collateralSymbol.toString(),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //         onErrorSign: (context) {},
-                  //         onSuccessSign: (context, data) {
-                  //           bloc.postCollateralWithdraw(
-                  //             id: obj.id.toString(),
-                  //           );
-                  //           showLoadSuccess(context).then((value) {
-                  //             Navigator.of(context).popUntil((route) {
-                  //               return route.settings.name ==
-                  //                   AppRouter.collateral_detail_myacc;
-                  //             });
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
+                  // );//todo bloc
+                  unawaited(
+                    navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          textActiveButton: S.current.confirm_reject_offer,
+                          spender:
+                              Get.find<AppConstants>().crypto_pawn_contract,
+                          hexString: widget.bloc.hexStringReject,
+                          tokenAddress: Get.find<AppConstants>().contract_defy,
+                          title: S.current.confirm_send_offer,
+                          listDetail: [],
+                          onErrorSign: (context) {},
+                          onSuccessSign: (context, data) {
+                            //todo BE bloc.postCollateralWithdraw(
+                            //   id: obj.id.toString(),
+                            // );
+                            showLoadSuccess(context).then((value) {
+                              Navigator.of(context).popUntil((route) {
+                                return route.settings.name ==
+                                    AppRouter.offer_detail_myacc;
+                              });
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   color: AppTheme.getInstance().bgBtsColor(),
