@@ -236,7 +236,7 @@ abstract class BorrowService {
 
   @POST(ApiConstants.COLLATERAL_WITHDRAW)
   Future<CollateralWithDrawResponse> postCollateralWithdraw(
-    @Field('id') String? id,
+    @Query('id') String? id,
   );
 
   @GET('${ApiConstants.OFFER_DETAIL_MY_ACC}{id}')
