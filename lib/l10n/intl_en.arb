@@ -1007,5 +1007,6 @@
   "system_fee": "System fee",
   "pay": "Pay",
   "learn_more_about": "Learn more about  Loan to value",
-  "learn_more_about_ltv": "Learn more about LTV liquidation threshhold"
+  "learn_more_about_ltv": "Learn more about LTV liquidation threshhold",
+  "prepaid_fee": "Prepaid fee"
 }

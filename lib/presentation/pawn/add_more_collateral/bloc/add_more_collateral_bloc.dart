@@ -7,25 +7,30 @@ import 'package:Dfy/presentation/pawn/add_more_collateral/bloc/add_more_collater
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 class AddMoreCollateralBloc extends BaseCubit<AddMoreCollateralState> {
   AddMoreCollateralBloc() : super(AddMoreCollateralInitial()) {
     showLoading();
   }
 
+  BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
   final List<ModelToken> checkShow = [];
   double balanceToken = 0;
   final Web3Utils client = Web3Utils();
+  String? hexString;
+
 
   void validateAmount(String value) {
     if (value.isNotEmpty) {
       if (double.parse(value) > balanceToken) {
         errorCollateral.add(S.current.invalid_amount);
+        isBtn.add(false);
       } else {
         errorCollateral.add('');
+        isBtn.add(true);
       }
     } else {
+      isBtn.add(false);
       errorCollateral.add(S.current.value_is_required);
     }
   }

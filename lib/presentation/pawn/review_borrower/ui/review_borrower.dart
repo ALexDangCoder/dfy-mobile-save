@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/review_borrower/bloc/review_borrower_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ReviewBorrower extends StatefulWidget {
   const ReviewBorrower({Key? key}) : super(key: key);
@@ -233,9 +240,9 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                   children: [
                     GestureDetector(
                       onTap: () {
-
-                        PrefsService.savePleaseRate(bloc.isCheckBox.value.toString());
-                        // );//todo
+                        PrefsService.savePleaseRate(
+                            bloc.isCheckBox.value.toString());
+                        Navigator.pop(context);
                       },
                       child: Container(
                         height: 64.h,
@@ -263,7 +270,40 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        PrefsService.savePleaseRate(bloc.isCheckBox.value.toString());
+                        PrefsService.savePleaseRate(
+                          bloc.isCheckBox.value.toString(),
+                        );
+                        final NavigatorState navigator = Navigator.of(context);
+                        // await bloc.getWithdrawCryptoCollateralData(
+                        //   wad: obj.bcCollateralId.toString(),
+                        // );..//todo bloc
+                        unawaited(
+                          navigator.push(
+                            MaterialPageRoute(
+                              builder: (context) => Approve(
+                                textActiveButton:
+                                    '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
+                                spender: Get.find<AppConstants>()
+                                    .crypto_pawn_contract,
+                                hexString: bloc.hexString,
+                                tokenAddress:
+                                    Get.find<AppConstants>().contract_defy,
+                                title: S.current.confirm_send_offer,
+                                listDetail: [],
+                                onErrorSign: (context) {},
+                                onSuccessSign: (context, data) {
+                                  //BE todo
+                                  showLoadSuccess(context).then((value) {
+                                    Navigator.of(context).popUntil((route) {
+                                      return route.settings.name ==
+                                          AppRouter.contract_detail_my_acc;
+                                    });
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        );
                         //todo
                       },
                       child: SizedBox(

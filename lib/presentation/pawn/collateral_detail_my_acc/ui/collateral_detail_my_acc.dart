@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
@@ -472,6 +473,9 @@ class _CollateralDetailMyAccScreenState
                                                             index]
                                                         .id
                                                         .toString(),
+                                                  ),
+                                                  settings: const RouteSettings(
+                                                    name: AppRouter.send_nft_confirm_blockchain,
                                                   ),
                                                 ),
                                               );
