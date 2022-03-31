@@ -1,4 +1,5 @@
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/explore_category_model.dart';
@@ -7,9 +8,15 @@ import 'package:Dfy/domain/model/market_place/outstanding_collection_model.dart'
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/list_type_nft_collection_explore_repository.dart';
+import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_explore_category.dart';
+import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_nft_home.dart';
+import 'package:Dfy/presentation/market_place/ui/components_list_nft_categories/list_outstanding_collection.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
@@ -20,32 +27,122 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
 
   MarketPlaceRepository get _marketPlaceRepo => Get.find();
 
-  List<NftMarket> nftsHotAution = [];
-  List<NftMarket> nftsSale = [];
-
-  //pawnNft
-  List<NftMarket> nftsCollateral = [];
-  List<NftMarket> nftsHardNft = [];
-  List<NftMarket> nftsBuySellCreateCollectible = [];
-  List<NftMarket> nftsFeaturedSoft = [];
-  List<OutstandingCollection> outstandingCollection = [];
-  List<ExploreCategory> exploreCategories = [];
-  List<NftMarket> nftsFeaturedNfts = [];
+  // void clearAllBeforePullToRefresh() {
+  //   nftsHotAution.clear();
+  //   nftsSale.clear();
+  //   nftsCollateral.clear();
+  //   nftsHardNft.clear();
+  //   nftsBuySellCreateCollectible.clear();
+  //   nftsFeaturedSoft.clear();
+  //   outstandingCollection.clear();
+  //   exploreCategories.clear();
+  //   nftsFeaturedNfts.clear();
+  //   listCollectionFtExploreFtNft.clear();
+  // }
 
   void clearAllBeforePullToRefresh() {
+    listWidgetHome.clear();
     nftsHotAution.clear();
     nftsSale.clear();
     nftsCollateral.clear();
     nftsHardNft.clear();
-    nftsBuySellCreateCollectible.clear();
-    nftsFeaturedSoft.clear();
     outstandingCollection.clear();
     exploreCategories.clear();
     nftsFeaturedNfts.clear();
     listCollectionFtExploreFtNft.clear();
   }
 
-  Future<void> getListNftCollectionExplore() async {
+  final List<Widget> listWidgetHome = [];
+
+  ///start category
+  void handleWidgetDuplicated(MarketplaceCubit cubit) {
+    List<String> checkDuplicated = [];
+    for (int i = 0; i < cubit.listCollectionFtExploreFtNft.length; i++) {
+      if (checkDuplicated
+          .contains(cubit.listCollectionFtExploreFtNft[i]['name'])) {
+        continue;
+      } else {
+        checkDuplicated.add(cubit.listCollectionFtExploreFtNft[i]['name']);
+        if (cubit.listCollectionFtExploreFtNft[i]['type'] ==
+            MarketplaceCubit.NFT) {
+          listWidgetHome.add(Column(
+            children: [
+              ListNftHome(
+                cubit: cubit,
+                isLoading: false,
+                isLoadFail: false,
+                marketType: cubit.listCollectionFtExploreFtNft[i]
+                ['market_type'],
+                listNft: cubit.listCollectionFtExploreFtNft[i]['nfts'],
+                title: cubit.listCollectionFtExploreFtNft[i]['name'],
+              ),
+              spaceH32,
+            ],
+          ));
+        } else if (cubit.listCollectionFtExploreFtNft[i]['type'] ==
+            MarketplaceCubit.COLLECTION) {
+          listWidgetHome.add(Column(
+            children: [
+              ListOutstandingCollection(
+                cubit: cubit,
+                isLoading: false,
+                isLoadFail: false,
+              ),
+              spaceH32,
+            ],
+          ));
+        } else if (cubit.listCollectionFtExploreFtNft[i]['type'] ==
+            MarketplaceCubit.CATEGORY) {
+          listWidgetHome.add(Column(
+            children: [
+              ListExploreCategory(
+                cubit: cubit,
+                isLoading: false,
+                isLoadFail: false,
+              ),
+              SizedBox(
+                height: 32.h,
+              ),
+            ],
+          ));
+        } else if (cubit.listCollectionFtExploreFtNft[i]['type'] ==
+            MarketplaceCubit.PAWN) {
+          listWidgetHome.add(Column(
+            children: [
+              ListNftHome(
+                cubit: cubit,
+                isLoading: false,
+                isLoadFail: false,
+                marketType: cubit.listCollectionFtExploreFtNft[i]
+                ['market_type'],
+                listNft: cubit.listCollectionFtExploreFtNft[i]['nfts'],
+                title: cubit.listCollectionFtExploreFtNft[i]['name'],
+              ),
+              spaceH32,
+            ],
+          ));
+        } else {
+          listWidgetHome.add(Column(
+            children: [
+              ListNftHome(
+                cubit: cubit,
+                isLoading: false,
+                isLoadFail: false,
+                marketType: cubit.listCollectionFtExploreFtNft[i]
+                ['market_type'],
+                listNft: cubit.listCollectionFtExploreFtNft[i]['nfts'],
+                title: cubit.listCollectionFtExploreFtNft[i]['name'],
+              ),
+              spaceH32,
+            ],
+          ));
+        }
+      }
+    }
+  }
+  ///end
+
+  Future<void> getListNftCollectionExplore({required MarketplaceCubit cubit}) async {
     emit(LoadingDataLoading());
     getTokenInf();
     final Result<List<ListTypeNftCollectionExploreModel>> result =
@@ -53,6 +150,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     result.when(
       success: (res) {
         getNftCollectionExplore(res);
+        handleWidgetDuplicated(cubit);
         emit(LoadingDataSuccess());
       },
       error: (error) {
@@ -103,13 +201,35 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     return '';
   }
 
+  static const int NFT = 0;
+  static const int AUCTION = 1;
+  static const int COLLECTION = 2;
+  static const int CATEGORY = 3;
+  static const int PAWN = 4;
+
+
+
+
+  List<NftMarket> nftsHotAution = [];
+  List<NftMarket> nftsSale = [];
+
+  //pawnNft
+  List<NftMarket> nftsCollateral = [];
+  List<NftMarket> nftsHardNft = [];
+  List<NftMarket> nftsBuySellCreateCollectible = [];
+  List<OutstandingCollection> outstandingCollection = [];
+  List<ExploreCategory> exploreCategories = [];
+  List<NftMarket> nftsFeaturedNfts = [];
+
+  int countDuplicated = 0;
+
   void getNftCollectionExplore(
     List<ListTypeNftCollectionExploreModel> response,
   ) {
     for (final e in response) {
-      if (e.name == 'Buy, sell, and create collectible NFTs') {
+      if (e.type == PAWN) {
         e.items?.forEach(
-          (element) => nftsBuySellCreateCollectible.add(
+          (element) => nftsCollateral.add(
             NftMarket(
                 urlToken: getUrl(element.token ?? ''),
                 marketId: element.id,
@@ -134,77 +254,13 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           ),
         );
         listCollectionFtExploreFtNft.add({
+          'type': e.type,
           'name': e.name,
           'position': e.position,
-          'nfts': nftsBuySellCreateCollectible,
-          'market_type': getMarketType(e.url!) //todo,
+          'nfts': nftsCollateral,
+          'market_type': getMarketType(e.url ?? '') //todo,
         });
-      } else if (e.name == 'Featured NFTs') {
-        e.items?.forEach(
-          (element) => nftsFeaturedNfts.add(
-            NftMarket(
-              urlToken: getUrl(element.token ?? ''),
-              marketId: element.id,
-              nftId: element.nftId ?? '',
-              tokenBuyOut: element.token ?? '',
-              name: element.name ?? '',
-              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-              price: element.price ?? 0,
-              marketType: element.marketType == 1
-                  ? MarketType.SALE
-                  : (element.marketType == 2
-                      ? MarketType.AUCTION
-                      : MarketType.PAWN),
-              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType ?? '').contains('image')
-                  ? TypeImage.IMAGE
-                  : TypeImage.VIDEO,
-              numberOfCopies: element.numberOfCopies,
-              totalCopies: element.totalCopies ?? 0,
-              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
-            ),
-          ),
-        );
-        listCollectionFtExploreFtNft.add({
-          'name': e.name,
-          'position': e.position,
-          'nfts': nftsFeaturedNfts,
-          'market_type': getMarketType(e.url!) //todo,
-        });
-      } else if (e.name == 'Featured Soft NFTs') {
-        //hard nft chưa có
-        e.items?.forEach(
-          (element) => nftsFeaturedSoft.add(
-            NftMarket(
-              urlToken: getUrl(element.token ?? ''),
-              marketId: element.id,
-              nftId: element.nftId ?? '',
-              tokenBuyOut: element.token ?? '',
-              name: element.name ?? '',
-              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-              price: element.price ?? 0,
-              marketType: element.marketType == 1
-                  ? MarketType.SALE
-                  : (element.marketType == 2
-                      ? MarketType.AUCTION
-                      : MarketType.PAWN),
-              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType ?? '').contains('image')
-                  ? TypeImage.IMAGE
-                  : TypeImage.VIDEO,
-              numberOfCopies: element.numberOfCopies,
-              totalCopies: element.totalCopies ?? 0,
-              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
-            ),
-          ),
-        );
-        listCollectionFtExploreFtNft.add({
-          'name': e.name,
-          'position': e.position,
-          'nfts': nftsFeaturedSoft,
-          'market_type': getMarketType(e.url!)
-        });
-      } else if (e.name == 'Hot auction') {
+      } else if (e.type == AUCTION) {
         e.items?.forEach(
           (element) => nftsHotAution.add(
             NftMarket(
@@ -231,12 +287,13 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           ),
         );
         listCollectionFtExploreFtNft.add({
+          'type': e.type,
           'name': e.name,
           'position': e.position,
           'nfts': nftsHotAution,
-          'market_type': getMarketType(e.url!)
+          'market_type': getMarketType(e.url ?? '')
         });
-      } else if (e.name == 'Outstanding collection') {
+      } else if (e.type == COLLECTION) {
         e.items?.forEach(
           (e) => outstandingCollection.add(
             OutstandingCollection(
@@ -253,13 +310,16 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           ),
         );
         listCollectionFtExploreFtNft.add({
+          'type': e.type,
           'name': e.name,
           'position': e.position,
           'collection': outstandingCollection,
         });
-      } else if (e.name == 'Sale items' || e.name == 'Sell items') {
+      } else if (e.type == NFT) {
+        countDuplicated += 1;
+        final List<NftMarket> nftsJustNft = [];
         e.items?.forEach(
-          (element) => nftsSale.add(
+          (element) => nftsJustNft.add(
             NftMarket(
               urlToken: getUrl(element.token ?? ''),
               marketId: element.id,
@@ -284,42 +344,11 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           ),
         );
         listCollectionFtExploreFtNft.add({
+          'type': e.type,
           'name': e.name,
           'position': e.position,
-          'nfts': nftsSale,
-          'market_type': getMarketType(e.url!)
-        });
-      } else if (e.name == 'NFTs collateral') {
-        e.items?.forEach(
-          (element) => nftsCollateral.add(
-            NftMarket(
-              urlToken: getUrl(element.token ?? ''),
-              marketId: element.id,
-              nftId: element.nftId ?? '',
-              tokenBuyOut: element.token ?? '',
-              name: element.name ?? '',
-              image: ApiConstants.BASE_URL_IMAGE + (element.fileCid ?? ''),
-              price: element.price ?? 0,
-              marketType: element.marketType == 1
-                  ? MarketType.SALE
-                  : (element.marketType == 2
-                      ? MarketType.AUCTION
-                      : MarketType.PAWN),
-              typeNFT: element.type == 0 ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
-              typeImage: (element.fileType ?? '').contains('image')
-                  ? TypeImage.IMAGE
-                  : TypeImage.VIDEO,
-              numberOfCopies: element.numberOfCopies,
-              totalCopies: element.totalCopies ?? 0,
-              cover: ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
-            ),
-          ),
-        );
-        listCollectionFtExploreFtNft.add({
-          'name': e.name,
-          'position': e.position,
-          'nfts': nftsCollateral,
-          'market_type': getMarketType(e.url!)
+          'nfts': nftsJustNft,
+          'market_type': getMarketType(e.url ?? '') //todo,
         });
       } //this else is explore categories
       else {
@@ -338,6 +367,7 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
           ),
         );
         listCollectionFtExploreFtNft.add({
+          'type': e.type,
           'name': e.name,
           'position': e.position,
           'explore': exploreCategories,
@@ -349,4 +379,20 @@ class MarketplaceCubit extends BaseCubit<MarketplaceState> {
     // listCollectionFtExploreFtNft
     //     .sort((a, b) => a["position"].compareTo(b["position"]));
   }
+
+  // final listWidget = <String>[];
+  //
+  // void test() {
+  //   List<String> checkDuplicated = [];
+  //   for (var i = 0; i < listCollectionFtExploreFtNft.length; i++) {
+  //     if(checkDuplicated.contains(listCollectionFtExploreFtNft[i]['name'])) {
+  //       continue;
+  //     } else {
+  //       checkDuplicated.add(listCollectionFtExploreFtNft[i]['name']);
+  //       listWidget.add(listCollectionFtExploreFtNft[i]['name']);
+  //     }
+  //   }
+  //   print('nnono');
+  //   print(listWidget);
+  // }
 }
