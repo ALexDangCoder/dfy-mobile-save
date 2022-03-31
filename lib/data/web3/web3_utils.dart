@@ -1183,6 +1183,23 @@ class Web3Utils {
     return hex.encode(createOffer.data ?? []);
   }
 
+  Future<String> getCancelCryptoOfferData({
+    required String nftCollateralId,
+    required String offerId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('cancelOffer');
+    final cancelOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(offerId)),
+        BigInt.from(num.parse(nftCollateralId)),
+      ],
+    );
+    return hex.encode(cancelOffer.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
