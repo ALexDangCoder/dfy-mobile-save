@@ -114,6 +114,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
         return false;
       case REJECT_OFFER:
         return false;
+      case CANCEL_OFFER:
+        return false;
       default:
         return true;
     }
