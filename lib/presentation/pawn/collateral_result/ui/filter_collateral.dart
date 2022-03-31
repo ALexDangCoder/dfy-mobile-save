@@ -48,6 +48,7 @@ class _FilterCollateralState extends State<FilterCollateral> {
         },
         child: Container(
           height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(

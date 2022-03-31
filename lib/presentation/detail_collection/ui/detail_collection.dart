@@ -73,6 +73,7 @@ class _DetailCollectionState extends State<DetailCollection>
                     ),
                   ),
                   height: 812.h,
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
@@ -186,6 +187,7 @@ class _DetailCollectionState extends State<DetailCollection>
                   ),
                 ),
                 height: 812.h,
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child: CollectionDetailError(
                   collectionAddress: widget.collectionAddress,
                   cubit: detailCollectionBloc,

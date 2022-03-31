@@ -18,6 +18,7 @@ void showSuccessfulByTitle({
     builder: (context) {
       return Container(
         height: 812.h,
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         width: 375.w,
         decoration: BoxDecoration(
           // shape: BoxShape.circle,

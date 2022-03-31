@@ -38,6 +38,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
           children: [
             Container(
               height: 812.h,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
@@ -135,7 +136,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
                             showLoadSuccess(context).then((value) {
                               Navigator.of(context).popUntil((route) {
                                 return route.settings.name ==
-                                    AppRouter.offer_detail_myacc;
+                                    AppRouter.collateral_detail_myacc;
                               });
                             });
                           },

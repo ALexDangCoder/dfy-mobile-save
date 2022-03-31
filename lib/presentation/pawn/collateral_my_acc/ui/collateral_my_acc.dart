@@ -109,6 +109,8 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                 },
                 child: Container(
                   height: 812.h,
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: BorderRadius.only(
@@ -202,10 +204,11 @@ class _CollateralMyAccState extends State<CollateralMyAcc> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   CollateralDetailMyAccScreen(
-                                                    id: list[index].id.toString(),
-                                                  ),
+                                                id: list[index].id.toString(),
+                                              ),
                                               settings: const RouteSettings(
-                                                name: AppRouter.collateral_detail_myacc,
+                                                name: AppRouter
+                                                    .collateral_detail_myacc,
                                               ),
                                             ),
                                           );

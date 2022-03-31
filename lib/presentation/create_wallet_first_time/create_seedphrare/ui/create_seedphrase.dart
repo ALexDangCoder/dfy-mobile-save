@@ -106,6 +106,7 @@ class _BodyState extends State<_Body> {
             },
             child: Container(
               height: 812.h,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               width: 375.w,
               decoration: BoxDecoration(
                 color: const Color(0xff3e3d5c),

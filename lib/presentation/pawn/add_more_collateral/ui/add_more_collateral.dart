@@ -78,6 +78,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       height: 812.h,
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                       decoration: BoxDecoration(
                         color: AppTheme.getInstance().bgBtsColor(),
                         borderRadius: BorderRadius.only(

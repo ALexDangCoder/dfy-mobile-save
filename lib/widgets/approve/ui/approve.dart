@@ -199,11 +199,9 @@ class _ApproveState extends State<Approve> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          top: false,
-          right: false,
-          left: false,
-          bottom: defaultTargetPlatform == TargetPlatform.android,
+        body: Container(
+          height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           child: StateStreamLayout(
             stream: cubit.stateStream,
             error: AppException('', S.current.something_went_wrong),
@@ -232,7 +230,6 @@ class _ApproveState extends State<Approve> {
                       }
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(top: 48),
                       decoration: BoxDecoration(
                         color: AppTheme.getInstance().bgBtsColor(),
                         borderRadius: const BorderRadius.only(

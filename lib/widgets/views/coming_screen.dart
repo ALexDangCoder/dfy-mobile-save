@@ -5,7 +5,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class ComingScreen extends StatelessWidget {
   const ComingScreen({Key? key}) : super(key: key);
 
@@ -18,6 +17,7 @@ class ComingScreen extends StatelessWidget {
         children: [
           Container(
             height: 812.h,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             width: 375.w,
             decoration: const BoxDecoration(
               color: Color(0xff3e3d5c),
