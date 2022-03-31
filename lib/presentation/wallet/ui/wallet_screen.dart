@@ -101,9 +101,6 @@ class _WalletState extends State<WalletScreen>
           ),
           child: Column(
             children: [
-              SizedBox(
-                height: 44.h,
-              ),
               Padding(
                 padding: EdgeInsets.only(
                   left: 10.w,
