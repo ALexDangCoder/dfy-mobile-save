@@ -43,19 +43,19 @@ extension OfferSentCryptoExtension on OfferSentListCubit {
 
   static Color getStatusColor(int status) {
     switch (status) {
-      case OfferSentCryptoExtension.OPEN:
+      case OPEN:
         return AppTheme.getInstance().blueColor();
-      case OfferSentCryptoExtension.ACCEPTED:
+      case ACCEPTED:
         return AppTheme.getInstance().successTransactionColors();
-      case OfferSentCryptoExtension.REJECTED:
-      case OfferSentCryptoExtension.FAILED_CREATE:
+      case REJECTED:
+      case FAILED_CREATE:
         return AppTheme.getInstance().failTransactionColors();
-      case OfferSentCryptoExtension.CANCELED:
+      case CANCELED:
         return AppTheme.getInstance().titleTabColor();
-      case OfferSentCryptoExtension.PROCESSING_CREATE:
-      case OfferSentCryptoExtension.PROCESSING_ACCEPT:
-      case OfferSentCryptoExtension.PROCESSING_REJECT:
-      case OfferSentCryptoExtension.PROCESSING_CANCEL:
+      case PROCESSING_CREATE:
+      case PROCESSING_ACCEPT:
+      case PROCESSING_REJECT:
+      case PROCESSING_CANCEL:
         return orangeColor;
       default:
         return orangeColor;

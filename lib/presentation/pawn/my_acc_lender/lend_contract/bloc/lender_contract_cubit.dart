@@ -175,6 +175,9 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
   final List<Map<String, dynamic>> walletAddressDropDown = [
     {'value': '', 'label': 'All'}
   ];
+
+  Map<String, dynamic> tempWalletFilter = {'value': '', 'label': 'null'};
+
   bool isGotWallet = false;
 
   BehaviorSubject<List<Map<String, dynamic>>> listWalletBHVSJ =
@@ -240,12 +243,12 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
   }
 
   void resetFilter() {
+    tempWalletFilter = {'value': '', 'label': 'null'};
     filterListBHVSJ.sink.add(filterOriginalList);
   }
 
   BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
       BehaviorSubject();
-
 
   ///extension string
   String categoryOneOrMany({
@@ -268,9 +271,6 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
       }
     }
   }
-
-
-
 
   String getStatus(String type) {
     switch (type) {

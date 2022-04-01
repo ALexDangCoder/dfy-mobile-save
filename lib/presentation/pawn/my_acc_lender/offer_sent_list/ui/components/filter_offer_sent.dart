@@ -259,7 +259,6 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    widget.cubit.listOfferSentCrypto.clear();
                     if (widget.indexTab == 0) {
                       widget.cubit.listOfferSentCrypto.clear();
                       widget.cubit.getListOfferSentCrypto(
