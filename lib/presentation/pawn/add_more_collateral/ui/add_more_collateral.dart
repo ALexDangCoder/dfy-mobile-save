@@ -25,10 +25,12 @@ import 'package:get/get.dart';
 
 class AddMoreCollateral extends StatefulWidget {
   final ContractDetailPawn obj;
+  final double totalUnpaid;
 
   const AddMoreCollateral({
     Key? key,
     required this.obj,
+    required this.totalUnpaid,
   }) : super(key: key);
 
   @override
@@ -39,7 +41,6 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
   late AddMoreCollateralBloc bloc;
   late TextEditingController collateralAmount;
   double decimal = 0;
-  double decimalNext = 0;
 
   @override
   void initState() {
@@ -48,6 +49,14 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
     collateralAmount = TextEditingController();
     collateralAmount.addListener(() {
       bloc.validateAmount(collateralAmount.text);
+      double textAmount = 0;
+      final double estimateUsdAmount =
+          widget.obj.cryptoCollateral?.estimateUsdAmount ?? 0;
+      if (collateralAmount.text.isNotEmpty) {
+        textAmount = double.parse(collateralAmount.text);
+      }
+      bloc.decimalNext//todo
+          .add((widget.totalUnpaid / (textAmount + estimateUsdAmount)) * 100);
     });
     bloc.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
@@ -56,6 +65,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
     decimal = (widget.obj.contractTerm?.estimateUsdLoanAmount ?? 0) *
         100 /
         (widget.obj.cryptoCollateral?.estimateUsdAmount ?? 0);
+    bloc.decimalNext.add(decimal);
   }
 
   @override
@@ -78,7 +88,9 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       height: 812.h,
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top,
+                      ),
                       decoration: BoxDecoration(
                         color: AppTheme.getInstance().bgBtsColor(),
                         borderRadius: BorderRadius.only(
@@ -297,33 +309,40 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                             ),
                           ),
                           spaceH16,
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    '${S.current.next_ltv}:',
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      16,
-                                    ),
-                                  ),
+                          StreamBuilder<double>(
+                            stream: bloc.decimalNext,
+                            builder: (context, snapshot) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
                                 ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    '$decimalNext%',
-                                    style: textNormal(
-                                      AppTheme.getInstance().whiteColor(),
-                                      16,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        '${S.current.next_ltv}:',
+                                        style: textNormal(
+                                          AppTheme.getInstance().whiteColor(),
+                                          16,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        '${formatPrice.format(
+                                          snapshot.data ?? 0,
+                                        )}%',
+                                        style: textNormal(
+                                          AppTheme.getInstance().whiteColor(),
+                                          16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -333,79 +352,83 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                 Positioned(
                   bottom: 0,
                   child: StreamBuilder<bool>(
-                    stream: bloc.isBtn,
-                    builder: (context, snapshot) {
-                      return GestureDetector(
-                        onTap: () async {
-                         if(snapshot.data ?? false){
-                           final NavigatorState navigator = Navigator.of(context);
-                           // await bloc.getWithdrawCryptoCollateralData(
-                           //   wad: obj.bcCollateralId.toString(),
-                           // );..//todo bloc
-                           unawaited(
-                             navigator.push(
-                               MaterialPageRoute(
-                                 builder: (context) => Approve(
-                                   textActiveButton:
-                                   '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                   spender:
-                                   Get.find<AppConstants>().crypto_pawn_contract,
-                                   hexString: bloc.hexString,
-                                   tokenAddress:
-                                   Get.find<AppConstants>().contract_defy,
-                                   title: S.current.confirm_send_offer,
-                                   listDetail: [
-                                     DetailItemApproveModel(
-                                       title: '${S.current.collateral}: ',
-                                       value: '${formatPrice.format(
-                                         widget.obj.cryptoCollateral?.amount ?? 0,
-                                       )}'
-                                           ' ${widget.obj.cryptoCollateral?.cryptoAsset?.symbol.toString() ?? ''}',
-                                       urlToken: ImageAssets.getSymbolAsset(
-                                         widget.obj.cryptoCollateral?.cryptoAsset
-                                             ?.symbol
-                                             .toString() ??
-                                             '',
-                                       ),
-                                     ),
-                                     DetailItemApproveModel(
-                                       title: '${S.current.current_ltv}: ',
-                                       value: '$decimal%',
-                                     ),
-                                     DetailItemApproveModel(
-                                       title: '${S.current.next_ltv}: ',
-                                       value: '$decimalNext%',
-                                     ),
-                                   ],
-                                   onErrorSign: (context) {},
-                                   onSuccessSign: (context, data) {
-                                     //BE todo
-                                     showLoadSuccess(context).then((value) {
-                                       Navigator.of(context).popUntil((route) {
-                                         return route.settings.name ==
-                                             AppRouter.contract_detail_my_acc;
-                                       });
-                                     });
-                                   },
-                                 ),
-                               ),
-                             ),
-                           );
-                         }
-                        },
-                        child: Container(
-                          color: AppTheme.getInstance().bgBtsColor(),
-                          padding: EdgeInsets.only(
-                            bottom: 38.h,
+                      stream: bloc.isBtn,
+                      builder: (context, snapshot) {
+                        return GestureDetector(
+                          onTap: () async {
+                            if (snapshot.data ?? false) {
+                              final NavigatorState navigator =
+                                  Navigator.of(context);
+                              // await bloc.getWithdrawCryptoCollateralData(
+                              //   wad: obj.bcCollateralId.toString(),
+                              // );..//todo bloc
+                              unawaited(
+                                navigator.push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Approve(
+                                      textActiveButton:
+                                          '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
+                                      spender: Get.find<AppConstants>()
+                                          .crypto_pawn_contract,
+                                      hexString: bloc.hexString,
+                                      tokenAddress: Get.find<AppConstants>()
+                                          .contract_defy,
+                                      title: S.current.confirm_send_offer,
+                                      listDetail: [
+                                        DetailItemApproveModel(
+                                          title: '${S.current.collateral}: ',
+                                          value: '${formatPrice.format(
+                                            widget.obj.cryptoCollateral
+                                                    ?.amount ??
+                                                0,
+                                          )}'
+                                              ' ${widget.obj.cryptoCollateral?.cryptoAsset?.symbol.toString() ?? ''}',
+                                          urlToken: ImageAssets.getSymbolAsset(
+                                            widget.obj.cryptoCollateral
+                                                    ?.cryptoAsset?.symbol
+                                                    .toString() ??
+                                                '',
+                                          ),
+                                        ),
+                                        DetailItemApproveModel(
+                                          title: '${S.current.current_ltv}: ',
+                                          value: '$decimal%',
+                                        ),
+                                        DetailItemApproveModel(
+                                          title: '${S.current.next_ltv}: ',
+                                          value: '${bloc.decimalNext.value}%',
+                                        ),
+                                      ],
+                                      onErrorSign: (context) {},
+                                      onSuccessSign: (context, data) {
+                                        //BE todo
+                                        showLoadSuccess(context).then((value) {
+                                          Navigator.of(context)
+                                              .popUntil((route) {
+                                            return route.settings.name ==
+                                                AppRouter
+                                                    .contract_detail_my_acc;
+                                          });
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            color: AppTheme.getInstance().bgBtsColor(),
+                            padding: EdgeInsets.only(
+                              bottom: 38.h,
+                            ),
+                            child: ButtonGold(
+                              isEnable: snapshot.data ?? false,
+                              title: S.current.confirm,
+                            ),
                           ),
-                          child: ButtonGold(
-                            isEnable: snapshot.data ?? false,
-                            title: S.current.confirm,
-                          ),
-                        ),
-                      );
-                    }
-                  ),
+                        );
+                      }),
                 ),
               ],
             );
