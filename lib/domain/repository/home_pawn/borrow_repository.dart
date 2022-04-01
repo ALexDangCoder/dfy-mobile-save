@@ -247,4 +247,12 @@ mixin BorrowRepository {
     String? id,
     RepaymentPayRequest? repaymentPayRequest,
   });
+
+  Future<Result<String>> putCancelOffer({
+    String? id,
+  });
+
+  Future<Result<String>> putAcceptOffer({
+    String? id,
+  });
 }
