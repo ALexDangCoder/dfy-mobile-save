@@ -14,11 +14,11 @@ class AddMoreCollateralBloc extends BaseCubit<AddMoreCollateralState> {
 
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
+  BehaviorSubject<double> decimalNext = BehaviorSubject.seeded(0);
   final List<ModelToken> checkShow = [];
   double balanceToken = 0;
   final Web3Utils client = Web3Utils();
   String? hexString;
-
 
   void validateAmount(String value) {
     if (value.isNotEmpty) {

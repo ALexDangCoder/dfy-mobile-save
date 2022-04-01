@@ -760,6 +760,10 @@ class _ContractDetailState extends State<ContractDetail>
                                                   builder: (context) {
                                                     return AddMoreCollateral(
                                                       obj: obj,
+                                                      totalUnpaid: bloc
+                                                              .objRepayment
+                                                              ?.totalUnpaid ??
+                                                          0,
                                                     );
                                                   },
                                                 ),

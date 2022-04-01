@@ -27,6 +27,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   String? hexStringAccept;
   String? hexStringReject;
   OfferDetailMyAcc? obj;
+
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
     getOfferDetailMyAcc(id: id);
   }
@@ -49,6 +50,41 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     }
   }
 
+  Future<void> putCancelOffer() async {
+    final Result<String> response = await _pawnService.putCancelOffer(
+      id: id,
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
+
+  Future<void> putAcceptOffer() async {
+    final Result<String> response = await _pawnService.putAcceptOffer(
+      id: id,
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
+
+  Future<void> getAcceptCryptoOfferData({
+    required String bcCollateralId,
+    required String bcOfferId,
+  }) async {
+    try {
+      showLoading();
+      hexStringAccept = await web3Client.getAcceptCryptoOfferData(
+        nftCollateralId: bcCollateralId,
+        offerId: bcOfferId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
   Future<void> getOfferDetailMyAcc({
     String? id,
   }) async {
@@ -59,7 +95,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     );
     response.when(
       success: (response) {
-        obj=response;
+        obj = response;
         emit(
           OfferDetailMyAccSuccess(
             CompleteType.SUCCESS,
@@ -113,6 +149,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
       case ACCEPT_OFFER:
         return false;
       case REJECT_OFFER:
+        return false;
+      case CANCEL_OFFER:
         return false;
       default:
         return true;

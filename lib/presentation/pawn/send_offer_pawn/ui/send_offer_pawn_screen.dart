@@ -100,7 +100,6 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
           height: 812.h,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.only(top: 26.h),
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: const BorderRadius.only(

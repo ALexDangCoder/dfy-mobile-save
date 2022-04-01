@@ -130,9 +130,7 @@ class _ConfirmRejectState extends State<ConfirmReject> {
                           listDetail: [],
                           onErrorSign: (context) {},
                           onSuccessSign: (context, data) {
-                            //todo BE bloc.postCollateralWithdraw(
-                            //   id: obj.id.toString(),
-                            // );
+                            widget.bloc.putCancelOffer();
                             showLoadSuccess(context).then((value) {
                               Navigator.of(context).popUntil((route) {
                                 return route.settings.name ==
