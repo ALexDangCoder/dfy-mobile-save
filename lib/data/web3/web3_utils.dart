@@ -1200,6 +1200,23 @@ class Web3Utils {
     return hex.encode(cancelOffer.data ?? []);
   }
 
+  Future<String> getAcceptCryptoOfferData({
+    required String nftCollateralId,
+    required String offerId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('acceptOffer');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(offerId)),
+        BigInt.from(num.parse(nftCollateralId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
