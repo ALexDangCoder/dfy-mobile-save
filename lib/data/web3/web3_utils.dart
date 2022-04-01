@@ -1217,6 +1217,51 @@ class Web3Utils {
     return hex.encode(acceptOffer.data ?? []);
   }
 
+  //collateral
+  Future<String> getIncreaseCollateralData({
+    required String contractId,
+    required String collateralId,
+    required String collateralAddress,
+    required String amount,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('increaseCollateralAmount');
+    final increaseCollateralAmount = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(contractId)),
+        BigInt.from(num.parse(collateralId)),
+        EthereumAddress.fromHex(collateralAddress),
+        BigInt.from(num.parse(_handleAmount(18, amount))),
+      ],
+    );
+    return hex.encode(increaseCollateralAmount.data ?? []);
+  }
+
+  Future<String> getRepaymentData({
+    required String contractId,
+    required String paidPenaltyAmount,
+    required String paidInterestAmount,
+    required String paidLoanAmount,
+    required String uid,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('repayment');
+    final repayment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(contractId)),
+        BigInt.from(num.parse(paidPenaltyAmount)),
+        BigInt.from(num.parse(paidInterestAmount)),
+        BigInt.from(num.parse(paidLoanAmount)),
+        BigInt.from(num.parse(uid)),
+      ],
+    );
+    return hex.encode(repayment.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -1311,6 +1356,16 @@ class Web3Utils {
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'pawnCrypto'),
       EthereumAddress.fromHex(Get.find<AppConstants>().crypto_pawn_contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedCollateralContract() async {
+    final abiCode =
+        await rootBundle.loadString('assets/abi/Collateral_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'collateral'),
+      EthereumAddress.fromHex(Get.find<AppConstants>().collateral_contract),
     );
     return deployContract;
   }
