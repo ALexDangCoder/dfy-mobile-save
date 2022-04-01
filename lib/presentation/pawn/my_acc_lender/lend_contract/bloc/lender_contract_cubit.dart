@@ -1,46 +1,47 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:Dfy/config/base/base_cubit.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
-import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_crypto_model.dart';
-import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
-import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
+import 'package:Dfy/domain/model/pawn/lender_contract/lender_contract_nft_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/user_infor_model.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
+import 'package:Dfy/domain/repository/pawn/lender_contract/lender_contract_repository.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_nft/lender_contract_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:Dfy/utils/extensions/string_extension.dart';
+part 'lender_contract_state.dart';
 
-part 'offer_sent_list_state.dart';
-
-class OfferSentListCubit extends BaseCubit<OfferSentListState> {
-  OfferSentListCubit() : super(OfferSentListInitial()) {}
+class LenderContractCubit extends BaseCubit<LenderContractState> {
+  LenderContractCubit() : super(LenderContractInitial());
 
   ///DI
   OfferSentRepository get _offerSentService => Get.find();
 
-  static const String PROCESSING_CREATE = '1';
-  static const String ALL = '';
-  static const String FAILED_CREATE = '2';
-  static const String OPEN = '3';
-  static const String PROCESSING_ACCEPT = '4';
-  static const String PROCESSING_REJECT = '5';
-  static const String PROCESSING_CANCEL = '6';
-  static const String ACCEPTED = '7';
-  static const String REJECTED = '8';
-  static const String CANCELED = '9';
+  LenderContractRepository get _lenderContractService => Get.find();
 
-  ///need for call api
-  ///0.Api get UserID
+  static const String ACTIVE = '1';
+  static const String ALL = '';
+  static const String COMPLETE = '2';
+  static const String DEFAULT = '3';
+
+  ///get UserId
+  String userID = '';
+  List<CryptoPawnModel> listNftLenderContract = [];
+  List<CryptoPawnModel> listCryptoLenderContract = [];
+
   String getEmailWallet() {
     late String currentEmail = '';
     final account = PrefsService.getWalletLogin();
@@ -57,8 +58,6 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     }
     return currentEmail;
   }
-
-  String userID = '';
 
   Future<String> getUserId() async {
     final Result<UserInfoModel> result = await _offerSentService.getUserId(
@@ -77,29 +76,28 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     return userID;
   }
 
-  ///1.Api tab Crypto feat NFT
+  String walletAddressFilter = PrefsService.getCurrentBEWallet();
+
+  ///1.Api tab Crypto feat NFT not confirm
+  ///1.Api tab  NFT temp
   String message = '';
   int page = 0;
   bool loadMore = false;
   bool canLoadMoreList = true;
   bool refresh = false;
-  int defaultSize = 10;
+  int defaultSize = 12;
 
-  ///because tab NFT & CRYPTO same Api #type
-  ///this func refresh var
   void refreshVariableApi() {
     message = '';
     page = 0;
     loadMore = false;
     canLoadMoreList = true;
     refresh = false;
-    defaultSize = 10;
+    defaultSize = 12;
   }
 
-  List<OfferSentCryptoModel> listOfferSentCrypto = [];
-  List<OfferSentCryptoModel> listOfferSentNFT = [];
-
-  Future<void> getListOfferSentCrypto({
+  ///call api tab nft
+  Future<void> getListNft({
     String? type,
     String? size,
     String? status,
@@ -108,31 +106,24 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     String? walletAddress,
   }) async {
     showLoading();
-    final Result<List<OfferSentCryptoModel>> result =
-        await _offerSentService.getListOfferSentCrypto(
+    final Result<List<CryptoPawnModel>> result =
+        await _lenderContractService.getListOfferSentCrypto(
       status: status,
-      size: size ?? defaultSize.toString(),
-      page: page.toString(),
-      walletAddress: walletAddressFilter,
       type: type,
+      walletAddress: walletAddress ?? walletAddressFilter,
       userId: await getUserId(),
+      size: size ?? defaultSize.toString(),
       sort: sort,
+      page: page.toString(),
     );
     result.when(
       success: (success) {
-        emit(
-          LoadCryptoResult(
-            CompleteType.SUCCESS,
-            list: success,
-          ),
-        );
-        showContent();
+        emit(LoadCryptoFtNftResult(CompleteType.SUCCESS, list: success));
       },
       error: (error) {
         emit(
-          LoadCryptoResult(
+          LoadCryptoFtNftResult(
             CompleteType.ERROR,
-            message: error.message,
           ),
         );
         showContent();
@@ -140,8 +131,9 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     );
   }
 
-  Future<void> loadMoreGetListCrypto({
-    String? type = '0',
+  Future<void> loadMoreGetListNft({
+    //todo đúng quy trình gọi 0 call crypto trước
+    String? type = '1',
     String? size,
     String? status,
     String? userId,
@@ -149,106 +141,34 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     String? walletAddress,
   }) async {
     if (loadMore == false) {
-      emit(LoadMoreCrypto());
+      emit(LoadMoreNFT());
       page += 1;
       canLoadMoreList = true;
       loadMore = true;
-      await getListOfferSentCrypto(
+      await getListNft(
         type: type,
         sort: sort,
+        size: size,
         userId: userId,
         walletAddress: walletAddress,
-        size: size,
         status: status,
       );
-    } else {
-      //nothing
-    }
+    } else {}
   }
 
-  Future<void> refreshGetListOfferSentCrypto({String? type = '0'}) async {
+  Future<void> refreshGetListNft({String? type = '1'}) async {
     canLoadMoreList = true;
     if (refresh == false) {
       page = 0;
       refresh = true;
-      await getListOfferSentCrypto(type: type);
+      await getListNft(type: type);
     } else {
       //nothing
     }
   }
 
-  bool refreshDetailCrypto = false;
-  String messageDetailCrypto = '';
-
-  ///api detail crypto
-  ///START
-  OfferSentDetailCryptoModel offerSentDetailCrypto =
-      OfferSentDetailCryptoModel();
-  OfferSentDetailCryptoCollateralModel offerSentDetailCryptoCollateral =
-      OfferSentDetailCryptoCollateralModel();
-
-  Future<void> callApiDetailCrypto({required String id}) async {
-    await getOfferSentDetailCrypto(id: id);
-    await getOfferSentDetailCryptoCollateral();
-  }
-
-  Future<void> getOfferSentDetailCrypto({String? id}) async {
-    showLoading();
-    final Result<OfferSentDetailCryptoModel> result =
-        await _offerSentService.getOfferSentDetailCrypto(id: id);
-    result.when(
-      success: (response) {
-        offerSentDetailCrypto = response;
-      },
-      error: (err) {
-        GetApiDetalOfferSentCrypto(
-          CompleteType.ERROR,
-          message: err.message,
-        );
-      },
-    );
-  }
-
-  Future<void> getOfferSentDetailCryptoCollateral({String? id}) async {
-    final Result<OfferSentDetailCryptoCollateralModel> result =
-        await _offerSentService.getOfferSentDetailCryptoCollateral(
-      id: offerSentDetailCrypto.collateralId.toString(),
-    );
-    result.when(
-      success: (response) {
-        offerSentDetailCryptoCollateral = response;
-        emit(
-          GetApiDetalOfferSentCrypto(
-            CompleteType.SUCCESS,
-            detailCrypto: offerSentDetailCrypto,
-            detailCryptoCollateral: offerSentDetailCryptoCollateral,
-          ),
-        );
-      },
-      error: (error) {
-        GetApiDetalOfferSentCrypto(
-          CompleteType.ERROR,
-          message: error.message,
-        );
-      },
-    );
-  }
-
-  ///end
-  ///For Filter OfferSent
-  ///start
-  final List<Map<String, dynamic>> filterOriginalList = [
-    {'isSelected': true, 'status': ALL},
-    {'isSelected': false, 'status': PROCESSING_CREATE},
-    {'isSelected': false, 'status': FAILED_CREATE},
-    {'isSelected': false, 'status': OPEN},
-    {'isSelected': false, 'status': PROCESSING_ACCEPT},
-    {'isSelected': false, 'status': PROCESSING_REJECT},
-    {'isSelected': false, 'status': PROCESSING_CANCEL},
-    {'isSelected': false, 'status': ACCEPTED},
-    {'isSelected': false, 'status': REJECTED},
-    {'isSelected': false, 'status': CANCELED}
-  ];
+  ///for filter
+  String statusFilter = '';
 
   WalletAddressRepository get _walletAddressRepository => Get.find();
 
@@ -259,6 +179,20 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
 
   BehaviorSubject<List<Map<String, dynamic>>> listWalletBHVSJ =
       BehaviorSubject();
+
+  final List<Map<String, dynamic>> filterTmpList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': ACTIVE},
+    {'isSelected': false, 'status': COMPLETE},
+    {'isSelected': false, 'status': DEFAULT},
+  ];
+
+  final List<Map<String, dynamic>> filterOriginalList = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': ACTIVE},
+    {'isSelected': false, 'status': COMPLETE},
+    {'isSelected': false, 'status': DEFAULT},
+  ];
 
   Future<void> getListWallet() async {
     if (isGotWallet) {
@@ -296,22 +230,6 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     }
   }
 
-  String statusFilter = '';
-  String walletAddressFilter = PrefsService.getCurrentBEWallet();
-
-  final List<Map<String, dynamic>> filterTmpList = [
-    {'isSelected': true, 'status': ALL},
-    {'isSelected': false, 'status': PROCESSING_CREATE},
-    {'isSelected': false, 'status': FAILED_CREATE},
-    {'isSelected': false, 'status': OPEN},
-    {'isSelected': false, 'status': PROCESSING_ACCEPT},
-    {'isSelected': false, 'status': PROCESSING_REJECT},
-    {'isSelected': false, 'status': PROCESSING_CANCEL},
-    {'isSelected': false, 'status': ACCEPTED},
-    {'isSelected': false, 'status': REJECTED},
-    {'isSelected': false, 'status': CANCELED}
-  ];
-
   void pickJustOneFilter(int index) {
     for (final element in filterTmpList) {
       element['isSelected'] = false;
@@ -328,7 +246,6 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
   BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
       BehaviorSubject();
 
-  ///End
 
   ///extension string
   String categoryOneOrMany({
@@ -352,9 +269,32 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     }
   }
 
-  String convertMilisecondsToString(int createAt) {
-    final dt = DateTime.fromMillisecondsSinceEpoch(createAt);
-    final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
-    return d24;
+
+
+
+  String getStatus(String type) {
+    switch (type) {
+      case ACTIVE:
+        return S.current.active;
+      case COMPLETE:
+        return S.current.completed;
+      case DEFAULT:
+        return S.current.defaults;
+      default:
+        return '';
+    }
+  }
+
+  Color getColor(String type) {
+    switch (type) {
+      case ACTIVE:
+        return AppTheme.getInstance().greenMarketColors();
+      case COMPLETE:
+        return AppTheme.getInstance().blueMarketColors();
+      case DEFAULT:
+        return AppTheme.getInstance().redColor();
+      default:
+        return AppTheme.getInstance().redColor();
+    }
   }
 }

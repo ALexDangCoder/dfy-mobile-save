@@ -21,11 +21,15 @@ import 'package:intl/intl.dart';
 //todo màn này trường LTV và liquidation threshold chỉ show với crypto
 
 class DetailOfferSent extends StatefulWidget {
-  const DetailOfferSent(
-      {Key? key, required this.cubit, required this.idGetDetail})
-      : super(key: key);
+  const DetailOfferSent({
+    Key? key,
+    required this.cubit,
+    required this.idGetDetail,
+    this.isNFT = false,
+  }) : super(key: key);
   final OfferSentListCubit cubit;
   final int idGetDetail;
+  final bool? isNFT;
 
   @override
   _DetailOfferSentState createState() => _DetailOfferSentState();
@@ -133,26 +137,32 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
                     urlToken:
                         widget.cubit.offerSentDetailCrypto.supplyCurrencySymbol,
                   ),
-                  spaceH16,
-                  _rowItem(
-                    title: S.current.loan_to_value.capitalize().withColon(),
-                    description:
-                        '${widget.cubit.offerSentDetailCrypto.loanToValue}%',
-                  ),
+                  if (widget.isNFT ?? false) Container() else spaceH16,
+                  if (widget.isNFT ?? false)
+                    Container()
+                  else
+                    _rowItem(
+                      title: S.current.loan_to_value.capitalize().withColon(),
+                      description:
+                          '${widget.cubit.offerSentDetailCrypto.loanToValue}%',
+                    ),
                   spaceH16,
                   _rowItem(
                     title: S.current.interest_rate.capitalize(),
                     description:
                         '${widget.cubit.offerSentDetailCrypto.interestRate}%',
                   ),
-                  spaceH16,
-                  _rowItem(
-                    title: S.current.liquidation_threshold
-                        .capitalize()
-                        .withColon(),
-                    description:
-                        '${widget.cubit.offerSentDetailCrypto.liquidationThreshold}%',
-                  ),
+                  if (widget.isNFT ?? false) Container() else spaceH16,
+                  if (widget.isNFT ?? false)
+                    Container()
+                  else
+                    _rowItem(
+                      title: S.current.liquidation_threshold
+                          .capitalize()
+                          .withColon(),
+                      description:
+                          '${widget.cubit.offerSentDetailCrypto.liquidationThreshold}%',
+                    ),
                   spaceH16,
                   _rowItem(
                     title: S.current.recurring_interest.capitalize(),
@@ -205,18 +215,27 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
                   spaceH16,
                   _rowItem(
                     title: S.current.collateral.capitalize().withColon(),
-                    description: formatValue.format(widget.cubit
-                        .offerSentDetailCryptoCollateral.collateralAmount),
+                    description: (widget.isNFT ?? false)
+                        ? 'Hard NFT'
+                        : formatValue.format(widget.cubit
+                            .offerSentDetailCryptoCollateral.collateralAmount),
                     urlToken: widget
                         .cubit.offerSentDetailCryptoCollateral.collateralSymbol,
                     isLoanAmount: true,
                   ),
-                  spaceH16,
-                  _rowItem(
-                    title: S.current.estimate.capitalize().withColon(),
-                    description:
-                        '~ ${widget.cubit.offerSentDetailCryptoCollateral.estimatePrice}',
-                  ),
+                  if (widget.isNFT ?? false) Container() else spaceH16,
+                  if (widget.isNFT ?? false)
+                    _rowItem(
+                      title: S.current.name_of_nft.capitalize().withColon(),
+                      description:
+                      '${widget.cubit.offerSentDetailCryptoCollateral}',
+                    )
+                  else
+                    _rowItem(
+                      title: S.current.estimate.capitalize().withColon(),
+                      description:
+                          '~ ${widget.cubit.offerSentDetailCryptoCollateral.estimatePrice}',
+                    ),
                   spaceH16,
                   _rowItem(
                     title: S.current.loan_token.capitalize().withColon(),

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -8,8 +7,6 @@ import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/ckc_filter/ckc_filter.dart';
-import 'package:Dfy/widgets/cool_drop_down/cool_drop_down.dart';
-import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,13 +33,8 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
   void initState() {
     super.initState();
     initValueFilterList = widget.cubit.filterOriginalList;
+    widget.cubit.getListWallet();
     currentWallet = widget.cubit.walletAddressDropDown[0];
-    // if(widget.indexTab == 0) {
-    //   //this is crypto tab
-    // } else {
-    //   //this is nft tab
-    // }
-    // print(initValueFilterList);
   }
 
   @override
@@ -87,166 +79,164 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                 ),
                 spaceH16,
                 StreamBuilder<List<Map<String, dynamic>>>(
-                    initialData: initValueFilterList,
-                    stream: widget.cubit.filterListBHVSJ,
-                    builder: (context, snapshot) {
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 0,
-                                  isSelected: (snapshot.data ?? [])[0]
-                                      ['isSelected'],
-                                  nameCkcFilter: S.current.all.capitalize(),
-                                ),
+                  initialData: initValueFilterList,
+                  stream: widget.cubit.filterListBHVSJ,
+                  builder: (context, snapshot) {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 0,
+                                isSelected: (snapshot.data ?? [])[0]
+                                ['isSelected'],
+                                nameCkcFilter: S.current.all.capitalize(),
                               ),
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 3,
-                                  isSelected: (snapshot.data ?? [])[3]
-                                      ['isSelected'],
-                                  nameCkcFilter: S.current.open.capitalize(),
-                                ),
-                              )
-                            ],
-                          ),
-                          spaceH15,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 7,
-                                  isSelected: (snapshot.data ?? [])[7]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.accepted.capitalize(),
-                                ),
+                            ),
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 3,
+                                isSelected: (snapshot.data ?? [])[3]
+                                ['isSelected'],
+                                nameCkcFilter: S.current.open.capitalize(),
                               ),
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 8,
-                                  isSelected: (snapshot.data ?? [])[8]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.rejected.capitalize(),
-                                ),
-                              )
-                            ],
-                          ),
-                          spaceH15,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 9,
-                                  isSelected: (snapshot.data ?? [])[9]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.canceled.capitalize(),
-                                ),
+                            )
+                          ],
+                        ),
+                        spaceH15,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 7,
+                                isSelected: (snapshot.data ?? [])[7]
+                                ['isSelected'],
+                                nameCkcFilter: S.current.accepted.capitalize(),
                               ),
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 1,
-                                  isSelected: (snapshot.data ?? [])[1]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.process_create.capitalize(),
-                                ),
-                              )
-                            ],
-                          ),
-                          spaceH15,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 4,
-                                  isSelected: (snapshot.data ?? [])[4]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.processing_accept.capitalize(),
-                                ),
+                            ),
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 8,
+                                isSelected: (snapshot.data ?? [])[8]
+                                ['isSelected'],
+                                nameCkcFilter: S.current.rejected.capitalize(),
                               ),
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 5,
-                                  isSelected: (snapshot.data ?? [])[5]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.processing_reject.capitalize(),
-                                ),
-                              )
-                            ],
-                          ),
-                          spaceH15,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 6,
-                                  isSelected: (snapshot.data ?? [])[6]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.processing_cancel.capitalize(),
-                                ),
+                            )
+                          ],
+                        ),
+                        spaceH15,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 9,
+                                isSelected: (snapshot.data ?? [])[9]
+                                ['isSelected'],
+                                nameCkcFilter: S.current.canceled.capitalize(),
                               ),
-                              Expanded(
-                                child: CheckBoxFilterWidget(
-                                  typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                  callBack: (value) {
-                                    widget.cubit.pickJustOneFilter(value);
-                                  },
-                                  index: 2,
-                                  isSelected: (snapshot.data ?? [])[2]
-                                      ['isSelected'],
-                                  nameCkcFilter:
-                                      S.current.failed_create.capitalize(),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      );
-                    })
+                            ),
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 1,
+                                isSelected: (snapshot.data ?? [])[1]
+                                ['isSelected'],
+                                nameCkcFilter:
+                                S.current.process_create.capitalize(),
+                              ),
+                            )
+                          ],
+                        ),
+                        spaceH15,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 4,
+                                isSelected: (snapshot.data ?? [])[4]
+                                ['isSelected'],
+                                nameCkcFilter:
+                                S.current.processing_accept.capitalize(),
+                              ),
+                            ),
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 5,
+                                isSelected: (snapshot.data ?? [])[5]
+                                ['isSelected'],
+                                nameCkcFilter:
+                                S.current.processing_reject.capitalize(),
+                              ),
+                            )
+                          ],
+                        ),
+                        spaceH15,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 6,
+                                isSelected: (snapshot.data ?? [])[6]
+                                ['isSelected'],
+                                nameCkcFilter:
+                                S.current.processing_cancel.capitalize(),
+                              ),
+                            ),
+                            Expanded(
+                              child: CheckBoxFilterWidget(
+                                typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                                callBack: (value) {
+                                  widget.cubit.pickJustOneFilter(value);
+                                },
+                                index: 2,
+                                isSelected: (snapshot.data ?? [])[2]
+                                ['isSelected'],
+                                nameCkcFilter:
+                                S.current.failed_create.capitalize(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                )
               ],
             ),
             Positioned(
@@ -270,15 +260,17 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
                   onPressed: () {
                     Navigator.pop(context);
                     widget.cubit.listOfferSentCrypto.clear();
-                    if(widget.indexTab == 0 ) {
+                    if (widget.indexTab == 0) {
+                      widget.cubit.listOfferSentCrypto.clear();
                       widget.cubit.getListOfferSentCrypto(
-                        walletAddress: currentWallet['value'],
+                        walletAddress: widget.cubit.walletAddressFilter,
                         status: widget.cubit.statusFilter,
                         type: 0.toString(),
                       );
                     } else {
+                      widget.cubit.listOfferSentNFT.clear();
                       widget.cubit.getListOfferSentCrypto(
-                        walletAddress: currentWallet['value'],
+                        walletAddress: widget.cubit.walletAddressFilter,
                         status: widget.cubit.statusFilter,
                         type: 1.toString(),
                       );
@@ -307,52 +299,62 @@ class _FilerOfferSentState extends State<FilerOfferSent> {
           hintColor: Colors.white24,
           selectedRowColor: Colors.white24,
         ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton2<Map<String, dynamic>>(
-            buttonDecoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            items: widget.cubit.walletAddressDropDown.map((element) {
-              return DropdownMenuItem(
-                value: element,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  child: Text(
-                    element['label'],
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
+        child: StreamBuilder<List<Map<String, dynamic>>>(
+          initialData: widget.cubit.walletAddressDropDown,
+          stream: widget.cubit.listWalletBHVSJ,
+          builder: (context, snapshot) {
+            return DropdownButtonHideUnderline(
+              child: DropdownButton2<Map<String, dynamic>>(
+                buttonDecoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 ),
-              );
-            }).toList(),
-            onChanged: (Map<String, dynamic>? newValue) {
-              setState(() {
-                currentWallet = newValue!;
-              });
-            },
-            dropdownMaxHeight: 200,
-            dropdownWidth: MediaQuery.of(context).size.width - 32.w,
-            dropdownDecoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            scrollbarThickness: 0,
-            scrollbarAlwaysShow: false,
-            offset: Offset(-16.w, 0),
-            value: currentWallet,
-            icon: Image.asset(
-              ImageAssets.ic_line_down,
-              height: 24.h,
-              width: 24.w,
-            ),
-          ),
+                items: (snapshot.data ?? []).map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                      ),
+                      child: Text(
+                        element['label'],
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (Map<String, dynamic>? newValue) {
+                  setState(() {
+                    currentWallet = newValue!;
+                    widget.cubit.walletAddressFilter = currentWallet['value'];
+                  });
+                },
+                dropdownMaxHeight: 200,
+                dropdownWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 32.w,
+                dropdownDecoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                ),
+                scrollbarThickness: 0,
+                scrollbarAlwaysShow: false,
+                offset: Offset(-16.w, 0),
+                value: currentWallet,
+                icon: Image.asset(
+                  ImageAssets.ic_line_down,
+                  height: 24.h,
+                  width: 24.w,
+                ),
+              ),
+            );
+          }
         ),
       ),
     );
