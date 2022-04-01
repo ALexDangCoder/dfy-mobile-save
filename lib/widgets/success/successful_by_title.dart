@@ -21,7 +21,6 @@ void showSuccessfulByTitle({
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         width: 375.w,
         decoration: BoxDecoration(
-          // shape: BoxShape.circle,
           color: const Color(0xff3e3d5c),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.h),
