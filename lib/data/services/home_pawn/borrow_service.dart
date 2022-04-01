@@ -305,4 +305,14 @@ abstract class BorrowService {
     @Path('id') String? id,
     @Body() RepaymentPayRequest? repaymentPayRequest,
   );
+
+  @PUT('${ApiConstants.PUT_ACCEPT_OFFER}{id}${ApiConstants.ACCEPT_OFFER_PAWN}')
+  Future<String> putAcceptOffer(
+    @Path('id') String? id,
+  );
+
+  @PUT('${ApiConstants.PUT_CANCEL_OFFER}{id}${ApiConstants.CANCEL}')
+  Future<String> putCancelOffer(
+    @Path('id') String? id,
+  );
 }

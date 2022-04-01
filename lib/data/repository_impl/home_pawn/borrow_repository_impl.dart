@@ -627,4 +627,24 @@ class BorrowRepositoryImpl implements BorrowRepository {
       (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
     );
   }
+
+  @override
+  Future<Result<String>> putAcceptOffer({String? id}) {
+    return runCatchingAsync<String, String>(
+      () => _client.putAcceptOffer(
+        id,
+      ),
+      (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> putCancelOffer({String? id}) {
+    return runCatchingAsync<String, String>(
+      () => _client.putCancelOffer(
+        id,
+      ),
+      (response) => response,
+    );
+  }
 }
