@@ -119,7 +119,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                     typeMarket: widget.nftMarket.marketType ?? MarketType.SALE,
                     marketId: widget.nftMarket.marketId,
                     typeNft: widget.nftMarket.typeNFT,
-                    nftId: widget.nftMarket.nftId,
+                    nftId: widget.nftMarket.id,
                     pawnId: widget.nftMarket.pawnId,
                     collectionAddress: widget.nftMarket.collectionAddress,
                     nftTokenId: widget.nftMarket.nftTokenId,
@@ -270,7 +270,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                                 width: 4.18.h,
                               ),
                               SizedBox(
-                                width: 70.w,
+                                // width: 110.w,
                                 child: Text(
                                   formatValue.format(widget.nftMarket.price),
                                   style: textNormalCustom(
@@ -285,9 +285,9 @@ class _NFTItemState extends State<NFTItemWidget> {
                           ),
                         ),
                         Text(
-                          '${widget.nftMarket.numberOfCopies} '
+                          '${widget.nftMarket.numberOfCopies ?? 0} '
                           '${S.current.of_all} '
-                          '${widget.nftMarket.totalCopies}',
+                          '${widget.nftMarket.totalCopies ?? 0}',
                           style: textNormalCustom(
                             AppTheme.getInstance().whiteColor(),
                             13,
