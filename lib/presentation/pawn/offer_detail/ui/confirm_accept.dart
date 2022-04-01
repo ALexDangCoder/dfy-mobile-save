@@ -112,11 +112,11 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
               child: GestureDetector(
                 onTap: () async {
                   final NavigatorState navigator = Navigator.of(context);
-
-                  // await widget.bloc.getWithdrawCryptoCollateralData(
-                  //   wad: obj.bcCollateralId.toString(),
-                  // );//todo hex string
-                  //
+                  await widget.bloc.getAcceptCryptoOfferData(
+                    bcOfferId: widget.bloc.obj?.bcOfferId.toString() ?? '',
+                    bcCollateralId:
+                        widget.bloc.obj?.bcCollateralId.toString() ?? '',
+                  );
                   unawaited(
                     navigator.push(
                       MaterialPageRoute(
@@ -130,9 +130,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
                           listDetail: [],
                           onErrorSign: (context) {},
                           onSuccessSign: (context, data) {
-                            // bloc.postCollateralWithdraw(
-                            //   id: obj.id.toString(),
-                            // );//todo BE
+                            widget.bloc.putAcceptOffer();
                             showLoadSuccess(context).then((value) {
                               Navigator.of(context).popUntil((route) {
                                 return route.settings.name ==

@@ -433,7 +433,7 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         if (PrefsService.getCurrentWalletCore()
-                                                .toLowerCase() ==
+                                                .toLowerCase() !=
                                             obj.walletAddress?.toUpperCase()) {
                                           Navigator.push(
                                             context,
