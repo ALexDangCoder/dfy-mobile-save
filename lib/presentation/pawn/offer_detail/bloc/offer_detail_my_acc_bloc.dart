@@ -26,6 +26,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
   String? hexStringAccept;
   String? hexStringReject;
+  String? userId;
   OfferDetailMyAcc? obj;
 
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
@@ -165,7 +166,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          rate.add(response.first.reputationBorrower.toString());
+          rate.add(response.first.reputationLender.toString());
+          userId=response.first.userId.toString();
         }
       },
       error: (error) {},

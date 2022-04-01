@@ -268,7 +268,7 @@ class CollateralResultNFTBloc extends BaseCubit<CollateralResultNFTState> {
       durationQuantity: durationQuantity,
       loanAmountFrom: loanAmountFrom,
       loanAmountTo: loanAmountTo,
-      maximunLoanAmount: maximunLoanAmount,
+      maxiMunLoanAmount: maximunLoanAmount,
       types: types,
       page: page.toString(),
       size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),

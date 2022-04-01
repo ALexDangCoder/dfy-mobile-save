@@ -55,7 +55,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
       if (collateralAmount.text.isNotEmpty) {
         textAmount = double.parse(collateralAmount.text);
       }
-      bloc.decimalNext//todo
+      bloc.decimalNext //todo tinh sai
           .add((widget.totalUnpaid / (textAmount + estimateUsdAmount)) * 100);
     });
     bloc.getBalanceToken(
@@ -181,9 +181,6 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                       ],
                                       controller: collateralAmount,
                                       maxLength: 50,
-                                      onChanged: (value) {
-                                        //todo
-                                      },
                                       cursorColor:
                                           AppTheme.getInstance().whiteColor(),
                                       style: textNormal(
@@ -359,9 +356,17 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                             if (snapshot.data ?? false) {
                               final NavigatorState navigator =
                                   Navigator.of(context);
-                              // await bloc.getWithdrawCryptoCollateralData(
-                              //   wad: obj.bcCollateralId.toString(),
-                              // );..//todo bloc
+                              await bloc.getIncreaseCollateralData(
+                                bcCollateralId: widget
+                                        .obj.cryptoCollateral?.bcCollateralId
+                                        .toString() ??
+                                    '',
+                                bcCollateralAddress: widget.obj.cryptoCollateral
+                                        ?.cryptoAsset?.address ??
+                                    '',
+                                bcContractId:
+                                    widget.obj.bcContractId.toString(),
+                              );
                               unawaited(
                                 navigator.push(
                                   MaterialPageRoute(
@@ -378,9 +383,9 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                         DetailItemApproveModel(
                                           title: '${S.current.collateral}: ',
                                           value: '${formatPrice.format(
-                                            widget.obj.cryptoCollateral
-                                                    ?.amount ??
-                                                0,
+                                            double.parse(
+                                              bloc.amount.value,
+                                            ),
                                           )}'
                                               ' ${widget.obj.cryptoCollateral?.cryptoAsset?.symbol.toString() ?? ''}',
                                           urlToken: ImageAssets.getSymbolAsset(
@@ -401,7 +406,18 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                       ],
                                       onErrorSign: (context) {},
                                       onSuccessSign: (context, data) {
-                                        //BE todo
+                                        bloc.putAddMoreCollateral(
+                                          symbol: widget.obj.cryptoCollateral
+                                                  ?.cryptoAsset?.symbol
+                                                  .toString() ??
+                                              '',
+                                          id: widget.obj.id
+                                              .toString(),
+                                          amount: double.parse(
+                                            bloc.amount.value,
+                                          ),
+                                          txnHash: data,
+                                        );
                                         showLoadSuccess(context).then((value) {
                                           Navigator.of(context)
                                               .popUntil((route) {
