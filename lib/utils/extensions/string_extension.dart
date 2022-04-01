@@ -44,7 +44,7 @@ extension StringMoneyFormat on String {
 
 extension FormatAddress on String {
   String formatAddressWallet() {
-    final String result = '${substring(0, 5)}...${substring(
+    final String result = '${substring(0, 4)}...${substring(
       length - 4,
       length,
     )}';

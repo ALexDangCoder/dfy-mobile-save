@@ -1,9 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/nft/lender_loan_request_nft_item.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/offer_sent_crypto_item.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/bloc/lender_contract_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_crypto/lender_contract_crypto_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_error_view.dart';
@@ -12,57 +11,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
-class OfferSentNftList extends StatefulWidget {
-  const OfferSentNftList({
+class LenderContractCrypto extends StatefulWidget {
+  const LenderContractCrypto({
     Key? key,
     required this.cubit,
   }) : super(key: key);
-  final OfferSentListCubit cubit;
+  final LenderContractCubit cubit;
 
   @override
-  _OfferSentNftListState createState() => _OfferSentNftListState();
+  _LenderContractCryptoState createState() => _LenderContractCryptoState();
 }
 
-class _OfferSentNftListState extends State<OfferSentNftList> {
+class _LenderContractCryptoState extends State<LenderContractCrypto> {
   @override
   void initState() {
     super.initState();
-    // if(widget.cubit.walletAddressDropDown.isNotEmpty) {
-    //   widget.cubit.walletAddressDropDown.clear();
-    //   widget.cubit.getListWallet();
-    // }
     widget.cubit.refreshVariableApi();
-    if (widget.cubit.listOfferSentNFT.isNotEmpty) {
-      widget.cubit.listOfferSentNFT.clear();
-    }
-    widget.cubit.getListOfferSentCrypto(
+    widget.cubit.getListNft(
       userId: widget.cubit.userID,
-      type: 1.toString(),
+      type: 0.toString(),
       status: widget.cubit.statusFilter,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<OfferSentListCubit, OfferSentListState>(
+    return BlocConsumer<LenderContractCubit, LenderContractState>(
       listener: (context, state) {
-        if (state is LoadCryptoResult) {
+        if (state is LoadCryptoFtNftResult) {
           if (state.completeType == CompleteType.SUCCESS) {
             if (widget.cubit.refresh) {
-              widget.cubit.listOfferSentNFT.clear();
+              widget.cubit.listCryptoLenderContract.clear();
             }
             widget.cubit.showContent();
           } else {
-            widget.cubit.message = state.message ?? '';
-            widget.cubit.listOfferSentNFT.clear();
-            widget.cubit.emit(LoadCryptoFail());
+            widget.cubit.message = S.current.something_went_wrong;
+            widget.cubit.listCryptoLenderContract.clear();
+            widget.cubit.emit(LoadCryptoFtNftFail());
           }
-          widget.cubit.listOfferSentNFT =
-              widget.cubit.listOfferSentNFT + (state.list ?? []);
+          widget.cubit.listCryptoLenderContract =
+              widget.cubit.listCryptoLenderContract + (state.list ?? []);
           widget.cubit.canLoadMoreList =
-              widget.cubit.listOfferSentNFT.length >=
+              widget.cubit.listCryptoLenderContract.length >=
                   widget.cubit.defaultSize;
           widget.cubit.loadMore = false;
           widget.cubit.refresh = false;
@@ -73,7 +63,7 @@ class _OfferSentNftListState extends State<OfferSentNftList> {
         return StateStreamLayout(
           stream: widget.cubit.stateStream,
           retry: () {
-            widget.cubit.refreshGetListOfferSentCrypto(type: '1');
+            widget.cubit.refreshGetListNft();
           },
           error: AppException(
             S.current.error,
@@ -86,13 +76,16 @@ class _OfferSentNftListState extends State<OfferSentNftList> {
                 if (widget.cubit.canLoadMoreList &&
                     scrollInfo.metrics.pixels ==
                         scrollInfo.metrics.maxScrollExtent) {
-                  widget.cubit.loadMoreGetListCrypto(type: '1', status: widget.cubit.statusFilter);
+                  widget.cubit.loadMoreGetListNft(
+                    type: '0',
+                    // status: widget.cubit.statusFilter,
+                  );
                 }
                 return true;
               },
               child: RefreshIndicator(
                 onRefresh: () async {
-                  await widget.cubit.refreshGetListOfferSentCrypto(type: '1');
+                  await widget.cubit.refreshGetListNft(type: '0');
                 },
                 child: _content(state),
               ),
@@ -103,33 +96,32 @@ class _OfferSentNftListState extends State<OfferSentNftList> {
     );
   }
 
-  Widget _content(OfferSentListState state) {
-    if (state is LoadCryptoFail) {
+  Widget _content(LenderContractState state) {
+    if (state is LoadCryptoFtNftFail) {
       return StateErrorView(
         widget.cubit.message,
         () {
-          widget.cubit.refreshGetListOfferSentCrypto();
+          widget.cubit.refreshGetListNft(type: '0');
         },
         isHaveBackBtn: false,
       );
     } else {
-      return (widget.cubit.listOfferSentNFT.isNotEmpty)
+      return (widget.cubit.listCryptoLenderContract.isNotEmpty)
           ? Column(
               children: [
                 Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: widget.cubit.listOfferSentNFT.length,
+                    itemCount: widget.cubit.listCryptoLenderContract.length,
                     itemBuilder: (context, index) {
-                      return OfferSentCryptoItem(
-                        index: index,
-                        model: widget.cubit.listOfferSentNFT[index],
+                      return LenderContractCryptoItem(
+                        obj: widget.cubit.listCryptoLenderContract[index],
                         cubit: widget.cubit,
                       );
                     },
                   ),
                 ),
-                if (state is LoadMoreCrypto)
+                if (state is LoadMoreNFT)
                   Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 2.r,

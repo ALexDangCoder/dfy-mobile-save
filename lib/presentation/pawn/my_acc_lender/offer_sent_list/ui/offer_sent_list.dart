@@ -27,6 +27,7 @@ class _OfferSentListState extends State<OfferSentList>
   void initState() {
     super.initState();
     cubit = OfferSentListCubit();
+
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
     _tabController.index;

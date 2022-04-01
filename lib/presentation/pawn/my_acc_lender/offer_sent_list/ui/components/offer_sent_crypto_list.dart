@@ -27,7 +27,10 @@ class _OfferSentListCrypto extends State<OfferSentListCrypto> {
   void initState() {
     super.initState();
     widget.cubit.refreshVariableApi();
-    widget.cubit.getListWallet();
+    // if(widget.cubit.walletAddressDropDown.isNotEmpty) {
+    //   widget.cubit.walletAddressDropDown.clear();
+    //   widget.cubit.getListWallet();
+    // }
     if (widget.cubit.listOfferSentCrypto.isNotEmpty) {
       widget.cubit.listOfferSentCrypto.clear();
     }
