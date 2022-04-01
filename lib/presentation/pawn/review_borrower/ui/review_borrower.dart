@@ -292,7 +292,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                                 listDetail: [],
                                 onErrorSign: (context) {},
                                 onSuccessSign: (context, data) {
-                                  //BE todo
+                                  bloc.postReview();
                                   showLoadSuccess(context).then((value) {
                                     Navigator.of(context).popUntil((route) {
                                       return route.settings.name ==
@@ -304,7 +304,6 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                             ),
                           ),
                         );
-                        //todo
                       },
                       child: SizedBox(
                         width: 159.w,

@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
-import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
+import 'package:Dfy/data/request/pawn/calculate_repayment_fee.dart';
+import 'package:Dfy/data/request/pawn/review_create_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -242,8 +243,9 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<String>> confirmCollateralToBe(
-      {required Map<String, String> map,}) {
+  Future<Result<String>> confirmCollateralToBe({
+    required Map<String, String> map,
+  }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
       (response) => response.code.toString(),
@@ -618,7 +620,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   @override
   Future<Result<RepaymentRequestModel>> postRepaymentPay({
     String? id,
-    RepaymentPayRequest? repaymentPayRequest,
+    CalculateRepaymentRequest? repaymentPayRequest,
   }) {
     return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
       () => _client.postRepaymentPay(
@@ -644,6 +646,36 @@ class BorrowRepositoryImpl implements BorrowRepository {
     return runCatchingAsync<String, String>(
       () => _client.putCancelOffer(
         id,
+      ),
+      (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> putAddMoreCollateral({
+    String? id,
+    double? amount,
+    String? symbol,
+    String? txnHash,
+  }) {
+    return runCatchingAsync<String, String>(
+      () => _client.putAddMoreCollateral(
+        id,
+        amount,
+        symbol,
+        txnHash,
+      ),
+      (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> postReview({
+    ReviewCreateRequest? reviewCreateRequest,
+  }) {
+    return runCatchingAsync<String, String>(
+      () => _client.postReview(
+        reviewCreateRequest,
       ),
       (response) => response,
     );

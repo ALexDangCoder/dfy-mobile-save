@@ -1,6 +1,6 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
+import 'package:Dfy/data/request/pawn/calculate_repayment_fee.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
@@ -169,15 +169,21 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     final Result<RepaymentRequestModel> response =
         await _pawnService.postRepaymentPay(
       id: id,
-      repaymentPayRequest: RepaymentPayRequest(
+      repaymentPayRequest: CalculateRepaymentRequest(
         interest: AmountRequest(
           amount: double.tryParse(interest.value),
+          address: objRepayment.interest?.address.toString(),
+          symbol: objRepayment.interest?.symbol.toString(),
         ),
         loan: AmountRequest(
           amount: double.tryParse(loan.value),
+          address: objRepayment.loan?.address.toString(),
+          symbol: objRepayment.loan?.symbol.toString(),
         ),
         penalty: AmountRequest(
           amount: double.tryParse(penalty.value),
+          address: objRepayment.penalty?.address.toString(),
+          symbol: objRepayment.penalty?.symbol.toString(),
         ),
       ),
     );

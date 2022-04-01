@@ -30,7 +30,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-enum TypeBorrow { CRYPTO_TYPE, NFT_TYPE }
+enum TypeBorrow { CRYPTO_TYPE, NFT_TYPE, LENDER_TYPE }
 
 class ContractDetail extends StatefulWidget {
   const ContractDetail({
@@ -734,150 +734,160 @@ class _ContractDetailState extends State<ContractDetail>
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: widget.type == TypeBorrow.CRYPTO_TYPE
-                              ? Center(
-                                  child: Container(
-                                    color: AppTheme.getInstance().bgBtsColor(),
-                                    padding: EdgeInsets.only(
-                                      bottom: 16.h,
-                                    ),
-                                    width: 343.w,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        if (obj.status ==
-                                            ContractDetailBloc.ACTIVE)
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return AddMoreCollateral(
-                                                      obj: obj,
-                                                      totalUnpaid: bloc
-                                                              .objRepayment
-                                                              ?.totalUnpaid ??
-                                                          0,
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              height: 64.h,
-                                              width: obj.status !=
-                                                      ContractDetailBloc.ACTIVE
-                                                  ? 343.w
-                                                  : 159.w,
-                                              decoration: BoxDecoration(
-                                                color: AppTheme.getInstance()
-                                                    .borderItemColor(),
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(20.r),
-                                                ),
-                                                border: Border.all(
+                        if (widget.type == TypeBorrow.LENDER_TYPE)
+                          const SizedBox.shrink()
+                        else
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: widget.type == TypeBorrow.CRYPTO_TYPE
+                                ? Center(
+                                    child: Container(
+                                      color:
+                                          AppTheme.getInstance().bgBtsColor(),
+                                      padding: EdgeInsets.only(
+                                        bottom: 16.h,
+                                      ),
+                                      width: 343.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          if (obj.status ==
+                                              ContractDetailBloc.ACTIVE)
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return AddMoreCollateral(
+                                                        obj: obj,
+                                                        totalUnpaid: bloc
+                                                                .objRepayment
+                                                                ?.totalUnpaid ??
+                                                            0,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 64.h,
+                                                width: obj.status !=
+                                                        ContractDetailBloc
+                                                            .ACTIVE
+                                                    ? 343.w
+                                                    : 159.w,
+                                                decoration: BoxDecoration(
                                                   color: AppTheme.getInstance()
-                                                      .fillColor(),
+                                                      .borderItemColor(),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(20.r),
+                                                  ),
+                                                  border: Border.all(
+                                                    color:
+                                                        AppTheme.getInstance()
+                                                            .fillColor(),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  S.current.add_collateral,
-                                                  style: textNormalCustom(
-                                                    AppTheme.getInstance()
-                                                        .fillColor(),
-                                                    20,
-                                                    FontWeight.w600,
+                                                child: Center(
+                                                  child: Text(
+                                                    S.current.add_collateral,
+                                                    style: textNormalCustom(
+                                                      AppTheme.getInstance()
+                                                          .fillColor(),
+                                                      20,
+                                                      FontWeight.w600,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        if (obj.status ==
-                                            ContractDetailBloc.ACTIVE)
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (obj.lenderWalletAddress ==
-                                                  PrefsService
-                                                      .getCurrentWalletCore()) {
-                                                goTo(
-                                                  context,
-                                                  RepaymentPay(
-                                                    id: obj.id.toString(),
-                                                    obj: bloc.objDetail ??
-                                                        ContractDetailPawn
-                                                            .name(),
-                                                  ),
-                                                );
-                                              } else {
-                                                showAlert(
-                                                  context,
-                                                  PrefsService
-                                                      .getCurrentWalletCore(),
-                                                );
-                                              }
-                                            },
-                                            child: SizedBox(
-                                              width: obj.status !=
-                                                      ContractDetailBloc.ACTIVE
-                                                  ? 343.w
-                                                  : 159.w,
-                                              child: ButtonGold(
-                                                isEnable: true,
-                                                fixSize: false,
-                                                haveMargin: false,
-                                                title: S.current.repayment,
+                                          if (obj.status ==
+                                              ContractDetailBloc.ACTIVE)
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (obj.lenderWalletAddress ==
+                                                    PrefsService
+                                                        .getCurrentWalletCore()) {
+                                                  goTo(
+                                                    context,
+                                                    RepaymentPay(
+                                                      id: obj.id.toString(),
+                                                      obj: bloc.objDetail ??
+                                                          ContractDetailPawn
+                                                              .name(),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  showAlert(
+                                                    context,
+                                                    PrefsService
+                                                        .getCurrentWalletCore(),
+                                                  );
+                                                }
+                                              },
+                                              child: SizedBox(
+                                                width: obj.status !=
+                                                        ContractDetailBloc
+                                                            .ACTIVE
+                                                    ? 343.w
+                                                    : 159.w,
+                                                child: ButtonGold(
+                                                  isEnable: true,
+                                                  fixSize: false,
+                                                  haveMargin: false,
+                                                  title: S.current.repayment,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : SizedBox(
-                                  child: obj.status == ContractDetailBloc.ACTIVE
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            if (obj.lenderWalletAddress ==
-                                                PrefsService
-                                                    .getCurrentWalletCore()) {
-                                              goTo(
-                                                context,
-                                                RepaymentPay(
-                                                  obj: bloc.objDetail ??
-                                                      ContractDetailPawn.name(),
-                                                  id: obj.id.toString(),
+                                  )
+                                : SizedBox(
+                                    child:
+                                        obj.status == ContractDetailBloc.ACTIVE
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  if (obj.lenderWalletAddress ==
+                                                      PrefsService
+                                                          .getCurrentWalletCore()) {
+                                                    goTo(
+                                                      context,
+                                                      RepaymentPay(
+                                                        obj: bloc.objDetail ??
+                                                            ContractDetailPawn
+                                                                .name(),
+                                                        id: obj.id.toString(),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    showAlert(
+                                                      context,
+                                                      PrefsService
+                                                          .getCurrentWalletCore(),
+                                                    );
+                                                  }
+                                                },
+                                                child: Container(
+                                                  color: AppTheme.getInstance()
+                                                      .bgBtsColor(),
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 38.h,
+                                                  ),
+                                                  child: ButtonGold(
+                                                    isEnable: true,
+                                                    title: S.current.repayment,
+                                                  ),
                                                 ),
-                                              );
-                                            } else {
-                                              showAlert(
-                                                context,
-                                                PrefsService
-                                                    .getCurrentWalletCore(),
-                                              );
-                                            }
-                                          },
-                                          child: Container(
-                                            color: AppTheme.getInstance()
-                                                .bgBtsColor(),
-                                            padding: EdgeInsets.only(
-                                              bottom: 38.h,
-                                            ),
-                                            child: ButtonGold(
-                                              isEnable: true,
-                                              title: S.current.repayment,
-                                            ),
-                                          ),
-                                        )
-                                      : null,
-                                ),
-                        ),
+                                              )
+                                            : null,
+                                  ),
+                          ),
                       ],
                     ),
                   )

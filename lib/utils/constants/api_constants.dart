@@ -366,10 +366,6 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
   static const String COLLATERAL = '/collaterals';
 
-  static const String POST_REPAYMENT =
-      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
-  static const String REPAYMENT = '/calculate-repayment-fee';
-
   static const String REVIEW_RATE =
       '/defi-pawn-crypto-service/public-api/v1.0.0/review';
 }

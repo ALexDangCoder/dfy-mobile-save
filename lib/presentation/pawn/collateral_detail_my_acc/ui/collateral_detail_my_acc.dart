@@ -9,9 +9,11 @@ import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_state.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/ui/item_send_to.dart';
+import 'package:Dfy/presentation/pawn/loan_package_detail/ui/loan_package_detail.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/ui/offer_detail_my_acc.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -464,21 +466,21 @@ class _CollateralDetailMyAccScreenState
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      OfferDetailMyAccScreen(
-                                                    id: bloc
-                                                        .listOffersReceived[
-                                                            index]
-                                                        .id
-                                                        .toString(),
-                                                  ),
-                                                  settings: const RouteSettings(
-                                                    name: AppRouter.send_nft_confirm_blockchain,
-                                                  ),
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OfferDetailMyAccScreen(
+                                                  id: bloc
+                                                      .listOffersReceived[index]
+                                                      .id
+                                                      .toString(),
                                                 ),
-                                              );
+                                                settings: const RouteSettings(
+                                                  name: AppRouter
+                                                      .send_nft_confirm_blockchain,
+                                                ),
+                                              ),
+                                            );
                                           },
                                           child: ItemOfferReceived(
                                             obj: bloc.listOffersReceived[index],
@@ -528,7 +530,21 @@ class _CollateralDetailMyAccScreenState
                                                       .status ??
                                                   0,
                                             )) {
-                                              //todo
+                                              goTo(
+                                                context,
+                                                LoanPackageDetail(
+                                                  packageId: bloc
+                                                      .listSendToLoanPackageModel[
+                                                          index]
+                                                      .id
+                                                      .toString(),
+                                                  packageType: bloc
+                                                          .listSendToLoanPackageModel[
+                                                              index]
+                                                          .type ??
+                                                      0,
+                                                ),
+                                              );
                                             }
                                           },
                                           child: ItemSendTo(

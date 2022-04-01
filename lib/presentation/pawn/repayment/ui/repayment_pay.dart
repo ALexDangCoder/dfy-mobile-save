@@ -394,15 +394,16 @@ class _RepaymentPayState extends State<RepaymentPay> {
                               return GestureDetector(
                                 onTap: () async {
                                   if (snapshot.data ?? false) {
-                                    await bloc.postRepaymentPay();
                                     final NavigatorState navigator =
                                         Navigator.of(context);
                                     await bloc.getRepaymentData(
-                                      bcContractId:widget.obj.bcContractId.toString(),
-                                      paidInterestAmount:bloc.interest.value,
-                                      paidLoanAmount:bloc.loan.value,
-                                      paidPenaltyAmount:bloc.penalty.value,//todo data
-                                      uid:widget.obj.borrowerUserId.toString(),
+                                      bcContractId:
+                                          widget.obj.bcContractId.toString(),
+                                      paidInterestAmount: bloc.interest.value,
+                                      paidLoanAmount: bloc.loan.value,
+                                      paidPenaltyAmount: bloc.penalty.value,
+                                      //todo data
+                                      uid: widget.obj.borrowerUserId.toString(),
                                     );
                                     unawaited(
                                       navigator.push(
@@ -498,7 +499,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                             ],
                                             onErrorSign: (context) {},
                                             onSuccessSign: (context, data) {
-                                              //BE todo
+                                              bloc.postRepaymentPay();
                                               showLoadSuccess(context)
                                                   .then((value) {
                                                 Navigator.of(context)
