@@ -89,7 +89,7 @@ mixin BorrowRepository {
   Future<Result<List<NftMarket>>> getListNFTCollateral({
     String? page,
     String? size,
-    String? maximunLoanAmount,
+    String? maxiMunLoanAmount,
     String? loanSymbols,
     String? durationTypes,
     String? durationQuantity,

@@ -121,6 +121,27 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     }
   }
 
+  Future<void> getRepaymentData({
+    required String paidInterestAmount,
+    required String paidLoanAmount,
+    required String paidPenaltyAmount,
+    required String uid,
+    required String bcContractId,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getRepaymentData(
+        paidInterestAmount: paidInterestAmount,
+        paidLoanAmount: paidLoanAmount,
+        paidPenaltyAmount: paidPenaltyAmount,
+        uid: uid,
+        contractId: bcContractId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
   Future<void> getBalanceToken({
     required String ofAddress,
     required String tokenAddress,

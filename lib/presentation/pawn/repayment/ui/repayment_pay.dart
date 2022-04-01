@@ -8,6 +8,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
@@ -35,8 +36,10 @@ class RepaymentPay extends StatefulWidget {
   const RepaymentPay({
     Key? key,
     required this.id,
+    required this.obj,
   }) : super(key: key);
   final String id;
+  final ContractDetailPawn obj;
 
   @override
   _RepaymentPayState createState() => _RepaymentPayState();
@@ -394,9 +397,13 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                     await bloc.postRepaymentPay();
                                     final NavigatorState navigator =
                                         Navigator.of(context);
-                                    // await bloc.getWithdrawCryptoCollateralData(
-                                    //   wad: obj.bcCollateralId.toString(),
-                                    // );..//todo bloc
+                                    await bloc.getRepaymentData(
+                                      bcContractId:widget.obj.bcContractId.toString(),
+                                      paidInterestAmount:bloc.interest.value,
+                                      paidLoanAmount:bloc.loan.value,
+                                      paidPenaltyAmount:bloc.penalty.value,//todo data
+                                      uid:widget.obj.borrowerUserId.toString(),
+                                    );
                                     unawaited(
                                       navigator.push(
                                         MaterialPageRoute(

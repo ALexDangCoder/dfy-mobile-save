@@ -14,11 +14,31 @@ class AddMoreCollateralBloc extends BaseCubit<AddMoreCollateralState> {
 
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> errorCollateral = BehaviorSubject.seeded('');
+  BehaviorSubject<String> amount = BehaviorSubject.seeded('');
   BehaviorSubject<double> decimalNext = BehaviorSubject.seeded(0);
   final List<ModelToken> checkShow = [];
   double balanceToken = 0;
   final Web3Utils client = Web3Utils();
   String? hexString;
+  final Web3Utils web3Client = Web3Utils();
+
+  Future<void> getIncreaseCollateralData({
+    required String bcContractId,
+    required String bcCollateralAddress,
+    required String bcCollateralId,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getIncreaseCollateralData(
+        amount: amount.value,
+        collateralId: bcCollateralId,
+        collateralAddress: bcCollateralAddress,
+        contractId: bcContractId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 
   void validateAmount(String value) {
     if (value.isNotEmpty) {
@@ -26,6 +46,7 @@ class AddMoreCollateralBloc extends BaseCubit<AddMoreCollateralState> {
         errorCollateral.add(S.current.invalid_amount);
         isBtn.add(false);
       } else {
+        amount.add(value);
         errorCollateral.add('');
         isBtn.add(true);
       }

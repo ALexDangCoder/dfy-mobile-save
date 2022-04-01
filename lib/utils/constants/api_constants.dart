@@ -361,4 +361,15 @@ class ApiConstants {
   static const String PUT_CANCEL_OFFER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
   static const String CANCEL_OFFER_PAWN = '/cancel';
+
+  static const String ADD_MORE_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String COLLATERAL = '/collaterals';
+
+  static const String POST_REPAYMENT =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String REPAYMENT = '/calculate-repayment-fee';
+
+  static const String REVIEW_RATE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/review';
 }

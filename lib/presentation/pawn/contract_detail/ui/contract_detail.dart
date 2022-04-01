@@ -803,12 +803,6 @@ class _ContractDetailState extends State<ContractDetail>
                                             ContractDetailBloc.ACTIVE)
                                           GestureDetector(
                                             onTap: () {
-                                              goTo(
-                                                context,
-                                                RepaymentPay(
-                                                  id: obj.id.toString(),
-                                                ),
-                                              );
                                               if (obj.lenderWalletAddress ==
                                                   PrefsService
                                                       .getCurrentWalletCore()) {
@@ -816,6 +810,9 @@ class _ContractDetailState extends State<ContractDetail>
                                                   context,
                                                   RepaymentPay(
                                                     id: obj.id.toString(),
+                                                    obj: bloc.objDetail ??
+                                                        ContractDetailPawn
+                                                            .name(),
                                                   ),
                                                 );
                                               } else {
@@ -853,6 +850,8 @@ class _ContractDetailState extends State<ContractDetail>
                                               goTo(
                                                 context,
                                                 RepaymentPay(
+                                                  obj: bloc.objDetail ??
+                                                      ContractDetailPawn.name(),
                                                   id: obj.id.toString(),
                                                 ),
                                               );

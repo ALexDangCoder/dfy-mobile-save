@@ -55,7 +55,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
       if (collateralAmount.text.isNotEmpty) {
         textAmount = double.parse(collateralAmount.text);
       }
-      bloc.decimalNext//todo
+      bloc.decimalNext //todo
           .add((widget.totalUnpaid / (textAmount + estimateUsdAmount)) * 100);
     });
     bloc.getBalanceToken(
@@ -359,9 +359,17 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                             if (snapshot.data ?? false) {
                               final NavigatorState navigator =
                                   Navigator.of(context);
-                              // await bloc.getWithdrawCryptoCollateralData(
-                              //   wad: obj.bcCollateralId.toString(),
-                              // );..//todo bloc
+                              await bloc.getIncreaseCollateralData(
+                                bcCollateralId: widget
+                                        .obj.cryptoCollateral?.bcCollateralId
+                                        .toString() ??
+                                    '',
+                                bcCollateralAddress: widget.obj.cryptoCollateral
+                                        ?.cryptoAsset?.address ??
+                                    '',
+                                bcContractId:
+                                    widget.obj.bcContractId.toString(),
+                              );
                               unawaited(
                                 navigator.push(
                                   MaterialPageRoute(

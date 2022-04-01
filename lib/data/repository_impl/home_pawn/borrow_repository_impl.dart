@@ -212,7 +212,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<List<NftMarket>>> getListNFTCollateral({
     String? page,
     String? size,
-    String? maximunLoanAmount,
+    String? maxiMunLoanAmount,
     String? loanSymbols,
     String? durationTypes,
     String? durationQuantity,
@@ -226,7 +226,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
       () => _client.getListNFTCollateral(
         page,
         size,
-        maximunLoanAmount,
+        maxiMunLoanAmount,
         loanSymbols,
         durationTypes,
         durationQuantity,
@@ -243,7 +243,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
 
   @override
   Future<Result<String>> confirmCollateralToBe(
-      {required Map<String, String> map}) {
+      {required Map<String, String> map,}) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
       (response) => response.code.toString(),
@@ -291,8 +291,9 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<PawnshopPackage>> getPawnshopDetail(
-      {required String packageId}) {
+  Future<Result<PawnshopPackage>> getPawnshopDetail({
+    required String packageId,
+  }) {
     return runCatchingAsync<DetailPawnShopResponse, PawnshopPackage>(
       () => _client.getPawnshopPackageDetail(packageId),
       (response) => response.data?.toDomain() ?? PawnshopPackage(),
