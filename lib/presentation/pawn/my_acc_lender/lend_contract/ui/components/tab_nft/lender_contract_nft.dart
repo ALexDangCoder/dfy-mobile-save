@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/item_nft_pawn.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
@@ -131,8 +130,11 @@ class _LenderContractNftState extends State<LenderContractNft> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => ContractDetail(
-                              type: TypeBorrow.LENDER_TYPE,
-                              id: widget.cubit.listNftLenderContract[index].id ?? 0,
+                              type: TypeBorrow.NFT_TYPE,
+                              typeNavigator: TypeNavigator.LENDER_TYPE,
+                              id: widget
+                                      .cubit.listNftLenderContract[index].id ??
+                                  0,
                             ),
                             settings: const RouteSettings(
                               name: AppRouter.contract_detail_my_acc,

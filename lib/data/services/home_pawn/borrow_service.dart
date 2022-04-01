@@ -263,6 +263,13 @@ abstract class BorrowService {
     @Query('type') String? type,
   );
 
+  @GET('${ApiConstants.GET_DETAIl_LENDER}{id}')
+  Future<ContractlDetailMyAccResponse> getLenderDetail(
+      @Path('id') String? id,
+      @Query('walletAddress') String? walletAddress,
+      @Query('type') String? type,
+      );
+
   @GET(
       '${ApiConstants.GET_BORROW_REPAYMENT_HISTORY}{id}${ApiConstants.REPAYMENT_STATS}')
   Future<RepaymentStatsResponse> getRepaymentHistory(

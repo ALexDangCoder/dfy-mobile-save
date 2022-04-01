@@ -121,7 +121,8 @@ class _LenderContractCryptoState extends State<LenderContractCrypto> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ContractDetail(
-                                type: TypeBorrow.LENDER_TYPE,
+                                type: TypeBorrow.CRYPTO_TYPE,
+                                typeNavigator: TypeNavigator.LENDER_TYPE,
                                 id: widget.cubit.listCryptoLenderContract[index]
                                         .id ??
                                     0,

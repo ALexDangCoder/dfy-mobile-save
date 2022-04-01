@@ -66,7 +66,7 @@ class _ContractInfoState extends State<ContractInfo>
             value: '${obj.contractTerm?.interestRate.toString() ?? '0'}%',
           ),
           spaceH16,
-          if (widget.bloc.type == TypeBorrow.CRYPTO_TYPE)
+          if (widget.bloc.typeBorrow == TypeBorrow.CRYPTO_TYPE)
             RichText(
               text: TextSpan(
                 text: '',

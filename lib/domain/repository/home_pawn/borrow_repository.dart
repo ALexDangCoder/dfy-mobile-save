@@ -214,6 +214,12 @@ mixin BorrowRepository {
     String? type,
   });
 
+  Future<Result<ContractDetailPawn>> getLenderDetail({
+    String? id,
+    String? walletAddress,
+    String? type,
+  });
+
   Future<Result<RepaymentStatsModel>> getRepaymentHistory({
     String? id,
   });
