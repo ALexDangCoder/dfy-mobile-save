@@ -20,6 +20,7 @@ class _CheckboxItemState extends State<CheckboxItemTab> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 24.w,
@@ -50,7 +51,7 @@ class _CheckboxItemState extends State<CheckboxItemTab> {
             style: textNormalCustom(
               Colors.white,
               16,
-              FontWeight.w600,
+              FontWeight.w400,
             ),
           ),
         ),

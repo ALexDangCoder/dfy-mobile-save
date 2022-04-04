@@ -62,11 +62,15 @@ class EditProfileCubit extends BaseCubit<EditProfileState> {
   final PinToIPFS ipfsService = PinToIPFS();
 
   Future<void> pickImage({bool isMainMedia = false}) async {
-    final _fileMap = await pickImageFunc(
-      imageType: FEATURE_PHOTO,
-      tittle: 'Pick Image',
-      needCrop: false,
+    final _fileMap = await pickMediaFile(
+      type: PickerType.IMAGE_FILE,
     );
+
+    // final _fileMap = await pickImageFunc(
+    //   imageType: FEATURE_PHOTO,
+    //   tittle: 'Pick Image',
+    //   needCrop: false,
+    // );
     final _path = _fileMap.getStringValue(PATH_OF_FILE);
     if (_path.isNotEmpty) {
       final _imageSize = _fileMap.intValue(SIZE_OF_FILE);

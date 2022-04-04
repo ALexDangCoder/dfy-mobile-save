@@ -151,6 +151,8 @@ class ApiConstants {
   //Liên kết email:
   static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';
   static const String VERIFY_OTP = '/defi-user-service/api/v1.0.0/users/otp';
+  static const String GET_REWARD = '/defi-user-service/api/v1.0.0/verification/get_dfy_reward';
+  static const String POST_VERIFICATION = '/defi-user-service/api/v1.0.0/verification';
 
   //cancel auction
   static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
