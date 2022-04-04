@@ -294,7 +294,7 @@ class _ContractInfoState extends State<ContractInfo>
                   name: S.current.ltv_liquidation_threshold,
                   content: S.current.learn_more_about_ltv,
                 ),
-              ); //todo
+              );
             },
             title: S.current.ltv_liquid_thres,
             value: '${obj.liquidationType}%',

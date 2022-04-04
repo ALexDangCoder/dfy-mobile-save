@@ -349,9 +349,9 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 name:
                                                     S.current.ltv_liquid_thres,
                                                 content:
-                                                    S.current.ltv_liquid_thres,
+                                                    S.current.learn_more_about_ltv,
                                               ),
-                                            ); //todo
+                                            );
                                           },
                                           child: Image.asset(
                                             ImageAssets.ic_about_2,
