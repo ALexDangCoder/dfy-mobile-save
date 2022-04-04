@@ -261,8 +261,6 @@ class VerificationCubit extends BaseCubit<VerificationState> {
         fileSelfieType = '$MEDIA_IMAGE_FILE/$_extension';
         mediaSelfiePath = _path;
         pickSelfieFile.add(mediaSelfiePath);
-        mediaSelfieCid = ApiConstants.BASE_URL_IMAGE +
-            await ipfsService.pinFileToIPFS(pathFile: mediaSelfiePath);
         selectSelfieImage.add(StatusPickFile.PICK_SUCCESS);
       } else {
         selectSelfieImage.add(StatusPickFile.PICK_ERROR);
@@ -382,7 +380,9 @@ class VerificationCubit extends BaseCubit<VerificationState> {
 
 
   Future<void> putDataKYC() async {
-    Map<String,dynamic> map = {
+    mediaSelfieCid = ApiConstants.BASE_URL_IMAGE +
+        await ipfsService.pinFileToIPFS(pathFile: mediaSelfiePath);
+    final Map<String,dynamic> map = {
       'address': userProfile.kyc?.address,
       'backPhoto': userProfile.kyc?.backPhoto,
       'cityID':userProfile.kyc?.city?.id,

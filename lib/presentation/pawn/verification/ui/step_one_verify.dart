@@ -384,7 +384,9 @@ class _StepOneVerifyState extends State<StepOneVerify> {
                 if (Platform.isAndroid) {
                   picked = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: DateTime.fromMillisecondsSinceEpoch(
+                      cubit.selectBirth.value,
+                    ),
                     firstDate: DateTime(1900, 8),
                     lastDate: DateTime.now(),
                     builder: (context, child) {
