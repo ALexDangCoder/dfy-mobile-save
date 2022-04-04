@@ -27,10 +27,12 @@ class CustomCalendar extends StatefulWidget {
 
 class _CustomCalendarState extends State<CustomCalendar> {
   late DateTime _selectedDay;
+  late CalendarFormat _calendarFormat;
 
   @override
   void initState() {
     _selectedDay = widget.selectDate ?? DateTime.now();
+    _calendarFormat = CalendarFormat.month;
     // TODO: implement initState
     super.initState();
   }
@@ -65,6 +67,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TableCalendar(
+                        calendarFormat: _calendarFormat,
                         daysOfWeekHeight: 32,
                         daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: textNormalCustom(
@@ -86,6 +89,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                             24,
                             FontWeight.w700,
                           ),
+
                           titleCentered: true,
                           formatButtonVisible: false,
                           leftChevronIcon: SvgPicture.asset(

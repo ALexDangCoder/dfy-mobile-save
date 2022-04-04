@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -19,6 +20,7 @@ import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/item/circle_step_create_nft.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -60,6 +62,8 @@ class _StepOneVerifyState extends State<StepOneVerify> {
       firstNameController.text = widget.kyc?.firstName ?? '';
       lastNameController.text = widget.kyc?.lastName ?? '';
       middleNameController.text = widget.kyc?.middleName ?? '';
+      cubit.country.add(widget.kyc?.country ?? CountryModel());
+      cubit.city.add(widget.kyc?.city ?? CityModel());
       cubit.selectBirth.add(
         widget.kyc?.dateOfBirth ?? DateTime.now().millisecondsSinceEpoch,
       );
@@ -68,6 +72,9 @@ class _StepOneVerifyState extends State<StepOneVerify> {
       textSearchController.text = widget.kyc?.country?.name ?? '';
       addressController.text = widget.kyc?.address ?? '';
       textSearchController.text = widget.kyc?.country?.name ?? '';
+      cubit.selectBirth.add(
+        DateTime.now().millisecondsSinceEpoch,
+      );
     }
   }
 
@@ -373,25 +380,79 @@ class _StepOneVerifyState extends State<StepOneVerify> {
             spaceH4,
             InkWell(
               onTap: () async {
-                final result = await Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: Duration.zero,
-                    opaque: false,
-                    pageBuilder: (_, __, ___) {
-                      return CustomCalendar(
-                        isCheckDate: false,
-                        selectDate: DateTime.fromMillisecondsSinceEpoch(
-                          widget.kyc?.dateOfBirth ??
-                              DateTime.now().microsecondsSinceEpoch,
-                          isUtc: true,
+                DateTime? picked;
+                if (Platform.isAndroid) {
+                  picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900, 8),
+                    lastDate: DateTime.now(),
+                    builder: (context, child) {
+                      return Theme(
+                        data: ThemeData(
+                          colorScheme: const ColorScheme.dark(
+                            background: colorSkeleton,
+                            surface: colorSkeleton,
+                            onSurface: Colors.amberAccent,
+                            // default text color
+                            primary: Colors.amberAccent, // circle color
+                          ),
+                          dialogBackgroundColor: colorSkeleton,
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              textStyle: const TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              ),
+                              primary: Colors.amber,
+                              // color of button's letters
+                              backgroundColor: Colors.black54,
+                              // Background color
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+                } else {
+                  picked = await showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext builder) {
+                      return Container(
+                        height:
+                            MediaQuery.of(context).copyWith().size.height / 3,
+                        color: Colors.white,
+                        child: CupertinoDatePicker(
+                          mode: CupertinoDatePickerMode.date,
+                          onDateTimeChanged: (picked) {
+                            if (picked !=
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  cubit.selectBirth.value,
+                                )) {
+                              cubit.selectBirth
+                                  .add(picked.millisecondsSinceEpoch);
+                            }
+                          },
+                          initialDateTime: DateTime.fromMillisecondsSinceEpoch(
+                            cubit.selectBirth.value,
+                          ),
+                          minimumYear: 1900,
+                          maximumDate: DateTime.now(),
                         ),
                       );
                     },
-                  ),
-                );
-                if (result != null) {
-                  cubit.selectBirth.add(result.millisecondsSinceEpoch);
+                  );
+                }
+                if (picked != null) {
+                  cubit.selectBirth.add(picked.millisecondsSinceEpoch);
                 }
               },
               child: StreamBuilder<int>(

@@ -56,6 +56,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
     resultCountries.when(
       success: (res) {
         listCountry = res;
+        country.add(res.first);
         streamCountry.add(listCountry);
       },
       error: (error) {},
@@ -85,6 +86,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
     resultCities.when(
       success: (res) {
         listCity = res;
+        city.add(res.first);
         streamCity.add(listCity);
       },
       error: (error) {},

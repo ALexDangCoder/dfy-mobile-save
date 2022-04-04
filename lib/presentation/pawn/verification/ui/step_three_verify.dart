@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:Dfy/config/resources/color.dart';
@@ -11,6 +12,7 @@ import 'package:Dfy/presentation/pawn/edit_profile/cubit/edit_profile_cubit.dart
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/check_tab_bar.dart';
 import 'package:Dfy/presentation/pawn/verification/cubit/verification_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
@@ -62,9 +64,17 @@ class _StepThreeVerifyState extends State<StepThreeVerify> {
             bottom: 16.h,
           ),
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               if(cubit.selectSelfieImage.value == StatusPickFile.PICK_SUCCESS){
-                cubit.putDataKYC();
+                unawaited(showLoadingDialog(context, showLoading: true));
+                await cubit.putDataKYC();
+                await showLoadSuccess(context, onlySuccess: true).then(
+                      (value) {
+                        Navigator.of(context)
+                          ..pop()..pop()..pop()..pop()
+                          ..pop(true);
+                      }
+                );
               }
               else {
                 cubit.errorSelfiePhoto.add('Image is required');

@@ -203,7 +203,11 @@ class _VerificationState extends State<Verification> {
                                               id: cubit.userProfile.id,
                                             ),
                                           ),
-                                        );
+                                        ).then((value) {
+                                          if(value != null){
+                                            cubit.getDetailKYC();
+                                          }
+                                        });
                                       },
                                       child: ButtonRadial(
                                         height: 40.h,
