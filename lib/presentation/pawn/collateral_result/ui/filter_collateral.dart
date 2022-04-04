@@ -232,31 +232,31 @@ class _FilterCollateralState extends State<FilterCollateral> {
                           ],
                         ),
                       ),
-                      spaceH16,
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: Text(
-                          S.current.networks,
-                          style: textNormalCustom(
-                            null,
-                            16,
-                            FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      spaceH16,
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: ItemWidgetTextFilter(
-                          bloc: widget.bloc,
-                          list: widget.bloc.listNetworkFilter,
-                        ),
-                      ),
-                      spaceH40,
+                      // spaceH16,
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(
+                      //     horizontal: 16.w,
+                      //   ),
+                      //   child: Text(
+                      //     S.current.networks,
+                      //     style: textNormalCustom(
+                      //       null,
+                      //       16,
+                      //       FontWeight.w600,
+                      //     ),
+                      //   ),
+                      // ),
+                      // spaceH16,
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(
+                      //     horizontal: 16.w,
+                      //   ),
+                      //   child: ItemWidgetTextFilter(
+                      //     bloc: widget.bloc,
+                      //     list: widget.bloc.listNetworkFilter,
+                      //   ),
+                      // ),//todo network
+                     // spaceH40,
                     ],
                   ),
                 ),

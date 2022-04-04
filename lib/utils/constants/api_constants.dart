@@ -151,6 +151,8 @@ class ApiConstants {
   //Liên kết email:
   static const String GET_OTP = '/defi-user-service/api/v1.0.0/users/otp';
   static const String VERIFY_OTP = '/defi-user-service/api/v1.0.0/users/otp';
+  static const String GET_REWARD = '/defi-user-service/api/v1.0.0/verification/get_dfy_reward';
+  static const String POST_VERIFICATION = '/defi-user-service/api/v1.0.0/verification';
 
   //cancel auction
   static const String CANCEL_AUCTION = '/nft-market-svc/api/auction/cancel';
@@ -328,6 +330,9 @@ class ApiConstants {
   static const String GET_DETAIl_CONTRACT_LENDER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts/';
 
+  static const String GET_DETAIl_LENDER =
+      '/defi-pawn-crypto-service/api/v1.0.0/my-contract/lender-contracts/';
+
   static const String GET_BORROW_REPAYMENT_HISTORY =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
   static const String REPAYMENT_STATS = '/repayment-stats';
@@ -361,6 +366,13 @@ class ApiConstants {
   static const String PUT_CANCEL_OFFER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
   static const String CANCEL_OFFER_PAWN = '/cancel';
+
+  static const String ADD_MORE_COLLATERAL =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
+  static const String COLLATERAL = '/collaterals';
+
+  static const String REVIEW_RATE =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/review';
 
   static const String GET_LOAN_REQUEST_LIST =
       '/defi-pawn-crypto-service/api/v1.0.0/loan-requests';

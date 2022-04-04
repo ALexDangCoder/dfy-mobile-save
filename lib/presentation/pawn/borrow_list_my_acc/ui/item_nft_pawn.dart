@@ -186,18 +186,18 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
                             ),
                           ],
                         ),
-                      ), //todo 1of1
-                      // Text(
-                      //   '${nftPawnModel.numberOfCopies ?? 1} '
-                      //   '${S.current.of_all} '
-                      //   '${nftPawnModel.totalOfCopies ?? 1}',
-                      //   style: textNormalCustom(
-                      //     AppTheme.getInstance().whiteColor(),
-                      //     13,
-                      //     FontWeight.w600,
-                      //   ),
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
+                      ),
+                      Text(
+                        '${nftPawnModel.numberOfCopies ?? 1} '
+                        '${S.current.of_all} '
+                        '${nftPawnModel.totalOfCopies ?? 1}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          13,
+                          FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                 ),

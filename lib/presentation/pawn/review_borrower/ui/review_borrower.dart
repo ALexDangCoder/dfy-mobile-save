@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/request/pawn/review_create_request.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
 import 'package:Dfy/presentation/pawn/review_borrower/bloc/review_borrower_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -17,7 +20,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ReviewBorrower extends StatefulWidget {
-  const ReviewBorrower({Key? key}) : super(key: key);
+  const ReviewBorrower({
+    Key? key,
+    required this.type,
+    required this.objDetail,
+  }) : super(key: key);
+  final TypeNavigator type;
+  final ContractDetailPawn objDetail;
 
   @override
   _ReviewBorrowerState createState() => _ReviewBorrowerState();
@@ -156,6 +165,9 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                         AppTheme.getInstance().whiteColor(),
                         16,
                       ),
+                      onChanged: (value) {
+                        bloc.note.add(value);
+                      },
                       maxLines: 8,
                       maxLength: 150,
                       decoration: InputDecoration(
@@ -292,7 +304,27 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                                 listDetail: [],
                                 onErrorSign: (context) {},
                                 onSuccessSign: (context, data) {
-                                  //BE todo
+                                  bloc.postReview(
+                                    reviewCreateRequest: ReviewCreateRequest(
+                                      contractId: widget.objDetail.bcContractId,
+                                      type: widget.type ==
+                                              TypeNavigator.BORROW_TYPE
+                                          ? 0
+                                          : 1,
+                                      content: bloc.note.value,
+                                      point: bloc.rateNumber.value,
+                                      reviewee: ReviewerRequest(
+                                        id: widget.objDetail.lenderUserId,
+                                        walletAddress: widget
+                                            .objDetail.lenderWalletAddress,
+                                      ),
+                                      reviewer: ReviewerRequest(
+                                        id: widget.objDetail.borrowerUserId,
+                                        walletAddress: widget
+                                            .objDetail.borrowerWalletAddress,
+                                      ),
+                                    ),
+                                  );
                                   showLoadSuccess(context).then((value) {
                                     Navigator.of(context).popUntil((route) {
                                       return route.settings.name ==
@@ -304,7 +336,6 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                             ),
                           ),
                         );
-                        //todo
                       },
                       child: SizedBox(
                         width: 159.w,

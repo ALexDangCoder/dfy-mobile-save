@@ -356,145 +356,143 @@ class _HomePawnState extends State<HomePawn> {
           width: 262.w,
           height: 267.h,
           child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 222.h,
-                  width: 262.w,
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                    top: 48.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: AppTheme.getInstance().bgProgressingColors(),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        nameShop.handleTitle(),
-                        style: textNormalCustom(
-                          AppTheme.getInstance().getAmountColor(),
-                          16,
-                          FontWeight.w600,
+              Container(
+                height: 222.h,
+                width: 262.w,
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                  right: 16.w,
+                  top: 48.h,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: AppTheme.getInstance().bgProgressingColors(),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      nameShop.handleTitle(),
+                      style: textNormalCustom(
+                        AppTheme.getInstance().getAmountColor(),
+                        16,
+                        FontWeight.w600,
+                      ),
+                    ),
+                    spaceH8,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 16.h,
+                          width: 16.w,
+                          child: Image.asset(ImageAssets.img_star),
                         ),
-                      ),
-                      spaceH8,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 16.h,
-                            width: 16.w,
-                            child: Image.asset(ImageAssets.img_star),
+                        spaceW4,
+                        Text(
+                          '$reputation',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
                           ),
-                          spaceW4,
-                          Text(
-                            '$reputation',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
+                        ),
+                      ],
+                    ),
+                    spaceH24,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Loan',
+                          style: textNormalCustom(
+                            AppTheme.getInstance()
+                                .whiteWithOpacitySevenZero(),
+                            14,
+                            FontWeight.w400,
                           ),
-                        ],
-                      ),
-                      spaceH24,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Loan',
-                            style: textNormalCustom(
-                              AppTheme.getInstance()
-                                  .whiteWithOpacitySevenZero(),
-                              14,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 20.h,
-                                width: 20.w,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50.r),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: ImageAssets.image_loading,
-                                    image: iconTokenUrl,
-                                    imageCacheHeight: 20,
-                                    placeholderCacheHeight: 15,
-                                    fit: BoxFit.fill,
-                                  ),
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                              width: 20.w,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50.r),
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: ImageAssets.image_loading,
+                                  image: iconTokenUrl,
+                                  imageCacheHeight: 20,
+                                  placeholderCacheHeight: 15,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-                              spaceW8,
-                              Text(
-                                formatValue.format(loan),
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().whiteColor(),
-                                  14,
-                                  FontWeight.w600,
-                                ),
-                              )
-                            ],
+                            ),
+                            spaceW8,
+                            Text(
+                              formatValue.format(loan),
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                14,
+                                FontWeight.w600,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    spaceH13,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Interest rate',
+                          style: textNormalCustom(
+                            AppTheme.getInstance()
+                                .whiteWithOpacitySevenZero(),
+                            14,
+                            FontWeight.w400,
                           ),
-                        ],
-                      ),
-                      spaceH13,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Interest rate',
-                            style: textNormalCustom(
-                              AppTheme.getInstance()
-                                  .whiteWithOpacitySevenZero(),
-                              14,
-                              FontWeight.w400,
-                            ),
+                        ),
+                        Text(
+                          '$interestRate APR',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            14,
+                            FontWeight.w600,
                           ),
-                          Text(
-                            '$interestRate APR',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              14,
-                              FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      ),
-                      spaceH13,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Signed contracts',
-                            style: textNormalCustom(
-                              AppTheme.getInstance()
-                                  .whiteWithOpacitySevenZero(),
-                              14,
-                              FontWeight.w400,
-                            ),
+                        )
+                      ],
+                    ),
+                    spaceH13,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Signed contracts',
+                          style: textNormalCustom(
+                            AppTheme.getInstance()
+                                .whiteWithOpacitySevenZero(),
+                            14,
+                            FontWeight.w400,
                           ),
-                          Text(
-                            '$signedContracts contracts',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              14,
-                              FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                        Text(
+                          '$signedContracts contracts',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            14,
+                            FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
               Positioned(
-                left: 84,
+                top: 0,
                 child: Container(
                   height: 94.h,
                   width: 94.w,
@@ -502,6 +500,8 @@ class _HomePawnState extends State<HomePawn> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
                       colors: AppTheme.getInstance().bgColorHomePawn(),
                     ),
                   ),
@@ -598,70 +598,70 @@ class _HomePawnState extends State<HomePawn> {
         ],
       ),
     );
-    return ClipRRect(
-      borderRadius: BorderRadius.all(
-        Radius.circular(20.r),
-      ),
-      child: SizedBox(
-        height: 161.h,
-        width: 235.w,
-        child: Stack(
-          children: [
-            SizedBox(
-              height: 161.h,
-              width: 235.w,
-              child: Image.asset(imageBg),
-            ),
-            Positioned(
-              top: 12.h,
-              left: 12.w,
-              child: Text(
-                title,
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  16,
-                  FontWeight.w700,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 15.h,
-              left: 12.w,
-              child: InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => ConnectWalletDialog(
-                      navigationTo: BorrowLendScreen(
-                        type: type,
-                      ),
-                      isRequireLoginEmail: false,
-                    ),
-                  ).then((_) => null);
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      suffixTitle,
-                      style: textNormalCustom(
-                        AppTheme.getInstance().blueColor(),
-                        12,
-                        FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12,
-                      width: 12,
-                      child: Image.asset(ImageAssets.blueArrow),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    // return ClipRRect(
+    //   borderRadius: BorderRadius.all(
+    //     Radius.circular(20.r),
+    //   ),
+    //   child: SizedBox(
+    //     height: 161.h,
+    //     width: 235.w,
+    //     child: Stack(
+    //       children: [
+    //         SizedBox(
+    //           height: 161.h,
+    //           width: 235.w,
+    //           child: Image.asset(imageBg),
+    //         ),
+    //         Positioned(
+    //           top: 12.h,
+    //           left: 12.w,
+    //           child: Text(
+    //             title,
+    //             style: textNormalCustom(
+    //               AppTheme.getInstance().whiteColor(),
+    //               16,
+    //               FontWeight.w700,
+    //             ),
+    //           ),
+    //         ),
+    //         Positioned(
+    //           bottom: 15.h,
+    //           left: 12.w,
+    //           child: InkWell(
+    //             onTap: () {
+    //               showDialog(
+    //                 context: context,
+    //                 builder: (context) => ConnectWalletDialog(
+    //                   navigationTo: BorrowLendScreen(
+    //                     type: type,
+    //                   ),
+    //                   isRequireLoginEmail: false,
+    //                 ),
+    //               ).then((_) => null);
+    //             },
+    //             child: Row(
+    //               children: [
+    //                 Text(
+    //                   suffixTitle,
+    //                   style: textNormalCustom(
+    //                     AppTheme.getInstance().blueColor(),
+    //                     12,
+    //                     FontWeight.w400,
+    //                   ),
+    //                 ),
+    //                 SizedBox(
+    //                   height: 12,
+    //                   width: 12,
+    //                   child: Image.asset(ImageAssets.blueArrow),
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   ClipRRect _itemTopRate({required String title, required String img}) {

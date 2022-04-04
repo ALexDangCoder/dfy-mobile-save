@@ -67,7 +67,6 @@ class _LenderContractListState extends State<LenderContractList>
                 Divider(
                   color: AppTheme.getInstance().divideColor(),
                 ),
-                spaceH30,
                 Flexible(
                   child: Column(
                     children: [

@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/bloc/lender_contract_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/tab_crypto/lender_contract_crypto_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -114,9 +116,27 @@ class _LenderContractCryptoState extends State<LenderContractCrypto> {
                     shrinkWrap: true,
                     itemCount: widget.cubit.listCryptoLenderContract.length,
                     itemBuilder: (context, index) {
-                      return LenderContractCryptoItem(
-                        obj: widget.cubit.listCryptoLenderContract[index],
-                        cubit: widget.cubit,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ContractDetail(
+                                type: TypeBorrow.CRYPTO_TYPE,
+                                typeNavigator: TypeNavigator.LENDER_TYPE,
+                                id: widget.cubit.listCryptoLenderContract[index]
+                                        .id ??
+                                    0,
+                              ),
+                              settings: const RouteSettings(
+                                name: AppRouter.contract_detail_my_acc,
+                              ),
+                            ),
+                          );
+                        },
+                        child: LenderContractCryptoItem(
+                          obj: widget.cubit.listCryptoLenderContract[index],
+                          cubit: widget.cubit,
+                        ),
                       );
                     },
                   ),

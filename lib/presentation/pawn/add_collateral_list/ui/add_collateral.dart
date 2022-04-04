@@ -75,7 +75,8 @@ class _AddCollateralState extends State<AddCollateral> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: 812.h,
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                padding:
+                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 decoration: BoxDecoration(
                   color: AppTheme.getInstance().bgBtsColor(),
                   borderRadius: BorderRadius.only(
@@ -153,32 +154,35 @@ class _AddCollateralState extends State<AddCollateral> {
                                     );
                                   },
                                 )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Center(
-                                      child: Image(
-                                        image: const AssetImage(
-                                          ImageAssets.img_search_empty,
+                              : state is AddCollateralSuccess
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Image(
+                                            image: const AssetImage(
+                                              ImageAssets.img_search_empty,
+                                            ),
+                                            height: 120.h,
+                                            width: 120.w,
+                                          ),
                                         ),
-                                        height: 120.h,
-                                        width: 120.w,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 17.7.h,
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        S.current.no_result_found,
-                                        style: textNormal(
-                                          Colors.white54,
-                                          20.sp,
+                                        SizedBox(
+                                          height: 17.7.h,
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                        Center(
+                                          child: Text(
+                                            S.current.no_result_found,
+                                            style: textNormal(
+                                              Colors.white54,
+                                              20.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink(),
                         ),
                       ),
                     ),
