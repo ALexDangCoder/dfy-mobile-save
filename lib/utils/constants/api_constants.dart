@@ -328,6 +328,9 @@ class ApiConstants {
   static const String GET_DETAIl_CONTRACT_LENDER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/borrow-contracts/';
 
+  static const String GET_DETAIl_LENDER =
+      '/defi-pawn-crypto-service/api/v1.0.0/my-contract/lender-contracts/';
+
   static const String GET_BORROW_REPAYMENT_HISTORY =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';
   static const String REPAYMENT_STATS = '/repayment-stats';

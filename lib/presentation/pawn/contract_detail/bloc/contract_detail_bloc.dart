@@ -20,7 +20,8 @@ import 'contract_detail_state.dart';
 
 class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   final int id;
-  final TypeBorrow type;
+  final TypeBorrow typeBorrow;
+  final TypeNavigator typeNavigator;
   late String typePawn;
   bool? isShow;
   bool? isRate;
@@ -30,7 +31,8 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
   BehaviorSubject<String> rateMy = BehaviorSubject.seeded('0');
 
-  ContractDetailBloc(this.id, this.type) : super(ContractDetailInitial()) {
+  ContractDetailBloc(this.id, this.typeBorrow, this.typeNavigator)
+      : super(ContractDetailInitial()) {
     getData();
   }
 
@@ -144,7 +146,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   }
 
   void getData() {
-    if (type == TypeBorrow.CRYPTO_TYPE) {
+    if (typeBorrow == TypeBorrow.CRYPTO_TYPE) {
       typePawn = '0';
     } else {
       typePawn = '1';
@@ -158,17 +160,26 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   Future<void> getLenderContract() async {
     showLoading();
     String typePawn = '0';
-    if (type == TypeBorrow.CRYPTO_TYPE) {
+    if (typeBorrow == TypeBorrow.CRYPTO_TYPE) {
       typePawn = '0';
     } else {
-      typePawn = '0';
+      typePawn = '1';
     }
-    final Result<ContractDetailPawn> response =
-        await _pawnService.getLenderContract(
-      type: typePawn,
-      id: id.toString(),
-      walletAddress: PrefsService.getCurrentWalletCore(),
-    );
+    late final Result<ContractDetailPawn> response;
+    if (typeNavigator == TypeNavigator.BORROW_TYPE) {
+      response = await _pawnService.getLenderContract(
+        type: typePawn,
+        id: id.toString(),
+        walletAddress: PrefsService.getCurrentWalletCore(),
+      );
+    }else{
+      response =
+      await _pawnService.getLenderDetail(
+        type: typePawn,
+        id: id.toString(),
+        walletAddress: PrefsService.getCurrentWalletCore(),
+      );
+    }
     response.when(
       success: (response) {
         getReputation(response.lenderWalletAddress.toString());

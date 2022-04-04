@@ -11,6 +11,8 @@ class ReviewCreateRequest {
   int? point;
   int? type;
   String? wallet;
+  ReviewerRequest? reviewer;
+  ReviewerRequest? reviewee;
 
   ReviewCreateRequest({
     this.content,
@@ -20,6 +22,8 @@ class ReviewCreateRequest {
     this.point,
     this.type,
     this.wallet,
+    this.reviewer,
+    this.reviewee,
   });
 
   factory ReviewCreateRequest.fromJson(Map<String, dynamic> json) =>
