@@ -998,7 +998,7 @@ class _ContractDetailState extends State<ContractDetail>
                                               ContractDetailBloc.ACTIVE)
                                             GestureDetector(
                                               onTap: () {
-                                                if (obj.lenderWalletAddress ==
+                                                if (obj.borrowerWalletAddress ==
                                                     PrefsService
                                                         .getCurrentWalletCore()) {
                                                   goTo(
