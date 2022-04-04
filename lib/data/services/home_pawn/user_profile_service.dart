@@ -25,42 +25,50 @@ abstract class UserProfileService {
   Future<UserProfileResponse> getUserProfile(
     @Path('userId') String userId,
   );
-  @GET('${ApiConstants.GET_MY_PROFILE_USER}profile')
-  Future<UserProfileResponse> getMyUserProfile(
 
-      );
+  @GET('${ApiConstants.GET_MY_PROFILE_USER}profile')
+  Future<UserProfileResponse> getMyUserProfile();
+
   @PUT(ApiConstants.PUT_PAWN_SHOP_PROFILE)
   Future<ConfirmEvaluationResponse> updatePawnshopProfile(
-      @Body() Map<String,String> map,
-      );
+    @Body() Map<String, String> map,
+  );
+
   @PUT(ApiConstants.PUT_PROFILE_USER)
   Future<ConfirmEvaluationResponse> updatePersonalProfile(
-      @Body() Map<String,dynamic> map,
-      );
+    @Body() Map<String, dynamic> map,
+  );
+
   @PUT(ApiConstants.DISCONNECT_WALLET)
   Future<ConfirmEvaluationResponse> disconnectWallet(
-      @Body() Map<String,dynamic> map,
-      );
+    @Body() Map<String, dynamic> map,
+  );
+
   @PUT('${ApiConstants.GET_NOTIFICATION}/{id}')
   Future<String> updateNoti(
-      @Path('id') String id,
-      );
+    @Path('id') String id,
+  );
+
   @DELETE('${ApiConstants.GET_NOTIFICATION}/{id}')
   Future<String> deleteNoti(
-      @Path('id') String id,
-      );
+    @Path('id') String id,
+  );
 
+  @GET(ApiConstants.GET_REWARD)
+  Future<int> getReward();
 
-
+  @POST(ApiConstants.POST_VERIFICATION)
+  Future<KycResponse> saveKYC(
+    @Body() Map<String, dynamic> map,
+  );
 
   @GET(ApiConstants.GET_NOTIFICATION)
   Future<NotificationResponse> getNotification(
-      @Query('notiType') String? notiType,
-      @Query('isReaded') String? isReaded,
-      @Query('page') String page,
-      @Query('size') String size,
-      );
-
+    @Query('notiType') String? notiType,
+    @Query('isReaded') String? isReaded,
+    @Query('page') String page,
+    @Query('size') String size,
+  );
 
   @GET(ApiConstants.GET_MY_SETTING_EMAIL)
   Future<SettingUserResponse> getEmailSetting();
@@ -70,14 +78,13 @@ abstract class UserProfileService {
 
   @PUT(ApiConstants.GET_MY_SETTING_EMAIL)
   Future<SettingUserResponse> putEmailSetting(
-      @Body() Map<String,dynamic>  emailSetting,
-      );
+    @Body() Map<String, dynamic> emailSetting,
+  );
 
   @PUT(ApiConstants.GET_MY_SETTING_NOTI)
   Future<SettingUserResponse> putNotiSetting(
-      @Body() Map<String,dynamic>  notiSetting,
-      );
-
+    @Body() Map<String, dynamic> notiSetting,
+  );
 
   @GET(ApiConstants.GET_REPUTATION)
   Future<List<ReputationResponse>> getReputation(
@@ -117,12 +124,13 @@ abstract class UserProfileService {
     @Query('borrower_wallet_address') String walletAddress,
     @Query('size') String size,
   );
+
   @GET(ApiConstants.GET_LIST_LOAN_CONTRACT_USER)
   Future<ListSignedContractUser> getListLoanSignedContract(
-      @Query('userId') String userId,
-      @Query('borrower_wallet_address') String walletAddress,
-      @Query('size') String size,
-      );
+    @Query('userId') String userId,
+    @Query('borrower_wallet_address') String walletAddress,
+    @Query('size') String size,
+  );
 
   @GET(ApiConstants.GET_LIST_COMMENT)
   Future<ListCommentUser> getListCommentUser(
@@ -131,18 +139,20 @@ abstract class UserProfileService {
     @Query('size') String size,
     @Query('page') String page,
   );
+
   @GET(ApiConstants.GET_LENDING_SETTING)
   Future<LendingSettingResponse> getLendingSetting(
-      @Query('userId') String userId,
-      );
+    @Query('userId') String userId,
+  );
+
   @GET('${ApiConstants.GET_LIST_LOAN_PACKAGE}{pawnshopId}/pawn-shop-packages')
   Future<ListLoanPackage> getListLoanPackage(
-      @Path('pawnshopId') String pawnshopId,
-      @Query('userId') String userId,
-      @Query('walletAddress') String walletAddress,
-      @Query('loanStatus') String loanStatus,
-      @Query('loanTypes') String loanTypes,
-      @Query('size') String size,
-      @Query('page') String page,
-      );
+    @Path('pawnshopId') String pawnshopId,
+    @Query('userId') String userId,
+    @Query('walletAddress') String walletAddress,
+    @Query('loanStatus') String loanStatus,
+    @Query('loanTypes') String loanTypes,
+    @Query('size') String size,
+    @Query('page') String page,
+  );
 }

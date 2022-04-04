@@ -183,7 +183,7 @@ class KycResponse {
   @JsonKey(name: 'selfiePhoto')
   String? selfiePhoto;
   @JsonKey(name: 'kycNumber')
-  int? kycNumber;
+  String? kycNumber;
   @JsonKey(name: 'address')
   String? address;
   @JsonKey(name: 'status')

@@ -23,7 +23,10 @@ mixin UsersRepository {
   Future<Result<String>> deleteNoti({
     required String id,
   });
-
+  Future<Result<int>> getReward();
+  Future<Result<KYC>> putKYCtoBE({
+    required Map<String, dynamic> map,
+  });
 
   Future<Result<List<Reputation>>> getListReputation({String? userId});
 

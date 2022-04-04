@@ -46,7 +46,7 @@ class KYC {
   String? frontPhoto;
   String? backPhoto;
   String? selfiePhoto;
-  int? kycNumber;
+  String? kycNumber;
   String? address;
   int? status;
   int? dateOfBirth;

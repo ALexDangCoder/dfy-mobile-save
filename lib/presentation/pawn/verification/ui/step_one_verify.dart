@@ -23,9 +23,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepOneVerify extends StatefulWidget {
-  const StepOneVerify({Key? key, this.kyc}) : super(key: key);
+  const StepOneVerify({Key? key, this.kyc, this.id}) : super(key: key);
 
   final KYC? kyc;
+  final int? id;
 
   @override
   _StepOneVerifyState createState() => _StepOneVerifyState();
@@ -51,6 +52,7 @@ class _StepOneVerifyState extends State<StepOneVerify> {
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     middleNameController = TextEditingController();
+    cubit.userProfile.id = widget.id;
     cubit.getCountriesApi();
     if (widget.kyc != null) {
       cubit.userProfile.kyc = widget.kyc;
@@ -102,7 +104,12 @@ class _StepOneVerifyState extends State<StepOneVerify> {
                 cities: cubit.city.value,
                 address: addressController.text,
               )) {
-                goTo(context, const StepTwoVerify());
+                goTo(
+                  context,
+                  StepTwoVerify(
+                    cubit: cubit,
+                  ),
+                );
               }
             },
             child: ButtonRadial(
@@ -748,19 +755,30 @@ class _StepOneVerifyState extends State<StepOneVerify> {
                                                       '0',
                                                 );
                                               },
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    snapshot.data?[index]
-                                                            .name ??
-                                                        '',
-                                                    style: textNormal(
-                                                      Colors.white,
-                                                      14,
+                                              child: Container(
+                                                color:
+                                                    cubit.country.value.name ==
+                                                            snapshot
+                                                                .data?[index]
+                                                                .name
+                                                        ? Colors.white
+                                                            .withOpacity(0.4)
+                                                        : Colors.transparent,
+                                                child: Column(
+                                                  children: [
+                                                    spaceH5,
+                                                    Text(
+                                                      snapshot.data?[index]
+                                                              .name ??
+                                                          '',
+                                                      style: textNormal(
+                                                        Colors.white,
+                                                        14,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  spaceH10,
-                                                ],
+                                                    spaceH5,
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           } else {
@@ -788,19 +806,28 @@ class _StepOneVerifyState extends State<StepOneVerify> {
                                                 );
                                                 Navigator.pop(context);
                                               },
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    snapshot.data?[index]
-                                                            .name ??
-                                                        '',
-                                                    style: textNormal(
-                                                      Colors.white,
-                                                      14,
+                                              child: Container(
+                                                color: cubit.city.value.name ==
+                                                        snapshot
+                                                            .data?[index].name
+                                                    ? Colors.white
+                                                        .withOpacity(0.4)
+                                                    : Colors.transparent,
+                                                child: Column(
+                                                  children: [
+                                                    spaceH5,
+                                                    Text(
+                                                      snapshot.data?[index]
+                                                              .name ??
+                                                          '',
+                                                      style: textNormal(
+                                                        Colors.white,
+                                                        14,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  spaceH10,
-                                                ],
+                                                    spaceH5,
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           } else {

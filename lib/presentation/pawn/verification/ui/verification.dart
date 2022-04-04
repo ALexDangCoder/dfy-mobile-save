@@ -174,7 +174,7 @@ class _VerificationState extends State<Verification> {
                                   ),
                                 ),
                               ] else ...[
-                                if (cubit.userProfile.kyc?.status != 1) ...[
+                                if (cubit.userProfile.kyc?.status == 1) ...[
                                   Align(
                                     child: Image.asset(
                                       ImageAssets.img_pending,
@@ -200,6 +200,7 @@ class _VerificationState extends State<Verification> {
                                           MaterialPageRoute(
                                             builder: (context) => StepOneVerify(
                                               kyc: cubit.userProfile.kyc,
+                                              id: cubit.userProfile.id,
                                             ),
                                           ),
                                         );

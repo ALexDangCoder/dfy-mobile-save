@@ -167,6 +167,18 @@ class ImageAssets {
   static const String bg_repayment_history = '$baseImg/bg_repayment.png';
   static const String img_verification = '$baseImg/img_verification.png';
   static const String img_pending = '$baseImg/img_pending.png';
+  static const String img_id_good = '$baseImg/img_id_good.svg';
+  static const String img_id_not_blur = '$baseImg/img_id_not_blur.png';
+  static const String img_id_not_cropped = '$baseImg/img_id_not_cropped.svg';
+  static const String img_id_not_reflective = '$baseImg/img_id_reflective.png';
+  static const String img_dr_good = '$baseImg/img_dr_good.svg';
+  static const String img_dr_not_cropped = '$baseImg/img_dr_not_cropped.svg';
+  static const String img_dr_not_blur = '$baseImg/img_dr_not_blur.png';
+  static const String img_dr_not_reflective = '$baseImg/img_dr_reflective.png';
+  static const String img_pp_good = '$baseImg/img_pp_good.svg';
+  static const String img_pp_cropped = '$baseImg/img_pp_cropped.svg';
+  static const String img_pp_too_small = '$baseImg/img_pp_too_small.svg';
+  static const String img_selfie = '$baseImg/img_selfie.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';

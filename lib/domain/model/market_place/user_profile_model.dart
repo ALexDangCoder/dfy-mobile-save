@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 
 UserProfileModel userProfileFromJson(String str) {
@@ -23,7 +22,7 @@ class UserProfileModel {
   String? email;
   int? id;
   bool? isActive;
-  KYC? kyc;
+  dynamic kyc;
   List<dynamic>? links;
   String? name;
   dynamic pawnShop;
