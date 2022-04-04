@@ -883,5 +883,7 @@
   "late_payment_From": " late payment. From ",
   "rd_time": "3rd time",
   "the_collateral_will_be_liquidated": ", the collateral will be liquidated.",
-  "lender_contract_list": "Danh sách hợp đồng cho vay"
+  "lender_contract_list": "Danh sách hợp đồng cho vay",
+  "request_detail": "Chi tiết yêu cầu",
+  "reject_request": "Từ chối yêu cầu"
 }

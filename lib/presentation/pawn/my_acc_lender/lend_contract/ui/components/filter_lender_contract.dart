@@ -3,7 +3,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/bloc/lender_contract_cubit.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -35,7 +34,11 @@ class _FilterLenderContractState extends State<FilterLenderContract> {
     super.initState();
     initValueFilterList = widget.cubit.filterOriginalList;
     widget.cubit.getListWallet();
-    currentWallet = widget.cubit.walletAddressDropDown[0];
+    if (widget.cubit.tempWalletFilter['label'] == 'null') {
+      currentWallet = widget.cubit.walletAddressDropDown[0];
+    } else {
+      currentWallet = widget.cubit.tempWalletFilter;
+    }
   }
 
   @override
@@ -168,22 +171,21 @@ class _FilterLenderContractState extends State<FilterLenderContract> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    // widget.cubit.listOfferSentCrypto.clear();
-                    // if (widget.indexTab == 0) {
-                    //   widget.cubit.listOfferSentCrypto.clear();
-                    //   widget.cubit.getListOfferSentCrypto(
-                    //     walletAddress: widget.cubit.walletAddressFilter,
-                    //     status: widget.cubit.statusFilter,
-                    //     type: 0.toString(),
-                    //   );
-                    // } else {
-                    //   widget.cubit.listOfferSentNFT.clear();
-                    //   widget.cubit.getListOfferSentCrypto(
-                    //     walletAddress: widget.cubit.walletAddressFilter,
-                    //     status: widget.cubit.statusFilter,
-                    //     type: 1.toString(),
-                    //   );
-                    // }
+                    if (widget.indexTab == 0) {
+                      widget.cubit.listCryptoLenderContract.clear();
+                      widget.cubit.getListNft(
+                        walletAddress: widget.cubit.walletAddressFilter,
+                        status: widget.cubit.statusFilter,
+                        type: 0.toString(),
+                      );
+                    } else {
+                      widget.cubit.listNftLenderContract.clear();
+                      widget.cubit.getListNft(
+                        walletAddress: widget.cubit.walletAddressFilter,
+                        status: widget.cubit.statusFilter,
+                        type: 1.toString(),
+                      );
+                    }
                   },
                 ),
               ),
@@ -240,6 +242,7 @@ class _FilterLenderContractState extends State<FilterLenderContract> {
                   onChanged: (Map<String, dynamic>? newValue) {
                     setState(() {
                       currentWallet = newValue!;
+                      widget.cubit.tempWalletFilter = newValue;
                       widget.cubit.walletAddressFilter = currentWallet['value'];
                     });
                   },
