@@ -3,6 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/crypto/loan_request_crypto_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/filter/filter_loan_request_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/nft/lender_loan_request_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +118,7 @@ class _LenderLoanRequestState extends State<LenderLoanRequest>
                             LoanRequestCryptoList(cubit: cubit),
 
                             ///Tab Nft
-                            Container(),
+                            LoanRequestNftList(cubit: cubit),
                           ],
                         ),
                       )
@@ -165,15 +167,15 @@ class _LenderLoanRequestState extends State<LenderLoanRequest>
             Flexible(
               child: InkWell(
                 onTap: () {
-                  // showModalBottomSheet(
-                  //   isScrollControlled: true,
-                  //   context: context,
-                  //   backgroundColor: Colors.transparent,
-                  //   builder: (ctx) => FilerOfferSent(
-                  //     cubit: cubit,
-                  //     indexTab: _tabController.index,
-                  //   ),
-                  // );
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (ctx) => FilterLoanRequest(
+                      cubit: cubit,
+                      indexTab: _tabController.index,
+                    ),
+                  );
                 },
                 child: Image.asset(ImageAssets.ic_filter),
               ),

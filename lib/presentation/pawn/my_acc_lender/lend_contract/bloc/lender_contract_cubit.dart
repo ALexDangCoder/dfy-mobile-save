@@ -199,6 +199,7 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
 
   Future<void> getListWallet() async {
     if (isGotWallet) {
+      //nothing
     } else {
       final Result<List<WalletAddressModel>> result =
           await _walletAddressRepository.getListWalletAddress();

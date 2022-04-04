@@ -1,3 +1,6 @@
+import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
+import 'package:Dfy/domain/model/pawn/loan_request_list/detail_loan_request_crypto_model.dart';
+
 class LoanRequestCryptoModel {
   int? id;
   String? collateralSymbol;
@@ -11,10 +14,16 @@ class LoanRequestCryptoModel {
   int? bcCollateralId;
   int? collateralId;
   P2PLenderPackageModel? p2pLenderPackageModel;
+  CollateralOwnerLoanRqModel? collateralOwner;
+  double? expectedLoanAmount;
+  String? expectedLoanSymbol;
+  NFTPawnModel? nftModel;
 
   LoanRequestCryptoModel({
     this.id,
     this.collateralSymbol,
+    this.collateralOwner,
+    this.nftModel,
     this.collateralAmount,
     this.loanSymbol,
     this.description,
@@ -24,6 +33,8 @@ class LoanRequestCryptoModel {
     this.durationQty,
     this.bcCollateralId,
     this.collateralId,
+    this.expectedLoanSymbol,
+    this.expectedLoanAmount,
     this.p2pLenderPackageModel,
   });
 }

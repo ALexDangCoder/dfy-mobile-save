@@ -3,6 +3,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/loan_request_crypto_item_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/loan_request_detail/ui/loan_request_detail.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -20,62 +21,76 @@ class LoanRequestCryptoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 343.w,
-      padding: EdgeInsets.only(
-        top: 16.h,
-        left: 16.w,
-        bottom: 20.h,
-        right: 16.w,
-      ),
-      margin: EdgeInsets.only(
-        bottom: 20.h,
-        left: 16.w,
-        right: 16.w,
-      ),
-      decoration: BoxDecoration(
-        color: AppTheme.getInstance().borderItemColor(),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
-        border: Border.all(
-          color: AppTheme.getInstance().divideColor(),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _rowItem(
-            title: S.current.collateral.capitalize().withColon(),
-            isLoanAmount: true,
-            urlToken: cryptoModel.collateralSymbol,
-            description: formatPrice.format(cryptoModel.collateralAmount),
-          ),
-          SizedBox(
-            height: 17.w,
-          ),
-          _rowItem(
-            title: S.current.loan_currency.capitalize().withColon(),
-            isLoanAmount: true,
-            urlToken: cryptoModel.loanSymbol,
-            description: ''
-            // description: cryptoModel.loanSymbol ?? DFY,
-          ),
-          SizedBox(
-            height: 17.w,
-          ),
-          _rowItem(
-            title: S.current.duration,
-            description: cubit.categoryOneOrMany(
-              durationQty: cryptoModel.durationQty ?? 0,
-              durationType: cryptoModel.durationType ?? 0,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoanRequestDetail(
+              typeDetail: TypeDetail.CRYPTO,
+              id: cryptoModel.id.toString(),
+              walletAddress: cryptoModel.collateralOwner?.walletAddress ?? '',
             ),
           ),
-          SizedBox(
-            height: 17.w,
+        );
+      },
+      child: Container(
+        width: 343.w,
+        padding: EdgeInsets.only(
+          top: 16.h,
+          left: 16.w,
+          bottom: 20.h,
+          right: 16.w,
+        ),
+        margin: EdgeInsets.only(
+          bottom: 20.h,
+          left: 16.w,
+          right: 16.w,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.getInstance().borderItemColor(),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
           ),
-          _rowItem(title: S.current.status, isStatus: true, description: ''),
-        ],
+          border: Border.all(
+            color: AppTheme.getInstance().divideColor(),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _rowItem(
+              title: S.current.collateral.capitalize().withColon(),
+              isLoanAmount: true,
+              urlToken: cryptoModel.collateralSymbol,
+              description: formatPrice.format(cryptoModel.collateralAmount),
+            ),
+            SizedBox(
+              height: 17.w,
+            ),
+            _rowItem(
+                title: S.current.loan_currency.capitalize().withColon(),
+                isLoanAmount: true,
+                urlToken: cryptoModel.loanSymbol,
+                description: ''
+                // description: cryptoModel.loanSymbol ?? DFY,
+                ),
+            SizedBox(
+              height: 17.w,
+            ),
+            _rowItem(
+              title: S.current.duration,
+              description: cubit.categoryOneOrMany(
+                durationQty: cryptoModel.durationQty ?? 0,
+                durationType: cryptoModel.durationType ?? 0,
+              ),
+            ),
+            SizedBox(
+              height: 17.w,
+            ),
+            _rowItem(title: S.current.status, isStatus: true, description: ''),
+          ],
+        ),
       ),
     );
   }

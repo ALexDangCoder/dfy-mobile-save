@@ -1,3 +1,5 @@
+import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
+import 'package:Dfy/data/response/pawn/loan_request_list/detail_loan_request_response.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/loan_request_crypto_item_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -70,8 +72,18 @@ class LoanRequestCryptoItemResponse extends Equatable {
   int? bcCollateralId;
   @JsonKey(name: 'collateralId')
   int? collateralId;
+  @JsonKey(name: 'collateralOwner')
+  CollateralOwnerResponse? collateralOwner;
   @JsonKey(name: 'p2pLenderPackage')
   P2PLenderPackageResponse? p2pLenderPackage;
+
+  ///this is for nft
+  @JsonKey(name: 'expectedLoanAmount')
+  double? expectedLoanAmount;
+  @JsonKey(name: 'expectedLoanSymbol')
+  String? expectedLoanSymbol;
+  @JsonKey(name: 'nft')
+  NftResponse? nft;
 
   LoanRequestCryptoItemResponse(
     this.id,
@@ -86,6 +98,10 @@ class LoanRequestCryptoItemResponse extends Equatable {
     this.bcCollateralId,
     this.collateralId,
     this.p2pLenderPackage,
+    this.collateralOwner,
+    this.expectedLoanAmount,
+    this.nft,
+    this.expectedLoanSymbol,
   );
 
   LoanRequestCryptoModel toModel() => LoanRequestCryptoModel(
@@ -101,6 +117,10 @@ class LoanRequestCryptoItemResponse extends Equatable {
         collateralId: collateralId,
         message: message,
         p2pLenderPackageModel: p2pLenderPackage?.toModel(),
+        collateralOwner: collateralOwner?.toModel(),
+        nftModel: nft?.toDomain(),
+        expectedLoanAmount: expectedLoanAmount,
+        expectedLoanSymbol: expectedLoanSymbol,
       );
 
   factory LoanRequestCryptoItemResponse.fromJson(Map<String, dynamic> json) =>

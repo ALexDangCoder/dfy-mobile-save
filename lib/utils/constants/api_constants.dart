@@ -362,5 +362,11 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
   static const String CANCEL_OFFER_PAWN = '/cancel';
 
-  static const String GET_LOAN_REQUEST_LIST = '/defi-pawn-crypto-service/api/v1.0.0/loan-requests';
+  static const String GET_LOAN_REQUEST_LIST =
+      '/defi-pawn-crypto-service/api/v1.0.0/loan-requests';
+
+  static const String GET_LOAN_REQUEST =
+      '/defi-pawn-crypto-service/api/v1.0.0/loan-requests/';
+  static const String GET_NFT_LOAN_REQUEST =
+      '/defi-pawn-crypto-service/api/v1.0.0/loan-requests/nft';
 }
