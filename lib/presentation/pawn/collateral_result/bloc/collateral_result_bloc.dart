@@ -174,6 +174,9 @@ class CollateralResultBloc extends BaseCubit<CollateralResultState> {
         );
       },
       error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getListCollateral();
+        }
         emit(
           CollateralResultSuccess(
             CompleteType.ERROR,
