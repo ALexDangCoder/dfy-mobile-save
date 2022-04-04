@@ -120,32 +120,34 @@ class _NFTTabState extends State<NFTTab> with AutomaticKeepAliveClientMixin {
                         );
                       },
                     )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Image(
-                            image: const AssetImage(
-                              ImageAssets.img_search_empty,
+                  : state is BorrowListMyAccNFTSuccess
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image(
+                                image: const AssetImage(
+                                  ImageAssets.img_search_empty,
+                                ),
+                                height: 120.h,
+                                width: 120.w,
+                              ),
                             ),
-                            height: 120.h,
-                            width: 120.w,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 17.7.h,
-                        ),
-                        Center(
-                          child: Text(
-                            S.current.no_result_found,
-                            style: textNormal(
-                              Colors.white54,
-                              20.sp,
+                            SizedBox(
+                              height: 17.7.h,
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
+                            Center(
+                              child: Text(
+                                S.current.no_result_found,
+                                style: textNormal(
+                                  Colors.white54,
+                                  20.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
             ),
           ),
         );

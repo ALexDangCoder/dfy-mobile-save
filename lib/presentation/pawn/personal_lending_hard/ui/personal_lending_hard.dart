@@ -274,36 +274,38 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                             .toString(),
                                       ),
                                     )
-                                  : Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          height: 60.h,
-                                        ),
-                                        Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                              ImageAssets.img_search_empty,
+                                  : state is PersonalLendingHardSuccess
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 60.h,
                                             ),
-                                            height: 120.h,
-                                            width: 120.w,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 17.7.h,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            S.current.no_result_found,
-                                            style: textNormal(
-                                              Colors.white54,
-                                              20.sp,
+                                            Center(
+                                              child: Image(
+                                                image: const AssetImage(
+                                                  ImageAssets.img_search_empty,
+                                                ),
+                                                height: 120.h,
+                                                width: 120.w,
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                            SizedBox(
+                                              height: 17.7.h,
+                                            ),
+                                            Center(
+                                              child: Text(
+                                                S.current.no_result_found,
+                                                style: textNormal(
+                                                  Colors.white54,
+                                                  20.sp,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox.shrink(),
                             ),
                           ),
                         ),

@@ -106,6 +106,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   }
 
   void funFilter() {
+    list.clear();
     page = 0;
     statusListCollateral = [];
     statusListLoan = [];
