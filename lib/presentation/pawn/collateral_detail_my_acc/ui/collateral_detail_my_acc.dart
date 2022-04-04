@@ -5,6 +5,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/home_pawn/collateral_detail_my_acc_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail_my_acc/bloc/collateral_detail_my_acc_state.dart';
@@ -544,6 +545,12 @@ class _CollateralDetailMyAccScreenState
                                                           .type ??
                                                       0,
                                                 ),
+                                              );
+                                            } else {
+                                              showErrDialog(
+                                                context: context,
+                                                title: S.current.error,
+                                                content: 'NOT FOUNT 404',
                                               );
                                             }
                                           },

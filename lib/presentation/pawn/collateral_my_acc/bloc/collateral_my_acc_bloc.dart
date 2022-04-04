@@ -345,6 +345,9 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
         );
       },
       error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getListCollateral();
+        }
         emit(
           CollateralMyAccSuccess(
             CompleteType.ERROR,
