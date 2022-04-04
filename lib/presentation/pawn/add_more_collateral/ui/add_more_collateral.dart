@@ -426,6 +426,7 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                         Navigator.of(context).popUntil((route) {
                                           return route.settings.name ==
                                               AppRouter.contract_detail_my_acc;
+                                          
                                         });
                                       });
                                     },
