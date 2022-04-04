@@ -143,8 +143,6 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                 spaceH16,
                                 fromLoanTo(),
                                 spaceH20,
-                                checkBoxFrom(),
-                                spaceH20,
                               ],
                             ),
                           );
@@ -211,7 +209,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                     payValue: bloc.amountCollateral.value,
                                     tokenAddress:
                                         Get.find<AppConstants>().contract_defy,
-                                    title: S.current.confirm_send_offer,
+                                    title: S.current.confirm_new_collateral,
                                     listDetail: [
                                       DetailItemApproveModel(
                                         title: '${S.current.message}: ',
@@ -256,7 +254,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                                         amount: bloc.amountCollateral.value,
                                         supplyCurrency: bloc.textToken.value,
                                         collateral: bloc.item.nameShortToken,
-                                        txid: data,
+                                        txId: data,
                                       );
                                       showLoadSuccess(context).then((value) {
                                         Navigator.of(context).popUntil((route) {
@@ -289,58 +287,56 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
       ),
     );
   }
-
-  Widget checkBoxFrom() {
-    return RichText(
-      text: TextSpan(
-        text: '',
-        style: textNormalCustom(
-          AppTheme.getInstance().whiteColor(),
-          16,
-          FontWeight.w400,
-        ),
-        children: [
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-            child: StreamBuilder<bool>(
-              initialData: true,
-              stream: bloc.isCheckBox,
-              builder: (context, snapshot) {
-                return SizedBox(
-                  width: 24.w,
-                  height: 24.h,
-                  child: Transform.scale(
-                    scale: 1.34.sp,
-                    child: Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      fillColor: MaterialStateProperty.all(
-                        AppTheme.getInstance().fillColor(),
-                      ),
-                      activeColor: AppTheme.getInstance().activeColor(),
-                      // checkColor: const Colors,
-                      onChanged: (value) {
-                        bloc.isCheckBox.sink.add(value ?? false);
-                        bloc.checkButton();
-                      },
-                      value: snapshot.data ?? false,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          WidgetSpan(
-            child: spaceW16,
-          ),
-          TextSpan(
-            text: S.current.login_to_receive_email_notification,
-          ),
-        ],
-      ),
-    );
-  }
+  //
+  // Widget checkBoxFrom() {
+  //   return RichText(
+  //     text: TextSpan(
+  //       text: '',
+  //       style: textNormalCustom(
+  //         AppTheme.getInstance().whiteColor(),
+  //         16,
+  //         FontWeight.w400,
+  //       ),
+  //       children: [
+  //         WidgetSpan(
+  //           alignment: PlaceholderAlignment.middle,
+  //           child: StreamBuilder<bool>(
+  //             initialData: true,
+  //             stream: bloc.isCheckBox,
+  //             builder: (context, snapshot) {
+  //               return SizedBox(
+  //                 width: 24.w,
+  //                 height: 24.h,
+  //                 child: Transform.scale(
+  //                   scale: 1.34.sp,
+  //                   child: Checkbox(
+  //                     shape: RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.circular(6.r),
+  //                     ),
+  //                     fillColor: MaterialStateProperty.all(
+  //                       AppTheme.getInstance().fillColor(),
+  //                     ),
+  //                     activeColor: AppTheme.getInstance().activeColor(),
+  //                     onChanged: (value) {
+  //                       bloc.isCheckBox.sink.add(value ?? false);//todo.
+  //                     },
+  //                     value: snapshot.data ?? false,
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //         WidgetSpan(
+  //           child: spaceW16,
+  //         ),
+  //         TextSpan(
+  //           text: S.current.login_to_receive_email_notification,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget formCollateralAmount() {
     return Column(
