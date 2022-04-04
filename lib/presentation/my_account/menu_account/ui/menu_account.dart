@@ -16,6 +16,7 @@ import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubi
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/borrow_list_my_acc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/lend_contract_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/setting_my_acc/ui/setting_my_acc.dart';
@@ -369,6 +370,26 @@ class _MenuAccountState extends State<MenuAccount> {
                   pageRouter: PageRouter.MY_ACC,
                   index: 0,
                 ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
+      case 'contracts_lender':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: LenderContractList(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LenderContractList(),
               ),
             ).then((_) => cubit.getLoginState());
           }

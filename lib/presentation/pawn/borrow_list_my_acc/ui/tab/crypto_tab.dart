@@ -1,4 +1,5 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/bloc/borrow_list_my_acc_bloc.dart';
@@ -100,6 +101,9 @@ class _CryptoTabState extends State<CryptoTab>
                                 builder: (context) => ContractDetail(
                                   type: TypeBorrow.CRYPTO_TYPE,
                                   id: bloc.list[index].id ?? 0,
+                                ),
+                                settings: const RouteSettings(
+                                  name: AppRouter.contract_detail_my_acc,
                                 ),
                               ),
                             );

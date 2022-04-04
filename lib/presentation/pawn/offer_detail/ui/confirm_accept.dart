@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_bloc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ConfirmAccept extends StatefulWidget {
   const ConfirmAccept({
@@ -31,6 +38,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
           children: [
             Container(
               height: 812.h,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(
@@ -88,7 +96,7 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
                       horizontal: 16.w,
                     ),
                     child: Text(
-                      '${S.current.by_accept_offer}:',
+                      S.current.by_accept_offer,
                       style: textNormalCustom(
                         null,
                         16,
@@ -103,48 +111,37 @@ class _ConfirmAcceptState extends State<ConfirmAccept> {
               bottom: 0,
               child: GestureDetector(
                 onTap: () async {
-                  // final NavigatorState navigator = Navigator.of(context);
-                  // await bloc.getWithdrawCryptoCollateralData(
-                  //   wad: obj.bcCollateralId.toString(),
-                  // );
-                  // unawaited(
-                  //   navigator.push(
-                  //     MaterialPageRoute(
-                  //       builder: (context) => Approve(
-                  //         textActiveButton: S.current.send,
-                  //         spender:
-                  //         Get.find<AppConstants>().crypto_pawn_contract,
-                  //         hexString: bloc.hexString,
-                  //         tokenAddress: Get.find<AppConstants>().contract_defy,
-                  //         title: S.current.confirm_send_offer,
-                  //         listDetail: [
-                  //           DetailItemApproveModel(
-                  //             title: '${S.current.your_collateral}: ',
-                  //             value: '${formatPrice.format(
-                  //               obj.collateralAmount ?? 0,
-                  //             )}'
-                  //                 ' ${obj.collateralSymbol.toString().toUpperCase()}',
-                  //             urlToken: ImageAssets.getSymbolAsset(
-                  //               obj.collateralSymbol.toString(),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //         onErrorSign: (context) {},
-                  //         onSuccessSign: (context, data) {
-                  //           bloc.postCollateralWithdraw(
-                  //             id: obj.id.toString(),
-                  //           );
-                  //           showLoadSuccess(context).then((value) {
-                  //             Navigator.of(context).popUntil((route) {
-                  //               return route.settings.name ==
-                  //                   AppRouter.collateral_detail_myacc;
-                  //             });
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
+                  final NavigatorState navigator = Navigator.of(context);
+                  await widget.bloc.getAcceptCryptoOfferData(
+                    bcOfferId: widget.bloc.obj?.bcOfferId.toString() ?? '',
+                    bcCollateralId:
+                        widget.bloc.obj?.bcCollateralId.toString() ?? '',
+                  );
+                  unawaited(
+                    navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => Approve(
+                          textActiveButton: S.current.confirm_accept_offer,
+                          spender:
+                              Get.find<AppConstants>().crypto_pawn_contract,
+                          hexString: widget.bloc.hexStringAccept,
+                          tokenAddress: Get.find<AppConstants>().contract_defy,
+                          title: S.current.confirm_send_offer,
+                          listDetail: [],
+                          onErrorSign: (context) {},
+                          onSuccessSign: (context, data) {
+                            widget.bloc.putAcceptOffer();
+                            showLoadSuccess(context).then((value) {
+                              Navigator.of(context).popUntil((route) {
+                                return route.settings.name ==
+                                    AppRouter.collateral_detail_myacc;
+                              });
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   color: AppTheme.getInstance().bgBtsColor(),

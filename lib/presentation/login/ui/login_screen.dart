@@ -158,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
             width: 375.sw,
             height: 812.h,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,

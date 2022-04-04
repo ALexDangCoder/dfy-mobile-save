@@ -58,6 +58,7 @@ class _SearchNFTState extends State<SearchNFT> {
         child: Container(
           width: 375.w,
           height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,

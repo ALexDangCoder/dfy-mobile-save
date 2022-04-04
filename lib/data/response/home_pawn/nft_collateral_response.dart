@@ -161,7 +161,7 @@ class ContentResponse {
         price: expectedLoanAmount,
         name: nftName,
         tokenBuyOut: expectedLoanSymbol,
-        pawnId: bcCollateralId ?? 0,
+        pawnId: id ?? 0,
         totalCopies: totalOfCopies,
         numberOfCopies: numberOfCopies,
         walletAddress: borrowerWalletAddress,

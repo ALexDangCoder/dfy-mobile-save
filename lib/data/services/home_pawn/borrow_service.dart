@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
-import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
+import 'package:Dfy/data/request/pawn/calculate_repayment_fee.dart';
+import 'package:Dfy/data/request/pawn/review_create_request.dart';
 import 'package:Dfy/data/response/create_hard_nft/confirm_evaluation_response.dart';
 import 'package:Dfy/data/response/home_pawn/asset_filter_response.dart';
 import 'package:Dfy/data/response/home_pawn/borrow_list_my_acc_response.dart';
@@ -236,7 +237,7 @@ abstract class BorrowService {
 
   @POST(ApiConstants.COLLATERAL_WITHDRAW)
   Future<CollateralWithDrawResponse> postCollateralWithdraw(
-    @Field('id') String? id,
+    @Query('id') String? id,
   );
 
   @GET('${ApiConstants.OFFER_DETAIL_MY_ACC}{id}')
@@ -261,6 +262,13 @@ abstract class BorrowService {
     @Query('walletAddress') String? walletAddress,
     @Query('type') String? type,
   );
+
+  @GET('${ApiConstants.GET_DETAIl_LENDER}{id}')
+  Future<ContractlDetailMyAccResponse> getLenderDetail(
+      @Path('id') String? id,
+      @Query('walletAddress') String? walletAddress,
+      @Query('type') String? type,
+      );
 
   @GET(
       '${ApiConstants.GET_BORROW_REPAYMENT_HISTORY}{id}${ApiConstants.REPAYMENT_STATS}')
@@ -303,6 +311,29 @@ abstract class BorrowService {
   @POST('${ApiConstants.POST_REPAYMENT_PAY}{id}${ApiConstants.CALCULATE}')
   Future<RepaymentPayResponse> postRepaymentPay(
     @Path('id') String? id,
-    @Body() RepaymentPayRequest? repaymentPayRequest,
+    @Body() CalculateRepaymentRequest? repaymentPayRequest,
+  );
+
+  @PUT('${ApiConstants.PUT_ACCEPT_OFFER}{id}${ApiConstants.ACCEPT_OFFER_PAWN}')
+  Future<String> putAcceptOffer(
+    @Path('id') String? id,
+  );
+
+  @PUT('${ApiConstants.PUT_CANCEL_OFFER}{id}${ApiConstants.CANCEL_OFFER_PAWN}')
+  Future<String> putCancelOffer(
+    @Path('id') String? id,
+  );
+
+  @PUT('${ApiConstants.ADD_MORE_COLLATERAL}{id}${ApiConstants.COLLATERAL}')
+  Future<String> putAddMoreCollateral(
+    @Path('id') String? id,
+    @Field('amount') double? amount,
+    @Field('symbol') String? collateral,
+    @Field('txnHash') String? description,
+  );
+
+  @POST(ApiConstants.REVIEW_RATE)
+  Future<String> postReview(
+    @Body() ReviewCreateRequest? reviewCreateRequest,
   );
 }

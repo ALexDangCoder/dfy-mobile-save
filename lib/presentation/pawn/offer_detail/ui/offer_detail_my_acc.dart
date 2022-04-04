@@ -6,8 +6,10 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_state.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -249,7 +251,19 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                         Center(
                                           child: GestureDetector(
                                             onTap: () {
-                                              //todo
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      OtherProfile(
+                                                    userId:
+                                                        bloc.userId.toString(),
+                                                    index: 1,
+                                                    pageRouter:
+                                                        PageRouter.MARKET,
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
@@ -369,25 +383,24 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return ConfirmAccept(
-                                                bloc: bloc,
-                                              );
-                                            },
-                                          ),
-                                        );
                                         if (PrefsService.getCurrentWalletCore()
-                                                .toLowerCase() ==
-                                            obj.walletAddress) {
-                                          //todo
+                                                .toLowerCase() !=
+                                            obj.walletAddress?.toUpperCase()) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return ConfirmReject(
+                                                  bloc: bloc,
+                                                );
+                                              },
+                                            ),
+                                          );
                                         } else {
-                                          // showAlert(
-                                          //   context,
-                                          //   obj.walletAddress.toString(),
-                                          // );//todo
+                                          showAlert(
+                                            context,
+                                            obj.walletAddress.toString(),
+                                          );
                                         }
                                       },
                                       child: Container(
@@ -419,25 +432,24 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return ConfirmReject(
-                                                bloc: bloc,
-                                              );
-                                            },
-                                          ),
-                                        );
                                         if (PrefsService.getCurrentWalletCore()
-                                                .toLowerCase() ==
-                                            obj.walletAddress) {
-                                          //todo
+                                                .toLowerCase() !=
+                                            obj.walletAddress?.toUpperCase()) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return ConfirmAccept(
+                                                  bloc: bloc,
+                                                );
+                                              },
+                                            ),
+                                          );
                                         } else {
-                                          // showAlert(
-                                          //   context,
-                                          //   obj.walletAddress.toString(),
-                                          // );//todo
+                                          showAlert(
+                                            context,
+                                            obj.walletAddress.toString(),
+                                          );
                                         }
                                       },
                                       child: SizedBox(

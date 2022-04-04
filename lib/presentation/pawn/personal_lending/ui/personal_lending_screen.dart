@@ -81,6 +81,8 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                 },
                 child: Container(
                   height: 812.h,
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: BorderRadius.only(
@@ -257,7 +259,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                       itemCount: list.length,
                                       itemBuilder: (context, index) =>
                                           PersonalItem(
-                                            id: list[index].id.toString(),
+                                        id: list[index].id.toString(),
                                         rate: list[index].reputation.toString(),
                                         isShop: list[index].isKYC ?? false,
                                         nameShop: list[index].name.toString(),

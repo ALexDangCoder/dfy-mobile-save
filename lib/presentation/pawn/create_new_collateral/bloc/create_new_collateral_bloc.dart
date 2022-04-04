@@ -57,12 +57,12 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
     String? expectedLoanDurationType,
     String? status,
     String? supplyCurrency,
-    String? txid,
+    String? txId,
     String? walletAddress,
   }) async {
     final Result<ResultCreateNewModel> response =
         await _pawnService.postCreateNewCollateral(
-      txid: txid,
+      txid: txId,
       collateral: collateral,
       supplyCurrency: supplyCurrency,
       amount: amount,
@@ -138,8 +138,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   }
 
   void checkButton() {
-    if (isCheckBox.value &&
-        amountCollateral.value.isNotEmpty &&
+    if (amountCollateral.value.isNotEmpty &&
         textMess.value.isNotEmpty &&
         textDuration.value.isNotEmpty) {
       isCheckBtn.add(true);

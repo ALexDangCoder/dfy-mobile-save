@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
@@ -23,6 +24,10 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   static const int CANCEL_OFFER = 9;
   static const int OPEN_OFFER = 3;
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
+  String? hexStringAccept;
+  String? hexStringReject;
+  String? userId;
+  OfferDetailMyAcc? obj;
 
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
     getOfferDetailMyAcc(id: id);
@@ -30,6 +35,56 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
 
   BorrowRepository get _pawnService => Get.find();
   final Web3Utils web3Client = Web3Utils();
+
+  Future<void> getCancelCryptoOfferData({
+    required String bcCollateralId,
+    required String bcOfferId,
+  }) async {
+    try {
+      showLoading();
+      hexStringReject = await web3Client.getCancelCryptoOfferData(
+        nftCollateralId: bcCollateralId,
+        offerId: bcOfferId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  Future<void> putCancelOffer() async {
+    final Result<String> response = await _pawnService.putCancelOffer(
+      id: id,
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
+
+  Future<void> putAcceptOffer() async {
+    final Result<String> response = await _pawnService.putAcceptOffer(
+      id: id,
+    );
+    response.when(
+      success: (response) {},
+      error: (error) {},
+    );
+  }
+
+  Future<void> getAcceptCryptoOfferData({
+    required String bcCollateralId,
+    required String bcOfferId,
+  }) async {
+    try {
+      showLoading();
+      hexStringAccept = await web3Client.getAcceptCryptoOfferData(
+        nftCollateralId: bcCollateralId,
+        offerId: bcOfferId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
 
   Future<void> getOfferDetailMyAcc({
     String? id,
@@ -41,6 +96,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     );
     response.when(
       success: (response) {
+        obj = response;
         emit(
           OfferDetailMyAccSuccess(
             CompleteType.SUCCESS,
@@ -95,6 +151,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
         return false;
       case REJECT_OFFER:
         return false;
+      case CANCEL_OFFER:
+        return false;
       default:
         return true;
     }
@@ -108,7 +166,8 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
     response.when(
       success: (response) {
         if (response.isNotEmpty) {
-          rate.add(response.first.reputationBorrower.toString());
+          rate.add(response.first.reputationLender.toString());
+          userId=response.first.userId.toString();
         }
       },
       error: (error) {},

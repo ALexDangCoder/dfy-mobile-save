@@ -35,6 +35,7 @@ class ImportTokenScreen extends StatelessWidget {
           length: 2,
           child: Container(
             height: 812.h,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             width: 375.w,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),

@@ -21,9 +21,9 @@ class TokenSuccessfully extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           width: 375.w,
           decoration: BoxDecoration(
-            // shape: BoxShape.circle,
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30.r),

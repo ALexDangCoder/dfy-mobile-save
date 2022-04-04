@@ -56,6 +56,7 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
           },
           child: Container(
             height: 812.h,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(
@@ -139,9 +140,6 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                             14,
                             FontWeight.w600,
                           ),
-                          onTap: (index) {
-                            //todo
-                          },
                           tabs: [
                             Tab(
                               text: S.current.crypto,

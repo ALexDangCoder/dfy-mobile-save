@@ -92,6 +92,7 @@ class _BaseCustomScrollViewState extends State<BaseCustomScrollViewDetail> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 812.h,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),

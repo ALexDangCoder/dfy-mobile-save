@@ -7,12 +7,14 @@ import 'package:Dfy/domain/model/pawn/detail_collateral.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail/bloc/collateral_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/collateral_detail/bloc/collateral_detail_state.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/send_offer_pawn/ui/send_offer_pawn_screen.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -184,7 +186,18 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
                         spaceH20,
                         GestureDetector(
                           onTap: () {
-                            //todo
+                            goTo(
+                              context,
+                              OtherProfile(
+                                index: 1,
+                                userId: obj
+                                    .userId
+                                    .toString(),
+                                pageRouter:
+                                PageRouter
+                                    .MY_ACC,
+                              ),
+                            );
                           },
                           child: Center(
                             child: Container(

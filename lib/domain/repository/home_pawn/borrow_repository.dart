@@ -1,5 +1,6 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
-import 'package:Dfy/data/request/pawn/repayment_pay_request.dart';
+import 'package:Dfy/data/request/pawn/calculate_repayment_fee.dart';
+import 'package:Dfy/data/request/pawn/review_create_request.dart';
 import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
@@ -89,7 +90,7 @@ mixin BorrowRepository {
   Future<Result<List<NftMarket>>> getListNFTCollateral({
     String? page,
     String? size,
-    String? maximunLoanAmount,
+    String? maxiMunLoanAmount,
     String? loanSymbols,
     String? durationTypes,
     String? durationQuantity,
@@ -213,6 +214,12 @@ mixin BorrowRepository {
     String? type,
   });
 
+  Future<Result<ContractDetailPawn>> getLenderDetail({
+    String? id,
+    String? walletAddress,
+    String? type,
+  });
+
   Future<Result<RepaymentStatsModel>> getRepaymentHistory({
     String? id,
   });
@@ -245,6 +252,25 @@ mixin BorrowRepository {
 
   Future<Result<RepaymentRequestModel>> postRepaymentPay({
     String? id,
-    RepaymentPayRequest? repaymentPayRequest,
+    CalculateRepaymentRequest? repaymentPayRequest,
+  });
+
+  Future<Result<String>> putCancelOffer({
+    String? id,
+  });
+
+  Future<Result<String>> putAcceptOffer({
+    String? id,
+  });
+
+  Future<Result<String>> putAddMoreCollateral({
+    String? id,
+    double? amount,
+    String? symbol,
+    String? txnHash,
+  });
+
+  Future<Result<String>> postReview({
+    ReviewCreateRequest? reviewCreateRequest,
   });
 }

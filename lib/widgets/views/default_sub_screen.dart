@@ -23,6 +23,7 @@ class DefaultSubScreen extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 812.h,
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           width: 375.w,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
