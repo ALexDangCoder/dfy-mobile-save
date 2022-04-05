@@ -24,8 +24,10 @@ class ReviewBorrower extends StatefulWidget {
     Key? key,
     required this.type,
     required this.objDetail,
+    required this.typeBorrow,
   }) : super(key: key);
   final TypeNavigator type;
+  final TypeBorrow typeBorrow;
   final ContractDetailPawn objDetail;
 
   @override
@@ -253,7 +255,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                     GestureDetector(
                       onTap: () {
                         PrefsService.savePleaseRate(
-                            bloc.isCheckBox.value.toString());
+                          bloc.isCheckBox.value.toString(),
+                        );
                         Navigator.pop(context);
                       },
                       child: Container(
@@ -281,14 +284,17 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        PrefsService.savePleaseRate(
-                          bloc.isCheckBox.value.toString(),
-                        );
+                      onTap: () async {
                         final NavigatorState navigator = Navigator.of(context);
-                        // await bloc.getWithdrawCryptoCollateralData(
-                        //   wad: obj.bcCollateralId.toString(),
-                        // );..//todo bloc
+                        await bloc.getHexString(
+                          bcContractAddress: widget
+                                  .objDetail.contractTerm?.walletAddress
+                                  .toString() ??
+                              '',
+                          bcContractId:
+                              widget.objDetail.bcContractId.toString(),
+                          typeBorrow: widget.typeBorrow,
+                        );
                         unawaited(
                           navigator.push(
                             MaterialPageRoute(
@@ -335,6 +341,9 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                               ),
                             ),
                           ),
+                        );
+                        await PrefsService.savePleaseRate(
+                          bloc.isCheckBox.value.toString(),
                         );
                       },
                       child: SizedBox(

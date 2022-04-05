@@ -251,7 +251,6 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
   }) async {
     final Map<String, String> map = {
       'amount': amount,
-      'bcPackageId': bcPackageId,
       'collateral': collateral,
       'collateralId': collateralId,
       'description': description,
