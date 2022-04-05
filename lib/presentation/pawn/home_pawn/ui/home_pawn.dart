@@ -794,7 +794,13 @@ class _HomePawnState extends State<HomePawn> {
           ),
           InkWell(
             onTap: (){
-              goTo(context, const TotalNotification());
+              showDialog(
+                context: context,
+                builder: (context) => const ConnectWalletDialog(
+                  navigationTo: TotalNotification(),
+                  isRequireLoginEmail: true,
+                ),
+              ).then((_) => null);
             },
             child: SizedBox(
               height: 24.h,

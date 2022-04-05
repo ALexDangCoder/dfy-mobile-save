@@ -214,6 +214,14 @@ TextStyle richTextBlue = GoogleFonts.sourceSansPro(
   fontSize: 14.sp,
   decoration: TextDecoration.underline,
 );
+
+TextStyle richTextOrange = GoogleFonts.sourceSansPro(
+  color: Colors.orange,
+  fontWeight: FontWeight.w400,
+  fontSize: 14.sp,
+  decoration: TextDecoration.underline,
+);
+
 TextStyle richTextWhite = GoogleFonts.sen(
   color: AppTheme.getInstance().textThemeColor(),
   fontWeight: FontWeight.w400,
