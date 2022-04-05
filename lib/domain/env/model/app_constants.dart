@@ -70,6 +70,9 @@ class AppConstants {
   @JsonKey(name: 'collateral_contract')
   String collateral_contract;
 
+  @JsonKey(name: 'review_contract')
+  String review_contract;
+
   AppConstants(
     this.type,
     this.baseUrl,
@@ -93,6 +96,7 @@ class AppConstants {
     this.crypto_pawn_contract,
     this.pawn_custom_url,
     this.collateral_contract,
+    this.review_contract,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>
