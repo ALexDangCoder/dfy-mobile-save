@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/home_pawn/user_repository.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/pawn/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:Dfy/presentation/pawn/verification/ui/step_two_verify.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -21,7 +22,6 @@ import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../main.dart';
 
 part 'verification_state.dart';
 
@@ -385,7 +385,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
     final Map<String,dynamic> map = {
       'address': userProfile.kyc?.address,
       'backPhoto': userProfile.kyc?.backPhoto,
-      'cityID':userProfile.kyc?.city?.id,
+      'cityId':userProfile.kyc?.city?.id,
       'countryId':userProfile.kyc?.country?.id,
       'dateOfBirth': selectBirth.value,
       'id': userProfile.kyc?.id ?? 0,
@@ -397,7 +397,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
       'name': '${userProfile.kyc?.firstName} ${userProfile.kyc?.middleName} ${userProfile.kyc?.lastName}',
       'selfiePhoto': mediaSelfieCid,
       'typePhoto': 0,
-      'userID': userProfile.id,
+      'userId': userProfile.id,
       'walletAddress':walletAddress.value,
     };
     final Result<KYC> result = await _repo.putKYCtoBE(map:map);
