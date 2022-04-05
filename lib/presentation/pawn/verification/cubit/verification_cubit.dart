@@ -8,6 +8,7 @@ import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/domain/model/wallet.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
 import 'package:Dfy/domain/repository/home_pawn/user_repository.dart';
+import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/pawn/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:Dfy/presentation/pawn/verification/ui/step_two_verify.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
@@ -21,7 +22,6 @@ import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../main.dart';
 
 part 'verification_state.dart';
 
