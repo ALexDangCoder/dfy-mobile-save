@@ -71,7 +71,7 @@ class _StepThreeVerifyState extends State<StepThreeVerify> {
                 await showLoadSuccess(context, onlySuccess: true).then(
                       (value) {
                         Navigator.of(context)
-                          ..pop()..pop()..pop()..pop()
+                          ..pop()..pop()..pop()
                           ..pop(true);
                       }
                 );

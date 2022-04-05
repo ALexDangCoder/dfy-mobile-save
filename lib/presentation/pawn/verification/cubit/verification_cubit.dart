@@ -385,7 +385,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
     final Map<String,dynamic> map = {
       'address': userProfile.kyc?.address,
       'backPhoto': userProfile.kyc?.backPhoto,
-      'cityID':userProfile.kyc?.city?.id,
+      'cityId':userProfile.kyc?.city?.id,
       'countryId':userProfile.kyc?.country?.id,
       'dateOfBirth': selectBirth.value,
       'id': userProfile.kyc?.id ?? 0,
@@ -397,7 +397,7 @@ class VerificationCubit extends BaseCubit<VerificationState> {
       'name': '${userProfile.kyc?.firstName} ${userProfile.kyc?.middleName} ${userProfile.kyc?.lastName}',
       'selfiePhoto': mediaSelfieCid,
       'typePhoto': 0,
-      'userID': userProfile.id,
+      'userId': userProfile.id,
       'walletAddress':walletAddress.value,
     };
     final Result<KYC> result = await _repo.putKYCtoBE(map:map);
