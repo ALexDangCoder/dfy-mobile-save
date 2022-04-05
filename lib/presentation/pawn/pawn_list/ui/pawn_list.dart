@@ -268,6 +268,7 @@ class _PawnListState extends State<PawnList> {
                                   collateral:
                                       list[index].collateralAccepted ?? [],
                                   isShop: list[index].isKYC ?? false,
+                                  userId: list[index].userId.toString(),
                                 ),
                               ),
                             ),

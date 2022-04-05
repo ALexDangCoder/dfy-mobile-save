@@ -59,7 +59,7 @@ class _ItemWidgetFilterState extends State<ItemWidgetFilter> {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 4,
                 crossAxisSpacing: 10,
                 childAspectRatio: 55 / 15,
               ),

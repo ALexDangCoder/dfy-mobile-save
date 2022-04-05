@@ -109,7 +109,7 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
 
     if (textAddressFilter.value == S.current.all) {
       textAddress = 'all';
-      textAddress = 'all';
+      textAddressNFT = 'all';
     } else {
       textAddress = textAddressFilter.value.toLowerCase();
       textAddressNFT = textAddressFilter.value.toLowerCase();
