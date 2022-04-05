@@ -48,6 +48,7 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
               }
             },
             child: Container(
+              height: 764.h,
               decoration: BoxDecoration(
                 color: AppTheme.getInstance().bgBtsColor(),
                 borderRadius: BorderRadius.only(

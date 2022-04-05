@@ -229,6 +229,7 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
     );
     response.when(
       success: (response) {
+        listOffersReceived.clear();
         listOffersReceived.addAll(response);
         isAdd.add(isAdd.value);
       },
@@ -247,6 +248,7 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
     );
     response.when(
       success: (response) {
+        listSendToLoanPackageModel.clear();
         listSendToLoanPackageModel.addAll(response);
         isAddSend.add(isAddSend.value);
       },
