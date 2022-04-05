@@ -140,9 +140,6 @@ class _BorrowListMyAccScreenState extends State<BorrowListMyAccScreen>
                             14,
                             FontWeight.w600,
                           ),
-                          onTap: (index) {
-                            //todo
-                          },
                           tabs: [
                             Tab(
                               text: S.current.crypto,

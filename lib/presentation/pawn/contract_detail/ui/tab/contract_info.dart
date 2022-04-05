@@ -66,7 +66,7 @@ class _ContractInfoState extends State<ContractInfo>
             value: '${obj.contractTerm?.interestRate.toString() ?? '0'}%',
           ),
           spaceH16,
-          if (widget.bloc.type == TypeBorrow.CRYPTO_TYPE)
+          if (widget.bloc.typeBorrow == TypeBorrow.CRYPTO_TYPE)
             RichText(
               text: TextSpan(
                 text: '',
@@ -294,7 +294,7 @@ class _ContractInfoState extends State<ContractInfo>
                   name: S.current.ltv_liquidation_threshold,
                   content: S.current.learn_more_about_ltv,
                 ),
-              ); //todo
+              );
             },
             title: S.current.ltv_liquid_thres,
             value: '${obj.liquidationType}%',

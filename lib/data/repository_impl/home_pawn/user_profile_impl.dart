@@ -272,4 +272,20 @@ class UserProfileRepositoryImpl implements UsersRepository {
           (response) => response,
     );
   }
+
+  @override
+  Future<Result<int>> getReward() {
+    return runCatchingAsync<int, int>(
+          () => _userService.getReward(),
+          (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<KYC>> putKYCtoBE({required Map<String, dynamic> map}) {
+    return runCatchingAsync<KycResponse, KYC>(
+    () => _userService.saveKYC(map),
+    (response) => response.toDomain(),
+    );
+  }
 }

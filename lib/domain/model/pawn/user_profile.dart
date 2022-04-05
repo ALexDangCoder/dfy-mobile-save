@@ -46,7 +46,7 @@ class KYC {
   String? frontPhoto;
   String? backPhoto;
   String? selfiePhoto;
-  int? kycNumber;
+  String? kycNumber;
   String? address;
   int? status;
   int? dateOfBirth;
@@ -56,6 +56,7 @@ class KYC {
   String? walletAddress;
   String? email;
   int? createAt;
+  String? reason;
   int? verifyAt;
   String? emailAdminVerify;
 
@@ -81,6 +82,7 @@ class KYC {
     this.createAt,
     this.verifyAt,
     this.emailAdminVerify,
+    this.reason,
   });
 }
 

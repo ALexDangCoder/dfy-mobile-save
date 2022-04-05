@@ -257,7 +257,7 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                                   builder: (context) =>
                                                       OtherProfile(
                                                     userId:
-                                                        obj.userId.toString(),
+                                                        bloc.userId.toString(),
                                                     index: 1,
                                                     pageRouter:
                                                         PageRouter.MARKET,

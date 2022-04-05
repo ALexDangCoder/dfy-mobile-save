@@ -1,8 +1,13 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
+import 'package:Dfy/domain/model/pawn/loan_request_list/loan_request_crypto_item_model.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/widgets/views/custom_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +15,17 @@ import 'package:intl/intl.dart';
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class LenderLoanRequestNftItem extends StatelessWidget {
-  const LenderLoanRequestNftItem({Key? key}) : super(key: key);
+  const LenderLoanRequestNftItem({
+    Key? key,
+    required this.cubit,
+    required this.nftModel,
+  }) : super(key: key);
+  final LoanRequestCryptoModel nftModel;
+  final LenderLoanRequestCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    final nftItem = nftModel.nftModel;
     return Container(
       width: 343.w,
       padding: EdgeInsets.only(
@@ -22,6 +34,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
         top: 12.h,
         bottom: 12.h,
       ),
+      margin: EdgeInsets.only(bottom: 16.w),
       decoration: BoxDecoration(
         border: Border.all(
           color: AppTheme.getInstance().divideColor(),
@@ -34,12 +47,15 @@ class LenderLoanRequestNftItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _imageFtNameNft(),
+          _imageFtNameNft(
+            nftModel: nftItem ?? NFTPawnModel(),
+          ),
           spaceH12,
           _rowItem(
             title: S.current.borrower.capitalize(),
             description: Text(
-              '0x723....0238',
+              (nftModel.collateralOwner?.walletAddress ?? '')
+                  .formatAddressWalletConfirm(),
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 14,
@@ -53,7 +69,10 @@ class LenderLoanRequestNftItem extends StatelessWidget {
           _rowItem(
             title: S.current.duration.capitalize(),
             description: Text(
-              '12 months',
+              cubit.categoryOneOrMany(
+                durationQty: nftModel.durationQty ?? 0,
+                durationType: nftModel.durationType ?? 0,
+              ),
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 14,
@@ -65,7 +84,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
           _rowItem(
             title: S.current.asset_location.capitalize(),
             description: Text(
-              '4517 Washington Ave. Manchester, Kentucky 39495',
+              'tam thoi dang trong do be chua co data',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 14,
@@ -77,9 +96,9 @@ class LenderLoanRequestNftItem extends StatelessWidget {
           _rowItem(
             title: S.current.status.capitalize(),
             description: Text(
-              'open',
+              cubit.getStatus(nftModel.status.toString()),
               style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
+                cubit.getColor(nftModel.status.toString()),
                 14,
                 FontWeight.w400,
               ),
@@ -94,7 +113,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
           _rowItem(
             title: S.current.expected_loan.capitalize(),
             description: Text(
-              '${formatValue.format(100000000)} USDT',
+              '${formatValue.format(nftModel.expectedLoanAmount)} ${nftModel.expectedLoanSymbol}',
               style: textNormalCustom(
                 AppTheme.getInstance().whiteColor(),
                 24,
@@ -109,8 +128,11 @@ class LenderLoanRequestNftItem extends StatelessWidget {
 
   Row _imageFtNameNft({
     bool? isHardNft = false,
+    required NFTPawnModel nftModel,
   }) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Stack(
@@ -118,7 +140,10 @@ class LenderLoanRequestNftItem extends StatelessWidget {
               SizedBox(
                 height: 100.h,
                 width: 100.w,
-                child: Image.network(ImageAssets.getUrlToken('DFY')),
+                child: CustomImageNetwork(
+                  image: ApiConstants.BASE_URL_IMAGE +
+                      (nftModel.nftAvatarCid ?? ''),
+                ),
               ),
               if (isHardNft ?? false)
                 Positioned(
@@ -133,13 +158,14 @@ class LenderLoanRequestNftItem extends StatelessWidget {
             ],
           ),
         ),
+        spaceW10,
         Expanded(
           flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'The lonely tree',
+                nftModel.nftName ?? '',
                 style: textNormalCustom(
                   AppTheme.getInstance().whiteColor(),
                   16,
@@ -150,7 +176,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'BDA collection',
+                    nftModel.collectionName ?? '',
                     style: textNormalCustom(
                       AppTheme.getInstance().whiteWithOpacitySevenZero(),
                       14,
@@ -185,6 +211,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
             ),
           ),
         ),
+        spaceW10,
         Expanded(
           flex: 6,
           child: description,

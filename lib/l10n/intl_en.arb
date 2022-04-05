@@ -995,6 +995,7 @@
   "total_loan": "Total loan",
   "late": "Late",
   "wait_payment": "Wait payment",
+  "lender_contract_list": "Lend contract list",
   "the_current_ltv": "The current LTV has reached LTV liquidation threshold",
   "loan_repayment": "Loan repayment is overdue",
   "maximum_late_payment": "Maximum late payment has been made ",
@@ -1008,5 +1009,7 @@
   "pay": "Pay",
   "learn_more_about": "Learn more about  Loan to value",
   "learn_more_about_ltv": "Learn more about LTV liquidation threshhold",
-  "prepaid_fee": "Prepaid fee"
+  "prepaid_fee": "Prepaid fee",
+  "request_detail": "Request detail",
+  "reject_request": "Reject request"
 }

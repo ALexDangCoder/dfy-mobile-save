@@ -23,7 +23,7 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 part 'offer_sent_list_state.dart';
 
 class OfferSentListCubit extends BaseCubit<OfferSentListState> {
-  OfferSentListCubit() : super(OfferSentListInitial());
+  OfferSentListCubit() : super(OfferSentListInitial()) {}
 
   ///DI
   OfferSentRepository get _offerSentService => Get.find();
@@ -252,31 +252,48 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
 
   WalletAddressRepository get _walletAddressRepository => Get.find();
 
-  final List<Map<String, dynamic>> walletAddressDropDown = [];
+  final List<Map<String, dynamic>> walletAddressDropDown = [
+    {'value': '', 'label': 'All'}
+  ];
+  bool isGotWallet = false;
+
+  BehaviorSubject<List<Map<String, dynamic>>> listWalletBHVSJ =
+      BehaviorSubject();
 
   Future<void> getListWallet() async {
-    final Result<List<WalletAddressModel>> result =
-        await _walletAddressRepository.getListWalletAddress();
-    result.when(
-      success: (res) {
-        for (final element in res) {
+    if (isGotWallet) {
+    } else {
+      final Result<List<WalletAddressModel>> result =
+          await _walletAddressRepository.getListWalletAddress();
+      result.when(
+        success: (res) {
+          for (final element in res) {
+            if ((element.walletAddress ?? '') ==
+                    PrefsService.getCurrentBEWallet() ||
+                (element.walletAddress ?? '').isEmpty) {
+            } else {
+              walletAddressDropDown.add(
+                {
+                  'value': element.walletAddress ?? '',
+                  'label': (element.walletAddress ?? '').formatAddressWallet(),
+                },
+              );
+            }
+          }
+          listWalletBHVSJ.sink.add(walletAddressDropDown);
+        },
+        error: (error) {
           walletAddressDropDown.add(
             {
-              'value': element.walletAddress ?? '',
-              'label': (element.walletAddress ?? '').formatAddressWallet(),
+              'value': PrefsService.getCurrentBEWallet(),
+              'label': PrefsService.getCurrentBEWallet().formatAddressWallet(),
             },
           );
-        }
-      },
-      error: (error) {},
-    );
-
-    walletAddressDropDown.add(
-      {
-        'value': '1',
-        'label': '23',
-      },
-    );
+          listWalletBHVSJ.sink.add(walletAddressDropDown);
+        },
+      );
+      isGotWallet = true;
+    }
   }
 
   String statusFilter = '';

@@ -285,7 +285,7 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                           const SizedBox.shrink(),
                                       ],
                                     )
-                                  : Column(
+                                  : state is CollateralResultSuccess?Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -314,7 +314,7 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ): const SizedBox.shrink(),
                             ),
                           ),
                         ),

@@ -89,6 +89,20 @@ final dividerCreateNFT = SizedBox(
     color: AppTheme.getInstance().lineCreateNFT(),
   ),
 );
+final dividerVerify = SizedBox(
+  width: 114.w,
+  child: Divider(
+    thickness: 1,
+    color: AppTheme.getInstance().lineCreateNFT(),
+  ),
+);
+final dividerVerifySuccess = SizedBox(
+  width: 114.w,
+  child: Divider(
+    thickness: 1,
+    color: AppTheme.getInstance().successTransactionColors(),
+  ),
+);
 
 final dividerSuccessCreateNFT = SizedBox(
   width: 66.w,

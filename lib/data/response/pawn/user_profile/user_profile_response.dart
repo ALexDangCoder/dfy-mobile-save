@@ -183,7 +183,7 @@ class KycResponse {
   @JsonKey(name: 'selfiePhoto')
   String? selfiePhoto;
   @JsonKey(name: 'kycNumber')
-  int? kycNumber;
+  String? kycNumber;
   @JsonKey(name: 'address')
   String? address;
   @JsonKey(name: 'status')
@@ -200,6 +200,8 @@ class KycResponse {
   String? walletAddress;
   @JsonKey(name: 'email')
   String? email;
+  @JsonKey(name: 'reason')
+  String? reason;
   @JsonKey(name: 'createAt')
   int? createAt;
   @JsonKey(name: 'verifyAt')
@@ -225,6 +227,7 @@ class KycResponse {
       this.city,
       this.isActive,
       this.walletAddress,
+      this.reason,
       this.email,
       this.createAt,
       this.verifyAt,
@@ -257,6 +260,7 @@ class KycResponse {
     createAt: createAt,
     verifyAt: verifyAt,
     emailAdminVerify: emailAdminVerify,
+    reason: reason,
   );
 }
 

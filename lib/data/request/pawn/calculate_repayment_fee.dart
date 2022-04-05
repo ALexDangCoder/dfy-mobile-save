@@ -1,31 +1,35 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'repayment_pay_request.g.dart';
+part 'calculate_repayment_fee.g.dart';
 
 @JsonSerializable()
-class RepaymentPayRequest {
+class CalculateRepaymentRequest {
   AmountRequest? interest;
   AmountRequest? loan;
   AmountRequest? penalty;
 
-  RepaymentPayRequest({
+  CalculateRepaymentRequest({
     this.interest,
     this.loan,
     this.penalty,
   });
 
-  factory RepaymentPayRequest.fromJson(Map<String, dynamic> json) =>
-      _$RepaymentPayRequestFromJson(json);
+  factory CalculateRepaymentRequest.fromJson(Map<String, dynamic> json) =>
+      _$CalculateRepaymentRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RepaymentPayRequestToJson(this);
+  Map<String, dynamic> toJson() => _$CalculateRepaymentRequestToJson(this);
 }
 
 @JsonSerializable()
 class AmountRequest {
   double? amount;
+  String? address;
+  String? symbol;
 
   AmountRequest({
     this.amount,
+    this.address,
+    this.symbol,
   });
 
   factory AmountRequest.fromJson(Map<String, dynamic> json) =>

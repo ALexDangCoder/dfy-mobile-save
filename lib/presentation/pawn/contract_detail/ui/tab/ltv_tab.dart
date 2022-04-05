@@ -192,10 +192,10 @@ class _LTVTABState extends State<LTVTAB>
                                     showDialog(
                                       context: context,
                                       builder: (_) => InfoPopup(
-                                        name: S.current.ltv_liquid_thres,
-                                        content: S.current.ltv_liquid_thres,
+                                        name: S.current.your_current_ltv,
+                                        content: S.current.your_current_ltv_is,
                                       ),
-                                    ); //todo
+                                    );
                                   },
                                   child: Image.asset(
                                     ImageAssets.ic_about_2,

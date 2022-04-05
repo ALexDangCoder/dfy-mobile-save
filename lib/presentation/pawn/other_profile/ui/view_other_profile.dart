@@ -109,7 +109,8 @@ class _OtherProfileState extends State<OtherProfile>
               return BaseDesignScreen(
                 title: snapshot.data ?? 'View profile',
                 child: state is OtherProfileSuccess
-                    ? NestedScrollView(
+                    ?
+                NestedScrollView(
                   controller: scrollController,
                   physics: const ScrollPhysics(),
                   body: DefaultTabController(
@@ -244,7 +245,7 @@ class _OtherProfileState extends State<OtherProfile>
                                         ),
                                       ),
                                       spaceH4,
-                                      if (cubit.userProfile.kyc != null)
+                                      if (cubit.userProfile.kyc?.status == 2)
                                         Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,

@@ -24,7 +24,7 @@ abstract class Step1Client {
   factory Step1Client(Dio dio, {String baseUrl}) = _Step1Client;
 
   @GET(ApiConstants.GET_PHONE_CODE)
-  Future<ListPhoneCodeResponse  > getPhoneCode();
+  Future<ListPhoneCodeResponse> getPhoneCode();
 
   @GET(ApiConstants.GET_COUNTRIES)
   Future<ListCountryResponse> getCountries();

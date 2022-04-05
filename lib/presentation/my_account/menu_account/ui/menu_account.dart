@@ -16,9 +16,12 @@ import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_cubi
 import 'package:Dfy/presentation/my_account/menu_account/cubit/menu_account_state.dart';
 import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/borrow_list_my_acc.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/lend_contract_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/lender_loan_request_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/setting_my_acc/ui/setting_my_acc.dart';
+import 'package:Dfy/presentation/pawn/verification/ui/verification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -373,13 +376,13 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
-      case 'setting':
+      case 'contracts_lender':
         {
           if (state is NoLoginState) {
             showDialog(
               context: context,
               builder: (context) => const ConnectWalletDialog(
-                navigationTo: SettingMyAcc(),
+                navigationTo: LenderContractList(),
                 isRequireLoginEmail: false,
               ),
             ).then((_) => cubit.getLoginState());
@@ -387,7 +390,73 @@ class _MenuAccountState extends State<MenuAccount> {
             Navigator.push(
               context,
               MaterialPageRoute(
+                builder: (context) => const LenderContractList(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
+      case 'loan_request_lender':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: LenderLoanRequest(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LenderLoanRequest(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
+      case 'setting':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: SettingMyAcc(),
+                isRequireLoginEmail: true,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
                 builder: (context) => const SettingMyAcc(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
+      case 'verification':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: Verification(),
+                isRequireLoginEmail: true,
+                settings: RouteSettings(
+                  name: AppRouter.verify,
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Verification(),
+                settings: const RouteSettings(
+                  name: AppRouter.verify,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           }
