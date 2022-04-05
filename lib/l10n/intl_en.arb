@@ -1009,5 +1009,7 @@
   "pay": "Pay",
   "learn_more_about": "Learn more about  Loan to value",
   "learn_more_about_ltv": "Learn more about LTV liquidation threshhold",
-  "prepaid_fee": "Prepaid fee"
+  "prepaid_fee": "Prepaid fee",
+  "request_detail": "Request detail",
+  "reject_request": "Reject request"
 }

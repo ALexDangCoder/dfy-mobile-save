@@ -1262,6 +1262,45 @@ class Web3Utils {
     return hex.encode(repayment.data ?? []);
   }
 
+  //sumit
+  Future<String> getSubmitCryptoContractData({
+    required int point,
+    required String contractId,
+    required String contractAddress,
+  }) async {
+    final deployContract = await deployedSubmitContract();
+    final function = deployContract.function('submitUserReviewCryptoContract');
+    final submitUserReviewCryptoContract = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(point),
+        BigInt.from(num.parse(contractId)),
+        EthereumAddress.fromHex(contractAddress)
+      ],
+    );
+    return hex.encode(submitUserReviewCryptoContract.data ?? []);
+  }
+
+  Future<String> getSubmitNFTContractData({
+    required int point,
+    required String contractId,
+    required String contractAddress,
+  }) async {
+    final deployContract = await deployedSubmitContract();
+    final function = deployContract.function('submitUserReviewNFTContract');
+    final submitUserReviewNFTContract = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(point),
+        BigInt.from(num.parse(contractId)),
+        EthereumAddress.fromHex(contractAddress)
+      ],
+    );
+    return hex.encode(submitUserReviewNFTContract.data ?? []);
+  }
+
   Future<DeployedContract> deployedContractAddress(
     String contract,
     BuildContext context,
@@ -1366,6 +1405,15 @@ class Web3Utils {
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'collateral'),
       EthereumAddress.fromHex(Get.find<AppConstants>().collateral_contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedSubmitContract() async {
+    final abiCode = await rootBundle.loadString('assets/abi/Submit_ABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'submit'),
+      EthereumAddress.fromHex(Get.find<AppConstants>().review_contract),
     );
     return deployContract;
   }

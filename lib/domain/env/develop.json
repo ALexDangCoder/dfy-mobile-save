@@ -20,5 +20,6 @@
   "erc721_abi": "erc721_abi.json",
   "contract_defy": "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14",
   "crypto_pawn_contract": "0x85e63AAA2CE9144bf7E716dF8CfAB1EcaE1E203A",
-  "collateral_contract": "0x754862C670dd7405CB84345855333d40310d3186"
+  "collateral_contract": "0x754862C670dd7405CB84345855333d40310d3186",
+  "review_contract": "0x062df96c075fD38E8a83A59aa67187D62a9DC382"
 }
