@@ -256,7 +256,9 @@ mixin BorrowRepository {
   });
 
   Future<Result<String>> putCancelOffer({
-    String? id,
+    String? idCollateral,
+    String? idOffer,
+    String? walletAddress,
   });
 
   Future<Result<String>> putAcceptOffer({

@@ -281,7 +281,6 @@ class _PersonalHardFilterState extends State<PersonalHardFilter> {
                     ],
                   ),
                 ),
-                spaceH16,
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 7.w,

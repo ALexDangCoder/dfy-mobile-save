@@ -241,7 +241,6 @@ class _FilterBorrowMyAccState extends State<FilterBorrowMyAcc> {
                               ],
                             ),
                           ),
-                          spaceH16,
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 7.w,
@@ -306,7 +305,7 @@ class _FilterBorrowMyAccState extends State<FilterBorrowMyAcc> {
               return Visibility(
                 visible: snapshot.data ?? false,
                 child: Positioned(
-                  top: 150.h,
+                  top: 130.h,
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(

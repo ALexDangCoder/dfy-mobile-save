@@ -56,7 +56,7 @@ class _FilterCollateralNFTState extends State<FilterCollateralNFT> {
           }
         },
         child: Container(
-          height: 764.h,
+          height: 700.h,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),

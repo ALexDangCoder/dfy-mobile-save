@@ -319,9 +319,11 @@ abstract class BorrowService {
     @Path('id') String? id,
   );
 
-  @PUT('${ApiConstants.PUT_CANCEL_OFFER}{id}${ApiConstants.CANCEL_OFFER_PAWN}')
+  @PUT('${ApiConstants.PUT_CANCEL_OFFER}{id_collateral}${ApiConstants.CANCEL_OFFER_PAWN}{id_offer}')
   Future<String> putCancelOffer(
-    @Path('id') String? id,
+      @Path('id_collateral') String? idCollateral ,
+      @Path('id_offer') String? idOffer ,
+      @Query('wallet-address') String? walletAddress,
   );
 
   @PUT('${ApiConstants.ADD_MORE_COLLATERAL}{id}${ApiConstants.COLLATERAL}')
