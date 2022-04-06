@@ -64,8 +64,7 @@ class _ConfirmRejectState extends State<ConfirmReject> {
                           child: Image.asset(ImageAssets.ic_back),
                         ),
                       ),
-                      SizedBox(
-                        width: 250.w,
+                      Expanded(
                         child: Text(
                           S.current.confirm_reject_offer,
                           style: textNormalCustom(
@@ -150,7 +149,7 @@ class _ConfirmRejectState extends State<ConfirmReject> {
                   ),
                   child: ButtonGold(
                     isEnable: true,
-                    title: S.current.reject_ed,
+                    title: S.current.reject,
                   ),
                 ),
               ),

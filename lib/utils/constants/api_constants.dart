@@ -364,8 +364,8 @@ class ApiConstants {
   static const String ACCEPT_OFFER_PAWN = '/accept';
 
   static const String PUT_CANCEL_OFFER =
-      '/defi-pawn-crypto-service/public-api/v1.0.0/account/loan-crypto-offer/';
-  static const String CANCEL_OFFER_PAWN = '/cancel';
+      '/defi-pawn-crypto-service/api/v1.0.0/crypto-offer/';
+  static const String CANCEL_OFFER_PAWN = '/rejectOffer/';
 
   static const String ADD_MORE_COLLATERAL =
       '/defi-pawn-crypto-service/public-api/v1.0.0/my-contract/';

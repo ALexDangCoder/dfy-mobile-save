@@ -118,7 +118,7 @@ class CollateralDetailMyAccBloc extends BaseCubit<CollateralDetailMyAccState> {
       case ACCEPTED:
         return S.current.accepted;
       case WITHDRAW:
-        return S.current.withdraw;
+        return S.current.withdraw_status;
       case FAILED:
         return S.current.failed;
       default:

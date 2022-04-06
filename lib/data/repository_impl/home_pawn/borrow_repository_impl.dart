@@ -642,10 +642,16 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<String>> putCancelOffer({String? id}) {
+  Future<Result<String>> putCancelOffer({
+    String? idCollateral,
+    String? idOffer,
+    String? walletAddress,
+  }) {
     return runCatchingAsync<String, String>(
       () => _client.putCancelOffer(
-        id,
+        idCollateral,
+        idOffer,
+        walletAddress,
       ),
       (response) => response,
     );

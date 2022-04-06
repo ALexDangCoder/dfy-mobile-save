@@ -6,6 +6,7 @@ import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
 import 'package:Dfy/presentation/pawn/borrow_result/ui/borrow_result.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/ui/components/list_item_horizontal.dart';
+import 'package:Dfy/presentation/pawn/lending_registration/ui/leding_registration.dart';
 import 'package:Dfy/presentation/pawn/notifications/ui/total_notification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -148,8 +149,8 @@ class _HomePawnState extends State<HomePawn> {
                               children: [
                                 _itemBorrowFtLend(
                                   title: cubit.borrowFeatLend[index].title,
-                                  imageBg: cubit
-                                      .borrowFeatLend[index].imgBackGround,
+                                  imageBg:
+                                      cubit.borrowFeatLend[index].imgBackGround,
                                   suffixTitle:
                                       cubit.borrowFeatLend[index].sufTitle,
                                   type: cubit.borrowFeatLend[index].type,
@@ -184,14 +185,11 @@ class _HomePawnState extends State<HomePawn> {
                               nameShop: cubit.topSalePawnShop[index]
                                       .pawnShopPackage?.name ??
                                   '',
-                              reputation: cubit
-                                      .topSalePawnShop[index]
-                                      .pawnShopPackage
-                                      ?.pawnShop
-                                      ?.reputation ??
+                              reputation: cubit.topSalePawnShop[index]
+                                      .pawnShopPackage?.pawnShop?.reputation ??
                                   0,
-                              loan: cubit.topSalePawnShop[index]
-                                      .pawnShopPackage?.allowedLoanMax ??
+                              loan: cubit.topSalePawnShop[index].pawnShopPackage
+                                      ?.allowedLoanMax ??
                                   0,
                               interestRate: cubit.topSalePawnShop[index]
                                       .pawnShopPackage?.interestRate ??
@@ -304,12 +302,13 @@ class _HomePawnState extends State<HomePawn> {
                     spaceH18,
                     InkWell(
                       onTap: () {
-                        /// test phát :v
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const BorrowResult(),
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ConnectWalletDialog(
+                            navigationTo: LendingRegistration(),
+                            isRequireLoginEmail: false,
                           ),
-                        );
+                        ).then((_) => null);
                       },
                       child: Row(
                         children: [
@@ -407,8 +406,7 @@ class _HomePawnState extends State<HomePawn> {
                         Text(
                           'Loan',
                           style: textNormalCustom(
-                            AppTheme.getInstance()
-                                .whiteWithOpacitySevenZero(),
+                            AppTheme.getInstance().whiteWithOpacitySevenZero(),
                             14,
                             FontWeight.w400,
                           ),
@@ -449,8 +447,7 @@ class _HomePawnState extends State<HomePawn> {
                         Text(
                           'Interest rate',
                           style: textNormalCustom(
-                            AppTheme.getInstance()
-                                .whiteWithOpacitySevenZero(),
+                            AppTheme.getInstance().whiteWithOpacitySevenZero(),
                             14,
                             FontWeight.w400,
                           ),
@@ -472,8 +469,7 @@ class _HomePawnState extends State<HomePawn> {
                         Text(
                           'Signed contracts',
                           style: textNormalCustom(
-                            AppTheme.getInstance()
-                                .whiteWithOpacitySevenZero(),
+                            AppTheme.getInstance().whiteWithOpacitySevenZero(),
                             14,
                             FontWeight.w400,
                           ),
@@ -793,7 +789,7 @@ class _HomePawnState extends State<HomePawn> {
             ),
           ),
           InkWell(
-            onTap: (){
+            onTap: () {
               showDialog(
                 context: context,
                 builder: (context) => const ConnectWalletDialog(

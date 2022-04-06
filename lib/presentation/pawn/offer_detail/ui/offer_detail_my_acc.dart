@@ -419,7 +419,7 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            S.current.reject_ed,
+                                            S.current.reject,
                                             style: textNormalCustom(
                                               AppTheme.getInstance()
                                                   .fillColor(),
@@ -458,7 +458,7 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                           isEnable: true,
                                           fixSize: false,
                                           haveMargin: false,
-                                          title: S.current.accepted,
+                                          title: S.current.accept,
                                         ),
                                       ),
                                     ),
