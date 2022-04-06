@@ -29,7 +29,8 @@ class PersonalItem extends StatelessWidget {
     required this.collateral,
     required this.interestRate,
     required this.signedContract,
-    required this.total, required this.id,
+    required this.total,
+    required this.id,
   }) : super(key: key);
 
   WidgetSpan widgetSpanBase({
@@ -125,27 +126,43 @@ class PersonalItem extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 8,
-                  child: RichText(
-                    text: TextSpan(
-                      text: nameShop,
-                      style: textNormalCustom(
-                        null,
-                        16,
-                        FontWeight.w600,
-                      ).copyWith(
-                        overflow: TextOverflow.clip,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SendLoanRequest(
+                              packageId: id,
+                              pawnshopType: '3',
+                              collateralAccepted: collateral,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: nameShop,
+                        style: textNormalCustom(
+                          null,
+                          16,
+                          FontWeight.w600,
+                        ).copyWith(
+                          overflow: TextOverflow.clip,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            child: spaceW6,
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: isShop
+                                ? Image.asset(ImageAssets.ic_selected)
+                                : const SizedBox.shrink(),
+                          ),
+                        ],
                       ),
-                      children: [
-                        WidgetSpan(
-                          child: spaceW6,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: isShop
-                              ? Image.asset(ImageAssets.ic_selected)
-                              : const SizedBox.shrink(),
-                        ),
-                      ],
                     ),
                   ),
                 ),
@@ -370,7 +387,7 @@ class PersonalItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return  SendLoanRequest(
+                        return SendLoanRequest(
                           packageId: id,
                           pawnshopType: '3',
                           collateralAccepted: collateral,
