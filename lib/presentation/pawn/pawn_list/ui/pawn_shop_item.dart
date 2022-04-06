@@ -181,27 +181,39 @@ class PawnItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: nameShop,
-                          style: textNormalCustom(
-                            null,
-                            16,
-                            FontWeight.w600,
-                          ).copyWith(
-                            overflow: TextOverflow.clip,
+                      GestureDetector(
+                        onTap: () {
+                          goTo(
+                            context,
+                            OtherProfile(
+                              userId: userId,
+                              index: 0,
+                              pageRouter: PageRouter.MARKET,
+                            ),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: nameShop,
+                            style: textNormalCustom(
+                              null,
+                              16,
+                              FontWeight.w600,
+                            ).copyWith(
+                              overflow: TextOverflow.clip,
+                            ),
+                            children: [
+                              WidgetSpan(
+                                child: spaceW6,
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: isShop
+                                    ? Image.asset(ImageAssets.ic_selected)
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
                           ),
-                          children: [
-                            WidgetSpan(
-                              child: spaceW6,
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: isShop
-                                  ? Image.asset(ImageAssets.ic_selected)
-                                  : const SizedBox.shrink(),
-                            ),
-                          ],
                         ),
                       ),
                       spaceH12,
@@ -313,7 +325,7 @@ class PawnItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${S.current.collateral_accepted}:',
+                    '${S.current.loan_currency}:',
                     style: textNormalCustom(
                       AppTheme.getInstance().pawnGray(),
                       14,

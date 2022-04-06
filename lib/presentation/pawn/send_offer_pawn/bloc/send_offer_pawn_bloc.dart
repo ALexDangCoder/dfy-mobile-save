@@ -194,8 +194,8 @@ class SendOfferPawnBloc {
     if (value.isNotEmpty) {
       if (!regexInterestRate.hasMatch(value)) {
         isInterestRate.add(
-          '${S.current.must_below_2} ${S.current.or_pawn} '
-          '${S.current.invalid_interest_rate}',
+
+          S.current.invalid_interest_rate,
         );
         textInterestRate.add('');
       } else {
