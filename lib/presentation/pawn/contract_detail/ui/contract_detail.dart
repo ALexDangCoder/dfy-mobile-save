@@ -85,6 +85,7 @@ class _ContractDetailState extends State<ContractDetail>
                       builder: (context) => ReviewBorrower(
                         objDetail: bloc.objDetail ?? ContractDetailPawn.name(),
                         type: widget.typeNavigator,
+                        typeBorrow: widget.type,
                       ),
                     );
                   }
@@ -427,6 +428,9 @@ class _ContractDetailState extends State<ContractDetail>
                                                                           obj,
                                                                       type: widget
                                                                           .typeNavigator,
+                                                                      typeBorrow:
+                                                                          widget
+                                                                              .type,
                                                                     ),
                                                                   );
                                                                 }
@@ -787,6 +791,9 @@ class _ContractDetailState extends State<ContractDetail>
                                                                           obj,
                                                                       type: widget
                                                                           .typeNavigator,
+                                                                      typeBorrow:
+                                                                          widget
+                                                                              .type,
                                                                     ),
                                                                   );
                                                                 }

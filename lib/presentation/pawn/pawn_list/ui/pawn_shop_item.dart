@@ -3,8 +3,10 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class PawnItem extends StatelessWidget {
   final String interestRate;
   final String availableLoan;
   final String total;
+  final String userId;
 
   const PawnItem({
     Key? key,
@@ -34,6 +37,7 @@ class PawnItem extends StatelessWidget {
     required this.interestRate,
     required this.availableLoan,
     required this.total,
+    required this.userId,
   }) : super(key: key);
 
   WidgetSpan widgetSpanBase({
@@ -177,27 +181,39 @@ class PawnItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: nameShop,
-                          style: textNormalCustom(
-                            null,
-                            16,
-                            FontWeight.w600,
-                          ).copyWith(
-                            overflow: TextOverflow.clip,
+                      GestureDetector(
+                        onTap: () {
+                          goTo(
+                            context,
+                            OtherProfile(
+                              userId: userId,
+                              index: 0,
+                              pageRouter: PageRouter.MARKET,
+                            ),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: nameShop,
+                            style: textNormalCustom(
+                              null,
+                              16,
+                              FontWeight.w600,
+                            ).copyWith(
+                              overflow: TextOverflow.clip,
+                            ),
+                            children: [
+                              WidgetSpan(
+                                child: spaceW6,
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: isShop
+                                    ? Image.asset(ImageAssets.ic_selected)
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
                           ),
-                          children: [
-                            WidgetSpan(
-                              child: spaceW6,
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: isShop
-                                  ? Image.asset(ImageAssets.ic_selected)
-                                  : const SizedBox.shrink(),
-                            ),
-                          ],
                         ),
                       ),
                       spaceH12,
@@ -309,7 +325,7 @@ class PawnItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${S.current.collateral_accepted}:',
+                    '${S.current.loan_currency}:',
                     style: textNormalCustom(
                       AppTheme.getInstance().pawnGray(),
                       14,
@@ -470,7 +486,14 @@ class PawnItem extends StatelessWidget {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  //todo event
+                  goTo(
+                    context,
+                    OtherProfile(
+                      userId: userId,
+                      index: 0,
+                      pageRouter: PageRouter.MARKET,
+                    ),
+                  );
                 },
                 child: SizedBox(
                   width: 140.w,
