@@ -106,18 +106,18 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    // for(final element in collateralAccepted){
-    //   for(final item in checkShow) {
-    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-    //       listTokenCollateral.add(item);
-    //     }
-    //   }
-    // }
-    for (final item in checkShow) {
-      if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
-        listTokenCollateral.add(item);
+    for(final element in collateralAccepted){
+      for(final item in checkShow) {
+        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+          listTokenCollateral.add(item);
+        }
       }
     }
+    // for (final item in checkShow) {
+    //   if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
+    //     listTokenCollateral.add(item);
+    //   }
+    // }
   }
 
   List<ModelToken> listTokenFromWalletCore = [];

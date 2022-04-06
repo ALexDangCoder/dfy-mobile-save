@@ -27,6 +27,7 @@ class _SignLoanContractState extends State<SignLoanContract> {
     // TODO: implement initState
     super.initState();
     cubit = SignLoanContractCubit();
+    cubit.collateralAccepted = widget.pawnshopPackage.acceptableAssetsAsCollateral ?? [];
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     cubit.getLoginState();
