@@ -38,7 +38,7 @@ class _DialogFilterState extends State<DialogFilter> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: MediaQuery.of(context).size.height / 2,
+          height: 812.h,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
             borderRadius: BorderRadius.only(

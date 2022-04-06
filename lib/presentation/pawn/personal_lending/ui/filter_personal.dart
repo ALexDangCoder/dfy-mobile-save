@@ -267,6 +267,8 @@ class _PersonalFilterState extends State<PersonalFilter> {
                   ),
                 ),
                 spaceH40,
+                spaceH40,
+                spaceH40,
                 GestureDetector(
                   onTap: () {
                     widget.bloc.funFilter();

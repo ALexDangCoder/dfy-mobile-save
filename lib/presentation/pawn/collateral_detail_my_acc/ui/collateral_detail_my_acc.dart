@@ -83,9 +83,9 @@ class _CollateralDetailMyAccScreenState
             textEmpty: mes,
             child: state is CollateralDetailMyAccSuccess
                 ? RefreshIndicator(
-                  onRefresh: () async {
-                    await bloc.getDetailCollateralMyAcc(
-                    collateralId: widget.id,
+                    onRefresh: () async {
+                      await bloc.getDetailCollateralMyAcc(
+                        collateralId: widget.id,
                       );
                     },
                     child: Stack(
@@ -132,7 +132,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +162,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +224,8 @@ class _CollateralDetailMyAccScreenState
                                                   PlaceholderAlignment.middle,
                                               child: Image.network(
                                                 ImageAssets.getSymbolAsset(
-                                                  obj.collateralSymbol.toString(),
+                                                  obj.collateralSymbol
+                                                      .toString(),
                                                 ),
                                                 width: 16.sp,
                                                 height: 16.sp,
@@ -282,7 +283,8 @@ class _CollateralDetailMyAccScreenState
                                                           AddCollateral(
                                                         estimate:
                                                             formatPrice.format(
-                                                          obj.estimatePrice ?? 0,
+                                                          obj.estimatePrice ??
+                                                              0,
                                                         ),
                                                         id: widget.id,
                                                       ),
@@ -306,7 +308,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,7 +340,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,7 +416,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH16,
+                                spaceH14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,7 +446,7 @@ class _CollateralDetailMyAccScreenState
                                     ),
                                   ],
                                 ),
-                                spaceH36,
+                                spaceH24,
                                 StreamBuilder<bool>(
                                   stream: bloc.isAdd,
                                   builder: (context, snapshot) {
@@ -465,7 +467,8 @@ class _CollateralDetailMyAccScreenState
                                       child: ListView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(),
-                                        itemCount: bloc.listOffersReceived.length,
+                                        itemCount:
+                                            bloc.listOffersReceived.length,
                                         shrinkWrap: true,
                                         padding: EdgeInsets.only(
                                           top: 16.h,
@@ -478,7 +481,8 @@ class _CollateralDetailMyAccScreenState
                                                   builder: (context) =>
                                                       OfferDetailMyAccScreen(
                                                     id: bloc
-                                                        .listOffersReceived[index]
+                                                        .listOffersReceived[
+                                                            index]
                                                         .id
                                                         .toString(),
                                                   ),
@@ -490,7 +494,8 @@ class _CollateralDetailMyAccScreenState
                                               );
                                             },
                                             child: ItemOfferReceived(
-                                              obj: bloc.listOffersReceived[index],
+                                              obj: bloc
+                                                  .listOffersReceived[index],
                                               bloc: bloc,
                                             ),
                                           );
@@ -499,7 +504,7 @@ class _CollateralDetailMyAccScreenState
                                     );
                                   },
                                 ),
-                                spaceH32,
+                                spaceH16,
                                 StreamBuilder<bool>(
                                   stream: bloc.isAddSend,
                                   builder: (context, snapshot) {
@@ -621,7 +626,7 @@ class _CollateralDetailMyAccScreenState
                         ),
                       ],
                     ),
-                )
+                  )
                 : const SizedBox.shrink(),
           );
         },

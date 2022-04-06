@@ -294,7 +294,6 @@ class _FilterCollateralMyAccState extends State<FilterCollateralMyAcc> {
                               ],
                             ),
                           ),
-                          spaceH16,
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 7.w,
