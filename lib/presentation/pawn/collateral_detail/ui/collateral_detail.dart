@@ -362,7 +362,7 @@ class _CollateralDetailScreenState extends State<CollateralDetailScreen> {
                             Expanded(
                               flex: 2,
                               child: Text(
-                                '${S.current.duration}:',
+                                S.current.duration,
                                 maxLines: 1,
                                 style: textNormalCustom(
                                   AppTheme.getInstance().getGray3(),
