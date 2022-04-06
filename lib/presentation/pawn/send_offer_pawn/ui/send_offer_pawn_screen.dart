@@ -40,7 +40,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
   late TextEditingController textLoanController;
   late TextEditingController durationController;
   late TextEditingController textInterestController;
-  String duration = S.current.weeks_pawn;
+  late String duration;
   late String symbolAmount;
 
   @override
@@ -62,6 +62,12 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
     textLoanController = TextEditingController();
     durationController = TextEditingController();
     textInterestController = TextEditingController();
+    durationController.text = widget.objCollateralDetail.durationQty.toString();
+    duration = widget.objCollateralDetail.durationType == WEEK
+        ? S.current.weeks_pawn
+        : S.current.months_pawn;
+    bloc.textDuration.add(durationController.text);
+    bloc.textRecurringInterest.add(duration);
     textInterestController.addListener(() {
       bloc.checkBtn();
     });
@@ -249,7 +255,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                                   value: '${bloc.textDuration.value} $duration',
                                 ),
                                 DetailItemApproveModel(
-                                  title: '${S.current.loan_amount}: ',
+                                  title: '${S.current.loan_amount} ',
                                   value:
                                       '$symbolAmount ${bloc.textAmount.value}',
                                   urlToken:
