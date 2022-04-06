@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/cubit/loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
@@ -80,11 +81,24 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                 ),
                 child: ButtonGradient(
                   onPressed: () {
-                    goTo(
-                        context,
-                        SignLoanContract(
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SignLoanContract(
                           pawnshopPackage: cubit.pawnshopPackage,
-                        ));
+                        ),
+                      ),
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        showDialogSuccess(
+                          context,
+                          alert: 'Congratulation',
+                          text: 'Your Collateral has been sent to ${cubit.pawnshopPackage.type ==0 ? 'Auto':'Semi-Auto'} Loan Package,\nPlease wait a moment',
+                          onlyPop: true,
+                        );
+                      }
+                    });
                   },
                   gradient: RadialGradient(
                     center: const Alignment(0.5, -0.5),
@@ -337,7 +351,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         spaceH14,
                         rowItem(
                           'Liquidation threshold:',
-                          '${cubit.pawnshopPackage.interest}% APR',
+                          '${cubit.pawnshopPackage.liquidationThreshold}%',
                         ),
                       ],
                     ),

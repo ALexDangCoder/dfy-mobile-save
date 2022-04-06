@@ -13,11 +13,14 @@ class ConfirmEvaluationResponse extends Equatable {
 
   @JsonKey(name: 'code')
   dynamic code;
+  @JsonKey(name: 'error')
+  String? error;
 
   ConfirmEvaluationResponse(
     this.rd,
     this.rc,
     this.code,
+    this.error,
   );
 
   factory ConfirmEvaluationResponse.fromJson(Map<String, dynamic> json) =>
