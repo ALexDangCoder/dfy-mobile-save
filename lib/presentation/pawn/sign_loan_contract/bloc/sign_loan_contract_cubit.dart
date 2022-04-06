@@ -5,6 +5,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/model_token.dart';
+import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
@@ -66,6 +67,8 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
         .exchangeRate;
   }
 
+  PawnshopPackage pawnshopPackage = PawnshopPackage();
+
   void loanE(
     double collateral,
     ModelToken collateralToken,
@@ -76,21 +79,44 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
     loanE = collateral *
         collateralToken.exchangeRate *
         loanToValue /
-        exchangeRate(loanToken);
+        exchangeRate(loanToken) /
+        100;
+    if (loanE < (pawnshopPackage.allowedLoanMin ?? 0)) {
+      errorCollateral.add('Amount need to larger than the minimum loan');
+    }
+    if (loanE > (pawnshopPackage.allowedLoanMax ?? 0)) {
+      errorCollateral.add('Amount need to smaller than the maximum loan');
+    }
     loanEstimation.add(formatPrice.format(loanE));
   }
 
   void interestE(
     num loanE,
+    String loanToken,
     num interestRate,
     String durationType,
     int duration,
+    String repaymentToken,
   ) {
     double interestE = 0;
     if (durationType == S.current.week) {
-      interestE = loanE * interestRate * duration * 7 / 365 / 100;
+      interestE = loanE *
+          exchangeRate(loanToken) *
+          interestRate *
+          duration *
+          7 /
+          365 /
+          100 /
+          exchangeRate(repaymentToken);
     } else {
-      interestE = loanE * interestRate * duration * 30 / 365 / 100;
+      interestE = loanE *
+          exchangeRate(loanToken) *
+          interestRate *
+          duration *
+          30 /
+          365 /
+          100 /
+          exchangeRate(repaymentToken);
     }
     interestEstimation.add(formatPrice.format(interestE));
   }
@@ -106,18 +132,19 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
   void checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) {
-    // for(final element in collateralAccepted){
-    //   for(final item in checkShow) {
-    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-    //       listTokenCollateral.add(item);
-    //     }
-    //   }
-    // }
-    for (final item in checkShow) {
-      if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
-        listTokenCollateral.add(item);
+    for (final element in collateralAccepted) {
+      for (final item in checkShow) {
+        if (element.symbol?.toLowerCase() ==
+            item.nameShortToken.toLowerCase()) {
+          listTokenCollateral.add(item);
+        }
       }
     }
+    // for (final item in checkShow) {
+    //   if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
+    //     listTokenCollateral.add(item);
+    //   }
+    // }
   }
 
   List<ModelToken> listTokenFromWalletCore = [];
@@ -235,7 +262,7 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
 
   BorrowRepository get _repo => Get.find();
 
-  Future<void> pushSendNftToBE({
+  Future<bool> pushSendNftToBE({
     required String amount,
     required String bcPackageId,
     required String collateral,
@@ -262,7 +289,67 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
       'txid': txId,
       'wallet_address': walletAddress,
     };
+    bool checkSuccess = false;
     final Result<String> code = await _repo.confirmCollateralToBe(map: map);
-    code.when(success: (res) {}, error: (error) {});
+    code.when(
+      success: (res) {
+        if (res == 'success') {
+          checkSuccess = true;
+        }
+      },
+      error: (error) {},
+    );
+    return checkSuccess;
+  }
+
+  void checkDuration(
+    String value,
+    String typeDuration,
+  ) {
+    if (typeDuration == S.current.month) {
+      if (pawnshopPackage.durationQtyType == 1) {
+        if (int.parse(value) < (pawnshopPackage.durationQtyTypeMin ?? 0)) {
+          errorDuration.add('Out of range');
+        } else if (int.parse(value) >
+            (pawnshopPackage.durationQtyTypeMax ?? 0)) {
+          errorDuration.add('Out of range');
+        } else {
+          durationCached = value;
+          errorDuration.add('');
+        }
+      } else {
+        if (int.parse(value) * 4 < (pawnshopPackage.durationQtyTypeMin ?? 0)) {
+          errorDuration.add('Out of range');
+        } else if (int.parse(value) * 4 >
+            (pawnshopPackage.durationQtyTypeMax ?? 0)) {
+          errorDuration.add('Out of range');
+        } else {
+          durationCached = value;
+          errorDuration.add('');
+        }
+      }
+    } else {
+      if (pawnshopPackage.durationQtyType == 1) {
+        if (int.parse(value) < (pawnshopPackage.durationQtyTypeMin ?? 0) * 4) {
+          errorDuration.add('Out of range');
+        } else if (int.parse(value) >
+            (pawnshopPackage.durationQtyTypeMax ?? 0) * 4) {
+          errorDuration.add('Out of range');
+        } else {
+          durationCached = value;
+          errorDuration.add('');
+        }
+      } else {
+        if (int.parse(value) < (pawnshopPackage.durationQtyTypeMin ?? 0)) {
+          errorDuration.add('Out of range');
+        } else if (int.parse(value) >
+            (pawnshopPackage.durationQtyTypeMax ?? 0)) {
+          errorDuration.add('Out of range');
+        } else {
+          durationCached = value;
+          errorDuration.add('');
+        }
+      }
+    }
   }
 }

@@ -71,7 +71,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
     message.text = widget.cubit.messageCached ?? '';
     durationController.text = widget.cubit.durationCached ?? '';
     loanToken = widget.cubit.loanTokenCached ?? widget.cubit.checkShow[0];
-    duration = widget.cubit.durationCachedType ?? S.current.week;
+    duration = widget.cubit.durationCachedType ?? S.current.month;
   }
 
   @override
@@ -125,8 +125,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         maxLength: 50,
                         onChanged: (value) {
                           if (value == '') {
-                            widget.cubit.errorCollateral
-                                .add('Collateral amount not null');
+                            widget.cubit.errorCollateral.add('Invalid amount');
                           } else {
                             widget.cubit.collateralCached = value;
                             if (double.parse(value.replaceAll(',', '')) >
@@ -136,16 +135,15 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 'Max amount '
                                 '${widget.cubit.getMaxBalance(item.nameShortToken)}',
                               );
-                            } else if (double.parse(
-                                    value.replaceAll(',', '')) <=
-                                0) {
-                              widget.cubit.errorCollateral
-                                  .add('Invalid amount');
                             } else {
                               widget.cubit.errorCollateral.add('');
                             }
                           }
-                          widget.cubit.enableButtonRequest();
+                          widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                         },
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
@@ -268,71 +266,87 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             ),
           ),
           spaceH4,
-          Container(
-            height: 64.h,
-            padding: EdgeInsets.only(right: 15.w, left: 15.w),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().backgroundBTSColor(),
-              borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TextFormField(
-                    controller: message,
-                    maxLength: 100,
-                    onChanged: (value) {
-                      widget.cubit.focusTextField.add(value);
-                      if (value == '') {
-                        widget.cubit.errorMessage.add('Message not null');
-                      } else {
-                        widget.cubit.messageCached = value;
-                        widget.cubit.errorMessage.add('');
-                      }
-                      widget.cubit.enableButtonRequest();
-                    },
-                    cursorColor: AppTheme.getInstance().whiteColor(),
-                    style: textNormal(
-                      AppTheme.getInstance().whiteColor(),
-                      16,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isCollapsed: true,
-                      counterText: '',
-                      hintText: S.current.enter_message,
-                      hintStyle: textNormal(
-                        Colors.white.withOpacity(0.5),
-                        16,
+          StreamBuilder<bool>(
+              stream: widget.cubit.chooseExisting,
+            builder: (context, snapshot) {
+              bool enable;
+              if (snapshot.hasData) {
+                enable = !(snapshot.data ?? false);
+              } else {
+                enable = true;
+              }
+              return Container(
+                height: 64.h,
+                padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                decoration: BoxDecoration(
+                  color: AppTheme.getInstance().backgroundBTSColor(),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: TextFormField(
+                        enabled: enable,
+                        controller: message,
+                        maxLength: 100,
+                        onChanged: (value) {
+                          widget.cubit.focusTextField.add(value);
+                          if (value == '') {
+                            widget.cubit.errorMessage.add('Invalid message');
+                          } else {
+                            widget.cubit.messageCached = value;
+                            widget.cubit.errorMessage.add('');
+                          }
+                          widget.cubit.enableButtonRequest(
+                                collateralAmount.text,
+                                message.text,
+                                durationController.text,
+                              );
+                        },
+                        cursorColor: AppTheme.getInstance().whiteColor(),
+                        style: textNormal(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isCollapsed: true,
+                          counterText: '',
+                          hintText: S.current.enter_message,
+                          hintStyle: textNormal(
+                            Colors.white.withOpacity(0.5),
+                            16,
+                          ),
+                          border: InputBorder.none,
+                        ),
                       ),
-                      border: InputBorder.none,
                     ),
-                  ),
-                ),
-                StreamBuilder(
-                  stream: widget.cubit.focusTextField,
-                  builder: (context, AsyncSnapshot<String> snapshot) {
-                    return GestureDetector(
-                      onTap: () {
-                        widget.cubit.focusTextField.add('');
-                        message.text = '';
+                    StreamBuilder(
+                      stream: widget.cubit.focusTextField,
+                      builder: (context, AsyncSnapshot<String> snapshot) {
+                        return GestureDetector(
+                          onTap: () {
+                            widget.cubit.focusTextField.add('');
+                            message.text = '';
+                          },
+                          child: (snapshot.data != '')
+                              ? Image.asset(
+                                  ImageAssets.ic_close,
+                                  width: 20.w,
+                                  height: 20.h,
+                                )
+                              : SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                ),
+                        );
                       },
-                      child: (snapshot.data != '')
-                          ? Image.asset(
-                              ImageAssets.ic_close,
-                              width: 20.w,
-                              height: 20.h,
-                            )
-                          : SizedBox(
-                              height: 20.h,
-                              width: 20.w,
-                            ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
           StreamBuilder<String>(
             stream: widget.cubit.errorMessage,
@@ -393,7 +407,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             widget.cubit.durationCached = value;
                             widget.cubit.errorDuration.add('');
                           }
-                          widget.cubit.enableButtonRequest();
+                          widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                         },
                         cursorColor: AppTheme.getInstance().whiteColor(),
                         style: textNormal(
@@ -445,6 +463,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 widget.cubit.durationCachedType = newValue;
                                 duration = newValue!;
                               });
+                              widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                             }
                           },
                           value: duration,
@@ -543,6 +566,11 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             widget.cubit.loanTokenCached = newValue;
                             loanToken = newValue!;
                           });
+                          widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                         }
                       },
                       dropdownMaxHeight: 200,
@@ -598,36 +626,36 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                           widget.cubit.chooseExisting.add(true);
                           collateralAmount.text =
                               select.collateralAmount.toString();
-                          widget.cubit.collateralCached =
-                              collateralAmount.text;
+                          widget.cubit.collateralCached = collateralAmount.text;
                           bcCollateralId = select.bcCollateralId.toString();
                           txhChoseCollateral = select.txhHash.toString();
                           message.text = select.name.toString();
                           widget.cubit.messageCached = message.text;
                           durationController.text = select.duration.toString();
-                          widget.cubit.durationCached =
-                              durationController.text;
+                          widget.cubit.durationCached = durationController.text;
                           duration = select.durationType == 0
                               ? S.current.week
                               : S.current.month;
-                          widget.cubit.durationCachedType =
-                          duration;
+                          widget.cubit.durationCachedType = duration;
                           item =
                               widget.cubit.listTokenFromWalletCore.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.collateralSymbol,
                           );
-                          widget.cubit.collateralTokenCached =
-                              item;
+                          widget.cubit.collateralTokenCached = item;
                           loanToken = widget.cubit.checkShow.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.loanTokenSymbol,
                           );
-                          widget.cubit.loanTokenCached =
-                              loanToken;
+                          widget.cubit.loanTokenCached = loanToken;
                         }
+                        widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                       }
                     });
                   } else {
@@ -675,7 +703,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
             child: InkWell(
               onTap: () {
                 widget.cubit.emailNotification.add(!checkEmail);
-                if(!checkEmail){
+                if (!checkEmail) {
                   showDialog(
                     context: context,
                     builder: (context) => ConnectWalletDialog(
@@ -688,7 +716,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       ),
                       isRequireLoginEmail: true,
                       hasFunction: true,
-                      function: (){
+                      function: () {
                         checkEmail = true;
                       },
                     ),
@@ -726,34 +754,47 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                       if (durationController.text.isEmpty) {
                         widget.cubit.errorDuration.add('Duration not null');
                       }
-                      widget.cubit.enableButtonRequest();
+                      widget.cubit.enableButtonRequest(
+                            collateralAmount.text,
+                            message.text,
+                            durationController.text,
+                          );
                     } else {
-                      if(checkEmail){
+                      if (checkEmail) {
                         if (widget.cubit.chooseExisting.value) {
                           unawaited(showLoadingDialog(context));
-                          await widget.cubit.pushSendNftToBE(
+                          await widget.cubit
+                              .pushSendNftToBE(
                             amount: collateralAmount.text,
                             bcPackageId: widget.packageId,
                             collateral: item.nameShortToken,
                             collateralId: bcCollateralId,
                             description: message.text,
                             duration: durationController.text,
-                            durationType: duration == S.current.week ? '0' : '1',
+                            durationType:
+                                duration == S.current.week ? '0' : '1',
                             packageId: widget.packageId,
                             pawnshopType: widget.pawnshopType,
                             txId: txhChoseCollateral,
                             supplyCurrency: loanToken.nameShortToken,
                             walletAddress: widget.walletAddress,
-                          );
-                          await showLoadSuccess(context).then(
+                          )
+                              .then((value) async {
+                            if (value) {
+                              await showLoadSuccess(context).then(
                                 (value) => Navigator.of(context)
-                              ..pop()
-                              ..pop(),
-                          );
+                                  ..pop()
+                                  ..pop()
+                                  ..pop(true),
+                              );
+                            } else {
+                              await showLoadFail(context);
+                            }
+                          });
                         } else {
                           final nav = Navigator.of(context);
                           final hexString =
-                          await widget.cubit.getCreateCryptoCollateral(
+                              await widget.cubit.getCreateCryptoCollateral(
                             collateralAddress: item.tokenAddress,
                             packageID: '-1',
                             amount: collateralAmount.text,
@@ -767,31 +808,38 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 builder: (context) => Approve(
                                   hexString: hexString,
                                   payValue: collateralAmount.text,
-                                  tokenAddress:
-                                  item.tokenAddress,
+                                  tokenAddress: item.tokenAddress,
                                   needApprove: true,
                                   onSuccessSign: (context, data) async {
-                                    await widget.cubit.pushSendNftToBE(
+                                    await widget.cubit
+                                        .pushSendNftToBE(
                                       amount: collateralAmount.text,
                                       bcPackageId: widget.packageId,
                                       collateral: item.nameShortToken,
                                       collateralId: '',
                                       description: message.text,
                                       duration: durationController.text,
-                                      durationType:
-                                      duration == S.current.week ? '0' : '1',
+                                      durationType: duration == S.current.week
+                                          ? '0'
+                                          : '1',
                                       packageId: widget.packageId,
                                       pawnshopType: widget.pawnshopType,
                                       txId: data,
                                       supplyCurrency: loanToken.nameShortToken,
                                       walletAddress: widget.walletAddress,
-                                    );
-                                    await showLoadSuccess(context).then(
+                                    )
+                                        .then((value) async {
+                                      if (value) {
+                                        await showLoadSuccess(context).then(
                                           (value) => Navigator.of(context)
-                                        ..pop()
-                                        ..pop()
-                                        ..pop(),
-                                    );
+                                            ..pop()
+                                            ..pop()
+                                            ..pop(true),
+                                        );
+                                      } else {
+                                        await showLoadFail(context);
+                                      }
+                                    });
                                   },
                                   onErrorSign: (context) {
                                     showLoadFail(context);
@@ -805,7 +853,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                       title: S.current.collateral,
                                       urlToken: item.iconToken,
                                       value:
-                                      '${collateralAmount.text} ${item.nameShortToken}',
+                                          '${collateralAmount.text} ${item.nameShortToken}',
                                     ),
                                     DetailItemApproveModel(
                                       title: S.current.loan_token,
@@ -815,7 +863,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                     DetailItemApproveModel(
                                       title: S.current.duration,
                                       value:
-                                      '${durationController.text} $duration',
+                                          '${durationController.text} $duration',
                                     ),
                                   ],
                                   title: 'Confirm loan request',
@@ -831,7 +879,8 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         showDialogSuccess(
                           context,
                           alert: 'Warning',
-                          text: 'You must be login by email to send loan request',
+                          text:
+                              'You must be login by email to send loan request',
                           onlyPop: true,
                         );
                       }

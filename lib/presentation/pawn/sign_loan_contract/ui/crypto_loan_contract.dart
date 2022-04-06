@@ -21,6 +21,7 @@ import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/button/error_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -64,7 +65,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
     message.text = widget.cubit.messageCached ?? '';
     durationController.text = widget.cubit.durationCached ?? '';
     loanToken = widget.cubit.loanTokenCached ?? widget.cubit.checkShow[0];
-    duration = widget.cubit.durationCachedType ?? S.current.week;
+    duration = widget.cubit.durationCachedType ?? S.current.month;
   }
 
   @override
@@ -104,7 +105,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                     onChanged: (value) {
                       widget.cubit.focusTextField.add(value);
                       if (value == '') {
-                        widget.cubit.errorMessage.add('Message not null');
+                        widget.cubit.errorMessage.add('Invalid message');
                       } else {
                         widget.cubit.messageCached = value;
                         widget.cubit.errorMessage.add('');
@@ -206,8 +207,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                         maxLength: 50,
                         onChanged: (value) {
                           if (value == '') {
-                            widget.cubit.errorCollateral
-                                .add('Collateral amount not null');
+                            widget.cubit.errorCollateral.add('Invalid amount');
                           } else {
                             widget.cubit.collateralCached = value;
                             if (double.parse(
@@ -241,9 +241,14 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                     widget.cubit.loanEstimation.value
                                         .replaceAll(',', ''),
                                   ),
+                                  widget.pawnshopPackage.loanToken?[0].symbol ??
+                                      '',
                                   widget.pawnshopPackage.interest ?? 0,
                                   duration,
                                   int.parse(durationController.text),
+                                  widget.pawnshopPackage.repaymentToken?[0]
+                                          .symbol ??
+                                      '',
                                 );
                               }
                             }
@@ -262,6 +267,11 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,5}'),
+                          ),
+                        ],
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.zero,
                           isCollapsed: true,
@@ -299,9 +309,16 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                   widget.cubit.loanEstimation.value
                                       .replaceAll(',', ''),
                                 ),
+                                widget.pawnshopPackage.loanToken?[0].symbol ??
+                                    '',
                                 widget.pawnshopPackage.interest ?? 0,
                                 duration,
-                                int.parse(durationController.text),
+                                durationController.text != ''
+                                    ? int.parse(durationController.text)
+                                    : 0,
+                                widget.pawnshopPackage.repaymentToken?[0]
+                                        .symbol ??
+                                    '',
                               );
                             },
                             child: Text(
@@ -353,9 +370,12 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                   widget.cubit.collateralTokenCached = newValue;
                                   item = newValue!;
                                 });
-                                if (double.parse(
-                                      collateralAmount.text.replaceAll(',', ''),
-                                    ) >
+                                if ((collateralAmount.text != ''
+                                        ? double.parse(
+                                            collateralAmount.text
+                                                .replaceAll(',', ''),
+                                          )
+                                        : 0) >
                                     widget.cubit.getMaxBalance(
                                       item.nameShortToken,
                                     )) {
@@ -366,28 +386,39 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                 } else {
                                   widget.cubit.errorCollateral.add('');
                                 }
+                                if (collateralAmount.text != '') {
+                                  widget.cubit.loanE(
+                                    double.parse(
+                                      collateralAmount.text.replaceAll(',', ''),
+                                    ),
+                                    item,
+                                    widget.pawnshopPackage.loanToValue ?? 0,
+                                    widget.pawnshopPackage.loanToken?[0]
+                                            .symbol ??
+                                        '',
+                                  );
+                                  widget.cubit.interestE(
+                                    double.parse(
+                                      widget.cubit.loanEstimation.value
+                                          .replaceAll(',', ''),
+                                    ),
+                                    widget.pawnshopPackage.loanToken?[0]
+                                            .symbol ??
+                                        '',
+                                    widget.pawnshopPackage.interest ?? 0,
+                                    duration,
+                                    durationController.text != ''
+                                        ? int.parse(durationController.text)
+                                        : 0,
+                                    widget.pawnshopPackage.repaymentToken?[0]
+                                            .symbol ??
+                                        '',
+                                  );
+                                }
                                 widget.cubit.enableButtonRequest(
                                   message.text,
                                   collateralAmount.text,
                                   durationController.text,
-                                );
-                                widget.cubit.loanE(
-                                  double.parse(
-                                    collateralAmount.text.replaceAll(',', ''),
-                                  ),
-                                  item,
-                                  widget.pawnshopPackage.loanToValue ?? 0,
-                                  widget.pawnshopPackage.loanToken?[0].symbol ??
-                                      '',
-                                );
-                                widget.cubit.interestE(
-                                  double.parse(
-                                    widget.cubit.loanEstimation.value
-                                        .replaceAll(',', ''),
-                                  ),
-                                  widget.pawnshopPackage.interest ?? 0,
-                                  duration,
-                                  int.parse(durationController.text),
                                 );
                               }
                             },
@@ -450,32 +481,31 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                     Expanded(
                       flex: 3,
                       child: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d{0,4}'),
+                          ),
+                        ],
                         enabled: enable,
                         controller: durationController,
                         maxLength: 50,
                         onChanged: (value) {
                           if (value == '') {
-                            widget.cubit.errorDuration.add('Duration not null');
-                          } else if (value.contains(',') ||
-                              value.contains('.')) {
-                            widget.cubit.errorDuration
-                                .add('Duration must be integer');
-                          } else if (double.parse(
-                                value.replaceAll(',', ''),
-                              ) <=
-                              0) {
                             widget.cubit.errorDuration.add('Invalid amount');
                           } else {
-                            widget.cubit.durationCached = value;
-                            widget.cubit.errorDuration.add('');
+                            widget.cubit.checkDuration(value, duration);
                             widget.cubit.interestE(
                               double.parse(
                                 widget.cubit.loanEstimation.value
                                     .replaceAll(',', ''),
                               ),
+                              widget.pawnshopPackage.loanToken?[0].symbol ?? '',
                               widget.pawnshopPackage.interest ?? 0,
                               duration,
                               int.parse(value),
+                              widget.pawnshopPackage.repaymentToken?[0]
+                                      .symbol ??
+                                  '',
                             );
                           }
                           widget.cubit.enableButtonRequest(
@@ -511,7 +541,9 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                           borderRadius: BorderRadius.all(Radius.circular(20.r)),
                           dropdownColor:
                               AppTheme.getInstance().backgroundBTSColor(),
-                          items: [S.current.week, S.current.month]
+                          items: (widget.pawnshopPackage.durationQtyType == 0
+                                  ? [S.current.week]
+                                  : [S.current.month])
                               .map((String item) {
                             return DropdownMenuItem(
                               value: item,
@@ -534,15 +566,31 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                 widget.cubit.durationCachedType = newValue;
                                 duration = newValue!;
                               });
-                              widget.cubit.interestE(
-                                double.parse(
-                                  widget.cubit.loanEstimation.value
-                                      .replaceAll(',', ''),
-                                ),
-                                widget.pawnshopPackage.interest ?? 0,
-                                duration,
-                                int.parse(durationController.text),
-                              );
+                              if (durationController.text != '') {
+                                widget.cubit.checkDuration(
+                                  durationController.text,
+                                  duration,
+                                );
+                                widget.cubit.interestE(
+                                  double.parse(
+                                    widget.cubit.loanEstimation.value
+                                        .replaceAll(',', ''),
+                                  ),
+                                  widget.pawnshopPackage.loanToken?[0].symbol ??
+                                      '',
+                                  widget.pawnshopPackage.interest ?? 0,
+                                  duration,
+                                  int.parse(durationController.text),
+                                  widget.pawnshopPackage.repaymentToken?[0]
+                                          .symbol ??
+                                      '',
+                                );
+                                widget.cubit.enableButtonRequest(
+                                  message.text,
+                                  collateralAmount.text,
+                                  durationController.text,
+                                );
+                              }
                             }
                           },
                           value: duration,
@@ -642,9 +690,12 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                               widget.cubit.loanEstimation.value
                                   .replaceAll(',', ''),
                             ),
+                            widget.pawnshopPackage.loanToken?[0].symbol ?? '',
                             widget.pawnshopPackage.interest ?? 0,
                             duration,
                             int.parse(durationController.text),
+                            widget.pawnshopPackage.repaymentToken?[0].symbol ??
+                                '',
                           );
                           widget.cubit.enableButtonRequest(
                             message.text,
@@ -732,7 +783,8 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                       width: 20.w,
                       child: Image.network(
                         ImageAssets.getUrlToken(
-                          widget.pawnshopPackage.loanToken?[0].symbol ?? '',
+                          widget.pawnshopPackage.repaymentToken?[0].symbol ??
+                              '',
                         ),
                       ),
                     ),
@@ -752,7 +804,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                     ),
                     spaceW8,
                     Text(
-                      widget.pawnshopPackage.loanToken?[0].symbol ?? '',
+                      widget.pawnshopPackage.repaymentToken?[0].symbol ?? '',
                       style: textNormalCustom(
                         AppTheme.getInstance().whiteColor(),
                         16,
@@ -879,9 +931,11 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                       );
                     } else {
                       if (checkEmail) {
-                        if (widget.cubit.chooseExisting.value) {
+                        if (widget.cubit.chooseExisting.value ||
+                            item.nameShortToken == 'BNB') {
                           unawaited(showLoadingDialog(context));
-                          await widget.cubit.pushSendNftToBE(
+                          await widget.cubit
+                              .pushSendNftToBE(
                             amount: collateralAmount.text,
                             bcPackageId:
                                 widget.pawnshopPackage.bcPackageId.toString(),
@@ -891,20 +945,25 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                             duration: durationController.text,
                             durationType:
                                 duration == S.current.week ? '0' : '1',
-                            packageId: widget.pawnshopPackage.pawnshop?.id
-                                    .toString() ??
-                                '',
+                            packageId: widget.pawnshopPackage.id.toString(),
                             pawnshopType:
                                 widget.pawnshopPackage.type.toString(),
                             txId: txhChoseCollateral,
                             supplyCurrency: loanToken.nameShortToken,
                             walletAddress: widget.cubit.wallet,
-                          );
-                          await showLoadSuccess(context).then(
-                            (value) => Navigator.of(context)
-                              ..pop()
-                              ..pop(),
-                          );
+                          )
+                              .then((value) async {
+                            if (value) {
+                              await showLoadSuccess(context).then(
+                                (value) => Navigator.of(context)
+                                  ..pop()
+                                  ..pop()
+                                  ..pop(true),
+                              );
+                            } else {
+                              await showLoadFail(context);
+                            }
+                          });
                         } else {
                           final nav = Navigator.of(context);
                           final hexString =
@@ -925,7 +984,8 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                   tokenAddress: item.tokenAddress,
                                   needApprove: true,
                                   onSuccessSign: (context, data) async {
-                                    await widget.cubit.pushSendNftToBE(
+                                    await widget.cubit
+                                        .pushSendNftToBE(
                                       amount: collateralAmount.text,
                                       bcPackageId:
                                           widget.pawnshopPackage.id.toString(),
@@ -936,22 +996,26 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                                       durationType: duration == S.current.week
                                           ? '0'
                                           : '1',
-                                      packageId: widget
-                                              .pawnshopPackage.pawnshop?.id
-                                              .toString() ??
-                                          '',
+                                      packageId:
+                                          widget.pawnshopPackage.id.toString(),
                                       pawnshopType: widget.pawnshopPackage.type
                                           .toString(),
                                       txId: data,
                                       supplyCurrency: loanToken.nameShortToken,
                                       walletAddress: widget.cubit.wallet,
-                                    );
-                                    await showLoadSuccess(context).then(
-                                      (value) => Navigator.of(context)
-                                        ..pop()
-                                        ..pop()
-                                        ..pop(),
-                                    );
+                                    )
+                                        .then((value) async {
+                                      if (value) {
+                                        await showLoadSuccess(context).then(
+                                          (value) => Navigator.of(context)
+                                            ..pop()
+                                            ..pop()
+                                            ..pop(true),
+                                        );
+                                      } else {
+                                        await showLoadFail(context);
+                                      }
+                                    });
                                   },
                                   onErrorSign: (context) {
                                     showLoadFail(context);
@@ -991,7 +1055,8 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                         showDialogSuccess(
                           context,
                           alert: 'Warning',
-                          text: 'You must be login by email to send loan request',
+                          text:
+                              'You must be login by email to send loan request',
                           onlyPop: true,
                         );
                       }

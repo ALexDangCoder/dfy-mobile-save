@@ -10,10 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PersonalLendingItem extends StatelessWidget {
-  const PersonalLendingItem({Key? key, required this.personalLending})
+  const PersonalLendingItem(
+      {Key? key, required this.personalLending, required this.listToken})
       : super(key: key);
 
   final PersonalLending personalLending;
+  final List<String?> listToken;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class PersonalLendingItem extends StatelessWidget {
         left: 16.w,
         top: 13.h,
         right: 16.w,
+        bottom: 20.h,
       ),
       decoration: BoxDecoration(
         color: borderItemColors,
@@ -31,6 +34,7 @@ class PersonalLendingItem extends StatelessWidget {
         border: Border.all(color: dialogColor),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -180,12 +184,17 @@ class PersonalLendingItem extends StatelessWidget {
                             .acceptableAssetsAsCollateral?.length ??
                         0) >
                     5)
-                  Text(
-                    '& ${personalLending.p2PLenderPackages![0].acceptableAssetsAsCollateral!.length - 5} more',
-                    style: textNormalCustom(
-                      Colors.white,
-                      14,
-                      FontWeight.w400,
+                  InkWell(
+                    onTap: () {
+                      showInfo(context, listToken);
+                    },
+                    child: Text(
+                      '& ${personalLending.p2PLenderPackages![0].acceptableAssetsAsCollateral!.length - 5} more',
+                      style: textNormalCustom(
+                        Colors.white,
+                        14,
+                        FontWeight.w400,
+                      ),
                     ),
                   ),
               ],
@@ -213,6 +222,7 @@ class PersonalLendingItem extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(left: 76.w),
               child: ButtonRadial(
+                radius: 12,
                 height: 40.h,
                 width: 122.w,
                 child: Center(
@@ -230,6 +240,33 @@ class PersonalLendingItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void showInfo(BuildContext context, List<String?> listInfo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                20.0.r,
+              ),
+            ),
+          ),
+          backgroundColor: AppTheme.getInstance().selectDialogColor(),
+          content: SizedBox(
+            child: Text(
+              listInfo.toString(),
+              style: textNormal(
+                Colors.white,
+                16,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

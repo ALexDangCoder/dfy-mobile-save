@@ -96,7 +96,7 @@ class _BorrowResultState extends State<BorrowResult> {
           retry: () {
             cubit.callApi(
               collateralSymbols:
-              widget.nameToken != S.current.all ? widget.nameToken : '',
+                  widget.nameToken != S.current.all ? widget.nameToken : '',
               collateralAmount: widget.amount,
             );
           },
@@ -194,6 +194,13 @@ class _BorrowResultState extends State<BorrowResult> {
                                   PersonalLendingItem(
                                     personalLending:
                                         cubit.personalLending[index],
+                                    listToken: cubit
+                                            .personalLending[index]
+                                            .p2PLenderPackages?[0]
+                                            .acceptableAssetsAsCollateral
+                                            ?.map((e) => e.symbol)
+                                            .toList() ??
+                                        [],
                                   ),
                                   spaceW20,
                                 ],
@@ -226,6 +233,11 @@ class _BorrowResultState extends State<BorrowResult> {
                                   PawnshopPackageItem(
                                     pawnshopPackage:
                                         cubit.pawnshopPackage[index],
+                                    listToken: cubit.pawnshopPackage[index]
+                                            .acceptableAssetsAsCollateral
+                                            ?.map((e) => e.symbol)
+                                            .toList() ??
+                                        [],
                                   ),
                                   spaceH20,
                                 ],
@@ -244,7 +256,7 @@ class _BorrowResultState extends State<BorrowResult> {
                               ),
                             ),
                           ),
-                       // spaceH16,
+                        // spaceH16,
                       ],
                     ),
                   ),

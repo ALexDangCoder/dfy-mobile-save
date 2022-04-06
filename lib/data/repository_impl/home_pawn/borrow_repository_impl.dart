@@ -166,7 +166,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   ) {
     return runCatchingAsync<CryptoCollateralResponse,
         List<CryptoCollateralModel>>(
-      () => _client.getCryptoCollateral(walletAddress, packageId, 'true', page,
+      () => _client.getCryptoCollateral(walletAddress, packageId, 'false', page,
           ApiConstants.DEFAULT_PAGE_SIZE.toString()),
       (response) => response.data?.toDomain() ?? [],
     );
@@ -248,7 +248,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
-      (response) => response.code.toString(),
+      (response) => response.error.toString(),
     );
   }
 
