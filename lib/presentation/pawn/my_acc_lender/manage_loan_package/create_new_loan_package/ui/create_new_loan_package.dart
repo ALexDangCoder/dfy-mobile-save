@@ -2,9 +2,9 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateNewLoanPackage extends StatefulWidget {

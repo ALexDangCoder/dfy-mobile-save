@@ -45,7 +45,12 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
   @override
   void initState() {
     cubit = LoanRequestDetailCubit();
-    cubit.callAllApi(walletAddress: widget.walletAddress, id: widget.id);
+    if (widget.typeDetail == TypeDetail.CRYPTO) {
+      cubit.callAllApi(walletAddress: widget.walletAddress, id: widget.id);
+    } else {
+      //nft
+
+    }
     super.initState();
   }
 

@@ -18,6 +18,7 @@ import 'package:Dfy/presentation/pawn/borrow_list_my_acc/ui/borrow_list_my_acc.d
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/collateral_my_acc.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/lend_contract_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/lender_loan_request_list.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/ui/manage_loan_package_list.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/offer_sent_list.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/setting_my_acc/ui/setting_my_acc.dart';
@@ -436,6 +437,26 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+      case 'setting_package_lender':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: ManageLoanPackageList(),
+                isRequireLoginEmail: false,
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ManageLoanPackageList(),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
       case 'verification':
         {
           if (state is NoLoginState) {
@@ -545,7 +566,6 @@ class _MenuAccountState extends State<MenuAccount> {
         ),
       ],
     ),
-    //todo đang mượn tạm để test màn sent list
     ItemMenuModel.createParent(
       title: S.current.lender_profile,
       icon: ImageAssets.ic_card,

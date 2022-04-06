@@ -962,7 +962,7 @@
   "confirm_reject_collateral": "Confirm reject collateral",
   "confirm_cancel_cancel_package": "Cancel loan package",
   "description_manage_loan_1": "Join the revolution in\ndecentralized finance.",
-  "description_manage_loan_2": "Make money from crypto\nlending today.",
+  "description_manage_loan_2": "Make money from crypto\n   lending today.",
   "add_lend_setting": "Add lending setting",
   "select_wallet_address": "Select wallet address",
   "offer_sent": "Offer Sent",
@@ -1011,5 +1011,7 @@
   "learn_more_about_ltv": "Learn more about LTV liquidation threshhold",
   "prepaid_fee": "Prepaid fee",
   "request_detail": "Request detail",
-  "reject_request": "Reject request"
+  "reject_request": "Reject request",
+  "manage_loan_package": "Manage loan package",
+  "lending_setting": "Lending setting"
 }
