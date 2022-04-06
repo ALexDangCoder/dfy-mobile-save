@@ -29,9 +29,9 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
   static const String INTEREST_3 = '25-50%';
   static const String INTEREST_4 = '>50%';
 
-  String paramInterest = INTEREST_1;
-  List<bool> listInterest = [true, false, false, false];
-  List<bool> listCachedInterest = [true, false, false, false];
+  String paramInterest = '';
+  List<bool> listInterest = [false, false, false, false];
+  List<bool> listCachedInterest = [false, false, false, false];
   List<String> listInterestString = [
     INTEREST_1,
     INTEREST_2,
@@ -57,9 +57,9 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
   static const String LOAN_VL3 = '25-50%';
   static const String LOAN_VL4 = '>50%';
 
-  String paramLoan = LOAN_VL1;
-  List<bool> listLoan = [true, false, false, false];
-  List<bool> listCachedLoan = [true, false, false, false];
+  String paramLoan = '';
+  List<bool> listLoan = [false, false, false, false];
+  List<bool> listCachedLoan = [false, false, false, false];
   List<String> listLoanString = [
     LOAN_VL1,
     LOAN_VL2,
@@ -295,9 +295,11 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       case INTEREST_2:
         return '0.1:0.25';
       case INTEREST_3:
-        return '0.25:5';
-      default:
+        return '0.25:0.5';
+      case INTEREST_4:
         return '0.5:1';
+      default:
+        return '';
     }
   }
 
@@ -308,9 +310,11 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       case LOAN_VL2:
         return '0.1:0.25';
       case LOAN_VL3:
-        return '0.25:5';
-      default:
+        return '0.25:0.5';
+      case LOAN_VL4:
         return '0.5:1';
+      default:
+        return '';
     }
   }
   List<String> paramCollateral = [];
@@ -385,8 +389,8 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
 
   void resetFilter() {
 
-    listInterest = [true, false, false, false];
-    listLoan = [true, false, false, false];
+    listInterest = [false, false, false, false];
+    listLoan = [false, false, false, false];
     for(int i = 0; i<network.length;i++){
       network[i].isSelect = false;
     }
@@ -405,8 +409,12 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
 
     interestRate.add('change');
   }
+  String cachedName ='';
 
   void applyFilter(String name) {
+    cachedName = name;
+    personalLending.clear();
+    pawnshopPackage.clear();
 
     listCachedCollateral.clear();
     listCachedLoanToken.clear();
@@ -422,6 +430,7 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
     getParamNetwork();
     getParamLoanToken();
 
+
     callApi(
       name: name,
       interestRanges: interestRateParam(),
@@ -431,6 +440,12 @@ class BorrowResultCubit extends BaseCubit<BorrowResultState> {
       loanType: getParam(paramLoanType),
       duration: getParam(paramDuration),
     );
+    paramInterest = '';
+    paramLoan = '';
+    paramCollateral.clear();
+    paramLoanToken.clear();
+    paramLoanType.clear();
+    paramDuration.clear();
   }
 
   ///

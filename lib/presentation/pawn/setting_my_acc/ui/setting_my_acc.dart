@@ -69,7 +69,6 @@ class _SettingMyAccState extends State<SettingMyAcc> {
                     padding: EdgeInsets.only(
                       left: 12.w,
                       top: 16.h,
-                      right: 10.w,
                       bottom: 20.h,
                     ),
                     decoration: BoxDecoration(
@@ -166,7 +165,6 @@ class _SettingMyAccState extends State<SettingMyAcc> {
                     padding: EdgeInsets.only(
                       left: 12.w,
                       top: 16.h,
-                      right: 16.w,
                       bottom: 20.h,
                     ),
                     decoration: BoxDecoration(
@@ -373,63 +371,65 @@ class _SettingMyAccState extends State<SettingMyAcc> {
     Function onchange, {
     bool? notChange,
   }) {
-    return Row(
-      children: [
-        CupertinoSwitch(
-          value: value,
-          onChanged: (notChange ?? false)
-              ? null
-              : (bool value) {
-                  cubit.emit(SettingMyAccInitial());
-                  onchange();
-                },
-          activeColor: AppTheme.getInstance().fillColor(),
-          trackColor: colorSwitch,
-        ),
-        spaceW12,
-        SizedBox(
-          width: 248.w,
-          child: RichText(
-            text: TextSpan(
-              text: '',
-              style: textNormalCustom(
-                AppTheme.getInstance().getGray3(),
-                16,
-                FontWeight.w400,
-              ),
-              children: [
-                TextSpan(
-                  text: title,
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteColor(),
-                    16,
-                    FontWeight.w400,
-                  ),
+    return SizedBox(
+      child: Row(
+        children: [
+          CupertinoSwitch(
+            value: value,
+            onChanged: (notChange ?? false)
+                ? null
+                : (bool value) {
+                    cubit.emit(SettingMyAccInitial());
+                    onchange();
+                  },
+            activeColor: AppTheme.getInstance().fillColor(),
+            trackColor: colorSwitch,
+          ),
+          spaceW12,
+          SizedBox(
+            width: 240.w,
+            child: RichText(
+              text: TextSpan(
+                text: '',
+                style: textNormalCustom(
+                  AppTheme.getInstance().getGray3(),
+                  16,
+                  FontWeight.w400,
                 ),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: SizedBox(
-                    width: 4.w,
-                  ),
-                ),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: GestureDetector(
-                    onTap: () {
-                      function();
-                    },
-                    child: Image.asset(
-                      ImageAssets.ic_about_2,
-                      height: 17.h,
-                      width: 17.w,
+                children: [
+                  TextSpan(
+                    text: title,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
                     ),
                   ),
-                ),
-              ],
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: SizedBox(
+                      width: 4.w,
+                    ),
+                  ),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: GestureDetector(
+                      onTap: () {
+                        function();
+                      },
+                      child: Image.asset(
+                        ImageAssets.ic_about_2,
+                        height: 17.h,
+                        width: 17.w,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
