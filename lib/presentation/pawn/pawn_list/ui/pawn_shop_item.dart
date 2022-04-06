@@ -325,7 +325,7 @@ class PawnItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${S.current.collateral_accepted}:',
+                    '${S.current.loan_currency}:',
                     style: textNormalCustom(
                       AppTheme.getInstance().pawnGray(),
                       14,
