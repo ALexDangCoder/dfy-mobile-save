@@ -844,22 +844,20 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                       ),
                     ),
                     spaceW8,
-                    SizedBox(
-                      width: 120.w,
-                      child: StreamBuilder<String>(
-                        stream: widget.cubit.loanEstimation,
-                        builder: (context, snapshot) {
-                          return Text(
+                    StreamBuilder<String>(
+                      stream: widget.cubit.loanEstimation,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          child: Text(
                             snapshot.data ?? '',
                             style: textNormalCustom(
                               AppTheme.getInstance().whiteColor(),
                               16,
                               FontWeight.w400,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                     spaceW8,
                     Text(
@@ -983,6 +981,39 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                             nav.push(
                               MaterialPageRoute(
                                 builder: (context) => Approve(
+                                  warning: (double.parse(
+                                                widget
+                                                    .cubit.loanEstimation.value
+                                                    .replaceAll(',', ''),
+                                              ) >
+                                              widget
+                                                  .pawnshopPackage.available! &&
+                                          widget.pawnshopPackage.type == 0)
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Image.asset(
+                                                ImageAssets.img_waning,
+                                              height: 20.h,
+                                              width: 20.w,
+                                              color: failTransactionColor,
+                                            ),
+                                            spaceW5,
+                                            SizedBox(
+                                              width: 317.w,
+                                              child: Text(
+                                                "The pawnshop's balance is currently not sufficient to complete this transaction."
+                                                ' You will have to wait. Are your sure you wish to continue?',
+                                                style: textNormal(
+                                                  failTransactionColor,
+                                                  14,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox(),
                                   hexString: hexString,
                                   payValue: collateralAmount.text,
                                   tokenAddress: item.tokenAddress,

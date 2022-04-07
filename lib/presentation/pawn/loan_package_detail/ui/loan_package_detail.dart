@@ -151,7 +151,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         spaceH16,
                         rowItem(
                           'Available:',
-                          '${cubit.pawnshopPackage.available} ${cubit.pawnshopPackage.loanToken?[0].symbol}',
+                          '${formatPrice.format(cubit.pawnshopPackage.available)} ${cubit.pawnshopPackage.loanToken?[0].symbol}',
                           color: deliveredColor,
                         ),
                         Row(
