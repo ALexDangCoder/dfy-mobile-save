@@ -1,7 +1,10 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/presentation/pawn/lending_registration_accept/ui/text_validate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'close_text_base.dart';
 
 class FormInputBase extends StatefulWidget {
   const FormInputBase({
@@ -11,10 +14,14 @@ class FormInputBase extends StatefulWidget {
     this.initText,
     required this.validateFun,
     this.textInputType,
+    this.isClose = false,
+    this.maxLength,
   }) : super(key: key);
   final String title;
+  final bool isClose;
   final String hintText;
   final String? initText;
+  final int? maxLength;
   final Function validateFun;
   final TextInputType? textInputType;
 
@@ -24,15 +31,20 @@ class FormInputBase extends StatefulWidget {
 
 class _FormInputBaseState extends State<FormInputBase> {
   late TextEditingController textEditingController;
+  String textValidate = '';
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     textEditingController = TextEditingController();
     if (widget.initText?.isNotEmpty ?? false) {
       textEditingController.text = widget.initText ?? '';
     }
-    super.initState();
+    textEditingController.addListener(() {
+      textValidate = widget.validateFun(
+        textEditingController.text,
+      );
+    });
   }
 
   @override
@@ -67,10 +79,8 @@ class _FormInputBaseState extends State<FormInputBase> {
               child: TextFormField(
                 keyboardType: widget.textInputType,
                 controller: textEditingController,
-                maxLength: 100,
-                validator: (value) {
-                  return widget.validateFun(value);
-                },
+                maxLength: widget.maxLength ?? 999,
+                textAlignVertical: TextAlignVertical.center,
                 cursorColor: AppTheme.getInstance().whiteColor(),
                 style: textNormal(
                   AppTheme.getInstance().whiteColor(),
@@ -86,9 +96,19 @@ class _FormInputBaseState extends State<FormInputBase> {
                     16,
                   ),
                   border: InputBorder.none,
+                  suffixIcon: widget.isClose
+                      ? CloseTextBase(
+                          textEditingController: textEditingController,
+                        )
+                      : null,
                 ),
               ),
             ),
+          ),
+          spaceH4,
+          ValidateTextBase(
+            textEditingController: textEditingController,
+            textValidate: textValidate,
           ),
         ],
       ),
