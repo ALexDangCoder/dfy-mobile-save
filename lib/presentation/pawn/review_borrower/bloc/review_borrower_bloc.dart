@@ -27,13 +27,13 @@ class ReviewBorrowerBloc {
         hexString = await web3Client.getSubmitNFTContractData(
           contractAddress: bcContractAddress,
           contractId: bcContractId,
-          point: rateNumber.value,
+          point: rateNumber.value+1,
         );
       } else {
         hexString = await web3Client.getSubmitCryptoContractData(
           contractAddress: bcContractAddress,
           contractId: bcContractId,
-          point: rateNumber.value,
+          point: rateNumber.value+1,
         );
       }
     } catch (e) {

@@ -23,12 +23,12 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   bool _isRefresh = true;
   bool _isLoading = false;
   int page = 0;
-  static const String A_TO_Z_REPUTATION = 'reputation,desc';
-  static const String Z_TO_A_REPUTATION = 'reputation,asc';
+  static const String A_TO_Z_REPUTATION = 'rating,desc';
+  static const String Z_TO_A_REPUTATION = 'rating,asc';
   static const String A_TO_Z_INTEREST = 'interest,desc';
   static const String Z_TO_A_INTEREST = 'interest,asc';
-  static const String A_TO_Z_COMPLETED = 'completedContracts,desc';
-  static const String Z_TO_A_COMPLETED = 'completedContracts,asc';
+  static const String A_TO_Z_COMPLETED = 'available,desc';
+  static const String Z_TO_A_COMPLETED = 'available,asc';
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -238,6 +238,7 @@ class PawnListBloc extends BaseCubit<PawnListState> {
         await _pawnService.getListPawnShopMy(
           size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
           page: page.toString(),
+
         );
     response.when(
       success: (response) {

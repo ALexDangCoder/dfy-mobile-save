@@ -421,7 +421,7 @@ class _ItemCollateralState extends State<ItemCollateral> {
                     width: 103.w,
                     height: 40.h,
                     child: ButtonGold(
-                      radiusButton: 16,
+                      radiusButton: 12,
                       haveMargin: false,
                       title: S.current.send_offer,
                       isEnable:
