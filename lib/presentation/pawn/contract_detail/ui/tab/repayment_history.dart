@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/bloc/contract_detail_bloc.dart';
 import 'package:Dfy/presentation/pawn/repayment_history_detail/ui/repayment_history_detail.dart';
@@ -85,65 +86,81 @@ class _RepaymentHistoryState extends State<RepaymentHistory>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          spaceH20,
-          SizedBox(
-            height: 121.h,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                itemList(
-                  S.current.total_loan,
-                  formatPrice.format(
-                    widget.bloc.objRepayment?.totalLoan ?? 0,
-                  ),
-                  AppTheme.getInstance().greenMarketColors(),
-                ),
-                itemList(
-                  S.current.total_paid,
-                  formatPrice.format(
-                    widget.bloc.objRepayment?.totalPaid ?? 0,
-                  ),
-                  AppTheme.getInstance().blueColor(),
-                ),
-                itemList(
-                  S.current.total_unpaid,
-                  formatPrice.format(
-                    widget.bloc.objRepayment?.totalUnpaid ?? 0,
-                  ),
-                  AppTheme.getInstance().redColor(),
-                ),
-              ],
-            ),
-          ),
-          spaceH32,
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: widget.bloc.listRequest.length,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RepaymentHistoryDetail(
-                      id: widget.bloc.listRequest[index].id.toString(),
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollInfo) {
+        if (widget.bloc.isCanLoadMore &&
+            (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent)) {
+          widget.bloc.isCanLoadMore=false;
+          widget.bloc.getRepaymentRequest();
+        }
+        return true;
+      },
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            spaceH20,
+            SizedBox(
+              height: 121.h,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  itemList(
+                    S.current.total_loan,
+                    formatPrice.format(
+                      widget.bloc.objRepayment?.totalLoan ?? 0,
                     ),
+                    AppTheme.getInstance().greenMarketColors(),
                   ),
-                );
-              },
-              child: ItemRepayment(
-                obj: widget.bloc.listRequest[index],
-                index: index + 1,
-                bloc: widget.bloc,
+                  itemList(
+                    S.current.total_paid,
+                    formatPrice.format(
+                      widget.bloc.objRepayment?.totalPaid ?? 0,
+                    ),
+                    AppTheme.getInstance().blueColor(),
+                  ),
+                  itemList(
+                    S.current.total_unpaid,
+                    formatPrice.format(
+                      widget.bloc.objRepayment?.totalUnpaid ?? 0,
+                    ),
+                    AppTheme.getInstance().redColor(),
+                  ),
+                ],
               ),
             ),
-          ),
-          spaceH152,
-        ],
+            spaceH32,
+            StreamBuilder<List<RepaymentRequestModel>>(
+                stream: widget.bloc.listRequest,
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: widget.bloc.listRequest.value.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RepaymentHistoryDetail(
+                              id: widget.bloc.listRequest.value[index].id
+                                  .toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: ItemRepayment(
+                        obj: widget.bloc.listRequest.value[index],
+                        index: index + 1,
+                        bloc: widget.bloc,
+                      ),
+                    ),
+                  );
+                }),
+            spaceH152,
+          ],
+        ),
       ),
     );
   }
