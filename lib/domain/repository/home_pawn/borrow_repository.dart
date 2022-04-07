@@ -85,6 +85,11 @@ mixin BorrowRepository {
   Future<Result<List<PawnShopModelMy>>> getListPawnShopMy({
     String? page,
     String? size,
+    String? interestRanges,
+    String? loanSymbols,
+    String? collateralSymbols,
+    String? name,
+    String? cusSort,
   });
 
   Future<Result<List<NftMarket>>> getListNFTCollateral({

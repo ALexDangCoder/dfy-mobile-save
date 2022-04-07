@@ -110,6 +110,11 @@ abstract class BorrowService {
   Future<PawnListResponse> getListPawnShopMy(
     @Query('page') String? page,
     @Query('size') String? size,
+    @Query('interestRanges') String? interestRanges,
+    @Query('loanSymbols') String? loanSymbols,
+    @Query('collateralSymbols') String? collateralSymbols,
+    @Query('name') String? name,
+    @Query('cusSort') String? cusSort,
   );
 
   @GET(ApiConstants.GET_LIST_NFT_COLLATERAL)
@@ -265,10 +270,10 @@ abstract class BorrowService {
 
   @GET('${ApiConstants.GET_DETAIl_LENDER}{id}')
   Future<ContractlDetailMyAccResponse> getLenderDetail(
-      @Path('id') String? id,
-      @Query('walletAddress') String? walletAddress,
-      @Query('type') String? type,
-      );
+    @Path('id') String? id,
+    @Query('walletAddress') String? walletAddress,
+    @Query('type') String? type,
+  );
 
   @GET(
       '${ApiConstants.GET_BORROW_REPAYMENT_HISTORY}{id}${ApiConstants.REPAYMENT_STATS}')
@@ -319,11 +324,12 @@ abstract class BorrowService {
     @Path('id') String? id,
   );
 
-  @PUT('${ApiConstants.PUT_CANCEL_OFFER}{id_collateral}${ApiConstants.CANCEL_OFFER_PAWN}{id_offer}')
+  @PUT(
+      '${ApiConstants.PUT_CANCEL_OFFER}{id_collateral}${ApiConstants.CANCEL_OFFER_PAWN}{id_offer}')
   Future<String> putCancelOffer(
-      @Path('id_collateral') String? idCollateral ,
-      @Path('id_offer') String? idOffer ,
-      @Query('wallet-address') String? walletAddress,
+    @Path('id_collateral') String? idCollateral,
+    @Path('id_offer') String? idOffer,
+    @Query('wallet-address') String? walletAddress,
   );
 
   @PUT('${ApiConstants.ADD_MORE_COLLATERAL}{id}${ApiConstants.COLLATERAL}')

@@ -198,11 +198,21 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<List<PawnShopModelMy>>> getListPawnShopMy({
     String? page,
     String? size,
+    String? interestRanges,
+    String? loanSymbols,
+    String? collateralSymbols,
+    String? name,
+    String? cusSort,
   }) {
     return runCatchingAsync<PawnListResponse, List<PawnShopModelMy>>(
       () => _client.getListPawnShopMy(
         page,
         size,
+        interestRanges,
+        loanSymbols,
+        collateralSymbols,
+        name,
+        cusSort,
       ),
       (response) =>
           response.data?.data?.content?.map((e) => e.toDomain()).toList() ?? [],
