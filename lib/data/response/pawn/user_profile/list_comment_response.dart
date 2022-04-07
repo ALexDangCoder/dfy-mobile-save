@@ -48,7 +48,7 @@ class DataResponse {
   String? content;
   @JsonKey(name: 'point')
   int? point;
-  @JsonKey(name: 'createAt')
+  @JsonKey(name: 'createdAt')
   int? createAt;
   @JsonKey(name: 'reviewer')
   UserReviewResponse? userReview;

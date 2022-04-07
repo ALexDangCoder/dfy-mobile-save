@@ -29,6 +29,7 @@ class CommentItem extends StatelessWidget {
         border: Border.all(color: dialogColor),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (commentBorrow.userReview?.name != null)
             Row(
@@ -56,6 +57,7 @@ class CommentItem extends StatelessWidget {
             ),
           spaceH12,
           SizedBox(
+            height: 24.h,
             child: Row(
               children: [
                 SizedBox(
