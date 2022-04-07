@@ -12,6 +12,7 @@ import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -241,13 +242,13 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
     final Result<List<RepaymentRequestModel>> response =
         await _pawnService.getRepaymentResquest(
       id: id.toString(),
-      size: '3',
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
       page: page.toString(),
     );
     response.when(
       success: (response) {
         page++;
-        if (response.length == 3) {
+        if (response.length == ApiConstants.DEFAULT_PAGE_SIZE) {
           isCanLoadMore = true;
         } else {
           isCanLoadMore = false;

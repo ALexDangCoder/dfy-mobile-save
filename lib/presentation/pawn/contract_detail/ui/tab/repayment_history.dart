@@ -97,6 +97,7 @@ class _RepaymentHistoryState extends State<RepaymentHistory>
       },
       child: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -158,6 +159,8 @@ class _RepaymentHistoryState extends State<RepaymentHistory>
                     ),
                   );
                 }),
+            if(widget.bloc.objDetail?.status ==
+                ContractDetailBloc.ACTIVE)
             spaceH152,
           ],
         ),
