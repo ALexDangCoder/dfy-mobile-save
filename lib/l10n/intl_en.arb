@@ -1034,5 +1034,9 @@
   "you_all_set": "You’re all set!",
   "withdraw_status": "Withdrawn",
   "invalid_balance": "Invalid balance",
-  "invalid_loan_currency": "Invalid loan currency"
+  "invalid_loan_currency": "Invalid loan currency",
+  "email": "Email",
+  "enter_address": "Enter address",
+  "enter_description": "Enter description",
+  "accept_continue": "Accept & Continue"
 }
