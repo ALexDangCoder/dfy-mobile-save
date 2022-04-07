@@ -292,6 +292,7 @@ class _LenderTabState extends State<LenderTab> {
                           onTap: (){},
                           child: ButtonRadial(
                             height: 40.h,
+                            radius: 12,
                             width: 122.w,
                             child: Center(
                               child: Text(

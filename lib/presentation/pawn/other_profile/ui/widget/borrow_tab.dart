@@ -541,33 +541,31 @@ class _BorrowTabState extends State<BorrowTab>
                                     (context, AsyncSnapshot<bool> snapshot2) {
                                   return Column(
                                     children: [
-                                      SizedBox(
-                                        child: ListView.builder(
-                                          itemCount: snapshot2.data == false
-                                              ? (widget.cubit.listComment.length >
-                                              3
-                                              ? 3
-                                              : widget
-                                              .cubit.listComment.length)
-                                              : widget.cubit.listComment.length,
-                                          shrinkWrap: true,
-                                          physics:
-                                          const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (
-                                              BuildContext context,
-                                              int index,
-                                              ) {
-                                            return Column(
-                                              children: [
-                                                CommentItem(
-                                                  commentBorrow: widget
-                                                      .cubit.listComment[index],
-                                                ),
-                                                spaceH20,
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                      ListView.builder(
+                                        itemCount: snapshot2.data == false
+                                            ? (widget.cubit.listComment.length >
+                                            3
+                                            ? 3
+                                            : widget
+                                            .cubit.listComment.length)
+                                            : widget.cubit.listComment.length,
+                                        shrinkWrap: true,
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (
+                                            BuildContext context,
+                                            int index,
+                                            ) {
+                                          return Column(
+                                            children: [
+                                              CommentItem(
+                                                commentBorrow: widget
+                                                    .cubit.listComment[index],
+                                              ),
+                                              spaceH20,
+                                            ],
+                                          );
+                                        },
                                       ),
                                       if (widget.cubit.listComment.length >
                                           3) ...[
