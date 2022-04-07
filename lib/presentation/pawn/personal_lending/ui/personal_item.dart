@@ -400,7 +400,7 @@ class PersonalItem extends StatelessWidget {
                   width: 140.w,
                   height: 40.h,
                   child: ButtonGold(
-                    radiusButton: 16,
+                    radiusButton: 12,
                     haveMargin: false,
                     title: S.current.request_loan,
                     isEnable: true,

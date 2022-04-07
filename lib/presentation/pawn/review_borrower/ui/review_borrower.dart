@@ -288,10 +288,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                       onTap: () async {
                         final NavigatorState navigator = Navigator.of(context);
                         await bloc.getHexString(
-                          bcContractAddress: widget
-                                  .objDetail.contractTerm?.walletAddress
-                                  .toString() ??
-                              '',
+                          bcContractAddress:
+                              Get.find<AppConstants>().collateral_contract,
                           bcContractId:
                               widget.objDetail.bcContractId.toString(),
                           typeBorrow: widget.typeBorrow,
