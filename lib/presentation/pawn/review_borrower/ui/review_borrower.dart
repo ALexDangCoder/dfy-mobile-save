@@ -46,6 +46,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
+      backgroundColor: Colors.transparent,
       title: S.current.review_borrower,
       text: ImageAssets.ic_close,
       onRightClick: () {

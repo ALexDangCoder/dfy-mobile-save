@@ -23,9 +23,13 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   final TypeBorrow typeBorrow;
   final TypeNavigator typeNavigator;
   late String typePawn;
+  int page = 0;
   bool? isShow;
   bool? isRate;
-  List<RepaymentRequestModel> listRequest = [];
+  bool isCanLoadMore = true;
+  List<RepaymentRequestModel> listRequestMy = [];
+  BehaviorSubject<List<RepaymentRequestModel>> listRequest =
+      BehaviorSubject.seeded([]);
   RepaymentStatsModel? objRepayment;
   ContractDetailPawn? objDetail;
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
@@ -152,7 +156,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
       typePawn = '1';
     }
     getCheckRate();
-    getRepaymentResquest();
+    getRepaymentRequest();
     getRepaymentHistory();
     getLenderContract();
   }
@@ -172,9 +176,8 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
         id: id.toString(),
         walletAddress: PrefsService.getCurrentWalletCore(),
       );
-    }else{
-      response =
-      await _pawnService.getLenderDetail(
+    } else {
+      response = await _pawnService.getLenderDetail(
         type: typePawn,
         id: id.toString(),
         walletAddress: PrefsService.getCurrentWalletCore(),
@@ -233,16 +236,25 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
     );
   }
 
-  Future<void> getRepaymentResquest() async {
+  Future<void> getRepaymentRequest() async {
+    showLoading();
     final Result<List<RepaymentRequestModel>> response =
         await _pawnService.getRepaymentResquest(
       id: id.toString(),
-      size: '9999',
-      page: '0',
+      size: '3',
+      page: page.toString(),
     );
     response.when(
       success: (response) {
-        listRequest.addAll(response);
+        page++;
+        if (response.length == 3) {
+          isCanLoadMore = true;
+        } else {
+          isCanLoadMore = false;
+        }
+        showContent();
+        listRequestMy.addAll(response);
+        listRequest.add(listRequestMy);
       },
       error: (error) {},
     );
