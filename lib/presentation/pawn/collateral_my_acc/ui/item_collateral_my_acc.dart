@@ -213,7 +213,7 @@ class ItemCollateralMyAcc extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Text(
-                      '${S.current.duration}:',
+                      '${S.current.duration}',
                       style: textNormalCustom(
                         AppTheme.getInstance().pawnItemGray(),
                         16,

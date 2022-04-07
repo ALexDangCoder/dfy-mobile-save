@@ -73,7 +73,8 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   child: Container(
                     height: 812.h,
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
+                      top: MediaQuery.of(context).padding.top,
+                    ),
                     decoration: BoxDecoration(
                       color: AppTheme.getInstance().bgBtsColor(),
                       borderRadius: BorderRadius.only(
@@ -415,29 +416,9 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   ),
                   Row(
                     children: [
-                      // Visibility(
-                      //   visible: enable,
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       collateralAmount.text = bloc
-                      //           .getMax(bloc.item.nameShortToken)
-                      //           .replaceAll(',', '');
-                      //       bloc.errorCollateral.add('');
-                      //       bloc.validateAmount(collateralAmount.text);
-                      //     },
-                      //     child: Text(
-                      //       S.current.max,
-                      //       style: textNormalCustom(
-                      //         fillYellowColor,
-                      //         16,
-                      //         FontWeight.w400,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // spaceW10,
                       DropdownButtonHideUnderline(
                         child: DropdownButton<ModelToken>(
+                          menuMaxHeight: 200.h,
                           borderRadius: BorderRadius.all(Radius.circular(20.r)),
                           dropdownColor:
                               AppTheme.getInstance().backgroundBTSColor(),
@@ -799,7 +780,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    bloc.textToken.add(newValue ?? '');
+                    bloc.validateLoanToken(newValue ?? '');
                   });
                 },
                 dropdownMaxHeight: 100.h,
@@ -820,7 +801,24 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
               ),
             ),
           ),
-        )
+        ),
+        spaceH4,
+        StreamBuilder<String>(
+          stream: bloc.isLoanToken,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            return SizedBox(
+              child: snapshot.data?.isNotEmpty ?? false
+                  ? Text(
+                      snapshot.data ?? '',
+                      style: textNormal(
+                        AppTheme.getInstance().redColor(),
+                        12,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            );
+          },
+        ),
       ],
     );
   }
