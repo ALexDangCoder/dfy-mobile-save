@@ -4,8 +4,11 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/presentation/pawn/lending_registration/bloc/leding_registration_bloc.dart';
+import 'package:Dfy/presentation/pawn/lending_registration_accept/ui/leding_registration_accept.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -56,183 +59,442 @@ class _LendingRegistrationState extends State<LendingRegistration> {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    spaceH16,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              left: 16.w,
+                        spaceH16,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  left: 16.w,
+                                ),
+                                width: 24.w,
+                                height: 24.h,
+                                child: Image.asset(
+                                  ImageAssets.ic_back,
+                                ),
+                              ),
                             ),
-                            width: 24.w,
-                            height: 24.h,
-                            child: Image.asset(
-                              ImageAssets.ic_back,
+                            SizedBox(
+                              width: 250.w,
+                              child: Text(
+                                S.current.lending_registration,
+                                style: textNormalCustom(
+                                  null,
+                                  20.sp,
+                                  FontWeight.w700,
+                                ).copyWith(
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  right: 16.w,
+                                ),
+                                width: 24.w,
+                                height: 24.h,
+                                child: Image.asset(
+                                  ImageAssets.ic_close,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        spaceH20,
+                        line,
+                        spaceH24,
+                        Container(
+                          height: 64.h,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            color: AppTheme.getInstance().itemBtsColors(),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            keyboardType: TextInputType.emailAddress,
+                            style: textNormal(
+                              AppTheme.getInstance().textThemeColor(),
+                              16,
+                            ),
+                            onChanged: (value) {
+                              bloc.checkValidate(value);
+                            },
+                            controller: emailEditingController,
+                            cursorColor:
+                                AppTheme.getInstance().textThemeColor(),
+                            maxLength: 50,
+                            decoration: InputDecoration(
+                              hintText: S.current.enter_email,
+                              counterText: '',
+                              hintStyle: textNormal(
+                                AppTheme.getInstance()
+                                    .whiteWithOpacityFireZero(),
+                                16,
+                              ),
+                              prefixIcon: ImageIcon(
+                                const AssetImage(ImageAssets.ic_email),
+                                color: AppTheme.getInstance().whiteColor(),
+                              ),
+                              border: InputBorder.none,
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 250.w,
-                          child: Text(
-                            S.current.lending_registration,
-                            style: textNormalCustom(
-                              null,
-                              20.sp,
-                              FontWeight.w700,
-                            ).copyWith(
-                              overflow: TextOverflow.ellipsis,
+                        StreamBuilder<String>(
+                          stream: bloc.validateTextSubject,
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data ?? '',
+                              style: textNormal(
+                                AppTheme.getInstance().wrongColor(),
+                                12,
+                              ).copyWith(fontWeight: FontWeight.w400),
+                            );
+                          },
+                        ),
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              if (bloc.checkWalletAddress) {
+                                bloc.isChooseAcc.sink.add(false);
+                              }
+                            },
+                            child: StreamBuilder<String>(
+                              stream: bloc.textAddress,
+                              builder: (context, snapshot) {
+                                final String address =
+                                    bloc.checkAddress(snapshot.data ?? '');
+                                return Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: 12.h,
+                                  ),
+                                  height: 64.h,
+                                  width: 343.w,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 15.5.w,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        AppTheme.getInstance().itemBtsColors(),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.r),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            child: Image.asset(
+                                              ImageAssets.ic_wallet,
+                                              height: 20.67.h,
+                                              width: 20.14.w,
+                                            ),
+                                          ),
+                                          spaceW6,
+                                          SizedBox(
+                                            child: Text(
+                                              address,
+                                              style: textNormal(
+                                                null,
+                                                16,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        child: bloc.checkWalletAddress
+                                            ? Image.asset(
+                                                ImageAssets.ic_line_down,
+                                                height: 20.67.h,
+                                                width: 20.14.w,
+                                              )
+                                            : SizedBox(
+                                                height: 20.67.h,
+                                                width: 20.14.w,
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              right: 16.w,
-                            ),
-                            width: 24.w,
-                            height: 24.h,
-                            child: Image.asset(
-                              ImageAssets.ic_close,
+                        spaceH24,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: RichText(
+                            textAlign: TextAlign.justify,
+                            text: TextSpan(
+                              text: '',
+                              style: textNormalCustom(
+                                null,
+                                14,
+                                FontWeight.w500,
+                              ),
+                              children: [
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.by_choosing_on_the,
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.continue_pawn,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().fillColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.i_agree_with_the,
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.terms_and_conditions,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ' ',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.condition,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ', ',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.payment_terms,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ', ',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.privacy_policy,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ' ',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.and,
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ' ',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    S.current.nondiscrimination_policy,
+                                    style: textNormalCustom(
+                                      AppTheme.getInstance().blueColor(),
+                                      14,
+                                      FontWeight.w500,
+                                    ).copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: Text(
+                                    ' ${S.current.of_de_fi_for_you}',
+                                    style: textNormalCustom(
+                                      null,
+                                      14,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    spaceH20,
-                    line,
-                    spaceH24,
-                    Container(
-                      height: 64.h,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: AppTheme.getInstance().itemBtsColors(),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20),
-                        ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                      child: TextFormField(
-                        textAlignVertical: TextAlignVertical.center,
-                        keyboardType: TextInputType.emailAddress,
-                        style: textNormal(
-                          AppTheme.getInstance().textThemeColor(),
-                          16,
-                        ),
-                        onChanged: (value) {
-                          bloc.checkValidate(value);
-                        },
-                        controller: emailEditingController,
-                        cursorColor: AppTheme.getInstance().textThemeColor(),
-                        maxLength: 50,
-                        decoration: InputDecoration(
-                          hintText: S.current.enter_email,
-                          counterText: '',
-                          hintStyle: textNormal(
-                            AppTheme.getInstance().whiteWithOpacityFireZero(),
-                            16,
+                      child: Column(
+                        children: [
+                          Text(
+                            S.current.we_ll_also_send_you_special_we,
+                            style: textNormalCustom(
+                              null,
+                              14,
+                              FontWeight.w500,
+                            ),
                           ),
-                          prefixIcon: ImageIcon(
-                            const AssetImage(ImageAssets.ic_email),
-                            color: AppTheme.getInstance().whiteColor(),
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    StreamBuilder<String>(
-                      stream: bloc.validateTextSubject,
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? '',
-                          style: textNormal(
-                            AppTheme.getInstance().wrongColor(),
-                            12,
-                          ).copyWith(fontWeight: FontWeight.w400),
-                        );
-                      },
-                    ),
-                    Center(
-                      child: InkWell(
-                        onTap: () {
-                          if (bloc.checkWalletAddress) {
-                            bloc.isChooseAcc.sink.add(false);
-                          }
-                        },
-                        child: StreamBuilder<String>(
-                          stream: bloc.textAddress,
-                          builder: (context, snapshot) {
-                            final String address =
-                                bloc.checkAddress(snapshot.data ?? '');
-                            return Container(
-                              margin: EdgeInsets.only(
-                                
-                                bottom: 12.h,
+                          spaceH15,
+                          RichText(
+                            text: TextSpan(
+                              text: '',
+                              style: textNormalCustom(
+                                AppTheme.getInstance().whiteColor(),
+                                14,
+                                FontWeight.w400,
                               ),
-                              height: 64.h,
-                              width: 343.w,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 15.5.w,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppTheme.getInstance().itemBtsColors(),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20.r),
+                              children: [
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: StreamBuilder<bool>(
+                                    initialData: true,
+                                    stream: bloc.isCheckBox,
+                                    builder: (context, snapshot) {
+                                      return SizedBox(
+                                        width: 24.w,
+                                        height: 24.h,
+                                        child: Transform.scale(
+                                          scale: 1.34.sp,
+                                          child: Checkbox(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.r),
+                                            ),
+                                            fillColor:
+                                                MaterialStateProperty.all(
+                                              AppTheme.getInstance()
+                                                  .fillColor(),
+                                            ),
+                                            activeColor: AppTheme.getInstance()
+                                                .activeColor(),
+                                            onChanged: (value) {
+                                              bloc.isCheckBox.sink
+                                                  .add(value ?? false); //todo.
+                                            },
+                                            value: snapshot.data ?? false,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        child: Image.asset(
-                                          ImageAssets.ic_wallet,
-                                          height: 20.67.h,
-                                          width: 20.14.w,
-                                        ),
-                                      ),
-                                      spaceW6,
-                                      SizedBox(
-                                        child: Text(
-                                          address,
-                                          style: textNormal(
-                                            null,
-                                            16,
-                                          ),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    child: bloc.checkWalletAddress
-                                        ? Image.asset(
-                                            ImageAssets.ic_line_down,
-                                            height: 20.67.h,
-                                            width: 20.14.w,
-                                          )
-                                        : SizedBox(
-                                            height: 20.67.h,
-                                            width: 20.14.w,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                WidgetSpan(
+                                  child: spaceW16,
+                                ),
+                                TextSpan(
+                                  text: S.current.i_don_t_want_to_receive,
+                                ),
+                              ],
+                            ),
+                          ),
+                          spaceH152,
+                        ],
                       ),
                     ),
                   ],
@@ -303,8 +565,15 @@ class _LendingRegistrationState extends State<LendingRegistration> {
               builder: (context, snapshot) {
                 return GestureDetector(
                   onTap: () async {
+                    goTo(
+                      context,
+                      const LedingRegistrationAccept(),
+                    );//todo
                     if (snapshot.data ?? false) {
-                      //todo
+                      goTo(
+                        context,
+                        const LedingRegistrationAccept(),
+                      );
                     }
                   },
                   child: Container(

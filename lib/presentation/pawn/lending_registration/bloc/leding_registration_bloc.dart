@@ -16,6 +16,7 @@ class LendingRegistrationBloc {
       BehaviorSubject.seeded(PrefsService.getCurrentWalletCore());
   List<String> listAcc = [];
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> isCheckBox = BehaviorSubject.seeded(false);
 
   WalletAddressRepository get _walletAddressRepository => Get.find();
 
