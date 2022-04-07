@@ -59,6 +59,7 @@ class _LTVTABState extends State<LTVTAB>
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         spaceH60,
         Stack(
