@@ -129,9 +129,9 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
 
   List<AcceptableAssetsAsCollateral> collateralAccepted = [];
 
-  void checkShowCollateral(
+  Future<void> checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
-  ) {
+  ) async {
     for (final element in collateralAccepted) {
       for (final item in checkShow) {
         if (element.symbol?.toLowerCase() ==
@@ -159,13 +159,8 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
         for (final element in data) {
           checkShow.add(ModelToken.fromWalletCore(element));
         }
-        for (final element in checkShow) {
-          if (element.isShow) {
-            listTokenFromWalletCore.add(element);
-          }
-        }
-        await getBalanceOFToken(listTokenFromWalletCore);
-        checkShowCollateral(collateralAccepted);
+        await checkShowCollateral(collateralAccepted);
+        await getBalanceOFToken(listTokenCollateral);
         emit(GetWalletSuccess());
         break;
       default:
@@ -203,7 +198,7 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
 
   double getMaxBalance(String symbol) {
     double balance = 0;
-    for (final element in listTokenFromWalletCore) {
+    for (final element in listTokenCollateral) {
       if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
         balance = element.balanceToken;
       }
@@ -213,7 +208,7 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
 
   String getMax(String symbol) {
     double balance = 0;
-    for (final element in listTokenFromWalletCore) {
+    for (final element in listTokenCollateral) {
       if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
         balance = element.balanceToken;
       }
