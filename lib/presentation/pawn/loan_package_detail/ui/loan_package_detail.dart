@@ -10,7 +10,6 @@ import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -94,7 +93,8 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         showDialogSuccess(
                           context,
                           alert: 'Congratulation',
-                          text: 'Your Collateral has been sent to ${cubit.pawnshopPackage.type ==0 ? 'Auto':'Semi-Auto'} Loan Package,\nPlease wait a moment',
+                          text:
+                              'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
                           onlyPop: true,
                         );
                       }
@@ -185,9 +185,10 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         ),
                         spaceH14,
                         rowItem(
-                            'Duration',
-                            '${cubit.pawnshopPackage.durationQtyTypeMin}-${cubit.pawnshopPackage.durationQtyTypeMax} '
-                                '${cubit.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month}'),
+                          'Duration',
+                          '${cubit.pawnshopPackage.durationQtyTypeMin}-${cubit.pawnshopPackage.durationQtyTypeMax} '
+                              '${cubit.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month}',
+                        ),
                         spaceH14,
                         rowItem(
                           'LTV:',
@@ -440,14 +441,39 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
           Center(
             child: InkWell(
               onTap: () {
-                goTo(
-                  context,
-                  OtherProfile(
-                    userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
-                    index: 0,
-                    pageRouter: PageRouter.MARKET,
+                Navigator.of(context)
+                    .push(
+                  MaterialPageRoute(
+                    builder: (context) => OtherProfile(
+                      userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
+                      index: 1,
+                      pageRouter: PageRouter.MARKET,
+                    ),
                   ),
-                );
+                )
+                    .then((value) {
+                  if (value == true) {
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SignLoanContract(
+                          pawnshopPackage: cubit.pawnshopPackage,
+                        ),
+                      ),
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        showDialogSuccess(
+                          context,
+                          alert: 'Congratulation',
+                          text:
+                              'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
+                          onlyPop: true,
+                        );
+                      }
+                    });
+                  }
+                });
               },
               child: Container(
                 height: 40.h,
@@ -522,7 +548,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$title',
+          title,
           style: textNormalCustom(
             grey3,
             16,

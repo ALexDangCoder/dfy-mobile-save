@@ -844,18 +844,22 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                       ),
                     ),
                     spaceW8,
-                    StreamBuilder<String>(
-                      stream: widget.cubit.loanEstimation,
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? '',
-                          style: textNormalCustom(
-                            AppTheme.getInstance().whiteColor(),
-                            16,
-                            FontWeight.w400,
-                          ),
-                        );
-                      },
+                    SizedBox(
+                      width: 120.w,
+                      child: StreamBuilder<String>(
+                        stream: widget.cubit.loanEstimation,
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().whiteColor(),
+                              16,
+                              FontWeight.w400,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        },
+                      ),
                     ),
                     spaceW8,
                     Text(
