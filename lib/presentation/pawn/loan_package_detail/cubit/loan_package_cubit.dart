@@ -21,14 +21,20 @@ class LoanPackageCubit extends BaseCubit<LoanPackageState> {
   Future<void> getBalanceOFToken(PawnshopPackage pawnshopPackage) async {
     if (pawnshopPackage.loanToken?[0].symbol != 'BNB') {
       pawnshopPackage.available = await Web3Utils().getBalanceOfToken(
-        ofAddress: pawnshopPackage.pawnshop?.walletAddress ?? '',
+        ofAddress: pawnshopPackage.associatedWalletAddress ?? '',
         tokenAddress: pawnshopPackage.loanToken?[0].address ?? '',
       );
     } else {
       pawnshopPackage.available = await Web3Utils().getBalanceOfBnb(
-        ofAddress: pawnshopPackage.pawnshop?.walletAddress ?? '',
+        ofAddress: pawnshopPackage.associatedWalletAddress ?? '',
       );
     }
+    emit(
+      LoanPackageSuccess(
+        CompleteType.SUCCESS,
+        pawnshopPackage: pawnshopPackage,
+      ),
+    );
   }
 
   Future<void> getDetailPawnshop(String packageId) async {
@@ -38,10 +44,12 @@ class LoanPackageCubit extends BaseCubit<LoanPackageState> {
     result.when(
       success: (res) {
         getBalanceOFToken(res);
-        emit(LoanPackageSuccess(CompleteType.SUCCESS,pawnshopPackage: res,));
       },
       error: (error) {
-        emit(LoanPackageSuccess(CompleteType.SUCCESS,message: error.message,));
+        emit(LoanPackageSuccess(
+          CompleteType.SUCCESS,
+          message: error.message,
+        ));
       },
     );
   }

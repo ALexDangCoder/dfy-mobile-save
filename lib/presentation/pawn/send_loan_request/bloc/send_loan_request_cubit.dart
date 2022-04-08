@@ -69,9 +69,9 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   List<AcceptableAssetsAsCollateral> collateralAccepted = [];
 
-  void checkShowCollateral(
+  Future<void> checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
-  ) {
+  ) async {
     for(final element in collateralAccepted){
       for(final item in checkShow) {
         if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
@@ -79,6 +79,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
         }
       }
     }
+    await getBalanceOFToken(listTokenCollateral);
     // for (final item in checkShow) {
     //   if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
     //     listTokenCollateral.add(item);
@@ -103,8 +104,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getBalanceOFToken(listTokenFromWalletCore);
-        checkShowCollateral(collateralAccepted);
+        await checkShowCollateral(collateralAccepted);
         emit(GetWalletSuccess());
         break;
       default:

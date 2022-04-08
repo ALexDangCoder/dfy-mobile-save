@@ -289,7 +289,9 @@ class _LenderTabState extends State<LenderTab> {
                       spaceH24,
                       Center(
                         child: InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.of(context).pop(true);
+                          },
                           child: ButtonRadial(
                             height: 40.h,
                             radius: 12,

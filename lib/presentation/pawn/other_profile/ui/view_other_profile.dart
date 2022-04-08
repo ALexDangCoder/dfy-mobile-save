@@ -411,7 +411,7 @@ class _OtherProfileState extends State<OtherProfile>
                                 rowItem(
                                   'Referral ID:',
                                   cubit.userProfile.referredId ?? '',
-                                  hasCopy: true,
+                                  hasCopy: cubit.userProfile.referredId != null,
                                 ),
                                 spaceH16,
                                 Padding(
