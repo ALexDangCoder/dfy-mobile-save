@@ -316,7 +316,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                                           ? 0
                                           : 1,
                                       content: bloc.note.value,
-                                      point: bloc.rateNumber.value,
+                                      point: bloc.rateNumber.value + 1,
                                       reviewee: ReviewerRequest(
                                         id: widget.objDetail.lenderUserId,
                                         walletAddress: widget
