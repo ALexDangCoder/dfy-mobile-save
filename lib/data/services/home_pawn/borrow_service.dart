@@ -344,4 +344,16 @@ abstract class BorrowService {
   Future<String> postReview(
     @Body() ReviewCreateRequest? reviewCreateRequest,
   );
+
+  @POST(ApiConstants.POST_LENDING)
+  Future<String> postLendingCreate(
+    @Field('address') String? address,
+    @Field('description') String? description,
+    @Field('email') String? email,
+    @Field('name') String? name,
+    @Field('phoneNumber') String? phoneNumber,
+    @Field('type') String? type,
+    @Field('userId') String? userId,
+    @Field('walletAddress') String? walletAddress,
+  );
 }

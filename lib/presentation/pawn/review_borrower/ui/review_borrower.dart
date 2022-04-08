@@ -305,19 +305,19 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                                 hexString: bloc.hexString,
                                 tokenAddress:
                                     Get.find<AppConstants>().contract_defy,
-                                title: S.current.confirm_send_offer,
+                                title: S.current.review_claim_reward,
                                 listDetail: [],
                                 onErrorSign: (context) {},
                                 onSuccessSign: (context, data) {
                                   bloc.postReview(
                                     reviewCreateRequest: ReviewCreateRequest(
-                                      contractId: widget.objDetail.bcContractId,
+                                      contractId: widget.objDetail.id,
                                       type: widget.type ==
                                               TypeNavigator.BORROW_TYPE
                                           ? 0
                                           : 1,
                                       content: bloc.note.value,
-                                      point: bloc.rateNumber.value,
+                                      point: bloc.rateNumber.value + 1,
                                       reviewee: ReviewerRequest(
                                         id: widget.objDetail.lenderUserId,
                                         walletAddress: widget

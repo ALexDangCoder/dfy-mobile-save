@@ -62,9 +62,6 @@ class _RepaymentPayState extends State<RepaymentPay> {
     penalty = TextEditingController();
     interest = TextEditingController();
     loan = TextEditingController();
-    bloc.maxInterest = obj.interest?.amount ?? 0;
-    bloc.maxLoan = obj.loan?.amount ?? 0;
-    bloc.maxPenalty = obj.penalty?.amount ?? 0;
     penalty.addListener(() {
       bloc.validatePenalty(penalty.text);
     });
@@ -348,8 +345,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               builder: (_) => InfoPopup(
                                                 name:
                                                     S.current.ltv_liquid_thres,
-                                                content:
-                                                    S.current.learn_more_about_ltv,
+                                                content: S.current
+                                                    .learn_more_about_ltv,
                                               ),
                                             );
                                           },
