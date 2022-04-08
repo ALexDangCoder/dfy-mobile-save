@@ -12,6 +12,7 @@ class InputWithSelectType extends StatefulWidget {
   final double? heightOfWidget;
   final String? hintText;
   final int? chooseIndex;
+  final String? loanAmount;
   final Function? onchangeText;
   final int? maxSize;
   final List<TextInputFormatter>? inputFormatters;
@@ -29,7 +30,7 @@ class InputWithSelectType extends StatefulWidget {
       this.onChangeType,
       this.keyboardType,
       this.inputFormatters,
-      this.maxSize})
+      this.maxSize, this.loanAmount})
       : super(key: key);
 
   @override
@@ -40,12 +41,17 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
   GlobalKey dropdownKey = GlobalKey();
   late double width, height, xPosition, yPosition;
   int chooseIndex = 0;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
     chooseIndex = widget.chooseIndex ?? 0;
+    controller.text = widget.loanAmount ?? '';
     // TODO: implement initState
     super.initState();
+    if(widget.loanAmount?.isNotEmpty ?? false){
+      widget.onchangeText!(widget.loanAmount);
+    }
   }
 
   void findDropDownSize() {
@@ -72,6 +78,7 @@ class _InputWithSelectTypeState extends State<InputWithSelectType> {
             children: [
               Expanded(
                 child: TextField(
+                  controller: controller,
                   inputFormatters: widget.inputFormatters,
                   keyboardType: widget.keyboardType ?? TextInputType.text,
                   onChanged: (value) {

@@ -66,7 +66,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
     message.text = widget.cubit.messageCached ?? '';
     durationController.text = widget.cubit.durationCached ?? '';
     loanToken = widget.pawnshopPackage.loanToken?[0] ?? LoanToken();
-    duration = widget.cubit.durationCachedType ?? S.current.month;
+    duration = widget.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month;
   }
 
   @override

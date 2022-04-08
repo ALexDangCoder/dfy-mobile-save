@@ -200,18 +200,24 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
   }
 
   List<Widget> _buildTable(OfferDetailModel? data) => [
-        buildRowCustom(
-          title: '${S.current.status}:',
-          child: Text(
-            _cubit.colorText.status ?? '',
-            style: textNormalCustom(
-              _cubit.colorText.color,
-              16,
-              FontWeight.w600,
-            ),
-          ),
-        ),
-        spaceH16,
+        PrefsService.getCurrentBEWallet().toLowerCase() ==
+                PrefsService.getOwnerPawn().toLowerCase()
+            ? buildRowCustom(
+                title: '${S.current.status}:',
+                child: Text(
+                  _cubit.colorText.status ?? '',
+                  style: textNormalCustom(
+                    _cubit.colorText.color,
+                    16,
+                    FontWeight.w600,
+                  ),
+                ),
+              )
+            : Container(),
+        PrefsService.getCurrentBEWallet().toLowerCase() ==
+                PrefsService.getOwnerPawn().toLowerCase()
+            ? spaceH16
+            : Container(),
         buildRowCustom(
           title: '${S.current.message}:',
           child: Text(

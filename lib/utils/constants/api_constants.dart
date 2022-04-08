@@ -53,6 +53,8 @@ class ApiConstants {
 
   static const String GET_DETAIL_NFT_NOT_ON_MARKET =
       '/inventory-svc/public-api/nfts/';
+  static const String GET_DETAIL_NFT_NOT_ON_MARKET_2 =
+      '/nft-svc/public-api/soft-nft/id/';
   static const String GET_DETAIL_HARD_NFT =
       '/hard-nft-svc/public-api/hard-nft/';
   static const String GET_HISTORY = 'inventory-svc/public-api/v1.0.0/histories';

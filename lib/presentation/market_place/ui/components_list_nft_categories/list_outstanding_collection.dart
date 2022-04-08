@@ -93,7 +93,7 @@ class ListOutstandingCollection extends StatelessWidget {
                         children: [
                           ErrorLoadCollection(
                             callback: () {
-                              cubit.getListNftCollectionExplore();
+                              cubit.getListNftCollectionExplore(cubit: cubit);
                             },
                           ),
                           spaceW20,

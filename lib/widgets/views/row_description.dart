@@ -21,7 +21,6 @@ Row buildRow({
   bool isShowCopy = false,
 }) =>
     Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
           child: SizedBox(

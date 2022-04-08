@@ -60,6 +60,8 @@ class AppConstants {
 
   @JsonKey(name: 'contract_defy')
   String contract_defy;
+  @JsonKey(name: 'base_pawn_url')
+  String basePawnUrl;
 
   @JsonKey(name: 'crypto_pawn_contract')
   String crypto_pawn_contract;
@@ -93,6 +95,7 @@ class AppConstants {
     this.default_collection_abi,
     this.erc721_abi,
     this.contract_defy,
+      this.basePawnUrl,
     this.crypto_pawn_contract,
     this.pawn_custom_url,
     this.collateral_contract,

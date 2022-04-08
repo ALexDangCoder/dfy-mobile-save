@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:Dfy/config/base/base_custom_scroll_view.dart';
 import 'package:Dfy/config/resources/color.dart';
@@ -8,6 +9,7 @@ import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/model/nft_info_model.dart';
+import 'package:Dfy/data/web_socket/web_socket.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
@@ -37,6 +39,7 @@ import 'package:Dfy/presentation/send_offer/ui/send_offer.dart';
 import 'package:Dfy/presentation/send_token_nft/ui/send_nft/send_nft.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/base_items/base_fail.dart';
@@ -101,6 +104,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
   late final String walletAddress;
   final PageController pageController = PageController();
   final NFTDetailBloc bloc = NFTDetailBloc();
+  late WebSocket webSocket;
 
   @override
   void initState() {
@@ -110,6 +114,16 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     caseTabBar(widget.typeMarket, widget.typeNft);
     onRefresh();
     _tabController = TabController(length: _tabPage.length, vsync: this);
+    final account = PrefsService.getWalletLogin();
+    final Map<String, dynamic> mapLoginState = jsonDecode(account);
+    if (mapLoginState.stringValueOrEmpty('accessToken') != 'bid_auction') {
+      webSocket =
+          WebSocket(mapLoginState.stringValueOrEmpty('accessToken'), '');
+      webSocket.socketDataStream.listen((event) {
+        // print('Fuck data $event');
+        onRefresh();
+      });
+    }
   }
 
   void caseTabBar(MarketType type, TypeNFT? typeNft) {
@@ -452,6 +466,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     bloc.close();
     _tabController.dispose();
     pageController.dispose();
+    webSocket.dispose();
     super.dispose();
   }
 
@@ -547,20 +562,36 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ),
               tabs: _tabTit,
             ),
-            bottomBar: _buildButtonPutOnMarket(
-              context,
-              bloc,
-              objSale,
-              widget.nftId,
-              onRefresh,
-            ),
+            bottomBar: StreamBuilder<Evaluation>(
+                stream: bloc.evaluationStream,
+                builder: (context, snapshot) {
+                  return _buildButtonPutOnMarket(
+                    context,
+                    bloc,
+                    objSale,
+                    widget.nftId,
+                    objSale.typeNFT == TypeNFT.HARD_NFT
+                        ? (bloc.evaluationStream.hasValue
+                            ? bloc.evaluationStream.value.evaluatedPrice
+                                .toString()
+                            : '')
+                        : '',
+                    objSale.typeNFT == TypeNFT.HARD_NFT
+                        ? (bloc.evaluationStream.hasValue
+                            ? bloc.evaluationStream.value.evaluatedSymbol
+                            : '')
+                        : DFY,
+                    onRefresh,
+                  );
+                }),
             content: [
               _nameNFT(
                 context: context,
                 title: objSale.name ?? '',
                 quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
+                url: widget.nftId ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
+                type: MarketType.NOT_ON_MARKET,
               ),
               _priceNotOnMarket(),
               divide,
@@ -679,7 +710,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
       case MarketType.SALE:
         if (state is NftOnSaleSuccess) {
           final objSale = state.nftMarket;
-          if(objSale.marketStatus == 10) {
+          if (objSale.marketStatus == 10) {
             Timer(const Duration(seconds: 20), () {
               onRefresh();
             });
@@ -732,9 +763,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               _nameNFT(
                 title: objSale.name ?? '',
                 quantity: objSale.totalCopies ?? 1,
-                url: objSale.image ?? '',
+                url: '${widget.nftId}?market_id=${objSale.marketId}',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
                 context: context,
+                type: MarketType.SALE,
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
@@ -899,9 +931,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
-                url: nftOnPawn.nftCollateralDetailDTO?.image ?? '',
+                url: nftOnPawn.bcCollateralId.toString(),
                 context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
+                type: MarketType.PAWN,
               ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
@@ -1099,6 +1132,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                               bloc,
                               nftOnAuction,
                               widget.marketId ?? '',
+                              onRefresh,
                             ),
                           ),
                         ],
@@ -1109,9 +1143,10 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 context: context,
                 title: nftOnAuction.name ?? '',
                 quantity: nftOnAuction.numberOfCopies ?? 1,
-                url: nftOnAuction.fileCid ?? '',
+                url: '${widget.nftId}?auction_id=${widget.marketId}',
                 price: (nftOnAuction.reservePrice ?? 0) *
                     (nftOnAuction.usdExchange ?? 1),
+                type: MarketType.AUCTION,
               ),
               _priceContainerOnAuction(
                 nftOnAuction: nftOnAuction,

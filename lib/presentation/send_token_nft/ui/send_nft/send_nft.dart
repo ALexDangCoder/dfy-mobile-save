@@ -121,8 +121,7 @@ class _SendNftState extends State<SendNft> {
                     ),
                   ),
                 ).then(
-                  (value) => Navigator.of(context).pop(
-                  ),
+                  (value) => Navigator.of(context).pop(),
                 );
               }
             },
@@ -194,6 +193,8 @@ class _SendNftState extends State<SendNft> {
                                 height: 16.h,
                               ),
                               formAmountFtQuantity(
+                                readOnly: ((widget.nftInfo.standard ?? '') ==
+                                    ERC_721) ? true : false,
                                 hintText: S.current.quantity,
                                 isAmount: true,
                                 isQuantity: true,
@@ -236,16 +237,12 @@ class _SendNftState extends State<SendNft> {
                                         nftId: widget.nftInfo.nftId ?? '',
                                         walletReceived: txtToAddressNft.text,
                                       );
-                                      showLoadSuccess(context).then(
-                                        (value) {
-                                          Navigator.of(context)
-                                              .pop();
-                                          Navigator.of(context)
-                                              .pop();
-                                          Navigator.of(context)
-                                              .pop(txtToAddressNft.text);
-                                        }
-                                      );
+                                      showLoadSuccess(context).then((value) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context)
+                                            .pop(txtToAddressNft.text);
+                                      });
                                     },
                                     onErrorSign: (context) {
                                       showLoadFail(context);
@@ -365,7 +362,9 @@ class _SendNftState extends State<SendNft> {
     required bool isQuantity,
     required String prefixImg,
     Function()? callBack,
+    bool? readOnly = false,
   }) {
+
     return Container(
       height: 64.h,
       // width: 323.w,
@@ -383,6 +382,7 @@ class _SendNftState extends State<SendNft> {
               value: txtToAddressNft.text,
             );
           },
+          readOnly: (readOnly ?? false) ? true : false,
           keyboardType: TextInputType.number,
           textAlignVertical: TextAlignVertical.center,
           controller: txtQuantity,

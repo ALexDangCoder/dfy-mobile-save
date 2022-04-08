@@ -16,12 +16,10 @@ class ComingSoon extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          SizedBox(
-            height: 26.h,
-          ),
           Expanded(
             child: Container(
               width: 375.w,
+              height: 812.h,
               decoration: BoxDecoration(
                 color: const Color(0xff3e3d5c),
                 borderRadius: BorderRadius.only(
@@ -59,7 +57,7 @@ class ComingSoon extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 124.h,
+                    height: 172.h,
                   ),
                   GestureDetector(
                     onTap: () {

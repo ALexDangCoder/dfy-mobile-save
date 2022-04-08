@@ -16,10 +16,11 @@ class FilterBts extends StatefulWidget {
   const FilterBts({
     Key? key,
     required this.listNftCubit,
-    required this.isLogin,
+    required this.isLogin, required this.query,
   }) : super(key: key);
   final ListNftCubit listNftCubit;
   final bool isLogin;
+  final String query;
 
   @override
   _FilterBtsState createState() => _FilterBtsState();
@@ -209,6 +210,7 @@ class _FilterBtsState extends State<FilterBts> {
                                     radius: Radius.circular(10.0.r),
                                     isAlwaysShown: true,
                                     child: ListView.builder(
+                                      controller: _firstController,
                                       shrinkWrap: true,
                                       itemCount: itemCount,
                                       itemBuilder: (context, index) {
@@ -292,6 +294,7 @@ class _FilterBtsState extends State<FilterBts> {
                           widget.listNftCubit.checkStatus();
                           widget.listNftCubit.checkFilterArr.clear();
                           widget.listNftCubit.getListNft(
+                            name: widget.query,
                             status: widget.listNftCubit
                                 .getParam(widget.listNftCubit.selectStatus),
                             nftType: widget.listNftCubit
@@ -538,6 +541,7 @@ class _FilterBtsState extends State<FilterBts> {
                 ),
               ],
             ),
+            if(widget.listNftCubit.showDropdownAddress)
             Image.asset(
               ImageAssets.ic_line_down,
               height: 20.67.h,

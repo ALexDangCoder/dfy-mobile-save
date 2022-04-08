@@ -40,7 +40,7 @@ class Validator {
     return regExp.hasMatch(value);
   }
 
-  static validateAmountFtQuantity(String value) {
+  static bool validateAmountFtQuantity(String value) {
     const String pattern = r'^[0-9]*$';
     final RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);

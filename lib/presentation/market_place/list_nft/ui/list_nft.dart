@@ -183,6 +183,7 @@ class _ListNftState extends State<ListNft> {
                       return FilterBts(
                         listNftCubit: _cubit,
                         isLogin: widget.pageRouter == PageRouter.MY_ACC,
+                        query: widget.queryAllResult ?? controller.value.text,
                       );
                     },
                   );
@@ -210,7 +211,7 @@ class _ListNftState extends State<ListNft> {
                                   scrollInfo.metrics.maxScrollExtent)) {
                             _cubit.loadMorePosts(
                               widget.pageRouter,
-                              controller.text.trim(),
+                              widget.queryAllResult ?? controller.text.trim(),
                             );
                           }
                           return true;

@@ -57,7 +57,7 @@ class ListExploreCategory extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ErrorLoadExplore(
                         callback: () {
-                          cubit.getListNftCollectionExplore();
+                          cubit.getListNftCollectionExplore(cubit: cubit);
                         },
                       );
                     },

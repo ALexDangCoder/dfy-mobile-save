@@ -11,6 +11,7 @@ import 'package:Dfy/presentation/send_offer/ui/day_drop_down.dart';
 import 'package:Dfy/presentation/send_offer/ui/token_drop_down.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/validator.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
@@ -48,6 +49,9 @@ class _SendOfferState extends State<SendOffer> {
   @override
   void initState() {
     loanAmount = widget.nftOnPawn.expectedLoanAmount.toString();
+    loanDurationType = widget.nftOnPawn.durationType ?? 0;
+    duration = (widget.nftOnPawn.durationQuantity ?? 0).toString();
+    _cubit.sinkIndex.add(loanDurationType);
     super.initState();
   }
 
@@ -189,7 +193,7 @@ class _SendOfferState extends State<SendOffer> {
                     'message': message,
                     'duration': int.parse(duration),
                     'durationType': loanDurationType,
-                    'interestRate': num.parse(interest),
+                    'interestRate': interest,
                     'liquidationThreshold': 0,
                     'loanAmount': double.parse(loanAmount),
                     'loanToValue': 0,
@@ -198,6 +202,8 @@ class _SendOfferState extends State<SendOffer> {
                     'repaymentToken': shortName,
                     'latestBlockchainTxn': data,
                     'walletAddress': PrefsService.getCurrentBEWallet(),
+                    'pawnShopPackageId': 0,
+                    'bcOfferId': 0,
                   };
                   await _cubit.sendOffer(
                       offerRequest:
@@ -509,10 +515,14 @@ class _SendOfferState extends State<SendOffer> {
                     ),
                     spaceH4,
                     CustomFormValidate(
+                      initText:
+                          (widget.nftOnPawn.durationQuantity ?? 0).toString(),
                       maxLength: 4,
                       validator: validator,
                       validatorValue: (value) {
-                        if (value?.isEmpty ?? true) {
+                        if ((value ?? '').isEmpty ||
+                            (double.parse(value ?? '') <= 0) ||
+                            !Validator.validateAmountFtQuantity(value ?? '')) {
                           return S.current.invalid_duration;
                         } else if (loanDurationType == ID_WEEK &&
                             int.parse(value!) > 5200) {
@@ -534,7 +544,7 @@ class _SendOfferState extends State<SendOffer> {
                         width: 100.w,
                         child: StreamBuilder<int>(
                           stream: _cubit.streamIndex,
-                          initialData: 1,
+                          initialData: 0,
                           builder: (context, snapshot) {
                             return Center(
                               child: CustomDropDown(

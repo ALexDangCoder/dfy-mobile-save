@@ -53,8 +53,9 @@ class ListActivity extends StatelessWidget {
         ImageAssets.getSymbolAsset(objActivity.priceSymbol ?? '');
     final String? urlAvatar;
     final String fromAddress = objActivity.fromAddress ?? '';
+    final String nftOwner = objActivity.nftOwner ?? '';
     final String priceSymbol = objActivity.priceSymbol ?? '';
-    final double price = objActivity.price ?? 0;
+    final String price = formatPrice.format(objActivity.price ?? 0);
     final String nftName = objActivity.nftName ?? '';
     final int date = objActivity.eventDateTime ?? 0;
     final String toAddress = objActivity.toAddress ?? '';
@@ -88,12 +89,12 @@ class ListActivity extends StatelessWidget {
                     text: myCopy.isEmpty
                         ? ''
                         : '${S.current.activity_copied} '
-                            '$myCopy ${S.current.activity_on} ',
+                            '$myCopy',
                   ),
                   TextSpan(
-                    text: '$market ${S.current.activity_by} ',
+                    text: '${S.current.activity_on} $market ${S.current.activity_by} ',
                   ),
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                   TextSpan(
                     text: ' ${S.current.activity_for} ',
                   ),
@@ -207,7 +208,7 @@ class ListActivity extends StatelessWidget {
                         : '${S.current.activity_copied} $myCopy '
                             '${S.current.activity_by} ',
                   ),
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),
@@ -241,7 +242,7 @@ class ListActivity extends StatelessWidget {
                   TextSpan(
                     text: '$market ${S.current.activity_by} ',
                   ),
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),
@@ -266,7 +267,7 @@ class ListActivity extends StatelessWidget {
                   FontWeight.w400,
                 ),
                 children: [
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),
@@ -291,7 +292,7 @@ class ListActivity extends StatelessWidget {
                   FontWeight.w400,
                 ),
                 children: [
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),
@@ -362,7 +363,7 @@ class ListActivity extends StatelessWidget {
                   TextSpan(
                     text: ' ${S.current.activity_by} ',
                   ),
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),
@@ -428,7 +429,7 @@ class ListActivity extends StatelessWidget {
                     TextSpan(
                       text: ' ${S.current.activity_by} ',
                     ),
-                    baseTextBSC(fromAddress),
+                    baseTextBSC(nftOwner),
                   ],
                 ),
               ),
@@ -493,7 +494,7 @@ class ListActivity extends StatelessWidget {
                     TextSpan(
                       text: ' ${S.current.activity_by} ',
                     ),
-                    baseTextBSC(fromAddress),
+                    baseTextBSC(nftOwner),
                   ],
                 ),
               ),
@@ -559,7 +560,7 @@ class ListActivity extends StatelessWidget {
                   TextSpan(
                     text: ' ${S.current.from} ',
                   ),
-                  baseTextBSC(fromAddress),
+                  baseTextBSC(nftOwner),
                 ],
               ),
             ),

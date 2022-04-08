@@ -50,6 +50,11 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
       error: AppException('', S.current.something_went_wrong),
       child: BaseDesignScreen(
         title: S.current.create_nft,
+        isImage: true,
+        text: ImageAssets.ic_close,
+        onRightClick: () {
+          Navigator.pop(context);
+        },
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
