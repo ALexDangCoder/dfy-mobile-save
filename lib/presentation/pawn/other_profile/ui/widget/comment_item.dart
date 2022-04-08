@@ -71,7 +71,7 @@ class CommentItem extends StatelessWidget {
                         return Row(
                           children: [
                             Image.asset(
-                              ImageAssets.img_star,
+                              ImageAssets.img_rate,
                               height: 24.h,
                               width: 24.w,
                             ),
@@ -94,7 +94,7 @@ class CommentItem extends StatelessWidget {
                       return Row(
                         children: [
                           Image.asset(
-                            ImageAssets.img_star_not_fill,
+                            ImageAssets.img_rate2,
                             height: 24.h,
                             width: 24.w,
                           ),
