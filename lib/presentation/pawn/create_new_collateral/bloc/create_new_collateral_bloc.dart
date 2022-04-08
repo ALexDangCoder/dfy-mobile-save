@@ -135,6 +135,9 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
       if (double.parse(value) > getMaxBalance(item.nameShortToken)) {
         errorCollateral.add(S.current.invalid_balance);
         amountCollateral.add('');
+      } else if (double.parse(value) == 0) {
+        errorCollateral.add(S.current.invalid_balance);
+        amountCollateral.add('');
       } else {
         errorCollateral.add('');
         amountCollateral.add(value);

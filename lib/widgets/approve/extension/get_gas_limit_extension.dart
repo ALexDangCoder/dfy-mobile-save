@@ -19,7 +19,6 @@ extension GetGasLimit on ApproveCubit {
       );
     } catch (e) {
       //Gas limit error
-      print('fuck error $e');
       AppException(S.current.error, e.toString());
     }
     return double.parse(gasLimit);

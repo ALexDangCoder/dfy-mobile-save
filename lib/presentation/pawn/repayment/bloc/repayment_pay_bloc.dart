@@ -31,9 +31,10 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   double balancePenalty = 0;
   double balanceInterest = 0;
   double balanceLoan = 0;
-  double maxInterest = 0;
-  double maxLoan = 0;
-  double maxPenalty = 0;
+  double? maxInterest;
+  double? maxLoan;
+  double? maxPenalty;
+
   String id = '';
   bool isChoose = true;
   RepaymentRequestModel objRepayment = RepaymentRequestModel.name();
@@ -43,7 +44,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
       if (double.parse(value) > balancePenalty) {
         isPenalty.add(S.current.invalid_amount);
         penalty.add('');
-      } else if (double.parse(value) > maxPenalty) {
+      } else if (double.parse(value) > (maxPenalty ?? 0)) {
         isPenalty.add(S.current.invalid_amount);
         penalty.add('');
       } else {
@@ -62,7 +63,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
       if (double.parse(value) > balanceLoan) {
         isLoan.add(S.current.invalid_amount);
         loan.add('');
-      } else if (double.parse(value) > maxLoan) {
+      } else if (double.parse(value) > (maxLoan ?? 0)) {
         isLoan.add(S.current.invalid_amount);
         loan.add('');
       } else {
@@ -81,7 +82,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
       if (double.parse(value) > balanceInterest) {
         interest.add('');
         isInterest.add(S.current.invalid_amount);
-      } else if (double.parse(value) > maxInterest) {
+      } else if (double.parse(value) > (maxInterest ?? 0)) {
         isInterest.add(S.current.invalid_amount);
         interest.add('');
       } else {
@@ -206,6 +207,9 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     );
     response.when(
       success: (response) {
+        maxInterest = response.interest?.amount ?? 0;
+        maxLoan = response.loan?.amount ?? 0;
+        maxPenalty = response.penalty?.amount ?? 0;
         emit(
           RepaymentPaySuccess(
             CompleteType.SUCCESS,

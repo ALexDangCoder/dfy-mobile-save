@@ -712,4 +712,30 @@ class BorrowRepositoryImpl implements BorrowRepository {
       (response) => response.data?.toDomain() ?? ContractDetailPawn.name(),
     );
   }
+
+  @override
+  Future<Result<String>> postLendingCreate({
+    String? address,
+    String? description,
+    String? email,
+    String? name,
+    String? phoneNumber,
+    String? type,
+    String? userId,
+    String? walletAddress,
+  }) {
+    return runCatchingAsync<String, String>(
+      () => _client.postLendingCreate(
+        address,
+        description,
+        email,
+        name,
+        phoneNumber,
+        type,
+        userId,
+        walletAddress,
+      ),
+      (response) => response,
+    );
+  }
 }
