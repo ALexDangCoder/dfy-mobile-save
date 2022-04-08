@@ -300,8 +300,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                               builder: (context) => Approve(
                                 textActiveButton:
                                     '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                spender: Get.find<AppConstants>()
-                                    .crypto_pawn_contract,
+                                spender:
+                                    Get.find<AppConstants>().review_contract,
                                 hexString: bloc.hexString,
                                 tokenAddress:
                                     Get.find<AppConstants>().contract_defy,
