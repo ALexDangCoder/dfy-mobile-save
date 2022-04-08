@@ -68,6 +68,9 @@ class AddMoreCollateralBloc extends BaseCubit<AddMoreCollateralState> {
       if (double.parse(value) > balanceToken) {
         errorCollateral.add(S.current.invalid_amount);
         isBtn.add(false);
+      } else if (double.parse(value) == 0) {
+        errorCollateral.add(S.current.invalid_amount);
+        isBtn.add(false);
       } else {
         amount.add(value);
         errorCollateral.add('');
