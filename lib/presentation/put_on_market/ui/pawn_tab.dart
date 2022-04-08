@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -47,6 +46,7 @@ class _PawnTabState extends State<PawnTab>
 
   @override
   void initState() {
+    super.initState();
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.durationType = 0;
     _putOnMarketModel.numberOfCopies = 1;
@@ -55,11 +55,15 @@ class _PawnTabState extends State<PawnTab>
     );
     _putOnMarketModel.tokenAddress = widget.cubit.listToken[0].address ?? '';
     _putOnMarketModel.loanSymbol = widget.cubit.listToken[0].symbol ?? '';
-    super.initState();
   }
 
   void checkDuration() {
     final int duration = widget.cubit.valueDuration ?? 0;
+    if (widget.cubit.typeDuration == null) {
+      widget.cubit.typeDuration = 0; //default is week
+    } else {
+      //nothing
+    }
     if (widget.cubit.typeDuration == 0 && duration > 5200) {
       setState(() {
         errorTextDuration = S.current.Duration_by_week_cannot_be_greater_than;
@@ -86,6 +90,7 @@ class _PawnTabState extends State<PawnTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.getInstance().bgBtsColor(),
@@ -134,6 +139,7 @@ class _PawnTabState extends State<PawnTab>
                 height: 4,
               ),
               InputWithSelectType(
+                loanAmount: _putOnMarketModel.loanAmount.toString(),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
                     RegExp(r'^\d+\.?\d{0,5}'),
@@ -143,6 +149,7 @@ class _PawnTabState extends State<PawnTab>
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                chooseIndex: widget.cubit.listToken.indexWhere((element) => element.symbol == _putOnMarketModel.loanSymbol),
                 typeInput: widget.cubit.listToken
                     .map(
                       (e) => SizedBox(

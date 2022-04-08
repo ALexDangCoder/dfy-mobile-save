@@ -27,6 +27,7 @@ class PutOnMarketModel {
   String? nftName;
   int? nftStandard;
   int? totalOfCopies;
+  String? loanAmount;
 
   PutOnMarketModel({
     this.tokenAddress,
@@ -45,6 +46,8 @@ class PutOnMarketModel {
     this.nftMediaCid,
     this.nftName,
     this.nftStandard,
+    this.loanAmount,
+    this.loanSymbol,
   });
 
   factory PutOnMarketModel.putOnSale({
@@ -59,6 +62,8 @@ class PutOnMarketModel {
     required String nftName,
     required int nftStandard,
     required int totalOfCopies,
+    String? loanAmount,
+    String? loanSymbol,
   }) {
     return PutOnMarketModel(
       nftId:  nftId,
@@ -72,6 +77,8 @@ class PutOnMarketModel {
       nftName: nftName,
       nftStandard:  nftStandard,
       totalOfCopies:  totalOfCopies,
+      loanAmount: loanAmount,
+      loanSymbol: loanSymbol,
     );
   }
 }

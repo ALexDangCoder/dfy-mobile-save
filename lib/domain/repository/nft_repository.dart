@@ -35,6 +35,9 @@ mixin NFTRepository {
     String collectionAddress,
     String nftTokenId,
   );
+  Future<Result<NftMarket>> getDetailNft2(
+      String nftId,
+      );
 
   Future<Result<NFTOnAuction>> getDetailHardNftOnAuction(String nftId);
 

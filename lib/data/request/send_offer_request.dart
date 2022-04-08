@@ -4,33 +4,37 @@ part 'send_offer_request.g.dart';
 
 @JsonSerializable()
 class SendOfferRequest {
-  final int cryptoCollateralId;
-  final String description;
-  final int durationQty;
-  final int durationType;
-  final num interestRate;
-  final int liquidationThreshold;
-  final num loanAmount;
-  final num loanToValue;
-  final int repaymentCycleType;
-  final String repaymentTokenSymbol;
-  final String supplyCurrency;
-  final String txid;
-  final String walletAddress;
+  final int? bcOfferId;
+  final int? collateralId;
+  final String? message;
+  final int? duration;
+  final int? durationType;
+  final String? interestRate;
+  final int? liquidationThreshold;
+  final num? loanAmount;
+  final num? loanToValue;
+  final num? loanRequestId;
+  final int? pawnShopPackageId;
+  final String? repaymentToken;
+  final String? supplyCurrency;
+  final String? latestBlockchainTxn;
+  final String? walletAddress;
 
   SendOfferRequest(
-      this.cryptoCollateralId,
-      this.description,
-      this.durationQty,
+      this.bcOfferId,
+      this.collateralId,
+      this.message,
+      this.duration,
       this.durationType,
       this.interestRate,
       this.liquidationThreshold,
       this.loanAmount,
       this.loanToValue,
-      this.repaymentCycleType,
+      this.loanRequestId,
+      this.pawnShopPackageId,
+      this.repaymentToken,
       this.supplyCurrency,
-      this.repaymentTokenSymbol,
-      this.txid,
+      this.latestBlockchainTxn,
       this.walletAddress);
 
   factory SendOfferRequest.fromJson(Map<String, dynamic> json) =>

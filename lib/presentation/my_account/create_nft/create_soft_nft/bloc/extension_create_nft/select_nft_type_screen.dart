@@ -12,6 +12,7 @@ extension SelectNftCubit on CreateNftCubit {
         listNft = res;
         listNft.sort((a, b) => (a.standard ?? 0).compareTo(b.standard ?? 0));
         listNftSubject.sink.add(listNft);
+        changeId('1');
       },
       error: (error) {
         showError();
@@ -23,7 +24,6 @@ extension SelectNftCubit on CreateNftCubit {
     selectedId = id;
     selectIdSubject.sink.add(selectedId);
     selectedNftType =
-        listNft.where((element) => element.id == id).toList().first.type ??
-            1;
+        listNft.where((element) => element.id == id).toList().first.type ?? 1;
   }
 }

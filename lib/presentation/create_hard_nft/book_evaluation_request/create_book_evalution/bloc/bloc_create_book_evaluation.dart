@@ -112,7 +112,7 @@ class BlocCreateBookEvaluation {
         ofAddress: ofAddress,
         tokenAddress: tokenAddress,
       );
-      balanceCheck=balance;
+      balanceCheck = balance;
     } catch (e) {
       throw AppException(S.current.error, e.toString());
     }
@@ -232,16 +232,14 @@ class BlocCreateBookEvaluation {
   bool checkHourWorking(int hour, int minute) {
     //working hour
     final workingHour = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0),
-      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      objDetail.value.workingTimeFrom ?? 0,
     );
     final String hourWorking =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHour);
     final int hourWorkingInt = int.parse(hourWorking);
     //working Min
     final workingMin = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeFrom ?? 0),
-      // (objDetail.value.workingTimeFrom ?? 0) * 1000,
+      objDetail.value.workingTimeFrom ?? 0,
     );
     final String minWorking =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMin);
@@ -258,8 +256,7 @@ class BlocCreateBookEvaluation {
 
     // working hour close
     final workingHourClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0),
-      // (objDetail.value.workingTimeTo ?? 0) * 1000,
+      objDetail.value.workingTimeTo ?? 0,
     );
     final String hourWorkingTo =
         DateFormat(DateTimeFormat.BOOK_HOUR).format(workingHourClose);
@@ -267,8 +264,7 @@ class BlocCreateBookEvaluation {
 
     //working miu close
     final workingMinClose = DateTime.fromMillisecondsSinceEpoch(
-      (objDetail.value.workingTimeTo ?? 0),
-      // (objDetail.value.workingTimeTo ?? 0) * 1000,
+      objDetail.value.workingTimeTo ?? 0,
     );
     final String minWorkingTo =
         DateFormat(DateTimeFormat.BOOK_MIN).format(workingMinClose);
@@ -316,6 +312,13 @@ class BlocCreateBookEvaluation {
     required int minWorkingInt,
     required int hourWorkingInt,
   }) {
+    if (hourWorkingIntTo == 0) {
+      hourWorkingIntTo = 24;
+    }
+    if (hour == 0) {
+      hour = 24;
+    }
+
     if ((hourWorkingIntTo == hour && minute <= minWorkingIntTo) ||
         (hourWorkingInt == hour && minWorkingInt <= minute)) {
       return false;

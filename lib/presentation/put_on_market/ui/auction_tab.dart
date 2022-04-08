@@ -64,7 +64,7 @@ class _AuctionTabState extends State<AuctionTab>
 
   @override
   void initState() {
-    final now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final now = DateFormat('dd-MM-yyyy').format(DateTime.now());
     _putOnMarketModel = widget.putOnMarketModel;
     _putOnMarketModel.numberOfCopies = 1;
     dateStartController.text = now;
@@ -433,7 +433,9 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ],
                           maxLength: 100,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           onChanged: (value) {
                             _putOnMarketModel.buyOutPrice = value;
                             if (!validateBuyOutPrice()) {
@@ -601,7 +603,9 @@ class _AuctionTabState extends State<AuctionTab>
                             ),
                           ],
                           maxLength: 100,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           onChanged: (value) {
                             _putOnMarketModel.priceStep = value;
                             if (!validatePriceStep()) {
@@ -758,27 +762,29 @@ class _AuctionTabState extends State<AuctionTab>
                               },
                               listDetail: [
                                 DetailItemApproveModel(
-                                  title: '${S.current.reserve_price} :',
+                                  title: '${S.current.reserve_price}:',
                                   value:
                                       '${widget.cubit.valueTokenInputAuction ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
                                   isToken: true,
                                 ),
                                 if (outPrice)
                                   DetailItemApproveModel(
-                                    title: '${S.current.buy_out_price} :',
-                                    value:
-                                        '${_putOnMarketModel.buyOutPrice ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
+                                    title: '${S.current.buy_out_price}:',
+                                    value: '${double.parse(
+                                      _putOnMarketModel.buyOutPrice ?? '0.0',
+                                    )} ${_tokenInf?.symbol ?? 'DFY'}',
                                     isToken: true,
                                   ),
                                 if (priceStep)
                                   DetailItemApproveModel(
-                                    title: '${S.current.price_step} :',
-                                    value:
-                                        '${_putOnMarketModel.priceStep ?? 0} ${_tokenInf?.symbol ?? 'DFY'}',
+                                    title: '${S.current.price_step}:',
+                                    value: '${double.parse(
+                                      _putOnMarketModel.priceStep ?? '0.0',
+                                    )} ${_tokenInf?.symbol ?? 'DFY'}',
                                     isToken: true,
                                   ),
                                 DetailItemApproveModel(
-                                  title: '${S.current.duration} :',
+                                  title: S.current.duration,
                                   value:
                                       '${(durationTime ?? 0) ~/ 60} ${S.current.hour} '
                                       '${(durationTime ?? 0 % 60) > 0 ? (durationTime ?? 0 % 60).toInt().toString() + ' ' + S.current.minute : ''} \n'
@@ -937,7 +943,7 @@ class _AuctionTabState extends State<AuctionTab>
                           ),
                         );
                         if (result != null) {
-                          final date = DateFormat('yyyy-MM-dd').format(result);
+                          final date = DateFormat('dd-MM-yyyy').format(result);
                           dateController.text = date;
                           validateDuration();
                         }

@@ -9,6 +9,7 @@ import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -486,14 +487,26 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
           if (typeScreen == PageRouter.MARKET) {
             final List<NftMarket> listNftMyAcc = [];
             for (final NftMarket value in res) {
+              value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
               if (value.marketType == MarketType.NOT_ON_MARKET) {
+                 listNftMyAcc.add(value);
               } else {
                 listNftMyAcc.add(value);
               }
             }
             listNft.add(listNftMyAcc);
           } else {
-            listNft.add(res);
+            final List<NftMarket> listNftMyAcc = [];
+            for (final NftMarket value in res) {
+              value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
+              if (value.marketType == MarketType.NOT_ON_MARKET) {
+                value.price = 0;
+                listNftMyAcc.add(value);
+              } else {
+                listNftMyAcc.add(value);
+              }
+            }
+            listNft.add(listNftMyAcc);
           }
           statusNft.add(SUCCESS);
         }

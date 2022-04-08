@@ -537,6 +537,8 @@ Widget _buildButtonPutOnMarket(
   NFTDetailBloc bloc,
   NftMarket nftMarket,
   String? nftId,
+  String? loanAmount,
+  String? loanSymbol,
   Function reload,
 ) {
   return ButtonGradient(
@@ -575,6 +577,8 @@ Widget _buildButtonPutOnMarket(
                   collectionName: nftMarket.collectionName ?? '',
                   collectionIsWhitelist: nftMarket.isWhitelist ?? false,
                   nftStandard: int.parse(nftMarket.nftStandard ?? '0'),
+                  loanAmount: loanAmount,
+                  loanSymbol: loanSymbol,
                 ),
               ),
               settings: const RouteSettings(

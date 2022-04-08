@@ -7,6 +7,7 @@ import 'package:Dfy/domain/model/nft_item.dart';
 import 'package:Dfy/domain/model/search_marketplace/list_search_collection_nft_model.dart';
 import 'package:Dfy/domain/model/search_marketplace/search_collection_nft_model.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
+import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -22,6 +23,7 @@ class SearchCubit extends BaseCubit<SearchState> {
   SearchMarketRepository get _searchMarketRepo => Get.find();
 
   final BehaviorSubject<bool> _isVisible = BehaviorSubject<bool>();
+  final BehaviorSubject<String> txtWarningSearch = BehaviorSubject<String>();
 
   Stream<bool> get isVisible => _isVisible.stream;
 
@@ -33,11 +35,19 @@ class SearchCubit extends BaseCubit<SearchState> {
     _isVisible.sink.add(false);
   }
 
+  void validateTextSearch(String value) {
+    if (value.length > 255) {
+      txtWarningSearch.sink.add(S.current.maximum_255);
+    } else {
+      txtWarningSearch.sink.add('');
+    }
+  }
+
   Future<void> getCollectionFeatNftBySearch({required String query}) async {
     emit(SearchLoading());
     clearCollectionsFtNftsAfterSearch();
     final Result<List<ListSearchCollectionFtNftModel>> result =
-        await _searchMarketRepo.getCollectionFeatNftSearch(
+    await _searchMarketRepo.getCollectionFeatNftSearch(
       name: query.trim(),
     );
     result.when(
@@ -57,8 +67,7 @@ class SearchCubit extends BaseCubit<SearchState> {
   List<NftItem> listNFT = [];
 
   void responseToCollectionFtNftModel(
-    List<ListSearchCollectionFtNftModel> response,
-  ) {
+      List<ListSearchCollectionFtNftModel> response,) {
     for (final element in response) {
       if (element.name == 'Collection') {
         collectionsSearch = element.items ?? [];
@@ -70,7 +79,7 @@ class SearchCubit extends BaseCubit<SearchState> {
               items: int.parse(element.info ?? '0'),
               title: element.name ?? 'name',
               background:
-                  ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
+              ApiConstants.BASE_URL_IMAGE + (element.coverCid ?? ''),
               avatar: ApiConstants.BASE_URL_IMAGE + (element.imageCid ?? ''),
             ),
           );
@@ -90,11 +99,11 @@ class SearchCubit extends BaseCubit<SearchState> {
               marketType: element.marketType == 'Auction'
                   ? MarketType.AUCTION
                   : (element.marketType == 'Sell'
-                      ? MarketType.SALE
-                      : MarketType.PAWN),
+                  ? MarketType.SALE
+                  : MarketType.PAWN),
               pawnId: element.pawnId,
               typeNFT:
-                  (element.type == 0) ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
+              (element.type == 0) ? TypeNFT.SOFT_NFT : TypeNFT.HARD_NFT,
               nftId: element.nftId,
               coverCidIfVid: element.coverCid,
             ),
@@ -133,62 +142,4 @@ class SearchCubit extends BaseCubit<SearchState> {
     _lengthStream.close();
   }
 
-// List<Collection> collections = [
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-//     title: 'Trinidad',
-//     items: 1000,
-//   ),
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-//     title: 'Kyat',
-//     items: 1000,
-//   ),
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/aaronalfred_128.jpg',
-//     title: 'Zambian Kwacha',
-//     items: 1000,
-//   ),
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/bobwassermann_128.jpg',
-//     title: 'Pataca',
-//     items: 1000,
-//   ),
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/picard102_128.jpg',
-//     title: 'Trinidad',
-//     items: 1000,
-//   ),
-//   Collection(
-//     background: 'http://placeimg.com/640/480',
-//     avatar: 'https://cdn.fakercloud.com/avatars/supervova_128.jpg',
-//     title: 'Trinidad',
-//     items: 1000,
-//   ),
-// ];
-// List<NftItem> listNFT = [
-//   NftItem(
-//     name: 'Lamborghi',
-//     image: 'http://placeimg.com/640/480',
-//     price: 0,
-//     marketType: MarketType.AUCTION,
-//   ),
-//   NftItem(
-//     name: 'Lamborghin',
-//     image: 'http://placeimg.com/640/480',
-//     price: 10000,
-//     marketType: MarketType.PAWN,
-//   ),
-//   NftItem(
-//     name: ' Pink 21',
-//     image: 'http://placeimg.com/640/480',
-//     price: 10000,
-//     marketType: MarketType.SALE,
-//   ),
-// ];
 }

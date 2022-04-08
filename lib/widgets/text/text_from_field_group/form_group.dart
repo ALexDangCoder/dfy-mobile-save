@@ -20,6 +20,7 @@ class FormGroupState extends State<FormGroup> {
     }
     return true;
   }
+
   bool validator() {
     for(var vl in _validator.keys){
       vl.currentState?.validate();
