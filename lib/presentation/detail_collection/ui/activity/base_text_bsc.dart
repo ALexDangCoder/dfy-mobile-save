@@ -3,12 +3,14 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 WidgetSpan baseTextBSC(String content) {
   final String address = _funCheckAddress(addressWallet: content);
   return WidgetSpan(
+    alignment: PlaceholderAlignment.middle,
     child: GestureDetector(
       onTap: () {
         launchURL(

@@ -7,6 +7,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/ui/receive_hard_nft_screen.dart';
+import 'package:Dfy/presentation/create_hard_nft/ui/components/step1__when_submit.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,16 @@ class MintRequestItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         switch (mintRequestModel.status) {
+          case 0:
+          case 1:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => Step1WhenSubmit(
+                  assetId: mintRequestModel.id ?? '',
+                ),
+              ),
+            );
+            break;
           case 3:
           case 4:
             Navigator.of(context).push(

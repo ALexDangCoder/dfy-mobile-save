@@ -75,6 +75,27 @@ class _SearchNFTState extends State<SearchNFT> {
                   height: 52.h,
                 ),
                 searchBar(),
+                Center(
+                  child: StreamBuilder<String>(
+                    initialData: '',
+                    stream: searchCubit.txtWarningSearch,
+                    builder: (context, snapshot) {
+                      return Column(
+                        children: [
+                          spaceH4,
+                          Text(
+                            snapshot.data ?? '',
+                            style: textNormalCustom(
+                              AppTheme.getInstance().redMarketColors(),
+                              12,
+                              FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ),
                 SizedBox(
                   height: 22.h,
                 ),
@@ -186,6 +207,8 @@ class _SearchNFTState extends State<SearchNFT> {
                       controller: controller,
                       onChanged: (value) {
                         searchCubit.show();
+                        //todo
+                        searchCubit.validateTextSearch(value);
                         if (_debounce.isActive) _debounce.cancel();
                         searchCubit.clearCollectionsFtNftsAfterSearch();
                         _debounce =

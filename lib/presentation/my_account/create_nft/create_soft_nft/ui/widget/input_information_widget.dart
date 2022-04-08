@@ -3,6 +3,7 @@ import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/crea
 import 'package:Dfy/presentation/my_account/create_nft/create_soft_nft/bloc/extension_create_nft/validate_input.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/style_utils.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 Widget inputInformationWidget({
   required CreateNftCubit cubit,
   required Function onChange,
+  required BuildContext context,
 }) {
   return Column(
     children: [
@@ -44,27 +46,6 @@ Widget inputInformationWidget({
         },
       ),
       spaceH16,
-      TextFieldValidator(
-        hint: S.current.royalties,
-        textInputType: TextInputType.number,
-        maxInputChar: 2,
-        prefixIcon: sizedSvgImage(
-          w: 20,
-          h: 20,
-          image: ImageAssets.ic_round_percent_svg,
-        ),
-        suffixIcon: sizedSvgImage(
-          w: 20,
-          h: 20,
-          image: ImageAssets.ic_round_i,
-        ),
-        onChange: (vl) {
-          onChange();
-        },
-        validator: (vl) {
-          return cubit.validateRoyalty(vl ?? '');
-        },
-      ),
     ],
   );
 }

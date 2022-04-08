@@ -34,7 +34,6 @@ class CollectionListRes extends Equatable {
 
   @override
   List<Object?> get props => [];
-
 }
 
 @JsonSerializable()
@@ -130,6 +129,7 @@ class CollectionResponse extends Equatable {
         collectionId: id,
         addressCollection: collectionAddress,
         type: collectionType?.parseToInt() ?? -1,
+        textRoyalties: royalty.toString(),
       );
 
   @override

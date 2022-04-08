@@ -226,6 +226,13 @@ class NFTRepositoryImpl implements NFTRepository {
       () => _nftClient.getDetailNft(collectionAddress, nftTokenId),
       (response) => response.item?.toOnSale() ?? NftMarket.init(),
     );
+  }@override
+  Future<Result<NftMarket>> getDetailNft2(
+      String nftId,) {
+    return runCatchingAsync<HardNftResponse, NftMarket>(
+          () => _nftClient.getDetailNft2(nftId),
+          (response) => response.item?.toOnSale() ?? NftMarket.init(),
+    );
   }
 
   @override

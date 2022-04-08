@@ -2,17 +2,23 @@ import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
+import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
+import 'package:Dfy/widgets/video_player/video_player_view.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/provide_hard_nft_cubit.dart';
@@ -38,18 +44,43 @@ enum NFT_TYPE {
 
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
-class Step1WhenSubmit extends StatelessWidget {
+class Step1WhenSubmit extends StatefulWidget {
   const Step1WhenSubmit({
     Key? key,
-    required this.cubit,
+    this.assetId,
+    this.cubit,
   }) : super(key: key);
-  final ProvideHardNftCubit cubit;
+  final String? assetId;
+  final ProvideHardNftCubit? cubit;
+
+  @override
+  _Step1WhenSubmitState createState() => _Step1WhenSubmitState();
+}
+
+class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
+  late ProvideHardNftCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.cubit != null) {
+      cubit = widget.cubit ?? ProvideHardNftCubit();
+    } else {
+      cubit = ProvideHardNftCubit();
+    }
+
+    ///if from mintRequest Screen use it like param else
+    ///default asset from cubit
+    if (widget.assetId != null) {
+      cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
+    } else {
+      cubit.checkStatusBeHandle(assetId: cubit.assetId);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    cubit.dataStep1.wallet = cubit.getAddressWallet();
-    final walletFormat = cubit.getAddressWallet().formatAddressWallet();
-    return BlocConsumer(
+    return BlocConsumer<ProvideHardNftCubit, ProvideHardNftState>(
       listener: (context, state) {
         if (state is CreateStep1Submitting) {
           showDialog(
@@ -88,7 +119,7 @@ class Step1WhenSubmit extends StatelessWidget {
                       ],
                       onErrorSign: (context) async {
                         final nav = Navigator.of(context);
-                        nav.pop();
+                        nav.pop(true);
                         await showLoadFail(context);
                       },
                       onSuccessSign: (context, data) {
@@ -102,20 +133,12 @@ class Step1WhenSubmit extends StatelessWidget {
                           /// để trở lại màn hình
                           Navigator.pop(context);
                           Navigator.pop(context);
-                          cubit.checkStatusBeHandle();
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ListBookEvaluation(
-                          //         assetId: cubit.assetId,
-                          //       );
-                          //     },
-                          //     settings: const RouteSettings(
-                          //       name: AppRouter.step2ListBook,
-                          //     ),
-                          //   ),
-                          // ).then((value) => Navigator.pop(context));
+                          if (widget.assetId != null) {
+                            cubit.checkStatusBeHandle(
+                                assetId: widget.assetId ?? '');
+                          } else {
+                            cubit.checkStatusBeHandle(assetId: cubit.assetId);
+                          }
                         });
                       },
                       textActiveButton: S.current.request_evaluation,
@@ -123,12 +146,18 @@ class Step1WhenSubmit extends StatelessWidget {
                     ),
                   ),
                 )
-                .then((value) async => {
-                      Navigator.pop(context),
-                      await cubit.checkStatusBeHandle(),
-                    }),
+                .then(
+                  (value) async => {
+                    Navigator.pop(context, true),
+                    if (widget.assetId != null)
+                      await cubit.checkStatusBeHandle(
+                          assetId: widget.assetId ?? '')
+                    else
+                      cubit.checkStatusBeHandle(assetId: cubit.assetId),
+                  },
+                ),
           );
-        } else {
+        } else if (state is CreateStep1SubmittingFail) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -139,326 +168,386 @@ class Step1WhenSubmit extends StatelessWidget {
           );
           Future.delayed(const Duration(seconds: 2), () {
             Navigator.pop(context);
-          }).then((value) => Navigator.pop(context));
+          }).then((value) => Navigator.pop(context, true));
         }
       },
       bloc: cubit,
       builder: (ctx, state) {
-        return RefreshIndicator(
-          onRefresh: () async {
-            if (cubit.statusWhenSubmit != null) {
-              await cubit.checkStatusBeHandle();
-            } else {}
-          },
-          child: BaseDesignScreen(
-            isImage: true,
-            text: ImageAssets.ic_close,
-            onRightClick: () {
-              Navigator.of(context)
-                ..pop()
-                ..pop()
-                ..pop();
-            },
-            title: S.current.provide_hard_nft_info,
-            bottomBar: _buttonByState(context),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  spaceH24,
-                  const Center(child: CircleStatusProvideHardNft()),
-                  spaceH32,
-                  textShowWithPadding(
-                    textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().unselectedTabLabelColor(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH20,
-                  UploadImageWidget(
-                    cubit: cubit,
-                    showAddMore: false,
-                  ),
-                  spaceH32,
-                  Visibility(
-                    visible:
-                        cubit.listDocumentPathSubject.hasValue ? true : false,
-                    child: Column(
-                      children: [
-                        textShowWithPadding(
-                          textShow: S.current.documents,
-                          txtStyle: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        UploadDocumentWidget(
-                          cubit: cubit,
-                          isVisibleDoc: false,
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cubit.dataStep1.documents.length,
-                    itemBuilder: (ctx, index) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          textShowWithPadding(
-                            textShow:
-                                basename(cubit.dataStep1.documents[index]),
-                            txtStyle: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          if (index == cubit.dataStep1.documents.length)
-                            spaceH32
-                          else
-                            spaceH16,
-                        ],
-                      );
-                    },
-                  ),
-                  textShowWithPadding(
-                    textShow: S.current.hard_nft_info,
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().unselectedTabLabelColor(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  //icon feat name
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: 16.w,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          imageNftByTypeSelect(
-                            id: cubit.dataStep1.hardNftType.id ?? 0,
-                          ),
-                          spaceW4,
-                          Text(
-                            cubit.dataStep1.hardNftName,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              24,
-                              FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  spaceH8,
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                      ),
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          Text(
-                            cubit.dataStep1.hardNftType.name ?? '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          spaceW4,
-                          Container(
-                            width: 1.w,
-                            height: 12.h,
-                            color: AppTheme.getInstance().whiteColor(),
-                          ),
-                          spaceW5,
-                          Text(
-                            cubit.dataStep1.conditionNft.name ?? '',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          spaceW4,
-                          Container(
-                            width: 1.w,
-                            height: 12.h,
-                            color: AppTheme.getInstance().whiteColor(),
-                          ),
-                          spaceW5,
-                          Text(
-                            S.current.expecting_for,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          spaceW4,
-                          SizedBox(
-                            width: 16.w,
-                            height: 16.h,
-                            child: Image.network(
-                              ImageAssets.getSymbolAsset(
-                                cubit.dataStep1.tokenInfo.symbol ?? DFY,
-                              ),
-                            ),
-                          ),
-                          spaceW4,
-                          Text(
-                            '${formatValue.format(cubit.dataStep1.amountToken)}'
-                            ' ${cubit.dataStep1.tokenInfo.symbol}',
-                            style: textNormalCustom(
-                              AppTheme.getInstance().whiteColor(),
-                              16,
-                              FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  spaceH8,
-                  textShowWithPadding(
-                    textShow: cubit.dataStep1.additionalInfo,
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().whiteOpacityDot5(),
-                      16,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH12,
-                  //item properties
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                      ),
-                      child: Wrap(
-                        runSpacing: 10.h,
-                        children: cubit.dataStep1.properties.map((e) {
-                          final int index =
-                              cubit.dataStep1.properties.indexOf(e);
-                          return itemProperty(
-                            property: e.property,
-                            value: e.value,
-                            index: index,
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                  spaceH20,
-                  textShowWithPadding(
-                    textShow: S.current.contact_info,
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().unselectedTabLabelColor(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH12,
-                  informationContactWidget(
-                    title: cubit.dataStep1.nameContact,
-                    image: ImageAssets.profileStep1,
-                  ),
-                  spaceH15,
-                  informationContactWidget(
-                    title: cubit.dataStep1.emailContact,
-                    image: ImageAssets.mailStep1,
-                  ),
-                  spaceH15,
-                  informationContactWidget(
-                    title: '${cubit.dataStep1.phoneCodeModel.code} '
-                        '${cubit.dataStep1.phoneContact}',
-                    image: ImageAssets.callStep1,
-                  ),
-                  spaceH15,
-                  informationContactWidget(
-                    title: cubit.dataStep1.addressContact,
-                    image: ImageAssets.locationStep1,
-                  ),
-                  spaceH32,
-                  textShowWithPadding(
-                    textShow: S.current.wallet_and_collection,
-                    txtStyle: textNormalCustom(
-                      AppTheme.getInstance().unselectedTabLabelColor(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                  spaceH16,
-                  widgetShowCollectionFtWallet(
-                    isWallet: true,
-                    walletAddress: walletFormat,
-                  ),
-                  spaceH18,
-                  widgetShowCollectionFtWallet(
-                    nameCollection: cubit.dataStep1.collection,
-                    isWallet: false,
-                  ),
-                  spaceH46,
-                ],
-              ),
-            ),
-          ),
+        return StateStreamLayout(
+          stream: cubit.stateStream,
+          error: AppException(S.current.error, S.current.something_went_wrong),
+          retry: () async {},
+          textEmpty: '',
+          child: _content(state, ctx),
         );
       },
     );
   }
 
-  Widget _buttonByState(BuildContext context) {
+  Widget _content(ProvideHardNftState state, BuildContext context) {
+    if (state is CreateStep1LoadingSuccess) {
+      return RefreshIndicator(
+        onRefresh: () async {
+          if (cubit.statusWhenSubmit != null) {
+            if (widget.assetId != null) {
+              await cubit.checkStatusBeHandle(
+                  assetId: widget.assetId ?? '', isRefresh: true);
+            } else {
+              await cubit.checkStatusBeHandle(
+                assetId: cubit.assetId,
+                isRefresh: true,
+              );
+            }
+          } else {}
+        },
+        child: BaseDesignScreen(
+          isImage: true,
+          text: ImageAssets.ic_close,
+          onRightClick: () {
+            Navigator.of(context)
+              ..pop()
+              ..pop()
+              ..pop();
+          },
+          title: S.current.provide_hard_nft_info,
+          bottomBar:
+              _buttonByState(context, assetIdMintRq: widget.assetId ?? ''),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                spaceH24,
+                const Center(child: CircleStatusProvideHardNft()),
+                spaceH32,
+                textShowWithPadding(
+                  textShow: 'HARD NFT ${S.current.picture}/ VIDEO',
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH20,
+                if ((widget.assetId ?? '').isNotEmpty)
+                  _buildPictureVidHardNft()
+                else
+                  UploadImageWidget(
+                    //widget chỉ từ step 1 sang
+                    cubit: cubit,
+                    showAddMore: false,
+                  ),
+                spaceH20,
+                _widgetListDocument(),
+                textShowWithPadding(
+                  textShow: S.current.hard_nft_info,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH16,
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        imageNftByTypeSelect(
+                          id: cubit.dataDetailAsset.assetType?.id ?? 0,
+                        ),
+                        spaceW4,
+                        Text(
+                          cubit.dataDetailAsset.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            24,
+                            FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                spaceH8,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          cubit.dataDetailAsset.assetType?.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceW4,
+                        Container(
+                          width: 1.w,
+                          height: 12.h,
+                          color: AppTheme.getInstance().whiteColor(),
+                        ),
+                        spaceW5,
+                        Text(
+                          cubit.dataDetailAsset.condition?.name ?? '',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceW4,
+                        Container(
+                          width: 1.w,
+                          height: 12.h,
+                          color: AppTheme.getInstance().whiteColor(),
+                        ),
+                        spaceW5,
+                        Text(
+                          S.current.expecting_for,
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ),
+                        spaceW4,
+                        SizedBox(
+                          width: 16.w,
+                          height: 16.h,
+                          child: Image.asset(
+                            ImageAssets.getSymbolAsset(
+                              cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
+                            ),
+                          ),
+                        ),
+                        spaceW4,
+                        Text(
+                          '${formatValue.format(cubit.dataDetailAsset.expectingPrice)}'
+                          ' ${cubit.dataDetailAsset.expectingPriceSymbol ?? DFY}',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            16,
+                            FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                ///
+                //todo start widget information text
+                textShowWithPadding(
+                  textShow: cubit.dataDetailAsset.additionalInfo ?? '',
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().whiteOpacityDot5(),
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH12,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                    ),
+                    child: Wrap(
+                      runSpacing: 10.h,
+                      children: (cubit.dataDetailAsset.additionalInfoList ?? [])
+                          .map((e) {
+                        final int index =
+                            (cubit.dataDetailAsset.additionalInfoList ?? [])
+                                .indexOf(e);
+                        return itemProperty(
+                          property: e.traitType ?? '',
+                          value: e.value ?? '',
+                          index: index,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                //todo end
+                spaceH20,
+                textShowWithPadding(
+                  textShow: S.current.contact_info,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH12,
+                //4 widget contact info todo start
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactName ?? '',
+                  image: ImageAssets.profileStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactEmail ?? '',
+                  image: ImageAssets.mailStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: '(${cubit.dataDetailAsset.contactPhoneCode?.code}) '
+                      '${cubit.dataDetailAsset.contactPhone}',
+                  image: ImageAssets.callStep1,
+                ),
+                spaceH15,
+                informationContactWidget(
+                  title: cubit.dataDetailAsset.contactAddress ?? '',
+                  image: ImageAssets.locationStep1,
+                ),
+                spaceH32,
+                textShowWithPadding(
+                  textShow: S.current.wallet_and_collection,
+                  txtStyle: textNormalCustom(
+                    AppTheme.getInstance().unselectedTabLabelColor(),
+                    14,
+                    FontWeight.w400,
+                  ),
+                ),
+                spaceH16,
+                widgetShowCollectionFtWallet(
+                  isWallet: true,
+                  walletAddress: cubit.dataDetailAsset.walletAddress
+                      ?.formatAddressWallet(),
+                ),
+                spaceH18,
+                widgetShowCollectionFtWallet(
+                  nameCollection: cubit.dataDetailAsset.collection?.name ?? '',
+                  isWallet: false,
+                ),
+                spaceH46,
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      return const ModalProgressHUD(
+        inAsyncCall: true,
+        progressIndicator: CupertinoLoading(),
+        child: SizedBox(),
+      );
+    }
+  }
+
+  Widget _buildPictureVidHardNft() {
+    if (cubit.handleTypeImgOrVid() == TypeMedia.VID) {
+      return Column(
+        children: [
+          VideoPlayerView(
+            urlVideo:
+                '${ApiConstants.URL_BASE}${(cubit.dataDetailAsset.mediaList ?? [])[0].cid}',
+            isJustWidget: true,
+          ),
+          spaceH8,
+          if ((cubit.dataDetailAsset.mediaList ?? []).length > 2)
+            textShowWithPadding(
+              textShow:
+                  '${S.current.and} ${(cubit.dataDetailAsset.mediaList ?? []).length - 1} ${S.current.other_file}',
+              txtStyle: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                24,
+                FontWeight.w600,
+              ),
+            )
+          else
+            Container(),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          FadeInImage.assetNetwork(
+            placeholder: ImageAssets.image_loading,
+            image:
+                '${ApiConstants.URL_BASE}${(cubit.dataDetailAsset.mediaList ?? [])[0].cid}',
+            imageCacheHeight: 290,
+            imageErrorBuilder: (context, url, error) {
+              return Center(
+                child: Text(
+                  S.current.unload_image,
+                  style: textNormalCustom(
+                    Colors.white,
+                    14,
+                    FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            },
+            placeholderCacheHeight: 200,
+            fit: BoxFit.cover,
+          ),
+          spaceH8,
+          if ((cubit.dataDetailAsset.mediaList ?? []).length > 2)
+            textShowWithPadding(
+              textShow:
+                  '${S.current.and} ${(cubit.dataDetailAsset.mediaList ?? []).length - 1} ${S.current.other_file}',
+              txtStyle: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                24,
+                FontWeight.w600,
+              ),
+            )
+          else
+            Container(),
+        ],
+      );
+    }
+  }
+
+  Widget _buttonByState(BuildContext context, {required String assetIdMintRq}) {
     return StreamBuilder<StateButton>(
-      initialData: StateButton.DEFAULT,
+      initialData: assetIdMintRq.isNotEmpty
+          ? StateButton.PROCESSING
+          : StateButton.DEFAULT,
       stream: cubit.stateButton.stream,
       builder: (context, snapshot) {
         if ((snapshot.data ?? StateButton.DEFAULT) ==
             StateButton.FINDEVALUATOR) {
           return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ListBookEvaluation(
-                        assetId: cubit.assetId,
-                      );
-                    },
-                    settings: const RouteSettings(
-                      name: AppRouter.step2ListBook,
-                    ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ListBookEvaluation(
+                      assetId: cubit.assetId,
+                    );
+                  },
+                  settings: const RouteSettings(
+                    name: AppRouter.step2ListBook,
                   ),
-                ).then((value) => Navigator.pop(context));
-              },
-              child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: 38.h,
-                    left: 16.w,
-                    right: 16.w,
-                  ),
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  child: const ButtonGold(
-                      title: 'Find evaluator', isEnable: true)));
+                ),
+              ).then((value) => Navigator.pop(context));
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: 38.h,
+                left: 16.w,
+                right: 16.w,
+              ),
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: const ButtonGold(title: 'Find evaluator', isEnable: true),
+            ),
+          );
         } else if ((snapshot.data ?? StateButton.DEFAULT) ==
             StateButton.PROCESSING) {
           return Container(
@@ -486,7 +575,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                     child: ButtonGold(
                       haveGradient: false,
@@ -508,8 +597,7 @@ class Step1WhenSubmit extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await cubit.getDataFromStep1ToModelToSave();
-                      await cubit.postFileMediaFeatDocumentApi();
+                      await cubit.putInfoToBlockChain();
                     },
                     child: ButtonGold(
                       radiusButton: 22,
@@ -530,6 +618,52 @@ class Step1WhenSubmit extends StatelessWidget {
     );
   }
 
+  Visibility _widgetListDocument() {
+    return Visibility(
+      visible: (cubit.dataDetailAsset.documentList ?? []).isNotEmpty,
+      child: Column(
+        children: [
+          textShowWithPadding(
+            textShow: S.current.documents,
+            txtStyle: textNormalCustom(
+              AppTheme.getInstance().unselectedTabLabelColor(),
+              14,
+              FontWeight.w400,
+            ),
+          ),
+          spaceH20,
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: (cubit.dataDetailAsset.documentList ?? []).length,
+            itemBuilder: (ctx, index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  textShowWithPadding(
+                    textShow: (cubit.dataDetailAsset.documentList ?? [])[index]
+                            .name ??
+                        '',
+                    txtStyle: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                  if (index ==
+                      (cubit.dataDetailAsset.documentList ?? []).length)
+                    spaceH32
+                  else
+                    spaceH16,
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Container textShowWithPadding({
     required String textShow,
     required TextStyle txtStyle,
@@ -546,36 +680,6 @@ class Step1WhenSubmit extends StatelessWidget {
           style: txtStyle,
         ),
       ),
-    );
-  }
-
-  SizedBox imageNftByTypeSelect({required int id}) {
-    String imageNFT = '';
-    switch (id) {
-      case 2:
-        imageNFT = ImageAssets.artWork;
-        break;
-      case 4:
-        imageNFT = ImageAssets.car;
-        break;
-      case 3:
-        imageNFT = ImageAssets.house;
-        break;
-      case 0:
-        imageNFT = ImageAssets.diamond;
-        break;
-      case 1:
-        imageNFT = ImageAssets.watch;
-        break;
-      default:
-        //case other
-        imageNFT = ImageAssets.others;
-        break;
-    }
-    return SizedBox(
-      width: 24.w,
-      height: 24.h,
-      child: Image.asset(imageNFT),
     );
   }
 
@@ -767,5 +871,35 @@ class Step1WhenSubmit extends StatelessWidget {
               ],
             ),
           );
+  }
+
+  SizedBox imageNftByTypeSelect({required int id}) {
+    String imageNFT = '';
+    switch (id) {
+      case 2:
+        imageNFT = ImageAssets.artWork;
+        break;
+      case 4:
+        imageNFT = ImageAssets.car;
+        break;
+      case 3:
+        imageNFT = ImageAssets.house;
+        break;
+      case 0:
+        imageNFT = ImageAssets.diamond;
+        break;
+      case 1:
+        imageNFT = ImageAssets.watch;
+        break;
+      default:
+        //case other
+        imageNFT = ImageAssets.others;
+        break;
+    }
+    return SizedBox(
+      width: 24.w,
+      height: 24.h,
+      child: Image.asset(imageNFT),
+    );
   }
 }

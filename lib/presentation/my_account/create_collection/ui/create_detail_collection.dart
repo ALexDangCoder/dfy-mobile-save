@@ -72,6 +72,13 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
       child: BaseDesignScreen(
         resizeBottomInset: true,
         title: S.current.create_collection,
+        text: ImageAssets.ic_close,
+        isImage: true,
+        onRightClick: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+        },
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -90,7 +97,7 @@ class _CreateDetailCollectionState extends State<CreateDetailCollection> {
                   builder: (context, snapshot) {
                     final statusButton = snapshot.data ?? false;
                     return ButtonLuxury(
-                      marginHorizontal: 16.w,
+                      marginHorizontal: 0,
                       title: S.current.create,
                       isEnable: statusButton,
                       buttonHeight: 64,

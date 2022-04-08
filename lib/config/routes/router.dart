@@ -19,6 +19,7 @@ class AppRouter {
   static const collectionList = '/collection_list';
   static const putOnSale = '/put_on_market';
   static const step2Book = '/step2_book';
+  static const step1WhenSubmit = '/step1_when_submit';
   static const step2ListBook = '/step2_list_book';
   static const createHardNftStep1 = '/step1_create_hard_nft';
   static const step2Create = '/step2_create';
