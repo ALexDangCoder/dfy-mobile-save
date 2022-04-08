@@ -386,4 +386,7 @@ class ApiConstants {
 
   static const String POST_LENDING =
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop';
+  static const String GET_FIND_USER_ID = '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/find-by-user-id';
+  static const String GET_COLLATERAL_PAWNSHOP_PACKAGE = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/';
+
 }

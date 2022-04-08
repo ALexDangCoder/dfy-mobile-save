@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/filter/filter_collateral.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
@@ -26,13 +27,15 @@ class FilterLoanRequest extends StatefulWidget {
 
 class _FilterLoanRequestState extends State<FilterLoanRequest> {
   late List<Map<String, dynamic>> initValueFilterList;
+  late List<Map<String, dynamic>> initNFTFilterList;
 
   late Map<String, dynamic> currentWallet;
 
   @override
   void initState() {
     super.initState();
-    // initValueFilterList = widget.cubit.filterOriginalList;
+    initValueFilterList = widget.cubit.listFilterStatusOriginal;
+    initNFTFilterList = widget.cubit.listFilterNftTypeOriginal;
     widget.cubit.getListWallet();
     if (widget.cubit.tempWalletFilter['label'] == 'null') {
       currentWallet = widget.cubit.walletAddressDropDown[0];
@@ -77,74 +80,14 @@ class _FilterLoanRequestState extends State<FilterLoanRequest> {
                   if (widget.indexTab == 0)
                     _buildFilterCrypto()
                   else
-                    _buildFilterNFT()
-                  // StreamBuilder<List<Map<String, dynamic>>>(
-                  //   initialData: initValueFilterList,
-                  //   stream: widget.cubit.filterListBHVSJ,
-                  //   builder: (context, snapshot) {
-                  //     return Column(
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Expanded(
-                  //               child: CheckBoxFilterWidget(
-                  //                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                  //                 callBack: (value) {
-                  //                   widget.cubit.pickJustOneFilter(value);
-                  //                 },
-                  //                 index: 0,
-                  //                 isSelected: (snapshot.data ?? [])[0]
-                  //                 ['isSelected'],
-                  //                 nameCkcFilter: S.current.all.capitalize(),
-                  //               ),
-                  //             ),
-                  //             Expanded(
-                  //               child: CheckBoxFilterWidget(
-                  //                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                  //                 callBack: (value) {
-                  //                   widget.cubit.pickJustOneFilter(value);
-                  //                 },
-                  //                 index: 1,
-                  //                 isSelected: (snapshot.data ?? [])[1]
-                  //                 ['isSelected'],
-                  //                 nameCkcFilter: S.current.active.capitalize(),
-                  //               ),
-                  //             )
-                  //           ],
-                  //         ),
-                  //         spaceH15,
-                  //         Row(
-                  //           children: [
-                  //             Expanded(
-                  //               child: CheckBoxFilterWidget(
-                  //                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                  //                 callBack: (value) {
-                  //                   widget.cubit.pickJustOneFilter(value);
-                  //                 },
-                  //                 index: 2,
-                  //                 isSelected: (snapshot.data ?? [])[2]
-                  //                 ['isSelected'],
-                  //                 nameCkcFilter: S.current.complete.capitalize(),
-                  //               ),
-                  //             ),
-                  //             Expanded(
-                  //               child: CheckBoxFilterWidget(
-                  //                 typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                  //                 callBack: (value) {
-                  //                   widget.cubit.pickJustOneFilter(value);
-                  //                 },
-                  //                 index: 3,
-                  //                 isSelected: (snapshot.data ?? [])[3]
-                  //                 ['isSelected'],
-                  //                 nameCkcFilter: S.current.defaults.capitalize(),
-                  //               ),
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // )
+                    _buildFilterNFT(),
+                  spaceH16,
+                  Text(
+                    S.current.status,
+                    style: textNormalCustom(null, 16, FontWeight.w600),
+                  ),
+                  spaceH16,
+                  _buildFilterStatus()
                 ],
               ),
             ),
@@ -167,22 +110,14 @@ class _FilterLoanRequestState extends State<FilterLoanRequest> {
                     ),
                   ),
                   onPressed: () {
-                    // Navigator.pop(context);
-                    // if (widget.indexTab == 0) {
-                    //   widget.cubit.listCryptoLenderContract.clear();
-                    //   widget.cubit.getListNft(
-                    //     walletAddress: widget.cubit.walletAddressFilter,
-                    //     status: widget.cubit.statusFilter,
-                    //     type: 0.toString(),
-                    //   );
-                    // } else {
-                    //   widget.cubit.listNftLenderContract.clear();
-                    //   widget.cubit.getListNft(
-                    //     walletAddress: widget.cubit.walletAddressFilter,
-                    //     status: widget.cubit.statusFilter,
-                    //     type: 1.toString(),
-                    //   );
-                    // }
+                    Navigator.pop(context);
+                    if (widget.indexTab == 0) {
+                      widget.cubit.crypoList.clear();
+                      widget.cubit.getListCryptoApi();
+                    } else {
+                      widget.cubit.nftList.clear();
+                      widget.cubit.getListNftApi();
+                    }
                   },
                 ),
               ),
@@ -190,6 +125,89 @@ class _FilterLoanRequestState extends State<FilterLoanRequest> {
           ],
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<Map<String, dynamic>>> _buildFilterStatus() {
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      initialData: initValueFilterList,
+      stream: widget.cubit.filterListBHVSJ,
+      builder: (context, snapshot) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilterWidget(
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    callBack: (value) {
+                      widget.cubit.pickJustOneFilter(value);
+                    },
+                    index: 0,
+                    isSelected: (snapshot.data ?? [])[0]['isSelected'],
+                    nameCkcFilter: S.current.all.capitalize(),
+                  ),
+                ),
+                Expanded(
+                  child: CheckBoxFilterWidget(
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    callBack: (value) {
+                      widget.cubit.pickJustOneFilter(value);
+                    },
+                    index: 1,
+                    isSelected: (snapshot.data ?? [])[1]['isSelected'],
+                    nameCkcFilter: S.current.open.capitalize(),
+                  ),
+                )
+              ],
+            ),
+            spaceH15,
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilterWidget(
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    callBack: (value) {
+                      widget.cubit.pickJustOneFilter(value);
+                    },
+                    index: 2,
+                    isSelected: (snapshot.data ?? [])[2]['isSelected'],
+                    nameCkcFilter: S.current.rejected.capitalize(),
+                  ),
+                ),
+                Expanded(
+                  child: CheckBoxFilterWidget(
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    callBack: (value) {
+                      widget.cubit.pickJustOneFilter(value);
+                    },
+                    index: 3,
+                    isSelected: (snapshot.data ?? [])[3]['isSelected'],
+                    nameCkcFilter: S.current.accepted.capitalize(),
+                  ),
+                )
+              ],
+            ),
+            spaceH15,
+            Row(
+              children: [
+                Expanded(
+                  child: CheckBoxFilterWidget(
+                    typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                    callBack: (value) {
+                      widget.cubit.pickJustOneFilter(value);
+                    },
+                    index: 4,
+                    isSelected: (snapshot.data ?? [])[4]['isSelected'],
+                    nameCkcFilter: S.current.canceled.capitalize(),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -288,10 +306,9 @@ class _FilterLoanRequestState extends State<FilterLoanRequest> {
               ),
               InkWell(
                 onTap: () {
-                  // widget.cubit.resetFilter();
-                  // setState(() {
-                  //   currentWallet = widget.cubit.walletAddressDropDown[0];
-                  // });
+                  widget.cubit.resetFilter(widget.indexTab);
+                  currentWallet = widget.cubit.walletAddressDropDown[0];
+                  setState(() {});
                 },
                 child: Container(
                   height: 30,
@@ -324,20 +341,93 @@ class _FilterLoanRequestState extends State<FilterLoanRequest> {
 
   Widget _buildFilterCrypto() {
     return Column(
-      children: [],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.current.collateral.capitalize(),
+          style: textNormalCustom(null, 16, FontWeight.w600),
+        ),
+        spaceH16,
+        FilterCollateral(
+          key: UniqueKey(),
+          cubit: widget.cubit,
+          list: widget.cubit.listTokenFilter,
+        )
+      ],
     );
   }
 
   Widget _buildFilterNFT() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          S.current.collateral.capitalize(),
+          S.current.nft_type.capitalize(),
           style: textNormalCustom(
             AppTheme.getInstance().whiteColor(),
             16,
             FontWeight.w600,
           ),
+        ),
+        spaceH16,
+        StreamBuilder<List<Map<String, dynamic>>>(
+          initialData: initNFTFilterList,
+          stream: widget.cubit.filterListNFTBHVSJ,
+          builder: (context, snapshot) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: CheckBoxFilterWidget(
+                        typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                        callBack: (value) {
+                          widget.cubit.pickJustOneFilter(value, isNft: true);
+                        },
+                        index: 0,
+                        isSelected: (snapshot.data ?? [])[0]['isSelected'],
+                        nameCkcFilter: S.current.all.capitalize(),
+                      ),
+                    ),
+                    Expanded(
+                      child: CheckBoxFilterWidget(
+                        typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                        callBack: (value) {
+                          widget.cubit.pickJustOneFilter(
+                            value,
+                            isNft: true,
+                          );
+                        },
+                        index: 1,
+                        isSelected: (snapshot.data ?? [])[1]['isSelected'],
+                        nameCkcFilter: S.current.hard_nft.capitalize(),
+                      ),
+                    )
+                  ],
+                ),
+                spaceH15,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CheckBoxFilterWidget(
+                        typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                        callBack: (value) {
+                          widget.cubit.pickJustOneFilter(
+                            value,
+                            isNft: true,
+                          );
+                        },
+                        index: 2,
+                        isSelected: (snapshot.data ?? [])[2]['isSelected'],
+                        nameCkcFilter: S.current.soft_nft.capitalize(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
         )
       ],
     );

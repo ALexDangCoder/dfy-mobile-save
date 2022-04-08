@@ -16,6 +16,7 @@ import 'package:Dfy/data/repository_impl/market_place/wallet_address_impl.dart';
 import 'package:Dfy/data/repository_impl/nft_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/pawn/lender_contract/lender_contract_repo_impl.dart';
 import 'package:Dfy/data/repository_impl/pawn/loan_request/loan_request_repo_impl.dart';
+import 'package:Dfy/data/repository_impl/pawn/manage_package/manage_package_repo_impl.dart';
 import 'package:Dfy/data/repository_impl/pawn/offer_sent/offer_sent_repo_impl.dart';
 import 'package:Dfy/data/repository_impl/pinata/pinata_repository_impl.dart';
 import 'package:Dfy/data/repository_impl/search_market/search_market_impl.dart';
@@ -38,6 +39,7 @@ import 'package:Dfy/data/services/nft_service.dart';
 import 'package:Dfy/data/services/pawn/lender_contract/lender_contract_service.dart';
 import 'package:Dfy/data/services/pawn/loan_request_list/loan_request_list_service.dart';
 import 'package:Dfy/data/services/pawn/offer_sent_list/offer_sent_service.dart';
+import 'package:Dfy/data/services/pawn/setting_package_lender/setting_package_lender_service.dart';
 import 'package:Dfy/data/services/pinata/pinata_service.dart';
 import 'package:Dfy/data/services/search_market/search_market_client.dart';
 import 'package:Dfy/data/services/token_service.dart';
@@ -61,6 +63,7 @@ import 'package:Dfy/domain/repository/market_place/wallet_address_respository.da
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/domain/repository/pawn/lender_contract/lender_contract_repository.dart';
 import 'package:Dfy/domain/repository/pawn/loan_request/loan_request_repository.dart';
+import 'package:Dfy/domain/repository/pawn/manage_loan_package/manage_loan_package_repository.dart';
 import 'package:Dfy/domain/repository/pawn/offer_sent/offer_sent_repository.dart';
 import 'package:Dfy/domain/repository/pinata/pinata_repository.dart';
 import 'package:Dfy/domain/repository/search_market/search_market_repository.dart';
@@ -144,6 +147,9 @@ void configureDependencies() {
 
   Get.put(LoanRequestListService(provideDioDFY()));
   Get.put<LoanRequestRepository>(LoanRequestRepositoryImplement(Get.find()));
+
+  Get.put(SettingPackageLenderService(provideDioDFY()));
+  Get.put<ManageLoanPackageRepository>(ManageLoanPackageImplement(Get.find()));
 }
 
 Dio provideDioDFY({int connectionTimeOut = 60000}) {

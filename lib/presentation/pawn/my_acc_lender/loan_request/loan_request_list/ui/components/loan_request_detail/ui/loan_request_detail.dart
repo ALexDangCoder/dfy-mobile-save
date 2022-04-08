@@ -3,7 +3,8 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/loan_request_detail/bloc/loan_request_detail_cubit.dart';
-import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/loan_send_offer.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/ui/confirm_reject_loan_request.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/ui/loan_send_offer.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
@@ -45,7 +46,12 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
   @override
   void initState() {
     cubit = LoanRequestDetailCubit();
-    cubit.callAllApi(walletAddress: widget.walletAddress, id: widget.id);
+    if (widget.typeDetail == TypeDetail.CRYPTO) {
+      cubit.callAllApi(walletAddress: widget.walletAddress, id: widget.id);
+    } else {
+      //nft
+
+    }
     super.initState();
   }
 
@@ -107,9 +113,10 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
         children: [
           GestureDetector(
             onTap: () {
-              // PrefsService.savePleaseRate(
-              //     bloc.isCheckBox.value.toString());
-              // Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => ConfirmRejectLoanRequest()));
             },
             child: Container(
               height: 64.h,
@@ -142,6 +149,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                   MaterialPageRoute(
                     builder: (context) => LoanSendOffer(
                       isCryptoElseNft: true,
+                      detailCrypto: cubit.detailLoanRequestCryptoModel,
                     ),
                   ));
             },
