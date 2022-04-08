@@ -29,6 +29,7 @@ class CommentItem extends StatelessWidget {
         border: Border.all(color: dialogColor),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (commentBorrow.userReview?.name != null)
             Row(
@@ -56,6 +57,7 @@ class CommentItem extends StatelessWidget {
             ),
           spaceH12,
           SizedBox(
+            height: 24.h,
             child: Row(
               children: [
                 SizedBox(
@@ -69,7 +71,7 @@ class CommentItem extends StatelessWidget {
                         return Row(
                           children: [
                             Image.asset(
-                              ImageAssets.img_star,
+                              ImageAssets.img_rate,
                               height: 24.h,
                               width: 24.w,
                             ),
@@ -92,7 +94,7 @@ class CommentItem extends StatelessWidget {
                       return Row(
                         children: [
                           Image.asset(
-                            ImageAssets.img_star_not_fill,
+                            ImageAssets.img_rate2,
                             height: 24.h,
                             width: 24.w,
                           ),

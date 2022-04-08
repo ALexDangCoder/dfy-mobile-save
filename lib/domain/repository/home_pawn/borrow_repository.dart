@@ -85,6 +85,11 @@ mixin BorrowRepository {
   Future<Result<List<PawnShopModelMy>>> getListPawnShopMy({
     String? page,
     String? size,
+    String? interestRanges,
+    String? loanSymbols,
+    String? collateralSymbols,
+    String? name,
+    String? cusSort,
   });
 
   Future<Result<List<NftMarket>>> getListNFTCollateral({
@@ -256,7 +261,9 @@ mixin BorrowRepository {
   });
 
   Future<Result<String>> putCancelOffer({
-    String? id,
+    String? idCollateral,
+    String? idOffer,
+    String? walletAddress,
   });
 
   Future<Result<String>> putAcceptOffer({
@@ -272,5 +279,16 @@ mixin BorrowRepository {
 
   Future<Result<String>> postReview({
     ReviewCreateRequest? reviewCreateRequest,
+  });
+
+  Future<Result<String>> postLendingCreate({
+    String? address,
+    String? description,
+    String? email,
+    String? name,
+    String? phoneNumber,
+    String? type,
+    String? userId,
+    String? walletAddress,
   });
 }

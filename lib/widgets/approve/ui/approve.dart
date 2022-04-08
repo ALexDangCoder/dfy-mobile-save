@@ -290,21 +290,25 @@ class _ApproveState extends State<Approve> {
                                                             ?.isNotEmpty ??
                                                         false)
                                                       spaceW8,
-                                                    Text(
-                                                      item.value,
-                                                      style: item.isToken ??
-                                                              false
-                                                          ? textNormalCustom(
-                                                              AppTheme.getInstance()
-                                                                  .fillColor(),
-                                                              20,
-                                                              FontWeight.w600,
-                                                            )
-                                                          : textNormal(
-                                                              AppTheme.getInstance()
-                                                                  .whiteColor(),
-                                                              16,
-                                                            ),
+                                                    SizedBox(
+                                                      width: 170.w,
+                                                      child: Text(
+                                                        item.value,
+                                                        style: item.isToken ??
+                                                                false
+                                                            ? textNormalCustom(
+                                                                AppTheme.getInstance()
+                                                                    .fillColor(),
+                                                                20,
+                                                                FontWeight.w600,
+                                                              )
+                                                            : textNormal(
+                                                                AppTheme.getInstance()
+                                                                    .whiteColor(),
+                                                                16,
+                                                              ),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

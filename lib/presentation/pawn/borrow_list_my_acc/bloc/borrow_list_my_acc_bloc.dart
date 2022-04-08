@@ -122,6 +122,8 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
   void statusFilterFirst() {
     if (checkStatus == null) {
       checkStatus = 'have';
+      statusWallet = textAddressFilter.value;
+      statusWalletNFT = textAddressFilter.value;
     } else {
       if (type == CRYPTO_TYPE) {
         textAddressFilter.add(statusWallet ?? '');
@@ -129,6 +131,7 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
         isDefault.add(statusDefaultFilter);
         isCompleted.add(statusCompletedFilter);
         isActive.add(statusActiveFilter);
+        checkStatus = null;
       } else {
         textAddressFilter.add(statusWalletNFT ?? '');
         isAll.add(statusAllFilterNFT);

@@ -376,13 +376,17 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                               navigator.push(
                                 MaterialPageRoute(
                                   builder: (context) => Approve(
+                                    needApprove: true,
+                                    payValue: bloc.amount.value,
                                     textActiveButton:
                                         '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
                                     spender: Get.find<AppConstants>()
-                                        .crypto_pawn_contract,
+                                        .collateral_contract,
                                     hexString: bloc.hexString,
-                                    tokenAddress:
-                                        Get.find<AppConstants>().contract_defy,
+                                    tokenAddress: ImageAssets.getAddressToken(
+                                        widget.obj.cryptoCollateral?.cryptoAsset
+                                                ?.symbol ??
+                                            ''),
                                     title: S.current.confirm_send_offer,
                                     listDetail: [
                                       DetailItemApproveModel(
@@ -426,7 +430,6 @@ class _AddMoreCollateralState extends State<AddMoreCollateral> {
                                         Navigator.of(context).popUntil((route) {
                                           return route.settings.name ==
                                               AppRouter.contract_detail_my_acc;
-                                          
                                         });
                                       });
                                     },

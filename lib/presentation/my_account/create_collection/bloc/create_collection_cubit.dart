@@ -38,7 +38,6 @@ const String COVER_CID = 'cover_cid';
 const String AVATAR_CID = 'avatar_cid';
 const String FEATURE_CID = 'feature_cid';
 
-
 class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
   CreateCollectionCubit() : super(CreateCollectionInitial());
 
@@ -200,6 +199,7 @@ class CreateCollectionCubit extends BaseCubit<CreateCollectionState> {
         listSoftNFTSubject.sink.add(listSoftNFT);
         listHardNFT = res.where((element) => element.type == 1).toList();
         listHardNFTSubject.sink.add(listHardNFT);
+        changeSelectedItem('1');
       },
       error: (error) {},
     );

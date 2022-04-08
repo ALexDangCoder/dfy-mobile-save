@@ -12,6 +12,7 @@ import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,9 +24,13 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   final TypeBorrow typeBorrow;
   final TypeNavigator typeNavigator;
   late String typePawn;
+  int page = 0;
   bool? isShow;
   bool? isRate;
-  List<RepaymentRequestModel> listRequest = [];
+  bool isCanLoadMore = true;
+  List<RepaymentRequestModel> listRequestMy = [];
+  BehaviorSubject<List<RepaymentRequestModel>> listRequest =
+      BehaviorSubject.seeded([]);
   RepaymentStatsModel? objRepayment;
   ContractDetailPawn? objDetail;
   BehaviorSubject<String> rate = BehaviorSubject.seeded('0');
@@ -152,7 +157,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
       typePawn = '1';
     }
     getCheckRate();
-    getRepaymentResquest();
+    getRepaymentRequest();
     getRepaymentHistory();
     getLenderContract();
   }
@@ -172,9 +177,8 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
         id: id.toString(),
         walletAddress: PrefsService.getCurrentWalletCore(),
       );
-    }else{
-      response =
-      await _pawnService.getLenderDetail(
+    } else {
+      response = await _pawnService.getLenderDetail(
         type: typePawn,
         id: id.toString(),
         walletAddress: PrefsService.getCurrentWalletCore(),
@@ -233,16 +237,25 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
     );
   }
 
-  Future<void> getRepaymentResquest() async {
+  Future<void> getRepaymentRequest() async {
+    showLoading();
     final Result<List<RepaymentRequestModel>> response =
         await _pawnService.getRepaymentResquest(
       id: id.toString(),
-      size: '9999',
-      page: '0',
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      page: page.toString(),
     );
     response.when(
       success: (response) {
-        listRequest.addAll(response);
+        page++;
+        if (response.length == ApiConstants.DEFAULT_PAGE_SIZE) {
+          isCanLoadMore = true;
+        } else {
+          isCanLoadMore = false;
+        }
+        showContent();
+        listRequestMy.addAll(response);
+        listRequest.add(listRequestMy);
       },
       error: (error) {},
     );

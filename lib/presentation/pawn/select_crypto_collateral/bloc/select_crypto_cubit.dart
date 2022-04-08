@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/crypto_collateral.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
-import 'package:Dfy/utils/extensions/map_extension.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
@@ -51,7 +46,6 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
     String packageId,
   ) async {
     if (!loadMore) {
-      emit(SelectCryptoLoading());
       showLoading();
       page += 1;
       canLoadMoreList = false;

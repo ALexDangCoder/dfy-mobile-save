@@ -35,6 +35,7 @@ class _ContractInfoState extends State<ContractInfo>
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           spaceH24,
@@ -371,6 +372,7 @@ class _ContractInfoState extends State<ContractInfo>
               ],
             ),
           ),
+          if (obj.status == ContractDetailBloc.DEFAULT)
           spaceH16,
           if (obj.status == ContractDetailBloc.DEFAULT)
             richText(
@@ -379,7 +381,9 @@ class _ContractInfoState extends State<ContractInfo>
             )
           else
             const SizedBox.shrink(),
-          spaceH152,
+          if(widget.bloc.objDetail?.status ==
+              ContractDetailBloc.ACTIVE)
+            spaceH152
         ],
       ),
     );

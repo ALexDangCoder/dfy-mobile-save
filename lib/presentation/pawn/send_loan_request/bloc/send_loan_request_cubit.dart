@@ -51,10 +51,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   final Web3Utils client = Web3Utils();
 
-  void enableButtonRequest() {
+  void enableButtonRequest(String amount, String message, String duration,) {
     if (errorCollateral.value == '' &&
         errorMessage.value == '' &&
-        errorDuration.value == '') {
+        errorDuration.value == ''&& amount !='' && message != '' && duration !='') {
       enableButton.add(true);
     } else {
       enableButton.add(false);
@@ -69,21 +69,22 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   List<AcceptableAssetsAsCollateral> collateralAccepted = [];
 
-  void checkShowCollateral(
+  Future<void> checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
-  ) {
-    // for(final element in collateralAccepted){
-    //   for(final item in checkShow) {
-    //     if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
-    //       listTokenCollateral.add(item);
-    //     }
-    //   }
-    // }
-    for (final item in checkShow) {
-      if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
-        listTokenCollateral.add(item);
+  ) async {
+    for(final element in collateralAccepted){
+      for(final item in checkShow) {
+        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+          listTokenCollateral.add(item);
+        }
       }
     }
+    await getBalanceOFToken(listTokenCollateral);
+    // for (final item in checkShow) {
+    //   if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
+    //     listTokenCollateral.add(item);
+    //   }
+    // }
   }
 
   List<ModelToken> listTokenFromWalletCore = [];
@@ -103,8 +104,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
             listTokenFromWalletCore.add(element);
           }
         }
-        await getBalanceOFToken(listTokenFromWalletCore);
-        checkShowCollateral(collateralAccepted);
+        await checkShowCollateral(collateralAccepted);
         emit(GetWalletSuccess());
         break;
       default:
@@ -201,7 +201,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     return hexString;
   }
 
-  Future<void> pushSendNftToBE({
+  Future<bool> pushSendNftToBE({
     required String amount,
     required String bcPackageId,
     required String collateral,
@@ -229,8 +229,14 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'txid': txId,
       'wallet_address': walletAddress,
     };
+    bool checkSuccess = false;
     final Result<String> code = await _repo.confirmCollateralToBe(map: map);
-    code.when(success: (res) {}, error: (error) {});
+    code.when(success: (res) {
+      if(res == 'success'){
+        checkSuccess = true;
+      }
+    }, error: (error) {});
+    return checkSuccess;
   }
 
   ///Huy send loan nft

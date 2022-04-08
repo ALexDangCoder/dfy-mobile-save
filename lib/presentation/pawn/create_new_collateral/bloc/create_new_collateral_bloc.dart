@@ -30,6 +30,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   BehaviorSubject<String> textMess = BehaviorSubject.seeded('');
   BehaviorSubject<bool> isMess = BehaviorSubject.seeded(false);
   BehaviorSubject<String> isDuration = BehaviorSubject.seeded('');
+  BehaviorSubject<String> isLoanToken = BehaviorSubject.seeded('');
   BehaviorSubject<String> textToken = BehaviorSubject.seeded('DFY');
   List<String> listToken = [];
   BehaviorSubject<String> textRecurringInterest =
@@ -48,6 +49,16 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
   final _web3utils = Web3Utils();
 
   BorrowRepository get _pawnService => Get.find();
+
+  void validateLoanToken(String value) {
+    textToken.add(value);
+    if (textToken.value == item.nameShortToken) {
+      isLoanToken.add(S.current.invalid_loan_currency);
+    } else {
+      isLoanToken.add('');
+    }
+    checkButton();
+  }
 
   Future<void> postCreateNewCollateral({
     String? amount,
@@ -106,41 +117,40 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
     );
   }
 
-  // double getMaxBalance(String symbol) {
-  //   double balance = 0;
-  //   for (final element in listTokenFromWalletCore) {
-  //     if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
-  //       balance = element.balanceToken;
-  //     }
-  //   }
-  //   return balance;
-  // }
+  double getMaxBalance(String symbol) {
+    double balance = 0;
+    for (final element in listTokenFromWalletCore) {
+      if (element.nameShortToken.toLowerCase() == symbol.toLowerCase()) {
+        balance = element.balanceToken;
+      }
+    }
+    return balance;
+  }
 
   void validateAmount(String value) {
     if (value == '') {
       errorCollateral.add(S.current.amount_required);
       amountCollateral.add('');
     } else {
-      //   if (double.parse(value.replaceAll(',', '')) >
-      //       getMaxBalance(item.nameShortToken)) {
-      //     errorCollateral.add(
-      //       '${S.current.max} ${S.current.amount.toLowerCase()} '
-      //       '${getMaxBalance(item.nameShortToken)}',
-      //     );
-      //   } else if (double.parse(value.replaceAll(',', '')) <= 0) {
-      //     errorCollateral.add(S.current.invalid_amount);
-      //   } else {
-      //     errorCollateral.add('');
-      //   }
-      errorCollateral.add('');
-      amountCollateral.add(value);
+      if (double.parse(value) > getMaxBalance(item.nameShortToken)) {
+        errorCollateral.add(S.current.invalid_balance);
+        amountCollateral.add('');
+      } else if (double.parse(value) == 0) {
+        errorCollateral.add(S.current.invalid_balance);
+        amountCollateral.add('');
+      } else {
+        errorCollateral.add('');
+        amountCollateral.add(value);
+      }
     }
+    validateLoanToken(textToken.value);
   }
 
   void checkButton() {
     if (amountCollateral.value.isNotEmpty &&
         textMess.value.isNotEmpty &&
-        textDuration.value.isNotEmpty) {
+        textDuration.value.isNotEmpty &&
+        !isLoanToken.value.isNotEmpty) {
       isCheckBtn.add(true);
     } else {
       isCheckBtn.add(false);
@@ -223,9 +233,7 @@ class CreateNewCollateralBloc extends BaseCubit<CreateNewCollateralState> {
 
   void checkShowCollateral() {
     for (final item in checkShow) {
-      if (item.nameShortToken == DFY || item.nameShortToken == BNB) {
-        listTokenCollateral.add(item);
-      }
+      listTokenCollateral.add(item);
     }
   }
 

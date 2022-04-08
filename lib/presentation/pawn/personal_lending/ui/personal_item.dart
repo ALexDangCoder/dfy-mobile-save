@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/borrow_result/ui/pawnshop_package_item.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -76,20 +77,29 @@ class PersonalItem extends StatelessWidget {
     );
   }
 
-  WidgetSpan widgetTextSpan({
-    required int listLength,
-  }) {
+  WidgetSpan widgetTextSpan(
+      {required int listLength,
+      required List<String> listToken,
+      required BuildContext context}) {
     return WidgetSpan(
-      alignment: PlaceholderAlignment.middle,
-      child: Text(
-        listLength > 5
-            ? '& ${listLength - 5} '
-                    '${S.current.more}'
-                .toLowerCase()
-            : '',
-        style: textNormal(
-          null,
-          16,
+      child: GestureDetector(
+        onTap: () {
+          showInfo(
+            context,
+            listToken,
+          );
+        },
+        child: Text(
+          listLength > 5
+              ? '& ${listLength - 5} '
+                      '${S.current.more}'
+                  .toLowerCase()
+              : '',
+          style: textNormalCustom(
+            null,
+            14,
+            FontWeight.w400,
+          ),
         ),
       ),
     );
@@ -297,6 +307,10 @@ class PersonalItem extends StatelessWidget {
                         widgetSpanSpaceW2(),
                         widgetTextSpan(
                           listLength: collateral.length,
+                          listToken: collateral
+                              .map((e) => e.symbol.toString())
+                              .toList(),
+                          context: context,
                         ),
                       ],
                     ),
@@ -400,7 +414,7 @@ class PersonalItem extends StatelessWidget {
                   width: 140.w,
                   height: 40.h,
                   child: ButtonGold(
-                    radiusButton: 16,
+                    radiusButton: 12,
                     haveMargin: false,
                     title: S.current.request_loan,
                     isEnable: true,

@@ -254,12 +254,10 @@ class _PawnListState extends State<PawnList> {
                                 itemBuilder: (context, index) => PawnItem(
                                   rate: list[index].reputation.toString(),
                                   total: list[index].totalValue.toString(),
-                                  imageAvatar: ApiConstants.BASE_URL_IMAGE +
-                                      list[index].avatar.toString(),
+                                  imageAvatar: list[index].avatar.toString(),
                                   //todo avatar
                                   interestRate: '${list[index].interest}%',
-                                  imageCover: ApiConstants.BASE_URL_IMAGE +
-                                      list[index].avatar.toString(),
+                                  imageCover: list[index].avatar.toString(),
                                   nameShop: list[index].name.toString(),
                                   loadToken: list[index].loanToken ?? [],
                                   availableLoan: list[index]

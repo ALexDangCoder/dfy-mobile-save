@@ -23,12 +23,12 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   bool _isRefresh = true;
   bool _isLoading = false;
   int page = 0;
-  static const String A_TO_Z_REPUTATION = 'reputation,desc';
-  static const String Z_TO_A_REPUTATION = 'reputation,asc';
+  static const String A_TO_Z_REPUTATION = 'rating,desc';
+  static const String Z_TO_A_REPUTATION = 'rating,asc';
   static const String A_TO_Z_INTEREST = 'interest,desc';
   static const String Z_TO_A_INTEREST = 'interest,asc';
-  static const String A_TO_Z_COMPLETED = 'completedContracts,desc';
-  static const String Z_TO_A_COMPLETED = 'completedContracts,asc';
+  static const String A_TO_Z_COMPLETED = 'available,desc';
+  static const String Z_TO_A_COMPLETED = 'available,asc';
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -72,6 +72,25 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   List<int> statusListLoan = [];
   List<int> statusListCollateral = [];
   List<TokenInf> listTokenSupport = [];
+  String? interestRanges;
+  String? name;
+  String? loanToValueRanges;
+  String? collateralSymbols;
+
+  String checkInterest(int index) {
+    switch (index) {
+      case ZERO_TO_TEN:
+        return '0:0.1';
+      case TEN_TO_TWENTY_FIVE:
+        return '0.1:0.25';
+      case TWENTY_FIVE_TO_FIVETY:
+        return '0.25:0.5';
+      case MORE_THAN_FIVETY:
+        return '0.5:1';
+      default:
+        return '';
+    }
+  }
 
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
@@ -177,6 +196,12 @@ class PawnListBloc extends BaseCubit<PawnListState> {
   }
 
   void funReset() {
+    page = 0;
+    name = '';
+    cusSort = '';
+    collateralSymbols = '';
+    interestRanges = '';
+    loanToValueRanges = '';
     textSearch.sink.add('');
     listFilter = List.filled(4, false);
     listFilterStream.add(listFilter);
@@ -215,16 +240,39 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     statusFilterNumber = listFilterStream.value;
     statusListCollateral = [];
     statusListLoan = [];
+    name = '';
+    name = textSearch.value;
+
+    loanToValueRanges = '';
     for (int i = 0; i < listLoanTokenFilter.length; i++) {
       if (listLoanTokenFilter[i].isCheck) {
         statusListLoan.add(i);
+        if (loanToValueRanges?.isNotEmpty ?? false) {
+          loanToValueRanges =
+              '$loanToValueRanges,${listLoanTokenFilter[i].symbol ?? ''}';
+        } else {
+          loanToValueRanges = listLoanTokenFilter[i].symbol;
+        }
       }
     }
+    collateralSymbols = '';
     for (int i = 0; i < listCollateralTokenFilter.length; i++) {
       if (listCollateralTokenFilter[i].isCheck) {
         statusListCollateral.add(i);
+        if (collateralSymbols?.isNotEmpty ?? false) {
+          collateralSymbols =
+              '$collateralSymbols,${listCollateralTokenFilter[i].symbol ?? ''}';
+        } else {
+          collateralSymbols = listCollateralTokenFilter[i].symbol;
+        }
       }
     }
+    for (int i = 0; i < listFilterStream.value.length; i++) {
+      if (listFilterStream.value[i]) {
+        interestRanges = checkInterest(i);
+      }
+    }
+    getListPawn();
   }
 
   void funOnTapSearch() {
@@ -236,9 +284,14 @@ class PawnListBloc extends BaseCubit<PawnListState> {
     emit(PawnListLoading());
     final Result<List<PawnShopModelMy>> response =
         await _pawnService.getListPawnShopMy(
-          size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
-          page: page.toString(),
-        );
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      page: page.toString(),
+      name: name,
+      cusSort: cusSort,
+      collateralSymbols: loanToValueRanges,
+      interestRanges: interestRanges,
+      loanSymbols: collateralSymbols,
+    );
     response.when(
       success: (response) {
         if (response.isNotEmpty) {

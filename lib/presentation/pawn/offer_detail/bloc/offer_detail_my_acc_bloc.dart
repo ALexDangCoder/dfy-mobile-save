@@ -5,6 +5,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -53,7 +54,9 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
 
   Future<void> putCancelOffer() async {
     final Result<String> response = await _pawnService.putCancelOffer(
-      id: id,
+      walletAddress: PrefsService.getCurrentWalletCore(),
+      idCollateral: obj?.collateralId.toString(),
+      idOffer: obj?.offerId.toString(),
     );
     response.when(
       success: (response) {},

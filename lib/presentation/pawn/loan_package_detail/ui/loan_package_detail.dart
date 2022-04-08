@@ -4,12 +4,13 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/presentation/pawn/borrow_result/ui/personal_lending_item.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/cubit/loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
@@ -80,11 +81,25 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                 ),
                 child: ButtonGradient(
                   onPressed: () {
-                    goTo(
-                        context,
-                        SignLoanContract(
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SignLoanContract(
                           pawnshopPackage: cubit.pawnshopPackage,
-                        ));
+                        ),
+                      ),
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        showDialogSuccess(
+                          context,
+                          alert: 'Congratulation',
+                          text:
+                              'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
+                          onlyPop: true,
+                        );
+                      }
+                    });
                   },
                   gradient: RadialGradient(
                     center: const Alignment(0.5, -0.5),
@@ -137,7 +152,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         spaceH16,
                         rowItem(
                           'Available:',
-                          '${cubit.pawnshopPackage.available} ${cubit.pawnshopPackage.loanToken?[0].symbol}',
+                          '${formatPrice.format(cubit.pawnshopPackage.available)} ${cubit.pawnshopPackage.loanToken?[0].symbol}',
                           color: deliveredColor,
                         ),
                         Row(
@@ -171,9 +186,10 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         ),
                         spaceH14,
                         rowItem(
-                            'Duration',
-                            '${cubit.pawnshopPackage.durationQtyTypeMin}-${cubit.pawnshopPackage.durationQtyTypeMax} '
-                                '${cubit.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month}'),
+                          'Duration',
+                          '${cubit.pawnshopPackage.durationQtyTypeMin}-${cubit.pawnshopPackage.durationQtyTypeMax} '
+                              '${cubit.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month}',
+                        ),
                         spaceH14,
                         rowItem(
                           'LTV:',
@@ -272,12 +288,22 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                                                   ?.length ??
                                               0) >
                                           7)
-                                        Text(
-                                          '& ${cubit.pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
-                                          style: textNormalCustom(
-                                            Colors.white,
-                                            14,
-                                            FontWeight.w400,
+                                        InkWell(
+                                          onTap: () {
+                                            showInfo(
+                                                context,
+                                                cubit.pawnshopPackage
+                                                    .acceptableAssetsAsCollateral!
+                                                    .map((e) => e.symbol)
+                                                    .toList());
+                                          },
+                                          child: Text(
+                                            '& ${cubit.pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
+                                            style: textNormalCustom(
+                                              Colors.white,
+                                              14,
+                                              FontWeight.w400,
+                                            ),
                                           ),
                                         ),
                                     ],
@@ -337,7 +363,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                         spaceH14,
                         rowItem(
                           'Liquidation threshold:',
-                          '${cubit.pawnshopPackage.interest}% APR',
+                          '${cubit.pawnshopPackage.liquidationThreshold}%',
                         ),
                       ],
                     ),
@@ -426,14 +452,39 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
           Center(
             child: InkWell(
               onTap: () {
-                goTo(
-                  context,
-                  OtherProfile(
-                    userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
-                    index: 0,
-                    pageRouter: PageRouter.MARKET,
+                Navigator.of(context)
+                    .push(
+                  MaterialPageRoute(
+                    builder: (context) => OtherProfile(
+                      userId: pawnshopPackage.pawnshop?.userId.toString() ?? '',
+                      index: 1,
+                      pageRouter: PageRouter.MARKET,
+                    ),
                   ),
-                );
+                )
+                    .then((value) {
+                  if (value == true) {
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => SignLoanContract(
+                          pawnshopPackage: cubit.pawnshopPackage,
+                        ),
+                      ),
+                    )
+                        .then((value) {
+                      if (value != null) {
+                        showDialogSuccess(
+                          context,
+                          alert: 'Congratulation',
+                          text:
+                              'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
+                          onlyPop: true,
+                        );
+                      }
+                    });
+                  }
+                });
               },
               child: Container(
                 height: 40.h,
@@ -508,7 +559,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$title',
+          title,
           style: textNormalCustom(
             grey3,
             16,

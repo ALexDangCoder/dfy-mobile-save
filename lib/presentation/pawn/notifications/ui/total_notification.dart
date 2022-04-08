@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/notifications/cubit/notifications_cubit.dart';
+import 'package:Dfy/presentation/pawn/setting_my_acc/ui/setting_my_acc.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -46,6 +47,11 @@ class _TotalNotificationState extends State<TotalNotification> {
           retry: () {},
           textEmpty: '',
           child: BaseDesignScreen(
+            onRightClick: (){
+              goTo(context, const SettingMyAcc());
+            },
+            text: ImageAssets.ic_setting,
+            isImage: true,
             title: 'Notifications',
             child: Padding(
               padding: EdgeInsets.only(

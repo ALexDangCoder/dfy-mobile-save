@@ -122,6 +122,7 @@ class NftCollectionResponse extends Equatable {
         typeNFT: getTypeNft(type ?? 0),
         image: getPath(fileCid ?? ''),
         tokenBuyOut: token,
+        symbolToken: expectedLoanSymbol ?? '',
         name: name ?? '',
         totalCopies: totalOfCopies ?? 0,
         endTime: endTime ?? 0,

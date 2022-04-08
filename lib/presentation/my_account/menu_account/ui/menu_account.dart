@@ -265,7 +265,7 @@ class _MenuAccountState extends State<MenuAccount> {
               ),
             ).then((_) => cubit.getLoginState());
           } else {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const ListHardNftMintRequest(),
@@ -985,7 +985,7 @@ class _MenuAccountState extends State<MenuAccount> {
                             child: SizedBox(
                               width: 100,
                               child: Text(
-                                S.current.connect_wallet,
+                                S.current.wallet,
                                 maxLines: 2,
                                 textAlign: TextAlign.right,
                                 style: textNormalCustom(

@@ -8,6 +8,7 @@
   "base_url_pinata": "https://api.pinata.cloud/",
   "base_custom_url" : "https://marketplace.defiforyou.uk/",
   "pawn_custom_url" : "https://app.defiforyou.uk/",
+  "base_pawn_url" : "https://app.defiforyou.uk/",
   "nft_sales_address": "0x8b3Ab5CdA6C6249e2c1A75c8122690B366B5aB9A",
   "nft_factory": "0x8d5A02CB0848fe02fDCA35a62dE7408d7C9dD543",
   "nft_auction": "0xA04391885543054E1d92861b97c1933D3E4501DA",

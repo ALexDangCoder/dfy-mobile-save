@@ -23,6 +23,7 @@ class BaseDesignScreen extends StatelessWidget {
   final bool resizeBottomInset;
   final Function()? onLeftClick;
   final bool isCustomLeftClick;
+  final Color backgroundColor;
 
   const BaseDesignScreen({
     Key? key,
@@ -38,6 +39,7 @@ class BaseDesignScreen extends StatelessWidget {
     this.bottomBar,
     this.onLeftClick,
     this.isCustomLeftClick = false,
+    this.backgroundColor = Colors.black,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class BaseDesignScreen extends StatelessWidget {
       child: Scaffold(
         bottomNavigationBar: bottomBar,
         resizeToAvoidBottomInset: resizeBottomInset,
-        backgroundColor: Colors.black,
+        backgroundColor: backgroundColor,
         body: Align(
           alignment: Alignment.bottomCenter,
           child: Container(

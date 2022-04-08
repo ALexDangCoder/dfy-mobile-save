@@ -166,7 +166,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   ) {
     return runCatchingAsync<CryptoCollateralResponse,
         List<CryptoCollateralModel>>(
-      () => _client.getCryptoCollateral(walletAddress, packageId, 'true', page,
+      () => _client.getCryptoCollateral(walletAddress, packageId, 'false', page,
           ApiConstants.DEFAULT_PAGE_SIZE.toString()),
       (response) => response.data?.toDomain() ?? [],
     );
@@ -198,11 +198,21 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<List<PawnShopModelMy>>> getListPawnShopMy({
     String? page,
     String? size,
+    String? interestRanges,
+    String? loanSymbols,
+    String? collateralSymbols,
+    String? name,
+    String? cusSort,
   }) {
     return runCatchingAsync<PawnListResponse, List<PawnShopModelMy>>(
       () => _client.getListPawnShopMy(
         page,
         size,
+        interestRanges,
+        loanSymbols,
+        collateralSymbols,
+        name,
+        cusSort,
       ),
       (response) =>
           response.data?.data?.content?.map((e) => e.toDomain()).toList() ?? [],
@@ -248,7 +258,7 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
-      (response) => response.code.toString(),
+      (response) => response.error.toString(),
     );
   }
 
@@ -642,10 +652,16 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<String>> putCancelOffer({String? id}) {
+  Future<Result<String>> putCancelOffer({
+    String? idCollateral,
+    String? idOffer,
+    String? walletAddress,
+  }) {
     return runCatchingAsync<String, String>(
       () => _client.putCancelOffer(
-        id,
+        idCollateral,
+        idOffer,
+        walletAddress,
       ),
       (response) => response,
     );
@@ -694,6 +710,32 @@ class BorrowRepositoryImpl implements BorrowRepository {
         type,
       ),
       (response) => response.data?.toDomain() ?? ContractDetailPawn.name(),
+    );
+  }
+
+  @override
+  Future<Result<String>> postLendingCreate({
+    String? address,
+    String? description,
+    String? email,
+    String? name,
+    String? phoneNumber,
+    String? type,
+    String? userId,
+    String? walletAddress,
+  }) {
+    return runCatchingAsync<String, String>(
+      () => _client.postLendingCreate(
+        address,
+        description,
+        email,
+        name,
+        phoneNumber,
+        type,
+        userId,
+        walletAddress,
+      ),
+      (response) => response,
     );
   }
 }

@@ -56,237 +56,250 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.getInstance().bgBtsColor(),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () {
-            closeKey();
-          },
-          child: Stack(
-            children: [
-              Container(
-                height: 812.h,
-                padding:
-                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.h),
-                    topRight: Radius.circular(30.h),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    spaceH16,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 16.w,
-                          ),
-                          width: 24.w,
-                          height: 24.h,
-                        ),
-                        SizedBox(
-                          width: 250.w,
-                          child: Text(
-                            S.current.create_new_collateral,
-                            style: textNormalCustom(
-                              null,
-                              20.sp,
-                              FontWeight.w700,
-                            ).copyWith(
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(right: 16.w),
-                            width: 24.w,
-                            height: 24.h,
-                            child: Image.asset(ImageAssets.ic_close),
-                          ),
-                        ),
-                      ],
+      body: Stack(
+        children: [
+          Scaffold(
+            backgroundColor: AppTheme.getInstance().bgBtsColor(),
+            body: Container(
+              color: AppTheme.getInstance().blackColor(),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: () {
+                    closeKey();
+                  },
+                  child: Container(
+                    height: 812.h,
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top,
                     ),
-                    spaceH20,
-                    line,
-                    spaceH24,
-                    BlocBuilder<CreateNewCollateralBloc,
-                        CreateNewCollateralState>(
-                      bloc: bloc,
-                      builder: (context, state) {
-                        if (state is CreateNewCollateralSuccess) {
-                          return Container(
-                            padding: EdgeInsets.only(
-                              right: 16.w,
-                              left: 16.w,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                formCollateralAmount(),
-                                spaceH16,
-                                fromMess(),
-                                spaceH16,
-                                formDuration(),
-                                spaceH16,
-                                fromLoanTo(),
-                                spaceH20,
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().bgBtsColor(),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.h),
+                        topRight: Radius.circular(30.h),
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          spaceH16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: EdgeInsets.only(
-                                  top: 100.h,
+                                margin: EdgeInsets.only(
+                                  left: 16.w,
                                 ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white70,
+                                width: 24.w,
+                                height: 24.h,
+                              ),
+                              SizedBox(
+                                width: 250.w,
+                                child: Text(
+                                  S.current.create_new_collateral,
+                                  style: textNormalCustom(
+                                    null,
+                                    20.sp,
+                                    FontWeight.w700,
+                                  ).copyWith(
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 16.w),
+                                  width: 24.w,
+                                  height: 24.h,
+                                  child: Image.asset(ImageAssets.ic_close),
                                 ),
                               ),
                             ],
-                          );
-                        }
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 38,
-                child: Container(
-                  color: AppTheme.getInstance().bgBtsColor(),
-                  child: StreamBuilder<bool>(
-                    stream: bloc.isCheckBtn,
-                    builder: (context, snapshot) {
-                      return GestureDetector(
-                        onTap: () async {
-                          if (snapshot.data ?? false) {
-                            final NavigatorState navigator =
-                                Navigator.of(context);
-                            await bloc.getCreateCryptoCollateralData(
-                              loanAsset: ImageAssets.getAddressToken(
-                                bloc.textToken.value,
-                              ),
-                              expectedDurationType:
-                                  bloc.textRecurringInterest.value ==
-                                          S.current.weeks_pawn
-                                      ? WEEK
-                                      : MONTH,
-                              expectedDurationQty: bloc.textDuration.value,
-                              amount: bloc.amountCollateral.value,
-                              collateralAddress: ImageAssets.getAddressToken(
-                                bloc.item.nameShortToken,
-                              ),
-                              packageId: '-1',
-                            ); //todo packageId
-                            unawaited(
-                              navigator.push(
-                                MaterialPageRoute(
-                                  builder: (context) => Approve(
-                                    textActiveButton:
-                                        S.current.confirm_new_collateral,
-                                    spender: Get.find<AppConstants>()
-                                        .crypto_pawn_contract,
-                                    needApprove: true,
-                                    hexString: bloc.hexString,
-                                    payValue: bloc.amountCollateral.value,
-                                    tokenAddress:
-                                        Get.find<AppConstants>().contract_defy,
-                                    title: S.current.confirm_new_collateral,
-                                    listDetail: [
-                                      DetailItemApproveModel(
-                                        title: '${S.current.message}: ',
-                                        value: bloc.textMess.value,
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.collateral}: ',
-                                        value: '${bloc.amountCollateral.value} '
-                                            '${bloc.item.nameShortToken}',
-                                        urlToken: ImageAssets.getSymbolAsset(
-                                          bloc.item.nameShortToken,
-                                        ),
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.loan_token}: ',
-                                        value: bloc.textToken.value,
-                                        urlToken: ImageAssets.getSymbolAsset(
-                                          bloc.textToken.value,
-                                        ),
-                                      ),
-                                      DetailItemApproveModel(
-                                        title: '${S.current.duration_pawn}: ',
-                                        value: '${bloc.textDuration.value} '
-                                            '${bloc.textRecurringInterest.value}',
-                                      ),
-                                    ],
-                                    onErrorSign: (context) {},
-                                    onSuccessSign: (context, data) {
-                                      bloc.postCreateNewCollateral(
-                                        expectedLoanDurationType:
-                                            bloc.textRecurringInterest.value ==
-                                                    S.current.weeks_pawn
-                                                ? WEEK.toString()
-                                                : MONTH.toString(),
-                                        expectedLoanDurationTime:
-                                            bloc.textDuration.value,
-                                        description: bloc.textMess.value,
-                                        walletAddress:
-                                            PrefsService.getCurrentWalletCore(),
-                                        status: 0.toString(),
-                                        //todo status
-                                        amount: bloc.amountCollateral.value,
-                                        supplyCurrency: bloc.textToken.value,
-                                        collateral: bloc.item.nameShortToken,
-                                        txId: data,
-                                      );
-                                      showLoadSuccess(context).then((value) {
-                                        Navigator.of(context).popUntil((route) {
-                                          return route.settings.name ==
-                                              AppRouter.collateral_list_myacc;
-                                        });
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: Container(
-                          color: AppTheme.getInstance().bgBtsColor(),
-                          child: ButtonGold(
-                            isEnable: snapshot.data ?? false,
-                            title: S.current.create_collateral,
                           ),
-                        ),
-                      );
-                    },
+                          spaceH20,
+                          line,
+                          spaceH24,
+                          BlocBuilder<CreateNewCollateralBloc,
+                              CreateNewCollateralState>(
+                            bloc: bloc,
+                            builder: (context, state) {
+                              if (state is CreateNewCollateralSuccess) {
+                                return Container(
+                                  padding: EdgeInsets.only(
+                                    right: 16.w,
+                                    left: 16.w,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      formCollateralAmount(),
+                                      spaceH16,
+                                      fromMess(),
+                                      spaceH16,
+                                      formDuration(),
+                                      spaceH16,
+                                      fromLoanTo(),
+                                      spaceH20,
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        top: 100.h,
+                                      ),
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            },
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              margin: EdgeInsets.only(
+                bottom: 38.h,
+              ),
+              color: AppTheme.getInstance().bgBtsColor(),
+              child: StreamBuilder<bool>(
+                stream: bloc.isCheckBtn,
+                builder: (context, snapshot) {
+                  return GestureDetector(
+                    onTap: () async {
+                      if (snapshot.data ?? false) {
+                        final NavigatorState navigator = Navigator.of(context);
+                        await bloc.getCreateCryptoCollateralData(
+                          loanAsset: ImageAssets.getAddressToken(
+                            bloc.textToken.value,
+                          ),
+                          expectedDurationType:
+                              bloc.textRecurringInterest.value ==
+                                      S.current.weeks_pawn
+                                  ? WEEK
+                                  : MONTH,
+                          expectedDurationQty: bloc.textDuration.value,
+                          amount: bloc.amountCollateral.value,
+                          collateralAddress: ImageAssets.getAddressToken(
+                            bloc.item.nameShortToken,
+                          ),
+                          packageId: '-1',
+                        ); //todo packageId
+                        unawaited(
+                          navigator.push(
+                            MaterialPageRoute(
+                              builder: (context) => Approve(
+                                textActiveButton:
+                                    S.current.confirm_new_collateral,
+                                spender: Get.find<AppConstants>()
+                                    .crypto_pawn_contract,
+                                needApprove: true,
+                                hexString: bloc.hexString,
+                                payValue: bloc.amountCollateral.value,
+                                tokenAddress:
+                                    Get.find<AppConstants>().contract_defy,
+                                title: S.current.confirm_new_collateral,
+                                listDetail: [
+                                  DetailItemApproveModel(
+                                    title: '${S.current.message}: ',
+                                    value: bloc.textMess.value,
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: '${S.current.collateral}: ',
+                                    value: '${bloc.amountCollateral.value} '
+                                        '${bloc.item.nameShortToken}',
+                                    urlToken: ImageAssets.getSymbolAsset(
+                                      bloc.item.nameShortToken,
+                                    ),
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: '${S.current.loan_token}: ',
+                                    value: bloc.textToken.value,
+                                    urlToken: ImageAssets.getSymbolAsset(
+                                      bloc.textToken.value,
+                                    ),
+                                  ),
+                                  DetailItemApproveModel(
+                                    title: '${S.current.duration_pawn}: ',
+                                    value: '${bloc.textDuration.value} '
+                                        '${bloc.textRecurringInterest.value}',
+                                  ),
+                                ],
+                                onErrorSign: (context) {},
+                                onSuccessSign: (context, data) {
+                                  bloc.postCreateNewCollateral(
+                                    expectedLoanDurationType:
+                                        bloc.textRecurringInterest.value ==
+                                                S.current.weeks_pawn
+                                            ? WEEK.toString()
+                                            : MONTH.toString(),
+                                    expectedLoanDurationTime:
+                                        bloc.textDuration.value,
+                                    description: bloc.textMess.value,
+                                    walletAddress:
+                                        PrefsService.getCurrentWalletCore(),
+                                    status: 0.toString(),
+                                    //todo status
+                                    amount: bloc.amountCollateral.value,
+                                    supplyCurrency: bloc.textToken.value,
+                                    collateral: bloc.item.nameShortToken,
+                                    txId: data,
+                                  );
+                                  showLoadSuccess(context).then((value) {
+                                    Navigator.of(context).popUntil((route) {
+                                      return route.settings.name ==
+                                          AppRouter.collateral_list_myacc;
+                                    });
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Container(
+                      color: AppTheme.getInstance().bgBtsColor(),
+                      child: ButtonGold(
+                        isEnable: snapshot.data ?? false,
+                        title: S.current.create_collateral,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
   //
   // Widget checkBoxFrom() {
   //   return RichText(
@@ -403,29 +416,9 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                   ),
                   Row(
                     children: [
-                      // Visibility(
-                      //   visible: enable,
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       collateralAmount.text = bloc
-                      //           .getMax(bloc.item.nameShortToken)
-                      //           .replaceAll(',', '');
-                      //       bloc.errorCollateral.add('');
-                      //       bloc.validateAmount(collateralAmount.text);
-                      //     },
-                      //     child: Text(
-                      //       S.current.max,
-                      //       style: textNormalCustom(
-                      //         fillYellowColor,
-                      //         16,
-                      //         FontWeight.w400,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // spaceW10,
                       DropdownButtonHideUnderline(
                         child: DropdownButton<ModelToken>(
+                          menuMaxHeight: 200.h,
                           borderRadius: BorderRadius.all(Radius.circular(20.r)),
                           dropdownColor:
                               AppTheme.getInstance().backgroundBTSColor(),
@@ -787,7 +780,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    bloc.textToken.add(newValue ?? '');
+                    bloc.validateLoanToken(newValue ?? '');
                   });
                 },
                 dropdownMaxHeight: 100.h,
@@ -808,7 +801,24 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
               ),
             ),
           ),
-        )
+        ),
+        spaceH4,
+        StreamBuilder<String>(
+          stream: bloc.isLoanToken,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            return SizedBox(
+              child: snapshot.data?.isNotEmpty ?? false
+                  ? Text(
+                      snapshot.data ?? '',
+                      style: textNormal(
+                        AppTheme.getInstance().redColor(),
+                        12,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            );
+          },
+        ),
       ],
     );
   }

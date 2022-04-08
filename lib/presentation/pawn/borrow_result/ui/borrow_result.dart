@@ -34,6 +34,7 @@ class BorrowResult extends StatefulWidget {
 
 class _BorrowResultState extends State<BorrowResult> {
   late BorrowResultCubit cubit;
+  ScrollController controller = ScrollController();
 
   @override
   void initState() {
@@ -96,7 +97,7 @@ class _BorrowResultState extends State<BorrowResult> {
           retry: () {
             cubit.callApi(
               collateralSymbols:
-              widget.nameToken != S.current.all ? widget.nameToken : '',
+                  widget.nameToken != S.current.all ? widget.nameToken : '',
               collateralAmount: widget.amount,
             );
           },
@@ -124,7 +125,9 @@ class _BorrowResultState extends State<BorrowResult> {
                 onNotification: (ScrollNotification scrollInfo) {
                   if (cubit.canLoadMoreList &&
                       scrollInfo.metrics.pixels ==
-                          scrollInfo.metrics.maxScrollExtent) {
+                          scrollInfo.metrics.maxScrollExtent &&
+                      controller.position.pixels ==
+                          controller.position.maxScrollExtent) {
                     cubit.loadMorePosts();
                   }
                   return true;
@@ -194,6 +197,13 @@ class _BorrowResultState extends State<BorrowResult> {
                                   PersonalLendingItem(
                                     personalLending:
                                         cubit.personalLending[index],
+                                    listToken: cubit
+                                            .personalLending[index]
+                                            .p2PLenderPackages?[0]
+                                            .acceptableAssetsAsCollateral
+                                            ?.map((e) => e.symbol)
+                                            .toList() ??
+                                        [],
                                   ),
                                   spaceW20,
                                 ],
@@ -216,6 +226,7 @@ class _BorrowResultState extends State<BorrowResult> {
                         spaceH16,
                         SizedBox(
                           child: ListView.builder(
+                            controller: controller,
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.only(left: 16.w, right: 16.w),
                             shrinkWrap: true,
@@ -226,6 +237,11 @@ class _BorrowResultState extends State<BorrowResult> {
                                   PawnshopPackageItem(
                                     pawnshopPackage:
                                         cubit.pawnshopPackage[index],
+                                    listToken: cubit.pawnshopPackage[index]
+                                            .acceptableAssetsAsCollateral
+                                            ?.map((e) => e.symbol)
+                                            .toList() ??
+                                        [],
                                   ),
                                   spaceH20,
                                 ],
@@ -244,7 +260,7 @@ class _BorrowResultState extends State<BorrowResult> {
                               ),
                             ),
                           ),
-                       // spaceH16,
+                        // spaceH16,
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/ui/loan_package_detail.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -8,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PawnshopPackageItem extends StatelessWidget {
-  const PawnshopPackageItem({Key? key, required this.pawnshopPackage})
+  const PawnshopPackageItem(
+      {Key? key, required this.pawnshopPackage, required this.listToken})
       : super(key: key);
   final PawnshopPackage pawnshopPackage;
+  final List<String?> listToken;
 
   @override
   Widget build(BuildContext context) {
@@ -225,12 +228,17 @@ class PawnshopPackageItem extends StatelessWidget {
                                   .acceptableAssetsAsCollateral?.length ??
                               0) >
                           5)
-                        Text(
-                          '& ${pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
-                          style: textNormalCustom(
-                            Colors.white,
-                            14,
-                            FontWeight.w400,
+                        InkWell(
+                          onTap: () {
+                            showInfo(context, listToken);
+                          },
+                          child: Text(
+                            '& ${pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
+                            style: textNormalCustom(
+                              Colors.white,
+                              14,
+                              FontWeight.w400,
+                            ),
                           ),
                         ),
                     ],
@@ -289,4 +297,58 @@ class PawnshopPackageItem extends StatelessWidget {
         );
     }
   }
+}
+
+void showInfo(BuildContext context, List<String?> listInfo) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              20.0.r,
+            ),
+          ),
+        ),
+        backgroundColor: AppTheme.getInstance().selectDialogColor(),
+        content: SizedBox(
+          width: 150.w,
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: listInfo.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: [
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.w,
+                    child: Image.network(
+                      ImageAssets.getSymbolAsset(listInfo[index] ?? ''),
+                    ),
+                  ),
+                  spaceW5,
+                  Text(
+                    listInfo[index] ?? '',
+                    style: textNormalCustom(
+                      Colors.white,
+                      16,
+                      FontWeight.w400,
+                    ),
+                  ),
+                ],
+              );
+            },
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 55 / 15,
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

@@ -21,21 +21,21 @@ extension ValidateInput on CreateNftCubit {
     return null;
   }
 
-  String? validateRoyalty(String vl) {
+  void validateRoyalty(String vl) {
     if (vl.isNotEmpty) {
       try {
         final tempVl = int.parse(vl);
         if (tempVl > 50 || tempVl < 0) {
-          return S.current.max_royalty;
+          validateRoyalties.add(S.current.max_royalty);
         } else {
           royalty = tempVl;
-          return null;
+          validateRoyalties.add('');
         }
       } catch (_) {
-        return S.current.only_digits;
+        validateRoyalties.add(S.current.only_digits);
       }
     } else {
-      return null;
+      validateRoyalties.add('');
     }
   }
 
@@ -57,6 +57,8 @@ extension ValidateInput on CreateNftCubit {
     } else {
       createNftMapCheck['collection'] = false;
     }
+
     validateCreate();
+    getRoyalties();
   }
 }

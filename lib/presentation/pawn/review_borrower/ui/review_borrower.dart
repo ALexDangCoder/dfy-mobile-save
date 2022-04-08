@@ -46,6 +46,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
+      backgroundColor: Colors.transparent,
       title: S.current.review_borrower,
       text: ImageAssets.ic_close,
       onRightClick: () {
@@ -287,10 +288,8 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                       onTap: () async {
                         final NavigatorState navigator = Navigator.of(context);
                         await bloc.getHexString(
-                          bcContractAddress: widget
-                                  .objDetail.contractTerm?.walletAddress
-                                  .toString() ??
-                              '',
+                          bcContractAddress:
+                              Get.find<AppConstants>().collateral_contract,
                           bcContractId:
                               widget.objDetail.bcContractId.toString(),
                           typeBorrow: widget.typeBorrow,
@@ -301,24 +300,24 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                               builder: (context) => Approve(
                                 textActiveButton:
                                     '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                spender: Get.find<AppConstants>()
-                                    .crypto_pawn_contract,
+                                spender:
+                                    Get.find<AppConstants>().review_contract,
                                 hexString: bloc.hexString,
                                 tokenAddress:
                                     Get.find<AppConstants>().contract_defy,
-                                title: S.current.confirm_send_offer,
+                                title: S.current.review_claim_reward,
                                 listDetail: [],
                                 onErrorSign: (context) {},
                                 onSuccessSign: (context, data) {
                                   bloc.postReview(
                                     reviewCreateRequest: ReviewCreateRequest(
-                                      contractId: widget.objDetail.bcContractId,
+                                      contractId: widget.objDetail.id,
                                       type: widget.type ==
                                               TypeNavigator.BORROW_TYPE
                                           ? 0
                                           : 1,
                                       content: bloc.note.value,
-                                      point: bloc.rateNumber.value,
+                                      point: bloc.rateNumber.value + 1,
                                       reviewee: ReviewerRequest(
                                         id: widget.objDetail.lenderUserId,
                                         walletAddress: widget
