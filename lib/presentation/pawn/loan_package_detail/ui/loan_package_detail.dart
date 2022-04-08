@@ -5,6 +5,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
+import 'package:Dfy/presentation/pawn/borrow_result/ui/personal_lending_item.dart';
 import 'package:Dfy/presentation/pawn/loan_package_detail/cubit/loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/presentation/pawn/sign_loan_contract/ui/sign_loan_contract.dart';
@@ -287,12 +288,22 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                                                   ?.length ??
                                               0) >
                                           7)
-                                        Text(
-                                          '& ${cubit.pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
-                                          style: textNormalCustom(
-                                            Colors.white,
-                                            14,
-                                            FontWeight.w400,
+                                        InkWell(
+                                          onTap: () {
+                                            showInfo(
+                                                context,
+                                                cubit.pawnshopPackage
+                                                    .acceptableAssetsAsCollateral!
+                                                    .map((e) => e.symbol)
+                                                    .toList());
+                                          },
+                                          child: Text(
+                                            '& ${cubit.pawnshopPackage.acceptableAssetsAsCollateral!.length - 5} more',
+                                            style: textNormalCustom(
+                                              Colors.white,
+                                              14,
+                                              FontWeight.w400,
+                                            ),
                                           ),
                                         ),
                                     ],
