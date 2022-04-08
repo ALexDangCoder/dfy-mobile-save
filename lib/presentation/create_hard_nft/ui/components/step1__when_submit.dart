@@ -14,6 +14,7 @@ import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
+import 'package:Dfy/widgets/image/circular_image.dart';
 import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,7 +60,7 @@ class Step1WhenSubmit extends StatefulWidget {
 
 class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
   late ProvideHardNftCubit cubit;
-
+  late Timer timeReload;
   @override
   void initState() {
     super.initState();
@@ -73,10 +74,34 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     ///default asset from cubit
     if (widget.assetId != null) {
       cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
+      reloadAPI(id: widget.assetId ?? '');
     } else {
       cubit.checkStatusBeHandle(assetId: cubit.assetId);
+      reloadAPI(id: cubit.assetId);
     }
   }
+
+  void reloadAPI({required String id}) {
+    const oneSec = Duration(seconds: 30);
+    timeReload = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        cubit.checkStatusBeHandle(assetId: id);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    closeReload();
+    super.dispose();
+  }
+
+  void closeReload() {
+    timeReload.cancel();
+  }
+
+  ///
 
   @override
   Widget build(BuildContext context) {
@@ -323,15 +348,9 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                           ),
                         ),
                         spaceW4,
-                        SizedBox(
-                          width: 16.w,
-                          height: 16.h,
-                          child: Image.asset(
-                            ImageAssets.getSymbolAsset(
-                              cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
-                            ),
-                          ),
-                        ),
+                        circularImage(ImageAssets.getSymbolAsset(
+                          cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
+                        ), height: 16.h, width: 16.w),
                         spaceW4,
                         Text(
                           '${formatValue.format(cubit.dataDetailAsset.expectingPrice)}'

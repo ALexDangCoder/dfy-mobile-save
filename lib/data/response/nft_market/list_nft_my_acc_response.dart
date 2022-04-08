@@ -147,6 +147,7 @@ class NftMyAccResponse extends Equatable {
         typeNFT: getTypeNft(type ?? 0),
         image: getPath(fileCid ?? ''),
         nftId: id,
+        id: id,
         nftTokenId: nftTokenId,
         price: price,
         name: name,

@@ -763,7 +763,7 @@
   "other_file": "tệp khác",
   "invalid_expect_price": "Gía mong muốn không hợp lệ",
   "collect_a_fee_mess": "Thu phí khi người dùng bán lại một mặt hàng mà bạn đã tạo ban đầu. Khoản này được khấu trừ vào giá ưu đãi cuối cùng và được thanh toán hàng tháng cho địa chỉ thanh toán mà bạn chọn.",
-  "you_must_have_ten": "Bạn phải có 10 DFY để tạo nft."
+  "you_must_have_ten": "Bạn phải có 10 DFY để tạo nft.",
   "processings": "Đang xử lý",
   "total_value_of_all": "Tổng giá trị của tất cả các hợp đồng cho vay được quy đổi sang USD",
   "total_contract_value": "Tổng giá trị hợp đồng",

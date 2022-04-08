@@ -868,7 +868,7 @@
   "other_file": "other files",
   "invalid_expect_price": "Invalid expecting price",
   "collect_a_fee_mess": "Collect a fee when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout address of your choosing.",
-  "you_must_have_ten": "You must have 10 DFY to create nft."
+  "you_must_have_ten": "You must have 10 DFY to create nft.",
   "sold": "Sold",
   "total_value_of_all": "Total value of all lend contracts converted to USD",
   "total_contract_value": "Total contract value",
