@@ -297,59 +297,58 @@ class PawnshopPackageItem extends StatelessWidget {
         );
     }
   }
+}
 
-  void showInfo(BuildContext context, List<String?> listInfo) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                20.0.r,
-              ),
+void showInfo(BuildContext context, List<String?> listInfo) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              20.0.r,
             ),
           ),
-          backgroundColor: AppTheme.getInstance().selectDialogColor(),
-          content: SizedBox(
-            width: 150.w,
-            child: GridView.builder(
-              padding: EdgeInsets.only(top: 10.h),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: listInfo.length,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return Row(
-                  children: [
-                    SizedBox(
-                      height: 20.h,
-                      width: 20.w,
-                      child: Image.network(
-                        ImageAssets.getSymbolAsset(listInfo[index] ?? ''),
-                      ),
+        ),
+        backgroundColor: AppTheme.getInstance().selectDialogColor(),
+        content: SizedBox(
+          width: 150.w,
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: listInfo.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: [
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.w,
+                    child: Image.network(
+                      ImageAssets.getSymbolAsset(listInfo[index] ?? ''),
                     ),
-                    spaceW5,
-                    Text(
-                      listInfo[index] ?? '',
-                      style: textNormalCustom(
-                        Colors.white,
-                        16,
-                        FontWeight.w400,
-                      ),
+                  ),
+                  spaceW5,
+                  Text(
+                    listInfo[index] ?? '',
+                    style: textNormalCustom(
+                      Colors.white,
+                      16,
+                      FontWeight.w400,
                     ),
-                  ],
-                );
-              },
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 55 / 15,
-              ),
+                  ),
+                ],
+              );
+            },
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 55 / 15,
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
 }

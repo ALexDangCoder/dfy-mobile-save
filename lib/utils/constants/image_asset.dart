@@ -75,7 +75,8 @@ class ImageAssets {
   static const String logo_pawn = '$baseImg/logo_pawn.png';
   static const String ic_hard = '$baseImg/icon_hard.png';
   static const String alarm = '$baseImg/alarm.png';
-  static const String bg_manage_loan_package_list = '$baseImg/bg_manage_loan.png';
+  static const String bg_manage_loan_package_list =
+      '$baseImg/bg_manage_loan.png';
   static const String banner_pawn = '$baseImg/banner.png';
   static const String bgPawnShopToken = '$baseImg/bg_pawnshop_token.png';
   static const String bgAvatarPawn = '$baseImg/bg_avt_pawn.png';
@@ -179,6 +180,8 @@ class ImageAssets {
   static const String img_pp_cropped = '$baseImg/img_pp_cropped.svg';
   static const String img_pp_too_small = '$baseImg/img_pp_too_small.svg';
   static const String img_selfie = '$baseImg/img_selfie.png';
+  static const String img_verify_now = '$baseImg/img_verify_now.png';
+  static const String img_create_now = '$baseImg/img_create_now.png';
 
   static const String icTabMarketPlaceSelected =
       '$baseImg/ic_tab_market_place_select.svg';

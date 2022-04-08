@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/borrow_result/ui/pawnshop_package_item.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -83,15 +84,31 @@ class PawnItem extends StatelessWidget {
     );
   }
 
-  TextSpan widgetTextSpan({
-    required int listLength,
-  }) {
-    return TextSpan(
-      text: listLength > 5
-          ? '& ${listLength - 5} '
-                  '${S.current.more}'
-              .toLowerCase()
-          : '',
+  WidgetSpan widgetTextSpan(
+      {required int listLength,
+      required List<String> listToken,
+      required BuildContext context}) {
+    return WidgetSpan(
+      child: GestureDetector(
+        onTap: () {
+          showInfo(
+            context,
+            listToken,
+          );
+        },
+        child: Text(
+          listLength > 5
+              ? '& ${listLength - 5} '
+                      '${S.current.more}'
+                  .toLowerCase()
+              : '',
+          style: textNormalCustom(
+            null,
+            14,
+            FontWeight.w400,
+          ),
+        ),
+      ),
     );
   }
 
@@ -311,7 +328,11 @@ class PawnItem extends StatelessWidget {
                         ),
                         widgetSpanSpaceW2(),
                         widgetTextSpan(
+                          context: context,
                           listLength: collateral.length,
+                          listToken: collateral
+                              .map((e) => e.symbol.toString())
+                              .toList(),
                         ),
                       ],
                     ),
@@ -386,6 +407,10 @@ class PawnItem extends StatelessWidget {
                         widgetSpanSpaceW2(),
                         widgetTextSpan(
                           listLength: loadToken.length,
+                          context: context,
+                          listToken: loadToken
+                              .map((e) => e.symbol.toString())
+                              .toList(),
                         ),
                       ],
                     ),
