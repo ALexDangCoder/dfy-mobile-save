@@ -5,9 +5,11 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/extension/offer_sent_crypto_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/ui/components/cancel_offer_sent.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/button/button_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -17,8 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:Dfy/utils/text_helper.dart';
 import 'package:intl/intl.dart';
-
-//todo màn này trường LTV và liquidation threshold chỉ show với crypto
 
 class DetailOfferSent extends StatefulWidget {
   const DetailOfferSent({
@@ -228,7 +228,7 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
                     _rowItem(
                       title: S.current.name_of_nft.capitalize().withColon(),
                       description:
-                      '${widget.cubit.offerSentDetailCryptoCollateral}',
+                          '${widget.cubit.offerSentDetailCryptoCollateral}',
                     )
                   else
                     _rowItem(
@@ -401,10 +401,23 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
             ],
           ),
           spaceH16,
-          ButtonGold(
-            title: S.current.view_profile.toUpperCase(),
-            isEnable: true,
-            fixSize: false,
+          InkWell(
+            onTap: () {
+              goTo(
+                context,
+                OtherProfile(
+                  userId:
+                      cubit.offerSentDetailCryptoCollateral.userId.toString(),
+                  index: 0,
+                  pageRouter: PageRouter.MARKET,
+                ),
+              );
+            },
+            child: ButtonGold(
+              title: S.current.view_profile.toUpperCase(),
+              isEnable: true,
+              fixSize: false,
+            ),
           ),
         ],
       ),

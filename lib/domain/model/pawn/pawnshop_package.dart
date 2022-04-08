@@ -1,3 +1,4 @@
+import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 
 class PawnshopPackage {
@@ -13,6 +14,7 @@ class PawnshopPackage {
   int? durationQtyTypeMax;
   Pawnshop? pawnshop;
   int? type;
+  int? status;
   int? signContracts;
   List<RepaymentToken>? repaymentToken;
   List<LoanToken>? loanToken;
@@ -24,9 +26,14 @@ class PawnshopPackage {
   double? available;
   num? liquidationThreshold;
   int? recurringInterest;
+  num? pawnShopId;
+  num? totalSentOffer;
+  List<InfoTokenAsset>? collateralTokens;
 
   PawnshopPackage({
     this.available,
+    this.pawnShopId,
+    this.totalSentOffer,
     this.acceptableAssetsAsCollateral,
     this.id,
     this.interest,
@@ -34,11 +41,13 @@ class PawnshopPackage {
     this.interestMin,
     this.isFavourite,
     this.loanToValue,
+    this.collateralTokens,
     this.durationQtyType,
     this.durationQtyTypeMin,
     this.durationQtyTypeMax,
     this.pawnshop,
     this.type,
+    this.status,
     this.signContracts,
     this.repaymentToken,
     this.loanToken,

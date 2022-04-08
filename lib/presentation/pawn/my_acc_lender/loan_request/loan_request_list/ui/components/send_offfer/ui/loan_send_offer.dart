@@ -1,5 +1,12 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/detail_item_approve.dart';
+import 'package:Dfy/domain/model/pawn/loan_request_list/detail_loan_request_crypto_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/bloc/send_offer_loanrq_cubit.dart';
@@ -7,6 +14,8 @@ import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_li
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -18,11 +27,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class LoanSendOffer extends StatefulWidget {
-  const LoanSendOffer({Key? key, required this.isCryptoElseNft})
-      : super(key: key);
+  const LoanSendOffer({
+    Key? key,
+    required this.isCryptoElseNft,
+    required this.detailCrypto,
+  }) : super(key: key);
   final bool isCryptoElseNft;
+  final DetailLoanRequestCryptoModel detailCrypto;
 
   @override
   _LoanSendOfferState createState() => _LoanSendOfferState();
@@ -36,7 +50,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
   late TextEditingController textLoanController;
   late TextEditingController durationController;
   late TextEditingController textInterestController;
-  String duration = S.current.weeks_pawn;
+  late String duration;
   late String symbolAmount;
 
   @override
@@ -44,20 +58,26 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
     super.initState();
     bloc = SendOfferLoanrqCubit();
     bloc.getTokenInf();
-    symbolAmount = 'DFY';
-    // bloc.getBalanceToken(
-    //   ofAddress: PrefsService.getCurrentBEWallet(),
-    //   tokenAddress: ImageAssets.getAddressToken(
-    //     symbolAmount,
-    //   ),
-    // );
-    // bloc.collateralAmount = widget.objCollateralDetail.estimatePrice ?? 0;
+    symbolAmount = widget.detailCrypto.collateralSymbol ?? '';
+    bloc.getBalanceToken(
+      ofAddress: PrefsService.getCurrentBEWallet(),
+      tokenAddress: ImageAssets.getAddressToken(
+        symbolAmount,
+      ),
+    );
+    bloc.collateralAmount = widget.detailCrypto.collateralAmount ?? 0;
     textMessController = TextEditingController();
     textLiquidationThresholdController = TextEditingController();
     textAmountController = TextEditingController();
     textLoanController = TextEditingController();
     durationController = TextEditingController();
     textInterestController = TextEditingController();
+    durationController.text = widget.detailCrypto.durationQty.toString();
+    duration = widget.detailCrypto.durationType == WEEK
+        ? S.current.weeks_pawn
+        : S.current.months_pawn;
+    bloc.textDuration.add(durationController.text);
+    bloc.textRecurringInterest.add(duration);
     textInterestController.addListener(() {
       bloc.checkBtn();
     });
@@ -140,7 +160,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                                   textAlign: TextAlign.center,
                                   style: titleText(
                                     color:
-                                    AppTheme.getInstance().textThemeColor(),
+                                        AppTheme.getInstance().textThemeColor(),
                                   ),
                                 ),
                               ),
@@ -245,7 +265,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                     //               value: '${bloc.textDuration.value} $duration',
                     //             ),
                     //             DetailItemApproveModel(
-                    //               title: '${S.current.loan_amount}: ',
+                    //               title: '${S.current.loan_amount} ',
                     //               value:
                     //               '$symbolAmount ${bloc.textAmount.value}',
                     //               urlToken:
@@ -374,14 +394,14 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                     },
                     child: snapshot.data?.isNotEmpty ?? false
                         ? Image.asset(
-                      ImageAssets.ic_close,
-                      width: 20.w,
-                      height: 20.h,
-                    )
+                            ImageAssets.ic_close,
+                            width: 20.w,
+                            height: 20.h,
+                          )
                         : SizedBox(
-                      height: 20.h,
-                      width: 20.w,
-                    ),
+                            height: 20.h,
+                            width: 20.w,
+                          ),
                   );
                 },
               ),
@@ -394,13 +414,13 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
           builder: (context, snapshot) {
             return snapshot.data ?? false
                 ? Text(
-              S.current.invalid_message,
-              style: textNormalCustom(
-                AppTheme.getInstance().redColor(),
-                12,
-                FontWeight.w400,
-              ),
-            )
+                    S.current.invalid_message,
+                    style: textNormalCustom(
+                      AppTheme.getInstance().redColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  )
                 : const SizedBox.shrink();
           },
         ),
@@ -524,13 +544,13 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
           builder: (context, snapshot) {
             return snapshot.data?.isNotEmpty ?? false
                 ? Text(
-              snapshot.data ?? '',
-              style: textNormalCustom(
-                AppTheme.getInstance().redColor(),
-                12,
-                FontWeight.w400,
-              ),
-            )
+                    snapshot.data ?? '',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().redColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  )
                 : const SizedBox.shrink();
           },
         ),
@@ -620,18 +640,18 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                           width: 20.w,
                           fit: BoxFit.fill,
                           errorBuilder: (
-                              context,
-                              error,
-                              stackTrace,
-                              ) =>
+                            context,
+                            error,
+                            stackTrace,
+                          ) =>
                               Container(
-                                height: 20.h,
-                                width: 20.w,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.getInstance().bgBtsColor(),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
+                            height: 20.h,
+                            width: 20.w,
+                            decoration: BoxDecoration(
+                              color: AppTheme.getInstance().bgBtsColor(),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -658,28 +678,28 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
           builder: (context, snapshot) {
             return snapshot.data?.isNotEmpty ?? false
                 ? Text(
-              snapshot.data ?? '',
-              style: textNormalCustom(
-                AppTheme.getInstance().redColor(),
-                12,
-                FontWeight.w400,
-              ),
-            )
+                    snapshot.data ?? '',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().redColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  )
                 : StreamBuilder<String>(
-              stream: bloc.balanceWallet,
-              builder: (context, snapshot) {
-                return Text(
-                  '$symbolAmount'
-                      ' ${S.current.balance.toLowerCase()}:'
-                      ' ${snapshot.data}',
-                  style: textNormalCustom(
-                    AppTheme.getInstance().whiteWithOpacitySevenZero(),
-                    12,
-                    FontWeight.w400,
-                  ),
-                );
-              },
-            );
+                    stream: bloc.balanceWallet,
+                    builder: (context, snapshot) {
+                      return Text(
+                        '$symbolAmount'
+                        ' ${S.current.balance.toLowerCase()}:'
+                        ' ${snapshot.data}',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                          12,
+                          FontWeight.w400,
+                        ),
+                      );
+                    },
+                  );
           },
         ),
       ],
@@ -792,13 +812,13 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
           builder: (context, snapshot) {
             return snapshot.data?.isNotEmpty ?? false
                 ? Text(
-              snapshot.data ?? '',
-              style: textNormalCustom(
-                AppTheme.getInstance().redColor(),
-                12,
-                FontWeight.w400,
-              ),
-            )
+                    snapshot.data ?? '',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().redColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  )
                 : const SizedBox.shrink();
           },
         ),
@@ -874,13 +894,13 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
           builder: (context, snapshot) {
             return snapshot.data?.isNotEmpty ?? false
                 ? Text(
-              snapshot.data ?? '',
-              style: textNormalCustom(
-                AppTheme.getInstance().redColor(),
-                12,
-                FontWeight.w400,
-              ),
-            )
+                    snapshot.data ?? '',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().redColor(),
+                      12,
+                      FontWeight.w400,
+                    ),
+                  )
                 : const SizedBox.shrink();
           },
         ),
@@ -955,7 +975,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                       child: DropdownButton<String>(
                         borderRadius: BorderRadius.all(Radius.circular(20.r)),
                         dropdownColor:
-                        AppTheme.getInstance().backgroundBTSColor(),
+                            AppTheme.getInstance().backgroundBTSColor(),
                         items: [
                           S.current.weeks_pawn,
                           S.current.months_pawn,
@@ -1012,12 +1032,12 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
             return SizedBox(
               child: snapshot.data?.isNotEmpty ?? false
                   ? Text(
-                snapshot.data ?? '',
-                style: textNormal(
-                  AppTheme.getInstance().redColor(),
-                  12,
-                ),
-              )
+                      snapshot.data ?? '',
+                      style: textNormal(
+                        AppTheme.getInstance().redColor(),
+                        12,
+                      ),
+                    )
                   : const SizedBox.shrink(),
             );
           },

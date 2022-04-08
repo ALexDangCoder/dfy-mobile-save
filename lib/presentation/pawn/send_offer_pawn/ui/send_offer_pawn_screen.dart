@@ -100,9 +100,11 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
     return Scaffold(
       backgroundColor: AppTheme.getInstance().blackColor(),
       resizeToAvoidBottomInset: false,
-      body: Align(
+      body:
+      Align(
         alignment: Alignment.bottomCenter,
-        child: Container(
+        child:
+        Container(
           height: 812.h,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           clipBehavior: Clip.hardEdge,

@@ -1,13 +1,19 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/data/response/home_pawn/send_offer_lend_crypto_response.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/create_new_loan_package.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/loan_package_detail/ui/loan_package_detail.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/widget/loan_package_item.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/base_items/custom_hide_keyboard.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/button/button_gradient.dart';
-import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ManageLoanPackageList extends StatefulWidget {
@@ -18,23 +24,103 @@ class ManageLoanPackageList extends StatefulWidget {
 }
 
 class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
+  late ManageLoanPackageCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = ManageLoanPackageCubit();
+    cubit.getListPawnShop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CustomGestureDetectorOnTapHideKeyBoard(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: 375.w,
-            height: 812.h,
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            decoration: BoxDecoration(
-              color: AppTheme.getInstance().bgBtsColor(),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+    return BlocConsumer<ManageLoanPackageCubit, ManageLoanPackageState>(
+      listener: (context, state) {
+        if (state is ManageLoadApiListPawnShop) {
+          if (state.completeType == CompleteType.SUCCESS) {
+            if (cubit.refresh) {
+              cubit.listPawnShop.clear();
+            }
+            cubit.showContent();
+          } else {
+            cubit.showError();
+          }
+          cubit.listPawnShop = cubit.listPawnShop + (state.list ?? []);
+          cubit.canLoadMoreList =
+              cubit.listPawnShop.length >= cubit.defaultSize;
+          cubit.loadMore = false;
+          cubit.refresh = false;
+        } else {
+          //nothing
+        }
+      },
+      bloc: cubit,
+      builder: (context, state) {
+        return StateStreamLayout(
+          stream: cubit.stateStream,
+          error: AppException(S.current.error, S.current.something_went_wrong),
+          textEmpty: S.current.something_went_wrong,
+          retry: () {},
+          child: CustomGestureDetectorOnTapHideKeyBoard(
+            child: Scaffold(
+              backgroundColor: Colors.black,
+              floatingActionButton: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreateNewLoanPackage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 50.w,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                      colors: AppTheme.getInstance().colorFab(),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    size: 32.sp,
+                    color: AppTheme.getInstance().whiteColor(),
+                  ),
+                ),
               ),
+              body: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: 375.w,
+                  height: 812.h,
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().bgBtsColor(),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: _content(),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _content() {
+    return cubit.listPawnShop.isNotEmpty
+        ? Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.w,
             ),
             child: Column(
               children: [
@@ -66,17 +152,43 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                             14,
                             FontWeight.w400,
                           ),
-                        )
+                        ),
+                        spaceH16,
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: cubit.listPawnShop.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                goTo(
+                                  context,
+                                  LoanPackageDetail(
+                                      id: cubit.listPawnShop[index].id ?? 0),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  LoanPackageItem(
+                                    pawnshopPackage: cubit.listPawnShop[index],
+                                  ),
+                                  spaceH16,
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : Container(
+            height: double.infinity,
+            width: double.infinity,
+          );
   }
 
   SizedBox _header() {

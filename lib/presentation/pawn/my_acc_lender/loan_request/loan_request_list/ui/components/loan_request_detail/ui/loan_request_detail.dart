@@ -149,6 +149,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                   MaterialPageRoute(
                     builder: (context) => LoanSendOffer(
                       isCryptoElseNft: true,
+                      detailCrypto: cubit.detailLoanRequestCryptoModel,
                     ),
                   ));
             },
