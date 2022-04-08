@@ -280,4 +280,15 @@ mixin BorrowRepository {
   Future<Result<String>> postReview({
     ReviewCreateRequest? reviewCreateRequest,
   });
+
+  Future<Result<String>> postLendingCreate({
+    String? address,
+    String? description,
+    String? email,
+    String? name,
+    String? phoneNumber,
+    String? type,
+    String? userId,
+    String? walletAddress,
+  });
 }

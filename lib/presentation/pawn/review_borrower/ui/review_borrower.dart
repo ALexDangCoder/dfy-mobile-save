@@ -298,20 +298,19 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                           navigator.push(
                             MaterialPageRoute(
                               builder: (context) => Approve(
-                                textActiveButton:
-                                    '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                spender: Get.find<AppConstants>()
-                                    .crypto_pawn_contract,
+                                textActiveButton: S.current.review_claim_reward,
+                                spender:
+                                    Get.find<AppConstants>().review_contract,
                                 hexString: bloc.hexString,
                                 tokenAddress:
                                     Get.find<AppConstants>().contract_defy,
-                                title: S.current.confirm_send_offer,
+                                title: S.current.review_claim_reward,
                                 listDetail: [],
                                 onErrorSign: (context) {},
                                 onSuccessSign: (context, data) {
                                   bloc.postReview(
                                     reviewCreateRequest: ReviewCreateRequest(
-                                      contractId: widget.objDetail.bcContractId,
+                                      contractId: widget.objDetail.id,
                                       type: widget.type ==
                                               TypeNavigator.BORROW_TYPE
                                           ? 0

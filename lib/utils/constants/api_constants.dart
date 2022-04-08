@@ -381,4 +381,7 @@ class ApiConstants {
       '/defi-pawn-crypto-service/api/v1.0.0/loan-requests/';
   static const String GET_NFT_LOAN_REQUEST =
       '/defi-pawn-crypto-service/api/v1.0.0/loan-requests/nft';
+
+  static const String POST_LENDING =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop';
 }

@@ -383,7 +383,7 @@ class _ContractInfoState extends State<ContractInfo>
             const SizedBox.shrink(),
           if(widget.bloc.objDetail?.status ==
               ContractDetailBloc.ACTIVE)
-            spaceH152,
+            spaceH152
         ],
       ),
     );
