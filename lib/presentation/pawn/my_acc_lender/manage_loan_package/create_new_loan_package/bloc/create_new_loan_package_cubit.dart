@@ -314,4 +314,9 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       } else {}
     }
   }
+
+}
+
+class Temp {
+  String? type;
 }

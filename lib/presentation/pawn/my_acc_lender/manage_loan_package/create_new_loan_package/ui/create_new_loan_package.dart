@@ -4,10 +4,12 @@ import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/bloc/create_new_loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/collateral_select_create.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/confirm_new_loan_package.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
-import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -350,9 +352,17 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                               _recurringInterest(),
                               spaceH16,
                               _textTitle(
-                                title: S.current.loan_to_value.capitalize(),
-                                isHaveIcWarning: true,
-                              ),
+                                  title: S.current.loan_to_value.capitalize(),
+                                  isHaveIcWarning: true,
+                                  callBack: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => InfoPopup(
+                                        name: S.current.loan_to_value,
+                                        content: S.current.mess_loan_to_value,
+                                      ),
+                                    );
+                                  }),
                               _formWithOutDropDown(
                                 controller: _txtLoanToValue,
                                 onChange: (value) {
@@ -390,11 +400,20 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                   ),
                                 ),
                               ),
-                              spaceH16,
                               _textTitle(
-                                title: S.current.ltv_liquid_thres.capitalize(),
-                                isHaveIcWarning: true,
-                              ),
+                                  title:
+                                      S.current.ltv_liquid_thres.capitalize(),
+                                  isHaveIcWarning: true,
+                                  callBack: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => InfoPopup(
+                                        name: S.current.liquidation_threshold,
+                                        content: S
+                                            .current.mess_liquidation_threshold,
+                                      ),
+                                    );
+                                  }),
                               _formWithOutDropDown(
                                 controller: _txtLTVLiquidThreshold,
                                 onChange: (value) {
@@ -444,30 +463,36 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
               Positioned(
                 bottom: 0,
                 child: StreamBuilder<bool>(
-                  stream: cubit.nextBtnBHVSJ,
-                  builder: (context, snapshot) {
-                    return GestureDetector(
-                      onTap: () async {
-                        if(snapshot.data ?? false) {
-                          //todo cho chuyeenr man;
-                        } else {
-                          //todo khong cho
-                        }
-                      },
-                      child: Container(
-                        color: AppTheme.getInstance().bgBtsColor(),
-                        padding: EdgeInsets.only(
-                          bottom: 38.h,
-                          top: 6.h,
+                    stream: cubit.nextBtnBHVSJ,
+                    builder: (context, snapshot) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (snapshot.data ?? false) {
+                            goTo(
+                              context,
+                              ConfirmNewLoanPackage(),
+                            );
+                          } else {
+                            //nothing
+                            goTo(
+                              context,
+                              ConfirmNewLoanPackage(),
+                            );
+                          }
+                        },
+                        child: Container(
+                          color: AppTheme.getInstance().bgBtsColor(),
+                          padding: EdgeInsets.only(
+                            bottom: 38.h,
+                            top: 6.h,
+                          ),
+                          child: ButtonGold(
+                            isEnable: snapshot.data ?? false,
+                            title: 'Create new',
+                          ),
                         ),
-                        child: ButtonGold(
-                          isEnable: snapshot.data ?? false,
-                          title: 'Create new',
-                        ),
-                      ),
-                    );
-                  }
-                ),
+                      );
+                    }),
               ),
             ],
           ),
@@ -476,7 +501,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
     );
   }
 
-  Widget _textTitle({required String title, bool? isHaveIcWarning = false}) {
+  Widget _textTitle({
+    required String title,
+    bool? isHaveIcWarning = false,
+    Function()? callBack,
+  }) {
     return Column(
       children: [
         Row(
@@ -491,12 +520,15 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
             ),
             spaceW8,
             if (isHaveIcWarning ?? false)
-              SizedBox(
-                height: 20.h,
-                width: 20.w,
-                child: Image.asset(
-                  ImageAssets.ic_about_2,
-                  fit: BoxFit.cover,
+              InkWell(
+                onTap: callBack,
+                child: SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: Image.asset(
+                    ImageAssets.ic_about_2,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )
             else

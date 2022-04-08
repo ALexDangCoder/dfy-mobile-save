@@ -379,14 +379,17 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                     widget.cubit.nftRequest.loanAmount = value.price;
 
                     ///end
-                  } else {
-                    messageController.text = '';
-                    loanController.text = '';
-                    durationController.text = '';
-                    itemDuration = widget.cubit.listDropDownDuration[0];
-                    itemToken = widget.cubit.listDropDownDuration[0];
-                    widget.cubit.validateAll();
                   }
+                  // else {
+                  //   setState(() {
+                  //     messageController.text = '';
+                  //     loanController.text = '';
+                  //     durationController.text = '';
+                  //     itemDuration = widget.cubit.listDropDownDuration[0];
+                  //     itemToken = widget.cubit.listDropDownDuration[0];
+                  //   });
+                  //   widget.cubit.validateAll();
+                  // }
                   return value;
                 });
               },
