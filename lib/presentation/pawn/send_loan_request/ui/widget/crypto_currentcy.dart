@@ -638,7 +638,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                               : S.current.month;
                           widget.cubit.durationCachedType = duration;
                           item =
-                              widget.cubit.listTokenFromWalletCore.firstWhere(
+                              widget.cubit.listTokenCollateral.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.collateralSymbol,
@@ -789,6 +789,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                               );
                             } else {
                               await showLoadFail(context);
+                              Navigator.of(context).pop();
                             }
                           });
                         } else {

@@ -1224,7 +1224,7 @@ class Web3Utils {
     required String collateralAddress,
     required String amount,
   }) async {
-    final deployContract = await deployedPawnCryptoContract();
+    final deployContract = await deployedCollateralContract();
     final function = deployContract.function('increaseCollateralAmount');
     final increaseCollateralAmount = Transaction.callContract(
       contract: deployContract,
@@ -1246,7 +1246,7 @@ class Web3Utils {
     required String paidLoanAmount,
     required String uid,
   }) async {
-    final deployContract = await deployedPawnCryptoContract();
+    final deployContract = await deployedCollateralContract();
     final function = deployContract.function('repayment');
     final repayment = Transaction.callContract(
       contract: deployContract,
