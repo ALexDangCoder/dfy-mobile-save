@@ -339,7 +339,6 @@ class NftResponse extends Equatable {
     }
   }
 
-
   //todo cần xem lại các trường khi dùng nftmarket
   NftMarket toModel({
     required double expectedLoanAmount,
@@ -364,7 +363,7 @@ class NftResponse extends Equatable {
         durationType: durationType,
         collectionName: collectionName,
         isWhitelist: isWhitelist,
-        image: getPath(nftAvatarCid ?? ''),
+        image: getPath(nftAvatarCid ?? nftMediaCid ?? ''),
         cover: getPath(nftMediaCid ?? ''),
         totalCopies: (totalOfCopies ?? 0) as int,
         bcNftId: bcNftId,

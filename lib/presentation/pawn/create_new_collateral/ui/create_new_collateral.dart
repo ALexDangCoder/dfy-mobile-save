@@ -783,7 +783,7 @@ class _CreateNewCollateralState extends State<CreateNewCollateral> {
                     bloc.validateLoanToken(newValue ?? '');
                   });
                 },
-                dropdownMaxHeight: 100.h,
+                dropdownMaxHeight: 170.h,
                 dropdownWidth: 343.w,
                 dropdownDecoration: BoxDecoration(
                   color: AppTheme.getInstance().backgroundBTSColor(),
