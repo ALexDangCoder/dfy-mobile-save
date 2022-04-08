@@ -287,7 +287,7 @@ void showInfo(BuildContext context, List<String?> listInfo) {
               );
             },
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               childAspectRatio: 55 / 15,
