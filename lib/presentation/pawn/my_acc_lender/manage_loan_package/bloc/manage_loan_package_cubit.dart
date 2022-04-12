@@ -13,6 +13,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'manage_loan_package_state.dart';
 
@@ -109,4 +110,10 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
       },
     );
   }
+
+
+  ///FOR LENDING SETTING
+
+  BehaviorSubject<String> txtWarningInterestMin = BehaviorSubject.seeded('');
+  BehaviorSubject<String> txtWarningInterestMax = BehaviorSubject.seeded('');
 }

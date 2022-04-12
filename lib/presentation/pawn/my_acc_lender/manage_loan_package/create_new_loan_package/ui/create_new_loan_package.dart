@@ -5,9 +5,11 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/bloc/create_new_loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/collateral_select_create.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/confirm_new_loan_package.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -71,7 +73,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 812.h,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          padding: EdgeInsets.only(top: MediaQuery
+              .of(context)
+              .padding
+              .top),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
@@ -117,7 +122,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                   textAlign: TextAlign.center,
                                   style: titleText(
                                     color:
-                                        AppTheme.getInstance().textThemeColor(),
+                                    AppTheme.getInstance().textThemeColor(),
                                   ),
                                 ),
                               ),
@@ -178,7 +183,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     child: _formWithOutDropDown(
                                       controller: _txtLoanAmountMin,
                                       txtInputType:
-                                          const TextInputType.numberWithOptions(
+                                      const TextInputType.numberWithOptions(
                                         decimal: true,
                                       ),
                                       onChange: (value) {
@@ -195,7 +200,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                       },
                                       hintText: 'Min',
                                       streamValidateText:
-                                          cubit.txtWarningLoanMinAmount.stream,
+                                      cubit.txtWarningLoanMinAmount.stream,
                                     ),
                                   ),
                                   spaceW16,
@@ -203,7 +208,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     child: _formWithOutDropDown(
                                       controller: _txtLoanAmountMax,
                                       txtInputType:
-                                          const TextInputType.numberWithOptions(
+                                      const TextInputType.numberWithOptions(
                                         decimal: true,
                                       ),
                                       onChange: (value) {
@@ -218,7 +223,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                       },
                                       hintText: 'Max',
                                       streamValidateText:
-                                          cubit.txtWarningLoanMaxAmount.stream,
+                                      cubit.txtWarningLoanMaxAmount.stream,
                                     ),
                                   )
                                 ],
@@ -241,11 +246,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter interest rate',
                                 txtInputType:
-                                    const TextInputType.numberWithOptions(
+                                const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                    cubit.txtWarningInterestRate.stream,
+                                cubit.txtWarningInterestRate.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -265,7 +270,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                               spaceH16,
                               _textTitle(
                                   title:
-                                      S.current.repayment_token.capitalize()),
+                                  S.current.repayment_token.capitalize()),
                               _formLoanRepaymentToken(),
                               spaceH16,
                               _textTitle(
@@ -284,8 +289,9 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     cubit.validateAll();
                                   },
                                   hintText: 'Enter duration',
+                                  txtInputType: TextInputType.number,
                                   streamValidateText:
-                                      cubit.txtWarningDuration.stream,
+                                  cubit.txtWarningDuration.stream,
                                   suffixIcon: SizedBox(
                                     width: 100.w,
                                     child: Align(
@@ -357,10 +363,12 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                   callBack: () {
                                     showDialog(
                                       context: context,
-                                      builder: (_) => InfoPopup(
-                                        name: S.current.loan_to_value,
-                                        content: S.current.mess_loan_to_value,
-                                      ),
+                                      builder: (_) =>
+                                          InfoPopup(
+                                            name: S.current.loan_to_value,
+                                            content: S.current
+                                                .mess_loan_to_value,
+                                          ),
                                     );
                                   }),
                               _formWithOutDropDown(
@@ -379,11 +387,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter loan to value',
                                 txtInputType:
-                                    const TextInputType.numberWithOptions(
+                                const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                    cubit.txtWarningLoanToValue.stream,
+                                cubit.txtWarningLoanToValue.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -402,16 +410,19 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                               ),
                               _textTitle(
                                   title:
-                                      S.current.ltv_liquid_thres.capitalize(),
+                                  S.current.ltv_liquid_thres.capitalize(),
                                   isHaveIcWarning: true,
                                   callBack: () {
                                     showDialog(
                                       context: context,
-                                      builder: (_) => InfoPopup(
-                                        name: S.current.liquidation_threshold,
-                                        content: S
-                                            .current.mess_liquidation_threshold,
-                                      ),
+                                      builder: (_) =>
+                                          InfoPopup(
+                                            name: S.current
+                                                .liquidation_threshold,
+                                            content: S
+                                                .current
+                                                .mess_liquidation_threshold,
+                                          ),
                                     );
                                   }),
                               _formWithOutDropDown(
@@ -430,11 +441,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter LTV Liquidation threshold',
                                 txtInputType:
-                                    const TextInputType.numberWithOptions(
+                                const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                    cubit.txtWarningLTVThresHold.stream,
+                                cubit.txtWarningLTVThresHold.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -468,10 +479,133 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                       return GestureDetector(
                         onTap: () async {
                           if (snapshot.data ?? false) {
-                            goTo(
-                              context,
-                              ConfirmNewLoanPackage(),
-                            );
+                            // goTo(
+                            //   context,
+                            //   ConfirmNewLoanPackage(),
+                            // );
+
+                            // Approve(
+                            //   payValue:,
+                            //   needApprove: true,
+                            //   tokenAddress
+                            //   :,
+                            //   title: 'Confirm new loan package',
+                            //   spender: Get
+                            //       .find<AppConstants>()
+                            //       .nftPawn,
+                            //   textActiveButton: 'Create',
+                            //   hexString: value,
+                            //   header: Column(
+                            //     children: [
+                            //       _rowItem(
+                            //           title: 'Type',
+                            //           description: 'Auto package'),
+                            //       spaceH16,
+                            //       _rowItem(
+                            //         title: 'Message',
+                            //         description:
+                            //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                            //       ),
+                            //       spaceH16,
+                            //       _rowItem(
+                            //         title: 'Loan amount',
+                            //         description: '',
+                            //         isCustomDes: true,
+                            //         widgetCustom: Row(
+                            //           children: [
+                            //             SizedBox(
+                            //               height: 20.h,
+                            //               width: 20.w,
+                            //               child: Image.network(
+                            //                   ImageAssets.getUrlToken('DFY')),
+                            //             ),
+                            //             spaceW5,
+                            //             Text(
+                            //               '${formatPrice.format(
+                            //                   1000)} - ${formatPrice.format(
+                            //                   10000)} DFY',
+                            //               style: textNormalCustom(
+                            //                 AppTheme.getInstance().whiteColor(),
+                            //                 16,
+                            //                 FontWeight.w400,
+                            //               ),
+                            //             )
+                            //           ],
+                            //         ),
+                            //       ),
+                            //       spaceH16,
+                            //       _collateralTokens(),
+                            //       spaceH16,
+                            //       _rowItem(
+                            //           title: 'Interest rate (%APR)',
+                            //           description: '10%'),
+                            //       spaceH16,
+                            //       _rowItem(
+                            //           title: 'Repayment token',
+                            //           description: '',
+                            //           isCustomDes: true,
+                            //           widgetCustom: Row(
+                            //             children: [
+                            //               SizedBox(
+                            //                 width: 20.w,
+                            //                 height: 20.h,
+                            //                 child: Image.network(
+                            //                     ImageAssets.getUrlToken('DFY')),
+                            //               ),
+                            //               spaceW5,
+                            //               Text('DFY', style: textNormalCustom(
+                            //                 AppTheme.getInstance().whiteColor(),
+                            //                 16,
+                            //                 FontWeight.w400,
+                            //               ),),
+                            //             ],
+                            //           )),
+                            //       spaceH16,
+                            //       _rowItem(title: 'Duration',
+                            //           description: '1-3 months'),
+                            //       spaceH16,
+                            //       _rowItem(title: 'Loan to value',
+                            //           description: '15%'),
+                            //       spaceH16,
+                            //       _rowItem(title: 'LTV Liquidation threshold',
+                            //           description: '15%')
+                            //     ],
+                            //   ),
+                            //   onSuccessSign: (context, data) async {
+                            //     Navigator.pop(context);
+                            //     // await _cubit.rejectOffer(
+                            //     //   obj.id?.toInt() ?? 0,
+                            //     //   obj.collateralId?.toInt() ?? 0,
+                            //     //   PrefsService.getCurrentBEWallet(),
+                            //     // );
+                            //     // await showLoadSuccess(context).then(
+                            //     //       (value) {
+                            //     //     Navigator.pop(context, true);
+                            //     //   },
+                            //     // );
+                            //     // await onRefresh();
+                            //   },
+                            //   onErrorSign: (context) async {
+                            //     Navigator.pop(context);
+                            //     // await showLoadFail(context)
+                            //     //     .then((_) => Navigator.pop(context))
+                            //     //     .then(
+                            //     //       (value) =>
+                            //     //       Navigator.pushReplacement(
+                            //     //         context,
+                            //     //         MaterialPageRoute(
+                            //     //           builder: (context) =>
+                            //     //               BaseFail(
+                            //     //                 title: S.current.reject_offer,
+                            //     //                 onTapBtn: () {
+                            //     //                   Navigator.pop(context);
+                            //     //                 },
+                            //     //               ),
+                            //     //         ),
+                            //     //       ),
+                            //     // );
+                            //   },
+                            // );
                           } else {
                             //nothing
                             goTo(
@@ -831,6 +965,116 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
           ),
         ),
       ),
+    );
+  }
+
+
+  ///UI FOR CONFIRM NEW LOAN PACKAGE
+  Row _collateralTokens() {
+    return _rowItem(
+      title: 'Collateral',
+      description: '',
+      isCustomDes: true,
+      widgetCustom: (fakeToken.length < 5)
+          ? SizedBox(
+        height: 20.h,
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: fakeToken.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: Image.network(
+                    ImageAssets.getUrlToken(
+                      fakeToken[index],
+                    ),
+                  ),
+                ),
+                spaceW5,
+              ],
+            );
+          },
+        ),
+      )
+          : SizedBox(
+        height: 20.h,
+        child: Row(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Row(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: Image.network(
+                        ImageAssets.getUrlToken(
+                          fakeToken[index],
+                        ),
+                      ),
+                    ),
+                    spaceW5,
+                  ],
+                );
+              },
+            ),
+            Text(
+              '& ${fakeToken.length - 5} mores',
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                16,
+                FontWeight.w400,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _rowItem({
+    required String title,
+    required String description,
+    bool? isCustomDes = false,
+    Widget? widgetCustom,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+            title.withColon(),
+            style: textNormalCustom(
+              AppTheme.getInstance().pawnItemGray(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
+        ),
+        if (isCustomDes ?? false)
+          Expanded(flex: 6, child: widgetCustom ?? Container())
+        else
+          Expanded(
+            flex: 6,
+            child: Text(
+              description,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                16,
+                FontWeight.w400,
+              ),
+            ),
+          )
+      ],
     );
   }
 }

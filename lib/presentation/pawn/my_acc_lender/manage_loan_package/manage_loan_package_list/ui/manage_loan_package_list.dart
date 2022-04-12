@@ -4,6 +4,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/create_new_loan_package.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/lending_setting.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/loan_package_detail/ui/loan_package_detail.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/loan_package_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -270,13 +271,18 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                   ),
                 ),
                 spaceH13,
-                Container(
-                  width: 165.w,
-                  margin: EdgeInsets.only(bottom: 10.h),
-                  child: ButtonGold(
-                    title: S.current.add_lend_setting,
-                    isEnable: true,
-                    fixSize: false,
+                InkWell(
+                  onTap: () {
+                    goTo(context, LendingSetting(cubit: cubit));
+                  },
+                  child: Container(
+                    width: 165.w,
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    child: ButtonGold(
+                      title: S.current.add_lend_setting,
+                      isEnable: true,
+                      fixSize: false,
+                    ),
                   ),
                 ),
               ],
