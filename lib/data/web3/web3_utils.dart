@@ -1266,11 +1266,11 @@ class Web3Utils {
   Future<String> getCreatePackageData({
     required int packageType,
     required String loanTokenAddress,
-    required Tuple2 loanAmountRange,
+    required Tuple2<double, double> loanAmountRange,
     required List<String> collateralAcceptance,
     required String interest,
     required String durationType,
-    required Tuple2 durationRange,
+    required Tuple2<int, int> durationRange,
     required String repaymentAssetAddress,
     required int repaymentCycleType,
     required String loanToValue,

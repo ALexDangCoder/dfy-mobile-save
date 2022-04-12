@@ -35,7 +35,6 @@ class _ItemCollateralCreateLoanPackageState
   }
 
   void checker() {
-    //todo khi chọn select thì làm gì đó ?
     if (check) {
       widget.cubit.listCollateralToken[widget.index].isSelect = false;
       check = false;
@@ -43,7 +42,7 @@ class _ItemCollateralCreateLoanPackageState
       widget.cubit.listCollateralToken[widget.index].isSelect = true;
       check = true;
     }
-    widget.cubit.validateAll();
+    widget.cubit.checkIsSelectedCollateralsToken();
     setState(() {});
   }
 

@@ -1,5 +1,7 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/bloc/create_new_loan_package_cubit.dart';
@@ -15,6 +17,8 @@ import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:tuple/tuple.dart';
 
 class CreateNewLoanPackage extends StatefulWidget {
   const CreateNewLoanPackage({Key? key}) : super(key: key);
@@ -32,7 +36,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
   late TextEditingController _txtLoanToValue;
   late TextEditingController _txtLTVLiquidThreshold;
   late CreateNewLoanPackageCubit cubit;
-  late String typeCreate;
+  late Tuple2<String, String> typeCreate;
   late TokenInf loanToken;
   late TokenInf loanRepaymentToken;
 
@@ -73,10 +77,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 812.h,
-          padding: EdgeInsets.only(top: MediaQuery
-              .of(context)
-              .padding
-              .top),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
@@ -122,7 +123,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                   textAlign: TextAlign.center,
                                   style: titleText(
                                     color:
-                                    AppTheme.getInstance().textThemeColor(),
+                                        AppTheme.getInstance().textThemeColor(),
                                   ),
                                 ),
                               ),
@@ -156,10 +157,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                           child: Column(
                             children: [
                               spaceH22,
-                              _textTitle(title: S.current.type.capitalize()),
+                              _textTitle(title: S.current.type),
                               _formType(),
                               spaceH16,
-                              _textTitle(title: S.current.message.capitalize()),
+                              _textTitle(title: S.current.message),
                               _formWithOutDropDown(
                                 controller: _txtMess,
                                 onChange: (value) {
@@ -170,12 +171,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 streamValidateText: cubit.txtWarningMess.stream,
                               ),
                               _textTitle(
-                                title: S.current.loan_token.capitalize(),
+                                title: S.current.loan_token,
                               ),
                               _formLoanToken(),
                               spaceH16,
-                              _textTitle(
-                                  title: S.current.loan_amount.capitalize()),
+                              _textTitle(title: S.current.loan_amount),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -183,7 +183,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     child: _formWithOutDropDown(
                                       controller: _txtLoanAmountMin,
                                       txtInputType:
-                                      const TextInputType.numberWithOptions(
+                                          const TextInputType.numberWithOptions(
                                         decimal: true,
                                       ),
                                       onChange: (value) {
@@ -200,7 +200,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                       },
                                       hintText: 'Min',
                                       streamValidateText:
-                                      cubit.txtWarningLoanMinAmount.stream,
+                                          cubit.txtWarningLoanMinAmount.stream,
                                     ),
                                   ),
                                   spaceW16,
@@ -208,7 +208,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     child: _formWithOutDropDown(
                                       controller: _txtLoanAmountMax,
                                       txtInputType:
-                                      const TextInputType.numberWithOptions(
+                                          const TextInputType.numberWithOptions(
                                         decimal: true,
                                       ),
                                       onChange: (value) {
@@ -223,21 +223,19 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                       },
                                       hintText: 'Max',
                                       streamValidateText:
-                                      cubit.txtWarningLoanMaxAmount.stream,
+                                          cubit.txtWarningLoanMaxAmount.stream,
                                     ),
                                   )
                                 ],
                               ),
                               // spaceH16,
-                              _textTitle(
-                                  title: S.current.collateral.capitalize()),
+                              _textTitle(title: S.current.collateral),
                               CollateralSelectCreate(
                                 cubit: cubit,
                                 listToken: cubit.listCollateralToken,
                               ),
                               spaceH16,
-                              _textTitle(
-                                  title: S.current.interest_rate.capitalize()),
+                              _textTitle(title: S.current.interest_rate),
                               _formWithOutDropDown(
                                 controller: _txtInterestRate,
                                 onChange: (value) {
@@ -246,11 +244,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter interest rate',
                                 txtInputType:
-                                const TextInputType.numberWithOptions(
+                                    const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                cubit.txtWarningInterestRate.stream,
+                                    cubit.txtWarningInterestRate.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -268,13 +266,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ),
                               ),
                               spaceH16,
-                              _textTitle(
-                                  title:
-                                  S.current.repayment_token.capitalize()),
+                              _textTitle(title: S.current.repayment_token),
                               _formLoanRepaymentToken(),
                               spaceH16,
                               _textTitle(
-                                title: S.current.duration.capitalize(),
+                                title: S.current.duration,
                               ),
                               _formWithOutDropDown(
                                   controller: _txtDuration,
@@ -291,7 +287,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                   hintText: 'Enter duration',
                                   txtInputType: TextInputType.number,
                                   streamValidateText:
-                                  cubit.txtWarningDuration.stream,
+                                      cubit.txtWarningDuration.stream,
                                   suffixIcon: SizedBox(
                                     width: 100.w,
                                     child: Align(
@@ -353,22 +349,20 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     ),
                                   )),
                               _textTitle(
-                                  title: S.current.recurring_interest
-                                      .capitalize()),
+                                title: S.current.recurring_interest,
+                              ),
                               _recurringInterest(),
                               spaceH16,
                               _textTitle(
-                                  title: S.current.loan_to_value.capitalize(),
+                                  title: S.current.loan_to_value,
                                   isHaveIcWarning: true,
                                   callBack: () {
                                     showDialog(
                                       context: context,
-                                      builder: (_) =>
-                                          InfoPopup(
-                                            name: S.current.loan_to_value,
-                                            content: S.current
-                                                .mess_loan_to_value,
-                                          ),
+                                      builder: (_) => InfoPopup(
+                                        name: S.current.loan_to_value,
+                                        content: S.current.mess_loan_to_value,
+                                      ),
                                     );
                                   }),
                               _formWithOutDropDown(
@@ -387,11 +381,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter loan to value',
                                 txtInputType:
-                                const TextInputType.numberWithOptions(
+                                    const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                cubit.txtWarningLoanToValue.stream,
+                                    cubit.txtWarningLoanToValue.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -409,20 +403,16 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ),
                               ),
                               _textTitle(
-                                  title:
-                                  S.current.ltv_liquid_thres.capitalize(),
+                                  title: S.current.ltv_liquid_thres,
                                   isHaveIcWarning: true,
                                   callBack: () {
                                     showDialog(
                                       context: context,
-                                      builder: (_) =>
-                                          InfoPopup(
-                                            name: S.current
-                                                .liquidation_threshold,
-                                            content: S
-                                                .current
-                                                .mess_liquidation_threshold,
-                                          ),
+                                      builder: (_) => InfoPopup(
+                                        name: S.current.liquidation_threshold,
+                                        content: S
+                                            .current.mess_liquidation_threshold,
+                                      ),
                                     );
                                   }),
                               _formWithOutDropDown(
@@ -441,11 +431,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 },
                                 hintText: 'Enter LTV Liquidation threshold',
                                 txtInputType:
-                                const TextInputType.numberWithOptions(
+                                    const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 streamValidateText:
-                                cubit.txtWarningLTVThresHold.stream,
+                                    cubit.txtWarningLTVThresHold.stream,
                                 suffixIcon: SizedBox(
                                   width: 20.w,
                                   height: 20.h,
@@ -483,129 +473,178 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                             //   context,
                             //   ConfirmNewLoanPackage(),
                             // );
-
-                            // Approve(
-                            //   payValue:,
-                            //   needApprove: true,
-                            //   tokenAddress
-                            //   :,
-                            //   title: 'Confirm new loan package',
-                            //   spender: Get
-                            //       .find<AppConstants>()
-                            //       .nftPawn,
-                            //   textActiveButton: 'Create',
-                            //   hexString: value,
-                            //   header: Column(
-                            //     children: [
-                            //       _rowItem(
-                            //           title: 'Type',
-                            //           description: 'Auto package'),
-                            //       spaceH16,
-                            //       _rowItem(
-                            //         title: 'Message',
-                            //         description:
-                            //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                            //       ),
-                            //       spaceH16,
-                            //       _rowItem(
-                            //         title: 'Loan amount',
-                            //         description: '',
-                            //         isCustomDes: true,
-                            //         widgetCustom: Row(
-                            //           children: [
-                            //             SizedBox(
-                            //               height: 20.h,
-                            //               width: 20.w,
-                            //               child: Image.network(
-                            //                   ImageAssets.getUrlToken('DFY')),
-                            //             ),
-                            //             spaceW5,
-                            //             Text(
-                            //               '${formatPrice.format(
-                            //                   1000)} - ${formatPrice.format(
-                            //                   10000)} DFY',
-                            //               style: textNormalCustom(
-                            //                 AppTheme.getInstance().whiteColor(),
-                            //                 16,
-                            //                 FontWeight.w400,
-                            //               ),
-                            //             )
-                            //           ],
-                            //         ),
-                            //       ),
-                            //       spaceH16,
-                            //       _collateralTokens(),
-                            //       spaceH16,
-                            //       _rowItem(
-                            //           title: 'Interest rate (%APR)',
-                            //           description: '10%'),
-                            //       spaceH16,
-                            //       _rowItem(
-                            //           title: 'Repayment token',
-                            //           description: '',
-                            //           isCustomDes: true,
-                            //           widgetCustom: Row(
-                            //             children: [
-                            //               SizedBox(
-                            //                 width: 20.w,
-                            //                 height: 20.h,
-                            //                 child: Image.network(
-                            //                     ImageAssets.getUrlToken('DFY')),
-                            //               ),
-                            //               spaceW5,
-                            //               Text('DFY', style: textNormalCustom(
-                            //                 AppTheme.getInstance().whiteColor(),
-                            //                 16,
-                            //                 FontWeight.w400,
-                            //               ),),
-                            //             ],
-                            //           )),
-                            //       spaceH16,
-                            //       _rowItem(title: 'Duration',
-                            //           description: '1-3 months'),
-                            //       spaceH16,
-                            //       _rowItem(title: 'Loan to value',
-                            //           description: '15%'),
-                            //       spaceH16,
-                            //       _rowItem(title: 'LTV Liquidation threshold',
-                            //           description: '15%')
-                            //     ],
-                            //   ),
-                            //   onSuccessSign: (context, data) async {
-                            //     Navigator.pop(context);
-                            //     // await _cubit.rejectOffer(
-                            //     //   obj.id?.toInt() ?? 0,
-                            //     //   obj.collateralId?.toInt() ?? 0,
-                            //     //   PrefsService.getCurrentBEWallet(),
-                            //     // );
-                            //     // await showLoadSuccess(context).then(
-                            //     //       (value) {
-                            //     //     Navigator.pop(context, true);
-                            //     //   },
-                            //     // );
-                            //     // await onRefresh();
-                            //   },
-                            //   onErrorSign: (context) async {
-                            //     Navigator.pop(context);
-                            //     // await showLoadFail(context)
-                            //     //     .then((_) => Navigator.pop(context))
-                            //     //     .then(
-                            //     //       (value) =>
-                            //     //       Navigator.pushReplacement(
-                            //     //         context,
-                            //     //         MaterialPageRoute(
-                            //     //           builder: (context) =>
-                            //     //               BaseFail(
-                            //     //                 title: S.current.reject_offer,
-                            //     //                 onTapBtn: () {
-                            //     //                   Navigator.pop(context);
-                            //     //                 },
-                            //     //               ),
-                            //     //         ),
-                            //     //       ),
-                            //     // );
-                            //   },
-                            // );
+                            // print(cubit.loanPackageRequest.toString());
+                            final hexString =
+                                await Web3Utils().getCreatePackageData(
+                              packageType: int.parse(
+                                  CreateNewLoanPackageCubit.SEMI_AUTO),
+                              loanTokenAddress: ImageAssets.getAddressToken(
+                                  cubit.loanPackageRequest.loanTokens
+                                          ?.loanTokens?.first ??
+                                      ''),
+                              loanAmountRange: Tuple2(
+                                  double.parse(
+                                      cubit.loanPackageRequest.allowedLoanMin ??
+                                          '0'),
+                                  double.parse(
+                                      cubit.loanPackageRequest.allowedLoanMax ??
+                                          '0')),
+                              collateralAcceptance: cubit.loanPackageRequest
+                                      .loanTokens?.loanTokens ??
+                                  [],
+                              interest: cubit.loanPackageRequest.interest ?? '',
+                              durationType:
+                                  cubit.loanPackageRequest.durationQtyType ??
+                                      '0',
+                              durationRange: Tuple2(
+                                  int.parse(
+                                      cubit.loanPackageRequest.durationQtyMin ??
+                                          '1'),
+                                  int.parse(
+                                      cubit.loanPackageRequest.durationQtyMax ??
+                                          '2')),
+                              repaymentAssetAddress:
+                                  ImageAssets.getAddressToken((cubit
+                                          .loanPackageRequest
+                                          .repaymentTokens
+                                          ?.repaymentTokens
+                                          ?.first ??
+                                      '')),
+                              repaymentCycleType: int.parse(
+                                  cubit.loanPackageRequest.durationQtyType ??
+                                      '0'),
+                              loanToValue:
+                                  cubit.loanPackageRequest.loanToValue ?? '1',
+                              loanToValueLiquidationThreshold: cubit
+                                      .loanPackageRequest
+                                      .liquidationThreshold ??
+                                  '10',
+                            );
+                            Approve(
+                              payValue: '',
+                              needApprove: true,
+                              tokenAddress: '',
+                              title: 'Confirm new loan package',
+                              spender:
+                                  Get.find<AppConstants>().crypto_pawn_contract,
+                              textActiveButton: 'Create',
+                              hexString: '',
+                              header: Column(
+                                children: [
+                                  _rowItem(
+                                      title: 'Type',
+                                      description: 'Auto package'),
+                                  spaceH16,
+                                  _rowItem(
+                                    title: 'Message',
+                                    description:
+                                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                                  ),
+                                  spaceH16,
+                                  _rowItem(
+                                    title: 'Loan amount',
+                                    description: '',
+                                    isCustomDes: true,
+                                    widgetCustom: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 20.h,
+                                          width: 20.w,
+                                          child: Image.network(
+                                              ImageAssets.getUrlToken('DFY')),
+                                        ),
+                                        spaceW5,
+                                        Text(
+                                          '${formatPrice.format(1000)} - ${formatPrice.format(10000)} DFY',
+                                          style: textNormalCustom(
+                                            AppTheme.getInstance().whiteColor(),
+                                            16,
+                                            FontWeight.w400,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  spaceH16,
+                                  _collateralTokens(),
+                                  spaceH16,
+                                  _rowItem(
+                                      title: 'Interest rate (%APR)',
+                                      description: '10%'),
+                                  spaceH16,
+                                  _rowItem(
+                                      title: 'Repayment token',
+                                      description: '',
+                                      isCustomDes: true,
+                                      widgetCustom: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 20.w,
+                                            height: 20.h,
+                                            child: Image.network(
+                                                ImageAssets.getUrlToken('DFY')),
+                                          ),
+                                          spaceW5,
+                                          Text(
+                                            'DFY',
+                                            style: textNormalCustom(
+                                              AppTheme.getInstance()
+                                                  .whiteColor(),
+                                              16,
+                                              FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  spaceH16,
+                                  _rowItem(
+                                      title: 'Duration',
+                                      description: '1-3 months'),
+                                  spaceH16,
+                                  _rowItem(
+                                      title: 'Loan to value',
+                                      description: '15%'),
+                                  spaceH16,
+                                  _rowItem(
+                                      title: 'LTV Liquidation threshold',
+                                      description: '15%')
+                                ],
+                              ),
+                              onSuccessSign: (context, data) async {
+                                Navigator.pop(context);
+                                // await _cubit.rejectOffer(
+                                //   obj.id?.toInt() ?? 0,
+                                //   obj.collateralId?.toInt() ?? 0,
+                                //   PrefsService.getCurrentBEWallet(),
+                                // );
+                                // await showLoadSuccess(context).then(
+                                //       (value) {
+                                //     Navigator.pop(context, true);
+                                //   },
+                                // );
+                                // await onRefresh();
+                              },
+                              onErrorSign: (context) async {
+                                Navigator.pop(context);
+                                // await showLoadFail(context)
+                                //     .then((_) => Navigator.pop(context))
+                                //     .then(
+                                //       (value) =>
+                                //       Navigator.pushReplacement(
+                                //         context,
+                                //         MaterialPageRoute(
+                                //           builder: (context) =>
+                                //               BaseFail(
+                                //                 title: S.current.reject_offer,
+                                //                 onTapBtn: () {
+                                //                   Navigator.pop(context);
+                                //                 },
+                                //               ),
+                                //         ),
+                                //       ),
+                                // );
+                              },
+                            );
                           } else {
                             //nothing
                             goTo(
@@ -715,16 +754,16 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
           selectedRowColor: Colors.white24,
         ),
         child: DropdownButtonHideUnderline(
-          child: DropdownButton2<String>(
+          child: DropdownButton2<Tuple2<String, String>>(
             buttonDecoration: BoxDecoration(
               color: AppTheme.getInstance().backgroundBTSColor(),
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
             ),
-            items: cubit.typeCreate.map((String value) {
+            items: cubit.typeCreate.map((Tuple2<String, String> value) {
               return DropdownMenuItem(
                 value: value,
                 child: Text(
-                  value,
+                  value.item1,
                   style: textNormal(
                     Colors.white,
                     16,
@@ -732,9 +771,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                 ),
               );
             }).toList(),
-            onChanged: (String? newValue) {
+            onChanged: (Tuple2<String, String>? newValue) {
               setState(() {
                 typeCreate = newValue!;
+                cubit.loanPackageRequest.type = typeCreate.item2;
               });
             },
             dropdownMaxHeight: 110.h,
@@ -873,6 +913,8 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
             onChanged: (newValue) {
               setState(() {
                 loanToken = newValue!;
+                (cubit.loanPackageRequest.loanTokens?.loanTokens ?? [])[0] =
+                    loanToken.symbol ?? '';
                 cubit.changeListRepaymentToken(value: newValue);
               });
             },
@@ -945,6 +987,12 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
             onChanged: (newValue) {
               setState(() {
                 loanRepaymentToken = newValue!;
+                cubit.loanPackageRequest.repaymentTokens?.repaymentTokens
+                    ?.removeAt(0);
+                cubit.loanPackageRequest.repaymentTokens?.repaymentTokens?.add(
+                  loanRepaymentToken.symbol ?? '',
+                );
+                cubit.validateAll();
               });
             },
             dropdownMaxHeight: 200.h,
@@ -968,7 +1016,6 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
     );
   }
 
-
   ///UI FOR CONFIRM NEW LOAN PACKAGE
   Row _collateralTokens() {
     return _rowItem(
@@ -977,65 +1024,65 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
       isCustomDes: true,
       widgetCustom: (fakeToken.length < 5)
           ? SizedBox(
-        height: 20.h,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: fakeToken.length,
-          itemBuilder: (context, index) {
-            return Row(
-              children: [
-                SizedBox(
-                  height: 20.h,
-                  width: 20.w,
-                  child: Image.network(
-                    ImageAssets.getUrlToken(
-                      fakeToken[index],
-                    ),
-                  ),
-                ),
-                spaceW5,
-              ],
-            );
-          },
-        ),
-      )
-          : SizedBox(
-        height: 20.h,
-        child: Row(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    SizedBox(
-                      height: 20.h,
-                      width: 20.w,
-                      child: Image.network(
-                        ImageAssets.getUrlToken(
-                          fakeToken[index],
+              height: 20.h,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: fakeToken.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                        child: Image.network(
+                          ImageAssets.getUrlToken(
+                            fakeToken[index],
+                          ),
                         ),
                       ),
-                    ),
-                    spaceW5,
-                  ],
-                );
-              },
-            ),
-            Text(
-              '& ${fakeToken.length - 5} mores',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w400,
+                      spaceW5,
+                    ],
+                  );
+                },
               ),
             )
-          ],
-        ),
-      ),
+          : SizedBox(
+              height: 20.h,
+              child: Row(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: Image.network(
+                              ImageAssets.getUrlToken(
+                                fakeToken[index],
+                              ),
+                            ),
+                          ),
+                          spaceW5,
+                        ],
+                      );
+                    },
+                  ),
+                  Text(
+                    '& ${fakeToken.length - 5} mores',
+                    style: textNormalCustom(
+                      AppTheme.getInstance().whiteColor(),
+                      16,
+                      FontWeight.w400,
+                    ),
+                  )
+                ],
+              ),
+            ),
     );
   }
 
