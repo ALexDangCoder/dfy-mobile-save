@@ -29,6 +29,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
   String? hexStringReject;
   String? userId;
   OfferDetailMyAcc? obj;
+  double? balance;
 
   OfferDetailMyAccBloc(this.id) : super(OfferDetailMyAccInitial()) {
     getOfferDetailMyAcc(id: id);
@@ -46,6 +47,20 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
       hexStringReject = await web3Client.getCancelCryptoOfferData(
         nftCollateralId: bcCollateralId,
         offerId: bcOfferId,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
+  Future<void> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    try {
+      balance = await web3Client.getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
       );
     } catch (e) {
       throw AppException(S.current.error, e.toString());
@@ -170,7 +185,7 @@ class OfferDetailMyAccBloc extends BaseCubit<OfferDetailMyAccState> {
       success: (response) {
         if (response.isNotEmpty) {
           rate.add(response.first.reputationLender.toString());
-          userId=response.first.userId.toString();
+          userId = response.first.userId.toString();
         }
       },
       error: (error) {},

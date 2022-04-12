@@ -16,9 +16,9 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   RepaymentPayBloc() : super(RepaymentPayInitial());
 
   TypeRepayment type = TypeRepayment.PENALTY_INTEREST;
-  BehaviorSubject<String> penalty = BehaviorSubject.seeded('');
-  BehaviorSubject<String> interest = BehaviorSubject.seeded('');
-  BehaviorSubject<String> loan = BehaviorSubject.seeded('');
+  BehaviorSubject<String> penalty = BehaviorSubject.seeded('0');
+  BehaviorSubject<String> interest = BehaviorSubject.seeded('0');
+  BehaviorSubject<String> loan = BehaviorSubject.seeded('0');
 
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> isPenalty = BehaviorSubject.seeded('');
