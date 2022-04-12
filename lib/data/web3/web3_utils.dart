@@ -1305,6 +1305,40 @@ class Web3Utils {
     return hex.encode(createPawnShopPackage.data ?? []);
   }
 
+  Future<String> getRejectPackageData({
+    required String collateralId,
+    required String packageId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('rejectCollateralOfPackage');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(collateralId)),
+        BigInt.from(num.parse(packageId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
+  }
+
+  Future<String> getAcceptPackageData({
+    required String collateralId,
+    required String packageId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('acceptCollateralOfPackage');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(collateralId)),
+        BigInt.from(num.parse(packageId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
+  }
+
   //sumit
   Future<String> getSubmitCryptoContractData({
     required int point,
