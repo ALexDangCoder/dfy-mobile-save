@@ -100,11 +100,9 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
     return Scaffold(
       backgroundColor: AppTheme.getInstance().blackColor(),
       resizeToAvoidBottomInset: false,
-      body:
-      Align(
+      body: Align(
         alignment: Alignment.bottomCenter,
-        child:
-        Container(
+        child: Container(
           height: 812.h,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           clipBehavior: Clip.hardEdge,
@@ -806,7 +804,9 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                 ? Text(
                     snapshot.data ?? '',
                     style: textNormalCustom(
-                      AppTheme.getInstance().redColor(),
+                      S.current.ltv_validate_20 != (snapshot.data ?? '')
+                          ? AppTheme.getInstance().redColor()
+                          : AppTheme.getInstance().whiteWithOpacitySevenZero(),
                       12,
                       FontWeight.w400,
                     ),

@@ -1044,5 +1044,8 @@
   "accept_continue": "Accept & Continue",
   "reject_request": "Reject request",
   "manage_loan_package": "Manage loan package",
-  "lending_setting": "Lending setting"
+  "lending_setting": "Lending setting",
+  "your_balance_must": "Your balance must have:",
+  "soft_collection": "Soft Collection",
+  "hard_collection": "Hard Collection"
 }
