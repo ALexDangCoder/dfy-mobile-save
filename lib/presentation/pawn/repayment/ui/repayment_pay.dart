@@ -92,7 +92,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               obj = state.obj ?? obj;
-              bloc.obj=state.obj ?? obj;
+              bloc.obj = state.obj ?? obj;
               if ((obj.penalty?.address.toString().toUpperCase() ==
                       obj.interest?.address.toString().toUpperCase()) &&
                   (obj.penalty?.address.toString().toUpperCase() ==
@@ -199,6 +199,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.isLoan.add('');
                                                     bloc.isPenalty.add('');
                                                     bloc.isInterest.add('');
+                                                    if (obj.interest?.amount ==
+                                                            0 &&
+                                                        obj.penalty?.amount ==
+                                                            0) {
+                                                      //todo penalty
+                                                    } else {
+                                                      //todo
+                                                    }
                                                     setState(() {});
                                                   },
                                                 ),
@@ -215,6 +223,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 bloc.isLoan.add('');
                                                 bloc.isPenalty.add('');
                                                 bloc.isInterest.add('');
+                                                if (obj.interest?.amount == 0 &&
+                                                    obj.penalty?.amount == 0) {
+                                                  //todo penalty
+                                                } else {
+                                                  //todo
+                                                }
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -259,6 +273,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.isLoan.add('');
                                                     bloc.isPenalty.add('');
                                                     bloc.isInterest.add('');
+                                                    if (obj.interest?.amount ==
+                                                            0 &&
+                                                        obj.penalty?.amount ==
+                                                            0) {
+                                                      //todo penalty
+                                                    } else {
+                                                      //todo
+                                                    }
                                                     setState(() {});
                                                   },
                                                 ),
@@ -274,6 +296,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 bloc.isLoan.add('');
                                                 bloc.isPenalty.add('');
                                                 bloc.isInterest.add('');
+                                                if (obj.interest?.amount == 0 &&
+                                                    obj.penalty?.amount == 0) {
+                                                  //todo penalty
+                                                } else {
+                                                  //todo
+                                                }
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -431,7 +459,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                         MaterialPageRoute(
                                           builder: (context) => Approve(
                                             needApprove: true,
-                                            payValue: '1000000000',//todo a
+                                            payValue: '1000000000',
+                                            //todo a
                                             // nghĩa bao
                                             tokenAddress:
                                                 Get.find<AppConstants>()
@@ -446,78 +475,59 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               DetailItemApproveModel(
                                                 title: '${S.current.penalty}: ',
                                                 value: '${formatPrice.format(
-                                                  obj.penalty
-                                                          ?.amount ??
-                                                      0,
+                                                  obj.penalty?.amount ?? 0,
                                                 )}'
                                                     ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                      obj.penalty
-                                                          ?.symbol ??
-                                                      '',
+                                                  obj.penalty?.symbol ?? '',
                                                 ),
                                               ),
                                               DetailItemApproveModel(
                                                 title:
                                                     '${S.current.interest}: ',
                                                 value: '${formatPrice.format(
-                                                  obj.interest
-                                                          ?.amount ??
-                                                      0,
+                                                  obj.interest?.amount ?? 0,
                                                 )}'
                                                     ' ${obj.interest?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                      obj.interest
-                                                          ?.symbol ??
-                                                      '',
+                                                  obj.interest?.symbol ?? '',
                                                 ),
                                               ),
                                               DetailItemApproveModel(
                                                 title:
                                                     '${S.current.system_fee}: ',
                                                 value: '${formatPrice.format(
-                                                  obj.systemFee ??
-                                                      0,
+                                                  obj.systemFee ?? 0,
                                                 )}'
                                                     ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                      obj.penalty
-                                                          ?.symbol ??
-                                                      '',
+                                                  obj.penalty?.symbol ?? '',
                                                 ),
                                               ),
                                               DetailItemApproveModel(
                                                 title: '${S.current.loan}: ',
                                                 value: '${formatPrice.format(
-                                                  obj.loan
-                                                          ?.amount ??
-                                                      0,
+                                                  obj.loan?.amount ?? 0,
                                                 )}'
                                                     ' ${obj.loan?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  obj.loan
-                                                          ?.symbol ??
-                                                      '',
+                                                  obj.loan?.symbol ?? '',
                                                 ),
                                               ),
                                               DetailItemApproveModel(
                                                 title:
                                                     '${S.current.prepaid_fee}: ',
                                                 value: '${formatPrice.format(
-                                                  obj
-                                                          .prepaidFee ??
-                                                      0,
+                                                  obj.prepaidFee ?? 0,
                                                 )}'
                                                     ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  obj.penalty
-                                                          ?.symbol ??
-                                                      '',
+                                                  obj.penalty?.symbol ?? '',
                                                 ),
                                               ),
                                             ],
