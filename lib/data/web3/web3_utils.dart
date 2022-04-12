@@ -1211,8 +1211,8 @@ class Web3Utils {
       contract: deployContract,
       function: function,
       parameters: [
-        BigInt.from(num.parse(offerId)),
         BigInt.from(num.parse(nftCollateralId)),
+        BigInt.from(num.parse(offerId)),
       ],
     );
     return hex.encode(acceptOffer.data ?? []);
@@ -1266,11 +1266,11 @@ class Web3Utils {
   Future<String> getCreatePackageData({
     required int packageType,
     required String loanTokenAddress,
-    required Tuple2<double, double> loanAmountRange,
+    required List<String> loanAmountRange,
     required List<String> collateralAcceptance,
     required String interest,
     required String durationType,
-    required Tuple2<int, int> durationRange,
+    required List<String> durationRange,
     required String repaymentAssetAddress,
     required int repaymentCycleType,
     required String loanToValue,
@@ -1278,17 +1278,24 @@ class Web3Utils {
   }) async {
     final deployContract = await deployedPawnCryptoContract();
     final function = deployContract.function('createPawnShopPackage');
+    final loanAmount = loanAmountRange
+        .map((e) => BigInt.from(num.parse(_handleAmount(18, e))))
+        .toList();
+    final listAddress =
+        collateralAcceptance.map((e) => EthereumAddress.fromHex(e)).toList();
+    final duration =
+        durationRange.map((e) => BigInt.from(num.parse(e))).toList();
     final createPawnShopPackage = Transaction.callContract(
       contract: deployContract,
       function: function,
       parameters: [
         BigInt.from(packageType),
         EthereumAddress.fromHex(loanTokenAddress),
-        loanAmountRange,
-        collateralAcceptance,
+        loanAmount,
+        listAddress,
         BigInt.from(num.parse(_handleAmount(5, interest))),
         BigInt.from(num.parse(durationType)),
-        durationRange,
+        duration,
         EthereumAddress.fromHex(repaymentAssetAddress),
         BigInt.from(repaymentCycleType),
         BigInt.from(num.parse(loanToValue)),
