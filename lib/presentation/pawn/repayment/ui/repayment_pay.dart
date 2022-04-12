@@ -192,6 +192,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.type = value ??
                                                         TypeRepayment
                                                             .PENALTY_INTEREST;
+                                                    penalty.text = '';
+                                                    loan.text = '';
+                                                    interest.text = '';
+                                                    bloc.isLoan.add('');
+                                                    bloc.isPenalty.add('');
+                                                    bloc.isInterest.add('');
                                                     setState(() {});
                                                   },
                                                 ),
@@ -202,6 +208,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               onTap: () {
                                                 bloc.type = TypeRepayment
                                                     .PENALTY_INTEREST;
+                                                penalty.text = '';
+                                                loan.text = '';
+                                                interest.text = '';
+                                                bloc.isLoan.add('');
+                                                bloc.isPenalty.add('');
+                                                bloc.isInterest.add('');
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -240,6 +252,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.type = value ??
                                                         TypeRepayment
                                                             .PENALTY_INTEREST;
+                                                    penalty.text = '';
+                                                    loan.text = '';
+                                                    interest.text = '';
+                                                    bloc.isLoan.add('');
+                                                    bloc.isPenalty.add('');
+                                                    bloc.isInterest.add('');
                                                     setState(() {});
                                                   },
                                                 ),
@@ -249,6 +267,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                             GestureDetector(
                                               onTap: () {
                                                 bloc.type = TypeRepayment.LOAN;
+                                                penalty.text = '';
+                                                loan.text = '';
+                                                interest.text = '';
+                                                bloc.isLoan.add('');
+                                                bloc.isPenalty.add('');
+                                                bloc.isInterest.add('');
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -313,7 +337,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                       ? isChoose
                                       : bloc.type == TypeRepayment.LOAN,
                                   textController: loan,
-                                  symbol: obj.interest?.symbol.toString() ?? '',
+                                  symbol: obj.loan?.symbol.toString() ?? '',
                                   value:
                                       '${formatPrice.format(obj.loan?.amountPaid ?? 0)}'
                                       '/${formatPrice.format(obj.loan?.amount ?? 0)} '
@@ -406,15 +430,18 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                       navigator.push(
                                         MaterialPageRoute(
                                           builder: (context) => Approve(
-                                            textActiveButton:
-                                                '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                            spender: Get.find<AppConstants>()
-                                                .crypto_pawn_contract,
-                                            hexString: bloc.hexString,
+                                            needApprove: true,
+                                            payValue:'1000000000',
+                                            //todo
                                             tokenAddress:
                                                 Get.find<AppConstants>()
                                                     .contract_defy,
-                                            title: S.current.confirm_send_offer,
+                                            textActiveButton:
+                                            S.current.confirm_repayment,
+                                            spender: Get.find<AppConstants>()
+                                                .collateral_contract,
+                                            hexString: bloc.hexString,
+                                            title: S.current.confirm_repayment,
                                             listDetail: [
                                               DetailItemApproveModel(
                                                 title: '${S.current.penalty}: ',

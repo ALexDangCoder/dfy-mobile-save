@@ -54,7 +54,7 @@ class CreateCollectionScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   Text(
-                    S.current.soft_nft,
+                    S.current.soft_collection,
                     style: textLabelNFT,
                   ),
                   SizedBox(
@@ -93,7 +93,7 @@ class CreateCollectionScreen extends StatelessWidget {
                     height: 12.h,
                   ),
                   Text(
-                    S.current.hard_nft,
+                    S.current.hard_collection,
                     style: textLabelNFT,
                   ),
                   SizedBox(

@@ -1211,8 +1211,8 @@ class Web3Utils {
       contract: deployContract,
       function: function,
       parameters: [
-        BigInt.from(num.parse(offerId)),
         BigInt.from(num.parse(nftCollateralId)),
+        BigInt.from(num.parse(offerId)),
       ],
     );
     return hex.encode(acceptOffer.data ?? []);
