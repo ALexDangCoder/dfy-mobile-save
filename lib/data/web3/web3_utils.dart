@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:tuple/tuple.dart';
 import 'package:web3dart/web3dart.dart';
 
 class ImportNftResponse {
@@ -1260,6 +1261,41 @@ class Web3Utils {
       ],
     );
     return hex.encode(repayment.data ?? []);
+  }
+
+  Future<String> getCreatePackageData({
+    required int packageType,
+    required String loanTokenAddress,
+    required Tuple2 loanAmountRange,
+    required List<String> collateralAcceptance,
+    required String interest,
+    required String durationType,
+    required Tuple2 durationRange,
+    required String repaymentAssetAddress,
+    required int repaymentCycleType,
+    required String loanToValue,
+    required String loanToValueLiquidationThreshold,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('createPawnShopPackage');
+    final createPawnShopPackage = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(packageType),
+        EthereumAddress.fromHex(loanTokenAddress),
+        loanAmountRange,
+        collateralAcceptance,
+        BigInt.from(num.parse(_handleAmount(5, interest))),
+        BigInt.from(num.parse(durationType)),
+        durationRange,
+        EthereumAddress.fromHex(repaymentAssetAddress),
+        BigInt.from(repaymentCycleType),
+        BigInt.from(num.parse(loanToValue)),
+        BigInt.from(num.parse(loanToValueLiquidationThreshold)),
+      ],
+    );
+    return hex.encode(createPawnShopPackage.data ?? []);
   }
 
   //sumit
