@@ -92,6 +92,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               obj = state.obj ?? obj;
+              bloc.obj=state.obj ?? obj;
               if ((obj.penalty?.address.toString().toUpperCase() ==
                       obj.interest?.address.toString().toUpperCase()) &&
                   (obj.penalty?.address.toString().toUpperCase() ==
@@ -423,21 +424,20 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                       paidInterestAmount: bloc.interest.value,
                                       paidLoanAmount: bloc.loan.value,
                                       paidPenaltyAmount: bloc.penalty.value,
-                                      //todo data
-                                      uid: widget.obj.borrowerUserId.toString(),
+                                      uid: widget.obj.id.toString(),
                                     );
                                     unawaited(
                                       navigator.push(
                                         MaterialPageRoute(
                                           builder: (context) => Approve(
                                             needApprove: true,
-                                            payValue:'1000000000',
-                                            //todo
+                                            payValue: '1000000000',//todo a
+                                            // nghĩa bao
                                             tokenAddress:
                                                 Get.find<AppConstants>()
                                                     .contract_defy,
                                             textActiveButton:
-                                            S.current.confirm_repayment,
+                                                S.current.confirm_repayment,
                                             spender: Get.find<AppConstants>()
                                                 .collateral_contract,
                                             hexString: bloc.hexString,
@@ -446,14 +446,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               DetailItemApproveModel(
                                                 title: '${S.current.penalty}: ',
                                                 value: '${formatPrice.format(
-                                                  bloc.objRepayment.penalty
+                                                  obj.penalty
                                                           ?.amount ??
                                                       0,
                                                 )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                    ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
+                                                      obj.penalty
                                                           ?.symbol ??
                                                       '',
                                                 ),
@@ -462,14 +462,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 title:
                                                     '${S.current.interest}: ',
                                                 value: '${formatPrice.format(
-                                                  bloc.objRepayment.interest
+                                                  obj.interest
                                                           ?.amount ??
                                                       0,
                                                 )}'
-                                                    ' ${bloc.objRepayment.interest?.symbol ?? ''}',
+                                                    ' ${obj.interest?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.interest
+                                                      obj.interest
                                                           ?.symbol ??
                                                       '',
                                                 ),
@@ -478,13 +478,13 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 title:
                                                     '${S.current.system_fee}: ',
                                                 value: '${formatPrice.format(
-                                                  bloc.objRepayment.systemFee ??
+                                                  obj.systemFee ??
                                                       0,
                                                 )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                    ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
+                                                      obj.penalty
                                                           ?.symbol ??
                                                       '',
                                                 ),
@@ -492,14 +492,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               DetailItemApproveModel(
                                                 title: '${S.current.loan}: ',
                                                 value: '${formatPrice.format(
-                                                  bloc.objRepayment.loan
+                                                  obj.loan
                                                           ?.amount ??
                                                       0,
                                                 )}'
-                                                    ' ${bloc.objRepayment.loan?.symbol ?? ''}',
+                                                    ' ${obj.loan?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.loan
+                                                  obj.loan
                                                           ?.symbol ??
                                                       '',
                                                 ),
@@ -508,14 +508,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                 title:
                                                     '${S.current.prepaid_fee}: ',
                                                 value: '${formatPrice.format(
-                                                  bloc.objRepayment
+                                                  obj
                                                           .prepaidFee ??
                                                       0,
                                                 )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
+                                                    ' ${obj.penalty?.symbol ?? ''}',
                                                 urlToken:
                                                     ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
+                                                  obj.penalty
                                                           ?.symbol ??
                                                       '',
                                                 ),

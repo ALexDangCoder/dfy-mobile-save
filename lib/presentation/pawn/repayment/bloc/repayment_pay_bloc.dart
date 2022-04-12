@@ -14,7 +14,7 @@ import 'package:rxdart/rxdart.dart';
 
 class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   RepaymentPayBloc() : super(RepaymentPayInitial());
-
+  RepaymentRequestModel obj = RepaymentRequestModel.name();
   TypeRepayment type = TypeRepayment.PENALTY_INTEREST;
   BehaviorSubject<String> penalty = BehaviorSubject.seeded('0');
   BehaviorSubject<String> interest = BehaviorSubject.seeded('0');
@@ -173,18 +173,18 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
       repaymentPayRequest: CalculateRepaymentRequest(
         interest: AmountRequest(
           amount: double.tryParse(interest.value),
-          address: objRepayment.interest?.address.toString(),
-          symbol: objRepayment.interest?.symbol.toString(),
+          address: obj.interest?.address.toString(),
+          symbol: obj.interest?.symbol.toString(),
         ),
         loan: AmountRequest(
           amount: double.tryParse(loan.value),
-          address: objRepayment.loan?.address.toString(),
-          symbol: objRepayment.loan?.symbol.toString(),
+          address: obj.loan?.address.toString(),
+          symbol: obj.loan?.symbol.toString(),
         ),
         penalty: AmountRequest(
           amount: double.tryParse(penalty.value),
-          address: objRepayment.penalty?.address.toString(),
-          symbol: objRepayment.penalty?.symbol.toString(),
+          address: obj.penalty?.address.toString(),
+          symbol: obj.penalty?.symbol.toString(),
         ),
       ),
     );
