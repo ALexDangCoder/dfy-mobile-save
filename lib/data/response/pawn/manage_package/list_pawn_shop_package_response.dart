@@ -45,9 +45,9 @@ class ItemPawnShopPackageResponse extends Equatable {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'pawnShopId')
-  int? pawnShopId;
+  num? pawnShopId;
   @JsonKey(name: 'status')
-  int? status;
+  num? status;
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'type')
@@ -69,19 +69,19 @@ class ItemPawnShopPackageResponse extends Equatable {
   @JsonKey(name: 'bcPackageId')
   int? bcPackageId;
   @JsonKey(name: 'loanToValue')
-  int? loanToValue;
+  num? loanToValue;
   @JsonKey(name: 'interest')
-  int? interest;
+  num? interest;
   @JsonKey(name: 'liquidationThreshold')
-  int? liquidationThreshold;
+  num? liquidationThreshold;
   @JsonKey(name: 'recurringInterest')
   int? recurringInterest;
   @JsonKey(name: 'allowedLoanMax')
-  double? allowedLoanMax;
+  num? allowedLoanMax;
   @JsonKey(name: 'allowedLoanMin')
-  double? allowedLoanMin;
+  num? allowedLoanMin;
   @JsonKey(name: 'collateralReceived')
-  int? collateralReceived;
+  num? collateralReceived;
   @JsonKey(name: 'loanTokens')
   List<LoanTokensResponse>? loanTokens;
   @JsonKey(name: 'collateralTokens')

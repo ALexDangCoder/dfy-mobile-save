@@ -1,12 +1,15 @@
+import 'package:Dfy/data/request/pawn/lender/create_new_loan_package_request.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/home_pawn/official_pawn_with_token_res.dart';
 import 'package:Dfy/data/response/pawn/manage_package/detail_pawn_shop_package_response.dart';
 import 'package:Dfy/data/response/pawn/manage_package/find_by_user_id_response.dart';
+import 'package:Dfy/data/response/pawn/manage_package/info_after_post_new_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/manage_package/list_pawn_shop_package_response.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/services/pawn/setting_package_lender/setting_package_lender_service.dart';
 import 'package:Dfy/domain/model/home_pawn/pawn_shop_model.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
+import 'package:Dfy/domain/model/pawn/manage_loan_package/infor_after_post_new_loan_package.dart';
 import 'package:Dfy/domain/model/pawn/manage_loan_package/pawnshop_package_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/repository/pawn/manage_loan_package/manage_loan_package_repository.dart';
@@ -54,10 +57,21 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
   }
 
   @override
-  Future<Result<PawnshopPackage>> getPawnshopDetail({required String packageId}) {
+  Future<Result<PawnshopPackage>> getPawnshopDetail(
+      {required String packageId}) {
     return runCatchingAsync<DetailPawnShopPackageResponse, PawnshopPackage>(
-          () => _client.getPawnshopPackageDetail(packageId),
-          (response) => response.data?.toDomain() ?? PawnshopPackage(),
+      () => _client.getPawnshopPackageDetail(packageId),
+      (response) => response.data?.toDomain() ?? PawnshopPackage(),
+    );
+  }
+
+  @override
+  Future<Result<InfoAfterPostNewLoanPackage>> postInfoNewLoanPackage(
+      {CreateNewLoanPackageRequest? createNewLoanPackageRequest}) {
+    return runCatchingAsync<InfoAfterPostNewLoanPackageResponse,
+        InfoAfterPostNewLoanPackage>(
+      () => _client.postInfoNewLoanPackage(createNewLoanPackageRequest),
+      (response) => response.toModel(),
     );
   }
 

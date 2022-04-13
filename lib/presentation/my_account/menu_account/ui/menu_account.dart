@@ -445,6 +445,9 @@ class _MenuAccountState extends State<MenuAccount> {
               builder: (context) => const ConnectWalletDialog(
                 navigationTo: ManageLoanPackageList(),
                 isRequireLoginEmail: false,
+                settings: const RouteSettings(
+                  name: AppRouter.manage_loan_package,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           } else {
@@ -452,6 +455,9 @@ class _MenuAccountState extends State<MenuAccount> {
               context,
               MaterialPageRoute(
                 builder: (context) => const ManageLoanPackageList(),
+                settings: const RouteSettings(
+                  name: AppRouter.manage_loan_package,
+                ),
               ),
             ).then((_) => cubit.getLoginState());
           }

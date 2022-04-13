@@ -9,6 +9,12 @@ class ManageLoanPackageInitial extends ManageLoanPackageState {
   List<Object> get props => [];
 }
 
+
+class LoadMoreManageLoanPackage extends ManageLoanPackageState {
+  @override
+  List<Object> get props => [];
+}
+
 class ManageLoadApiListPawnShop extends ManageLoanPackageState {
   final List<PawnshopPackage>? list;
   final CompleteType completeType;

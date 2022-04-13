@@ -29,4 +29,8 @@ mixin OfferSentRepository {
       getOfferSentDetailCryptoCollateral({
     String? id,
   });
+
+  Future<Result<String>> putCryptoAfterCancel({
+    required String id,
+  });
 }
