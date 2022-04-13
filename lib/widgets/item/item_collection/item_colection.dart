@@ -89,7 +89,8 @@ class ItemCollection extends StatelessWidget {
                   top: 4.h,
                 ),
                 child: Text(
-                  '$items ${itemsKey ?? S.current.items} • $owners ${ownersKey ?? S.current.owners.toLowerCase()}',
+                  '$items ${itemsKey ?? S.current.items} • $owners '
+                      '${ownersKey ?? S.current.owners.toLowerCase()}',
                   style: textNormalCustom(
                     AppTheme.getInstance().whiteWithOpacity(),
                     12.sp,

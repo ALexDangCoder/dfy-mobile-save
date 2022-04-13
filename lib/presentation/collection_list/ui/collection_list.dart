@@ -330,6 +330,12 @@ class _CollectionListState extends State<CollectionList> {
                                               );
                                             },
                                             child: ItemCollection(
+                                              ownersKey:
+                                                  (list[index].nftOwnerCount ??
+                                                              0) <=
+                                                          1
+                                                      ? S.current.owner.toLowerCase()
+                                                      : S.current.owners.toLowerCase(),
                                               items:
                                                   '${list[index].totalNft ?? 0}',
                                               text: list[index]
