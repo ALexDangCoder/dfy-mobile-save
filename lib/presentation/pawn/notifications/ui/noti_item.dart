@@ -210,7 +210,7 @@ class _NotiItemState extends State<NotiItem> {
       case 16:
         return 'Period loan payment complete';
       case 17:
-        return 'Your loan iss due soon';
+        return 'Your loan is due soon';
       case 18:
         return 'Urgent: Your loan is due soon';
       case 19:
@@ -1934,6 +1934,7 @@ class _NotiItemState extends State<NotiItem> {
           ),
         );
       case 18:
+        final String date = widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate ?? '0';
         return RichText(
           text: TextSpan(
             children: [
@@ -1947,7 +1948,7 @@ class _NotiItemState extends State<NotiItem> {
               ),
               TextSpan(
                 text:
-                    '${widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate}',
+                    formatDateTime.format(DateTime.fromMillisecondsSinceEpoch(int.parse(date))),
                 style: textNormal(
                   textHistory,
                   14,

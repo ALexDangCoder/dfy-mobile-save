@@ -1,6 +1,8 @@
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/user_profile_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/presentation/pawn/lending_registration/bloc/leding_registration_bloc.dart';
@@ -29,6 +31,11 @@ class _LendingRegistrationState extends State<LendingRegistration> {
     emailEditingController = TextEditingController();
     bloc = LendingRegistrationBloc();
     bloc.getListWallet();
+    final profileJson = PrefsService.getUserProfile();
+    final UserProfileModel profile = userProfileFromJson(
+      profileJson,
+    );
+    emailEditingController.text = profile.email ?? '';
   }
 
   @override
@@ -42,7 +49,7 @@ class _LendingRegistrationState extends State<LendingRegistration> {
           GestureDetector(
             onTap: () {
               closeKey(context);
-              // bloc.isChooseAcc.add(true);
+              bloc.isChooseAcc.add(false);
             },
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -129,6 +136,7 @@ class _LendingRegistrationState extends State<LendingRegistration> {
                             ),
                           ),
                           child: TextFormField(
+                            enabled: false,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.emailAddress,
                             style: textNormal(
@@ -174,7 +182,7 @@ class _LendingRegistrationState extends State<LendingRegistration> {
                           child: InkWell(
                             onTap: () {
                               if (bloc.checkWalletAddress) {
-                                bloc.isChooseAcc.sink.add(false);
+                                bloc.isChooseAcc.sink.add(true);
                               }
                             },
                             child: StreamBuilder<String>(
@@ -503,55 +511,52 @@ class _LendingRegistrationState extends State<LendingRegistration> {
             ),
           ),
           Positioned(
-            top: 180.h,
+            top: 230.h,
             child: StreamBuilder<bool>(
               initialData: false,
               stream: bloc.isChooseAcc,
               builder: (ctx, snapshot) {
                 return Visibility(
                   visible: snapshot.data ?? false,
-                  child: Positioned(
-                    top: 150.h,
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: AppTheme.getInstance().colorTextReset(),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20.r),
-                        ),
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: AppTheme.getInstance().colorTextReset(),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.r),
                       ),
-                      width: 343.w,
-                      height: 123.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: bloc.listAcc.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              bloc.chooseAddressFilter(bloc.listAcc[index]);
-                            },
-                            child: Container(
-                              height: 54.h,
-                              padding: EdgeInsets.only(
-                                left: 24.w,
-                                top: 15.h,
-                              ),
-                              color:
-                                  bloc.listAcc[index] == bloc.textAddress.value
-                                      ? AppTheme.getInstance()
-                                          .whiteColor()
-                                          .withOpacity(0.3)
-                                      : Colors.transparent,
-                              child: Text(
-                                bloc.checkAddress(
-                                  bloc.listAcc[index],
-                                ),
-                                style: textNormalCustom(null, 16, null),
-                              ),
+                    ),
+                    width: 343.w,
+                    height: 123.h,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: bloc.listAcc.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            bloc.chooseAddressFilter(bloc.listAcc[index]);
+                          },
+                          child: Container(
+                            height: 54.h,
+                            padding: EdgeInsets.only(
+                              left: 24.w,
+                              top: 15.h,
                             ),
-                          );
-                        },
-                      ),
+                            color:
+                                bloc.listAcc[index] == bloc.textAddress.value
+                                    ? AppTheme.getInstance()
+                                        .whiteColor()
+                                        .withOpacity(0.3)
+                                    : Colors.transparent,
+                            child: Text(
+                              bloc.checkAddress(
+                                bloc.listAcc[index],
+                              ),
+                              style: textNormalCustom(null, 16, null),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );

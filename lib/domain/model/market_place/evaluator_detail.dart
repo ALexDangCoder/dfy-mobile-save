@@ -22,8 +22,16 @@ class EvaluatorsDetailModel {
   int? evaluatedCount;
   int? createdAt;
   PhoneCode? phoneCode;
+  String? storageLocation;
+  String? conditionDetail;
+  String? storageShortScrip;
+  String? protection;
 
   EvaluatorsDetailModel({
+    this.storageLocation,
+    this.conditionDetail,
+    this.storageShortScrip,
+    this.protection,
     this.id,
     this.name,
     this.email,

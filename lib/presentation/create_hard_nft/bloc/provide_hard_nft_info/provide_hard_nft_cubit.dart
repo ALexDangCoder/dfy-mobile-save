@@ -19,10 +19,8 @@ import 'package:Dfy/domain/model/hard_nft_my_account/step1/item_data_after_put_m
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/phone_code_model.dart';
 import 'package:Dfy/domain/model/hard_nft_my_account/step1/put_hard_nft_model.dart';
 import 'package:Dfy/domain/model/market_place/collection_market_model.dart';
-import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/hard_nft_my_account/step1/step1_repository.dart';
-import 'package:Dfy/domain/repository/market_place/collection_detail_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/bloc/provide_hard_nft_info/extension/upload_file_controller.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -80,7 +78,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   ///Di
   Step1Repository get _step1Repository => Get.find();
 
-  CollectionDetailRepository get _collectionDetailRepository => Get.find();
 
   final PinToIPFS _pinToIPFS = PinToIPFS();
 
@@ -504,11 +501,11 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       phonesCodeBHVSJ.sink.add(phonesCode);
     } else {
       final List<Map<String, dynamic>> result = [];
-      tmpPhones.forEach((element) {
+      for (final element in tmpPhones) {
         if ((element['label'] as String).contains(value)) {
           result.add(element);
         }
-      });
+      }
       phonesCodeBHVSJ.sink.add(result);
     }
   }
@@ -519,12 +516,12 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
       countriesBHVSJ.sink.add(countries);
     } else {
       final List<Map<String, dynamic>> result = [];
-      tmpCountries.forEach((element) {
+      for (final element in tmpCountries) {
         if (((element['label'] as String).toLowerCase())
             .contains(value.toLowerCase())) {
           result.add(element);
         }
-      });
+      }
       countriesBHVSJ.sink.add(result);
     }
   }
@@ -691,13 +688,13 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
           collectionMap[element.name ?? ''] = element;
         }
         res = collectionMap.values.toList();
-        res.forEach((element) {
+        for (final element in res) {
           listDropDown.add({
             'label': element.name,
             'value': element.collectionAddress,
             'id': element.id,
           });
-        });
+        }
 
         collectionsBHVSJ.sink.add(listDropDown);
       },
@@ -815,7 +812,6 @@ class ProvideHardNftCubit extends BaseCubit<ProvideHardNftState> {
   };
 
   void validateAll() {
-    print(mapValidate);
     if (mapValidate.containsValue(false)) {
       nextBtnBHVSJ.sink.add(false);
     } else {
