@@ -804,7 +804,9 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                 ? Text(
                     snapshot.data ?? '',
                     style: textNormalCustom(
-                      AppTheme.getInstance().redColor(),
+                      S.current.ltv_validate_20 != (snapshot.data ?? '')
+                          ? AppTheme.getInstance().redColor()
+                          : AppTheme.getInstance().whiteWithOpacitySevenZero(),
                       12,
                       FontWeight.w400,
                     ),

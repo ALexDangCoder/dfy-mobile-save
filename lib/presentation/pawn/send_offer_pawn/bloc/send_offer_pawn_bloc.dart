@@ -259,7 +259,7 @@ class SendOfferPawnBloc {
             textLiquidationThreshold.add('');
           } else if (double.parse(value) < loanToValue + 20) {
             isLiquidationThreshold.add(S.current.ltv_validate_20);
-            textLiquidationThreshold.add('');
+            textLiquidationThreshold.add(value);
           } else {
             textLiquidationThreshold.add(value);
             isLiquidationThreshold.add('');

@@ -1011,16 +1011,21 @@ class _ContractDetailState extends State<ContractDetail>
                                                       if (obj.borrowerWalletAddress ==
                                                           PrefsService
                                                               .getCurrentWalletCore()) {
-                                                        goTo(
+                                                        Navigator.push(
                                                           context,
-                                                          RepaymentPay(
-                                                            id: obj.id
-                                                                .toString(),
-                                                            obj: bloc
-                                                                    .objDetail ??
-                                                                ContractDetailPawn
-                                                                    .name(),
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                RepaymentPay(
+                                                              obj: bloc
+                                                                      .objDetail ??
+                                                                  ContractDetailPawn
+                                                                      .name(),
+                                                              id: obj.id
+                                                                  .toString(),
+                                                            ),
                                                           ),
+                                                        ).whenComplete(
+                                                          () => bloc.getData(),
                                                         );
                                                       } else {
                                                         showAlert(
@@ -1059,14 +1064,19 @@ class _ContractDetailState extends State<ContractDetail>
                                                   if (obj.lenderWalletAddress ==
                                                       PrefsService
                                                           .getCurrentWalletCore()) {
-                                                    goTo(
+                                                    Navigator.push(
                                                       context,
-                                                      RepaymentPay(
-                                                        obj: bloc.objDetail ??
-                                                            ContractDetailPawn
-                                                                .name(),
-                                                        id: obj.id.toString(),
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RepaymentPay(
+                                                          obj: bloc.objDetail ??
+                                                              ContractDetailPawn
+                                                                  .name(),
+                                                          id: obj.id.toString(),
+                                                        ),
                                                       ),
+                                                    ).whenComplete(
+                                                      () => bloc.getData(),
                                                     );
                                                   } else {
                                                     showAlert(

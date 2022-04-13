@@ -49,6 +49,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
         children: [
           _imageFtNameNft(
             nftModel: nftItem ?? NFTPawnModel(),
+            isHardNft: (nftItem?.nftType == 1)? true : false,
           ),
           spaceH12,
           _rowItem(
@@ -115,7 +116,7 @@ class LenderLoanRequestNftItem extends StatelessWidget {
             description: Text(
               '${formatValue.format(nftModel.expectedLoanAmount)} ${nftModel.expectedLoanSymbol}',
               style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
+                AppTheme.getInstance().successTransactionColors(),
                 24,
                 FontWeight.w600,
               ),
@@ -198,7 +199,6 @@ class LenderLoanRequestNftItem extends StatelessWidget {
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 3,

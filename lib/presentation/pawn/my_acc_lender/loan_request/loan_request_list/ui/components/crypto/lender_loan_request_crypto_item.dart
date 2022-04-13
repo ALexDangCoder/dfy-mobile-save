@@ -60,6 +60,13 @@ class LoanRequestCryptoItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _rowItem(
+              title: S.current.message.capitalize().withColon(),
+              description: cryptoModel.message ?? '',
+            ),
+            SizedBox(
+              height: 17.w,
+            ),
+            _rowItem(
               title: S.current.collateral.capitalize().withColon(),
               isLoanAmount: true,
               urlToken: cryptoModel.collateralSymbol,
@@ -89,6 +96,10 @@ class LoanRequestCryptoItem extends StatelessWidget {
               height: 17.w,
             ),
             _rowItem(title: S.current.status, isStatus: true, description: ''),
+            SizedBox(
+              height: 17.w,
+            ),
+            _rowItem(title: 'From package:', description: cryptoModel.p2pLenderPackageModel?.name ?? ''),
           ],
         ),
       ),

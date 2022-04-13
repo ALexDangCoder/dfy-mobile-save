@@ -7,6 +7,7 @@ import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/loan_request_crypto_item_model.dart';
+import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/market_place/wallet_address_respository.dart';
 import 'package:Dfy/domain/repository/pawn/loan_request/loan_request_repository.dart';
@@ -21,7 +22,9 @@ import 'package:rxdart/rxdart.dart';
 part 'lender_loan_request_state.dart';
 
 class LenderLoanRequestCubit extends BaseCubit<LenderLoanRequestState> {
-  LenderLoanRequestCubit() : super(LenderLoanRequestInitial());
+  LenderLoanRequestCubit() : super(LenderLoanRequestInitial()) {
+    getTokenInf();
+  }
 
   ///di
   LoanRequestRepository get _service => Get.find();
@@ -32,15 +35,11 @@ class LenderLoanRequestCubit extends BaseCubit<LenderLoanRequestState> {
   static const String DEFAULT = '3';
 
   static const String FILTER_ALL = '';
-  static const String FILTER_OPEN = '1';
-  static const String FILTER_REJECT = '5';
-  static const String FILTER_ACCEPT = '3';
-  static const String FILTER_CANCEL = '7';
 
   String filterWalletAddress = FILTER_ALL;
   String filterCollateral = FILTER_ALL;
   String filterStatus = FILTER_ALL;
-  String nftTypeFilter = '';
+  String nftTypeFilter = FILTER_ALL;
 
   ///Api for tab crypto
   int page = 0;
@@ -280,49 +279,113 @@ class LenderLoanRequestCubit extends BaseCubit<LenderLoanRequestState> {
     }
   }
 
-  ///for tab crypto
+  ///Filter collateral for tab crypto
   List<TokenInf> listTokenSupport = [];
+  List<TokenModelPawn> listTokenFilter = [];
 
   void getTokenInf() {
+    if (listTokenFilter.isNotEmpty || listTokenSupport.isNotEmpty) {
+      listTokenFilter.clear();
+      listTokenSupport.clear();
+    }
     final String listToken = PrefsService.getListTokenSupport();
     listTokenSupport = TokenInf.decode(listToken);
-    // for (final element in listTokenSupport) {
-    //   if (element.symbol == USDT ||
-    //       element.symbol == BNB ||
-    //       element.symbol == DFY) {
-    //     tokensMap.add(
-    //       {
-    //         'value': element.id,
-    //         'label': element.symbol,
-    //         'symbol': element.symbol ?? DFY,
-    //         'icon': SizedBox(
-    //           width: 20.w,
-    //           height: 20.h,
-    //           child: Image.network(
-    //             ImageAssets.getSymbolAsset(
-    //               element.symbol ?? DFY,
-    //             ),
-    //           ),
-    //         ),
-    //       },
-    //     );
-    //   }
-    //   if (tokensMap.isEmpty) {
-    //     tokensMap.add(
-    //       {
-    //         'label': DFY,
-    //         'icon': SizedBox(
-    //           width: 20.w,
-    //           height: 20.h,
-    //           child: Image.network(
-    //             ImageAssets.getSymbolAsset(
-    //               element.symbol ?? DFY,
-    //             ),
-    //           ),
-    //         ),
-    //       },
-    //     );
-    //   }
-    // }
+    for (final value in listTokenSupport) {
+      listTokenFilter.add(
+        TokenModelPawn(
+          symbol: value.symbol,
+          address: value.address,
+          id: value.id.toString(),
+          url: value.iconUrl,
+        ),
+      );
+    }
+  }
+
+  List<String> strings = [];
+
+  ///this var use for append filter collateral
+  void appendFilterCollateral(String symbol) {
+    symbol.toUpperCase();
+    if (strings.contains(symbol)) {
+      strings.remove(symbol);
+    } else {
+      strings.add(symbol.toUpperCase());
+    }
+    filterCollateral = strings.join(',');
+  }
+
+  ///filter status chug
+  static const String FILTER_OPEN = '1';
+  static const String FILTER_REJECT = '5';
+  static const String FILTER_ACCEPT = '3';
+  static const String FILTER_CANCEL = '7';
+  static const String FILTER_HARD_NFT = '1';
+  static const String FILTER_SOFT_NFT = '2';
+
+  final List<Map<String, dynamic>> listFilterStatusOriginal = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': FILTER_OPEN},
+    {'isSelected': false, 'status': FILTER_REJECT},
+    {'isSelected': false, 'status': FILTER_ACCEPT},
+    {'isSelected': false, 'status': FILTER_CANCEL},
+  ];
+
+  final List<Map<String, dynamic>> listFilterStatus = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': FILTER_OPEN},
+    {'isSelected': false, 'status': FILTER_REJECT},
+    {'isSelected': false, 'status': FILTER_ACCEPT},
+    {'isSelected': false, 'status': FILTER_CANCEL},
+  ];
+
+  final List<Map<String, dynamic>> listFilterNftTypeOriginal = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': FILTER_HARD_NFT},
+    {'isSelected': false, 'status': FILTER_SOFT_NFT},
+  ];
+
+  final List<Map<String, dynamic>> listFilterNftType = [
+    {'isSelected': true, 'status': ALL},
+    {'isSelected': false, 'status': FILTER_HARD_NFT},
+    {'isSelected': false, 'status': FILTER_SOFT_NFT},
+  ];
+
+  BehaviorSubject<List<Map<String, dynamic>>> filterListBHVSJ =
+      BehaviorSubject();
+  BehaviorSubject<List<Map<String, dynamic>>> filterListNFTBHVSJ =
+      BehaviorSubject();
+
+  void pickJustOneFilter(int index, {bool? isNft = false}) {
+    if (!(isNft ?? false)) {
+      for (final element in listFilterStatus) {
+        element['isSelected'] = false;
+      }
+      listFilterStatus[index]['isSelected'] = true;
+      filterStatus = listFilterStatus[index]['status'];
+      filterListBHVSJ.sink.add(listFilterStatus);
+    } else {
+      for (final element in listFilterNftType) {
+        element['isSelected'] = false;
+      }
+      listFilterNftType[index]['isSelected'] = true;
+      nftTypeFilter = listFilterNftType[index]['status'];
+      filterListNFTBHVSJ.sink.add(listFilterNftType);
+    }
+  }
+
+  void resetFilter(int indexTab) {
+    if (indexTab == 0) {
+      for (final element in listTokenFilter) {
+        element.isCheck = false;
+      }
+      filterWalletAddress = FILTER_ALL;
+      filterCollateral = FILTER_ALL;
+      filterStatus = FILTER_ALL;
+      filterListBHVSJ.sink.add(listFilterStatusOriginal);
+    } else {
+      nftTypeFilter = FILTER_ALL;
+      filterListNFTBHVSJ.sink.add(listFilterNftTypeOriginal);
+    }
   }
 }

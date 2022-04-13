@@ -860,7 +860,7 @@
   "confirm_reject_collateral": "Xác nhận từ chối tài sản thế chấp",
   "confirm_cancel_cancel_package": "Huỷ gói vay",
   "description_manage_loan_1": "Tham gia vào cuộc cách mạng\ntài chính phi tập trung.",
-  "description_manage_loan_2": "Kiếm tiền điện tử\ntừ cho vay.",
+  "description_manage_loan_2": "Kiếm tiền điện tử\n  từ cho vay.",
   "add_lend_setting": "Thêm cài đặt cho vay",
   "select_wallet_address": "Chọn địa chỉ ví",
   "offer_sent": "Đề nghị được gửi",
@@ -890,5 +890,7 @@
   "the_collateral_will_be_liquidated": ", the collateral will be liquidated.",
   "lender_contract_list": "Danh sách hợp đồng cho vay",
   "request_detail": "Chi tiết yêu cầu",
-  "reject_request": "Từ chối yêu cầu"
+  "reject_request": "Từ chối yêu cầu",
+  "manage_loan_package": "Quản lí gói vay",
+  "lending_setting": "Thiết lập cho vay"
 }

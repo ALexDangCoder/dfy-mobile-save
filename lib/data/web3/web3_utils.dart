@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:tuple/tuple.dart';
 import 'package:web3dart/web3dart.dart';
 
 class ImportNftResponse {
@@ -1210,8 +1211,8 @@ class Web3Utils {
       contract: deployContract,
       function: function,
       parameters: [
-        BigInt.from(num.parse(offerId)),
         BigInt.from(num.parse(nftCollateralId)),
+        BigInt.from(num.parse(offerId)),
       ],
     );
     return hex.encode(acceptOffer.data ?? []);
@@ -1260,6 +1261,84 @@ class Web3Utils {
       ],
     );
     return hex.encode(repayment.data ?? []);
+  }
+
+
+
+  Future<String> getCreatePackageData({
+    required int packageType,
+    required String loanTokenAddress,
+    required List<String> loanAmountRange,
+    required List<String> collateralAcceptance,
+    required String interest,
+    required String durationType,
+    required List<String> durationRange,
+    required String repaymentAssetAddress,
+    required int repaymentCycleType,
+    required String loanToValue,
+    required String loanToValueLiquidationThreshold,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('createPawnShopPackage');
+    final loanAmount = loanAmountRange
+        .map((e) => BigInt.from(num.parse(_handleAmount(18, e))))
+        .toList();
+    final listAddress =
+        collateralAcceptance.map((e) => EthereumAddress.fromHex(e)).toList();
+    final duration =
+        durationRange.map((e) => BigInt.from(num.parse(e))).toList();
+    final createPawnShopPackage = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(packageType),
+        EthereumAddress.fromHex(loanTokenAddress),
+        loanAmount,
+        listAddress,
+        BigInt.from(num.parse(_handleAmount(5, interest))),
+        BigInt.from(num.parse(durationType)),
+        duration,
+        EthereumAddress.fromHex(repaymentAssetAddress),
+        BigInt.from(repaymentCycleType),
+        BigInt.from(num.parse(loanToValue)),
+        BigInt.from(num.parse(loanToValueLiquidationThreshold)),
+      ],
+    );
+    return hex.encode(createPawnShopPackage.data ?? []);
+  }
+
+  Future<String> getRejectPackageData({
+    required String collateralId,
+    required String packageId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('rejectCollateralOfPackage');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(collateralId)),
+        BigInt.from(num.parse(packageId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
+  }
+
+  Future<String> getAcceptPackageData({
+    required String collateralId,
+    required String packageId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('acceptCollateralOfPackage');
+    final acceptOffer = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(collateralId)),
+        BigInt.from(num.parse(packageId)),
+      ],
+    );
+    return hex.encode(acceptOffer.data ?? []);
   }
 
   //sumit

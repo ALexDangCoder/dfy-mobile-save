@@ -6,6 +6,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/offer_detail_my_acc.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_bloc.dart';
 import 'package:Dfy/presentation/pawn/offer_detail/bloc/offer_detail_my_acc_state.dart';
@@ -60,6 +61,12 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               obj = state.obj ?? obj;
+              bloc.getBalanceToken(
+                tokenAddress: ImageAssets.getAddressToken(
+                  obj.supplyCurrencySymbol.toString(),
+                ),
+                ofAddress: PrefsService.getCurrentBEWallet(),
+              );
               bloc.getReputation(obj.walletAddress.toString());
             } else {
               mes = state.message ?? '';
@@ -395,6 +402,10 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                                 );
                                               },
                                             ),
+                                          ).whenComplete(
+                                            () => bloc.getOfferDetailMyAcc(
+                                              id: bloc.id,
+                                            ),
                                           );
                                         } else {
                                           showAlert(
@@ -435,16 +446,30 @@ class _OfferDetailMyAccScreenState extends State<OfferDetailMyAccScreen> {
                                         if (PrefsService.getCurrentWalletCore()
                                                 .toLowerCase() !=
                                             obj.walletAddress?.toUpperCase()) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return ConfirmAccept(
-                                                  bloc: bloc,
-                                                );
-                                              },
-                                            ),
-                                          );
+                                          if ((bloc.balance ?? 0) >=
+                                              (obj.loanAmount ?? 0)) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return ConfirmAccept(
+                                                    bloc: bloc,
+                                                  );
+                                                },
+                                              ),
+                                            ).whenComplete(
+                                              () => bloc.getOfferDetailMyAcc(
+                                                id: bloc.id,
+                                              ),
+                                            );
+                                          } else {
+                                            showErrDialog(
+                                              context: context,
+                                              title: S.current.warning,
+                                              content:
+                                                  '${S.current.your_balance_must} ${bloc.balance} ${obj.supplyCurrencySymbol.toString()}',
+                                            );
+                                          }
                                         } else {
                                           showAlert(
                                             context,

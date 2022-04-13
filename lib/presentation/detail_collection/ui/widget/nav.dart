@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -88,7 +87,9 @@ class NavCollection extends StatelessWidget {
               spaceW4,
               Expanded(
                 child: Text(
-                  S.current.owners.toLowerCase(),
+                  (owners.trim() == '1' || owners.trim() == '0')
+                      ? S.current.owner.toLowerCase()
+                      : S.current.owners.toLowerCase(),
                   style: textNormalCustom(
                     null,
                     12,
@@ -113,7 +114,6 @@ class NavCollection extends StatelessWidget {
               ),
             ],
           ),
-
         ],
       ),
     );

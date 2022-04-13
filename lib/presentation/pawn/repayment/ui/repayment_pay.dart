@@ -14,6 +14,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
 import 'package:Dfy/presentation/pawn/repayment/bloc/repayment_pay_bloc.dart';
 import 'package:Dfy/presentation/pawn/repayment/bloc/repayment_pay_state.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -92,6 +93,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
             bloc.showContent();
             if (state.completeType == CompleteType.SUCCESS) {
               obj = state.obj ?? obj;
+              bloc.obj = state.obj ?? obj;
               if ((obj.penalty?.address.toString().toUpperCase() ==
                       obj.interest?.address.toString().toUpperCase()) &&
                   (obj.penalty?.address.toString().toUpperCase() ==
@@ -192,6 +194,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.type = value ??
                                                         TypeRepayment
                                                             .PENALTY_INTEREST;
+                                                    penalty.text = '';
+                                                    loan.text = '';
+                                                    interest.text = '';
+                                                    bloc.isLoan.add('');
+                                                    bloc.isPenalty.add('');
+                                                    bloc.isInterest.add('');
                                                     setState(() {});
                                                   },
                                                 ),
@@ -202,6 +210,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                               onTap: () {
                                                 bloc.type = TypeRepayment
                                                     .PENALTY_INTEREST;
+                                                penalty.text = '';
+                                                loan.text = '';
+                                                interest.text = '';
+                                                bloc.isLoan.add('');
+                                                bloc.isPenalty.add('');
+                                                bloc.isInterest.add('');
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -240,6 +254,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                                     bloc.type = value ??
                                                         TypeRepayment
                                                             .PENALTY_INTEREST;
+                                                    penalty.text = '';
+                                                    loan.text = '';
+                                                    interest.text = '';
+                                                    bloc.isLoan.add('');
+                                                    bloc.isPenalty.add('');
+                                                    bloc.isInterest.add('');
                                                     setState(() {});
                                                   },
                                                 ),
@@ -249,6 +269,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                             GestureDetector(
                                               onTap: () {
                                                 bloc.type = TypeRepayment.LOAN;
+                                                penalty.text = '';
+                                                loan.text = '';
+                                                interest.text = '';
+                                                bloc.isLoan.add('');
+                                                bloc.isPenalty.add('');
+                                                bloc.isInterest.add('');
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -313,7 +339,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                       ? isChoose
                                       : bloc.type == TypeRepayment.LOAN,
                                   textController: loan,
-                                  symbol: obj.interest?.symbol.toString() ?? '',
+                                  symbol: obj.loan?.symbol.toString() ?? '',
                                   value:
                                       '${formatPrice.format(obj.loan?.amountPaid ?? 0)}'
                                       '/${formatPrice.format(obj.loan?.amount ?? 0)} '
@@ -391,126 +417,24 @@ class _RepaymentPayState extends State<RepaymentPay> {
                               return GestureDetector(
                                 onTap: () async {
                                   if (snapshot.data ?? false) {
-                                    final NavigatorState navigator =
-                                        Navigator.of(context);
-                                    await bloc.getRepaymentData(
-                                      bcContractId:
-                                          widget.obj.bcContractId.toString(),
-                                      paidInterestAmount: bloc.interest.value,
-                                      paidLoanAmount: bloc.loan.value,
-                                      paidPenaltyAmount: bloc.penalty.value,
-                                      //todo data
-                                      uid: widget.obj.borrowerUserId.toString(),
-                                    );
-                                    unawaited(
-                                      navigator.push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Approve(
-                                            textActiveButton:
-                                                '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
-                                            spender: Get.find<AppConstants>()
-                                                .crypto_pawn_contract,
-                                            hexString: bloc.hexString,
-                                            tokenAddress:
-                                                Get.find<AppConstants>()
-                                                    .contract_defy,
-                                            title: S.current.confirm_send_offer,
-                                            listDetail: [
-                                              DetailItemApproveModel(
-                                                title: '${S.current.penalty}: ',
-                                                value: '${formatPrice.format(
-                                                  bloc.objRepayment.penalty
-                                                          ?.amount ??
-                                                      0,
-                                                )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
-                                                urlToken:
-                                                    ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
-                                                          ?.symbol ??
-                                                      '',
-                                                ),
-                                              ),
-                                              DetailItemApproveModel(
-                                                title:
-                                                    '${S.current.interest}: ',
-                                                value: '${formatPrice.format(
-                                                  bloc.objRepayment.interest
-                                                          ?.amount ??
-                                                      0,
-                                                )}'
-                                                    ' ${bloc.objRepayment.interest?.symbol ?? ''}',
-                                                urlToken:
-                                                    ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.interest
-                                                          ?.symbol ??
-                                                      '',
-                                                ),
-                                              ),
-                                              DetailItemApproveModel(
-                                                title:
-                                                    '${S.current.system_fee}: ',
-                                                value: '${formatPrice.format(
-                                                  bloc.objRepayment.systemFee ??
-                                                      0,
-                                                )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
-                                                urlToken:
-                                                    ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
-                                                          ?.symbol ??
-                                                      '',
-                                                ),
-                                              ),
-                                              DetailItemApproveModel(
-                                                title: '${S.current.loan}: ',
-                                                value: '${formatPrice.format(
-                                                  bloc.objRepayment.loan
-                                                          ?.amount ??
-                                                      0,
-                                                )}'
-                                                    ' ${bloc.objRepayment.loan?.symbol ?? ''}',
-                                                urlToken:
-                                                    ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.loan
-                                                          ?.symbol ??
-                                                      '',
-                                                ),
-                                              ),
-                                              DetailItemApproveModel(
-                                                title:
-                                                    '${S.current.prepaid_fee}: ',
-                                                value: '${formatPrice.format(
-                                                  bloc.objRepayment
-                                                          .prepaidFee ??
-                                                      0,
-                                                )}'
-                                                    ' ${bloc.objRepayment.penalty?.symbol ?? ''}',
-                                                urlToken:
-                                                    ImageAssets.getUrlToken(
-                                                  bloc.objRepayment.penalty
-                                                          ?.symbol ??
-                                                      '',
-                                                ),
-                                              ),
-                                            ],
-                                            onErrorSign: (context) {},
-                                            onSuccessSign: (context, data) {
-                                              bloc.postRepaymentPay();
-                                              showLoadSuccess(context)
-                                                  .then((value) {
-                                                Navigator.of(context)
-                                                    .popUntil((route) {
-                                                  return route.settings.name ==
-                                                      AppRouter
-                                                          .contract_detail_my_acc;
-                                                });
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                    if (!isChoose) {
+                                      if (TypeRepayment.LOAN == bloc.type) {
+                                        if (obj.interest?.amount == 0 &&
+                                            obj.penalty?.amount == 0) {
+                                          await approveRepayment();
+                                        } else {
+                                          showErrDialog(
+                                            context: context,
+                                            title: S.current.warning,
+                                            content: S.current.in_order_to_pay,
+                                          );
+                                        }
+                                      } else {
+                                        await approveRepayment();
+                                      }
+                                    } else {
+                                      await approveRepayment();
+                                    }
                                   }
                                 },
                                 child: Container(
@@ -533,6 +457,94 @@ class _RepaymentPayState extends State<RepaymentPay> {
                 : const SizedBox.shrink(),
           );
         },
+      ),
+    );
+  }
+
+  Future<void> approveRepayment() async {
+    final NavigatorState navigator = Navigator.of(context);
+    await bloc.getRepaymentData(
+      bcContractId: widget.obj.bcContractId.toString(),
+      paidInterestAmount:
+          bloc.interest.value.isNotEmpty ? bloc.interest.value : '0',
+      paidLoanAmount: bloc.loan.value.isNotEmpty ? bloc.loan.value : '0',
+      paidPenaltyAmount:
+          bloc.penalty.value.isNotEmpty ? bloc.penalty.value : '0',
+      uid: widget.obj.id.toString(),
+    );
+    unawaited(
+      navigator.push(
+        MaterialPageRoute(
+          builder: (context) => Approve(
+            needApprove: true,
+            payValue: '1000000000',
+            //todo a
+            // nghĩa bao
+            tokenAddress: Get.find<AppConstants>().contract_defy,
+            textActiveButton: S.current.confirm_repayment,
+            spender: Get.find<AppConstants>().collateral_contract,
+            hexString: bloc.hexString,
+            title: S.current.confirm_repayment,
+            listDetail: [
+              DetailItemApproveModel(
+                title: '${S.current.penalty}: ',
+                value:
+                    '${bloc.penalty.value.isNotEmpty ? bloc.penalty.value : '0'}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.interest}: ',
+                value:
+                    '${bloc.interest.value.isNotEmpty ? bloc.interest.value : '0'}'
+                    ' ${obj.interest?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.interest?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.system_fee}: ',
+                value: '${formatPrice.format(
+                  obj.systemFee ?? 0,
+                )}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.loan}: ',
+                value: '${bloc.loan.value.isNotEmpty ? bloc.loan.value : '0'}'
+                    ' ${obj.loan?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.loan?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.prepaid_fee}: ',
+                value: '${formatPrice.format(
+                  obj.prepaidFee ?? 0,
+                )}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+            ],
+            onErrorSign: (context) {},
+            onSuccessSign: (context, data) {
+              bloc.postRepaymentPay();
+              showLoadSuccess(context).then((value) {
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name ==
+                      AppRouter.contract_detail_my_acc;
+                });
+              });
+            },
+          ),
+        ),
       ),
     );
   }

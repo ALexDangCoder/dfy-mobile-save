@@ -339,7 +339,6 @@ class NftResponse extends Equatable {
     }
   }
 
-
   //todo cần xem lại các trường khi dùng nftmarket
   NftMarket toModel({
     required double expectedLoanAmount,
