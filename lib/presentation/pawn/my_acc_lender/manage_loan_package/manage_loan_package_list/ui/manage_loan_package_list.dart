@@ -71,7 +71,9 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CreateNewLoanPackage(),
+                      builder: (context) => CreateNewLoanPackage(
+                        pawnShopId: cubit.idPawnShop,
+                      ),
                     ),
                   );
                 },
@@ -130,56 +132,77 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                   color: AppTheme.getInstance().divideColor(),
                 ),
                 Flexible(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        spaceH24,
-                        Text(
-                          S.current.lending_setting.toUpperCase(),
-                          style: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH20,
-                        _lenderSettingItem(),
-                        spaceH32,
-                        Text(
-                          S.current.loan_package.toUpperCase(),
-                          style: textNormalCustom(
-                            AppTheme.getInstance().unselectedTabLabelColor(),
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        spaceH16,
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: cubit.listPawnShop.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                goTo(
-                                  context,
-                                  LoanPackageDetail(
-                                      id: cubit.listPawnShop[index].id ?? 0),
-                                );
-                              },
-                              child: Column(
-                                children: [
-                                  LoanPackageItem(
-                                    pawnshopPackage: cubit.listPawnShop[index],
-                                  ),
-                                  spaceH16,
-                                ],
+                  child: SizedBox(
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (scrollInfo) {
+                        if (cubit.canLoadMoreList &&
+                            scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent) {
+                          cubit.loadMoreGetListPawnShop();
+                        }
+                        return true;
+                      },
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          cubit.refreshGetListPawnShop();
+                        },
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              spaceH24,
+                              Text(
+                                S.current.lending_setting.toUpperCase(),
+                                style: textNormalCustom(
+                                  AppTheme.getInstance()
+                                      .unselectedTabLabelColor(),
+                                  14,
+                                  FontWeight.w400,
+                                ),
                               ),
-                            );
-                          },
+                              spaceH20,
+                              _lenderSettingItem(),
+                              spaceH32,
+                              Text(
+                                S.current.loan_package.toUpperCase(),
+                                style: textNormalCustom(
+                                  AppTheme.getInstance()
+                                      .unselectedTabLabelColor(),
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                              spaceH16,
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: cubit.listPawnShop.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      goTo(
+                                        context,
+                                        LoanPackageDetail(
+                                            id: cubit.listPawnShop[index].id ??
+                                                0),
+                                      );
+                                    },
+                                    child: Column(
+                                      children: [
+                                        LoanPackageItem(
+                                          pawnshopPackage:
+                                              cubit.listPawnShop[index],
+                                        ),
+                                        spaceH16,
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

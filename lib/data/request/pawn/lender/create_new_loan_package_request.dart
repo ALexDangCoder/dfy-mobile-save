@@ -5,7 +5,7 @@ part 'create_new_loan_package_request.g.dart';
 @JsonSerializable()
 class CreateNewLoanPackageRequest {
   String? associatedWalletAddress;
-  CollateralAcceptancesRequest? collateralAcceptances;
+  List<String>? collateralAcceptances;
   String? description;
   String? durationQtyMax;
   String? durationQtyMin;
@@ -15,10 +15,10 @@ class CreateNewLoanPackageRequest {
   String? interest;
   String? liquidationThreshold;
   String? loanToValue;
-  LoanTokensRequest? loanTokens;
+  List<String>? loanTokens;
   String? recurringInterest;
   String? txid;
-  RepaymentTokensRequest? repaymentTokens;
+  List<String>? repaymentTokens;
   String? pawnShopId;
   String? type;
 

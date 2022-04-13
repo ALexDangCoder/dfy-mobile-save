@@ -2,13 +2,18 @@ import 'package:Dfy/data/request/pawn/lender/create_new_loan_package_request.dar
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/pawn/manage_loan_package/manage_loan_package_repository.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
 part 'create_new_loan_package_state.dart';
 
+//todo fix laji validate
 class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   CreateNewLoanPackageCubit() : super(CreateNewLoanPackageInitial());
 
@@ -20,6 +25,8 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   BehaviorSubject<String> txtWarningLTVThresHold = BehaviorSubject.seeded('');
   BehaviorSubject<String> txtWarningDuration = BehaviorSubject.seeded('');
   BehaviorSubject<String> valueRecurringInterest = BehaviorSubject();
+
+  ManageLoanPackageRepository get _manageSettingService => Get.find();
 
   final Web3Utils web3 = Web3Utils();
   static const String AUTO = '0';
@@ -33,9 +40,19 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   CreateNewLoanPackageRequest loanPackageRequest = CreateNewLoanPackageRequest(
     associatedWalletAddress: PrefsService.getCurrentBEWallet(),
     type: AUTO,
-    repaymentTokens: RepaymentTokensRequest(repaymentTokens: ['DFY']),
-    collateralAcceptances: CollateralAcceptancesRequest(),
+    repaymentTokens: ['DFY'],
+    collateralAcceptances: [],
+    loanTokens: ['DFY'],
+    pawnShopId: ManageLoanPackageCubit().idPawnShop,
   );
+
+  List<String> getAddressCollateralAcceptance() {
+    final List<String> result = [];
+    (loanPackageRequest.collateralAcceptances ?? []).forEach((element) {
+      result.add(ImageAssets.getAddressToken(element));
+    });
+    return result;
+  }
 
   List<String> recurringInterest = [
     'monthly',
@@ -63,9 +80,8 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
         mapValidate['collateral'] = true;
       }
     }
-    loanPackageRequest.collateralAcceptances?.collaterals?.clear();
-    loanPackageRequest.collateralAcceptances?.collaterals =
-        collaterals.toList();
+    loanPackageRequest.collateralAcceptances?.clear();
+    loanPackageRequest.collateralAcceptances = collaterals.toList();
     validateAll();
   }
 
@@ -83,6 +99,7 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(false);
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false) || !checkValidateCollateral()) {
       nextBtnBHVSJ.sink.add(false);
     } else {
@@ -253,13 +270,13 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       if (value1.isEmpty) {
         mapValidate['loanToValue'] = false;
         txtWarningLoanToValue.sink.add('Loan to value is required');
-      } else if (!regexAmount.hasMatch(value1) || double.parse(value1) == 0) {
-        mapValidate['loanToValue'] = false;
-        txtWarningLoanToValue.sink.add('Invalid loan to value');
       } else if (value1.length > 20) {
         mapValidate['loanToValue'] = false;
         txtWarningLoanToValue.sink
             .add('Maximum length allowed is 20 characters');
+      } else if (!regexAmount.hasMatch(value1) || double.parse(value1) == 0) {
+        mapValidate['loanToValue'] = false;
+        txtWarningLoanToValue.sink.add('Invalid loan to value');
       } else if (double.parse(value1) > double.parse(value2)) {
         mapValidate['loanToValue'] = true;
         loanPackageRequest.loanToValue = value1;
@@ -270,7 +287,11 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           regexAmount.hasMatch(value2) &&
           value2.isNotEmpty &&
           value1.isNotEmpty) {
-        if (!checkGreaterThan20(value1: value1, value2: value2)) {
+        if (double.parse(value1) >= double.parse(value2)) {
+          mapValidate['ltv'] = false;
+          txtWarningLTVThresHold.sink
+              .add('LTV Liquidation threshold must be greater than LTV');
+        } else if (!checkGreaterThan20(value1: value1, value2: value2)) {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
           loanPackageRequest.loanToValue = value1;
@@ -306,7 +327,11 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           regexAmount.hasMatch(value2) &&
           value2.isNotEmpty &&
           value1.isNotEmpty) {
-        if (!checkGreaterThan20(value1: value2, value2: value1)) {
+        if (double.parse(value1) <= double.parse(value2)) {
+          mapValidate['ltv'] = false;
+          txtWarningLTVThresHold.sink
+              .add('LTV Liquidation threshold must be greater than LTV');
+        } else if (!checkGreaterThan20(value1: value2, value2: value1)) {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
           loanPackageRequest.liquidationThreshold = value1;
@@ -378,5 +403,21 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
         listRepaymentToken.add(value);
       } else {}
     }
+  }
+
+  String getMonthOrWeek(String? type) {
+    return (type == '0') ? 'weeks' : 'months';
+  }
+
+  Future<void> postInfoNewLoanPackageToBe({
+    required String pawnShopId,
+    required String txId,
+  }) async {
+    loanPackageRequest.pawnShopId = pawnShopId;
+    loanPackageRequest.txid = txId;
+    final result = await _manageSettingService.postInfoNewLoanPackage(
+      createNewLoanPackageRequest: loanPackageRequest,
+    );
+    result.when(success: (success) {}, error: (error) {});
   }
 }

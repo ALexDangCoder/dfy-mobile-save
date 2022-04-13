@@ -64,6 +64,9 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
 
   String _idPawnShop = '';
 
+
+  String get idPawnShop => _idPawnShop;
+
   Future<String> getIdPawnShopPackage() async {
     final Result<PawnShopModel> result =
         await _manageSettingService.getFindUserId(userId: await getUserId());
@@ -109,6 +112,27 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
         emit(ManageLoadApiListPawnShop(CompleteType.ERROR));
       },
     );
+  }
+
+  Future<void> loadMoreGetListPawnShop() async {
+    if(loadMore == false) {
+      emit(LoadMoreManageLoanPackage());
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getListPawnShop();
+    } else {
+      //nothing
+    }
+  }
+
+  void refreshGetListPawnShop() {
+    canLoadMoreList = true;
+    page = 0;
+    if(!refresh) {
+      refresh = true;
+      getListPawnShop();
+    }
   }
 
 
