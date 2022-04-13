@@ -57,6 +57,8 @@ class EvaluationDetailResponse {
   String? additionalInformation;
   @JsonKey(name: 'bc_txn_hash')
   String? bcTxnHash;
+  @JsonKey(name: 'storage_location')
+  String? storageLocation;
 
   EvaluationDetailResponse(
     this.evaluatedPriceSymbol,
@@ -73,6 +75,7 @@ class EvaluationDetailResponse {
     this.additionalInformation,
     this.bcTxnHash,
     this.assetResponse,
+    this.storageLocation,
   );
 
   factory EvaluationDetailResponse.fromJson(Map<String, dynamic> json) =>
@@ -95,6 +98,7 @@ class EvaluationDetailResponse {
         additionalInformation: additionalInformation,
         bcTxnHash: bcTxnHash,
         nameNft: assetResponse?.toDomain(),
+        storageLocation: storageLocation,
       );
 }
 
@@ -236,5 +240,6 @@ class AssetResponse {
       _$AssetResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetResponseToJson(this);
+
   NameNft toDomain() => NameNft(name);
 }

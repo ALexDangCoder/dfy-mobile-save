@@ -4,6 +4,7 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
+import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/related_document_widget.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
@@ -56,6 +57,9 @@ class _EvaluationDetailState extends State<EvaluationDetail>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        spaceH16,
+        title('PROTECTION AND SERVICE'),
+        spaceH20,
         RichText(
           text: TextSpan(
             children: [
@@ -71,7 +75,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                 style: textNormal(
                   amountColor,
                   14,
-                ),
+                ).copyWith(decoration: TextDecoration.underline),
               ),
               TextSpan(
                 text: ' at $time',
@@ -82,6 +86,37 @@ class _EvaluationDetailState extends State<EvaluationDetail>
               ),
             ],
           ),
+        ),
+        spaceH10,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            sizedPngImage(w: 16, h: 16, image: ImageAssets.ic_location),
+            spaceW6,
+            SizedBox(
+              width: 319.w,
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Item is stored in ',
+                      style: textNormal(
+                        textGray,
+                        14,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.evaluation.storageLocation ?? '',
+                      style: textNormal(
+                        amountColor,
+                        14,
+                      ).copyWith(decoration: TextDecoration.underline),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         spaceH16,
         title(S.current.hard_nft_evaluation_information),
@@ -125,28 +160,31 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                             typeImage: media?.type ?? TypeImage.IMAGE,
                             onTap: () {
                               Navigator.of(context).push(
-                                  MaterialPageRoute<void>(
-                                      builder: (BuildContext context) {
-                                return Scaffold(
-                                  body: SizedBox(
-                                    child: media?.type == TypeImage.IMAGE
-                                        ? PhotoView(
-                                            imageProvider: NetworkImage(
-                                                media?.urlImage ?? '',),
-                                            minScale: PhotoViewComputedScale
-                                                    .contained *
-                                                0.8,
-                                            maxScale:
-                                                PhotoViewComputedScale.covered *
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) {
+                                    return Scaffold(
+                                      body: SizedBox(
+                                        child: media?.type == TypeImage.IMAGE
+                                            ? PhotoView(
+                                                imageProvider: NetworkImage(
+                                                  media?.urlImage ?? '',
+                                                ),
+                                                minScale: PhotoViewComputedScale
+                                                        .contained *
+                                                    0.8,
+                                                maxScale: PhotoViewComputedScale
+                                                        .covered *
                                                     2,
-                                            enableRotation: true,
-                                          )
-                                        : VideoPlayerView(
-                                            urlVideo: media?.urlImage ?? '',
-                                          ),
-                                  ),
-                                );
-                              },),);
+                                                enableRotation: true,
+                                              )
+                                            : VideoPlayerView(
+                                                urlVideo: media?.urlImage ?? '',
+                                              ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -181,32 +219,32 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                         },
                       ),
                       StreamBuilder<bool>(
-                          stream: bloc.showNextStream,
-                          initialData: true,
-                          builder: (context, snapNext) {
-                            return Visibility(
-                              visible: snapNext.data ?? true,
-                              child: Positioned(
-                                top: (290.h - 32.h) / 2,
-                                right: 16.w,
-                                child: InkWell(
-                                  onTap: () {
-                                    bloc.nextImage();
-                                    scrollController.scrollTo(
-                                      index: bloc.currentIndexImage > 2
-                                          ? bloc.currentIndexImage - 1
-                                          : 0,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                    );
-                                  },
-                                  child: roundButton(
-                                    image: ImageAssets.ic_btn_next_svg,
-                                  ),
+                        stream: bloc.showNextStream,
+                        initialData: true,
+                        builder: (context, snapNext) {
+                          return Visibility(
+                            visible: snapNext.data ?? true,
+                            child: Positioned(
+                              top: (290.h - 32.h) / 2,
+                              right: 16.w,
+                              child: InkWell(
+                                onTap: () {
+                                  bloc.nextImage();
+                                  scrollController.scrollTo(
+                                    index: bloc.currentIndexImage > 2
+                                        ? bloc.currentIndexImage - 1
+                                        : 0,
+                                    duration: const Duration(milliseconds: 300),
+                                  );
+                                },
+                                child: roundButton(
+                                  image: ImageAssets.ic_btn_next_svg,
                                 ),
                               ),
-                            );
-                          },),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                   spaceH12,
@@ -239,50 +277,29 @@ class _EvaluationDetailState extends State<EvaluationDetail>
           },
         ),
         spaceH32,
-        title(S.current.documentE),
-        spaceH20,
-        if (widget.evaluation.document?.isNotEmpty ?? false)
+        if (widget.evaluation.document?.isNotEmpty ?? false) ...[
+          title(S.current.documentE),
+          spaceH20,
           ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: widget.evaluation.document?.length,
             itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        launch(widget.evaluation.document![index].urlDocument ??
-                            '',);
-                      },
-                      child: Text(
-                        widget.evaluation.document![index].name ?? '',
-                        style: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  spaceH16,
-                ],
+              return documentWidget(
+                  title: widget.evaluation.document?[index].name ?? '',
+                  type: widget.evaluation.document![index].type ?? DocumentType.DOC,
+                  urlDocument: widget.evaluation.document?[index].urlDocument ?? '',
               );
             },
-          )
-        else
-          Text(
-            'No document result',
-            style: textNormal(
-              AppTheme.getInstance().whiteColor(),
-              16,
-            ),
           ),
-        spaceH46,
+          spaceH46,
+        ] else
+          const SizedBox(),
       ],
     );
   }
+
 
   Widget title(String text) {
     return Text(
@@ -387,12 +404,15 @@ class _EvaluationDetailState extends State<EvaluationDetail>
               ),
             ),
             spaceW6,
-            Text(
-              widget.evaluation.nameNft?.name ?? '',
-              style: textNormalCustom(
-                AppTheme.getInstance().textThemeColor(),
-                28,
-                FontWeight.w400,
+            SizedBox(
+              width: 300.w,
+              child: Text(
+                widget.evaluation.nameNft?.name ?? '',
+                style: textNormalCustom(
+                  AppTheme.getInstance().textThemeColor(),
+                  28,
+                  FontWeight.w400,
+                ),
               ),
             ),
           ],
@@ -403,7 +423,10 @@ class _EvaluationDetailState extends State<EvaluationDetail>
               sizedSvgImage(w: 16, h: 16, image: ImageAssets.ic_verify_svg)
             ] else ...[
               sizedSvgImage(
-                  w: 16, h: 16, image: ImageAssets.ic_transaction_fail_svg,)
+                w: 16,
+                h: 16,
+                image: ImageAssets.ic_transaction_fail_svg,
+              )
             ],
             spaceW5,
             if (widget.evaluation.authenticityType == 1)
@@ -503,8 +526,11 @@ class _EvaluationDetailState extends State<EvaluationDetail>
     }
   }
 
-  Widget smallImage(
-      {required Media img, required bool isCurrentImg, required int index,}) {
+  Widget smallImage({
+    required Media img,
+    required bool isCurrentImg,
+    required int index,
+  }) {
     return InkWell(
       onTap: () {
         bloc.changeImage(img.urlImage!);
@@ -535,8 +561,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                     VideoPlayer(
                       VideoPlayerController.network(img.urlImage!)
                         ..initialize().then((_) {
-                          setState(() {
-                          });
+                          setState(() {});
                         }),
                     ),
                     Center(
@@ -557,3 +582,33 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
+Widget documentWidget({
+  required String title,
+  required DocumentType type,
+  required String urlDocument,
+}) {
+  return InkWell(
+    onTap: () {
+      launch(urlDocument);
+    },
+    child: Row(
+      children: [
+        sizedSvgImage(
+          w: 24,
+          h: 24,
+          image: type.getIcon,
+        ),
+        spaceW10,
+        Text(
+          title,
+          style: tokenDetailAmount(
+            color: AppTheme.getInstance().whiteColor(),
+            fontSize: 16,
+          ),
+          overflow: TextOverflow.clip,
+        ),
+      ],
+    ),
+  );
+}
+
