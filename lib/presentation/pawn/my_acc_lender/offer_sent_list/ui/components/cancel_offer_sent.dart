@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_crypto_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/lend_contract/ui/components/lend_contract_detail.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/offer_sent_list/bloc/offer_sent_list_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
@@ -12,7 +14,13 @@ import 'package:intl/intl.dart';
 final formatValue = NumberFormat('###,###,###.###', 'en_US');
 
 class CancelOfferSent extends StatelessWidget {
-  const CancelOfferSent({Key? key}) : super(key: key);
+  const CancelOfferSent({
+    Key? key,
+    required this.model,
+    required this.cubit,
+  }) : super(key: key);
+  final OfferSentListCubit cubit;
+  final OfferSentDetailCryptoModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +32,8 @@ class CancelOfferSent extends StatelessWidget {
           left: 16.w,
           right: 16.w,
         ),
-        child: Column(
+        child:
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             spaceH24,
@@ -48,10 +57,13 @@ class CancelOfferSent extends StatelessWidget {
                       SizedBox(
                           height: 20.h,
                           width: 20.w,
-                          child: Image.network(ImageAssets.getUrlToken(DFY))),
+                          child: Image.network(ImageAssets.getUrlToken(
+                              model.supplyCurrencySymbol ?? 'DFY'))),
                       spaceW8,
                       Text(
-                        '120,000 ETH',
+                        formatPrice.format(
+                          model.loanAmount,
+                        ),
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           16,
@@ -81,13 +93,7 @@ class CancelOfferSent extends StatelessWidget {
   Widget _btnConfirm(BuildContext ctx) {
     return InkWell(
       onTap: () {
-        //todo đang code mất dạy
-        Navigator.push(
-          ctx,
-          MaterialPageRoute(
-            builder: (ctx) => LendContractDetail(),
-          ),
-        );
+
       },
       child: Container(
         color: AppTheme.getInstance().bgBtsColor(),

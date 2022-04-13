@@ -42,4 +42,9 @@ abstract class OfferSentService {
       getOfferSentDetailCryptoCollateral(
     @Path('id') String? id,
   );
+
+  @PUT('${ApiConstants.OFFER_DETAIL}{id}/cancel')
+  Future<String> putCryptoAfterCancel(
+    @Path('id') String id,
+  );
 }

@@ -357,4 +357,9 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     final d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
     return d24;
   }
+
+  Future<void> putCryptoAfterConfirmBlockChain({required String id}) async {
+    final result = await _offerSentService.putCryptoAfterCancel(id: id);
+    result.when(success: (success) {}, error: (error) {});
+  }
 }
