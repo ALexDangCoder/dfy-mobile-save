@@ -12,6 +12,7 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/utils/app_utils.dart' as utils;
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -51,10 +52,17 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   final Web3Utils client = Web3Utils();
 
-  void enableButtonRequest(String amount, String message, String duration,) {
+  void enableButtonRequest(
+    String amount,
+    String message,
+    String duration,
+  ) {
     if (errorCollateral.value == '' &&
         errorMessage.value == '' &&
-        errorDuration.value == ''&& amount !='' && message != '' && duration !='') {
+        errorDuration.value == '' &&
+        amount != '' &&
+        message != '' &&
+        duration != '') {
       enableButton.add(true);
     } else {
       enableButton.add(false);
@@ -72,9 +80,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   Future<void> checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) async {
-    for(final element in collateralAccepted){
-      for(final item in checkShow) {
-        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+    for (final element in collateralAccepted) {
+      for (final item in checkShow) {
+        if (element.symbol?.toLowerCase() ==
+            item.nameShortToken.toLowerCase()) {
           listTokenCollateral.add(item);
         }
       }
@@ -231,11 +240,13 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     };
     bool checkSuccess = false;
     final Result<String> code = await _repo.confirmCollateralToBe(map: map);
-    code.when(success: (res) {
-      if(res == 'success'){
-        checkSuccess = true;
-      }
-    }, error: (error) {});
+    code.when(
+        success: (res) {
+          if (res == 'success') {
+            checkSuccess = true;
+          }
+        },
+        error: (error) {});
     return checkSuccess;
   }
 
@@ -419,6 +430,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   bool refresh = false;
   List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
 
+  NftMarketRepository get _nftRepo => Get.find();
+
   Future<void> getSelectNftCollateral(
     String? walletAddress, {
     String? name,
@@ -479,6 +492,30 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     return PrefsService.getCurrentBEWallet();
   }
 
+  Future<void> getListNft({
+    String? name,
+    String? walletAddress,
+  }) async {
+    final Result<List<NftMarket>> result = await _nftRepo.getListNftMyAcc(
+      status: '0',
+      name: name,
+      nftType: '1',
+      collectionId: '',
+      page: page.toString(),
+    );
+
+    result.when(
+      success: (res) {
+        //todo
+      },
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getListNft();
+        }
+      },
+    );
+  }
+
   Future<void> postNftToServer() async {
     emit(SubmittingNft());
     final result = await _repo.postNftToServer(request: nftRequest);
@@ -500,6 +537,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);
+      getListNft();
     } else {
       //nothing
     }
