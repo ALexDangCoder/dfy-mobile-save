@@ -1047,5 +1047,6 @@
   "lending_setting": "Lending setting",
   "your_balance_must": "Your balance must have:",
   "soft_collection": "Soft Collection",
-  "hard_collection": "Hard Collection"
+  "hard_collection": "Hard Collection",
+  "in_order_to_pay": "In order to pay the original loan, you need to pay off all the interest and penalty owed of the period first"
 }
