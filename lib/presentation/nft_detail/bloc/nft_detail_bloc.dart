@@ -239,7 +239,6 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       }
       result.when(
         success: (res) {
-          res.nftId = nftId;
           if (typeNFT == TypeNFT.SOFT_NFT) {
             result2.when(
               success: (res2) {
