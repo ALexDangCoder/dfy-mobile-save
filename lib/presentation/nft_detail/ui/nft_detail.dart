@@ -187,7 +187,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ) {
                 if (snapshot.hasData) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 16.w,right: 16.w),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     child: EvaluationDetail(
                       evaluation: snapshot.data!,
                     ),
@@ -304,7 +304,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ) {
                 if (snapshot.hasData) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 16.w,right: 16.w),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     child: EvaluationDetail(
                       evaluation: snapshot.data!,
                     ),
@@ -326,12 +326,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             StreamBuilder<EvaluatorsDetailModel>(
               stream: bloc.evaluatorStream,
               builder: (
-                  context,
-                  AsyncSnapshot<EvaluatorsDetailModel> snapshot,
-                  ) {
+                context,
+                AsyncSnapshot<EvaluatorsDetailModel> snapshot,
+              ) {
                 if (snapshot.hasData) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 16.w,right: 16.w),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     child: EvaluatorTab(
                       evaluatorsDetailModel: snapshot.data!,
                     ),
@@ -357,7 +357,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           Tab(
             text: S.current.owner,
           ),
-          if (widget.typeNft == TypeNFT.HARD_NFT)...[
+          if (widget.typeNft == TypeNFT.HARD_NFT) ...[
             Tab(
               text: '${S.current.evaluation} passport',
             ),
@@ -424,7 +424,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               ) {
                 if (snapshot.data?.id!.isNotEmpty ?? false) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 16.w,right: 16.w),
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
                     child: EvaluationDetail(
                       evaluation: snapshot.data!,
                     ),
@@ -551,18 +551,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             actions: [
-              if (pageRouter == PageRouter.MY_ACC)
-                action(
-                  context,
-                  objSale.collectionAddress ?? '',
-                  objSale.isOwner ?? false,
-                  objSale.nftTokenId ?? '',
-                  (objSale.walletAddress ?? objSale.owner) ?? '',
-                  objSale.nftId ?? '',
-                  bloc,
-                  objSale,
-                  onRefresh,
-                ),
+              action(
+                context,
+                objSale.collectionAddress ?? '',
+                objSale.isOwner ?? false,
+                objSale.nftTokenId ?? '',
+                (objSale.walletAddress ?? objSale.owner) ?? '',
+                objSale.nftId ?? '',
+                bloc,
+                objSale,
+                onRefresh,
+              ),
             ],
             title: objSale.name ?? '',
             tabBarView: ExpandedPageViewWidget(

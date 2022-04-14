@@ -155,6 +155,7 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
+        id: id,
         price: 0,
         marketId: marketId,
         name: name ?? '',
@@ -172,8 +173,7 @@ class DetailHardNftResponse {
         mintingFeeNumber: mintingFeeNumber,
         mintingFeeToken: mintingFeeToken,
         marketStatus: marketStatus,
-        marketType:
-            getTypeMarket((marketType ?? nftType) ?? 0),
+        marketType: getTypeMarket((marketType ?? nftType) ?? 0),
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,
