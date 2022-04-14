@@ -30,8 +30,38 @@ class ConfirmSendLoanNft extends StatelessWidget {
   Widget build(BuildContext context) {
     final String duration =
         cubit.nftRequest.durationType == 0 ? 'weeks' : 'months';
-    return BlocBuilder<SendLoanRequestCubit, SendLoanRequestState>(
+    return BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
       bloc: cubit,
+      listener: (context, state) async {
+        if (state is SubmitNftSuccess) {
+          if (state.complete == CompleteType.SUCCESS) {
+            await showLoadSuccess(context).then(
+              (value) => {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.borrow_result,
+                ),
+              },
+            );
+          } else {
+            await showLoadFail(context).then(
+              (value) => Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.borrow_result,
+              ),
+            );
+          }
+        } else {
+          unawaited(
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmit(),
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return BaseDesignScreen(
           title: 'Confirm loan request',
@@ -55,14 +85,6 @@ class ConfirmSendLoanNft extends StatelessWidget {
                   ),
                 );
                 await cubit.postNftToServer();
-                await showLoadSuccess(context).then(
-                  (value) => {
-                    Navigator.of(context).popUntil(
-                      (route) =>
-                          route.settings.name == AppRouter.borrow_result,
-                    ),
-                  },
-                );
               },
               child: const ButtonGold(
                 title: 'Send request',

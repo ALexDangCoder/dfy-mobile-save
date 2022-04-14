@@ -648,7 +648,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       },
     );
   }
-
+  BehaviorSubject<String> statusResultPostNftToServer = BehaviorSubject();
   Future<void> postNftToServer() async {
     emit(SubmittingNft());
     final result = await _repo.postNftToServer(request: nftRequest);
