@@ -125,4 +125,15 @@ class LoanRequestRepositoryImplement implements LoanRequestRepository {
       (response) => response,
     );
   }
+
+  @override
+  Future<Result<String>> postRejectNFTLoanRequest(
+      {required String loanRequestId}) {
+    return runCatchingAsync<String, String>(
+      () => _client.rejectNFTLoanRequest(
+        loanRequestId: loanRequestId,
+      ),
+      (response) => response,
+    );
+  }
 }
