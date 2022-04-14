@@ -199,7 +199,7 @@ class LenderLoanRequestCubit extends BaseCubit<LenderLoanRequestState> {
       case CANCEL:
         return S.current.canceled;
       default:
-        return '';
+        return 'PROCESSING TRANSACTION';
     }
   }
 
