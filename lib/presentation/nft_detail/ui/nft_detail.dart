@@ -619,6 +619,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 url: widget.nftId ?? '',
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
                 type: MarketType.NOT_ON_MARKET,
+                nftType: widget.typeNft ?? TypeNFT.SOFT_NFT,
               ),
               _priceNotOnMarket(),
               divide,
@@ -795,6 +796,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 price: (objSale.price ?? 0) * (objSale.usdExchange ?? 1),
                 context: context,
                 type: MarketType.SALE,
+                nftType: widget.typeNft ?? TypeNFT.SOFT_NFT,
               ),
               _priceContainerOnSale(
                 price: objSale.price ?? 0,
@@ -961,10 +963,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 : _buildButtonSendOffer(context, nftOnPawn),
             content: [
               _nameNFT(
-                url: nftOnPawn.bcCollateralId.toString(),
+                url: widget.pawnId.toString(),
                 context: context,
                 title: nftOnPawn.nftCollateralDetailDTO?.nftName ?? '',
                 type: MarketType.PAWN,
+                nftType: widget.typeNft ?? TypeNFT.SOFT_NFT,
               ),
               _priceContainerOnPawn(nftOnPawn: nftOnPawn),
               _durationRowOnPawn(
@@ -1179,6 +1182,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 price: (nftOnAuction.reservePrice ?? 0) *
                     (nftOnAuction.usdExchange ?? 1),
                 type: MarketType.AUCTION,
+                nftType: widget.typeNft ?? TypeNFT.SOFT_NFT,
               ),
               _priceContainerOnAuction(
                 nftOnAuction: nftOnAuction,

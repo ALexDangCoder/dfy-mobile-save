@@ -1,7 +1,9 @@
 import 'package:Dfy/config/resources/styles.dart' as style;
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/bloc/receive_hard_nft_cubit.dart';
 import 'package:Dfy/presentation/create_hard_nft/receive_hard_nft/bloc/receive_hard_nft_state.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/step1__when_submit.dart';
@@ -23,9 +25,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ReceiveHardNFTScreen extends StatelessWidget {
-  const ReceiveHardNFTScreen({Key? key, required this.assetId})
+  const ReceiveHardNFTScreen({Key? key, required this.assetId, this.pageRouter})
       : super(key: key);
   final String assetId;
+  final PageRouterHardNFT? pageRouter;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +41,20 @@ class ReceiveHardNFTScreen extends StatelessWidget {
             isImage: true,
             text: ImageAssets.ic_close,
             onRightClick: () {
-              Navigator.of(context)
-                ..pop()
-                ..pop()
-                ..pop()
-                ..pop()
-                ..pop()..pop()..pop();
+              if (pageRouter == PageRouterHardNFT.LIST_HARD) {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.list_hard_mint,
+                );
+              } else {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop()
+                  ..pop();
+              }
             },
             title: S.current.receive_hard_nft,
             bottomBar: Container(
