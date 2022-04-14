@@ -78,10 +78,10 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
           child: (state is LoanRequestDetailLoadApi)
               ? BaseDesignScreen(
                   bottomBar:
-                      // ((cubit.detailLoanRequestCryptoModel.status ?? 0) == 1)
-                      //     ? _buildButton()
-                      //     : null,
-                      _buildButton(),
+                      ((cubit.detailLoanRequestCryptoModel.status ?? 0) == 1)
+                          ? _buildButton()
+                          : null,
+                      // _buildButton(),
                   title: S.current.request_detail,
                   child: SingleChildScrollView(
                     child: Container(
