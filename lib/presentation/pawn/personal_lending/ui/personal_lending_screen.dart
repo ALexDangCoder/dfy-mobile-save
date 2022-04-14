@@ -274,7 +274,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                             .toString(),
                                         signedContract: list[index]
                                             .completedContracts
-                                            .toString(),
+                                            .toString(), type: list[index].type ?? 0,
                                       ),
                                     ),
                                   )

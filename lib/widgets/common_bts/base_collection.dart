@@ -61,7 +61,7 @@ class BaseSliverHeader extends SliverPersistentHeaderDelegate {
           child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: 305.w,
+                maxWidth: 253.w,
                 minWidth: 253.w,
               ),
               child: Container(

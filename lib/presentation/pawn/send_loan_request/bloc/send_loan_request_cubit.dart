@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
+import 'package:Dfy/data/request/put_on_market/put_on_pawn_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
@@ -12,7 +13,10 @@ import 'package:Dfy/domain/model/pawn/personal_lending.dart';
 import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
+import 'package:Dfy/domain/repository/market_place/confirm_repository.dart';
+import 'package:Dfy/domain/repository/market_place/nft_market_repo.dart';
 import 'package:Dfy/main.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/utils/app_utils.dart' as utils;
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -40,9 +44,12 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> enableButton = BehaviorSubject.seeded(false);
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
-
+  int nftType = 0;
+  int type = 0;
   String wallet = '';
+  int idCollateral = 0;
   String? collateralCached;
+  String hexString = '';
   String? messageCached;
   String? durationCached;
   String? durationCachedType;
@@ -51,10 +58,93 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   final Web3Utils client = Web3Utils();
 
-  void enableButtonRequest(String amount, String message, String duration,) {
+  ConfirmRepository get confirmRepository => Get.find();
+
+  Future<void> getHexString({
+    required String nftContract,
+    required String nftTokenId,
+    required String expectedlLoanAmount,
+    required String loanAsset,
+    required String nftTokenQuantity,
+    required String expectedDurationQty,
+    required int durationType,
+    required String beNFTId,
+    required String pawnShopPackageId,
+    required String message,
+  }) async {
+    hexString = await client.getPutOnPawnWithLoanRequestData(
+      durationType: durationType,
+      message: message,
+      expectedDurationQty: expectedDurationQty,
+      loanAsset: loanAsset,
+      beNFTId: beNFTId,
+      expectedlLoanAmount: expectedlLoanAmount,
+      nftContract: nftContract,
+      nftTokenId: nftTokenId,
+      nftTokenQuantity: nftTokenQuantity,
+      pawnShopPackageId: pawnShopPackageId,
+    );
+  }
+
+  Future<bool> putOnPawn({
+    required String txHash,
+    required PutOnMarketModel putOnMarketModel,
+  }) async {
+    final userInfo = PrefsService.getUserProfile();
+    final Map<String, dynamic> mapProfileUser = jsonDecode(userInfo);
+    String userId = '';
+    if (mapProfileUser.intValue('id') != 0) {
+      userId = mapProfileUser.intValue('id').toString();
+    }
+    final Map<String, dynamic> mapRawData = {
+      'beNftId': putOnMarketModel.nftId ?? '',
+      'collectionAddress': putOnMarketModel.collectionAddress ?? '',
+      'collectionIsWhitelist': putOnMarketModel.collectionIsWhitelist ?? false,
+      'collectionName': putOnMarketModel.collectionName ?? '',
+      'durationQuantity': putOnMarketModel.duration ?? '1',
+      'durationType': putOnMarketModel.durationType ?? 0,
+      'loanAmount': putOnMarketModel.price ?? '1',
+      'loanSymbol': putOnMarketModel.loanSymbol ?? '1',
+      'networkName': networkName,
+      'nftMediaCid': putOnMarketModel.nftMediaCid ?? '1',
+      'nftMediaType': putOnMarketModel.nftMediaType ?? '1',
+      'nftName': putOnMarketModel.nftName ?? '1',
+      'nftStandard': putOnMarketModel.nftStandard ?? 0,
+      'nftType': (putOnMarketModel.nftType ?? 0).toString(),
+      'numberOfCopies': putOnMarketModel.numberOfCopies ?? 0,
+      'totalOfCopies': putOnMarketModel.totalOfCopies ?? 1,
+      'txnHash': txHash,
+      'userId': userId,
+      // 'collectionId' : putOnMarketModelfsd,
+      'id': putOnMarketModel.nftTokenId ?? 0,
+      'walletAddress': PrefsService.getCurrentBEWallet(),
+    };
+    final PutOnPawnRequest data = PutOnPawnRequest.fromJson(mapRawData);
+    final result = await confirmRepository.putOnPawn(data: data);
+    bool res = false;
+    result.when(
+      success: (suc) {
+        idCollateral = suc.id;
+        res = true;
+      },
+      error: (err) {
+        res = false;
+      },
+    );
+    return res;
+  }
+
+  void enableButtonRequest(
+    String amount,
+    String message,
+    String duration,
+  ) {
     if (errorCollateral.value == '' &&
         errorMessage.value == '' &&
-        errorDuration.value == ''&& amount !='' && message != '' && duration !='') {
+        errorDuration.value == '' &&
+        amount != '' &&
+        message != '' &&
+        duration != '') {
       enableButton.add(true);
     } else {
       enableButton.add(false);
@@ -72,9 +162,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   Future<void> checkShowCollateral(
     List<AcceptableAssetsAsCollateral> collateralAccepted,
   ) async {
-    for(final element in collateralAccepted){
-      for(final item in checkShow) {
-        if(element.symbol?.toLowerCase() == item.nameShortToken.toLowerCase()){
+    for (final element in collateralAccepted) {
+      for (final item in checkShow) {
+        if (element.symbol?.toLowerCase() ==
+            item.nameShortToken.toLowerCase()) {
           listTokenCollateral.add(item);
         }
       }
@@ -231,11 +322,13 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     };
     bool checkSuccess = false;
     final Result<String> code = await _repo.confirmCollateralToBe(map: map);
-    code.when(success: (res) {
-      if(res == 'success'){
-        checkSuccess = true;
-      }
-    }, error: (error) {});
+    code.when(
+        success: (res) {
+          if (res == 'success') {
+            checkSuccess = true;
+          }
+        },
+        error: (error) {});
     return checkSuccess;
   }
 
@@ -310,6 +403,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
         isShowDuration.add(false);
       }
     }
+    validateAll();
   }
 
   Map<String, bool> mapValidate = {
@@ -413,11 +507,15 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   ///Call API
   String message = '';
+  String nameSearchNotOnMarket = '';
   int page = 0;
   bool loadMore = false;
   bool canLoadMoreList = true;
   bool refresh = false;
   List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
+  List<ContentNftOnRequestLoanModel> contentNftOnSelectNotOnMarket = [];
+
+  NftMarketRepository get _nftRepo => Get.find();
 
   Future<void> getSelectNftCollateral(
     String? walletAddress, {
@@ -430,14 +528,23 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       page = 0;
     }
     showLoading();
-    final Result<List<ContentNftOnRequestLoanModel>> result =
-        await _repo.getListNftOnLoanRequest(
-      walletAddress: walletAddress,
-      page: page.toString(),
-      name: name,
-      // nftType: nftType ?? '0',
-      // size: '6',
-    );
+    late final Result<List<ContentNftOnRequestLoanModel>> result;
+    if (type == 3) {
+      result = await _repo.getListNftOnLoanRequest(
+        walletAddress: walletAddress,
+        page: page.toString(),
+        name: name,
+        // size: '6',
+      );
+    } else {
+      result = await _repo.getListNftOnLoanRequest(
+        walletAddress: walletAddress,
+        page: page.toString(),
+        name: name,
+        nftType: type.toString(),
+        // size: '6',
+      );
+    }
     result.when(
       success: (res) {
         emit(
@@ -475,8 +582,71 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
   }
 
+  Future<void> loadMoreNotOnMarket() async {
+    if (loadMore == false) {
+      // showLoading();
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getListNft(
+        name: nameSearchNotOnMarket,
+      );
+    } else {
+      //nothing
+    }
+  }
+
   String getCurrentWallet() {
     return PrefsService.getCurrentBEWallet();
+  }
+
+  Future<void> getListNft({
+    String? name,
+    bool isSearch = false,
+  }) async {
+    if (isSearch) {
+      contentNftOnSelectNotOnMarket.clear();
+      page = 0;
+    }
+    showLoading();
+    late final Result<List<NftMarket>> result;
+    if (type == 3) {
+      result = await _nftRepo.getListNftMyAcc(
+        status: '0',
+        name: name,
+        page: page.toString(),
+      );
+    } else {
+      result = await _nftRepo.getListNftMyAcc(
+        status: '0',
+        name: name,
+        nftType: type.toString(),
+        page: page.toString(),
+      );
+    }
+    result.when(
+      success: (res) {
+        emit(
+          ListSelectNftCollateralNotOnMarketGetApi(
+            CompleteType.SUCCESS,
+            list: res
+                .map(
+                  (e) => ContentNftOnRequestLoanModel(nft: e),
+                )
+                .toList(),
+          ),
+        );
+        showContent();
+      },
+      error: (error) {
+        emit(
+          ListSelectNftCollateralNotOnMarketGetApi(
+            CompleteType.ERROR,
+            message: error.message,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> postNftToServer() async {
@@ -500,6 +670,20 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);
+    } else {
+      //nothing
+    }
+  }
+
+  Future<void> refreshNotOnMarket(String walletAddress) async {
+    canLoadMoreList = true;
+    if (refresh == false) {
+      // showLoading();
+      page = 0;
+      refresh = true;
+      await getListNft(
+        name: nameSearchNotOnMarket,
+      );
     } else {
       //nothing
     }
