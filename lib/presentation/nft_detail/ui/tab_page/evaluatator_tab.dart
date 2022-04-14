@@ -18,7 +18,7 @@ class EvaluatorTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         spaceH20,
-        title('Delivery/Collection'),
+        title('Delivery / Collection'),
         spaceH10,
         InkWell(
           onTap: () {},
@@ -59,7 +59,7 @@ class EvaluatorTab extends StatelessWidget {
 
   Widget title(String text) {
     return Text(
-      text,
+      text.toUpperCase(),
       style: textNormalCustom(purple, 14, FontWeight.w400),
     );
   }
@@ -115,7 +115,7 @@ class EvaluatorTab extends StatelessWidget {
           ),
           backgroundColor: AppTheme.getInstance().selectDialogColor(),
           content: SizedBox(
-              height: 310.h,
+              height: 320.h,
               width: 343.w,
               child: Column(
                 children: [
