@@ -424,11 +424,13 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
 
   ///Call API
   String message = '';
+  String nameSearchNotOnMarket = '';
   int page = 0;
   bool loadMore = false;
   bool canLoadMoreList = true;
   bool refresh = false;
   List<ContentNftOnRequestLoanModel> contentNftOnSelect = [];
+  List<ContentNftOnRequestLoanModel> contentNftOnSelectNotOnMarket = [];
 
   NftMarketRepository get _nftRepo => Get.find();
 
@@ -488,30 +490,60 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
   }
 
+  Future<void> loadMoreNotOnMarket() async {
+    if (loadMore == false) {
+      // showLoading();
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getListNft(
+        name: nameSearchNotOnMarket,
+      );
+    } else {
+      //nothing
+    }
+  }
+
   String getCurrentWallet() {
     return PrefsService.getCurrentBEWallet();
   }
 
   Future<void> getListNft({
     String? name,
-    String? walletAddress,
+    bool isSearch = false,
   }) async {
+    if (isSearch) {
+      contentNftOnSelectNotOnMarket.clear();
+      page = 0;
+    }
+    showLoading();
     final Result<List<NftMarket>> result = await _nftRepo.getListNftMyAcc(
       status: '0',
       name: name,
       nftType: '1',
-      collectionId: '',
       page: page.toString(),
     );
-
     result.when(
       success: (res) {
-        //todo
+        emit(
+          ListSelectNftCollateralNotOnMarketGetApi(
+            CompleteType.SUCCESS,
+            list: res
+                .map(
+                  (e) => ContentNftOnRequestLoanModel(nft: e),
+                )
+                .toList(),
+          ),
+        );
+        showContent();
       },
       error: (error) {
-        if (error.code == CODE_ERROR_AUTH) {
-          getListNft();
-        }
+        emit(
+          ListSelectNftCollateralNotOnMarketGetApi(
+            CompleteType.ERROR,
+            message: error.message,
+          ),
+        );
       },
     );
   }
@@ -537,7 +569,19 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       page = 0;
       refresh = true;
       await getSelectNftCollateral(walletAddress);
-      getListNft();
+    } else {
+      //nothing
+    }
+  }
+
+  Future<void> refreshNotOnMarket(String walletAddress) async {
+    canLoadMoreList = true;
+    if (refresh == false) {
+      // showLoading();
+      page = 0;
+      refresh = true;
+      await getListNft(
+        name: nameSearchNotOnMarket,);
     } else {
       //nothing
     }

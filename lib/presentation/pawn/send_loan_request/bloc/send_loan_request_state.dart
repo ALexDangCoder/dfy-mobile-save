@@ -30,6 +30,18 @@ class ListSelectNftCollateralGetApi extends SendLoanRequestState {
   List<Object?> get props => [list];
 }
 
+class ListSelectNftCollateralNotOnMarketGetApi extends SendLoanRequestState {
+  final List<ContentNftOnRequestLoanModel>? list;
+  final CompleteType completeType;
+  final String? message;
+
+
+  ListSelectNftCollateralNotOnMarketGetApi(this.completeType, {this.list, this.message});
+
+  @override
+  List<Object?> get props => [list];
+}
+
 class ListSelectNftLoadMore extends SendLoanRequestState {
   @override
   List<Object?> get props => [];

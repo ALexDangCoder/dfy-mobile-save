@@ -85,7 +85,7 @@ class _PutOnMarketScreenState extends State<PutOnMarketScreen>
             }
           },
           child: Container(
-            margin: const EdgeInsets.only(top: 48),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: const BorderRadius.only(

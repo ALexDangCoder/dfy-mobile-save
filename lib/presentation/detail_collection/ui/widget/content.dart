@@ -250,16 +250,7 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        sizedSvgImage(
-                          w: 14,
-                          h: 14,
-                          image: isShow
-                              ? ImageAssets.ic_collapse_svg
-                              : ImageAssets.ic_expand_svg,
-                        ),
-                        SizedBox(
-                          width: 13.15.w,
-                        ),
+
                         Text(
                           isShow ? S.current.see_less : S.current.see_more,
                           style: textNormalCustom(
@@ -267,6 +258,15 @@ class _ContentDetailCollectionState extends State<ContentDetailCollection> {
                             16,
                             FontWeight.w400,
                           ),
+                        ),
+                        SizedBox(
+                          width: 13.15.w,
+                        ),sizedSvgImage(
+                          w: 14,
+                          h: 14,
+                          image: isShow
+                              ? ImageAssets.ic_collapse_svg
+                              : ImageAssets.ic_expand_svg,
                         ),
                       ],
                     ),
