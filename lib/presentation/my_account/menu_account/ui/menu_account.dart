@@ -591,10 +591,10 @@ class _MenuAccountState extends State<MenuAccount> {
           routeName: 'contracts_lender',
           title: S.current.contracts,
         ),
-        ItemMenuModel.createChild(
-          routeName: 'setting_package_lender',
-          title: S.current.setting_and_package,
-        ),
+        // ItemMenuModel.createChild(
+        //   routeName: 'setting_package_lender',
+        //   title: S.current.setting_and_package,
+        // ),
         ItemMenuModel.createChild(
           routeName: 'loan_request_lender',
           title: S.current.loan_request,
