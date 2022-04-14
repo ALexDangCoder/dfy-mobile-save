@@ -2,16 +2,19 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/pawn/loan_request/loan_request_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'send_offer_loanrq_state.dart';
 
-
 class SendOfferLoanrqCubit extends Cubit<SendOfferLoanrqState> {
+  LoanRequestRepository get _service => Get.find();
+
   SendOfferLoanrqCubit() : super(SendOfferLoanrqInitial());
   BehaviorSubject<String> textMess = BehaviorSubject.seeded('');
   BehaviorSubject<String> textAmount = BehaviorSubject.seeded('');
@@ -25,13 +28,14 @@ class SendOfferLoanrqCubit extends Cubit<SendOfferLoanrqState> {
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<String> textInterestRate = BehaviorSubject.seeded('');
   BehaviorSubject<String> textRecurringInterest =
-  BehaviorSubject.seeded(S.current.weekly_pawn);
+      BehaviorSubject.seeded(S.current.weekly_pawn);
   BehaviorSubject<String> isLoan = BehaviorSubject.seeded('');
   BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
   BehaviorSubject<String> isDuration = BehaviorSubject.seeded('');
   BehaviorSubject<String> textToken = BehaviorSubject.seeded('DFY');
   BehaviorSubject<String> isLiquidationThreshold = BehaviorSubject.seeded('');
   BehaviorSubject<String> balanceWallet = BehaviorSubject.seeded('0');
+
   // final _web3utils = Web3Utils();
   String hexString = '';
 
@@ -193,7 +197,7 @@ class SendOfferLoanrqCubit extends Cubit<SendOfferLoanrqState> {
       if (!regexInterestRate.hasMatch(value)) {
         isInterestRate.add(
           '${S.current.must_below_2} ${S.current.or_pawn} '
-              '${S.current.invalid_interest_rate}',
+          '${S.current.invalid_interest_rate}',
         );
         textInterestRate.add('');
       } else {
@@ -271,5 +275,45 @@ class SendOfferLoanrqCubit extends Cubit<SendOfferLoanrqState> {
       textLiquidationThreshold.add('');
       isLiquidationThreshold.add(S.current.liquid_threshold_is_required);
     }
+  }
+
+  Future<void> postSendOfferCryptoToBe({
+    required String loanRequestId,
+    required String duration,
+    required String supplyCurrency,
+    required String interestRate,
+    required String loanAmount,
+    required String id,
+    required String latestBlockchainTxn,
+    required String message,
+    required String collateralId,
+    required String durationType,
+    required String loanToValue,
+    required String liquidationThreshold,
+    required String repaymentToken,
+  }) async {
+    final result = await _service.postSendOfferCryptoToBe(
+      loanRequestId: loanRequestId,
+      duration: duration,
+      supplyCurrency: supplyCurrency,
+      interestRate: interestRate,
+      loanAmount: loanAmount,
+      latestBlockchainTxn: latestBlockchainTxn,
+      message: message,
+      collateralId: collateralId,
+      durationType: durationType,
+      walletAddress: PrefsService.getCurrentBEWallet(),
+      loanToValue: loanToValue,
+      liquidationThreshold: liquidationThreshold,
+      repaymentToken: repaymentToken,
+      id: id,
+    );
+    result.when(success: (success) {}, error: (error) {});
+  }
+
+  Future<void> rejectOfferCryptoLoanRequest({required String id}) async {
+    final result =
+        await _service.postRejectCryptoLoanRequest(loanRequestId: id);
+    result.when(success: (success) {}, error: (error) {});
   }
 }
