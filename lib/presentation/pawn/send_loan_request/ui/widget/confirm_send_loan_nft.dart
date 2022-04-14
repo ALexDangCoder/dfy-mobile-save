@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
@@ -24,12 +25,43 @@ class ConfirmSendLoanNft extends StatelessWidget {
     required this.cubit,
   }) : super(key: key);
   final SendLoanRequestCubit cubit;
+
   @override
   Widget build(BuildContext context) {
     final String duration =
         cubit.nftRequest.durationType == 0 ? 'weeks' : 'months';
-    return BlocBuilder<SendLoanRequestCubit, SendLoanRequestState>(
+    return BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
       bloc: cubit,
+      listener: (context, state) async {
+        if (state is SubmitNftSuccess) {
+          if (state.complete == CompleteType.SUCCESS) {
+            await showLoadSuccess(context).then(
+              (value) => {
+                Navigator.of(context).popUntil(
+                  (route) => route.settings.name == AppRouter.borrow_result,
+                ),
+              },
+            );
+          } else {
+            await showLoadFail(context).then(
+              (value) => Navigator.of(context).popUntil(
+                (route) => route.settings.name == AppRouter.borrow_result,
+              ),
+            );
+          }
+        } else {
+          unawaited(
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (_) => const AlertDialog(
+                backgroundColor: Colors.transparent,
+                content: TransactionSubmit(),
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return BaseDesignScreen(
           title: 'Confirm loan request',
@@ -53,13 +85,6 @@ class ConfirmSendLoanNft extends StatelessWidget {
                   ),
                 );
                 await cubit.postNftToServer();
-                await showLoadSuccess(context).then(
-                  (value) => Navigator.of(context)
-                    ..pop()
-                    ..pop()
-                    ..pop()
-                  ,
-                );
               },
               child: const ButtonGold(
                 title: 'Send request',

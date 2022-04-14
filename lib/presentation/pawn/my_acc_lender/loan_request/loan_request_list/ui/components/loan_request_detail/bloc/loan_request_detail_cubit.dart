@@ -176,4 +176,5 @@ class LoanRequestDetailCubit extends BaseCubit<LoanRequestDetailState> {
     await _service.postRejectNFTLoanRequest(loanRequestId: id);
     result.when(success: (success) {}, error: (error) {});
   }
+
 }

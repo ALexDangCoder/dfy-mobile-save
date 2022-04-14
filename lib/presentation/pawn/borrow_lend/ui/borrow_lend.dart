@@ -94,10 +94,11 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                   children: [
                     GestureDetector(
                       onTap: () {
-                          final FocusScopeNode currentFocus = FocusScope.of(context);
-                          if (!currentFocus.hasPrimaryFocus) {
-                            currentFocus.unfocus();
-                          }
+                        final FocusScopeNode currentFocus =
+                            FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
                         _bloc.isChooseToken.add(false);
                       },
                       child: SingleChildScrollView(
@@ -309,10 +310,12 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BorrowResult(
-                            nameToken: _bloc.tokenSymbol.value,
-                          ),
-                        ),
+                            builder: (context) => BorrowResult(
+                                  nameToken: _bloc.tokenSymbol.value,
+                                ),
+                            settings: const RouteSettings(
+                              name: AppRouter.borrow_result,
+                            )),
                       );
                     } else {
                       Navigator.push(
@@ -321,6 +324,9 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                           builder: (context) => BorrowResult(
                             nameToken: _bloc.tokenSymbol.value,
                             amount: _bloc.textAmount.value,
+                          ),
+                          settings: const RouteSettings(
+                            name: AppRouter.borrow_result,
                           ),
                         ),
                       );
