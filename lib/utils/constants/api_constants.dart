@@ -392,5 +392,6 @@ class ApiConstants {
   static const String GET_COLLATERAL_PAWNSHOP_PACKAGE = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/';
   static const String POST_NEW_LOAN_PACKAGE = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package';
   static const String REJECT_LOAN_REQUEST = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/rejectLoanRequest';
+  static const String REJECT_LOAN_REQUEST_NFT = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/rejectLoanRequestNFT';
 
 }

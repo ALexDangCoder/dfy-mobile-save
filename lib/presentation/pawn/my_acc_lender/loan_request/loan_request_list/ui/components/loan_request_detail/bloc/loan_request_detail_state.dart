@@ -21,3 +21,4 @@ class LoanRequestDetailLoadApi extends LoanRequestDetailState {
   @override
   List<Object> get props => [completeType];
 }
+

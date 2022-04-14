@@ -69,4 +69,11 @@ abstract class LoanRequestListService {
     @Field('loanRequestId') required String loanRequestId,
   });
 
+  @POST(ApiConstants.REJECT_LOAN_REQUEST_NFT)
+  Future<String> rejectNFTLoanRequest({
+    @Field('loanRequestId') required String loanRequestId,
+  });
+
+
+
 }

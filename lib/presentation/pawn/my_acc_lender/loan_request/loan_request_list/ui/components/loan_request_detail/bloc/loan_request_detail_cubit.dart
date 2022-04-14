@@ -170,4 +170,10 @@ class LoanRequestDetailCubit extends BaseCubit<LoanRequestDetailState> {
     await _service.postRejectCryptoLoanRequest(loanRequestId: id);
     result.when(success: (success) {}, error: (error) {});
   }
+
+  Future<void> rejectOfferNFTLoanRequest({required String id}) async {
+    final result =
+    await _service.postRejectNFTLoanRequest(loanRequestId: id);
+    result.when(success: (success) {}, error: (error) {});
+  }
 }
