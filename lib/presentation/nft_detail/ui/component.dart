@@ -26,7 +26,7 @@ Widget action(
   final NftInfo nftInfo = NftInfo(
     contract: collectionAddress.toLowerCase(),
     id: nftTokenId,
-    nftId: nftMarket.nftId,
+    nftId: nftMarket.id,
     collectionSymbol: 'DFY-NFT',
     collectionId: nftMarket.collectionID?.toLowerCase(),
     collectionName: nftMarket.collectionName,
@@ -84,21 +84,39 @@ Widget _nameNFT({
   double? price,
   required MarketType type,
   required BuildContext context,
+  required TypeNFT nftType,
 }) {
   String urlShare = '';
-  switch (type) {
-    case MarketType.AUCTION:
-      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
-      break;
-    case MarketType.SALE:
-      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
-      break;
-    case MarketType.PAWN:
-      urlShare = '${Get.find<AppConstants>().basePawnUrl}collateral-nft/$url';
-      break;
-    case MarketType.NOT_ON_MARKET:
-      urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
-      break;
+  if(nftType == TypeNFT.SOFT_NFT){
+    switch (type) {
+      case MarketType.AUCTION:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+        break;
+      case MarketType.SALE:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+        break;
+      case MarketType.PAWN:
+        urlShare = '${Get.find<AppConstants>().basePawnUrl}collateral-nft/$url';
+        break;
+      case MarketType.NOT_ON_MARKET:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}nft/$url';
+        break;
+    }
+  } else {
+    switch (type) {
+      case MarketType.AUCTION:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}hard-nft-detail/$url';
+        break;
+      case MarketType.SALE:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}hard-nft-detail/$url';
+        break;
+      case MarketType.PAWN:
+        urlShare = '${Get.find<AppConstants>().basePawnUrl}collateral-nft/$url';
+        break;
+      case MarketType.NOT_ON_MARKET:
+        urlShare = '${Get.find<AppConstants>().baseCustomUrl}hard-nft-detail/$url';
+        break;
+    }
   }
   return Container(
     margin: EdgeInsets.only(
