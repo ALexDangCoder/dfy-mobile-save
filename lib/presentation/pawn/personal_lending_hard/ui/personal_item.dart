@@ -21,6 +21,7 @@ class PersonalItem extends StatelessWidget {
   final String signedContract;
   final String total;
   final String id;
+  final int type;
 
   const PersonalItem({
     Key? key,
@@ -32,7 +33,7 @@ class PersonalItem extends StatelessWidget {
     required this.signedContract,
     required this.total,
     required this.id,
-    required this.isTrust,
+    required this.isTrust, required this.type,
   }) : super(key: key);
 
   @override
@@ -292,7 +293,7 @@ class PersonalItem extends StatelessWidget {
                               index: 1,
                               packageId: id,
                               pawnshopType: '',
-                              collateralAccepted: [],
+                              collateralAccepted: [], type: type,
                             );
                           },
                         ),

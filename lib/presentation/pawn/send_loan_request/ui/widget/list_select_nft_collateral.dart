@@ -1,4 +1,3 @@
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -32,12 +31,6 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral>
     super.initState();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.cubit.close();
   }
 
   @override

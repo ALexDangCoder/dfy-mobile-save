@@ -4,9 +4,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
-import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
-import 'package:Dfy/presentation/transaction_submit/transaction_success.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
@@ -26,7 +24,6 @@ class ConfirmSendLoanNft extends StatelessWidget {
     required this.cubit,
   }) : super(key: key);
   final SendLoanRequestCubit cubit;
-
   @override
   Widget build(BuildContext context) {
     final String duration =
@@ -36,7 +33,9 @@ class ConfirmSendLoanNft extends StatelessWidget {
       builder: (context, state) {
         return BaseDesignScreen(
           title: 'Confirm loan request',
-          onRightClick: () {},
+          onRightClick: () {
+            Navigator.pop(context);
+          },
           text: ImageAssets.ic_close,
           bottomBar: Container(
             padding: EdgeInsets.only(bottom: 38.h),
@@ -176,7 +175,7 @@ class ConfirmSendLoanNft extends StatelessWidget {
                     Text(
                       '${cubit.nftRequest.durationTime.toString()} $duration',
                       style: textNormalCustom(
-                        AppTheme.getInstance().whiteWithOpacitySevenZero(),
+                        null,
                         16,
                         FontWeight.w400,
                       ),

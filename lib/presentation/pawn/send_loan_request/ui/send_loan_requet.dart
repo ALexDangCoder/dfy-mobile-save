@@ -15,14 +15,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SendLoanRequest extends StatefulWidget {
-  const SendLoanRequest(
-      {Key? key,
-      this.index = 0,
-      required this.packageId,
-      required this.pawnshopType,
-      required this.collateralAccepted})
-      : super(key: key);
+  const SendLoanRequest({
+    Key? key,
+    this.index = 0,
+    required this.packageId,
+    required this.pawnshopType,
+    required this.collateralAccepted,
+    required this.type,
+  }) : super(key: key);
   final int index;
+  final int type;
   final String packageId;
   final String pawnshopType;
   final List<AcceptableAssetsAsCollateral> collateralAccepted;
@@ -42,6 +44,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
   void initState() {
     super.initState();
     cubit = SendLoanRequestCubit();
+    cubit.type=widget.type;
     trustWalletChannel
         .setMethodCallHandler(cubit.nativeMethodCallBackTrustWallet);
     checkLogin = cubit.getLoginState();
@@ -212,6 +215,7 @@ class _SendLoanRequestState extends State<SendLoanRequest>
                                           pawnshopType: widget.pawnshopType,
                                         ),
                                         SendLoanRequestNft(
+                                          type: widget.type,
                                           packageId: widget.packageId,
                                           cubit: cubit,
                                         )

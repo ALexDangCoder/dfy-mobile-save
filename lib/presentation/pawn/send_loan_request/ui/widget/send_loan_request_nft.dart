@@ -1,29 +1,38 @@
+import 'dart:async';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/presentation/market_place/ui/nft_item/ui/nft_item.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/bloc/send_loan_request_cubit.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/confirm_send_loan_nft.dart';
-import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/form_dropdown.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/widget/list_select_nft_collateral.dart';
+import 'package:Dfy/presentation/put_on_market/model/nft_put_on_market_model.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/dotted_border.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/text/text_from_field_group/text_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SendLoanRequestNft extends StatefulWidget {
   const SendLoanRequestNft({
     Key? key,
     required this.cubit,
     required this.packageId,
+    required this.type,
   }) : super(key: key);
 
   final SendLoanRequestCubit cubit;
   final String packageId;
+  final int type;
 
   @override
   _SendLoanRequestNftState createState() => _SendLoanRequestNftState();
@@ -49,9 +58,9 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 16.w,
+        // vertical: 16.h,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _chooseNftFtFillNft(context),
@@ -65,14 +74,17 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             ),
           ),
           spaceH4,
-          TextFieldValidator(
-            controller: messageController,
-            hint: 'Enter message',
-            onChange: (value) {
-              widget.cubit.nftRequest.message = value;
-              widget.cubit.validateMessage(value);
-              widget.cubit.validateAll();
-            },
+          SizedBox(
+            height: 64.h,
+            child: TextFieldValidator(
+              controller: messageController,
+              hint: 'Enter message',
+              onChange: (value) {
+                widget.cubit.nftRequest.message = value;
+                widget.cubit.validateMessage(value);
+                widget.cubit.validateAll();
+              },
+            ),
           ),
           _txtWarning(
             isShowStream: widget.cubit.isShowMessage,
@@ -88,55 +100,61 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             ),
           ),
           spaceH4,
-          TextFieldValidator(
-            controller: loanController,
-            hint: 'Loan amount',
-            onChange: (value) {
-              widget.cubit.validateAmount(value);
-              widget.cubit.validateAll();
-            },
-            suffixIcon: DropdownButtonHideUnderline(
-              child: DropdownButton<Map<String, dynamic>>(
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
-                items: widget.cubit.listDropDownToken.map((model) {
-                  return DropdownMenuItem(
-                    value: model,
-                    child: Row(
-                      children: <Widget>[
-                        model['icon'],
-                        spaceW5,
-                        Text(
-                          model['label'],
-                          style: textNormal(
-                            Colors.white,
-                            16,
+          SizedBox(
+            height: 64.h,
+            child: TextFieldValidator(
+              controller: loanController,
+              hint: 'Loan amount',
+              textInputType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              onChange: (value) {
+                widget.cubit.validateAmount(value);
+                widget.cubit.validateAll();
+              },
+              suffixIcon: DropdownButtonHideUnderline(
+                child: DropdownButton<Map<String, dynamic>>(
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                  dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
+                  items: widget.cubit.listDropDownToken.map((model) {
+                    return DropdownMenuItem(
+                      value: model,
+                      child: Row(
+                        children: <Widget>[
+                          model['icon'],
+                          spaceW5,
+                          Text(
+                            model['label'],
+                            style: textNormal(
+                              Colors.white,
+                              16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (Map<String, dynamic>? newValue) {
-                  setState(() {
-                    widget.cubit.nftRequest.loanSymbol = newValue!['label'];
-                    itemToken = newValue;
-                  });
-                },
-                value: itemToken,
-                icon: Row(
-                  children: [
-                    spaceW15,
-                    SizedBox(
-                      height: 70.h,
-                      child: sizedSvgImage(
-                        w: 13,
-                        h: 13,
-                        image: ImageAssets.ic_expand_white_svg,
+                        ],
                       ),
-                    ),
-                    spaceW15,
-                  ],
+                    );
+                  }).toList(),
+                  onChanged: (Map<String, dynamic>? newValue) {
+                    setState(() {
+                      widget.cubit.nftRequest.loanSymbol = newValue!['label'];
+                      itemToken = newValue;
+                    });
+                  },
+                  value: itemToken,
+                  icon: Row(
+                    children: [
+                      spaceW15,
+                      SizedBox(
+                        height: 70.h,
+                        child: sizedSvgImage(
+                          w: 13,
+                          h: 13,
+                          image: ImageAssets.ic_expand_white_svg,
+                        ),
+                      ),
+                      spaceW15,
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -155,67 +173,74 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             ),
           ),
           spaceH4,
-          StreamBuilder<bool>(
-            initialData: true,
-            stream: widget.cubit.isMonthForm,
-            builder: (context, snapshot) {
-              return TextFieldValidator(
-                controller: durationController,
-                hint: 'Duration',
-                onChange: (value) {
-                  widget.cubit.validateDuration(
-                    value,
-                    isMonth: snapshot.data ?? false,
-                  );
-                  widget.cubit.validateAll();
-                },
-                suffixIcon: DropdownButtonHideUnderline(
-                  child: DropdownButton<Map<String, dynamic>>(
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                    dropdownColor: AppTheme.getInstance().backgroundBTSColor(),
-                    items: widget.cubit.listDropDownDuration.map((model) {
-                      return DropdownMenuItem(
-                        value: model,
-                        child: Text(
-                          model['label'],
-                          style: textNormal(
-                            Colors.white,
-                            16,
+          SizedBox(
+            height: 64.h,
+            child: StreamBuilder<bool>(
+              initialData: true,
+              stream: widget.cubit.isMonthForm,
+              builder: (context, snapshot) {
+                return TextFieldValidator(
+                  textInputType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  controller: durationController,
+                  hint: 'Duration',
+                  onChange: (value) {
+                    widget.cubit.validateDuration(
+                      value,
+                      isMonth: snapshot.data ?? false,
+                    );
+                    widget.cubit.validateAll();
+                  },
+                  suffixIcon: DropdownButtonHideUnderline(
+                    child: DropdownButton<Map<String, dynamic>>(
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      dropdownColor:
+                          AppTheme.getInstance().backgroundBTSColor(),
+                      items: widget.cubit.listDropDownDuration.map((model) {
+                        return DropdownMenuItem(
+                          value: model,
+                          child: Text(
+                            model['label'],
+                            style: textNormal(
+                              Colors.white,
+                              16,
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (Map<String, dynamic>? newValue) {
-                      setState(() {
-                        if (newValue!['label'] == 'month') {
-                          widget.cubit.nftRequest.durationType = 1;
-                          widget.cubit.isMonthForm.sink.add(true);
-                        } else {
-                          widget.cubit.nftRequest.durationType = 0;
-                          widget.cubit.isMonthForm.sink.add(false);
-                        }
-                        itemDuration = newValue;
-                      });
-                    },
-                    value: itemDuration,
-                    icon: Row(
-                      children: [
-                        spaceW15,
-                        SizedBox(
-                          height: 70.h,
-                          child: sizedSvgImage(
-                            w: 13,
-                            h: 13,
-                            image: ImageAssets.ic_expand_white_svg,
+                        );
+                      }).toList(),
+                      onChanged: (Map<String, dynamic>? newValue) {
+                        setState(() {
+                          if (newValue!['label'] == 'month') {
+                            widget.cubit.nftRequest.durationType = 1;
+                            widget.cubit.isMonthForm.sink.add(true);
+                          } else {
+                            widget.cubit.nftRequest.durationType = 0;
+                            widget.cubit.isMonthForm.sink.add(false);
+                          }
+                          itemDuration = newValue;
+                        });
+                      },
+                      value: itemDuration,
+                      icon: Row(
+                        children: [
+                          spaceW15,
+                          SizedBox(
+                            height: 70.h,
+                            child: sizedSvgImage(
+                              w: 13,
+                              h: 13,
+                              image: ImageAssets.ic_expand_white_svg,
+                            ),
                           ),
-                        ),
-                        spaceW15,
-                      ],
+                          spaceW15,
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
           _txtWarning(
             isShowStream: widget.cubit.isShowDuration,
@@ -275,26 +300,165 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             stream: widget.cubit.isEnableSendRqNft,
             builder: (context, snapshot) {
               return InkWell(
-                onTap: () {
+                onTap: () async {
                   if (snapshot.data ?? false) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ConfirmSendLoanNft(
-                              cubit: widget.cubit,
+                    if (widget.cubit.nftType != 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmSendLoanNft(
+                            cubit: widget.cubit,
+                          ),
+                        ),
+                      );
+                    } else {
+                      final NavigatorState navigator = Navigator.of(context);
+                      await widget.cubit.getHexString(
+                        pawnShopPackageId: widget.packageId,
+                        nftTokenQuantity: 1.toString(),
+                        //todo
+                        nftTokenId:
+                            widget.cubit.nftMarketFill.value?.nftTokenId ?? '',
+                        nftContract: widget
+                                .cubit.nftMarketFill.value?.collectionAddress ??
+                            '',
+                        expectedlLoanAmount: loanController.text,
+                        beNFTId: widget.cubit.nftMarketFill.value?.nftId ?? '',
+                        loanAsset:
+                            ImageAssets.getAddressToken(itemToken['label']),
+                        expectedDurationQty: durationController.text,
+                        message: messageController.text,
+                        durationType:
+                            widget.cubit.nftMarketConfirm.durationType ?? 0,
+                      );
+                      unawaited(
+                        navigator.push(
+                          MaterialPageRoute(
+                            builder: (context) => Approve(
+                              needApprove: true,
+                              textActiveButton: 'Confirm loan request',
+                              spender: Get.find<AppConstants>().nftPawn,
+                              isPutOnMarket: true,
+                              payValue: loanController.text,
+                              tokenAddress: ImageAssets.getAddressToken(
+                                itemToken['label'],
+                              ),
+                              putOnMarketModel: PutOnMarketModel(
+                                collectionAddress: widget.cubit.nftMarketFill
+                                    .value?.collectionAddress,
+                              ),
+                              hexString: widget.cubit.hexString,
+                              title: 'Confirm loan request',
+                              onSuccessSign: (context, data) async {
+                                final result = await widget.cubit.putOnPawn(
+                                  txHash: data,
+                                  putOnMarketModel: PutOnMarketModel(
+                                    nftTokenId: int.parse(widget.cubit
+                                            .nftMarketFill.value?.nftTokenId ??
+                                        '0'),
+                                    loanSymbol: itemToken['label'],
+                                    tokenAddress: ImageAssets.getAddressToken(
+                                        itemToken['label']),
+                                    loanAmount: loanController.text,
+                                    collectionAddress: widget.cubit
+                                        .nftMarketFill.value?.collectionAddress,
+                                    buyOutPrice: widget
+                                        .cubit.nftMarketFill.value?.buyOutPrice
+                                        .toString(),
+                                    collectionIsWhitelist: widget
+                                        .cubit.nftMarketFill.value?.isWhitelist,
+                                    collectionName: widget.cubit.nftMarketFill
+                                        .value?.collectionName,
+                                    nftId:
+                                        widget.cubit.nftMarketFill.value?.nftId,
+                                    nftMediaCid:
+                                        widget.cubit.nftMarketFill.value?.cover,
+                                    nftMediaType: widget.cubit.nftMarketFill
+                                                .value?.typeImage ==
+                                            TypeImage.VIDEO
+                                        ? 'video'
+                                        : 'image',
+                                    nftName:
+                                        widget.cubit.nftMarketFill.value?.name,
+                                    nftStandard: ERC721,
+                                    nftType: (widget.cubit.nftMarketFill.value
+                                                ?.typeNFT ==
+                                            TypeNFT.SOFT_NFT)
+                                        ? 0
+                                        : 1,
+                                    numberOfCopies: widget.cubit.nftMarketFill
+                                        .value?.numberOfCopies,
+                                    totalOfCopies: widget
+                                        .cubit.nftMarketFill.value?.totalCopies,
+                                  ),
+                                );
+                                if (result) {
+                                  await showLoadSuccess(context).then((value) {
+                                    widget.cubit.nftRequest.walletAddress =
+                                        PrefsService.getCurrentBEWallet();
+                                    widget.cubit.nftRequest.txId = null;
+                                    widget.cubit.nftRequest.nftId =
+                                        widget.cubit.nftMarketFill.value?.nftId;
+                                    widget.cubit.nftRequest.message =
+                                        messageController.text;
+                                    widget.cubit.nftRequest.loanAmount =
+                                        double.parse(loanController.text);
+                                    widget.cubit.nftRequest.loanSymbol =
+                                        itemToken['label'];
+                                    widget.cubit.nftRequest.durationTime =
+                                        int.parse(durationController.text);
+                                    widget.cubit.nftRequest.durationType =
+                                        (itemDuration['label'] == 'month')
+                                            ? 1
+                                            : 0;
+                                    widget.cubit.nftRequest.pawnShopPackageId =
+                                        int.parse(widget.packageId);
+                                    widget.cubit.nftRequest.collateralSymbol =
+                                        itemToken['label'];
+                                    widget.cubit.nftRequest.collateralId =
+                                        widget.cubit.idCollateral ;
+                                    widget.cubit.nftRequest.marketType = (widget
+                                                .cubit
+                                                .nftMarketFill
+                                                .value
+                                                ?.typeNFT ==
+                                            TypeNFT.SOFT_NFT)
+                                        ? 0
+                                        : 1;
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ConfirmSendLoanNft(
+                                          cubit: widget.cubit,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                } else {
+                                  await showLoadFail(context);
+                                }
+                              },
+                              onErrorSign: (context) async {
+                                await showLoadFail(context);
+                              },
+                              listDetail: [],
                             ),
-                      ),
-                    );
-                  } else {}
+                          ),
+                        ),
+                      );
+                    }
+                  }
                 },
                 child: ButtonGold(
+                  haveMargin: false,
                   title: 'Request loan',
                   isEnable: snapshot.data ?? false,
                 ),
               );
             },
           ),
+          // spaceH35
           // SizedBox(height: 200.h,),
         ],
       ),
@@ -315,121 +479,130 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
             padding: ((snapshot.data?.name ?? '').isEmpty)
                 ? EdgeInsets.only(top: 47.h)
                 : EdgeInsets.only(
-              top: 16.h,
-              left: 94.w,
-            ),
+                    top: 16.h,
+                    left: 94.w,
+                  ),
             child: ((snapshot.data?.name ?? '').isEmpty)
                 ? InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ListSelectNftCollateral(cubit: widget.cubit);
-                    },
-                  ),
-                ).then((value) {
-                  widget.cubit.emit(GetWalletSuccess());
-                  if (value != null) {
-                    value as NftMarket;
-                    widget.cubit.nftMarketFill.sink.add(value);
-                    widget.cubit.mapValidate['formDuration'] = true;
-                    widget.cubit.mapValidate['formLoan'] = true;
-                    widget.cubit.mapValidate['chooseNFT'] = true;
-                    durationController.text =
-                        value.durationQty.toString();
-                    widget.cubit.validateDuration(
-                      durationController.text,
-                      isMonth: value.durationType == 0 ? false : true,
-                    );
-                    loanController.text = value.price.toString();
-                    // itemToken = widget.cubit.filTokenAfterChooseNft(
-                    //   value.expectedCollateralSymbol ?? DFY,
-                    // );
-                    itemToken = widget.cubit.listDropDownToken.firstWhere(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ListSelectNftCollateral(cubit: widget.cubit);
+                          },
+                        ),
+                      ).then((value) {
+                        widget.cubit.emit(GetWalletSuccess());
+                        if (value != null) {
+                          value as NftMarket;
+                          widget.cubit.nftMarketFill.sink.add(value);
+                          widget.cubit.mapValidate['chooseNFT'] = true;
+                          if (value.durationQty != null) {
+                            durationController.text =
+                                (value.durationQty ?? '1').toString();
+                            widget.cubit.validateDuration(
+                              durationController.text,
+                              isMonth: value.durationType == 0 ? false : true,
+                            );
+                            widget.cubit.validateDuration(
+                              durationController.text,
+                              isMonth: value.durationType == 0 ? false : true,
+                            );
+                          } else {
+                            durationController.text = '';
+                            widget.cubit.validateDuration(
+                              durationController.text,
+                              isMonth: value.durationType == 0 ? false : true,
+                            );
+                          }
+                          if (value.price != 0) {
+                            loanController.text = value.price.toString();
+                            widget.cubit.validateAmount(loanController.text);
+                          } else {
+                            loanController.text = '';
+                            widget.cubit.validateAmount(loanController.text);
+                          }
+                          // itemToken = widget.cubit.filTokenAfterChooseNft(
+                          //   value.expectedCollateralSymbol ?? DFY,
+                          // );
+                          itemToken = widget.cubit.listDropDownToken.firstWhere(
                             (element) =>
-                        element['label'] ==
-                            value.expectedCollateralSymbol);
-                    itemDuration = widget.cubit.listDropDownDuration
-                        .firstWhere((element) =>
-                    element['label'] ==
-                        (value.durationType == 0 ? 'month' : 'week'));
-                        widget.cubit.validateMessage(messageController.text);
-                    widget.cubit.validateAll();
+                                element['label'] ==
+                                (value.expectedCollateralSymbol ?? 'DFY'),
+                          );
+                          itemDuration = widget.cubit.listDropDownDuration
+                              .firstWhere((element) =>
+                                  element['label'] ==
+                                  (value.durationType == 0 ? 'month' : 'week'));
+                          widget.cubit.validateMessage(messageController.text);
+                          widget.cubit.validateAll();
 
-                    ///fill data to request to post
-                    widget.cubit.nftMarketConfirm = value;
-                    widget.cubit.nftRequest.durationType =
-                        value.durationType;
-                    widget.cubit.nftRequest.collateralId =
-                        value.collateralId;
-                    widget.cubit.nftRequest.walletAddress =
-                        value.walletAddress;
-                    widget.cubit.nftRequest.marketType =
-                    value.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1;
-                    widget.cubit.nftRequest.nftId = value.nftId ?? '';
-                    widget.cubit.nftRequest.pawnShopPackageId =
-                        int.parse(widget.packageId);
-                    widget.cubit.nftRequest.durationTime =
-                        value.durationQty;
-                    widget.cubit.nftRequest.txId =
-                    null; //case nay dang de null
-                    widget.cubit.nftRequest.collateralSymbol =
-                        value.expectedCollateralSymbol;
-                    widget.cubit.nftRequest.loanAmount = value.price;
+                          ///fill data to request to post
+                          ///
+                          widget.cubit.nftType = value.marketStatus ?? 1;
+                          widget.cubit.nftMarketConfirm = value;
+                          widget.cubit.nftRequest.durationType =
+                              value.durationType;
+                          widget.cubit.nftRequest.collateralId =
+                              value.collateralId;
+                          widget.cubit.nftRequest.walletAddress =
+                              value.walletAddress;
+                          widget.cubit.nftRequest.marketType =
+                              value.typeNFT == TypeNFT.SOFT_NFT ? 0 : 1;
+                          widget.cubit.nftRequest.nftId = value.nftId ?? '';
+                          widget.cubit.nftRequest.pawnShopPackageId =
+                              int.parse(widget.packageId);
+                          widget.cubit.nftRequest.durationTime =
+                              value.durationQty;
+                          widget.cubit.nftRequest.txId =
+                              null; //case nay dang de null
+                          widget.cubit.nftRequest.collateralSymbol =
+                              value.expectedCollateralSymbol;
+                          widget.cubit.nftRequest.loanAmount = value.price;
 
-                    ///end
-                  }
-                  // else {
-                  //   setState(() {
-                  //     messageController.text = '';
-                  //     loanController.text = '';
-                  //     durationController.text = '';
-                  //     itemDuration = widget.cubit.listDropDownDuration[0];
-                  //     itemToken = widget.cubit.listDropDownDuration[0];
-                  //   });
-                  //   widget.cubit.validateAll();
-                  // }
-                  return value;
-                });
-              },
-              child: Column(
-                children: [
-                  Image.asset(
-                    ImageAssets.createNft,
-                  ),
-                  spaceH16,
-                  Text(
-                    'Choose your NFT',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().whiteColor(),
-                      14,
-                      FontWeight.w400,
+                          ///end
+                        }
+                        return value;
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          ImageAssets.createNft,
+                        ),
+                        spaceH16,
+                        Text(
+                          'Choose your NFT',
+                          style: textNormalCustom(
+                            AppTheme.getInstance().whiteColor(),
+                            14,
+                            FontWeight.w400,
+                          ),
+                        )
+                      ],
                     ),
                   )
-                ],
-              ),
-            )
                 : Stack(
-              children: [
-                NFTItemWidget(
-                  nftMarket: snapshot.data ?? NftMarket(),
-                  isChoosing: true,
-                ),
-                InkWell(
-                  onTap: () {
-                    widget.cubit.nftMarketFill.sink.add(NftMarket());
-                    widget.cubit.mapValidate['chooseNFT'] = false;
-                    widget.cubit.mapValidate['formLoan'] = false;
-                    widget.cubit.mapValidate['formDuration'] = false;
-                    loanController.text = '';
-                    durationController.text = '';
-                    widget.cubit.validateAll();
-                  },
-                  child: Image.asset(ImageAssets.ic_close),
-                ),
-              ],
-            ),
+                    children: [
+                      NFTItemWidget(
+                        nftMarket: snapshot.data ?? NftMarket(),
+                        isChoosing: true,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          widget.cubit.nftMarketFill.sink.add(NftMarket());
+                          widget.cubit.mapValidate['chooseNFT'] = false;
+                          widget.cubit.mapValidate['formLoan'] = false;
+                          widget.cubit.mapValidate['formDuration'] = false;
+                          loanController.text = '';
+                          durationController.text = '';
+                          widget.cubit.validateAll();
+                        },
+                        child: Image.asset(ImageAssets.ic_close),
+                      ),
+                    ],
+                  ),
           );
         },
       ),
