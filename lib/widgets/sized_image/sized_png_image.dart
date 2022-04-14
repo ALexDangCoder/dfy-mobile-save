@@ -28,7 +28,7 @@ Widget sizedSvgImage({
     child: Center(
       child: SvgPicture.asset(
         image,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       ),
     ),
   );
