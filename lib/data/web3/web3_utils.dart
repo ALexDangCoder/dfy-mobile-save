@@ -1339,6 +1339,21 @@ class Web3Utils {
     return hex.encode(acceptOffer.data ?? []);
   }
 
+  Future<String> getDeactivePawnshopPackageData({
+    required String packageId,
+  }) async {
+    final deployContract = await deployedPawnCryptoContract();
+    final function = deployContract.function('deactivePawnShopPackage');
+    final deactivePawnShopPackage = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(packageId)),
+      ],
+    );
+    return hex.encode(deactivePawnShopPackage.data ?? []);
+  }
+
   //sumit
   Future<String> getSubmitCryptoContractData({
     required int point,
