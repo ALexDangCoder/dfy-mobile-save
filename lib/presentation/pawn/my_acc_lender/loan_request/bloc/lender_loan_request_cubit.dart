@@ -29,6 +29,13 @@ class LenderLoanRequestCubit extends BaseCubit<LenderLoanRequestState> {
   ///di
   LoanRequestRepository get _service => Get.find();
 
+
+  Future<void> rejectNFTLoanRequest({required String id}) async {
+    final result =
+    await _service.postRejectNFTLoanRequest(loanRequestId: id);
+    result.when(success: (success) {}, error: (error) {});
+  }
+
   static const String ACTIVE = '1';
   static const String ALL = '';
   static const String COMPLETE = '2';

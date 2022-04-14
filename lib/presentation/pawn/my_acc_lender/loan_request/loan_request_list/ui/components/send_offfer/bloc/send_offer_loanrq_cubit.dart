@@ -311,6 +311,8 @@ class SendOfferLoanrqCubit extends Cubit<SendOfferLoanrqState> {
     result.when(success: (success) {}, error: (error) {});
   }
 
+
+
   Future<void> rejectOfferCryptoLoanRequest({required String id}) async {
     final result =
         await _service.postRejectCryptoLoanRequest(loanRequestId: id);

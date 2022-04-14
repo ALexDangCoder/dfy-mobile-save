@@ -4,9 +4,11 @@ import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/loan_request_crypto_item_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/loan_request_detail/ui/loan_request_detail_nft.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/views/custom_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,103 +28,108 @@ class LenderLoanRequestNftItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nftItem = nftModel.nftModel;
-    return Container(
-      width: 343.w,
-      padding: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        top: 12.h,
-        bottom: 12.h,
-      ),
-      margin: EdgeInsets.only(bottom: 16.w),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AppTheme.getInstance().divideColor(),
+    return InkWell(
+      onTap: () {
+        goTo(context, LoanRequestDetailNft(nftModel: nftModel, cubit: cubit));
+      },
+      child: Container(
+        width: 343.w,
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          top: 12.h,
+          bottom: 12.h,
         ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
-        color: AppTheme.getInstance().bgBtsColor(),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _imageFtNameNft(
-            nftModel: nftItem ?? NFTPawnModel(),
-            isHardNft: (nftItem?.nftType == 1)? true : false,
-          ),
-          spaceH12,
-          _rowItem(
-            title: S.current.borrower.capitalize(),
-            description: Text(
-              (nftModel.collateralOwner?.walletAddress ?? '')
-                  .formatAddressWalletConfirm(),
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                14,
-                FontWeight.w400,
-              ).copyWith(
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-          spaceH12,
-          _rowItem(
-            title: S.current.duration.capitalize(),
-            description: Text(
-              cubit.categoryOneOrMany(
-                durationQty: nftModel.durationQty ?? 0,
-                durationType: nftModel.durationType ?? 0,
-              ),
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                14,
-                FontWeight.w400,
-              ),
-            ),
-          ),
-          spaceH12,
-          _rowItem(
-            title: S.current.asset_location.capitalize(),
-            description: Text(
-              'tam thoi dang trong do be chua co data',
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                14,
-                FontWeight.w400,
-              ),
-            ),
-          ),
-          spaceH12,
-          _rowItem(
-            title: S.current.status.capitalize(),
-            description: Text(
-              cubit.getStatus(nftModel.status.toString()),
-              style: textNormalCustom(
-                cubit.getColor(nftModel.status.toString()),
-                14,
-                FontWeight.w400,
-              ),
-            ),
-          ),
-          spaceH16,
-          Container(
-            height: 1.h,
+        margin: EdgeInsets.only(bottom: 16.w),
+        decoration: BoxDecoration(
+          border: Border.all(
             color: AppTheme.getInstance().divideColor(),
           ),
-          spaceH16,
-          _rowItem(
-            title: S.current.expected_loan.capitalize(),
-            description: Text(
-              '${formatValue.format(nftModel.expectedLoanAmount)} ${nftModel.expectedLoanSymbol}',
-              style: textNormalCustom(
-                AppTheme.getInstance().successTransactionColors(),
-                24,
-                FontWeight.w600,
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
+          ),
+          color: AppTheme.getInstance().bgBtsColor(),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _imageFtNameNft(
+              nftModel: nftItem ?? NFTPawnModel(),
+              isHardNft: (nftItem?.nftType == 1) ? true : false,
+            ),
+            spaceH12,
+            _rowItem(
+              title: S.current.borrower.capitalize(),
+              description: Text(
+                (nftModel.collateralOwner?.walletAddress ?? '')
+                    .formatAddressWalletConfirm(),
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  14,
+                  FontWeight.w400,
+                ).copyWith(
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
-          )
-        ],
+            spaceH12,
+            _rowItem(
+              title: S.current.duration.capitalize(),
+              description: Text(
+                cubit.categoryOneOrMany(
+                  durationQty: nftModel.durationQty ?? 0,
+                  durationType: nftModel.durationType ?? 0,
+                ),
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+            ),
+            spaceH12,
+            _rowItem(
+              title: S.current.asset_location.capitalize(),
+              description: Text(
+                'tam thoi dang trong do be chua co data',
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+            ),
+            spaceH12,
+            _rowItem(
+              title: S.current.status.capitalize(),
+              description: Text(
+                cubit.getStatus(nftModel.status.toString()),
+                style: textNormalCustom(
+                  cubit.getColor(nftModel.status.toString()),
+                  14,
+                  FontWeight.w400,
+                ),
+              ),
+            ),
+            spaceH16,
+            Container(
+              height: 1.h,
+              color: AppTheme.getInstance().divideColor(),
+            ),
+            spaceH16,
+            _rowItem(
+              title: S.current.expected_loan.capitalize(),
+              description: Text(
+                '${formatValue.format(nftModel.expectedLoanAmount)} ${nftModel.expectedLoanSymbol}',
+                style: textNormalCustom(
+                  AppTheme.getInstance().successTransactionColors(),
+                  24,
+                  FontWeight.w600,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
