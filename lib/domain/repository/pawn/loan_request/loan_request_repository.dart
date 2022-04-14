@@ -46,4 +46,8 @@ mixin LoanRequestRepository {
   Future<Result<String>> postRejectCryptoLoanRequest({
     required String loanRequestId,
   });
+
+  Future<Result<String>> postRejectNFTLoanRequest({
+    required String loanRequestId,
+  });
 }

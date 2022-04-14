@@ -406,7 +406,7 @@ class _MenuAccountState extends State<MenuAccount> {
                 navigationTo: LenderLoanRequest(),
                 isRequireLoginEmail: false,
                 settings: RouteSettings(
-                  name: AppRouter.collateral_list_myacc,
+                  name: AppRouter.loan_request_lender,
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -416,7 +416,7 @@ class _MenuAccountState extends State<MenuAccount> {
               MaterialPageRoute(
                 builder: (context) => const LenderLoanRequest(),
                 settings: const RouteSettings(
-                  name: AppRouter.collateral_list_myacc,
+                  name: AppRouter.loan_request_lender,
                 ),
               ),
             ).then((_) => cubit.getLoginState());
@@ -591,10 +591,10 @@ class _MenuAccountState extends State<MenuAccount> {
           routeName: 'contracts_lender',
           title: S.current.contracts,
         ),
-        ItemMenuModel.createChild(
-          routeName: 'setting_package_lender',
-          title: S.current.setting_and_package,
-        ),
+        // ItemMenuModel.createChild(
+        //   routeName: 'setting_package_lender',
+        //   title: S.current.setting_and_package,
+        // ),
         ItemMenuModel.createChild(
           routeName: 'loan_request_lender',
           title: S.current.loan_request,

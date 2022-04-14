@@ -81,7 +81,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                       ((cubit.detailLoanRequestCryptoModel.status ?? 0) == 1)
                           ? _buildButton()
                           : null,
-                      // _buildButton(),
+                  // _buildButton(),
                   title: S.current.request_detail,
                   child: SingleChildScrollView(
                     child: Container(
@@ -123,6 +123,8 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                   MaterialPageRoute(
                       builder: (_) => ConfirmRejectLoanRequest(
                             cubit: cubit,
+                            id: cubit.detailLoanRequestCryptoModel.id
+                                .toString(),
                           )));
             },
             child: Container(

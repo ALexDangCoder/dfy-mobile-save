@@ -146,11 +146,13 @@ class _OfferSentListState extends State<OfferSentList>
           children: [
             Flexible(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 child: SizedBox(
                   height: 30.h,
                   width: 30.w,
-                  child: Image.asset(ImageAssets.ic_menu),
+                  child: Image.asset(ImageAssets.ic_back),
                 ),
               ),
             ),
