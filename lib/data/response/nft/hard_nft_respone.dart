@@ -31,6 +31,8 @@ class HardNftResponse extends Equatable {
 class DetailHardNftResponse {
   @JsonKey(name: 'id')
   String? id;
+  @JsonKey(name: 'nft_id')
+  String? nftId;
   @JsonKey(name: 'market_id')
   String? marketId;
   @JsonKey(name: 'status')
@@ -112,6 +114,7 @@ class DetailHardNftResponse {
     this.collectionAddress,
     this.evaluationId,
     this.isWhiteList,
+    this.nftId,
     this.properties,
   );
 
@@ -155,7 +158,9 @@ class DetailHardNftResponse {
   }
 
   NftMarket toOnSale() => NftMarket(
+        id: id,
         price: 0,
+        nftId: nftId,
         marketId: marketId,
         name: name ?? '',
         description: description,
@@ -172,8 +177,7 @@ class DetailHardNftResponse {
         mintingFeeNumber: mintingFeeNumber,
         mintingFeeToken: mintingFeeToken,
         marketStatus: marketStatus,
-        marketType:
-            getTypeMarket((marketType ?? nftType) ?? 0),
+        marketType: getTypeMarket((marketType ?? nftType) ?? 0),
         createAt: createAt,
         updateAt: updateAt,
         collectionAddress: collectionAddress,
@@ -187,6 +191,7 @@ class DetailHardNftResponse {
 
   NFTOnAuction toAuction() => NFTOnAuction(
         marketId: marketId,
+        id: id,
         name: name ?? '',
         description: description,
         royalties: royalties,

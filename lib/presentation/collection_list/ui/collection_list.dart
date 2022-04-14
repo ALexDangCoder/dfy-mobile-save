@@ -302,7 +302,7 @@ class _CollectionListState extends State<CollectionList> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20.h,
                                         crossAxisSpacing: 26.w,
-                                        childAspectRatio: 2 / 3,
+                                        childAspectRatio: 0.9,
                                       ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length
@@ -334,8 +334,10 @@ class _CollectionListState extends State<CollectionList> {
                                                   (list[index].nftOwnerCount ??
                                                               0) <=
                                                           1
-                                                      ? S.current.owner.toLowerCase()
-                                                      : S.current.owners.toLowerCase(),
+                                                      ? S.current.owner
+                                                          .toLowerCase()
+                                                      : S.current.owners
+                                                          .toLowerCase(),
                                               items:
                                                   '${list[index].totalNft ?? 0}',
                                               text: list[index]

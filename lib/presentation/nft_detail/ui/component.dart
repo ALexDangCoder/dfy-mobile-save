@@ -26,7 +26,7 @@ Widget action(
   final NftInfo nftInfo = NftInfo(
     contract: collectionAddress.toLowerCase(),
     id: nftTokenId,
-    nftId: nftMarket.id,
+    nftId: nftMarket.nftId,
     collectionSymbol: 'DFY-NFT',
     collectionId: nftMarket.collectionID?.toLowerCase(),
     collectionName: nftMarket.collectionName,
