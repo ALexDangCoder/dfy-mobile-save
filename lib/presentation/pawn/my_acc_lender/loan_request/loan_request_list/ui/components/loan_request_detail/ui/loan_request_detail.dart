@@ -5,8 +5,11 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/loan_request_detail/bloc/loan_request_detail_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/ui/confirm_reject_loan_request.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/ui/loan_send_offer.dart';
+import 'package:Dfy/presentation/pawn/other_profile/ui/view_other_profile.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -234,7 +237,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
         _rowItem(
           title: 'Estimate:',
           description: Text(
-            '~ \$0.084',
+            '~ \$${formatValue.format((cubit.detailLoanRequestCryptoModel.collateralAmount ?? 0) * (cubit.getExchangeUSD(symbolToken: cubit.detailLoanRequestCryptoModel.collateralSymbol ?? 'DFY')))}',
             style: textNormalCustom(
               AppTheme.getInstance().whiteColor(),
               16,
@@ -407,10 +410,23 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
             ],
           ),
           spaceH16,
-          ButtonGold(
-            title: S.current.view_profile.toUpperCase(),
-            isEnable: true,
-            fixSize: false,
+          InkWell(
+            onTap: () {
+              goTo(
+                context,
+                OtherProfile(
+                  userId:
+                  cubit.reputationBorrower[0].userId.toString(),
+                  index: 0,
+                  pageRouter: PageRouter.MARKET,
+                ),
+              );
+            },
+            child: ButtonGold(
+              title: S.current.view_profile.toUpperCase(),
+              isEnable: true,
+              fixSize: false,
+            ),
           ),
         ],
       ),
