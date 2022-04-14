@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/detail_loan_request_crypto_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/loan_request_detail/bloc/loan_request_detail_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/bloc/send_offer_loanrq_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/send_offfer/ui/confirm_reject_loan_request.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -34,7 +36,9 @@ class LoanSendOffer extends StatefulWidget {
     Key? key,
     required this.isCryptoElseNft,
     required this.detailCrypto,
+    required this.cubit,
   }) : super(key: key);
+  final LoanRequestDetailCubit cubit;
   final bool isCryptoElseNft;
   final DetailLoanRequestCryptoModel detailCrypto;
 
@@ -58,14 +62,16 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
     super.initState();
     bloc = SendOfferLoanrqCubit();
     bloc.getTokenInf();
-    symbolAmount = widget.detailCrypto.collateralSymbol ?? '';
+    symbolAmount = widget.detailCrypto.loanSymbol ?? '';
     bloc.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
       tokenAddress: ImageAssets.getAddressToken(
         symbolAmount,
       ),
     );
-    bloc.collateralAmount = widget.detailCrypto.collateralAmount ?? 0;
+    bloc.collateralAmount = ((widget.detailCrypto.collateralAmount ?? 0) *
+        widget.cubit.getExchangeUSD(
+            symbolToken: widget.detailCrypto.collateralSymbol ?? ''));
     textMessController = TextEditingController();
     textLiquidationThresholdController = TextEditingController();
     textAmountController = TextEditingController();
@@ -222,92 +228,93 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                 bottom: 0,
                 child: GestureDetector(
                   onTap: () async {
-                    // if (bloc.checkBtn()) {
-                    //   final NavigatorState navigator = Navigator.of(context);
-                    //   await bloc.getCreateCryptoOfferDataHexString(
-                    //     duration: bloc.textDuration.value,
-                    //     collateralId: widget.objCollateralDetail.bcCollateralId
-                    //         .toString(),
-                    //     loanAmount: bloc.textAmount.value,
-                    //     repaymentCycleType:
-                    //     duration == S.current.weeks_pawn ? 0 : 1,
-                    //     interest: bloc.textInterestRate.value,
-                    //     liquidityThreshold: bloc.textLiquidationThreshold.value,
-                    //     loanDurationType:
-                    //     duration == S.current.weeks_pawn ? 0 : 1,
-                    //     repaymentAssetAddress:
-                    //     ImageAssets.getAddressToken(symbolAmount),
-                    //   );
-                    //   unawaited(
-                    //     navigator.push(
-                    //       MaterialPageRoute(
-                    //         builder: (context) => Approve(
-                    //           textActiveButton: S.current.send,
-                    //           spender:
-                    //           Get.find<AppConstants>().crypto_pawn_contract,
-                    //           needApprove: true,
-                    //           hexString: bloc.hexString,
-                    //           payValue: bloc.textAmount.value,
-                    //           tokenAddress:
-                    //           Get.find<AppConstants>().contract_defy,
-                    //           title: S.current.confirm_send_offer,
-                    //           listDetail: [
-                    //             DetailItemApproveModel(
-                    //               title: '${S.current.message}: ',
-                    //               value: bloc.textMess.value,
-                    //             ),
-                    //             DetailItemApproveModel(
-                    //               title: '${S.current.interest_rate_pawn}: ',
-                    //               value: '${bloc.textInterestRate.value} %APR',
-                    //             ),
-                    //             DetailItemApproveModel(
-                    //               title: '${S.current.duration_pawn}: ',
-                    //               value: '${bloc.textDuration.value} $duration',
-                    //             ),
-                    //             DetailItemApproveModel(
-                    //               title: '${S.current.loan_amount} ',
-                    //               value:
-                    //               '$symbolAmount ${bloc.textAmount.value}',
-                    //               urlToken:
-                    //               ImageAssets.getSymbolAsset(symbolAmount),
-                    //             ),
-                    //           ],
-                    //           onErrorSign: (context) {},
-                    //           onSuccessSign: (context, data) {
-                    //             //Be
-                    //             bloc.postSendOfferRequest(
-                    //               loanAmount: bloc.textAmount.value,
-                    //               collateralId:
-                    //               widget.objCollateralDetail.id.toString(),
-                    //               duration: bloc.textDuration.value,
-                    //               supplyCurrency: symbolAmount,
-                    //               repaymentToken: bloc.textToken.value,
-                    //               message: bloc.textMess.value,
-                    //               loanRequestId: '',
-                    //               //todo
-                    //               walletAddress:
-                    //               PrefsService.getCurrentWalletCore(),
-                    //               durationType: duration == S.current.weeks_pawn
-                    //                   ? '0'
-                    //                   : '1',
-                    //               latestBlockchainTxn: data,
-                    //               interestRate: bloc.textInterestRate.value,
-                    //               liquidationThreshold:
-                    //               bloc.textLiquidationThreshold.value,
-                    //               loanToValue: bloc.textLoan.value,
-                    //             );
-                    //             showLoadSuccess(context).then((value) {
-                    //               Navigator.of(context).popUntil((route) {
-                    //                 return route.settings.name ==
-                    //                     AppRouter.collateral_result;
-                    //               });
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   );
-                    // }
+                    if (bloc.checkBtn()) {
+                      final hexString =
+                          await Web3Utils().getCreateCryptoOfferData(
+                        duration: bloc.textDuration.value,
+                        collateralId:
+                            widget.detailCrypto.bcCollateralId.toString(),
+                        loanAmount: bloc.textAmount.value,
+                        repaymentCycleType:
+                            duration == S.current.weeks_pawn ? 0 : 1,
+                        interest: bloc.textInterestRate.value,
+                        liquidityThreshold: bloc.textLiquidationThreshold.value,
+                        loanDurationType:
+                            duration == S.current.weeks_pawn ? 0 : 1,
+                        repaymentAssetAddress:
+                            ImageAssets.getAddressToken(symbolAmount),
+                      );
+                      unawaited(
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Approve(
+                              textActiveButton: 'Send offer',
+                              spender:
+                                  Get.find<AppConstants>().crypto_pawn_contract,
+                              needApprove: true,
+                              hexString: hexString,
+                              payValue: bloc.textAmount.value,
+                              tokenAddress:
+                                  Get.find<AppConstants>().contract_defy,
+                              title: S.current.confirm_send_offer,
+                              listDetail: [
+                                DetailItemApproveModel(
+                                  title: '${S.current.message}: ',
+                                  value: bloc.textMess.value,
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.interest_rate_pawn}: ',
+                                  value: '${bloc.textInterestRate.value} %APR',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.duration_pawn}: ',
+                                  value: '${bloc.textDuration.value} $duration',
+                                ),
+                                DetailItemApproveModel(
+                                  title: '${S.current.loan_amount} ',
+                                  value:
+                                      '$symbolAmount ${bloc.textAmount.value}',
+                                  urlToken:
+                                      ImageAssets.getSymbolAsset(symbolAmount),
+                                ),
+                              ],
+                              onErrorSign: (context) async {
+                                await showLoadFail(context);
+                              },
+                              onSuccessSign: (context, data) {
+                                //Be
+                                bloc.postSendOfferCryptoToBe(
+                                  id: widget.detailCrypto.id.toString(),
+                                  loanRequestId:
+                                      widget.detailCrypto.id.toString(),
+                                  duration: bloc.textDuration.value,
+                                  supplyCurrency: symbolAmount,
+                                  interestRate: bloc.textInterestRate.value,
+                                  loanAmount: bloc.textAmount.value,
+                                  latestBlockchainTxn: data,
+                                  message: bloc.textMess.value,
+                                  collateralId: widget.detailCrypto.collateralId
+                                      .toString(),
+                                  durationType: duration == S.current.weeks_pawn
+                                      ? '0'
+                                      : '1',
+                                  loanToValue: bloc.textLoan.value,
+                                  liquidationThreshold:
+                                      bloc.textLiquidationThreshold.value,
+                                  repaymentToken: bloc.textToken.value,
+                                );
+                                showLoadSuccess(context).then((value) {
+                                  Navigator.of(context).popUntil((route) {
+                                    return route.settings.name ==
+                                        AppRouter.loan_request_lender;
+                                  });
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: StreamBuilder<bool>(
                     stream: bloc.isBtn,

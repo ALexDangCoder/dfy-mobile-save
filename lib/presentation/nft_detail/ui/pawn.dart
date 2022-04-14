@@ -74,7 +74,8 @@ Widget _durationRowOnPawn({
   required int durationType,
   required int durationQty,
 }) {
-  final String duration = (durationType == 0) ? S.current.week : S.current.month;
+  final String duration =
+      (durationType == 0) ? S.current.week : S.current.month;
   return Column(
     children: [
       Row(
@@ -143,8 +144,8 @@ Widget _buildButtonCancelOnPawn(
       if (nftMarket.status == 7 || nftMarket.status == 5) {
         return;
       }
-      if(nftMarket.status == 0){
-        Navigator.pop(context,true);
+      if (nftMarket.status == 0) {
+        Navigator.pop(context, true);
         return;
       }
       final nav = Navigator.of(context);
@@ -245,7 +246,9 @@ Widget _buildButtonCancelOnPawn(
     child: nftMarket.status == 7 || nftMarket.status == 5
         ? processing()
         : Text(
-            nftMarket.status == 0 ? S.current.cancel_success_s : S.current.cancel_pawn,
+            nftMarket.status == 0
+                ? S.current.cancel_success_s
+                : S.current.cancel_pawn,
             style: textNormalCustom(
               AppTheme.getInstance().textThemeColor(),
               16,
@@ -254,7 +257,9 @@ Widget _buildButtonCancelOnPawn(
           ),
   );
 }
-void showDialogSuccess (BuildContext context ,{String? alert, String? text,bool? onlyPop}) {
+
+void showDialogSuccess(BuildContext context,
+    {String? alert, String? text, bool? onlyPop, bool? hasImage}) {
   showDialog(
     context: context,
     builder: (BuildContext ctx) {
@@ -268,29 +273,47 @@ void showDialogSuccess (BuildContext context ,{String? alert, String? text,bool?
           ),
         ),
         backgroundColor: AppTheme.getInstance().selectDialogColor(),
-        title: Column(
-          children: [
-            Text(
-              alert ?? S.current.cancel_success_s,
-              style: textNormalCustom(
-                Colors.white,
-                20,
-                FontWeight.w700,
+        title: SizedBox(
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: hasImage == true ? 70.h : 0),
+                child: Column(
+                  children: [
+                    Text(
+                      alert ?? S.current.cancel_success_s,
+                      style: textNormalCustom(
+                        Colors.white,
+                        20,
+                        FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text(
+                      text ?? S.current.back_and_refresh_data,
+                      style: textNormalCustom(
+                        Colors.white,
+                        12,
+                        FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            Text(
-              text ?? S.current.back_and_refresh_data,
-              style: textNormalCustom(
-                Colors.white,
-                12,
-                FontWeight.w400,
+              if(hasImage ?? false)
+                Align(
+                alignment: Alignment.topCenter,
+                child: sizedSvgImage(
+                  w: 135,
+                  h: 70,
+                  image: ImageAssets.img_sign_loan_sc,
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
         actions: <Widget>[
           Divider(
@@ -308,10 +331,9 @@ void showDialogSuccess (BuildContext context ,{String? alert, String? text,bool?
                 ),
               ),
               onPressed: () {
-                if(onlyPop ?? false){
+                if (onlyPop ?? false) {
                   Navigator.of(ctx).pop();
-                }
-                else {
+                } else {
                   Navigator.of(ctx).pop();
                   Navigator.of(context).pop(true);
                   Navigator.pop(context);

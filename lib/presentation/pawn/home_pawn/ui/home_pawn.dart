@@ -3,7 +3,6 @@ import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
-import 'package:Dfy/presentation/pawn/borrow_result/ui/borrow_result.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/bloc/home_pawn_cubit.dart';
 import 'package:Dfy/presentation/pawn/home_pawn/ui/components/list_item_horizontal.dart';
 import 'package:Dfy/presentation/pawn/lending_registration/ui/leding_registration.dart';
@@ -11,7 +10,6 @@ import 'package:Dfy/presentation/pawn/notifications/ui/total_notification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
 import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/text/text_gradient.dart';
@@ -306,7 +304,7 @@ class _HomePawnState extends State<HomePawn> {
                           context: context,
                           builder: (context) => const ConnectWalletDialog(
                             navigationTo: LendingRegistration(),
-                            isRequireLoginEmail: false,
+                            isRequireLoginEmail: true,
                           ),
                         ).then((_) => null);
                       },

@@ -46,6 +46,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
   @override
   void initState() {
     cubit = LoanRequestDetailCubit();
+    cubit.getTokenInf();
     if (widget.typeDetail == TypeDetail.CRYPTO) {
       cubit.callAllApi(walletAddress: widget.walletAddress, id: widget.id);
     } else {
@@ -76,7 +77,11 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
           error: AppException(S.current.error, S.current.something_went_wrong),
           child: (state is LoanRequestDetailLoadApi)
               ? BaseDesignScreen(
-                  bottomBar: _buildButton(),
+                  bottomBar:
+                      ((cubit.detailLoanRequestCryptoModel.status ?? 0) == 1)
+                          ? _buildButton()
+                          : null,
+                      // _buildButton(),
                   title: S.current.request_detail,
                   child: SingleChildScrollView(
                     child: Container(
@@ -116,7 +121,9 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => ConfirmRejectLoanRequest()));
+                      builder: (_) => ConfirmRejectLoanRequest(
+                            cubit: cubit,
+                          )));
             },
             child: Container(
               height: 64.h,
@@ -148,6 +155,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => LoanSendOffer(
+                      cubit: cubit,
                       isCryptoElseNft: true,
                       detailCrypto: cubit.detailLoanRequestCryptoModel,
                     ),
@@ -203,7 +211,9 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
                 width: 20.w,
                 height: 20.h,
                 child: Image.network(
-                  ImageAssets.getUrlToken('BNB'),
+                  ImageAssets.getUrlToken(
+                      cubit.detailLoanRequestCryptoModel.collateralSymbol ??
+                          'DFY'),
                 ),
               ),
               spaceW4,
@@ -220,7 +230,7 @@ class _LoanRequestDetailState extends State<LoanRequestDetail> {
         ),
         spaceH16,
         _rowItem(
-          title: S.current.loan_token.capitalize().withColon(),
+          title: 'Estimate:',
           description: Text(
             '~ \$0.084',
             style: textNormalCustom(

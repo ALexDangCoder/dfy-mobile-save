@@ -153,8 +153,8 @@ class _ExpandedPageViewWidgetState extends State<ExpandedPageViewWidget>
       onPageChanged: (value) {
         widget.controller.animateTo(
           value,
-          duration: const Duration(milliseconds: 0),
-          curve: Curves.ease,
+          duration: const Duration(milliseconds: 5),
+          curve: Curves.bounceIn,
         );
       },
       controller: widget.pageController,

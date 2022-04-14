@@ -18,6 +18,7 @@ class Evaluation {
   String? additionalInformation;
   String? bcTxnHash;
   String? urlToken;
+  String? storageLocation;
 
   Evaluation({
     this.id,
@@ -35,6 +36,7 @@ class Evaluation {
     this.bcTxnHash,
     this.urlToken,
     this.nameNft,
+    this.storageLocation,
   });
 }
 

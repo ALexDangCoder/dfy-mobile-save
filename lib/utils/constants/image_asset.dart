@@ -387,6 +387,11 @@ class ImageAssets {
   static const String ic_expand_svg = '$baseImg/ic_expand_svg.svg';
   static const String ic_collapse_svg = '$baseImg/ic_collapse_svg.svg';
   static const String img_login = '$baseImg/login_img.png';
+
+  static const String ic_crown = '$baseImg/ic_crown.png';
+  static const String ic_map = '$baseImg/ic_map.png';
+  static const String ic_receipt = '$baseImg/ic_receipt.png';
+
   static const String ic_email = '$baseImg/sms.png';
   static const String ic_warning = '$baseImg/warning.png';
   static const String ic_verify_svg = '$baseImg/ic_verify.svg';
@@ -422,6 +427,7 @@ class ImageAssets {
   static const String play_btn_svg = '$baseImg/play_btn_svg.svg';
   static const String pause_btn_svg = '$baseImg/pause_btn_svg.svg';
   static const String img_login_user = '$baseImg/img_login.png';
+  static const String img_sign_loan_sc = '$baseImg/img_sign_conctract_sc.svg';
   static const String img_become_pawnshop = '$baseImg/img_become_pawnshop.svg';
 
   // about us

@@ -10,6 +10,7 @@ import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -22,6 +23,7 @@ import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,6 +63,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<List<BiddingNft>> listBiddingStream = BehaviorSubject();
   final BehaviorSubject<List<OfferDetail>> listOfferStream = BehaviorSubject();
   final BehaviorSubject<Evaluation> evaluationStream = BehaviorSubject();
+  final BehaviorSubject<EvaluatorsDetailModel> evaluatorStream = BehaviorSubject();
+
 
   String symbolToken = '';
 
@@ -171,12 +175,36 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
         await _nftRepo.getEvaluation(evaluationId);
     result.when(
       success: (res) {
+        getEvaluator(res.evaluator?.id ?? '');
         for (int i = 0; i < listTokenSupport.length; i++) {
           if (res.evaluatedSymbol == listTokenSupport[i].symbol) {
             res.urlToken = listTokenSupport[i].iconUrl;
           }
         }
         evaluationStream.add(res);
+      },
+      error: (error) {
+        showContent();
+      },
+    );
+  }
+  Future<void> getEvaluator(String evaluationId) async {
+    final Result<EvaluatorsDetailModel> result =
+    await _nftRepo.getEvaluator(evaluationId);
+    result.when(
+      success: (res) {
+        if(res.conditionDetail !=''){
+          List<String> des;
+          final buffer = StringBuffer();
+          des = res.conditionDetail!.split('<p>') ;
+          for(final element in des){
+            buffer.write('$element\n\n');
+          }
+
+          res.conditionDetail = buffer.toString().parseHtml();
+        }
+        evaluatorStream.add(res);
+        showContent();
       },
       error: (error) {
         showContent();

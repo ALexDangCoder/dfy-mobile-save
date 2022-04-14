@@ -417,7 +417,8 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 (value) => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Approve(
+                    builder: (context) =>
+                        Approve(
                       title: S.current.reject_offer,
                       spender: Get.find<AppConstants>().nftPawn,
                       textActiveButton: S.current.reject_offer,

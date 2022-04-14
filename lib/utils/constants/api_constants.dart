@@ -15,6 +15,8 @@ class ApiConstants {
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_EVALUATION_HARD_NFT =
       '/hard-nft-svc/public-api/evaluations/';
+  static const String GET_EVALUATOR_HARD_NFT =
+      '/hard-nft-svc/public-api/evaluators/profile/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
       '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =
@@ -388,5 +390,7 @@ class ApiConstants {
       '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop';
   static const String GET_FIND_USER_ID = '/defi-pawn-crypto-service/public-api/v1.0.0/pawn-shop/find-by-user-id';
   static const String GET_COLLATERAL_PAWNSHOP_PACKAGE = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/';
+  static const String POST_NEW_LOAN_PACKAGE = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package';
+  static const String REJECT_LOAN_REQUEST = '/defi-pawn-crypto-service/api/v1.0.0/pawn-shop-package/rejectLoanRequest';
 
 }

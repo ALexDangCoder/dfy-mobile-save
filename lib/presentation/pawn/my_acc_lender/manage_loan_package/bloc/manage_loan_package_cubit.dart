@@ -13,6 +13,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'manage_loan_package_state.dart';
 
@@ -63,6 +64,9 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
 
   String _idPawnShop = '';
 
+
+  String get idPawnShop => _idPawnShop;
+
   Future<String> getIdPawnShopPackage() async {
     final Result<PawnShopModel> result =
         await _manageSettingService.getFindUserId(userId: await getUserId());
@@ -109,4 +113,31 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
       },
     );
   }
+
+  Future<void> loadMoreGetListPawnShop() async {
+    if(loadMore == false) {
+      emit(LoadMoreManageLoanPackage());
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getListPawnShop();
+    } else {
+      //nothing
+    }
+  }
+
+  void refreshGetListPawnShop() {
+    canLoadMoreList = true;
+    page = 0;
+    if(!refresh) {
+      refresh = true;
+      getListPawnShop();
+    }
+  }
+
+
+  ///FOR LENDING SETTING
+
+  BehaviorSubject<String> txtWarningInterestMin = BehaviorSubject.seeded('');
+  BehaviorSubject<String> txtWarningInterestMax = BehaviorSubject.seeded('');
 }

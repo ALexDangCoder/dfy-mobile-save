@@ -1,11 +1,19 @@
+import 'package:Dfy/data/request/pawn/lender/create_new_loan_package_request.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/pawn/manage_loan_package/manage_loan_package_repository.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 part 'create_new_loan_package_state.dart';
 
+//todo fix laji validate
 class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   CreateNewLoanPackageCubit() : super(CreateNewLoanPackageInitial());
 
@@ -18,10 +26,33 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   BehaviorSubject<String> txtWarningDuration = BehaviorSubject.seeded('');
   BehaviorSubject<String> valueRecurringInterest = BehaviorSubject();
 
-  List<String> typeCreate = [
-    'Auto loan package',
-    'Semi loan package',
+  ManageLoanPackageRepository get _manageSettingService => Get.find();
+
+  final Web3Utils web3 = Web3Utils();
+  static const String AUTO = '0';
+  static const String SEMI_AUTO = '1';
+
+  List<Tuple2<String, String>> typeCreate = [
+    Tuple2<String, String>('AUTO', AUTO),
+    Tuple2<String, String>('SEMI AUTO', SEMI_AUTO),
   ];
+
+  CreateNewLoanPackageRequest loanPackageRequest = CreateNewLoanPackageRequest(
+    associatedWalletAddress: PrefsService.getCurrentBEWallet(),
+    type: AUTO,
+    repaymentTokens: ['DFY'],
+    collateralAcceptances: [],
+    loanTokens: ['DFY'],
+    pawnShopId: ManageLoanPackageCubit().idPawnShop,
+  );
+
+  List<String> getAddressCollateralAcceptance() {
+    final List<String> result = [];
+    (loanPackageRequest.collateralAcceptances ?? []).forEach((element) {
+      result.add(ImageAssets.getAddressToken(element));
+    });
+    return result;
+  }
 
   List<String> recurringInterest = [
     'monthly',
@@ -34,14 +65,30 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
     'loanMax': false,
     'interestRate': false,
     'duration': false,
+    'collateral': false,
     'loanToValue': false,
     'ltv': false,
   };
 
+  void checkIsSelectedCollateralsToken() {
+    bool _flag = false;
+    Set<String> collaterals = {};
+    for (final element in listCollateralToken) {
+      if (element.isSelect ?? false) {
+        _flag = true;
+        collaterals.add(element.symbol ?? '');
+        mapValidate['collateral'] = true;
+      }
+    }
+    loanPackageRequest.collateralAcceptances?.clear();
+    loanPackageRequest.collateralAcceptances = collaterals.toList();
+    validateAll();
+  }
+
   bool checkValidateCollateral() {
     bool _flagCollateral = false;
     for (final element in listCollateralToken) {
-      if(element.isSelect ?? false) {
+      if (element.isSelect ?? false) {
         _flagCollateral = true;
         break;
       }
@@ -52,6 +99,7 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
   BehaviorSubject<bool> nextBtnBHVSJ = BehaviorSubject.seeded(false);
 
   void validateAll() {
+    print(mapValidate);
     if (mapValidate.containsValue(false) || !checkValidateCollateral()) {
       nextBtnBHVSJ.sink.add(false);
     } else {
@@ -70,10 +118,18 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           txtWarningDuration.sink
               .add('Duration by month can not greater than 1200');
         } else {
+          loanPackageRequest.durationQtyMin = '1';
+          loanPackageRequest.durationQtyMax = value;
+          loanPackageRequest.durationQtyType = '1';
+          loanPackageRequest.recurringInterest = '1';
           mapValidate['duration'] = true;
           txtWarningDuration.sink.add('');
         }
       } else {
+        loanPackageRequest.durationQtyMin = '1';
+        loanPackageRequest.durationQtyMax = value;
+        loanPackageRequest.durationQtyType = '1';
+        loanPackageRequest.recurringInterest = '1';
         mapValidate['duration'] = false;
         txtWarningDuration.sink.add('Invalid Duration');
       }
@@ -87,10 +143,18 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           txtWarningDuration.sink
               .add('Duration week day can not greater than 5200');
         } else {
+          loanPackageRequest.durationQtyMin = '1';
+          loanPackageRequest.durationQtyMax = value;
+          loanPackageRequest.durationQtyType = '0';
+          loanPackageRequest.recurringInterest = '0';
           mapValidate['duration'] = true;
           txtWarningDuration.sink.add('');
         }
       } else {
+        loanPackageRequest.durationQtyMin = '1';
+        loanPackageRequest.durationQtyMax = value;
+        loanPackageRequest.durationQtyType = '0';
+        loanPackageRequest.recurringInterest = '0';
         mapValidate['duration'] = false;
         txtWarningDuration.sink.add('Invalid Duration');
       }
@@ -105,6 +169,7 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       txtWarningMess.sink.add('Maximum length allowed is 100 characters');
       mapValidate['message'] = false;
     } else {
+      loanPackageRequest.description = value;
       mapValidate['message'] = true;
       txtWarningMess.sink.add('');
     }
@@ -136,10 +201,12 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           txtWarningLoanMinAmount.sink
               .add('Minimum amount must be smaller than maximum amount');
         } else {
+          loanPackageRequest.allowedLoanMin = value1;
           mapValidate['loanMin'] = true;
           txtWarningLoanMinAmount.sink.add('');
         }
       } else {
+        loanPackageRequest.allowedLoanMin = value1;
         mapValidate['loanMin'] = true;
         txtWarningLoanMinAmount.sink.add('');
       }
@@ -164,10 +231,12 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           txtWarningLoanMaxAmount.sink
               .add('Maximum amount must be greater than minimum amount');
         } else {
+          loanPackageRequest.allowedLoanMax = value1;
           mapValidate['loanMax'] = true;
           txtWarningLoanMaxAmount.sink.add('');
         }
       } else {
+        loanPackageRequest.allowedLoanMax = value1;
         mapValidate['loanMax'] = true;
         txtWarningLoanMaxAmount.sink.add('');
       }
@@ -186,28 +255,31 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       txtWarningInterestRate.sink
           .add('Maximum length allowed is 10 characters');
     } else {
+      loanPackageRequest.interest = value;
       mapValidate['interestRate'] = true;
       txtWarningInterestRate.sink.add('');
     }
   }
 
-  void validateLoanToVlFeatLTVThresHold(String value1,
-      String value2, {
-        bool isLoanToVL = true,
-      }) {
+  void validateLoanToVlFeatLTVThresHold(
+    String value1,
+    String value2, {
+    bool isLoanToVL = true,
+  }) {
     if (isLoanToVL) {
       if (value1.isEmpty) {
         mapValidate['loanToValue'] = false;
         txtWarningLoanToValue.sink.add('Loan to value is required');
-      } else if (!regexAmount.hasMatch(value1) || double.parse(value1) == 0) {
-        mapValidate['loanToValue'] = false;
-        txtWarningLoanToValue.sink.add('Invalid loan to value');
       } else if (value1.length > 20) {
         mapValidate['loanToValue'] = false;
         txtWarningLoanToValue.sink
             .add('Maximum length allowed is 20 characters');
+      } else if (!regexAmount.hasMatch(value1) || double.parse(value1) == 0) {
+        mapValidate['loanToValue'] = false;
+        txtWarningLoanToValue.sink.add('Invalid loan to value');
       } else if (double.parse(value1) > double.parse(value2)) {
         mapValidate['loanToValue'] = true;
+        loanPackageRequest.loanToValue = value1;
         mapValidate['ltv'] = false;
         txtWarningLoanToValue.sink.add('');
         txtWarningLTVThresHold.sink.add('Invalid liquidation threshold');
@@ -215,19 +287,28 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           regexAmount.hasMatch(value2) &&
           value2.isNotEmpty &&
           value1.isNotEmpty) {
-        if (!checkGreaterThan20(value1: value1, value2: value2)) {
+        if (double.parse(value1) >= double.parse(value2)) {
+          mapValidate['ltv'] = false;
+          txtWarningLTVThresHold.sink
+              .add('LTV Liquidation threshold must be greater than LTV');
+        } else if (!checkGreaterThan20(value1: value1, value2: value2)) {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
+          loanPackageRequest.loanToValue = value1;
+          loanPackageRequest.liquidationThreshold = value2;
           txtWarningLoanToValue.sink.add('');
           txtWarningLTVThresHold.sink
               .add('LTV Liquidation threshold should be 20% greater than LTV');
         } else {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
+          loanPackageRequest.loanToValue = value1;
+          loanPackageRequest.liquidationThreshold = value2;
           txtWarningLoanToValue.sink.add('');
           txtWarningLTVThresHold.sink.add('');
         }
       } else {
+        loanPackageRequest.loanToValue = value1;
         mapValidate['loanToValue'] = true;
         txtWarningLoanToValue.sink.add('');
       }
@@ -246,19 +327,28 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
           regexAmount.hasMatch(value2) &&
           value2.isNotEmpty &&
           value1.isNotEmpty) {
-        if (!checkGreaterThan20(value1: value2, value2: value1)) {
+        if (double.parse(value1) <= double.parse(value2)) {
+          mapValidate['ltv'] = false;
+          txtWarningLTVThresHold.sink
+              .add('LTV Liquidation threshold must be greater than LTV');
+        } else if (!checkGreaterThan20(value1: value2, value2: value1)) {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
+          loanPackageRequest.liquidationThreshold = value1;
+          loanPackageRequest.loanToValue = value2;
           txtWarningLTVThresHold.sink
               .add('LTV Liquidation threshold should be 20% greater than LTV');
         } else {
           mapValidate['loanToValue'] = true;
           mapValidate['ltv'] = true;
+          loanPackageRequest.liquidationThreshold = value1;
+          loanPackageRequest.loanToValue = value2;
           txtWarningLoanToValue.sink.add('');
           txtWarningLTVThresHold.sink.add('');
         }
       } else {
         mapValidate['ltv'] = true;
+        loanPackageRequest.liquidationThreshold = value1;
         txtWarningLTVThresHold.sink.add('');
       }
     }
@@ -315,8 +405,19 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
     }
   }
 
-}
+  String getMonthOrWeek(String? type) {
+    return (type == '0') ? 'weeks' : 'months';
+  }
 
-class Temp {
-  String? type;
+  Future<void> postInfoNewLoanPackageToBe({
+    required String pawnShopId,
+    required String txId,
+  }) async {
+    loanPackageRequest.pawnShopId = pawnShopId;
+    loanPackageRequest.txid = txId;
+    final result = await _manageSettingService.postInfoNewLoanPackage(
+      createNewLoanPackageRequest: loanPackageRequest,
+    );
+    result.when(success: (success) {}, error: (error) {});
+  }
 }

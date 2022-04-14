@@ -1,6 +1,8 @@
+import 'package:Dfy/data/request/pawn/lender/create_new_loan_package_request.dart';
 import 'package:Dfy/data/response/home_pawn/list_collateral_response.dart';
 import 'package:Dfy/data/response/pawn/manage_package/detail_pawn_shop_package_response.dart';
 import 'package:Dfy/data/response/pawn/manage_package/find_by_user_id_response.dart';
+import 'package:Dfy/data/response/pawn/manage_package/info_after_post_new_loan_package_response.dart';
 import 'package:Dfy/data/response/pawn/manage_package/list_pawn_shop_package_response.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:injectable/injectable.dart';
@@ -38,5 +40,16 @@ abstract class SettingPackageLenderService {
   @GET('${ApiConstants.GET_PAWNSHOP_PACKAGE_DETAIL}{packageId}')
   Future<DetailPawnShopPackageResponse> getPawnshopPackageDetail(
     @Path('packageId') String? packageId,
+  );
+
+  // @POST('${ApiConstants.POST_NEW_LOAN_PACKAGE}')
+  // Future<RepaymentPayResponse> postRepaymentPay(
+  //     @Path('id') String? id,
+  //     @Body() CalculateRepaymentRequest? repaymentPayRequest,
+  //     );
+
+  @POST(ApiConstants.POST_NEW_LOAN_PACKAGE)
+  Future<InfoAfterPostNewLoanPackageResponse> postInfoNewLoanPackage(
+    @Body() CreateNewLoanPackageRequest? createNewLoanPackageRequest,
   );
 }

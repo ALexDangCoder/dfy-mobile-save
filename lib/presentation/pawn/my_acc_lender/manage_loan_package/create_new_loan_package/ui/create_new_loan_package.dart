@@ -1,21 +1,33 @@
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/bloc/create_new_loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/collateral_select_create.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/confirm_new_loan_package.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common/info_popup.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:tuple/tuple.dart';
 
 class CreateNewLoanPackage extends StatefulWidget {
-  const CreateNewLoanPackage({Key? key}) : super(key: key);
+  const CreateNewLoanPackage({
+    Key? key,
+    required this.pawnShopId,
+  }) : super(key: key);
+  final String pawnShopId;
 
   @override
   _CreateNewLoanPackageState createState() => _CreateNewLoanPackageState();
@@ -30,7 +42,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
   late TextEditingController _txtLoanToValue;
   late TextEditingController _txtLTVLiquidThreshold;
   late CreateNewLoanPackageCubit cubit;
-  late String typeCreate;
+  late Tuple2<String, String> typeCreate;
   late TokenInf loanToken;
   late TokenInf loanRepaymentToken;
 
@@ -151,10 +163,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                           child: Column(
                             children: [
                               spaceH22,
-                              _textTitle(title: S.current.type.capitalize()),
+                              _textTitle(title: S.current.type),
                               _formType(),
                               spaceH16,
-                              _textTitle(title: S.current.message.capitalize()),
+                              _textTitle(title: S.current.message),
                               _formWithOutDropDown(
                                 controller: _txtMess,
                                 onChange: (value) {
@@ -165,12 +177,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 streamValidateText: cubit.txtWarningMess.stream,
                               ),
                               _textTitle(
-                                title: S.current.loan_token.capitalize(),
+                                title: S.current.loan_token,
                               ),
                               _formLoanToken(),
                               spaceH16,
-                              _textTitle(
-                                  title: S.current.loan_amount.capitalize()),
+                              _textTitle(title: S.current.loan_amount),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -224,15 +235,13 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ],
                               ),
                               // spaceH16,
-                              _textTitle(
-                                  title: S.current.collateral.capitalize()),
+                              _textTitle(title: S.current.collateral),
                               CollateralSelectCreate(
                                 cubit: cubit,
                                 listToken: cubit.listCollateralToken,
                               ),
                               spaceH16,
-                              _textTitle(
-                                  title: S.current.interest_rate.capitalize()),
+                              _textTitle(title: S.current.interest_rate),
                               _formWithOutDropDown(
                                 controller: _txtInterestRate,
                                 onChange: (value) {
@@ -263,13 +272,11 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ),
                               ),
                               spaceH16,
-                              _textTitle(
-                                  title:
-                                      S.current.repayment_token.capitalize()),
+                              _textTitle(title: S.current.repayment_token),
                               _formLoanRepaymentToken(),
                               spaceH16,
                               _textTitle(
-                                title: S.current.duration.capitalize(),
+                                title: S.current.duration,
                               ),
                               _formWithOutDropDown(
                                   controller: _txtDuration,
@@ -284,6 +291,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     cubit.validateAll();
                                   },
                                   hintText: 'Enter duration',
+                                  txtInputType: TextInputType.number,
                                   streamValidateText:
                                       cubit.txtWarningDuration.stream,
                                   suffixIcon: SizedBox(
@@ -347,12 +355,12 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     ),
                                   )),
                               _textTitle(
-                                  title: S.current.recurring_interest
-                                      .capitalize()),
+                                title: S.current.recurring_interest,
+                              ),
                               _recurringInterest(),
                               spaceH16,
                               _textTitle(
-                                  title: S.current.loan_to_value.capitalize(),
+                                  title: S.current.loan_to_value,
                                   isHaveIcWarning: true,
                                   callBack: () {
                                     showDialog(
@@ -370,6 +378,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     value,
                                     _txtLTVLiquidThreshold.text,
                                   );
+                                  cubit.validateAll();
                                   cubit.validateLoanToVlFeatLTVThresHold(
                                     _txtLTVLiquidThreshold.text,
                                     value,
@@ -401,8 +410,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ),
                               ),
                               _textTitle(
-                                  title:
-                                      S.current.ltv_liquid_thres.capitalize(),
+                                  title: S.current.ltv_liquid_thres,
                                   isHaveIcWarning: true,
                                   callBack: () {
                                     showDialog(
@@ -422,6 +430,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                     _txtLoanToValue.text,
                                     isLoanToVL: false,
                                   );
+                                  cubit.validateAll();
                                   cubit.validateLoanToVlFeatLTVThresHold(
                                     _txtLoanToValue.text,
                                     value,
@@ -468,10 +477,180 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                       return GestureDetector(
                         onTap: () async {
                           if (snapshot.data ?? false) {
-                            goTo(
-                              context,
-                              ConfirmNewLoanPackage(),
+                            // goTo(
+                            //   context,
+                            //   ConfirmNewLoanPackage(),
+                            // );
+                            final hexString =
+                                await Web3Utils().getCreatePackageData(
+                              packageType: int.parse(
+                                  CreateNewLoanPackageCubit.SEMI_AUTO),
+                              loanTokenAddress: ImageAssets.getAddressToken(
+                                cubit.loanPackageRequest.loanTokens?.first ??
+                                    '',
+                              ),
+                              loanAmountRange: [
+                                (cubit.loanPackageRequest.allowedLoanMin ??
+                                    '1'),
+                                (cubit.loanPackageRequest.allowedLoanMax ?? '2')
+                              ],
+                              collateralAcceptance:
+                                  cubit.getAddressCollateralAcceptance(),
+                              interest: cubit.loanPackageRequest.interest ?? '',
+                              durationType:
+                                  cubit.loanPackageRequest.durationQtyType ??
+                                      '0',
+                              durationRange: [
+                                cubit.loanPackageRequest.durationQtyMin ?? '1',
+                                cubit.loanPackageRequest.durationQtyMax ?? '2'
+                              ],
+                              repaymentAssetAddress:
+                                  ImageAssets.getAddressToken((cubit
+                                          .loanPackageRequest
+                                          .repaymentTokens
+                                          ?.first ??
+                                      '')),
+                              repaymentCycleType: int.parse(
+                                  cubit.loanPackageRequest.durationQtyType ??
+                                      '0'),
+                              loanToValue:
+                                  cubit.loanPackageRequest.loanToValue ?? '1',
+                              loanToValueLiquidationThreshold: cubit
+                                      .loanPackageRequest
+                                      .liquidationThreshold ??
+                                  '10',
                             );
+
+                            goTo(
+                                context,
+                                Approve(
+                                  payValue:
+                                      cubit.loanPackageRequest.allowedLoanMax,
+                                  needApprove: true,
+                                  tokenAddress: ImageAssets.getAddressToken(
+                                      cubit.loanPackageRequest.loanTokens
+                                              ?.first ??
+                                          'DFY'),
+                                  title: 'Confirm new loan package',
+                                  spender: Get.find<AppConstants>()
+                                      .crypto_pawn_contract,
+                                  textActiveButton: 'Create',
+                                  hexString: hexString,
+                                  header: Column(
+                                    children: [
+                                      _rowItem(
+                                          title: 'Type',
+                                          description: typeCreate.item1),
+                                      spaceH16,
+                                      _rowItem(
+                                        title: 'Message',
+                                        description: _txtMess.text,
+                                      ),
+                                      spaceH16,
+                                      _rowItem(
+                                        title: 'Loan amount',
+                                        description: '',
+                                        isCustomDes: true,
+                                        widgetCustom: Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 20.h,
+                                              width: 20.w,
+                                              child: Image.network(
+                                                  ImageAssets.getUrlToken(
+                                                      loanToken.symbol ??
+                                                          'DFY')),
+                                            ),
+                                            spaceW5,
+                                            Text(
+                                              '${formatPrice.format(double.parse(cubit.loanPackageRequest.allowedLoanMin ?? '1'))} - ${formatPrice.format(double.parse(cubit.loanPackageRequest.allowedLoanMax ?? '2'))} ${loanToken.symbol ?? 'DFY'}',
+                                              style: textNormalCustom(
+                                                AppTheme.getInstance()
+                                                    .whiteColor(),
+                                                16,
+                                                FontWeight.w400,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      spaceH16,
+                                      _collateralTokens(),
+                                      spaceH16,
+                                      _rowItem(
+                                          title: 'Interest rate (%APR)',
+                                          description:
+                                              '${cubit.loanPackageRequest.interest}%'),
+                                      spaceH16,
+                                      _rowItem(
+                                          title: 'Repayment token',
+                                          description: '',
+                                          isCustomDes: true,
+                                          widgetCustom: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 20.w,
+                                                height: 20.h,
+                                                child: Image.network(
+                                                    ImageAssets.getUrlToken(
+                                                        loanRepaymentToken
+                                                                .symbol ??
+                                                            'DFY')),
+                                              ),
+                                              spaceW5,
+                                              Text(
+                                                loanRepaymentToken.symbol ??
+                                                    'DFY',
+                                                style: textNormalCustom(
+                                                  AppTheme.getInstance()
+                                                      .whiteColor(),
+                                                  16,
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                      spaceH16,
+                                      _rowItem(
+                                          title: 'Duration',
+                                          description:
+                                              '${cubit.loanPackageRequest.durationQtyMin}-${cubit.loanPackageRequest.durationQtyMax} ${cubit.getMonthOrWeek(cubit.loanPackageRequest.durationQtyType)}'),
+                                      spaceH16,
+                                      _rowItem(
+                                          title: 'Loan to value',
+                                          description:
+                                              '${cubit.loanPackageRequest.loanToValue ?? '0'}%'),
+                                      spaceH16,
+                                      _rowItem(
+                                          title: 'LTV Liquidation threshold',
+                                          description:
+                                              '${cubit.loanPackageRequest.liquidationThreshold ?? '0'}%')
+                                    ],
+                                  ),
+                                  onSuccessSign: (context, data) async {
+                                    Navigator.pop(context);
+                                    await cubit.postInfoNewLoanPackageToBe(
+                                      pawnShopId: widget.pawnShopId,
+                                      txId: data,
+                                    );
+                                    await showLoadSuccess(context).then(
+                                      (value) {
+                                        Navigator.pop(context, true);
+                                      },
+                                    );
+                                    Navigator.popUntil(
+                                        context,
+                                        (route) =>
+                                            route.settings.name ==
+                                            AppRouter.manage_loan_package);
+                                    // await onRefresh();
+                                  },
+                                  onErrorSign: (context) async {
+                                    final nav = Navigator.of(context);
+                                    nav.pop();
+                                    await showLoadFail(context);
+                                  },
+                                ));
                           } else {
                             //nothing
                             goTo(
@@ -581,16 +760,16 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
           selectedRowColor: Colors.white24,
         ),
         child: DropdownButtonHideUnderline(
-          child: DropdownButton2<String>(
+          child: DropdownButton2<Tuple2<String, String>>(
             buttonDecoration: BoxDecoration(
               color: AppTheme.getInstance().backgroundBTSColor(),
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
             ),
-            items: cubit.typeCreate.map((String value) {
+            items: cubit.typeCreate.map((Tuple2<String, String> value) {
               return DropdownMenuItem(
                 value: value,
                 child: Text(
-                  value,
+                  value.item1,
                   style: textNormal(
                     Colors.white,
                     16,
@@ -598,9 +777,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                 ),
               );
             }).toList(),
-            onChanged: (String? newValue) {
+            onChanged: (Tuple2<String, String>? newValue) {
               setState(() {
                 typeCreate = newValue!;
+                cubit.loanPackageRequest.type = typeCreate.item2;
               });
             },
             dropdownMaxHeight: 110.h,
@@ -739,6 +919,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
             onChanged: (newValue) {
               setState(() {
                 loanToken = newValue!;
+                cubit.loanPackageRequest.loanTokens = [loanToken.symbol ?? ''];
                 cubit.changeListRepaymentToken(value: newValue);
               });
             },
@@ -811,6 +992,10 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
             onChanged: (newValue) {
               setState(() {
                 loanRepaymentToken = newValue!;
+                cubit.loanPackageRequest.repaymentTokens = [
+                  loanRepaymentToken.symbol ?? ''
+                ];
+                cubit.validateAll();
               });
             },
             dropdownMaxHeight: 200.h,
@@ -831,6 +1016,122 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
           ),
         ),
       ),
+    );
+  }
+
+  ///UI FOR CONFIRM NEW LOAN PACKAGE
+  Row _collateralTokens() {
+    return _rowItem(
+      title: 'Collateral',
+      description: '',
+      isCustomDes: true,
+      widgetCustom:
+          ((cubit.loanPackageRequest.collateralAcceptances ?? []).length <= 5)
+              ? SizedBox(
+                  height: 20.h,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount:
+                        (cubit.loanPackageRequest.collateralAcceptances ?? [])
+                            .length,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: Image.network(
+                              ImageAssets.getUrlToken(
+                                (cubit.loanPackageRequest
+                                        .collateralAcceptances ??
+                                    [])[index],
+                              ),
+                            ),
+                          ),
+                          spaceW5,
+                        ],
+                      );
+                    },
+                  ),
+                )
+              : SizedBox(
+                  height: 20.h,
+                  child: Row(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              SizedBox(
+                                height: 20.h,
+                                width: 20.w,
+                                child: Image.network(
+                                  ImageAssets.getUrlToken(
+                                    (cubit.loanPackageRequest
+                                            .collateralAcceptances ??
+                                        [])[index],
+                                  ),
+                                ),
+                              ),
+                              spaceW5,
+                            ],
+                          );
+                        },
+                      ),
+                      Text(
+                        '& ${(cubit.loanPackageRequest.collateralAcceptances ?? []).length - 5} mores',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().whiteColor(),
+                          16,
+                          FontWeight.w400,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+    );
+  }
+
+  Row _rowItem({
+    required String title,
+    required String description,
+    bool? isCustomDes = false,
+    Widget? widgetCustom,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+            title.withColon(),
+            style: textNormalCustom(
+              AppTheme.getInstance().pawnItemGray(),
+              16,
+              FontWeight.w400,
+            ),
+          ),
+        ),
+        if (isCustomDes ?? false)
+          Expanded(flex: 6, child: widgetCustom ?? Container())
+        else
+          Expanded(
+            flex: 6,
+            child: Text(
+              description,
+              style: textNormalCustom(
+                AppTheme.getInstance().whiteColor(),
+                16,
+                FontWeight.w400,
+              ),
+            ),
+          )
+      ],
     );
   }
 }
