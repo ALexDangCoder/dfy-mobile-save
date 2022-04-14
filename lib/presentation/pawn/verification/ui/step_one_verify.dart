@@ -13,7 +13,6 @@ import 'package:Dfy/presentation/create_hard_nft/ui/provide_hard_nft_info.dart';
 import 'package:Dfy/presentation/pawn/edit_peronal_info/cubit/edit_personal_info_cubit.dart';
 import 'package:Dfy/presentation/pawn/verification/cubit/verification_cubit.dart';
 import 'package:Dfy/presentation/pawn/verification/ui/step_two_verify.dart';
-import 'package:Dfy/presentation/put_on_market/ui/component/custom_calandar.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/screen_controller.dart';
@@ -89,6 +88,7 @@ class _StepOneVerifyState extends State<StepOneVerify> {
     return BaseDesignScreen(
       title: 'Basic information',
       text: ImageAssets.ic_close,
+      resizeBottomInset: true,
       isImage: true,
       bottomBar: Container(
         height: 91.h,
