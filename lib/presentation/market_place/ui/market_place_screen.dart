@@ -43,8 +43,6 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -104,7 +102,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 cubit: cubit,
                                 isLoading: true,
                                 isLoadFail: false,
-                                marketType: '', listNft: [], title: '',
+                                marketType: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -114,7 +114,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 isLoading: true,
                                 isLoadFail: false,
                                 marketType: '',
-                                  listNft: [], title: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -124,7 +125,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 isLoading: true,
                                 isLoadFail: false,
                                 marketType: '',
-                                listNft: [], title: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -133,7 +135,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 cubit: cubit,
                                 isLoading: true,
                                 isLoadFail: false,
-                                listNft: [], title: '', marketType: '',
+                                listNft: [],
+                                title: '',
+                                marketType: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -235,7 +239,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 SizedBox(
                                   height: 24.h,
                                 ),
-                                for (final element in cubit.listWidgetHome) ...[element],
+                                for (final element in cubit.listWidgetHome) ...[
+                                  element
+                                ],
                                 SizedBox(
                                   height: 164.h,
                                 ),
@@ -300,7 +306,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 isLoading: true,
                                 isLoadFail: true,
                                 marketType: '',
-                                listNft: [], title: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -310,7 +317,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 isLoading: true,
                                 isLoadFail: true,
                                 marketType: '',
-                                listNft: [], title: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -320,7 +328,8 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 isLoading: true,
                                 isLoadFail: true,
                                 marketType: '',
-                                listNft: [], title: '',
+                                listNft: [],
+                                title: '',
                               ),
                               SizedBox(
                                 height: 32.h,
@@ -329,7 +338,9 @@ class _MarketPlaceState extends State<MarketPlaceScreen>
                                 cubit: cubit,
                                 isLoading: true,
                                 isLoadFail: true,
-                                listNft: [], title: '', marketType: '',
+                                listNft: [],
+                                title: '',
+                                marketType: '',
                               ),
                               SizedBox(
                                 height: 32.h,

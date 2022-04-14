@@ -18,14 +18,15 @@ class HeaderMarketPlace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
     return Padding(
       padding: EdgeInsets.only(
-        top: 44.h,
+        top: (topPadding == 0) ? 22.h : topPadding,
         left: 16.h,
         right: 16.w,
       ),
       child: SizedBox(
-        height: 52.h,
+        height: 38.h,
         width: 343.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
