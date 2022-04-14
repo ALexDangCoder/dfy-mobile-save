@@ -40,6 +40,7 @@ class AppRouter {
   static const verify = '/verify';
   static const manage_loan_package = '/manage_loan_package';
   static const loan_request_lender = '/loan_request_lender';
+  static const borrow_result = '/pawn_borrow_result';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     // final args = settings.arguments;

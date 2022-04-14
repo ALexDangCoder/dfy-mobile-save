@@ -444,32 +444,32 @@ class _MenuAccountState extends State<MenuAccount> {
         }
         break;
       ///dong lai
-      // case 'setting_package_lender':
-      //   {
-      //     if (state is NoLoginState) {
-      //       showDialog(
-      //         context: context,
-      //         builder: (context) => const ConnectWalletDialog(
-      //           navigationTo: ManageLoanPackageList(),
-      //           isRequireLoginEmail: false,
-      //           settings: const RouteSettings(
-      //             name: AppRouter.manage_loan_package,
-      //           ),
-      //         ),
-      //       ).then((_) => cubit.getLoginState());
-      //     } else {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => const ManageLoanPackageList(),
-      //           settings: const RouteSettings(
-      //             name: AppRouter.manage_loan_package,
-      //           ),
-      //         ),
-      //       ).then((_) => cubit.getLoginState());
-      //     }
-      //   }
-      //   break;
+      case 'setting_package_lender':
+        {
+          if (state is NoLoginState) {
+            showDialog(
+              context: context,
+              builder: (context) => const ConnectWalletDialog(
+                navigationTo: ManageLoanPackageList(),
+                isRequireLoginEmail: false,
+                settings: const RouteSettings(
+                  name: AppRouter.manage_loan_package,
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ManageLoanPackageList(),
+                settings: const RouteSettings(
+                  name: AppRouter.manage_loan_package,
+                ),
+              ),
+            ).then((_) => cubit.getLoginState());
+          }
+        }
+        break;
       case 'verification':
         {
           if (state is NoLoginState) {
@@ -591,10 +591,10 @@ class _MenuAccountState extends State<MenuAccount> {
           routeName: 'contracts_lender',
           title: S.current.contracts,
         ),
-        // ItemMenuModel.createChild(
-        //   routeName: 'setting_package_lender',
-        //   title: S.current.setting_and_package,
-        // ),
+        ItemMenuModel.createChild(
+          routeName: 'setting_package_lender',
+          title: S.current.setting_and_package,
+        ),
         ItemMenuModel.createChild(
           routeName: 'loan_request_lender',
           title: S.current.loan_request,
