@@ -798,6 +798,40 @@ class Web3Utils {
     return hex.encode(putOnPawn.data ?? []);
   }
 
+  Future<String> getPutOnPawnWithLoanRequestData({
+    required String nftContract,
+    required String nftTokenId,
+    required String expectedlLoanAmount,
+    required String loanAsset,
+    required String nftTokenQuantity,
+    required String expectedDurationQty,
+    required int durationType,
+    required String beNFTId,
+    required String pawnShopPackageId,
+    required String message,
+  }) async {
+    final deployContract =
+        await deployedNFTPawnContract(Get.find<AppConstants>().nftPawn);
+    final function = deployContract.function('putOnPawnWithLoanRequest');
+    final putOnPawnWithLoanRequest = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(nftContract),
+        BigInt.from(num.parse(nftTokenId)),
+        BigInt.from(num.parse(expectedlLoanAmount)),
+        EthereumAddress.fromHex(loanAsset),
+        BigInt.from(num.parse(nftTokenQuantity)),
+        BigInt.from(num.parse(expectedDurationQty)),
+        BigInt.from(durationType),
+        beNFTId,
+        BigInt.from(num.parse(pawnShopPackageId)),
+        message
+      ],
+    );
+    return hex.encode(putOnPawnWithLoanRequest.data ?? []);
+  }
+
   Future<String> getAcceptOfferData({
     required String nftCollateralId,
     required String offerId,
@@ -1263,8 +1297,6 @@ class Web3Utils {
     return hex.encode(repayment.data ?? []);
   }
 
-
-
   Future<String> getCreatePackageData({
     required int packageType,
     required String loanTokenAddress,
@@ -1450,8 +1482,7 @@ class Web3Utils {
   Future<DeployedContract> deployedNFTPawnContract(
     String contract,
   ) async {
-    final abiCode =
-        await rootBundle.loadString('assets/abi/PawnNFTABI_DEV2.json');
+    final abiCode = await rootBundle.loadString('assets/abi/PawnNFT_abi.json');
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'nftPawn'),
       EthereumAddress.fromHex(contract),
