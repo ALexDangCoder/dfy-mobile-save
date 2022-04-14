@@ -21,6 +21,7 @@ class PersonalItem extends StatelessWidget {
   final String signedContract;
   final String total;
   final String id;
+  final int type;
 
   const PersonalItem({
     Key? key,
@@ -31,7 +32,7 @@ class PersonalItem extends StatelessWidget {
     required this.interestRate,
     required this.signedContract,
     required this.total,
-    required this.id,
+    required this.id, required this.type,
   }) : super(key: key);
 
   WidgetSpan widgetSpanBase({
@@ -145,7 +146,7 @@ class PersonalItem extends StatelessWidget {
                             return SendLoanRequest(
                               packageId: id,
                               pawnshopType: '3',
-                              collateralAccepted: collateral,
+                              collateralAccepted: collateral, type: type,
                             );
                           },
                         ),
@@ -404,7 +405,7 @@ class PersonalItem extends StatelessWidget {
                         return SendLoanRequest(
                           packageId: id,
                           pawnshopType: '3',
-                          collateralAccepted: collateral,
+                          collateralAccepted: collateral, type: type,
                         );
                       },
                     ),

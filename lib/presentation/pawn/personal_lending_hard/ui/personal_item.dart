@@ -14,12 +14,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PersonalItem extends StatelessWidget {
   final String nameShop;
   final bool isShop;
+  final bool isTrust;
   final String rate;
   final int collateral;
   final String interestRate;
   final String signedContract;
   final String total;
   final String id;
+  final int type;
 
   const PersonalItem({
     Key? key,
@@ -29,7 +31,9 @@ class PersonalItem extends StatelessWidget {
     required this.collateral,
     required this.interestRate,
     required this.signedContract,
-    required this.total, required this.id,
+    required this.total,
+    required this.id,
+    required this.isTrust, required this.type,
   }) : super(key: key);
 
   @override
@@ -55,14 +59,15 @@ class PersonalItem extends StatelessWidget {
             color: AppTheme.getInstance().divideColor(),
           ),
         ),
-        child: Column(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          clipBehavior: Clip.none,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 8,
+                SizedBox(
+                  width: 250.w,
                   child: RichText(
                     text: TextSpan(
                       text: nameShop,
@@ -87,232 +92,240 @@ class PersonalItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                RichText(
+                  maxLines: 1,
+                  textAlign: TextAlign.end,
+                  text: TextSpan(
+                    text: '',
+                    style: textNormalCustom(
+                      null,
+                      16,
+                      FontWeight.w600,
+                    ).copyWith(
+                      overflow: TextOverflow.clip,
+                    ),
+                    children: [
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Image.asset(ImageAssets.img_star),
+                      ),
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: spaceW6,
+                      ),
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Text(
+                          rate,
+                          style: textNormal(
+                            null,
+                            16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 spaceH12,
-                Expanded(
-                  flex: 2,
-                  child: RichText(
-                    maxLines: 1,
-                    textAlign: TextAlign.end,
-                    text: TextSpan(
-                      text: '',
-                      style: textNormalCustom(
-                        null,
-                        16,
-                        FontWeight.w600,
-                      ).copyWith(
-                        overflow: TextOverflow.clip,
-                      ),
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(ImageAssets.img_star),
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: spaceW6,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Text(
-                            rate,
-                            style: textNormal(
-                              null,
-                              16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            spaceH12,
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '${S.current.interest_rate_apr}:',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().pawnGray(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ),
-                spaceW4,
-                Expanded(
-                  child: Text(
-                    interestRate,
-                    style: textNormalCustom(
-                      null,
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            spaceH12,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    '${S.current.collateral_accepted}:',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().pawnGray(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ),
-                spaceW4,
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '',
-                      style: textNormalCustom(
-                        null,
-                        14,
-                        FontWeight.w400,
-                      ),
-                      children: [
-                        WidgetSpan(
-                          child: collateral == PersonalLendingHardBloc.ALL
-                              ? const SizedBox.shrink()
-                              : Image.asset(
-                                  ImageAssets.ic_hard,
-                                  width: 16.w,
-                                  height: 16.w,
-                                ),
-                        ),
-                        WidgetSpan(
-                          child: collateral == PersonalLendingHardBloc.ALL
-                              ? const SizedBox.shrink()
-                              : spaceW4,
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Text(
-                            checkText(collateral),
-                            style: textNormal(
-                              null,
-                              16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            spaceH12,
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '${S.current.sign_contract_pawn}:',
-                    style: textNormalCustom(
-                      AppTheme.getInstance().pawnGray(),
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ),
-                spaceW4,
-                Expanded(
-                  child: Text(
-                    formatPrice.format(double.parse(signedContract)),
-                    style: textNormalCustom(
-                      null,
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            spaceH12,
-            line,
-            spaceH12,
-            Align(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                text: TextSpan(
-                  text: '',
-                  style: textNormalCustom(
-                    null,
-                    24,
-                    FontWeight.w600,
-                  ),
+                Row(
                   children: [
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
+                    Expanded(
                       child: Text(
-                        '\$ ${formatPrice.format(double.parse(total))}  ',
+                        '${S.current.interest_rate_apr}:',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().pawnGray(),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    spaceW4,
+                    Expanded(
+                      child: Text(
+                        interestRate,
                         style: textNormalCustom(
                           null,
-                          24,
-                          FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (_) => InfoPopup(
-                              name: S.current.total_contract_value,
-                              content: S.current.total_value_of_all,
-                            ),
-                          );
-                        },
-                        child: Image.asset(
-                          ImageAssets.img_waning,
-                          height: 20.w,
-                          width: 20.w,
+                          14,
+                          FontWeight.w400,
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            spaceH24,
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return  SendLoanRequest(
-                          index: 1,
-                          packageId: id,
-                          pawnshopType: '',
-                          collateralAccepted: [],
-                        );
-                      },
+                spaceH12,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${S.current.collateral_accepted}:',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().pawnGray(),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                child: SizedBox(
-                  width: 140.w,
-                  height: 40.h,
-                  child: ButtonGold(
-                    radiusButton: 12,
-                    haveMargin: false,
-                    title: S.current.request_loan,
-                    isEnable: true,
-                    fixSize: false,
-                    textSize: 16,
+                    spaceW4,
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          text: '',
+                          style: textNormalCustom(
+                            null,
+                            14,
+                            FontWeight.w400,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              child: collateral == PersonalLendingHardBloc.ALL
+                                  ? const SizedBox.shrink()
+                                  : Image.asset(
+                                      ImageAssets.ic_hard,
+                                      width: 16.w,
+                                      height: 16.w,
+                                    ),
+                            ),
+                            WidgetSpan(
+                              child: collateral == PersonalLendingHardBloc.ALL
+                                  ? const SizedBox.shrink()
+                                  : spaceW4,
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Text(
+                                checkText(collateral),
+                                style: textNormal(
+                                  null,
+                                  16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                spaceH12,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${S.current.sign_contract_pawn}:',
+                        style: textNormalCustom(
+                          AppTheme.getInstance().pawnGray(),
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    spaceW4,
+                    Expanded(
+                      child: Text(
+                        formatPrice.format(double.parse(signedContract)),
+                        style: textNormalCustom(
+                          null,
+                          14,
+                          FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                spaceH12,
+                line,
+                spaceH12,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      text: '',
+                      style: textNormalCustom(
+                        null,
+                        24,
+                        FontWeight.w600,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Text(
+                            '\$ ${formatPrice.format(double.parse(total))}  ',
+                            style: textNormalCustom(
+                              null,
+                              24,
+                              FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => InfoPopup(
+                                  name: S.current.total_contract_value,
+                                  content: S.current.total_value_of_all,
+                                ),
+                              );
+                            },
+                            child: Image.asset(
+                              ImageAssets.img_waning,
+                              height: 20.w,
+                              width: 20.w,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                spaceH24,
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SendLoanRequest(
+                              index: 1,
+                              packageId: id,
+                              pawnshopType: '',
+                              collateralAccepted: [], type: type,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: SizedBox(
+                      width: 140.w,
+                      height: 40.h,
+                      child: ButtonGold(
+                        radiusButton: 12,
+                        haveMargin: false,
+                        title: S.current.request_loan,
+                        isEnable: true,
+                        fixSize: false,
+                        textSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: -10.h,
+              right: -8.w,
+              child: isTrust
+                  ? Image.asset(
+                      ImageAssets.trust_img,
+                      height: 64.h,
+                      width: 50.w,
+                      fit: BoxFit.fill,
+                    )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),

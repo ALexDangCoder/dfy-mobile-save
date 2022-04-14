@@ -85,8 +85,11 @@ class _PopUpApproveState extends State<PopUpApprove> {
                   }
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  margin: const EdgeInsets.only(top: 48),
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: MediaQuery.of(context).padding.top,
+                  ),
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: const BorderRadius.only(
@@ -250,12 +253,12 @@ class _PopUpApproveState extends State<PopUpApprove> {
                                 border: Border.all(
                                   color: AppTheme.getInstance().yellowColor(),
                                 ),
-                                radiusButton: 15,
+                                radiusButton: 20,
                                 textSize: 16,
                                 title: S.current.reject,
                                 isEnable: true,
                                 fixSize: false,
-                                height: 48.h,
+                                height: 64.h,
                                 haveMargin: false,
                               ),
                             ),
@@ -273,11 +276,11 @@ class _PopUpApproveState extends State<PopUpApprove> {
                                     }
                                   },
                                   child: ButtonGold(
-                                    radiusButton: 15,
+                                    radiusButton: 20,
                                     textSize: 16,
                                     title: S.current.approve,
                                     isEnable: canAction,
-                                    height: 48.h,
+                                    height: 64.h,
                                     fixSize: false,
                                     haveMargin: false,
                                   ),

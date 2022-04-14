@@ -12,7 +12,14 @@ class ConfirmResponse extends Equatable {
   @JsonKey(name: 'rd')
   String? rd;
 
-  ConfirmResponse(this.rc, this.rd);
+  @JsonKey(name: 'data')
+  DateResponse? data;
+
+  ConfirmResponse(
+    this.rc,
+    this.rd,
+    this.data,
+  );
 
   factory ConfirmResponse.fromJson(Map<String, dynamic> json) =>
       _$ConfirmResponseFromJson(json);
@@ -21,8 +28,25 @@ class ConfirmResponse extends Equatable {
 
   ConfirmModel toDomain() => ConfirmModel(
         rc: rc ?? -1,
-        rd: rd ?? '',
+        rd: rd ?? '', id: data?.collateralId ??0,
       );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+@JsonSerializable()
+class DateResponse extends Equatable {
+  @JsonKey(name: 'collateralId')
+  int? collateralId;
+
+  DateResponse(this.collateralId);
+
+  factory DateResponse.fromJson(Map<String, dynamic> json) =>
+      _$DateResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DateResponseToJson(this);
 
   @override
   // TODO: implement props

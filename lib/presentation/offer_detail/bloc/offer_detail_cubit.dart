@@ -1,9 +1,12 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/offer_detail.dart';
+import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
+import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/domain/repository/nft_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/bloc/offer_detail_state.dart';
@@ -44,6 +47,25 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
   Stream<Status> get btnAcceptStream => _btnAccept.stream;
 
   Sink<Status> get btnAcceptSink => _btnAccept.sink;
+  BehaviorSubject<String> listReputationBorrower = BehaviorSubject.seeded('0');
+
+  BorrowRepository get _pawnService => Get.find();
+
+  Future<void> getReputation(String addressWallet) async {
+    final Result<List<ReputationBorrower>> response =
+        await _pawnService.getListReputation(
+      addressWallet: addressWallet,
+    );
+    response.when(
+      success: (response) {
+        if (response.isNotEmpty) {
+          listReputationBorrower
+              .add(response.first.reputationLender.toString());
+        }
+      },
+      error: (error) {},
+    );
+  }
 
   void getTokenInf() {
     final String listToken = PrefsService.getListTokenSupport();
@@ -69,6 +91,7 @@ class OfferDetailCubit extends BaseCubit<SendOfferState> {
           res.status?.toEnum().getColor(),
         );
         offerSink.add(res);
+        getReputation(res.walletAddress.toString());
       },
       error: (error) {},
     );

@@ -254,9 +254,9 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
   String funGetTypeNFT(int collectionType) {
     String typeNft = '';
     if (collectionType == SOFT_COLLECTION) {
-      typeNft = S.current.collection_soft;
+      typeNft = 'Soft NFT Collection';
     } else {
-      typeNft = S.current.collection_hard;
+      typeNft = 'Hard NFT Collection';
     }
     return typeNft;
   }
@@ -489,7 +489,7 @@ class DetailCollectionBloc extends BaseCubit<CollectionDetailState> {
             for (final NftMarket value in res) {
               value.urlToken = ImageAssets.getUrlToken(value.symbolToken ?? '');
               if (value.marketType == MarketType.NOT_ON_MARKET) {
-                 listNftMyAcc.add(value);
+                listNftMyAcc.add(value);
               } else {
                 listNftMyAcc.add(value);
               }

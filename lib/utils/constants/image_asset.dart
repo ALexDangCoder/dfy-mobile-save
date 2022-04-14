@@ -71,6 +71,7 @@ class ImageAssets {
   //urltoken
 
   ///Pawn
+  static const String trust_img = '$baseImg/trust_img.png';
 
   static const String logo_pawn = '$baseImg/logo_pawn.png';
   static const String ic_hard = '$baseImg/icon_hard.png';

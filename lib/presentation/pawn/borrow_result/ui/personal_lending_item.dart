@@ -214,7 +214,7 @@ class PersonalLendingItem extends StatelessWidget {
                             '',
                     collateralAccepted: personalLending.p2PLenderPackages?[0]
                             .acceptableAssetsAsCollateral ??
-                        [],
+                        [], type: personalLending.p2PLenderPackages?[0].type ?? 0,
                   ),
                 ),
               );

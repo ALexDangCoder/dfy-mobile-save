@@ -61,7 +61,6 @@ class BodyDetailCollection extends StatelessWidget {
           urlTelegram: urlTelegram,
           urlTwitter: urlTwitter,
         ),
-        spaceH10,
         NavCollection(
           items: items,
           owners: owners,

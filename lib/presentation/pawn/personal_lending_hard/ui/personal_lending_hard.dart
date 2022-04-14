@@ -272,6 +272,9 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                         signedContract: list[index]
                                             .completedContracts
                                             .toString(),
+                                        isTrust: list[index].isTrustedLender ??
+                                            false,
+                                        type: list[index].type ?? 0,
                                       ),
                                     )
                                   : state is PersonalLendingHardSuccess
