@@ -49,6 +49,7 @@ class _SearchNFTState extends State<SearchNFT> {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
@@ -58,7 +59,7 @@ class _SearchNFTState extends State<SearchNFT> {
         child: Container(
           width: 375.w,
           height: 812.h,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          padding: EdgeInsets.only(top: topPadding),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -72,7 +73,7 @@ class _SearchNFTState extends State<SearchNFT> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 52.h,
+                  height: (topPadding == 0) ? 22.h : 0,
                 ),
                 searchBar(),
                 Center(
@@ -96,9 +97,9 @@ class _SearchNFTState extends State<SearchNFT> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 22.h,
-                ),
+                // SizedBox(
+                //   height: 22.h,
+                // ),
                 Divider(
                   color: AppTheme.getInstance().divideColor(),
                 ),
