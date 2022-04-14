@@ -26,43 +26,41 @@ class _OwnerTabState extends State<OwnerTab>
   @override
   Widget build(BuildContext context) {
     if (widget.listOwner.isNotEmpty) {
-      return ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: widget.listOwner.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {},
-            child: _buildItemOwner(widget.listOwner[index]),
-          );
-        },
+      return SizedBox(
+        height: 300.h,
+        child: ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.listOwner.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {},
+              child: _buildItemOwner(widget.listOwner[index]),
+            );
+          },
+        ),
       );
     } else {
-      return Center(
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 100.h),
-          children: [
-            Center(
-              child: sizedPngImage(
-                w: 94,
-                h: 94,
-                image: ImageAssets.icNoTransaction,
+      return Column(
+        children: [
+          Center(
+            child: sizedPngImage(
+              w: 94,
+              h: 94,
+              image: ImageAssets.icNoTransaction,
+            ),
+          ),
+          Center(
+            child: Text(
+              S.current.no_transaction,
+              style: tokenDetailAmount(
+                color: AppTheme.getInstance().currencyDetailTokenColor(),
+                fontSize: 20,
               ),
             ),
-            Center(
-              child: Text(
-                S.current.no_transaction,
-                style: tokenDetailAmount(
-                  color: AppTheme.getInstance().currencyDetailTokenColor(),
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     }
   }
@@ -90,7 +88,7 @@ class _OwnerTabState extends State<OwnerTab>
                 ),
               spaceW10,
               InkWell(
-                onTap: (){
+                onTap: () {
                   launch(
                     Get.find<AppConstants>().bscScan +
                         ApiConstants.BSC_SCAN_ADDRESS +

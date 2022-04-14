@@ -15,6 +15,8 @@ class ApiConstants {
       '/nft-market-svc/public-api/auction/detail/';
   static const String GET_EVALUATION_HARD_NFT =
       '/hard-nft-svc/public-api/evaluations/';
+  static const String GET_EVALUATOR_HARD_NFT =
+      '/hard-nft-svc/public-api/evaluators/profile/';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE =
       '/nft-market-svc/public-api/home';
   static const String GET_LIST_NFT_COLLECTION_EXPLORE_SEARCH =

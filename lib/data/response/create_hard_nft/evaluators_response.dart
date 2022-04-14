@@ -78,6 +78,14 @@ class EvaluatorResponse extends Equatable {
   int? createdAt;
   @JsonKey(name: 'phone_code')
   PhoneCodeResponse? phoneCode;
+  @JsonKey(name: 'storage_location')
+  String? storageLocation;
+  @JsonKey(name: 'condition_detail')
+  String? conditionDetail;
+  @JsonKey(name: 'storage_short_description')
+  String? storageShortScrip;
+  @JsonKey(name: 'protection')
+  String? protection;
 
   EvaluatorResponse(
     this.id,
@@ -101,6 +109,10 @@ class EvaluatorResponse extends Equatable {
     this.evaluatedCount,
     this.createdAt,
     this.phoneCode,
+    this.protection,
+    this.storageShortScrip,
+    this.conditionDetail,
+    this.storageLocation,
   );
 
   factory EvaluatorResponse.fromJson(Map<String, dynamic> json) =>
@@ -116,7 +128,8 @@ class EvaluatorResponse extends Equatable {
         description: description,
         locationLat: locationLat,
         locationLong: locationLong,
-        acceptedAssetTypeList: acceptedAssetTypeList?.map((e) => e.toDomain()).toList() ?? [],
+        acceptedAssetTypeList:
+            acceptedAssetTypeList?.map((e) => e.toDomain()).toList() ?? [],
         workingTimeFrom: workingTimeFrom,
         workingTimeTo: workingTimeTo,
         workingDays: workingDays,
@@ -129,6 +142,13 @@ class EvaluatorResponse extends Equatable {
         createdAt: createdAt,
         phoneCode: phoneCode?.toDomain(),
       );
+  EvaluatorsDetailModel toDetail() => EvaluatorsDetailModel(
+    description: description,
+    protection: protection,
+    storageShortScrip: storageShortScrip,
+    storageLocation: storageLocation,
+    conditionDetail: conditionDetail,
+  );
 
   @override
   // TODO: implement props

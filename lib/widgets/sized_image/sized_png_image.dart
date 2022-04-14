@@ -29,7 +29,7 @@ Widget sizedSvgImage({
       child: SvgPicture.asset(
         image,
         width: w.w,
-        height: w.h,
+        height: h.h,
         fit: BoxFit.fill,
       ),
     ),

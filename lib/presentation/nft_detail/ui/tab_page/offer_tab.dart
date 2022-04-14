@@ -2,7 +2,6 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/offer_nft.dart';
-import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/offer_detail/ui/offer_detail_screen.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
@@ -31,30 +30,25 @@ class _OfferTabState extends State<OfferTab> {
   Widget build(BuildContext context) {
     if (widget.listOffer.isEmpty) {
       return SizedBox(
-        height: 150.h,
-        child: Center(
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              Center(
-                child: sizedPngImage(
-                  w: 94,
-                  h: 94,
-                  image: ImageAssets.icNoTransaction,
+        height: 300.h,
+        child: Column(
+          children: [
+            spaceH60,
+            sizedPngImage(
+              w: 94,
+              h: 94,
+              image: ImageAssets.icNoTransaction,
+            ),
+            Center(
+              child: Text(
+                'No offer',
+                style: tokenDetailAmount(
+                  color: AppTheme.getInstance().currencyDetailTokenColor(),
+                  fontSize: 20,
                 ),
               ),
-              Center(
-                child: Text(
-                  'No offer',
-                  style: tokenDetailAmount(
-                    color: AppTheme.getInstance().currencyDetailTokenColor(),
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     } else {
@@ -70,8 +64,7 @@ class _OfferTabState extends State<OfferTab> {
   }
 
   Widget _buildItemOffer(OfferDetail objOffer) {
-    final String duration =
-        (objOffer.durationType == 0) ? 'week' : 'month';
+    final String duration = (objOffer.durationType == 0) ? 'week' : 'month';
     return BaseItem(
       child: GestureDetector(
         onTap: () {
