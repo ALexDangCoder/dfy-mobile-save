@@ -63,8 +63,8 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
   final BehaviorSubject<List<BiddingNft>> listBiddingStream = BehaviorSubject();
   final BehaviorSubject<List<OfferDetail>> listOfferStream = BehaviorSubject();
   final BehaviorSubject<Evaluation> evaluationStream = BehaviorSubject();
-  final BehaviorSubject<EvaluatorsDetailModel> evaluatorStream = BehaviorSubject();
-
+  final BehaviorSubject<EvaluatorsDetailModel> evaluatorStream =
+      BehaviorSubject();
 
   String symbolToken = '';
 
@@ -188,16 +188,17 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
       },
     );
   }
+
   Future<void> getEvaluator(String evaluationId) async {
     final Result<EvaluatorsDetailModel> result =
-    await _nftRepo.getEvaluator(evaluationId);
+        await _nftRepo.getEvaluator(evaluationId);
     result.when(
       success: (res) {
-        if(res.conditionDetail !=''){
+        if (res.conditionDetail != '') {
           List<String> des;
           final buffer = StringBuffer();
-          des = res.conditionDetail!.split('<p>') ;
-          for(final element in des){
+          des = res.conditionDetail!.split('<p>');
+          for (final element in des) {
             buffer.write('$element\n\n');
           }
 
@@ -244,6 +245,7 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
               success: (res2) {
                 res.collectionName = res2.collectionName;
                 res.description = res2.description;
+                res.properties = res2.properties;
               },
               error: (error2) {},
             );
@@ -286,26 +288,24 @@ class NFTDetailBloc extends BaseCubit<NFTDetailState> {
     }
     if (type == MarketType.SALE) {
       showLoading();
-      final Result<NftMarket> result;
-      result = await _nftRepo.getDetailNftOnSale(marketId).then((value) async {
-        if (typeNFT == TypeNFT.HARD_NFT) {
-          final Result<NftMarket> result2 =
-              await _nftRepo.getDetailHardNftOnSale(nftId);
-          result2.when(
-            success: (res) {
-              getEvaluation(res.evaluationId ?? '');
-            },
-            error: (error) {
-              showError();
-            },
-          );
-          return value;
-        } else {
-          return value;
-        }
-      });
+      final Result<NftMarket> result =
+          await _nftRepo.getDetailNftOnSale(marketId);
+      final Result<NftMarket> result2 =
+          await _nftRepo.getDetailHardNftOnSale(nftId);
       result.when(
         success: (res) {
+          if (typeNFT == TypeNFT.HARD_NFT) {
+            result2.when(
+              success: (res2) {
+                res.description = (res2.description ?? '').parseHtml();
+                getEvaluation(res2.evaluationId ?? '');
+                res.properties = res2.properties;
+              },
+              error: (error) {
+                showError();
+              },
+            );
+          }
           final tokenBuyOut =
               res.tokenBuyOut == '' ? res.tokenBuyOut : res.token;
           for (final value in listTokenSupport) {
