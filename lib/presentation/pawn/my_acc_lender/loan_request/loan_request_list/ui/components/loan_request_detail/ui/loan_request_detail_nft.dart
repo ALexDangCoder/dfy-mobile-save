@@ -36,7 +36,7 @@ class _LoanRequestDetailNftState extends State<LoanRequestDetailNft> {
   Widget build(BuildContext context) {
     final nftItem = widget.nftModel.nftModel;
     return BaseDesignScreen(
-      bottomBar: _buildButton(),
+      bottomBar: ((widget.nftModel.status?? 0) == 1) ? _buildButton() : null,
       title: S.current.request_detail,
       child: SingleChildScrollView(
         child: Container(
