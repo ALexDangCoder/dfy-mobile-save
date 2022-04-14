@@ -115,6 +115,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
                           context,
                           ReceiveHardNFTScreen(
                             assetId: widget.assetID,
+                            pageRouter: widget.pageRouter,
                           ),
                         );
                       }
@@ -236,6 +237,7 @@ class _EvaluationResultState extends State<EvaluationResult> {
                       context,
                       ReceiveHardNFTScreen(
                         assetId: widget.assetID,
+                        pageRouter: widget.pageRouter,
                       ),
                     );
                   },

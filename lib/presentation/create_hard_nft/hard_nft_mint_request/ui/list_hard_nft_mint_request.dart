@@ -113,8 +113,7 @@ class _ListHardNftMintRequestState extends State<ListHardNftMintRequest> {
             child: searchBar(),
           ),
           spaceH16,
-          SizedBox(
-            height: 621.h,
+          Expanded(
             child: ListMintRequest(
               cubit: cubit,
               listMintRequest: list,

@@ -52,6 +52,7 @@ class MintRequestItem extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => ReceiveHardNFTScreen(
                   assetId: mintRequestModel.id ?? '',
+                  pageRouter: PageRouterHardNFT.LIST_HARD,
                 ),
               ),
             );
