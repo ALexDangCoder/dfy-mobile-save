@@ -16,24 +16,23 @@ class LoanRequestRepositoryImplement implements LoanRequestRepository {
   @override
   Future<Result<List<LoanRequestCryptoModel>>> getListCryptoLoanRequest(
       {String? p2p,
-        String? page,
-        String? size,
-        String? collateral,
-        String? status,
-        String? walletAddress}) {
+      String? page,
+      String? size,
+      String? collateral,
+      String? status,
+      String? walletAddress}) {
     return runCatchingAsync<LoanRequestCryptoTotalResponse,
         List<LoanRequestCryptoModel>>(
-          () =>
-          _client.getLoanRequestListCrypto(
-            p2p,
-            page,
-            size,
-            collateral,
-            status,
-            walletAddress,
-          ),
-          (response) =>
-      response.data?.content?.map((e) => e.toModel()).toList() ?? [],
+      () => _client.getLoanRequestListCrypto(
+        p2p,
+        page,
+        size,
+        collateral,
+        status,
+        walletAddress,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toModel()).toList() ?? [],
     );
   }
 
@@ -42,11 +41,10 @@ class LoanRequestRepositoryImplement implements LoanRequestRepository {
       String walletAddress) {
     return runCatchingAsync<List<ReputationBorrowerResponse>,
         List<ReputationBorrower>>(
-          () =>
-          _client.getBorrowerInfo(
-            walletAddress,
-          ),
-          (response) => response.map((e) => e.toDomain()).toList(),
+      () => _client.getBorrowerInfo(
+        walletAddress,
+      ),
+      (response) => response.map((e) => e.toDomain()).toList(),
     );
   }
 
@@ -54,26 +52,77 @@ class LoanRequestRepositoryImplement implements LoanRequestRepository {
   Future<Result<DetailLoanRequestCryptoModel>> getDetailLoanRequest(String id) {
     return runCatchingAsync<DetailLoanRequestTotalResponse,
         DetailLoanRequestCryptoModel>(
-          () => _client.getDetailLoanRequest(id),
-          (response) => response.data.toModel(),
+      () => _client.getDetailLoanRequest(id),
+      (response) => response.data.toModel(),
     );
   }
 
   @override
   Future<Result<List<LoanRequestCryptoModel>>> getListNftLoanRequest(
-      {String? page, String? size, String? nftType, String? status, String? walletAddress}) {
+      {String? page,
+      String? size,
+      String? nftType,
+      String? status,
+      String? walletAddress}) {
     return runCatchingAsync<LoanRequestCryptoTotalResponse,
         List<LoanRequestCryptoModel>>(
-          () =>
-          _client.getListNftLoanRequest(
-            nftType,
-            status,
-            walletAddress,
-            page,
-            size,
-          ),
-          (response) =>
-      response.data?.content?.map((e) => e.toModel()).toList() ?? [],
+      () => _client.getListNftLoanRequest(
+        nftType,
+        status,
+        walletAddress,
+        page,
+        size,
+      ),
+      (response) =>
+          response.data?.content?.map((e) => e.toModel()).toList() ?? [],
+    );
+  }
+
+  @override
+  Future<Result<String>> postSendOfferCryptoToBe(
+      {String? collateralId,
+      String? duration,
+      required String id,
+      String? durationType,
+      String? interestRate,
+      String? latestBlockchainTxn,
+      String? liquidationThreshold,
+      String? loanAmount,
+      String? loanRequestId,
+      String? loanToValue,
+      String? message,
+      String? repaymentToken,
+      String? supplyCurrency,
+      String? walletAddress}) {
+    return runCatchingAsync<String, String>(
+      () => _client.postSendOfferRequest(
+        id: id,
+        repaymentToken: repaymentToken,
+        liquidationThreshold: liquidationThreshold,
+        loanToValue: loanToValue,
+        walletAddress: walletAddress,
+        durationType: durationType,
+        collateralId: collateralId,
+        message: message,
+        latestBlockchainTxn: latestBlockchainTxn,
+        loanAmount: loanAmount,
+        interestRate: interestRate,
+        supplyCurrency: supplyCurrency,
+        duration: duration,
+        loanRequestId: loanRequestId,
+      ),
+      (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> postRejectCryptoLoanRequest(
+      {required String loanRequestId}) {
+    return runCatchingAsync<String, String>(
+      () => _client.rejectCryptoLoanRequest(
+        loanRequestId: loanRequestId,
+      ),
+      (response) => response,
     );
   }
 }

@@ -73,4 +73,14 @@ class OfferSentRepositoryImplement implements OfferSentRepository {
       (response) => response.data.toOfferDetailCryptoCollateral(),
     );
   }
+
+  @override
+  Future<Result<String>> putCryptoAfterCancel({required String id}) {
+    return runCatchingAsync<String, String>(
+      () => _client.putCryptoAfterCancel(
+        id,
+      ),
+      (response) => response,
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
@@ -8,7 +9,9 @@ import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LendingRegistrationBloc {
+import 'leding_registration_state.dart';
+
+class LendingRegistrationBloc extends BaseCubit<LendingRegistrationState>{
   BehaviorSubject<String> validateTextSubject = BehaviorSubject.seeded('');
   bool checkWalletAddress = false;
   BehaviorSubject<bool> isChooseAcc = BehaviorSubject.seeded(false);
@@ -17,6 +20,8 @@ class LendingRegistrationBloc {
   List<String> listAcc = [];
   BehaviorSubject<bool> isBtn = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> isCheckBox = BehaviorSubject.seeded(false);
+
+  LendingRegistrationBloc() : super(LendingRegistrationInitial());
 
   WalletAddressRepository get _walletAddressRepository => Get.find();
 
@@ -37,7 +42,7 @@ class LendingRegistrationBloc {
           checkWalletAddress = false;
         } else {
           if (res.length < 2) {
-            checkWalletAddress = true;
+            checkWalletAddress = false;
           } else {
             checkWalletAddress = true;
           }
@@ -46,7 +51,7 @@ class LendingRegistrationBloc {
               listAcc.add(element.walletAddress ?? '');
             }
           }
-          textAddress.add(res.first.walletAddress.toString());
+          textAddress.add(listAcc.first);
         }
       },
       error: (error) {

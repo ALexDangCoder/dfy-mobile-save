@@ -16,6 +16,7 @@ import 'package:Dfy/domain/model/bidding_nft.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/domain/model/history_nft.dart';
+import 'package:Dfy/domain/model/market_place/evaluator_detail.dart';
 import 'package:Dfy/domain/model/market_place/owner_nft.dart';
 import 'package:Dfy/domain/model/nft_auction.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
@@ -24,11 +25,12 @@ import 'package:Dfy/domain/model/offer_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/main.dart';
 import 'package:Dfy/presentation/buy_nft/ui/buy_nft.dart';
-import 'package:Dfy/presentation/market_place/hard_nft/ui/tab_content/evaluation_tab.dart';
+import 'package:Dfy/presentation/create_hard_nft/evaluation_detail/ui/evaluation_detail.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_bloc.dart';
 import 'package:Dfy/presentation/nft_detail/bloc/nft_detail_state.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/bid_tab.dart';
+import 'package:Dfy/presentation/nft_detail/ui/tab_page/evaluatator_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/history_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/offer_tab.dart';
 import 'package:Dfy/presentation/nft_detail/ui/tab_page/owner_tab.dart';
@@ -184,8 +186,11 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
                 if (snapshot.hasData) {
-                  return EvaluationTab(
-                    evaluation: snapshot.data ?? Evaluation(),
+                  return Padding(
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    child: EvaluationDetail(
+                      evaluation: snapshot.data!,
+                    ),
                   );
                 } else {
                   return SizedBox(
@@ -234,7 +239,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
             Tab(
-              text: S.current.evaluation,
+              text: '${S.current.evaluation} passport',
             ),
           Tab(
             text: S.current.bidding,
@@ -298,8 +303,38 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
                 if (snapshot.hasData) {
-                  return EvaluationTab(
-                    evaluation: snapshot.data ?? Evaluation(),
+                  return Padding(
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    child: EvaluationDetail(
+                      evaluation: snapshot.data!,
+                    ),
+                  );
+                } else {
+                  return SizedBox(
+                    height: 100.h,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.r,
+                        color: AppTheme.getInstance().whiteColor(),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          if (widget.typeNft == TypeNFT.HARD_NFT)
+            StreamBuilder<EvaluatorsDetailModel>(
+              stream: bloc.evaluatorStream,
+              builder: (
+                context,
+                AsyncSnapshot<EvaluatorsDetailModel> snapshot,
+              ) {
+                if (snapshot.hasData) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    child: EvaluatorTab(
+                      evaluatorsDetailModel: snapshot.data!,
+                    ),
                   );
                 } else {
                   return SizedBox(
@@ -322,10 +357,14 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           Tab(
             text: S.current.owner,
           ),
-          if (widget.typeNft == TypeNFT.HARD_NFT)
+          if (widget.typeNft == TypeNFT.HARD_NFT) ...[
             Tab(
-              text: S.current.evaluation,
+              text: '${S.current.evaluation} passport',
             ),
+            const Tab(
+              text: 'Protection and service',
+            ),
+          ]
         ];
         break;
       case MarketType.PAWN:
@@ -384,33 +423,20 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
                 AsyncSnapshot<Evaluation> snapshot,
               ) {
                 if (snapshot.data?.id!.isNotEmpty ?? false) {
-                  return EvaluationTab(
-                    evaluation: snapshot.data!,
+                  return Padding(
+                    padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                    child: EvaluationDetail(
+                      evaluation: snapshot.data!,
+                    ),
                   );
                 } else {
-                  return Center(
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.symmetric(vertical: 100.h),
-                      children: [
-                        Center(
-                          child: sizedPngImage(
-                            w: 94,
-                            h: 94,
-                            image: ImageAssets.icNoTransaction,
-                          ),
-                        ),
-                        Center(
-                          child: Text(
-                            S.current.no_transaction,
-                            style: tokenDetailAmount(
-                              color: AppTheme.getInstance()
-                                  .currencyDetailTokenColor(),
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ],
+                  return SizedBox(
+                    height: 100.h,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.r,
+                        color: AppTheme.getInstance().whiteColor(),
+                      ),
                     ),
                   );
                 }
@@ -449,7 +475,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
           ),
           if (widget.typeNft == TypeNFT.HARD_NFT)
             Tab(
-              text: S.current.evaluation,
+              text: '${S.current.evaluation} passport',
             ),
           Tab(
             text: S.current.offer,
@@ -525,18 +551,17 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
             initHeight: 360.h,
             leading: _leading(context),
             actions: [
-              if (pageRouter == PageRouter.MY_ACC)
-                action(
-                  context,
-                  objSale.collectionAddress ?? '',
-                  objSale.isOwner ?? false,
-                  objSale.nftTokenId ?? '',
-                  objSale.walletAddress ?? '',
-                  objSale.nftId ?? '',
-                  bloc,
-                  objSale,
-                  onRefresh,
-                ),
+              action(
+                context,
+                objSale.collectionAddress ?? '',
+                objSale.isOwner ?? false,
+                objSale.nftTokenId ?? '',
+                (objSale.walletAddress ?? objSale.owner) ?? '',
+                objSale.nftId ?? '',
+                bloc,
+                objSale,
+                onRefresh,
+              ),
             ],
             title: objSale.name ?? '',
             tabBarView: ExpandedPageViewWidget(
@@ -545,6 +570,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              physics: const AlwaysScrollableScrollPhysics(),
+              isScrollable: widget.typeNft == TypeNFT.HARD_NFT,
               onTap: (value) {
                 pageController.animateToPage(
                   value,
@@ -727,6 +754,7 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              isScrollable: widget.typeNft == TypeNFT.HARD_NFT,
               onTap: (value) {
                 pageController.animateToPage(
                   value,
@@ -903,6 +931,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              physics: const AlwaysScrollableScrollPhysics(),
+              isScrollable: widget.typeNft == TypeNFT.HARD_NFT,
               onTap: (value) {
                 pageController.animateToPage(
                   value,
@@ -1075,6 +1105,8 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
               children: _tabPage,
             ),
             tabBar: TabBar(
+              physics: const AlwaysScrollableScrollPhysics(),
+              isScrollable: widget.typeNft == TypeNFT.HARD_NFT,
               onTap: (value) {
                 pageController.animateToPage(
                   value,

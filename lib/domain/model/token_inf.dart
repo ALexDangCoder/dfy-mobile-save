@@ -25,6 +25,12 @@ class TokenInf {
     this.isSelect,
   });
 
+
+  @override
+  String toString() {
+    return 'TokenInf{id: $id, whitelistCollateral: $whitelistCollateral, whitelistSupply: $whitelistSupply, whiteListAsset: $whiteListAsset, usdExchange: $usdExchange, symbol: $symbol, address: $address, name: $name, iconUrl: $iconUrl, isSelect: $isSelect}';
+  }
+
   factory TokenInf.fromJson(Map<String, dynamic> json) {
     return TokenInf(
       address: json['address'],

@@ -4,8 +4,10 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/loan_request_list/detail_loan_request_crypto_model.dart';
 import 'package:Dfy/domain/model/pawn/reputation_borrower.dart';
+import 'package:Dfy/domain/model/token_inf.dart';
 import 'package:Dfy/domain/repository/pawn/loan_request/loan_request_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
@@ -33,7 +35,7 @@ class LoanRequestDetailCubit extends BaseCubit<LoanRequestDetailState> {
     showLoading();
     await getDetailCrypto(id);
     await getReputationBorrower(walletAddress);
-    if(_flagApi) {
+    if (_flagApi) {
       emit(
         LoanRequestDetailLoadApi(
           CompleteType.SUCCESS,
@@ -145,5 +147,27 @@ class LoanRequestDetailCubit extends BaseCubit<LoanRequestDetailState> {
         return '$durationQty ${S.current.month_1}';
       }
     }
+  }
+
+  List<TokenInf> listTokenSupport = [];
+
+  ///GET EXCHANGE USD TOKEN
+  void getTokenInf() {
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+  }
+
+  double getExchangeUSD({required String symbolToken}) {
+    return listTokenSupport
+            .where((element) => (element.symbol ?? '') == symbolToken)
+            .first
+            .usdExchange ??
+        0;
+  }
+
+  Future<void> rejectOfferCryptoLoanRequest({required String id}) async {
+    final result =
+    await _service.postRejectCryptoLoanRequest(loanRequestId: id);
+    result.when(success: (success) {}, error: (error) {});
   }
 }

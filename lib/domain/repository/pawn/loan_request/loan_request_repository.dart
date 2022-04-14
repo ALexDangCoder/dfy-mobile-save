@@ -25,4 +25,25 @@ mixin LoanRequestRepository {
       String walletAddress);
 
   Future<Result<DetailLoanRequestCryptoModel>> getDetailLoanRequest(String id);
+
+  Future<Result<String>> postSendOfferCryptoToBe({
+    required String id,
+    String? collateralId,
+    String? duration,
+    String? durationType,
+    String? interestRate,
+    String? latestBlockchainTxn,
+    String? liquidationThreshold,
+    String? loanAmount,
+    String? loanRequestId,
+    String? loanToValue,
+    String? message,
+    String? repaymentToken,
+    String? supplyCurrency,
+    String? walletAddress,
+  });
+
+  Future<Result<String>> postRejectCryptoLoanRequest({
+    required String loanRequestId,
+  });
 }

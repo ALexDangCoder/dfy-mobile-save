@@ -97,6 +97,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                           text:
                               'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
                           onlyPop: true,
+                          hasImage: true
                         );
                       }
                     });
@@ -480,6 +481,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                           text:
                               'Your Collateral has been sent to ${cubit.pawnshopPackage.type == 0 ? 'Auto' : 'Semi-Auto'} Loan Package,\nPlease wait a moment',
                           onlyPop: true,
+                          hasImage: true,
                         );
                       }
                     });

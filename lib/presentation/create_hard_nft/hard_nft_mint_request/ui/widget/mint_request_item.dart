@@ -24,7 +24,6 @@ class MintRequestItem extends StatelessWidget {
       onTap: () {
         switch (mintRequestModel.status) {
           case 0:
-          case 1:
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => Step1WhenSubmit(

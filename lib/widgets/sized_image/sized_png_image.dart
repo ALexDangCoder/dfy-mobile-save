@@ -9,7 +9,7 @@ Widget sizedPngImage({
 }) {
   return SizedBox(
     height: h.h,
-    width: w.h,
+    width: w.w,
     child: Image.asset(
       image,
       fit: BoxFit.fill,
@@ -28,8 +28,6 @@ Widget sizedSvgImage({
     child: Center(
       child: SvgPicture.asset(
         image,
-        width: w.w,
-        height: w.h,
         fit: BoxFit.fill,
       ),
     ),
