@@ -31,6 +31,8 @@ class _ListSelectNftCollateralState extends State<ListSelectNftCollateral>
     super.initState();
     _tabController =
         TabController(initialIndex: initIndexTab, length: 2, vsync: this);
+    widget.cubit.contentNftOnSelectNotOnMarket = [];
+    widget.cubit.contentNftOnSelect = [];
   }
 
   @override

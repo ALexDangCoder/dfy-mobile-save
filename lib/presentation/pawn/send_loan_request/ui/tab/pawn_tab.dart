@@ -44,8 +44,6 @@ class _PawnTabState extends State<PawnTab> with AutomaticKeepAliveClientMixin {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
@@ -120,17 +118,33 @@ class _PawnTabState extends State<PawnTab> with AutomaticKeepAliveClientMixin {
                           return Padding(
                             padding: EdgeInsets.only(left: 16.w),
                             child: NFTItemWidget(
-                              nftMarket:
-                                  widget.cubit.contentNftOnSelect[index].nft ??
-                                      NftMarket(),
-                              isChoosing: true,
-                              callBack: () {
+                              callBackNFT: () {
+                                widget.cubit.checkNotOnMarket.add(false);
+                                widget.cubit.checkData.add(widget
+                                    .cubit.contentNftOnSelect[index].durationQty
+                                    .toString());
+                                widget.cubit.durationMy = widget
+                                    .cubit.contentNftOnSelect[index].durationQty
+                                    .toString();
+                                widget.cubit.durationType = widget.cubit
+                                    .contentNftOnSelect[index].durationType
+                                    .toString();
+                                widget.cubit.loanAmountSymbol = widget
+                                    .cubit.contentNftOnSelect[index].loanSymbol
+                                    .toString();
+                                widget.cubit.loanAmount = widget.cubit
+                                    .contentNftOnSelect[index].collateralAmount
+                                    .toString();
                                 Navigator.pop(
                                   context,
                                   widget.cubit.contentNftOnSelect[index].nft ??
                                       NftMarket(),
                                 );
                               },
+                              nftMarket:
+                                  widget.cubit.contentNftOnSelect[index].nft ??
+                                      NftMarket(),
+                              isChoosing: true,
                               // pageRouter: widget.pageRouter,
                             ),
                           );

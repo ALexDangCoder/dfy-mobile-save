@@ -291,4 +291,7 @@ mixin BorrowRepository {
     String? userId,
     String? walletAddress,
   });
+  Future<Result<String>> confirmRepaymentToBe({ required String id,
+    required Map<String, dynamic> map,
+  });
 }
