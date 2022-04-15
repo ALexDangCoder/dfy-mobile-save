@@ -127,9 +127,34 @@ class _LoanRequestCryptoList extends State<LoanRequestCryptoList> {
                   SizedBox()
               ],
             )
-          : Container(
-              color: AppTheme.getInstance().bgBtsColor(),
-            );
+          : Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 150.h,
+          ),
+          child: Column(
+            children: [
+              Image(
+                image: const AssetImage(
+                  ImageAssets.img_search_empty,
+                ),
+                height: 120.h,
+                width: 120.w,
+              ),
+              SizedBox(
+                height: 17.7.h,
+              ),
+              Text(
+                S.current.no_result_found,
+                style: textNormal(
+                  Colors.white54,
+                  20.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

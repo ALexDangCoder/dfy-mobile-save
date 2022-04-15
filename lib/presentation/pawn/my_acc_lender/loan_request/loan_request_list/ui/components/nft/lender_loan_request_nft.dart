@@ -1,9 +1,11 @@
+import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/bloc/lender_loan_request_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/loan_request/loan_request_list/ui/components/nft/lender_loan_request_nft_item.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/views/state_error_view.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
@@ -126,9 +128,34 @@ class _LoanRequestNftListState extends State<LoanRequestNftList> {
                 ],
               ),
             )
-          : Container(
-              color: AppTheme.getInstance().bgBtsColor(),
-            );
+          : Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 150.h,
+          ),
+          child: Column(
+            children: [
+              Image(
+                image: const AssetImage(
+                  ImageAssets.img_search_empty,
+                ),
+                height: 120.h,
+                width: 120.w,
+              ),
+              SizedBox(
+                height: 17.7.h,
+              ),
+              Text(
+                S.current.no_result_found,
+                style: textNormal(
+                  Colors.white54,
+                  20.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

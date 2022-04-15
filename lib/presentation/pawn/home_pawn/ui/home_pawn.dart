@@ -528,47 +528,47 @@ class _HomePawnState extends State<HomePawn> {
     required TYPE_BORROW_OR_LEND type,
     required String imageBg,
   }) {
-    return Container(
-      height: 161.h,
-      width: 235.w,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(imageBg),
-          fit: BoxFit.cover,
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => ConnectWalletDialog(
+            navigationTo: BorrowLendScreen(
+              type: type,
+            ),
+            isRequireLoginEmail: false,
+          ),
+        ).then((_) => null);
+      },
+      child: Container(
+        height: 161.h,
+        width: 235.w,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imageBg),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.r),
+          ),
         ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.r),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 12.h,
-            left: 12.w,
-            child: Text(
-              title,
-              style: textNormalCustom(
-                AppTheme.getInstance().whiteColor(),
-                16,
-                FontWeight.w700,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 12.h,
+              left: 12.w,
+              child: Text(
+                title,
+                style: textNormalCustom(
+                  AppTheme.getInstance().whiteColor(),
+                  16,
+                  FontWeight.w700,
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 15.h,
-            left: 12.w,
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => ConnectWalletDialog(
-                    navigationTo: BorrowLendScreen(
-                      type: type,
-                    ),
-                    isRequireLoginEmail: false,
-                  ),
-                ).then((_) => null);
-              },
+            Positioned(
+              bottom: 15.h,
+              left: 12.w,
               child: Row(
                 children: [
                   Text(
@@ -586,9 +586,9 @@ class _HomePawnState extends State<HomePawn> {
                   )
                 ],
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
     // return ClipRRect(

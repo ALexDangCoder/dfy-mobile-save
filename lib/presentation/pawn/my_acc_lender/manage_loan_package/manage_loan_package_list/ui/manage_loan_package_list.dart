@@ -1,17 +1,25 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/create_new_loan_package.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/lending_setting.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/loan_package_detail/ui/loan_package_detail.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/loan_package_item.dart';
+import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
+import 'package:Dfy/utils/app_utils.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/base_items/custom_hide_keyboard.dart';
 import 'package:Dfy/widgets/button/button.dart';
+import 'package:Dfy/widgets/success/successful_by_title.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,8 +45,97 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ManageLoanPackageCubit, ManageLoanPackageState>(
-      listener: (context, state) {
-        if (state is ManageLoadApiListPawnShop) {
+      listener: (context, state) async {
+        if (state is NotPawnShopFound) {
+          cubit.showContent();
+          final navigator = Navigator.of(context);
+          unawaited(
+            navigator.push(
+              PageRouteBuilder(
+                reverseTransitionDuration: Duration.zero,
+                transitionDuration: Duration.zero,
+                pageBuilder: (_, animation, ___) {
+                  return Scaffold(
+                    backgroundColor: Colors.black.withOpacity(0.4),
+                    body: Center(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
+                        child: AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                36.0.r,
+                              ),
+                            ),
+                          ),
+                          backgroundColor:
+                              AppTheme.getInstance().selectDialogColor(),
+                          title: SizedBox(
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 30.h),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Warning',
+                                        style: textNormalCustom(
+                                          Colors.white,
+                                          20,
+                                          FontWeight.w700,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4.h,
+                                      ),
+                                      Text(
+                                        'You are not a pawnshop',
+                                        style: textNormalCustom(
+                                          Colors.white,
+                                          12,
+                                          FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            Divider(
+                              height: 1.h,
+                              color: AppTheme.getInstance().divideColor(),
+                            ),
+                            Center(
+                              child: TextButton(
+                                child: Text(
+                                  S.current.ok,
+                                  style: textNormalCustom(
+                                    AppTheme.getInstance().fillColor(),
+                                    20,
+                                    FontWeight.w700,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                opaque: false,
+              ),
+            ),
+          );
+        } else if (state is ManageLoadApiListPawnShop) {
           if (state.completeType == CompleteType.SUCCESS) {
             if (cubit.refresh) {
               cubit.listPawnShop.clear();
