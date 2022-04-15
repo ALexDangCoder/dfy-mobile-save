@@ -23,13 +23,13 @@ class NFTItemWidget extends StatefulWidget {
     required this.nftMarket,
     this.pageRouter,
     this.isChoosing = false,
-    this.callBack,
+    this.callBackNFT,
   }) : super(key: key);
 
   final NftMarket nftMarket;
   final PageRouter? pageRouter;
   final bool? isChoosing;
-  final Function()? callBack;
+  final Function()? callBackNFT;
 
   @override
   _NFTItemState createState() => _NFTItemState();
@@ -105,13 +105,10 @@ class _NFTItemState extends State<NFTItemWidget> {
       );
     }
     return GestureDetector(
-      onTap: () {
-        (widget.isChoosing ?? false)
-            ? Navigator.pop(
-                context,
-                widget.nftMarket,
-              )
-            : Navigator.push(
+      onTap: (widget.isChoosing ?? false)
+          ? widget.callBackNFT
+          : () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => NFTDetailScreen(
@@ -130,7 +127,7 @@ class _NFTItemState extends State<NFTItemWidget> {
                   ),
                 ),
               );
-      },
+            },
       child: Stack(
         children: [
           Container(
@@ -152,21 +149,21 @@ class _NFTItemState extends State<NFTItemWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      (widget.isChoosing ?? false)
-                          ? widget.callBack
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NFTDetailScreen(
-                                  typeMarket: widget.nftMarket.marketType ??
-                                      MarketType.SALE,
-                                  marketId: widget.nftMarket.marketId,
-                                  typeNft: widget.nftMarket.typeNFT,
-                                  nftId: widget.nftMarket.nftId,
-                                  pawnId: widget.nftMarket.pawnId,
-                                ),
-                              ),
-                            );
+                      if (!(widget.isChoosing ?? false)) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NFTDetailScreen(
+                              typeMarket: widget.nftMarket.marketType ??
+                                  MarketType.SALE,
+                              marketId: widget.nftMarket.marketId,
+                              typeNft: widget.nftMarket.typeNFT,
+                              nftId: widget.nftMarket.nftId,
+                              pawnId: widget.nftMarket.pawnId,
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: Stack(
                       children: [

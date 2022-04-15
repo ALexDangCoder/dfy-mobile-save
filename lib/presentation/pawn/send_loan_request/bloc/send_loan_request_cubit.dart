@@ -43,6 +43,8 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   BehaviorSubject<bool> emailNotification = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> chooseExisting = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> enableButton = BehaviorSubject.seeded(false);
+  BehaviorSubject<String> checkData = BehaviorSubject.seeded('');
+  BehaviorSubject<bool> checkNotOnMarket = BehaviorSubject.seeded(true);
   BehaviorSubject<int> tabIndex = BehaviorSubject.seeded(0);
   int nftType = 0;
   int type = 0;
@@ -50,6 +52,10 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   int idCollateral = 0;
   String? collateralCached;
   String hexString = '';
+  String? durationMy;
+  String? loanAmount;
+  String? durationType;
+  String? loanAmountSymbol;
   String? messageCached;
   String? durationCached;
   String? durationCachedType;

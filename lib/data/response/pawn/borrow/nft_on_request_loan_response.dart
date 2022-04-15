@@ -4,6 +4,7 @@ import 'package:Dfy/domain/model/pawn/borrow/nft_on_request_loan_model.dart';
 import 'package:Dfy/domain/model/pawn/offer_sent/offer_sent_detail_cryptp_collateral_model.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
+import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -365,12 +366,11 @@ class NftResponse extends Equatable {
         isWhitelist: isWhitelist,
         image: getPath(nftAvatarCid ?? nftMediaCid ?? ''),
         cover: getPath(nftMediaCid ?? ''),
-        totalCopies: (totalOfCopies ?? 0) as int,
+        totalCopies: (totalOfCopies ?? 1) as int,
         bcNftId: bcNftId,
         typeImage: getTypeImage(fileType ?? ''),
-        numberOfCopies: (numberOfCopies ?? 0) as int,
-
-        ///đang fix cứng theo web
+        numberOfCopies: (numberOfCopies ?? 1) as int,
+        urlToken: ImageAssets.getUrlToken(expectedCollateralSymbol),
         marketType: MarketType.PAWN,
       );
 
