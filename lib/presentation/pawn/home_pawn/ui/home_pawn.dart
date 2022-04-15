@@ -1,5 +1,6 @@
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
 import 'package:Dfy/presentation/pawn/borrow_lend/ui/borrow_lend.dart';
@@ -18,7 +19,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //todo chờ be thêm icon url token trong nfts collateral
 
@@ -222,7 +225,7 @@ class _HomePawnState extends State<HomePawn> {
                     //   ),
                     // ),
                     spaceH32,
-                    // _buildBecomePawnShop(),
+                     _buildBecomePawnShop(),
                     SizedBox(
                       height: 200.h,
                     )
@@ -300,13 +303,9 @@ class _HomePawnState extends State<HomePawn> {
                     spaceH18,
                     InkWell(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const ConnectWalletDialog(
-                            navigationTo: LendingRegistration(),
-                            isRequireLoginEmail: true,
-                          ),
-                        ).then((_) => null);
+                        launch(
+                          '${Get.find<AppConstants>().basePawnUrl}/pawn/shop',
+                        );
                       },
                       child: Row(
                         children: [

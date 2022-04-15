@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_result/bloc/collateral_result_bloc.dart';
@@ -13,6 +14,8 @@ import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'filter_collateral.dart';
 import 'item_become_bank.dart';
@@ -225,7 +228,11 @@ class _CollateralResultScreenState extends State<CollateralResultScreen> {
                                         ),
                                         Center(
                                           child: GestureDetector(
-                                            onTap: () {},
+                                            onTap: () {
+                                              launch(
+                                                '${Get.find<AppConstants>().basePawnUrl}/pawn/shop',
+                                              );
+                                            },
                                             child: const ItemBecomeBank(),
                                           ),
                                         ),
