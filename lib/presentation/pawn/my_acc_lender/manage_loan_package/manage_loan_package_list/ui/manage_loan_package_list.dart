@@ -7,6 +7,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/bloc/manage_loan_package_cubit.dart';
+import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/components/become_pawnshop.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/create_new_loan_package.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/create_new_loan_package/ui/lending_setting.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/loan_package_detail/ui/loan_package_detail.dart';
@@ -48,90 +49,11 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
       listener: (context, state) async {
         if (state is NotPawnShopFound) {
           cubit.showContent();
-          final navigator = Navigator.of(context);
           unawaited(
-            navigator.push(
-              PageRouteBuilder(
-                reverseTransitionDuration: Duration.zero,
-                transitionDuration: Duration.zero,
-                pageBuilder: (_, animation, ___) {
-                  return Scaffold(
-                    backgroundColor: Colors.black.withOpacity(0.4),
-                    body: Center(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
-                        child: AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                36.0.r,
-                              ),
-                            ),
-                          ),
-                          backgroundColor:
-                              AppTheme.getInstance().selectDialogColor(),
-                          title: SizedBox(
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 30.h),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Warning',
-                                        style: textNormalCustom(
-                                          Colors.white,
-                                          20,
-                                          FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4.h,
-                                      ),
-                                      Text(
-                                        'You are not a pawnshop',
-                                        style: textNormalCustom(
-                                          Colors.white,
-                                          12,
-                                          FontWeight.w400,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: <Widget>[
-                            Divider(
-                              height: 1.h,
-                              color: AppTheme.getInstance().divideColor(),
-                            ),
-                            Center(
-                              child: TextButton(
-                                child: Text(
-                                  S.current.ok,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().fillColor(),
-                                    20,
-                                    FontWeight.w700,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                opaque: false,
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BecomeAPawnShop(),
               ),
             ),
           );
@@ -393,7 +315,7 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                 spaceH13,
                 InkWell(
                   onTap: () {
-                    goTo(context, LendingSetting(cubit: cubit));
+                    // goTo(context, LendingSetting(cubit: cubit));
                   },
                   child: Container(
                     width: 165.w,
