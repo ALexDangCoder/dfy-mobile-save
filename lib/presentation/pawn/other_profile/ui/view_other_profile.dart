@@ -3,6 +3,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
+import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -12,6 +14,7 @@ import 'package:Dfy/presentation/pawn/other_profile/cubit/other_profile_cubit.da
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/borrow_tab.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/header_tab_profile.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/lender_tab.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/utils/screen_controller.dart';
@@ -109,105 +112,87 @@ class _OtherProfileState extends State<OtherProfile>
               return BaseDesignScreen(
                 title: snapshot.data ?? 'View profile',
                 child: state is OtherProfileSuccess
-                    ?
-                NestedScrollView(
-                  controller: scrollController,
-                  physics: const ScrollPhysics(),
-                  body: DefaultTabController(
-                    length: 2,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        BorrowTab(
-                          cubit: cubit,
-                          listReputation: cubit.reputation,
-                          pageRouter: widget.pageRouter,
-                        ),
-                        LenderTab(
-                          cubit: cubit,
-                          pageRouter: widget.pageRouter,
-                          listReputation: cubit.reputation,
-                        ),
-                      ],
-                    ),
-                  ),
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 12.w,
-                                top: 24.h,
+                    ? NestedScrollView(
+                        controller: scrollController,
+                        physics: const ScrollPhysics(),
+                        body: DefaultTabController(
+                          length: 2,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              BorrowTab(
+                                cubit: cubit,
+                                listReputation: cubit.reputation,
+                                pageRouter: widget.pageRouter,
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  title('PAWNSHOP INFORMATION'),
-                                  if (widget.pageRouter ==
-                                      PageRouter.MY_ACC &&
-                                      cubit.userProfile.pawnshop != null)
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditProfile(
-                                                  userProfile:
-                                                  cubit.userProfile,
+                              LenderTab(
+                                cubit: cubit,
+                                pageRouter: widget.pageRouter,
+                                listReputation: cubit.reputation,
+                              ),
+                            ],
+                          ),
+                        ),
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
+                          return [
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 12.w,
+                                      top: 24.h,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        title('PAWNSHOP INFORMATION'),
+                                        if (widget.pageRouter ==
+                                                PageRouter.MY_ACC &&
+                                            cubit.userProfile.pawnshop != null)
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditProfile(
+                                                    userProfile:
+                                                        cubit.userProfile,
+                                                  ),
                                                 ),
-                                          ),
-                                        ).then((value) async {
-                                          if (value != null) {
-                                            await cubit.getMyUserProfile();
-                                          }
-                                        });
-                                      },
-                                      child: Image.asset(
-                                        ImageAssets.ic_edit_profile,
-                                        height: 28.h,
-                                        width: 28.w,
-                                      ),
-                                    )
-                                  else
-                                    const SizedBox(),
-                                ],
-                              ),
-                            ),
-                            if (cubit.userProfile.pawnshop == null &&
-                                widget.pageRouter ==
-                                    PageRouter.MY_ACC) ...[
-                              sizedSvgImage(
-                                w: 138,
-                                h: 214,
-                                image: ImageAssets.img_become_pawnshop,
-                              ),
-                              Center(
-                                child: Text(
-                                  'You are not a pawnshop',
-                                  style: textNormalCustom(
-                                    Colors.white,
-                                    16,
-                                    FontWeight.w600,
+                                              )
+                                                  .then((value) async {
+                                                if (value != null) {
+                                                  await cubit
+                                                      .getMyUserProfile();
+                                                }
+                                              });
+                                            },
+                                            child: Image.asset(
+                                              ImageAssets.ic_edit_profile,
+                                              height: 28.h,
+                                              width: 28.w,
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              spaceH24,
-                              Center(
-                                child: InkWell(
-                                  onTap: () {
-                                    goTo(context, const ComingSoon());
-                                  },
-                                  child: ButtonRadial(
-                                    height: 40.h,
-                                    width: 174.w,
-                                    radius: 12,
-                                    child: Center(
+                                  if (cubit.userProfile.pawnshop == null &&
+                                      widget.pageRouter ==
+                                          PageRouter.MY_ACC) ...[
+                                    sizedSvgImage(
+                                      w: 138,
+                                      h: 214,
+                                      image: ImageAssets.img_become_pawnshop,
+                                    ),
+                                    Center(
                                       child: Text(
-                                        S.current.only_become_pawnshop,
+                                        'You are not a pawnshop',
                                         style: textNormalCustom(
                                           Colors.white,
                                           16,
@@ -215,307 +200,331 @@ class _OtherProfileState extends State<OtherProfile>
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ] else
-                              ...[
-                                spaceH20,
-                                boxCover(),
-                                spaceH12,
-                                Center(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        cubit.userProfile.pawnshop?.name ??
-                                            '',
-                                        style: textNormalCustom(
-                                          Colors.white,
-                                          20,
-                                          FontWeight.w600,
-                                        ),
-                                      ),
-                                      spaceH8,
-                                      Text(
-                                        'Joined in ${cubit.date()}',
-                                        style: textNormalCustom(
-                                          textPawnGray,
-                                          16,
-                                          FontWeight.w400,
-                                        ),
-                                      ),
-                                      spaceH4,
-                                      if (cubit.userProfile.kyc?.status == 2)
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            sizedSvgImage(
-                                              w: 14,
-                                              h: 14,
-                                              image:
-                                              ImageAssets.ic_verify_svg,
-                                            ),
-                                            spaceW5,
-                                            Text(
-                                              'Identity verified',
+                                    spaceH24,
+                                    Center(
+                                      child: InkWell(
+                                        onTap: () {
+                                          launch(
+                                            '${Get.find<AppConstants>().basePawnUrl}/pawn/shop',
+                                          );
+                                        },
+                                        child: ButtonRadial(
+                                          height: 40.h,
+                                          width: 174.w,
+                                          radius: 12,
+                                          child: Center(
+                                            child: Text(
+                                              S.current.only_become_pawnshop,
                                               style: textNormalCustom(
-                                                textPawnGray,
+                                                Colors.white,
                                                 16,
-                                                FontWeight.w400,
+                                                FontWeight.w600,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                spaceH32,
-                                rowItem(
-                                  'Name:',
-                                  cubit.userProfile.pawnshop?.name ?? '',
-                                  moreValue: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Email:',
-                                  cubit.userProfile.pawnshop?.email ?? '',
-                                  moreValue: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Phone number:',
-                                  cubit.userProfile.pawnshop?.phoneNumber ??
-                                      '',
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Address:',
-                                  cubit.userProfile.pawnshop?.address ?? '',
-                                  moreValue: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Description:',
-                                  cubit.userProfile.pawnshop?.description ??
-                                      '',
-                                  moreValue: true,
-                                ),
-                              ],
-                            spaceH32,
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 12.w,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  title('PERSONAL INFORMATION'),
-                                  if (widget.pageRouter ==
-                                      PageRouter.MY_ACC &&
-                                      cubit.userProfile.id != null)
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditPersonalInfo(
-                                                  userProfile:
-                                                  cubit.userProfile,
-                                                ),
                                           ),
-                                        ).then((value) async {
-                                          if (value != null) {
-                                            await cubit.getMyUserProfile();
-                                          }
-                                        });
-                                      },
-                                      child: Image.asset(
-                                        ImageAssets.ic_edit_profile,
-                                        height: 28.h,
-                                        width: 28.w,
-                                      ),
-                                    )
-                                  else
-                                    const SizedBox(),
-                                ],
-                              ),
-                            ),
-                            if (cubit.userProfile.id == null &&
-                                widget.pageRouter ==
-                                    PageRouter.MY_ACC) ...[
-                              spaceH32,
-                              Image.asset(
-                                ImageAssets.img_login_user,
-                                height: 142.h,
-                              ),
-                              spaceH24,
-                              Center(
-                                child: InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                      const ConnectWalletDialog(
-                                        navigationTo: OtherProfile(
-                                          userId: '',
-                                          pageRouter: PageRouter.MY_ACC,
-                                          index: 0,
-                                        ),
-                                        isRequireLoginEmail: true,
-                                      ),
-                                    );
-                                  },
-                                  child: ButtonRadial(
-                                    height: 40.h,
-                                    width: 174.w,
-                                    radius: 12,
-                                    child: Center(
-                                      child: Text(
-                                        S.current.login,
-                                        style: textNormalCustom(
-                                          Colors.white,
-                                          16,
-                                          FontWeight.w600,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ] else
-                              ...[
-                                spaceH16,
-                                rowItem(
-                                  'Name:',
-                                  cubit.userProfile.name ?? '',
-                                  moreValue: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Email:',
-                                  cubit.userProfile.email ?? '',
-                                  moreValue: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Referral link:',
-                                  '${Get
-                                      .find<AppConstants>()
-                                      .pawn_custom_url}login?tab=1&referral=${cubit
-                                      .userProfile.referredId}',
-                                  urlLink: true,
-                                ),
-                                spaceH16,
-                                rowItem(
-                                  'Referral ID:',
-                                  cubit.userProfile.referredId ?? '',
-                                  hasCopy: cubit.userProfile.referredId != null,
-                                ),
-                                spaceH16,
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16.w,
-                                    right: 16.w,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Personal link:',
-                                        style: textNormalCustom(
-                                          grey3,
-                                          16,
-                                          FontWeight.w400,
-                                        ),
-                                      ),
-                                      spaceW8,
-                                      Expanded(
-                                        flex: 2,
-                                        child: ListView.builder(
-                                          physics:
-                                          const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: cubit.userProfile.links
-                                              ?.length ??
-                                              0,
-                                          itemBuilder: (BuildContext context,
-                                              int index,) {
-                                            return Row(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                  ] else ...[
+                                    spaceH20,
+                                    boxCover(),
+                                    spaceH12,
+                                    Center(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            cubit.userProfile.pawnshop?.name ??
+                                                '',
+                                            style: textNormalCustom(
+                                              Colors.white,
+                                              20,
+                                              FontWeight.w600,
+                                            ),
+                                          ),
+                                          spaceH8,
+                                          Text(
+                                            'Joined in ${cubit.date()}',
+                                            style: textNormalCustom(
+                                              textPawnGray,
+                                              16,
+                                              FontWeight.w400,
+                                            ),
+                                          ),
+                                          spaceH4,
+                                          if (cubit.userProfile.kyc?.status ==
+                                              2)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    launch(
-                                                      cubit.userProfile
-                                                          .links?[
-                                                      index] ??
-                                                          '',
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    cubit.userProfile
-                                                        .links?[
-                                                    index] ??
-                                                        '',
-                                                    style: textNormalCustom(
-                                                      Colors.white,
-                                                      16,
-                                                      FontWeight.w400,
-                                                    ).copyWith(
-                                                      decoration:
-                                                      TextDecoration
-                                                          .underline,
-                                                    ),
+                                                sizedSvgImage(
+                                                  w: 14,
+                                                  h: 14,
+                                                  image:
+                                                      ImageAssets.ic_verify_svg,
+                                                ),
+                                                spaceW5,
+                                                Text(
+                                                  'Identity verified',
+                                                  style: textNormalCustom(
+                                                    textPawnGray,
+                                                    16,
+                                                    FontWeight.w400,
                                                   ),
                                                 ),
                                               ],
-                                            );
-                                          },
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    spaceH32,
+                                    rowItem(
+                                      'Name:',
+                                      cubit.userProfile.pawnshop?.name ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Email:',
+                                      cubit.userProfile.pawnshop?.email ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Phone number:',
+                                      cubit.userProfile.pawnshop?.phoneNumber ??
+                                          '',
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Address:',
+                                      cubit.userProfile.pawnshop?.address ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Description:',
+                                      cubit.userProfile.pawnshop?.description ??
+                                          '',
+                                      moreValue: true,
+                                    ),
+                                  ],
+                                  spaceH32,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 12.w,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        title('PERSONAL INFORMATION'),
+                                        if (widget.pageRouter ==
+                                                PageRouter.MY_ACC &&
+                                            cubit.userProfile.id != null)
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditPersonalInfo(
+                                                    userProfile:
+                                                        cubit.userProfile,
+                                                  ),
+                                                ),
+                                              )
+                                                  .then((value) async {
+                                                if (value != null) {
+                                                  await cubit
+                                                      .getMyUserProfile();
+                                                }
+                                              });
+                                            },
+                                            child: Image.asset(
+                                              ImageAssets.ic_edit_profile,
+                                              height: 28.h,
+                                              width: 28.w,
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                      ],
+                                    ),
+                                  ),
+                                  if (cubit.userProfile.id == null &&
+                                      widget.pageRouter ==
+                                          PageRouter.MY_ACC) ...[
+                                    spaceH32,
+                                    Image.asset(
+                                      ImageAssets.img_login_user,
+                                      height: 142.h,
+                                    ),
+                                    spaceH24,
+                                    Center(
+                                      child: InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                const ConnectWalletDialog(
+                                              navigationTo: OtherProfile(
+                                                userId: '',
+                                                pageRouter: PageRouter.MY_ACC,
+                                                index: 0,
+                                              ),
+                                              isRequireLoginEmail: true,
+                                            ),
+                                          );
+                                        },
+                                        child: ButtonRadial(
+                                          height: 40.h,
+                                          width: 174.w,
+                                          radius: 12,
+                                          child: Center(
+                                            child: Text(
+                                              S.current.login,
+                                              style: textNormalCustom(
+                                                Colors.white,
+                                                16,
+                                                FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ] else ...[
+                                    spaceH16,
+                                    rowItem(
+                                      'Name:',
+                                      cubit.userProfile.name ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Email:',
+                                      cubit.userProfile.email ?? '',
+                                      moreValue: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Referral link:',
+                                      '${Get.find<AppConstants>().pawn_custom_url}login?tab=1&referral=${cubit.userProfile.referredId}',
+                                      urlLink: true,
+                                    ),
+                                    spaceH16,
+                                    rowItem(
+                                      'Referral ID:',
+                                      cubit.userProfile.referredId ?? '',
+                                      hasCopy:
+                                          cubit.userProfile.referredId != null,
+                                    ),
+                                    spaceH16,
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 16.w,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Personal link:',
+                                            style: textNormalCustom(
+                                              grey3,
+                                              16,
+                                              FontWeight.w400,
+                                            ),
+                                          ),
+                                          spaceW8,
+                                          Expanded(
+                                            flex: 2,
+                                            child: ListView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: cubit.userProfile.links
+                                                      ?.length ??
+                                                  0,
+                                              itemBuilder: (
+                                                BuildContext context,
+                                                int index,
+                                              ) {
+                                                return Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        launch(
+                                                          cubit.userProfile
+                                                                      .links?[
+                                                                  index] ??
+                                                              '',
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        cubit.userProfile
+                                                                    .links?[
+                                                                index] ??
+                                                            '',
+                                                        style: textNormalCustom(
+                                                          Colors.white,
+                                                          16,
+                                                          FontWeight.w400,
+                                                        ).copyWith(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                  SizedBox(
+                                    height: 20.h,
                                   ),
-                                ),
-                              ],
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SliverPersistentHeader(
-                        delegate: SliverHeader(
-                          TabBar(
-                            unselectedLabelColor: purple,
-                            labelColor: Colors.white,
-                            onTap: (int i) {
-                              cubit.setTitle(i);
-                            },
-                            indicatorColor: formColor,
-                            labelStyle: textNormalCustom(
-                              Colors.white,
-                              14,
-                              FontWeight.w600,
-                            ),
-                            tabs: const [
-                              Tab(
-                                text: 'Borrower profile',
+                                ],
                               ),
-                              Tab(
-                                text: 'Lender profile',
-                              )
-                            ],
-                            controller: _tabController,
-                            indicatorSize: TabBarIndicatorSize.label,
-                          ),
-                        ),
-                        pinned: true,
-                      ),
-                    ];
-                  },
-                )
+                            ),
+                            SliverPersistentHeader(
+                              delegate: SliverHeader(
+                                TabBar(
+                                  unselectedLabelColor: purple,
+                                  labelColor: Colors.white,
+                                  onTap: (int i) {
+                                    cubit.setTitle(i);
+                                  },
+                                  indicatorColor: formColor,
+                                  labelStyle: textNormalCustom(
+                                    Colors.white,
+                                    14,
+                                    FontWeight.w600,
+                                  ),
+                                  tabs: const [
+                                    Tab(
+                                      text: 'Borrower profile',
+                                    ),
+                                    Tab(
+                                      text: 'Lender profile',
+                                    )
+                                  ],
+                                  controller: _tabController,
+                                  indicatorSize: TabBarIndicatorSize.label,
+                                ),
+                              ),
+                              pinned: true,
+                            ),
+                          ];
+                        },
+                      )
                     : const SizedBox(),
               );
             },
@@ -611,13 +620,14 @@ class _OtherProfileState extends State<OtherProfile>
     );
   }
 
-  Widget rowItem(String title,
-      String value, {
-        Color? color,
-        bool? urlLink,
-        bool? moreValue,
-        bool? hasCopy,
-      }) {
+  Widget rowItem(
+    String title,
+    String value, {
+    Color? color,
+    bool? urlLink,
+    bool? moreValue,
+    bool? hasCopy,
+  }) {
     return Padding(
       padding: EdgeInsets.only(
         left: 16.w,
