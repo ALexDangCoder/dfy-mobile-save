@@ -13,6 +13,7 @@ class ImageAssets {
       '$baseImg/ic_wallet_tab_unselect.svg';
 
   static const String icTabPawnSelected = '$baseImg/ic_tab_pawn_selected.svg';
+  static const String becomeAPawnShop = '$baseImg/become_pawnshop.png';
   static const String icTabPawnUnselected =
       '$baseImg/ic_tab_pawn_unselected.svg';
   static const String icTabHomeUnselected =
