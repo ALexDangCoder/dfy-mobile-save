@@ -22,10 +22,11 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
   @override
   Future<Result<PawnShopModel>> getFindUserId({String? userId}) {
     return runCatchingAsync<FindByUserIdTotalResponse, PawnShopModel>(
-      () => _client.getFindByUserId(
-        userId,
-      ),
-      (response) => response.data.toModel(),
+          () =>
+          _client.getFindByUserId(
+            userId,
+          ),
+          (response) => response.data.toModel(),
     );
   }
 
@@ -34,14 +35,16 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
       {String? page, String? size, String? walletAddress, required String id}) {
     return runCatchingAsync<PawnShopPackageTotalResponse,
         List<PawnshopPackage>>(
-      () => _client.getListPawnShopPackage(
-        id,
-        page,
-        size,
-        walletAddress,
-      ),
-      (response) =>
-          response.data?.content?.map((e) => e.toPawnShop()).toList() ?? [],
+            () =>
+            _client.getListPawnShopPackage(
+              id,
+              page,
+              size,
+              walletAddress,
+            ),
+            (response) =>
+        response.data?.content?.map((e) => e.toPawnShop()).toList() ?? [],
+
     );
   }
 
@@ -50,9 +53,9 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
       {required String id, String? page, String? size}) {
     return runCatchingAsync<ListCollateralResponse,
         List<CollateralResultModel>>(
-      () => _client.getListCollateral(id, page, size),
-      (response) =>
-          response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
+          () => _client.getListCollateral(id, page, size),
+          (response) =>
+      response.data?.content?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 
@@ -60,8 +63,8 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
   Future<Result<PawnshopPackage>> getPawnshopDetail(
       {required String packageId}) {
     return runCatchingAsync<DetailPawnShopPackageResponse, PawnshopPackage>(
-      () => _client.getPawnshopPackageDetail(packageId),
-      (response) => response.data?.toDomain() ?? PawnshopPackage(),
+          () => _client.getPawnshopPackageDetail(packageId),
+          (response) => response.data?.toDomain() ?? PawnshopPackage(),
     );
   }
 
@@ -70,8 +73,8 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
       {CreateNewLoanPackageRequest? createNewLoanPackageRequest}) {
     return runCatchingAsync<InfoAfterPostNewLoanPackageResponse,
         InfoAfterPostNewLoanPackage>(
-      () => _client.postInfoNewLoanPackage(createNewLoanPackageRequest),
-      (response) => response.toModel(),
+          () => _client.postInfoNewLoanPackage(createNewLoanPackageRequest),
+          (response) => response.toModel(),
     );
   }
 

@@ -75,6 +75,7 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
         _idPawnShop = success.id.toString();
       },
       error: (error) {
+        emit(NotPawnShopFound());
         _idPawnShop = '';
       },
     );
@@ -91,27 +92,35 @@ class ManageLoanPackageCubit extends BaseCubit<ManageLoanPackageState> {
 
   Future<void> getListPawnShop() async {
     showLoading();
-    final Result<List<PawnshopPackage>> result =
-        await _manageSettingService.getListPawnShopPackage(
-      id: await getIdPawnShopPackage(),
-      size: defaultSize.toString(),
-      page: page.toString(),
-      walletAddress: 'all',
-    );
+    final id = await getIdPawnShopPackage();
+    if(id == '') {
+      return;
+    } else {
+      final Result<List<PawnshopPackage>> result =
+      await _manageSettingService.getListPawnShopPackage(
+        id: id,
+        size: defaultSize.toString(),
+        page: page.toString(),
+        walletAddress: 'all',
+      );
 
-    result.when(
-      success: (success) {
-        emit(
-          ManageLoadApiListPawnShop(
-            CompleteType.SUCCESS,
-            list: success,
-          ),
-        );
-      },
-      error: (error) {
-        emit(ManageLoadApiListPawnShop(CompleteType.ERROR));
-      },
-    );
+      result.when(
+        success: (success) {
+          if(success == null) {
+          } else {
+            emit(
+              ManageLoadApiListPawnShop(
+                CompleteType.SUCCESS,
+                list: success,
+              ),
+            );
+          }
+        },
+        error: (error) {
+          emit(ManageLoadApiListPawnShop(CompleteType.ERROR));
+        },
+      );
+    }
   }
 
   Future<void> loadMoreGetListPawnShop() async {
