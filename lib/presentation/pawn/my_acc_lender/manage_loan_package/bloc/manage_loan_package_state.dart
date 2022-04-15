@@ -30,3 +30,8 @@ class ManageLoadApiListPawnShop extends ManageLoanPackageState {
         completeType,
       ];
 }
+
+class NotPawnShopFound extends ManageLoanPackageState {
+  @override
+  List<Object> get props => [];
+}

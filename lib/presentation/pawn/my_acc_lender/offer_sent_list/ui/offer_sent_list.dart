@@ -69,7 +69,6 @@ class _OfferSentListState extends State<OfferSentList>
                 Divider(
                   color: AppTheme.getInstance().divideColor(),
                 ),
-                spaceH30,
                 Flexible(
                   child: Column(
                     children: [

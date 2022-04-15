@@ -69,7 +69,6 @@ class _LenderLoanRequestState extends State<LenderLoanRequest>
                 Divider(
                   color: AppTheme.getInstance().divideColor(),
                 ),
-                spaceH30,
                 Flexible(
                   child: Column(
                     children: [
