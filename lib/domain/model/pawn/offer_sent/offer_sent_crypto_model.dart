@@ -6,10 +6,10 @@ class OfferSentCryptoModel {
   int? interestRate;
   int? status;
   String? description;
-  int? riskDefault;
+  double? riskDefault;
   int? bcOfferId;
   int? bcCollateralId;
-  int? liquidationThreshold;
+  double? liquidationThreshold;
   String? lenderWalletAddress;
 
   OfferSentCryptoModel({

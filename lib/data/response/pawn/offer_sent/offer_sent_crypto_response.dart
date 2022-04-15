@@ -69,13 +69,13 @@ class OfferSentCryptoItemResponse extends Equatable {
   @JsonKey(name: 'description')
   String? description;
   @JsonKey(name: 'riskDefault')
-  int? riskDefault;
+  double? riskDefault;
   @JsonKey(name: 'bcOfferId')
   int? bcOfferId;
   @JsonKey(name: 'bcCollateralId')
   int? bcCollateralId;
   @JsonKey(name: 'liquidationThreshold')
-  int? liquidationThreshold;
+  double? liquidationThreshold;
   @JsonKey(name: 'lenderWalletAddress')
   String? lenderWalletAddress;
   @JsonKey(name: 'supplyCurrency')
