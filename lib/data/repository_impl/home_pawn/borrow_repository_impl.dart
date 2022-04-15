@@ -738,4 +738,13 @@ class BorrowRepositoryImpl implements BorrowRepository {
       (response) => response,
     );
   }
+  @override
+  Future<Result<String>> confirmRepaymentToBe({ required String id,
+    required Map<String, dynamic> map,
+  }) {
+    return runCatchingAsync<ConfirmEvaluationResponse, String>(
+          () => _client.postRepayment(id,map),
+          (response) => response.error.toString(),
+    );
+  }
 }
