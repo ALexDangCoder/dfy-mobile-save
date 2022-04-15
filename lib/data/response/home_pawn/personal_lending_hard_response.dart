@@ -49,9 +49,9 @@ class DataResponse extends Equatable {
   @JsonKey(name: 'name')
   String? name;
   @JsonKey(name: 'interestMin')
-  int? interestMin;
+  double? interestMin;
   @JsonKey(name: 'interestMax')
-  int? interestMax;
+  double? interestMax;
   @JsonKey(name: 'reputation')
   int? reputation;
   @JsonKey(name: 'signedContract')

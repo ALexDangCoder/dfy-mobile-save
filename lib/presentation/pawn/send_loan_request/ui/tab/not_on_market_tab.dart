@@ -121,23 +121,25 @@ class _NotOnMarketTabState extends State<NotOnMarketTab>
                           return Padding(
                             padding: EdgeInsets.only(left: 16.w),
                             child: NFTItemWidget(
+                              callBackNFT: () {
+                                widget.cubit.checkNotOnMarket.add(true);
+                                widget.cubit.checkData.add('');
+                                widget.cubit.durationMy = '';
+                                widget.cubit.durationType = '';
+                                widget.cubit.loanAmountSymbol = '';
+                                widget.cubit.loanAmount = '';
+                                Navigator.pop(
+                                  context,
+                                  widget.cubit.contentNftOnSelectNotOnMarket[index].nft ??
+                                      NftMarket(),
+                                );
+                              },
                               nftMarket: widget
                                       .cubit
                                       .contentNftOnSelectNotOnMarket[index]
                                       .nft ??
                                   NftMarket(),
                               isChoosing: true,
-                              callBack: () {
-                                //todo
-                                Navigator.pop(
-                                  context,
-                                  widget
-                                      .cubit
-                                      .contentNftOnSelectNotOnMarket[index]
-                                      .nft ??
-                                      NftMarket(),
-                                );
-                              },
                               // pageRouter: widget.pageRouter,
                             ),
                           );

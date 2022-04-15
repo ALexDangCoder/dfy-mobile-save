@@ -39,9 +39,11 @@ class SendLoanRequestNft extends StatefulWidget {
 }
 
 class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
-  final TextEditingController loanController = TextEditingController();
-  final TextEditingController durationController = TextEditingController();
-  final TextEditingController messageController = TextEditingController();
+  late final TextEditingController loanController;
+  late final TextEditingController durationController;
+
+  late final TextEditingController messageController;
+  bool isInit = false;
   late Map<String, dynamic> itemToken;
   late Map<String, dynamic> itemDuration;
 
@@ -51,6 +53,35 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
     widget.cubit.getTokensRequestNft();
     itemToken = widget.cubit.listDropDownToken[0];
     itemDuration = widget.cubit.listDropDownDuration[0];
+    loanController = TextEditingController();
+    durationController = TextEditingController();
+    messageController = TextEditingController();
+    widget.cubit.checkData.listen((value) {
+      durationController.text = value;
+      loanController.text = widget.cubit.loanAmount ?? '';
+      itemDuration['label'] =
+          int.parse(widget.cubit.durationType ?? '0') == 0 ? 'month' : 'week';
+      itemToken['label'] = widget.cubit.loanAmountSymbol ?? 'DFY';
+      itemToken['icon'] = SizedBox(
+        width: 20.w,
+        height: 20.h,
+        child: Image.network(
+          ImageAssets.getSymbolAsset(
+            widget.cubit.loanAmountSymbol ?? 'DFY',
+          ),
+        ),
+      );
+      if (isInit) {
+        widget.cubit.validateDuration(
+          durationController.text,
+          isMonth:
+              int.parse(widget.cubit.durationType ?? '0') == 0 ? false : true,
+        );
+        widget.cubit.validateAmount(widget.cubit.loanAmount ?? '');
+        widget.cubit.validateMessage(messageController.text);
+      }
+      isInit = true;
+    });
   }
 
   @override
@@ -103,6 +134,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
           SizedBox(
             height: 64.h,
             child: TextFieldValidator(
+              isEnabled: widget.cubit.checkNotOnMarket.value,
               controller: loanController,
               hint: 'Loan amount',
               textInputType: const TextInputType.numberWithOptions(
@@ -180,6 +212,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
               stream: widget.cubit.isMonthForm,
               builder: (context, snapshot) {
                 return TextFieldValidator(
+                  isEnabled: widget.cubit.checkNotOnMarket.value,
                   textInputType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
@@ -416,7 +449,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                                     widget.cubit.nftRequest.collateralSymbol =
                                         itemToken['label'];
                                     widget.cubit.nftRequest.collateralId =
-                                        widget.cubit.idCollateral ;
+                                        widget.cubit.idCollateral;
                                     widget.cubit.nftRequest.marketType = (widget
                                                 .cubit
                                                 .nftMarketFill
@@ -494,28 +527,15 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                         ),
                       ).then((value) {
                         widget.cubit.emit(GetWalletSuccess());
+
                         if (value != null) {
                           value as NftMarket;
                           widget.cubit.nftMarketFill.sink.add(value);
                           widget.cubit.mapValidate['chooseNFT'] = true;
-                          if (value.durationQty != null) {
-                            durationController.text =
-                                (value.durationQty ?? '1').toString();
-                            widget.cubit.validateDuration(
-                              durationController.text,
-                              isMonth: value.durationType == 0 ? false : true,
-                            );
-                            widget.cubit.validateDuration(
-                              durationController.text,
-                              isMonth: value.durationType == 0 ? false : true,
-                            );
-                          } else {
-                            durationController.text = '';
-                            widget.cubit.validateDuration(
-                              durationController.text,
-                              isMonth: value.durationType == 0 ? false : true,
-                            );
-                          }
+                          widget.cubit.validateDuration(
+                            durationController.text,
+                            isMonth: value.durationType == 0 ? false : true,
+                          );
                           if (value.price != 0) {
                             loanController.text = value.price.toString();
                             widget.cubit.validateAmount(loanController.text);
