@@ -24,11 +24,19 @@ class NFTItemWidget extends StatefulWidget {
     this.pageRouter,
     this.isChoosing = false,
     this.callBack,
+    this.collateralSymbol,
+    this.collateralAmount,
+    this.durationQty,
+    this.durationType,
   }) : super(key: key);
 
   final NftMarket nftMarket;
   final PageRouter? pageRouter;
   final bool? isChoosing;
+  final String? collateralSymbol;
+  final String? collateralAmount;
+  final String? durationQty;
+  final String? durationType;
   final Function()? callBack;
 
   @override
@@ -109,7 +117,13 @@ class _NFTItemState extends State<NFTItemWidget> {
         (widget.isChoosing ?? false)
             ? Navigator.pop(
                 context,
-                widget.nftMarket,
+                [
+                  widget.nftMarket,
+                  widget.durationQty,
+                  widget.durationType,
+                  widget.collateralSymbol,
+                  widget.collateralAmount
+                ],
               )
             : Navigator.push(
                 context,

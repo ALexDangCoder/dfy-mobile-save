@@ -56,6 +56,13 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   ModelToken? collateralTokenCached;
   ModelToken? loanTokenCached;
 
+  ///param for nft request when pop
+  String collateralSymbolNft = '';
+  String CollateralAmountNft = '';
+  String durationQtyNft = '';
+  String durationTypeNft = '';
+  ///
+
   final Web3Utils client = Web3Utils();
 
   ConfirmRepository get confirmRepository => Get.find();
@@ -430,6 +437,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
   }
 
   BehaviorSubject<bool> isMonthForm = BehaviorSubject<bool>();
+  BehaviorSubject<bool> isChoseNft = BehaviorSubject<bool>();
   BehaviorSubject<bool> isEnableSendRqNft = BehaviorSubject<bool>();
   BehaviorSubject<bool> tickBoxSendRqNft = BehaviorSubject<bool>();
   List<Map<String, dynamic>> listDropDownToken = [];

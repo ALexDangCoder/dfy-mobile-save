@@ -44,8 +44,6 @@ class _PawnTabState extends State<PawnTab> with AutomaticKeepAliveClientMixin {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SendLoanRequestCubit, SendLoanRequestState>(
@@ -124,11 +122,38 @@ class _PawnTabState extends State<PawnTab> with AutomaticKeepAliveClientMixin {
                                   widget.cubit.contentNftOnSelect[index].nft ??
                                       NftMarket(),
                               isChoosing: true,
+                              durationType: widget
+                                  .cubit.contentNftOnSelect[index].durationType
+                                  .toString(),
+                              durationQty: widget
+                                  .cubit.contentNftOnSelect[index].durationQty
+                                  .toString(),
+                              collateralAmount: widget.cubit
+                                  .contentNftOnSelect[index].collateralAmount
+                                  .toString(),
+                              collateralSymbol: widget.cubit
+                                  .contentNftOnSelect[index].collateralSymbol
+                                  .toString(),
                               callBack: () {
                                 Navigator.pop(
                                   context,
-                                  widget.cubit.contentNftOnSelect[index].nft ??
-                                      NftMarket(),
+                                  [
+                                    widget.cubit.contentNftOnSelect[index]
+                                            .nft ??
+                                        NftMarket(),
+                                    widget.cubit.contentNftOnSelect[index]
+                                        .collateralSymbol
+                                        .toString(),
+                                    widget.cubit.contentNftOnSelect[index]
+                                        .collateralAmount
+                                        .toString(),
+                                    widget.cubit.contentNftOnSelect[index]
+                                        .durationQty
+                                        .toString(),
+                                    widget.cubit.contentNftOnSelect[index]
+                                        .durationType
+                                        .toString()
+                                  ],
                                 );
                               },
                               // pageRouter: widget.pageRouter,
