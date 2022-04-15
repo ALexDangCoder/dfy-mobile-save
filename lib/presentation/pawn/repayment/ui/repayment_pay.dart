@@ -417,6 +417,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                               return GestureDetector(
                                 onTap: () async {
                                   if (snapshot.data ?? false) {
+                                    bloc.postRepaymentPay();
                                     if (!isChoose) {
                                       if (TypeRepayment.LOAN == bloc.type) {
                                         if (obj.interest?.amount == 0 &&
@@ -535,7 +536,25 @@ class _RepaymentPayState extends State<RepaymentPay> {
             ],
             onErrorSign: (context) {},
             onSuccessSign: (context, data) {
-              bloc.postRepaymentPay();
+              bloc.postRepaymentToBE(
+                penaltyAmount: bloc.penalty.value,
+                loanSymbol:obj.loan?.symbol ??'',
+                penaltyFee: '',
+                interestAmount: bloc.interest.value,
+                lenderWallet: bloc.obj.lenderWalletAddress.toString(),
+                penaltySymbol: obj.penalty?.symbol ?? '',
+                borrowWallet: obj.borrowerWalletAddress.toString(),
+                interestAddress: ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
+                loanAddress:  ImageAssets.getAddressToken(obj.loan?.symbol ?? ''),
+                paymentRequestId: obj.id.toString(),
+                interestSymbol: obj.interest?.symbol ?? '',
+                loanSystemFee: '',
+                id: widget.id,
+                loanAmount: bloc.loan.value,
+                txnHash: data,
+                penaltyAddress:  ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
+                interestSystemFee: '',
+              );
               showLoadSuccess(context).then((value) {
                 Navigator.of(context).popUntil((route) {
                   return route.settings.name ==
