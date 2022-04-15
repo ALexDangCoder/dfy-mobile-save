@@ -201,6 +201,63 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
       error: (error) {},
     );
   }
+  Future<String> postRepaymentToBE({
+    required String id,
+    required String borrowWallet,
+    required String lenderWallet,
+    required String txnHash,
+    required String interestAddress,
+    required String interestAmount,
+    required String interestSymbol,
+    required String interestSystemFee,
+    required String loanAddress,
+    required String loanAmount,
+    required String loanSymbol,
+    required String loanSystemFee,
+    required String penaltyAddress,
+    required String penaltyAmount,
+    required String penaltySymbol,
+    required String penaltyFee,
+    required String paymentRequestId,
+  }) async {
+    String success = '';
+    final Map<String,dynamic> mapInterest = {
+      'address':interestAddress,
+      'amount':interestAmount,
+      'symbol':interestSymbol,
+      'systemFee':interestSystemFee,
+    };
+    final Map<String,dynamic> mapLoan = {
+      'address':loanAddress,
+      'amount':loanAmount,
+      'symbol':loanSymbol,
+      'systemFee':penaltyFee,
+    };
+    final Map<String,dynamic> mapPenalty = {
+      'address':penaltyAddress,
+      'amount':penaltyAmount,
+      'symbol':penaltySymbol,
+      'systemFee':interestSystemFee,
+    };
+    final Map<String,dynamic> map = {
+      'borrowerWalletAddress':borrowWallet,
+      'lenderWalletAddress':lenderWallet,
+      'interest':mapInterest,
+      'loan':mapLoan,
+      'penalty':mapPenalty,
+      'paymentRequestId':paymentRequestId,
+      'txnHash':txnHash,
+    };
+    final Result<String> response =
+    await _pawnService.confirmRepaymentToBe(id: id,map: map);
+    response.when(success: (res){
+      if(res == 'success'){
+        success = res;
+      }
+    }, error: (err){
+    },);
+    return success;
+  }
 
   Future<void> getRepaymentPay({
     String? collateralId,

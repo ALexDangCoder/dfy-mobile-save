@@ -653,10 +653,6 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 ));
                           } else {
                             //nothing
-                            goTo(
-                              context,
-                              ConfirmNewLoanPackage(),
-                            );
                           }
                         },
                         child: Container(

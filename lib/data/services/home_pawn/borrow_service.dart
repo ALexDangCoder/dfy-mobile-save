@@ -356,4 +356,11 @@ abstract class BorrowService {
     @Field('userId') String? userId,
     @Field('walletAddress') String? walletAddress,
   );
+
+  @POST(
+      '${ApiConstants.REQUEST_REPAYMENT}{id}${ApiConstants.REPAYMENT}')
+  Future<ConfirmEvaluationResponse> postRepayment(
+      @Path('id') String? id,
+      @Body() Map<String,dynamic> map,
+  );
 }
