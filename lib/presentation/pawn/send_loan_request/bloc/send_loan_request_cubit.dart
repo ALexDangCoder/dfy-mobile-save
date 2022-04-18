@@ -616,7 +616,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
     showLoading();
     late final Result<List<NftMarket>> result;
-    if (type == 3) {
+    if (type == 0) {
       result = await _nftRepo.getListNftMyAcc(
         status: '0',
         name: name,
@@ -626,7 +626,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       result = await _nftRepo.getListNftMyAcc(
         status: '0',
         name: name,
-        nftType: type.toString(),
+        nftType: ((type == 1) ? 0 : 1).toString(),
         page: page.toString(),
       );
     }
@@ -654,6 +654,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       },
     );
   }
+
   BehaviorSubject<String> statusResultPostNftToServer = BehaviorSubject();
   Future<void> postNftToServer() async {
     emit(SubmittingNft());
