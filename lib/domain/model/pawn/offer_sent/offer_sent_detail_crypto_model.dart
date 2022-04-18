@@ -41,7 +41,7 @@ class OfferSentDetailCryptoModel {
 
   int? bcOfferId;
 
-  int? liquidationThreshold;
+  double? liquidationThreshold;
 
   OfferSentDetailCryptoModel({
     this.id,

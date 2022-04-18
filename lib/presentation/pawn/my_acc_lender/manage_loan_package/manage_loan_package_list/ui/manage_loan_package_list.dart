@@ -170,18 +170,18 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               spaceH24,
-                              Text(
-                                S.current.lending_setting.toUpperCase(),
-                                style: textNormalCustom(
-                                  AppTheme.getInstance()
-                                      .unselectedTabLabelColor(),
-                                  14,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                              spaceH20,
-                              _lenderSettingItem(),
-                              spaceH32,
+                              // Text(
+                              //   S.current.lending_setting.toUpperCase(),
+                              //   style: textNormalCustom(
+                              //     AppTheme.getInstance()
+                              //         .unselectedTabLabelColor(),
+                              //     14,
+                              //     FontWeight.w400,
+                              //   ),
+                              // ),
+                              // spaceH20,
+                              // _lenderSettingItem(),
+                              // spaceH32,
                               Text(
                                 S.current.loan_package.toUpperCase(),
                                 style: textNormalCustom(

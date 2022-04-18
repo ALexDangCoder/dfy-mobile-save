@@ -175,11 +175,6 @@ class LoanPackageItem extends StatelessWidget {
                       ),
                   ],
                 ),
-                Image.asset(
-                  ImageAssets.ic_bsc_svg,
-                  height: 20.h,
-                  width: 20.w,
-                ),
               ],
             ),
           ),

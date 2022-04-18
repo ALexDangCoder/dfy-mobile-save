@@ -178,7 +178,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     _rowItemNormal(
                       title: 'Interest rate (%APR)',
                       description: Text(
-                        '${cubit.pawnShopPackage.interestMin}-${cubit.pawnShopPackage.interestMax}%',
+                        '${cubit.pawnShopPackage.interestMin ?? 0}-${cubit.pawnShopPackage.interestMax ?? 0}%',
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           16,
@@ -299,7 +299,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     _rowItemNormal(
                       title: 'Offer sent',
                       description: Text(
-                        '${cubit.pawnShopPackage.totalSentOffer}',
+                        '${cubit.pawnShopPackage.totalSentOffer ?? 0}',
                         style: textNormalCustom(
                           AppTheme.getInstance().whiteColor(),
                           16,
