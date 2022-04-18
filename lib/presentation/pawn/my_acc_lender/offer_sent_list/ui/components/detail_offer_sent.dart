@@ -14,6 +14,8 @@ import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
+import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
+import 'package:Dfy/widgets/dialog/modal_progress_hud.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,8 +205,8 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
                       FontWeight.w400,
                     ),
                   ),
-                  spaceH16,
-                  _borrowerInformation(widget.cubit),
+                  // spaceH16,
+                  // _borrowerInformation(widget.cubit),
                   spaceH32,
                   _rowItem(
                     title: 'Message:',
@@ -263,14 +265,10 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
         ),
       );
     } else {
-      return Container(
-        color: AppTheme.getInstance().bgBtsColor(),
-        child: Center(
-          child: CircularProgressIndicator(
-            color: AppTheme.getInstance().whiteColor(),
-            strokeWidth: 2,
-          ),
-        ),
+      return ModalProgressHUD(
+        inAsyncCall: true,
+        progressIndicator: CupertinoLoading(),
+        child: SizedBox(),
       );
     }
   }

@@ -110,7 +110,7 @@ class OfferSentDetailCryptoResponse extends Equatable {
   int? bcOfferId;
 
   @JsonKey(name: 'liquidationThreshold')
-  int? liquidationThreshold;
+  double? liquidationThreshold;
 
   OfferSentDetailCryptoResponse(
     this.id,

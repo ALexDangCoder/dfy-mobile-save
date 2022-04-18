@@ -192,7 +192,7 @@ class OfferSentListCubit extends BaseCubit<OfferSentListState> {
     await getOfferSentDetailCryptoCollateral();
   }
 
-  Future<void> getOfferSentDetailCrypto({String? id}) async {
+  Future<void> getOfferSentDetailCrypto({required String id}) async {
     showLoading();
     final Result<OfferSentDetailCryptoModel> result =
         await _offerSentService.getOfferSentDetailCrypto(id: id);
