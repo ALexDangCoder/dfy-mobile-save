@@ -32,4 +32,8 @@ mixin ManageLoanPackageRepository {
   Future<Result<InfoAfterPostNewLoanPackage>> postInfoNewLoanPackage({
     CreateNewLoanPackageRequest? createNewLoanPackageRequest,
   });
+
+  Future<Result<String>> postCancelLoanPackageAfterCFBC({
+    required String id,
+  });
 }

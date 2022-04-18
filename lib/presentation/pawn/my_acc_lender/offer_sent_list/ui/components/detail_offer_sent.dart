@@ -435,7 +435,8 @@ class _DetailOfferSentState extends State<DetailOfferSent> {
               //   ),
               // );
             },
-            child: Container(
+            child:
+            Container(
               color: AppTheme.getInstance().bgBtsColor(),
               padding: EdgeInsets.only(
                 bottom: 38.h,

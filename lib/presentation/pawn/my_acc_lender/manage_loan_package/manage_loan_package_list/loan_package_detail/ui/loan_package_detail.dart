@@ -1,21 +1,28 @@
+import 'dart:async';
+import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
+import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
-import 'package:Dfy/domain/model/pawn/manage_loan_package/pawnshop_package_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/my_acc_lender/manage_loan_package/manage_loan_package_list/loan_package_detail/bloc/loan_package_detail_cubit.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/pop_up_notification.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class LoanPackageDetail extends StatefulWidget {
   const LoanPackageDetail({
@@ -73,7 +80,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
   BaseDesignScreen _content() {
     return BaseDesignScreen(
       title: 'Loan package detail',
-      bottomBar: SizedBox(),
+      bottomBar: _buildButtonCancel(),
       // Container(
       //   color: AppTheme.getInstance().bgBtsColor(),
       //   padding: EdgeInsets.only(
@@ -106,7 +113,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                   children: [
                     spaceH24,
                     _rowItemNormal(
-                      title: 'Status',
+                      title: 'Status:',
                       description: Text(
                         cubit.getStatusLoanPackage(
                             cubit.pawnShopPackage.status ?? 0),
@@ -120,12 +127,12 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Type',
+                      title: 'Type:',
                       description: typeLoan(),
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Loan package ID',
+                      title: 'Loan package ID:',
                       description: Text(
                         cubit.pawnShopPackage.id.toString(),
                         style: textNormalCustom(
@@ -137,7 +144,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Message',
+                      title: 'Message:',
                       description: Text(
                         cubit.pawnShopPackage.name ?? '',
                         style: textNormalCustom(
@@ -149,7 +156,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Loan amount',
+                      title: 'Loan amount:',
                       description: Row(
                         children: [
                           SizedBox(
@@ -176,7 +183,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Interest rate (%APR)',
+                      title: 'Interest rate (%APR):',
                       description: Text(
                         '${cubit.pawnShopPackage.interestMin ?? 0}-${cubit.pawnShopPackage.interestMax ?? 0}%',
                         style: textNormalCustom(
@@ -188,7 +195,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Collateral accepted',
+                      title: 'Collateral accepted:',
                       description: SizedBox(
                         height: 30.h,
                         child: Row(
@@ -285,7 +292,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Duration',
+                      title: 'Duration:',
                       description: Text(
                         '${cubit.pawnShopPackage.durationQtyTypeMin}-${cubit.pawnShopPackage.durationQtyTypeMax} ${cubit.weekOrMonth(durationQtyType: cubit.pawnShopPackage.durationQtyType ?? 0)}',
                         style: textNormalCustom(
@@ -297,7 +304,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
                     ),
                     spaceH16,
                     _rowItemNormal(
-                      title: 'Offer sent',
+                      title: 'Offer sent:',
                       description: Text(
                         '${cubit.pawnShopPackage.totalSentOffer ?? 0}',
                         style: textNormalCustom(
@@ -334,6 +341,76 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
     );
   }
 
+  Widget? _buildButtonCancel() {
+    return ((cubit.pawnShopPackage.status ?? 0) == 1)
+        ? InkWell(
+            onTap: () async {
+              print(cubit.pawnShopPackage.toString());
+              final hexString =
+                  await Web3Utils().getDeactivePawnshopPackageData(
+                packageId: cubit.pawnShopPackage.pawnShopId.toString(),
+              );
+              print(hexString);
+              goTo(
+                context,
+                Approve(
+                  title: 'Cancel loan package',
+                  textActiveButton: 'Cancel loan package',
+                  hexString: hexString,
+                  onErrorSign: (context) async {
+                    await showLoadFail(context);
+                  },
+                  onSuccessSign: (context, data) async {
+                    //Be
+                    await cubit.cancelLoanPackageAfterCFBC(
+                      id: cubit.pawnShopPackage.id.toString(),
+                    );
+                    unawaited(
+                      showLoadSuccess(context).then((value) {
+                        Navigator.of(context).popUntil((route) {
+                          return route.settings.name ==
+                              AppRouter.manage_loan_package;
+                        });
+                      }),
+                    );
+                  },
+                  spender: Get.find<AppConstants>().crypto_pawn_contract,
+                ),
+              );
+            },
+            child: Container(
+              color: AppTheme.getInstance().bgBtsColor(),
+              padding: EdgeInsets.only(
+                bottom: 38.h,
+                left: 16.w,
+                right: 16.w,
+              ),
+              child: Container(
+                height: 64.h,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+                  // color: AppTheme.getInstance().bgBtsColor(),
+                  border: Border.all(color: AppTheme.getInstance().fillColor()),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Text(
+                      'Cancel package',
+                      style: textNormalCustom(
+                        AppTheme.getInstance().fillColor(),
+                        20,
+                        FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        : null;
+  }
+
   Widget _collateralItem({required CollateralResultModel collateralModel}) {
     return Container(
       width: 343.w,
@@ -359,14 +436,14 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _rowItem(
-            title: S.current.message.capitalize().withColon(),
+            title: 'Message:',
             description: collateralModel.description ?? '',
           ),
           SizedBox(
             height: 16.h,
           ),
           _rowItem(
-            title: S.current.collateral.capitalize().withColon(),
+            title: 'Collateral:',
             isLoanAmount: true,
             urlToken: collateralModel.collateralSymbol ?? '',
             description: formatPrice.format(collateralModel.collateralAmount),
@@ -376,7 +453,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
             height: 16.h,
           ),
           _rowItemNormal(
-            title: 'Loan currency',
+            title: 'Loan currency:',
             description: Row(
               children: [
                 SizedBox(
@@ -401,7 +478,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
             height: 16.h,
           ),
           _rowItemNormal(
-            title: 'Status',
+            title: 'Status:',
             description: Text(
               cubit.getStatusCollateral(collateralModel.status ?? 0),
               style: textNormalCustom(
@@ -492,7 +569,7 @@ class _LoanPackageDetailState extends State<LoanPackageDetail> {
         Expanded(
           flex: 4,
           child: Text(
-            title.capitalize().withColon(),
+            title,
             style: textNormalCustom(
               AppTheme.getInstance().pawnItemGray(),
               16,

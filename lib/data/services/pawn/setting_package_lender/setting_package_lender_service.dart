@@ -52,4 +52,9 @@ abstract class SettingPackageLenderService {
   Future<InfoAfterPostNewLoanPackageResponse> postInfoNewLoanPackage(
     @Body() CreateNewLoanPackageRequest? createNewLoanPackageRequest,
   );
+
+  @PUT('${ApiConstants.GET_COLLATERAL_PAWNSHOP_PACKAGE}{id}/cancel')
+  Future<String> postCancelPackageAfterCfBC({
+    @Path('id') String? id,
+  });
 }
