@@ -340,7 +340,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ConfirmSendLoanNft(
-                            cubit: widget.cubit,
+                            cubit: widget.cubit, isNftPawn: false,
                           ),
                         ),
                       );
@@ -463,7 +463,7 @@ class _SendLoanRequestNftState extends State<SendLoanRequestNft> {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             ConfirmSendLoanNft(
-                                          cubit: widget.cubit,
+                                          cubit: widget.cubit, isNftPawn: true,
                                         ),
                                       ),
                                     );
