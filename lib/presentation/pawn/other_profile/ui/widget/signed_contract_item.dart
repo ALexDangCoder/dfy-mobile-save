@@ -100,7 +100,7 @@ class SignedContractItem extends StatelessWidget {
                     ),
                     spaceW8,
                     Text(
-                      '${signedContractUser.collateralSymbol}',
+                      '${signedContractUser.loanSymbol}',
                       style: textNormal(Colors.white, 16),
                     ),
                   ],
@@ -127,7 +127,7 @@ class SignedContractItem extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${S.current.duration}:',
+                  S.current.duration,
                   style: textNormal(grey3, 16),
                 ),
               ),

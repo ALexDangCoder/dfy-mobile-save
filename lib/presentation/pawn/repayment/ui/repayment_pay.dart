@@ -554,12 +554,17 @@ class _RepaymentPayState extends State<RepaymentPay> {
                 txnHash: data,
                 penaltyAddress:  ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
                 interestSystemFee: '',
-              );
-              showLoadSuccess(context).then((value) {
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name ==
-                      AppRouter.contract_detail_my_acc;
-                });
+              ).then((value) {
+                if(value == 'success'){
+                  showLoadSuccess(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
+                } else {
+                  showLoadFail(context);
+                }
               });
             },
           ),
