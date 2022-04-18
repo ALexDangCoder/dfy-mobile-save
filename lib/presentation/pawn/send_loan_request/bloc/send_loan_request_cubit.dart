@@ -535,7 +535,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     }
     showLoading();
     late final Result<List<ContentNftOnRequestLoanModel>> result;
-    if (type == 3) {
+    if (type == 0) {
       result = await _repo.getListNftOnLoanRequest(
         walletAddress: walletAddress,
         page: page.toString(),
@@ -547,7 +547,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
         walletAddress: walletAddress,
         page: page.toString(),
         name: name,
-        nftType: type.toString(),
+        nftType: ((type == 1) ? 0 : 1).toString(),
         // size: '6',
       );
     }
