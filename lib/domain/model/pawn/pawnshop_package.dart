@@ -97,4 +97,9 @@ class Pawnshop {
     this.createAt,
     this.updateAt,
   });
+
+  @override
+  String toString() {
+    return 'Pawnshop{address: $address, avatar: $avatar, cover: $cover, name: $name, id: $id, type: $type, userId: $userId, isKYC: $isKYC, isTrustedLender: $isTrustedLender, reputation: $reputation, walletAddress: $walletAddress, email: $email, description: $description, phoneNumber: $phoneNumber, createAt: $createAt, updateAt: $updateAt}';
+  }
 }
