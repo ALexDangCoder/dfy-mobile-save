@@ -280,38 +280,42 @@ void showDialogSuccess(BuildContext context,
                 padding: EdgeInsets.only(top: hasImage == true ? 70.h : 0),
                 child: Column(
                   children: [
-                    Text(
-                      alert ?? S.current.cancel_success_s,
-                      style: textNormalCustom(
-                        Colors.white,
-                        20,
-                        FontWeight.w700,
+                    Center(
+                      child: Text(
+                        alert ?? S.current.cancel_success_s,
+                        style: textNormalCustom(
+                          Colors.white,
+                          20,
+                          FontWeight.w700,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 4.h,
                     ),
-                    Text(
-                      text ?? S.current.back_and_refresh_data,
-                      style: textNormalCustom(
-                        Colors.white,
-                        12,
-                        FontWeight.w400,
+                    Center(
+                      child: Text(
+                        text ?? S.current.back_and_refresh_data,
+                        style: textNormalCustom(
+                          Colors.white,
+                          12,
+                          FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
-              if(hasImage ?? false)
+              if (hasImage ?? false)
                 Align(
-                alignment: Alignment.topCenter,
-                child: sizedSvgImage(
-                  w: 135,
-                  h: 70,
-                  image: ImageAssets.img_sign_loan_sc,
+                  alignment: Alignment.topCenter,
+                  child: sizedSvgImage(
+                    w: 135,
+                    h: 70,
+                    image: ImageAssets.img_sign_loan_sc,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

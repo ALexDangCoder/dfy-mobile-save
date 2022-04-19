@@ -90,9 +90,10 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateNewLoanPackage(
-                        pawnShopId: cubit.idPawnShop,
-                      ),
+                      builder: (context) =>
+                          CreateNewLoanPackage(
+                            pawnShopId: cubit.idPawnShop,
+                          ),
                     ),
                   );
                 },
@@ -120,7 +121,10 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                   width: 375.w,
                   height: 812.h,
                   padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  EdgeInsets.only(top: MediaQuery
+                      .of(context)
+                      .padding
+                      .top),
                   decoration: BoxDecoration(
                     color: AppTheme.getInstance().bgBtsColor(),
                     borderRadius: const BorderRadius.only(
@@ -141,9 +145,13 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
   Widget _content() {
     return cubit.listPawnShop.isNotEmpty
         ? Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+          ),
+          child: RefreshIndicator(
+              onRefresh: () async {
+                cubit.refreshGetListPawnShop();
+              },
             child: Column(
               children: [
                 _header(),
@@ -161,65 +169,60 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                         }
                         return true;
                       },
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          cubit.refreshGetListPawnShop();
-                        },
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              spaceH24,
-                              // Text(
-                              //   S.current.lending_setting.toUpperCase(),
-                              //   style: textNormalCustom(
-                              //     AppTheme.getInstance()
-                              //         .unselectedTabLabelColor(),
-                              //     14,
-                              //     FontWeight.w400,
-                              //   ),
-                              // ),
-                              // spaceH20,
-                              // _lenderSettingItem(),
-                              // spaceH32,
-                              Text(
-                                S.current.loan_package.toUpperCase(),
-                                style: textNormalCustom(
-                                  AppTheme.getInstance()
-                                      .unselectedTabLabelColor(),
-                                  14,
-                                  FontWeight.w400,
-                                ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            spaceH24,
+                            // Text(
+                            //   S.current.lending_setting.toUpperCase(),
+                            //   style: textNormalCustom(
+                            //     AppTheme.getInstance()
+                            //         .unselectedTabLabelColor(),
+                            //     14,
+                            //     FontWeight.w400,
+                            //   ),
+                            // ),
+                            // spaceH20,
+                            // _lenderSettingItem(),
+                            // spaceH32,
+                            Text(
+                              S.current.loan_package.toUpperCase(),
+                              style: textNormalCustom(
+                                AppTheme.getInstance()
+                                    .unselectedTabLabelColor(),
+                                14,
+                                FontWeight.w400,
                               ),
-                              spaceH16,
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: cubit.listPawnShop.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      goTo(
-                                        context,
-                                        LoanPackageDetail(
-                                            id: cubit.listPawnShop[index].id ??
-                                                0),
-                                      );
-                                    },
-                                    child: Column(
-                                      children: [
-                                        LoanPackageItem(
-                                          pawnshopPackage:
-                                              cubit.listPawnShop[index],
-                                        ),
-                                        spaceH16,
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            spaceH16,
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: cubit.listPawnShop.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    goTo(
+                                      context,
+                                      LoanPackageDetail(
+                                          id: cubit.listPawnShop[index].id ??
+                                              0),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      LoanPackageItem(
+                                        pawnshopPackage:
+                                        cubit.listPawnShop[index],
+                                      ),
+                                      spaceH16,
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -227,11 +230,12 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
                 ),
               ],
             ),
-          )
+          ),
+        )
         : Container(
-            height: double.infinity,
-            width: double.infinity,
-          );
+      height: double.infinity,
+      width: double.infinity,
+    );
   }
 
   SizedBox _header() {
