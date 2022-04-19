@@ -36,4 +36,13 @@ mixin ManageLoanPackageRepository {
   Future<Result<String>> postCancelLoanPackageAfterCFBC({
     required String id,
   });
+
+  Future<Result<String>> postRejectCollateralAfterCFBC({
+    required String loanRequestId,
+  });
+
+  Future<Result<String>> postAcceptCollateralAfterCFBC({
+    required String loanRequestId,
+  });
+
 }

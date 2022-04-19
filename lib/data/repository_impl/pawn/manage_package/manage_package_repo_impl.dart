@@ -83,6 +83,24 @@ class ManageLoanPackageImplement implements ManageLoanPackageRepository {
     );
   }
 
+  @override
+  Future<Result<String>> postRejectCollateralAfterCFBC(
+      {required String loanRequestId}) {
+    return runCatchingAsync<String, String>(
+      () => _client.postRejectCollateralAfterCFBC(loanRequestId: loanRequestId),
+      (response) => response,
+    );
+  }
+
+  @override
+  Future<Result<String>> postAcceptCollateralAfterCFBC(
+      {required String loanRequestId}) {
+    return runCatchingAsync<String, String>(
+      () => _client.postAcceptCollateralAfterCFBC(loanRequestId: loanRequestId),
+      (response) => response,
+    );
+  }
+
 //
 // @override
 // Future<Result<List<CryptoPawnModel>>> getListOfferSentCrypto(
