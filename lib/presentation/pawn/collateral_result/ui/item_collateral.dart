@@ -141,25 +141,25 @@ class _ItemCollateralState extends State<ItemCollateral> {
                               ),
                             ),
                           ),
-                          WidgetSpan(
-                            child: SizedBox(
-                              width: 4.w,
-                            ),
-                          ),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Image.network(
-                              widget.iconBorrower,
-                              width: 16.sp,
-                              height: 16.sp,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Container(
-                                color: AppTheme.getInstance().bgBtsColor(),
-                                width: 16.sp,
-                                height: 16.sp,
-                              ),
-                            ),
-                          ),
+                          // WidgetSpan(
+                          //   child: SizedBox(
+                          //     width: 4.w,
+                          //   ),
+                          // ),
+                          // WidgetSpan(
+                          //   alignment: PlaceholderAlignment.middle,
+                          //   child: Image.network(
+                          //     widget.iconBorrower,
+                          //     width: 16.sp,
+                          //     height: 16.sp,
+                          //     errorBuilder: (context, error, stackTrace) =>
+                          //         Container(
+                          //       color: AppTheme.getInstance().bgBtsColor(),
+                          //       width: 16.sp,
+                          //       height: 16.sp,
+                          //     ),
+                          //   ),
+                          // ),
                           WidgetSpan(
                             child: SizedBox(
                               width: 4.w,
