@@ -1076,7 +1076,7 @@ class _ContractDetailState extends State<ContractDetail>
                                             ? GestureDetector(
                                                 onTap: () async{
                                                   //todo
-                                                  if (obj.lenderWalletAddress ==
+                                                  if (obj.borrowerWalletAddress ==
                                                       PrefsService
                                                           .getCurrentWalletCore()) {
                                                     await bloc.getRepaymentPay();
