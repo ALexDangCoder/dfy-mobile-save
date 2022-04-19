@@ -335,13 +335,19 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<NftResAfterPostLoanRequestResponse>> postNftToServer({
+  Future<Result<dynamic>> postNftToServer({
     required NftSendLoanRequest request,
   }) {
     return runCatchingAsync<NftResAfterPostLoanRequestResponse,
-        NftResAfterPostLoanRequestResponse>(
+        dynamic>(
       () => _client.postNftOnLoanRequest(request),
-      (response) => response,
+      (response) {
+        if(response.error=='error'){
+          return response.data ?? '';
+        }else{
+          return 'success';
+        }
+      },
     );
   }
 
@@ -616,28 +622,42 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+  Future<Result<dynamic>> getRepaymentPay({
     String? id,
   }) {
-    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+    return runCatchingAsync<RepaymentPayResponse, dynamic>(
       () => _client.getRepaymentPay(
         id,
       ),
-      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
+      (response) {
+        if (response.error == 'error') {
+          return response.data as String;
+        } else {
+          final res = ContentRepaymentResponse.fromJson(response.data);
+          return res.toDomain();
+        }
+      },
     );
   }
 
   @override
-  Future<Result<RepaymentRequestModel>> postRepaymentPay({
+  Future<Result<dynamic>> postRepaymentPay({
     String? id,
     CalculateRepaymentRequest? repaymentPayRequest,
   }) {
-    return runCatchingAsync<RepaymentPayResponse, RepaymentRequestModel>(
+    return runCatchingAsync<RepaymentPayResponse, dynamic>(
       () => _client.postRepaymentPay(
         id,
         repaymentPayRequest,
       ),
-      (response) => response.data?.toDomain() ?? RepaymentRequestModel.name(),
+      (response) {
+        if (response.error == 'error') {
+          return response.data as String;
+        } else {
+          final res = ContentRepaymentResponse.fromJson(response.data);
+          return res.toDomain();
+        }
+      },
     );
   }
 
@@ -738,13 +758,30 @@ class BorrowRepositoryImpl implements BorrowRepository {
       (response) => response,
     );
   }
+
   @override
-  Future<Result<String>> confirmRepaymentToBe({ required String id,
+  Future<Result<String>> confirmRepaymentToBe({
+    required String id,
     required Map<String, dynamic> map,
   }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
-          () => _client.postRepayment(id,map),
-          (response) => response.error.toString(),
+      () => _client.postRepayment(id, map),
+      (response) => response.error.toString(),
+    );
+  }
+
+  @override
+  Future<Result<List<NftMarket>>> getListNftContract({String? borrowerWalletAddress, String? name, String? status, String? type, String? page, String? size}) {
+    return runCatchingAsync<BorrowListMyAccResponse, List<NftMarket>>(
+          () => _client.getListNftCollateral(
+        borrowerWalletAddress,
+        name,
+        type,
+        page,
+        size,
+      ),
+          (response) =>
+      response.data?.content?.map((e) => e.toNftMarket()).toList() ?? [],
     );
   }
 }
