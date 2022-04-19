@@ -48,7 +48,6 @@ class _LenderContractNftState extends State<LenderContractNft> {
             if (widget.cubit.refresh) {
               widget.cubit.listNftLenderContract.clear();
             }
-            widget.cubit.showContent();
           } else {
             widget.cubit.message = S.current.something_went_wrong;
             widget.cubit.listNftLenderContract.clear();

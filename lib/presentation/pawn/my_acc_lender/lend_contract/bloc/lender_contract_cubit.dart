@@ -119,6 +119,7 @@ class LenderContractCubit extends BaseCubit<LenderContractState> {
     result.when(
       success: (success) {
         emit(LoadCryptoFtNftResult(CompleteType.SUCCESS, list: success));
+        showContent();
       },
       error: (error) {
         emit(
