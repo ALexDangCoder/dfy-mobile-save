@@ -345,7 +345,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   }) {
     if (!loadMore) {
       page += 1;
-      loadMore = false;
+      loadMore = true;
       getListNft(
         type: type,
         borrowerWalletAddress: borrowerWalletAddress,

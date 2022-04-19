@@ -51,7 +51,7 @@ class _NFTTabState extends State<NFTCollateral> with AutomaticKeepAliveClientMix
           }
           bloc.listNFT.addAll(state.listNFT ?? []);
           bloc.canLoadMoreListNft =
-              bloc.listNFT.length >= ApiConstants.DEFAULT_PAGE_SIZE;
+              (state.listNFT?.length ?? 0) >= ApiConstants.DEFAULT_PAGE_SIZE;
         }
       },
       builder: (context, state) {
