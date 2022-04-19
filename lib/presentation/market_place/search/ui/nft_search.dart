@@ -37,6 +37,9 @@ class _SearchNFTState extends State<SearchNFT> {
   void initState() {
     super.initState();
     searchCubit = SearchCubit();
+    searchCubit.getCollectionFeatNftBySearch(
+      query: '',
+    );
     _debounce = Timer(const Duration(milliseconds: 1000), () {});
   }
 
