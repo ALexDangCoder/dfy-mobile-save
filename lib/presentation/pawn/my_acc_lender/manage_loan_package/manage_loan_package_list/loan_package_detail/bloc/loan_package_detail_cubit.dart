@@ -1,7 +1,9 @@
 import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/result/result.dart';
+import 'package:Dfy/data/web3/web3_utils.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/pawnshop_package.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
@@ -24,25 +26,43 @@ class LoanPackageDetailCubit extends BaseCubit<LoanPackageDetailState> {
   List<CollateralResultModel> collateralsReceived = [];
   bool _flagApi = false;
 
-  Future<void> getDetailPawnShopPackage(String packageId) async {
+  Future<void> getDetailPawnShopPackage(String packageId,
+      {bool loadMore = false}) async {
     showLoading();
-    final Result<PawnshopPackage> result =
-        await _managePackageRepository.getPawnshopDetail(packageId: packageId);
-    result.when(
-      success: (success) {
-        _flagApi = true;
-        pawnShopPackage = success;
-      },
-      error: (error) {
-        _flagApi = false;
-        pawnShopPackage = PawnshopPackage();
-      },
-    );
+    if (!loadMore) {
+      final Result<PawnshopPackage> result = await _managePackageRepository
+          .getPawnshopDetail(packageId: packageId);
+      result.when(
+        success: (success) {
+          _flagApi = true;
+          pawnShopPackage = success;
+        },
+        error: (error) {
+          _flagApi = false;
+          pawnShopPackage = PawnshopPackage();
+        },
+      );
+    }
     await getCollateralPackageReceived(packageId);
   }
 
+  void refreshGetData(String id) {
+    emit(LoanPackageDetailInitial());
+    canLoadMoreList = true;
+    page = 0;
+    if(!refresh) {
+      refresh = true;
+      getDetailPawnShopPackage(id);
+    }
+  }
+
+  //todo ddang hard code page = 3 de test
   int page = 0;
   int defaultSize = 5;
+
+  bool loadMore = false;
+  bool canLoadMoreList = true;
+  bool refresh = false;
 
   Future<void> getCollateralPackageReceived(String id) async {
     final Result<List<CollateralResultModel>> result =
@@ -67,6 +87,21 @@ class LoanPackageDetailCubit extends BaseCubit<LoanPackageDetailState> {
         );
       },
     );
+  }
+
+  Future<void> loadMoreCollaterals(String id) async {
+    emit(LoanPackageDetailInitial());
+    if (loadMore == false) {
+      page += 1;
+      canLoadMoreList = true;
+      loadMore = true;
+      await getDetailPawnShopPackage(
+        id,
+        loadMore: true,
+      );
+    } else {
+      //nothing
+    }
   }
 
   static const int FAIL_CREATED = -1;
@@ -196,5 +231,39 @@ class LoanPackageDetailCubit extends BaseCubit<LoanPackageDetailState> {
         flagCancelLoanPackage = false;
       },
     );
+  }
+
+  Future<void> postRejectCollateralAfterCFBC(
+      {required String loanRequestId}) async {
+    final result = await _managePackageRepository.postRejectCollateralAfterCFBC(
+        loanRequestId: loanRequestId);
+    result.when(success: (success) {}, error: (error) {});
+  }
+
+  Future<void> postAcceptCollateralAfterCFBC(
+      {required String loanRequestId}) async {
+    final result = await _managePackageRepository.postAcceptCollateralAfterCFBC(
+      loanRequestId: loanRequestId,
+    );
+    result.when(success: (success) {}, error: (error) {});
+  }
+
+
+  double balanceCheck = 0;
+  Future<double> getBalanceToken({
+    required String ofAddress,
+    required String tokenAddress,
+  }) async {
+    late final double balance;
+    try {
+      balance = await Web3Utils().getBalanceOfToken(
+        ofAddress: ofAddress,
+        tokenAddress: tokenAddress,
+      );
+      balanceCheck = balance;
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+    return balance;
   }
 }

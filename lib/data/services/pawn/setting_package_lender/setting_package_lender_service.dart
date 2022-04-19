@@ -57,4 +57,14 @@ abstract class SettingPackageLenderService {
   Future<String> postCancelPackageAfterCfBC({
     @Path('id') String? id,
   });
+
+  @POST(ApiConstants.REJECT_LOAN_REQUEST)
+  Future<String> postRejectCollateralAfterCFBC({
+    @Field('loanRequestId') required String loanRequestId,
+  });
+
+  @POST(ApiConstants.ACCEPT_LOAN_REQUEST)
+  Future<String> postAcceptCollateralAfterCFBC({
+    @Field('loanRequestId') required String loanRequestId,
+  });
 }
