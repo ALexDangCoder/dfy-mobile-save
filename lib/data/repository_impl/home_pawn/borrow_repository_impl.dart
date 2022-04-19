@@ -335,13 +335,19 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<NftResAfterPostLoanRequestResponse>> postNftToServer({
+  Future<Result<dynamic>> postNftToServer({
     required NftSendLoanRequest request,
   }) {
     return runCatchingAsync<NftResAfterPostLoanRequestResponse,
-        NftResAfterPostLoanRequestResponse>(
+        dynamic>(
       () => _client.postNftOnLoanRequest(request),
-      (response) => response,
+      (response) {
+        if(response.error=='error'){
+          return response.data ?? '';
+        }else{
+          return 'success';
+        }
+      },
     );
   }
 

@@ -1,7 +1,6 @@
 import 'package:Dfy/data/request/pawn/borrow/nft_send_loan_request.dart';
 import 'package:Dfy/data/request/pawn/calculate_repayment_fee.dart';
 import 'package:Dfy/data/request/pawn/review_create_request.dart';
-import 'package:Dfy/data/response/pawn/borrow/nft_res_after_post_request_loan.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/model/home_pawn/asset_filter_model.dart';
 import 'package:Dfy/domain/model/home_pawn/check_rate_model.dart';
@@ -110,7 +109,7 @@ mixin BorrowRepository {
     required Map<String, String> map,
   });
 
-  Future<Result<NftResAfterPostLoanRequestResponse>> postNftToServer(
+  Future<Result<dynamic>> postNftToServer(
       {required NftSendLoanRequest request});
 
   Future<Result<List<ContentNftOnRequestLoanModel>>> getListNftOnLoanRequest({
