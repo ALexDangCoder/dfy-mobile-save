@@ -306,8 +306,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.penalty,
                                   funText: () {},
                                   funMax: () {
-                                    penalty.text =
-                                        bloc.maxPenalty.toString();
+                                    penalty.text = bloc.maxPenalty.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isPenalty,
@@ -327,8 +326,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.interest,
                                   funText: () {},
                                   funMax: () {
-                                    interest.text =
-                                       bloc.maxInterest.toString();
+                                    interest.text = bloc.maxInterest.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isInterest,
@@ -347,8 +345,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.loan,
                                   funText: () {},
                                   funMax: () {
-                                    loan.text =
-                                        bloc.maxLoan.toString();
+                                    loan.text = bloc.maxLoan.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isLoan,
@@ -545,7 +542,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
             ],
             onErrorSign: (context) {},
             onSuccessSign: (context, data) {
-              bloc.postRepaymentToBE(
+              bloc
+                  .postRepaymentToBE(
                 penaltyAmount: bloc.penalty.value,
                 loanSymbol: obj.loan?.symbol ?? '',
                 penaltyFee: '',
@@ -566,12 +564,22 @@ class _RepaymentPayState extends State<RepaymentPay> {
                 penaltyAddress:
                     ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
                 interestSystemFee: '',
-              );
-              showLoadSuccess(context).then((value) {
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name ==
-                      AppRouter.contract_detail_my_acc;
-                });
+              ).then((value) {
+                if (value == 'success') {
+                  showLoadSuccess(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
+                } else {
+                  showLoadFail(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
+                }
               });
             },
           ),
