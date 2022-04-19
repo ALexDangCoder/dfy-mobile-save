@@ -747,4 +747,19 @@ class BorrowRepositoryImpl implements BorrowRepository {
           (response) => response.error.toString(),
     );
   }
+
+  @override
+  Future<Result<List<NftMarket>>> getListNftContract({String? borrowerWalletAddress, String? name, String? status, String? type, String? page, String? size}) {
+    return runCatchingAsync<BorrowListMyAccResponse, List<NftMarket>>(
+          () => _client.getListNftCollateral(
+        borrowerWalletAddress,
+        name,
+        type,
+        page,
+        size,
+      ),
+          (response) =>
+      response.data?.content?.map((e) => e.toNftMarket()).toList() ?? [],
+    );
+  }
 }

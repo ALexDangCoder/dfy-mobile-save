@@ -2,6 +2,7 @@ import 'package:Dfy/config/base/base_cubit.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/wallet_address_model.dart';
+import 'package:Dfy/domain/model/nft_market_place.dart';
 import 'package:Dfy/domain/model/pawn/collateral_result_model.dart';
 import 'package:Dfy/domain/model/pawn/token_model_pawn.dart';
 import 'package:Dfy/domain/model/token_inf.dart';
@@ -27,6 +28,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   bool _isLoading = false;
   int page = 0;
   List<CollateralResultModel> list = [];
+  List<NftMarket> listNFT = [];
 
   bool get canLoadMore => canLoadMoreMy;
 
@@ -314,6 +316,77 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
       _isLoading = true;
       getListCollateral();
     }
+  }
+
+  Future<void> refreshPostsNft({
+    String? type,
+    String? borrowerWalletAddress,
+    String? name,
+  }) async {
+    if (!refresh) {
+      showLoading();
+      page = 0;
+      refresh = true;
+      await getListNft(
+        type: type,
+        borrowerWalletAddress: borrowerWalletAddress,
+        name: name,
+      );
+    }
+  }
+  bool loadMore = false;
+  bool canLoadMoreListNft = true;
+  bool refresh = false;
+
+  void loadMorePostsNft({
+    String? type,
+    String? borrowerWalletAddress,
+    String? name,
+  }) {
+    if (!loadMore) {
+      page += 1;
+      loadMore = false;
+      getListNft(
+        type: type,
+        borrowerWalletAddress: borrowerWalletAddress,
+        name: name,
+      );
+    }
+  }
+
+  Future<void> getListNft({
+    String? type,
+    String? borrowerWalletAddress,
+    String? name,
+  }) async {
+    showLoading();
+    final Result<List<NftMarket>> response =
+        await _pawnService.getListNftContract(
+      size: ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      name: name,
+      page: page.toString(),
+      type: type,
+      borrowerWalletAddress: textAddress,
+      status: status,
+    );
+    response.when(
+      success: (res) {
+        emit(
+          BorrowListMyAccNFTSuccess(
+            CompleteType.SUCCESS,
+            listNFT: res,
+          ),
+        );
+      },
+      error: (err) {
+        emit(
+          BorrowListMyAccNFTSuccess(
+            CompleteType.ERROR,
+            message: err.message,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> getListCollateral() async {

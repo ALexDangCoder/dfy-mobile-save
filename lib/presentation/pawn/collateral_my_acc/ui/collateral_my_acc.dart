@@ -3,6 +3,7 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/bloc/collateral_my_acc_bloc.dart';
+import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/tab/crypto.dart';
 import 'package:Dfy/presentation/pawn/collateral_my_acc/ui/tab/nft.dart';
 import 'package:Dfy/presentation/pawn/create_new_collateral/ui/create_new_collateral.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
@@ -27,7 +28,7 @@ class _CollateralMyAccState extends State<CollateralMyAcc>
   void initState() {
     super.initState();
     _bloc = CollateralMyAccBloc();
-    _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -170,7 +171,12 @@ class _CollateralMyAccState extends State<CollateralMyAcc>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            NFTCollateral(), //todo
+                            Crypto(
+                              bloc: _bloc,
+                            ),
+                            NFTCollateral(
+                              bloc: _bloc,
+                            ), //todo
                           ],
                         ),
                       )

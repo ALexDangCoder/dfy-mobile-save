@@ -213,6 +213,15 @@ mixin BorrowRepository {
     String? size,
   });
 
+  Future<Result<List<NftMarket>>> getListNftContract({
+    String? borrowerWalletAddress,
+    String? name,
+    String? status,
+    String? type,
+    String? page,
+    String? size,
+  });
+
   Future<Result<ContractDetailPawn>> getLenderContract({
     String? id,
     String? walletAddress,

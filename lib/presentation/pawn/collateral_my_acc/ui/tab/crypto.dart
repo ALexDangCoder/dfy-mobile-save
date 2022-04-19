@@ -58,80 +58,78 @@ class _CryptoState extends State<Crypto> {
           textEmpty: widget.bloc.mess,
           error: AppException(S.current.error, widget.bloc.mess),
           stream: widget.bloc.stateStream,
-          child: Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (widget.bloc.canLoadMore &&
-                    scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
-                  widget.bloc.loadMorePosts();
-                }
-                return true;
-              },
-              child: RefreshIndicator(
-                onRefresh: widget.bloc.refreshPosts,
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
-                  child: list.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          itemCount: list.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CollateralDetailMyAccScreen(
-                                    id: list[index].id.toString(),
-                                  ),
-                                  settings: const RouteSettings(
-                                    name: AppRouter.collateral_detail_myacc,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: ItemCollateralMyAcc(
-                              bloc: widget.bloc,
-                              index: index,
-                            ),
-                          ),
-                        )
-                      : state is CollateralMyAccSuccess
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 60.h,
-                                ),
-                                Center(
-                                  child: Image(
-                                    image: const AssetImage(
-                                      ImageAssets.img_search_empty,
-                                    ),
-                                    height: 120.h,
-                                    width: 120.w,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 17.7.h,
-                                ),
-                                Center(
-                                  child: Text(
-                                    S.current.no_result_found,
-                                    style: textNormal(
-                                      Colors.white54,
-                                      20.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (widget.bloc.canLoadMore &&
+                  scrollInfo.metrics.pixels ==
+                      scrollInfo.metrics.maxScrollExtent) {
+                widget.bloc.loadMorePosts();
+              }
+              return true;
+            },
+            child: RefreshIndicator(
+              onRefresh: widget.bloc.refreshPosts,
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
                 ),
+                child: list.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CollateralDetailMyAccScreen(
+                                  id: list[index].id.toString(),
+                                ),
+                                settings: const RouteSettings(
+                                  name: AppRouter.collateral_detail_myacc,
+                                ),
+                              ),
+                            );
+                          },
+                          child: ItemCollateralMyAcc(
+                            bloc: widget.bloc,
+                            index: index,
+                          ),
+                        ),
+                      )
+                    : state is CollateralMyAccSuccess
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 60.h,
+                              ),
+                              Center(
+                                child: Image(
+                                  image: const AssetImage(
+                                    ImageAssets.img_search_empty,
+                                  ),
+                                  height: 120.h,
+                                  width: 120.w,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 17.7.h,
+                              ),
+                              Center(
+                                child: Text(
+                                  S.current.no_result_found,
+                                  style: textNormal(
+                                    Colors.white54,
+                                    20.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
               ),
             ),
           ),
