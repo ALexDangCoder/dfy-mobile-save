@@ -529,10 +529,6 @@ class _MenuAccountState extends State<MenuAccount> {
           title: S.current.on_sale,
         ),
         ItemMenuModel.createChild(
-          routeName: 'nft_on_pawn',
-          title: S.current.on_pawn,
-        ),
-        ItemMenuModel.createChild(
           routeName: 'nft_on_auction',
           title: S.current.on_auction,
         ),

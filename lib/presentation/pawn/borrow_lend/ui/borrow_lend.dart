@@ -29,32 +29,27 @@ class BorrowLendScreen extends StatefulWidget {
   _BorrowLendScreenState createState() => _BorrowLendScreenState();
 }
 
-class _BorrowLendScreenState extends State<BorrowLendScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _BorrowLendScreenState extends State<BorrowLendScreen> {
   late BorrowLendBloc _bloc;
+  int index = 0;
 
   @override
   void initState() {
     super.initState();
     _bloc = BorrowLendBloc();
-    _tabController = TabController(length: 2, vsync: this);
     _bloc.getTokenInf();
     if (widget.type == TYPE_BORROW_OR_LEND.LEND) {
-      _tabController.index = 1;
+      index = 1;
     } else {
-      _tabController.index = 0;
+      index = 0;
     }
-    _tabController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseDesignScreen(
       text: ImageAssets.ic_close,
-      title: _tabController.index == 0 ? S.current.borrow : S.current.lend,
+      title: index == 0 ? S.current.borrow : S.current.lend,
       onRightClick: () {
         Navigator.pop(context);
       },
@@ -64,35 +59,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
         children: [
           Column(
             children: [
-              SizedBox(
-                height: 44.h,
-                width: 230.w,
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: const Color(0xFF9997FF),
-                  indicatorColor: const Color(0xFF6F6FC5),
-                  labelStyle: textNormalCustom(
-                    Colors.grey.shade400,
-                    14,
-                    FontWeight.w600,
-                  ),
-                  tabs: [
-                    Tab(
-                      text: S.current.borrow,
-                    ),
-                    Tab(
-                      text: S.current.lend,
-                    ),
-                  ],
-                  indicatorSize: TabBarIndicatorSize.tab,
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    GestureDetector(
+              if (index == 0) GestureDetector(
                       onTap: () {
                         final FocusScopeNode currentFocus =
                             FocusScope.of(context);
@@ -108,7 +75,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                             Container(
                               margin: EdgeInsets.symmetric(
                                 horizontal: 16.w,
-                                vertical: 40.h,
+                                vertical: 20.h,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,17 +119,16 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                           ],
                         ),
                       ),
-                    ),
-                    Container(
+                    ) else Container(
                       margin: EdgeInsets.symmetric(
                         horizontal: 16.w,
-                        vertical: 40.h,
+                        vertical: 20.h,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            S.current.what_you_can_borrow,
+                            S.current.what_you_can_lend,
                             style: textNormalCustom(
                               null,
                               20,
@@ -185,9 +151,6 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
               spaceH40,
             ],
           ),
@@ -304,7 +267,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen>
             color: AppTheme.getInstance().bgBtsColor(),
             child: GestureDetector(
               onTap: () {
-                if (_tabController.index == 0) {
+                if (index == 0) {
                   if (_bloc.typeScreen.value == TypeLend.CRYPTO) {
                     if (_bloc.isAmount.value) {
                       Navigator.push(

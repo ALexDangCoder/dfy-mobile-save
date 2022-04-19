@@ -1039,7 +1039,7 @@ class _ContractDetailState extends State<ContractDetail>
                                                               title: S.current
                                                                   .warning,
                                                               content: bloc
-                                                                  .checkRepay);
+                                                                  .checkRepay,);
                                                         }
                                                       } else {
                                                         showAlert(
@@ -1105,7 +1105,7 @@ class _ContractDetailState extends State<ContractDetail>
                                                           title: S.current
                                                               .warning,
                                                           content: bloc
-                                                              .checkRepay);
+                                                              .checkRepay,);
                                                     }
                                                   } else {
                                                     showAlert(
