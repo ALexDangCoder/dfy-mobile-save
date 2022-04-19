@@ -137,29 +137,29 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
                         ),
                 ),
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    widget.mainCubit.indexSink.add(tabStakingIndex);
-                  },
-                  child: snapshot.data == tabStakingIndex
-                      ? itemBottomBar(
-                          itemSelected(
-                            child: ImageAssets.svgAssets(
-                                ImageAssets.icTabStakingSelected),
-                          ),
-                          S.current.tab_staking,
-                          snapshot.data == tabStakingIndex,
-                        )
-                      : itemBottomBar(
-                          ImageAssets.svgAssets(
-                            ImageAssets.icTabStakingUnselected,
-                          ),
-                          S.current.tab_staking,
-                          snapshot.data == tabStakingIndex,
-                        ),
-                ),
-              ),
+              // Expanded(
+              //   child: InkWell(
+              //     onTap: () {
+              //       widget.mainCubit.indexSink.add(tabStakingIndex);
+              //     },
+              //     child: snapshot.data == tabStakingIndex
+              //         ? itemBottomBar(
+              //             itemSelected(
+              //               child: ImageAssets.svgAssets(
+              //                   ImageAssets.icTabStakingSelected),
+              //             ),
+              //             S.current.tab_staking,
+              //             snapshot.data == tabStakingIndex,
+              //           )
+              //         : itemBottomBar(
+              //             ImageAssets.svgAssets(
+              //               ImageAssets.icTabStakingUnselected,
+              //             ),
+              //             S.current.tab_staking,
+              //             snapshot.data == tabStakingIndex,
+              //           ),
+              //   ),
+              // ),
             ],
           );
         },
