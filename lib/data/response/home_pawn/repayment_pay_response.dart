@@ -5,8 +5,10 @@ part 'repayment_pay_response.g.dart';
 
 @JsonSerializable()
 class RepaymentPayResponse {
+  @JsonKey(name: 'error')
+  String? error;
   @JsonKey(name: 'data')
-  ContentResponse? data;
+  dynamic? data;
 
   RepaymentPayResponse(this.data);
 
@@ -17,7 +19,7 @@ class RepaymentPayResponse {
 }
 
 @JsonSerializable()
-class ContentResponse {
+class ContentRepaymentResponse {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'startDate')
@@ -51,7 +53,7 @@ class ContentResponse {
   @JsonKey(name: 'txnId')
   int? txnId;
 
-  ContentResponse(
+  ContentRepaymentResponse(
     this.id,
     this.startDate,
     this.dueDate,
@@ -67,10 +69,10 @@ class ContentResponse {
     this.smartContractType,
   );
 
-  factory ContentResponse.fromJson(Map<String, dynamic> json) =>
-      _$ContentResponseFromJson(json);
+  factory ContentRepaymentResponse.fromJson(Map<String, dynamic> json) =>
+      _$ContentRepaymentResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ContentResponseToJson(this);
+  Map<String, dynamic> toJson() => _$ContentRepaymentResponseToJson(this);
 
   RepaymentRequestModel toDomain() => RepaymentRequestModel(
         id,
