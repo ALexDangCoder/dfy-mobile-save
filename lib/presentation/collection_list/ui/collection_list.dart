@@ -302,7 +302,7 @@ class _CollectionListState extends State<CollectionList> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20.h,
                                         crossAxisSpacing: 26.w,
-                                        childAspectRatio: 0.8,
+                                        childAspectRatio: 0.78,
                                       ),
                                       itemCount: state is LoadingDataSuccess
                                           ? list.length
