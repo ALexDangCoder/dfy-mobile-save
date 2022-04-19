@@ -18,7 +18,6 @@ const int tabWalletIndex = 0;
 const int tabMarketingPlaceIndex = 1;
 const int tabHomeIndex = 2;
 const int tabPawnIndex = 3;
-const int tabStakingIndex = 4;
 
 const int walletInfoIndex = 1;
 const int loginIndex = 2;
@@ -87,7 +86,6 @@ class _MainScreenState extends BaseStateScreen<MainScreen> {
       const MarketPlaceScreen(),
       const HomeScreen(),
       const HomePawn(),
-      const StakingScreen(),
     ];
 
     navigatorKeys = List.generate(
