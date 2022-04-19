@@ -24,6 +24,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   final TypeBorrow typeBorrow;
   final TypeNavigator typeNavigator;
   late String typePawn;
+  String checkRepay = '';
   int page = 0;
   bool? isShow;
   bool? isRate;
@@ -54,6 +55,29 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   static const int LATE_TEXT = 0;
   static const int RICK = 1;
   static const int UNPAID = 2;
+
+  Future<void> getRepaymentPay() async {
+    showLoading();
+    final Result<dynamic> response =
+        await _pawnService.getRepaymentPay(
+      id: id.toString(),
+    );
+    response.when(
+      success: (response) {
+        if(response.runtimeType==String){
+          checkRepay=response;
+        }else{
+          checkRepay='';
+        }
+        showContent();
+      },
+      error: (error) {
+        if (error.code == CODE_ERROR_AUTH) {
+          getRepaymentPay();
+        }
+      },
+    );
+  }
 
   String getStatusDefault({
     int max = 0,

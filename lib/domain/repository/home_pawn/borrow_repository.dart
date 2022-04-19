@@ -260,11 +260,11 @@ mixin BorrowRepository {
     String? id,
   });
 
-  Future<Result<RepaymentRequestModel>> getRepaymentPay({
+  Future<Result<dynamic>> getRepaymentPay({
     String? id,
   });
 
-  Future<Result<RepaymentRequestModel>> postRepaymentPay({
+  Future<Result<dynamic>> postRepaymentPay({
     String? id,
     CalculateRepaymentRequest? repaymentPayRequest,
   });

@@ -2,6 +2,8 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
+import 'package:Dfy/utils/screen_controller.dart';
+import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,9 @@ class ConfirmManageLoanPackage extends StatelessWidget {
         ),
         color: AppTheme.getInstance().bgBtsColor(),
         child: GestureDetector(
-          onTap: null,
+          onTap: () {
+            // goTo(context, Approve(title: title, spender: spender, textActiveButton: textActiveButton))
+          },
           child: ButtonGold(
             isEnable: true,
             title: getTitleButton(),

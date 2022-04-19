@@ -306,8 +306,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.penalty,
                                   funText: () {},
                                   funMax: () {
-                                    penalty.text =
-                                        (obj.penalty?.amount ?? 0).toString();
+                                    penalty.text = bloc.maxPenalty.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isPenalty,
@@ -327,8 +326,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.interest,
                                   funText: () {},
                                   funMax: () {
-                                    interest.text =
-                                        (obj.interest?.amount ?? 0).toString();
+                                    interest.text = bloc.maxInterest.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isInterest,
@@ -347,8 +345,7 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                   title: S.current.loan,
                                   funText: () {},
                                   funMax: () {
-                                    loan.text =
-                                        (obj.loan?.amount ?? 0).toString();
+                                    loan.text = bloc.maxLoan.toString();
                                     closeKey(context);
                                   },
                                   isCheck: bloc.isLoan,
@@ -417,24 +414,33 @@ class _RepaymentPayState extends State<RepaymentPay> {
                               return GestureDetector(
                                 onTap: () async {
                                   if (snapshot.data ?? false) {
-                                    bloc.postRepaymentPay();
-                                    if (!isChoose) {
-                                      if (TypeRepayment.LOAN == bloc.type) {
-                                        if (obj.interest?.amount == 0 &&
-                                            obj.penalty?.amount == 0) {
-                                          await approveRepayment();
+                                    await bloc.postRepaymentPay();
+                                    if (bloc.checkPostRepay == '') {
+                                      if (!isChoose) {
+                                        if (TypeRepayment.LOAN == bloc.type) {
+                                          if (obj.interest?.amount == 0 &&
+                                              obj.penalty?.amount == 0) {
+                                            await approveRepayment();
+                                          } else {
+                                            showErrDialog(
+                                              context: context,
+                                              title: S.current.warning,
+                                              content:
+                                                  S.current.in_order_to_pay,
+                                            );
+                                          }
                                         } else {
-                                          showErrDialog(
-                                            context: context,
-                                            title: S.current.warning,
-                                            content: S.current.in_order_to_pay,
-                                          );
+                                          await approveRepayment();
                                         }
                                       } else {
                                         await approveRepayment();
                                       }
                                     } else {
-                                      await approveRepayment();
+                                      showErrDialog(
+                                        context: context,
+                                        title: S.current.warning,
+                                        content: bloc.checkPostRepay,
+                                      );
                                     }
                                   }
                                 },
@@ -536,26 +542,30 @@ class _RepaymentPayState extends State<RepaymentPay> {
             ],
             onErrorSign: (context) {},
             onSuccessSign: (context, data) {
-              bloc.postRepaymentToBE(
+              bloc
+                  .postRepaymentToBE(
                 penaltyAmount: bloc.penalty.value,
-                loanSymbol:obj.loan?.symbol ??'',
+                loanSymbol: obj.loan?.symbol ?? '',
                 penaltyFee: '',
                 interestAmount: bloc.interest.value,
                 lenderWallet: bloc.obj.lenderWalletAddress.toString(),
                 penaltySymbol: obj.penalty?.symbol ?? '',
                 borrowWallet: obj.borrowerWalletAddress.toString(),
-                interestAddress: ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
-                loanAddress:  ImageAssets.getAddressToken(obj.loan?.symbol ?? ''),
+                interestAddress:
+                    ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
+                loanAddress:
+                    ImageAssets.getAddressToken(obj.loan?.symbol ?? ''),
                 paymentRequestId: obj.id.toString(),
                 interestSymbol: obj.interest?.symbol ?? '',
                 loanSystemFee: '',
                 id: widget.id,
                 loanAmount: bloc.loan.value,
                 txnHash: data,
-                penaltyAddress:  ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
+                penaltyAddress:
+                    ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
                 interestSystemFee: '',
               ).then((value) {
-                if(value == 'success'){
+                if (value == 'success') {
                   showLoadSuccess(context).then((value) {
                     Navigator.of(context).popUntil((route) {
                       return route.settings.name ==
@@ -563,7 +573,12 @@ class _RepaymentPayState extends State<RepaymentPay> {
                     });
                   });
                 } else {
-                  showLoadFail(context);
+                  showLoadFail(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
                 }
               });
             },

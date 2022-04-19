@@ -182,4 +182,19 @@ class LoanPackageDetailCubit extends BaseCubit<LoanPackageDetailState> {
         return 'Processing';
     }
   }
+
+  bool flagCancelLoanPackage = false;
+
+  Future<void> cancelLoanPackageAfterCFBC({required String id}) async {
+    final result =
+        await _managePackageRepository.postCancelLoanPackageAfterCFBC(id: id);
+    result.when(
+      success: (success) {
+        flagCancelLoanPackage = true;
+      },
+      error: (error) {
+        flagCancelLoanPackage = false;
+      },
+    );
+  }
 }

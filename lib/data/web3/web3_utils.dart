@@ -1288,9 +1288,9 @@ class Web3Utils {
       function: function,
       parameters: [
         BigInt.from(num.parse(contractId)),
-        BigInt.from(num.parse(paidPenaltyAmount)),
-        BigInt.from(num.parse(paidInterestAmount)),
-        BigInt.from(num.parse(paidLoanAmount)),
+        BigInt.from(num.parse(_handleAmount(18, paidPenaltyAmount))),
+        BigInt.from(num.parse(_handleAmount(18, paidInterestAmount))),
+        BigInt.from(num.parse(_handleAmount(18, paidLoanAmount))),
         BigInt.from(num.parse(uid)),
       ],
     );

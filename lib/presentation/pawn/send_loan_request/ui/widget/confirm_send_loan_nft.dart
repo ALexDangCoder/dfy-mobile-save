@@ -23,8 +23,10 @@ class ConfirmSendLoanNft extends StatelessWidget {
   const ConfirmSendLoanNft({
     Key? key,
     required this.cubit,
+    required this.isNftPawn,
   }) : super(key: key);
   final SendLoanRequestCubit cubit;
+  final bool isNftPawn;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +39,38 @@ class ConfirmSendLoanNft extends StatelessWidget {
           if (state.complete == CompleteType.SUCCESS) {
             await showLoadSuccess(context).then(
               (value) => {
-                Navigator.of(context).popUntil(
-                  (route) => route.settings.name == AppRouter.borrow_result,
-                ),
+                if (isNftPawn)
+                  {
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                  } else {
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                }
               },
             );
           } else {
             await showLoadFail(context).then(
-              (value) => Navigator.of(context).popUntil(
-                (route) => route.settings.name == AppRouter.borrow_result,
-              ),
+              (value) => {
+                if (isNftPawn)
+                  {
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                  } else {
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                }
+              },
             );
           }
         } else {

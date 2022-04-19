@@ -25,6 +25,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   BehaviorSubject<String> isInterest = BehaviorSubject.seeded('');
   BehaviorSubject<String> isLoan = BehaviorSubject.seeded('');
   String? hexString;
+  String checkPostRepay = '';
 
   BorrowRepository get _pawnService => Get.find();
   final Web3Utils web3Client = Web3Utils();
@@ -167,8 +168,8 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   }
 
   Future<void> postRepaymentPay() async {
-    final Result<RepaymentRequestModel> response =
-        await _pawnService.postRepaymentPay(
+    showLoading();
+    final Result<dynamic> response = await _pawnService.postRepaymentPay(
       id: id,
       repaymentPayRequest: CalculateRepaymentRequest(
         interest: AmountRequest(
@@ -196,11 +197,18 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     );
     response.when(
       success: (response) {
-        objRepayment = response;
+        if (response.runtimeType == String) {
+          checkPostRepay = response;
+        } else {
+          objRepayment = response;
+          checkPostRepay = '';
+        }
+        showContent();
       },
-      error: (error) {},
+      error: (error) { },
     );
   }
+
   Future<String> postRepaymentToBE({
     required String id,
     required String borrowWallet,
@@ -221,41 +229,43 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     required String paymentRequestId,
   }) async {
     String success = '';
-    final Map<String,dynamic> mapInterest = {
-      'address':interestAddress,
-      'amount':interestAmount,
-      'symbol':interestSymbol,
-      'systemFee':interestSystemFee,
+    final Map<String, dynamic> mapInterest = {
+      'address': interestAddress,
+      'amount': interestAmount,
+      'symbol': interestSymbol,
+      'systemFee': interestSystemFee,
     };
-    final Map<String,dynamic> mapLoan = {
-      'address':loanAddress,
-      'amount':loanAmount,
-      'symbol':loanSymbol,
-      'systemFee':penaltyFee,
+    final Map<String, dynamic> mapLoan = {
+      'address': loanAddress,
+      'amount': loanAmount,
+      'symbol': loanSymbol,
+      'systemFee': penaltyFee,
     };
-    final Map<String,dynamic> mapPenalty = {
-      'address':penaltyAddress,
-      'amount':penaltyAmount,
-      'symbol':penaltySymbol,
-      'systemFee':interestSystemFee,
+    final Map<String, dynamic> mapPenalty = {
+      'address': penaltyAddress,
+      'amount': penaltyAmount,
+      'symbol': penaltySymbol,
+      'systemFee': interestSystemFee,
     };
-    final Map<String,dynamic> map = {
-      'borrowerWalletAddress':borrowWallet,
-      'lenderWalletAddress':lenderWallet,
-      'interest':mapInterest,
-      'loan':mapLoan,
-      'penalty':mapPenalty,
-      'paymentRequestId':paymentRequestId,
-      'txnHash':txnHash,
+    final Map<String, dynamic> map = {
+      'borrowerWalletAddress': borrowWallet,
+      'lenderWalletAddress': lenderWallet,
+      'interest': mapInterest,
+      'loan': mapLoan,
+      'penalty': mapPenalty,
+      'paymentRequestId': paymentRequestId,
+      'txnHash': txnHash,
     };
     final Result<String> response =
-    await _pawnService.confirmRepaymentToBe(id: id,map: map);
-    response.when(success: (res){
-      if(res == 'success'){
-        success = res;
-      }
-    }, error: (err){
-    },);
+        await _pawnService.confirmRepaymentToBe(id: id, map: map);
+    response.when(
+      success: (res) {
+        if (res == 'success') {
+          success = res;
+        }
+      },
+      error: (err) {},
+    );
     return success;
   }
 
@@ -264,15 +274,18 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
   }) async {
     id = collateralId ?? '';
     showLoading();
-    final Result<RepaymentRequestModel> response =
-        await _pawnService.getRepaymentPay(
+    final Result<dynamic> response = await _pawnService.getRepaymentPay(
       id: collateralId,
     );
     response.when(
       success: (response) {
-        maxInterest = response.interest?.amount ?? 0;
-        maxLoan = response.loan?.amount ?? 0;
-        maxPenalty = response.penalty?.amount ?? 0;
+        response as RepaymentRequestModel;
+        maxInterest = (response.interest?.amount ?? 0) -
+            (response.interest?.amountPaid ?? 0);
+        maxLoan =
+            (response.loan?.amount ?? 0) - (response.loan?.amountPaid ?? 0);
+        maxPenalty = (response.penalty?.amount ?? 0) -
+            (response.penalty?.amountPaid ?? 0);
         emit(
           RepaymentPaySuccess(
             CompleteType.SUCCESS,

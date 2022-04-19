@@ -5,6 +5,7 @@ import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/generated/l10n.dart';
+import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/create_book_evalution/ui/create_book_evaluation.dart';
 import 'package:Dfy/presentation/market_place/login/dialog/warrning_dialog.dart';
 import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
@@ -1007,26 +1008,39 @@ class _ContractDetailState extends State<ContractDetail>
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: () {
+                                                    onTap: () async{
+                                                      //todo
                                                       if (obj.borrowerWalletAddress ==
                                                           PrefsService
                                                               .getCurrentWalletCore()) {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                RepaymentPay(
-                                                              obj: bloc
-                                                                      .objDetail ??
-                                                                  ContractDetailPawn
-                                                                      .name(),
-                                                              id: obj.id
-                                                                  .toString(),
+                                                        await bloc.getRepaymentPay();
+                                                        if (bloc.checkRepay ==
+                                                            '') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  RepaymentPay(
+                                                                obj: bloc
+                                                                        .objDetail ??
+                                                                    ContractDetailPawn
+                                                                        .name(),
+                                                                id: obj.id
+                                                                    .toString(),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ).whenComplete(
-                                                          () => bloc.getData(),
-                                                        );
+                                                          ).whenComplete(
+                                                            () =>
+                                                                bloc.getData(),
+                                                          );
+                                                        } else {
+                                                          showErrDialog(
+                                                              context: context,
+                                                              title: S.current
+                                                                  .warning,
+                                                              content: bloc
+                                                                  .checkRepay);
+                                                        }
                                                       } else {
                                                         showAlert(
                                                           context,
@@ -1060,24 +1074,39 @@ class _ContractDetailState extends State<ContractDetail>
                                     child:
                                         obj.status == ContractDetailBloc.ACTIVE
                                             ? GestureDetector(
-                                                onTap: () {
+                                                onTap: () async{
+                                                  //todo
                                                   if (obj.lenderWalletAddress ==
                                                       PrefsService
                                                           .getCurrentWalletCore()) {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            RepaymentPay(
-                                                          obj: bloc.objDetail ??
-                                                              ContractDetailPawn
-                                                                  .name(),
-                                                          id: obj.id.toString(),
+                                                    await bloc.getRepaymentPay();
+                                                    if (bloc.checkRepay ==
+                                                        '') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              RepaymentPay(
+                                                                obj: bloc
+                                                                    .objDetail ??
+                                                                    ContractDetailPawn
+                                                                        .name(),
+                                                                id: obj.id
+                                                                    .toString(),
+                                                              ),
                                                         ),
-                                                      ),
-                                                    ).whenComplete(
-                                                      () => bloc.getData(),
-                                                    );
+                                                      ).whenComplete(
+                                                            () =>
+                                                            bloc.getData(),
+                                                      );
+                                                    } else {
+                                                      showErrDialog(
+                                                          context: context,
+                                                          title: S.current
+                                                              .warning,
+                                                          content: bloc
+                                                              .checkRepay);
+                                                    }
                                                   } else {
                                                     showAlert(
                                                       context,
