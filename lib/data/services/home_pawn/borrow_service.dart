@@ -258,6 +258,14 @@ abstract class BorrowService {
     @Query('page') String? page,
     @Query('size') String? size,
   );
+  @GET(ApiConstants.GET_LIST_NFT_ON_PAWN)
+  Future<BorrowListMyAccResponse> getListNftCollateral(
+      @Query('walletAddress') String? borrowerWalletAddress,
+      @Query('name') String? name,
+      @Query('nftType') String? nftType,
+      @Query('page') String? page,
+      @Query('size') String? size,
+      );
 
   //
 

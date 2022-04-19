@@ -1,7 +1,8 @@
 import 'package:Dfy/domain/model/home_pawn/crypto_pawn_model.dart';
 import 'package:Dfy/domain/model/home_pawn/nft_pawn_model.dart';
 import 'package:Dfy/domain/model/nft_market_place.dart';
-import 'package:Dfy/domain/model/pawn/lender_contract/lender_contract_nft_model.dart';
+import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -57,6 +58,10 @@ class DataResponse extends Equatable {
   String? collateral;
   @JsonKey(name: 'collateral_amount')
   double? collateralAmount;
+  @JsonKey(name: 'collateralAmount')
+  double? price;
+  @JsonKey(name: 'collateralSymbol')
+  String? collateralSymbol;
   @JsonKey(name: 'estimate_usd_collateral_amount')
   double? estimateUsdCollateralAmount;
   @JsonKey(name: 'interest_per_year')
@@ -136,6 +141,52 @@ class DataResponse extends Equatable {
         type,
         nft?.toDomain(),
       );
+
+  String getPath(String avatarCid) {
+    return ApiConstants.BASE_URL_IMAGE + avatarCid;
+  }
+
+  TypeImage getTypeImage(String type) {
+    if (type.toLowerCase().contains('image')) {
+      return TypeImage.IMAGE;
+    } else {
+      return TypeImage.VIDEO;
+    }
+  }
+
+  TypeNFT getTypeNft(int type) {
+    if (type == 0) {
+      return TypeNFT.SOFT_NFT;
+    } else {
+      return TypeNFT.HARD_NFT;
+    }
+  }
+
+  MarketType getTypeMarket(int type) {
+    if (type == 2) {
+      return MarketType.AUCTION;
+    } else if (type == 3) {
+      return MarketType.PAWN;
+    } else {
+      return MarketType.SALE;
+    }
+  }
+
+  NftMarket toNftMarket()  => NftMarket(
+    marketType: MarketType.PAWN,
+    typeImage: getTypeImage(nft?.toDomain().fileType ?? 'image'),
+    price: price,
+    typeNFT: getTypeNft(nft?.toDomain().nftType ?? 0),
+    image: getPath(nft?.toDomain().nftMediaCid ?? ''),
+    cover: getPath(nft?.toDomain().nftAvatarCid ?? ''),
+    nftId: nft?.toDomain().nftId,
+    tokenBuyOut: collateralSymbol,
+    name: nft?.toDomain().nftName,
+    totalCopies: 1,
+    numberOfCopies: 1,
+    collectionAddress: nft?.toDomain().collectionAddress,
+    pawnId: id,
+  );
 
 }
 

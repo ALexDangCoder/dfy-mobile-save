@@ -72,6 +72,8 @@ class ApiConstants {
 
   static const String GET_DETAIL_NFT_ON_PAWN =
       '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts/';
+  static const String GET_LIST_NFT_ON_PAWN =
+      '/defi-pawn-crypto-service/public-api/v1.0.0/account/collaterals/nfts';
 
   static const String GET_OFFER =
       '/defi-pawn-crypto-service/public-api/v1.0.0/loan-crypto-offer';
