@@ -184,7 +184,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (context) => DialogFilter(
-                                      title: S.current.rating,
+                                      title: S.current.interest_rate,
                                       type: _bloc.typeInterest ??
                                           TypeFilter.HIGH_TO_LOW,
                                     ),
@@ -209,7 +209,7 @@ class _PersonalLendingScreenState extends State<PersonalLendingScreen> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (context) => DialogFilter(
-                                      title: S.current.rating,
+                                      title: S.current.sign_contract_pawn,
                                       type: _bloc.typeSigned ??
                                           TypeFilter.HIGH_TO_LOW,
                                     ),

@@ -38,6 +38,9 @@ class _DialogFilterState extends State<DialogFilter> {
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top,
+          ),
           height: 812.h,
           decoration: BoxDecoration(
             color: AppTheme.getInstance().bgBtsColor(),
