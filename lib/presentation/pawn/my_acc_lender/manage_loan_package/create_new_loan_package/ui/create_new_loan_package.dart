@@ -526,7 +526,8 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
                                 Approve(
                                   payValue:
                                       cubit.loanPackageRequest.allowedLoanMax,
-                                  needApprove: true,
+                                  // needApprove:  cubit.checkCollatersNotContainBNB() ? true : false,
+                                  needApprove:  true,
                                   tokenAddress: ImageAssets.getAddressToken(
                                       cubit.loanPackageRequest.loanTokens
                                               ?.first ??

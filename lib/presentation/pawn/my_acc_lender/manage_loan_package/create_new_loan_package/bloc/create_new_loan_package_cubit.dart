@@ -384,7 +384,7 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       }
       if ((value.symbol ?? '') == 'ADA' ||
           (value.symbol ?? '') == 'DOT' ||
-          (value.symbol ?? '') == 'BNB' ||
+          // (value.symbol ?? '') == 'BNB' ||
           (value.symbol ?? '') == 'BTC' ||
           (value.symbol ?? '') == 'ETH' ||
           (value.symbol ?? '') == 'LTC' ||
@@ -419,5 +419,16 @@ class CreateNewLoanPackageCubit extends Cubit<CreateNewLoanPackageState> {
       createNewLoanPackageRequest: loanPackageRequest,
     );
     result.when(success: (success) {}, error: (error) {});
+  }
+
+  bool checkCollatersNotContainBNB() {
+    bool _flag = true;
+    for (final item in listCollateralToken) {
+      if (item.symbol == 'BNB' && (item.isSelect ?? false)) {
+        _flag = false;
+        break;
+      } else {}
+    }
+    return _flag;
   }
 }
