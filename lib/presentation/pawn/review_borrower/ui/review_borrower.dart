@@ -299,7 +299,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                             MaterialPageRoute(
                               builder: (context) => Approve(
                                 textActiveButton:
-                                    '${S.current.confirm} ${S.current.add_more_collateral.toLowerCase()}',
+                                    S.current.review_claim_reward,
                                 spender:
                                     Get.find<AppConstants>().review_contract,
                                 hexString: bloc.hexString,
