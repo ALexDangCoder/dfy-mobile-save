@@ -250,12 +250,12 @@ class _ManageLoanPackageListState extends State<ManageLoanPackageList> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  //todo
+                  Navigator.pop(context);
                 },
                 child: SizedBox(
                   height: 30.h,
                   width: 30.w,
-                  child: Image.asset(ImageAssets.ic_menu),
+                  child: Image.asset(ImageAssets.ic_close),
                 ),
               ),
             ),

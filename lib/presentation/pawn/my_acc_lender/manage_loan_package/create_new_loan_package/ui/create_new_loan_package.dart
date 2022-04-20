@@ -913,11 +913,15 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
               );
             }).toList(),
             onChanged: (newValue) {
-              setState(() {
-                loanToken = newValue!;
-                cubit.loanPackageRequest.loanTokens = [loanToken.symbol ?? ''];
-                cubit.changeListRepaymentToken(value: newValue);
-              });
+              if(newValue == loanToken) {
+
+              } else {
+                setState(() {
+                  loanToken = newValue!;
+                  cubit.loanPackageRequest.loanTokens = [loanToken.symbol ?? ''];
+                  cubit.changeListRepaymentToken(value: newValue);
+                });
+              }
             },
             dropdownMaxHeight: 200.h,
             dropdownWidth: 343.w,
@@ -986,13 +990,17 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
               );
             }).toList(),
             onChanged: (newValue) {
-              setState(() {
-                loanRepaymentToken = newValue!;
-                cubit.loanPackageRequest.repaymentTokens = [
-                  loanRepaymentToken.symbol ?? ''
-                ];
-                cubit.validateAll();
-              });
+              if (newValue == loanRepaymentToken) {
+
+              } else {
+                setState(() {
+                  loanRepaymentToken = newValue!;
+                  cubit.loanPackageRequest.repaymentTokens = [
+                    loanRepaymentToken.symbol ?? ''
+                  ];
+                  cubit.validateAll();
+                });
+              }
             },
             dropdownMaxHeight: 200.h,
             dropdownWidth: 343.w,
