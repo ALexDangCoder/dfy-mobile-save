@@ -268,86 +268,85 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
           spaceH4,
           StreamBuilder<bool>(
               stream: widget.cubit.chooseExisting,
-            builder: (context, snapshot) {
-              bool enable;
-              if (snapshot.hasData) {
-                enable = !(snapshot.data ?? false);
-              } else {
-                enable = true;
-              }
-              return Container(
-                height: 64.h,
-                padding: EdgeInsets.only(right: 15.w, left: 15.w),
-                decoration: BoxDecoration(
-                  color: AppTheme.getInstance().backgroundBTSColor(),
-                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: TextFormField(
-                        enabled: enable,
-                        controller: message,
-                        maxLength: 100,
-                        onChanged: (value) {
-                          widget.cubit.focusTextField.add(value);
-                          if (value == '') {
-                            widget.cubit.errorMessage.add('Invalid message');
-                          } else {
-                            widget.cubit.messageCached = value;
-                            widget.cubit.errorMessage.add('');
-                          }
-                          widget.cubit.enableButtonRequest(
-                                collateralAmount.text,
-                                message.text,
-                                durationController.text,
-                              );
-                        },
-                        cursorColor: AppTheme.getInstance().whiteColor(),
-                        style: textNormal(
-                          AppTheme.getInstance().whiteColor(),
-                          16,
-                        ),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
-                          isCollapsed: true,
-                          counterText: '',
-                          hintText: S.current.enter_message,
-                          hintStyle: textNormal(
-                            Colors.white.withOpacity(0.5),
+              builder: (context, snapshot) {
+                bool enable;
+                if (snapshot.hasData) {
+                  enable = !(snapshot.data ?? false);
+                } else {
+                  enable = true;
+                }
+                return Container(
+                  height: 64.h,
+                  padding: EdgeInsets.only(right: 15.w, left: 15.w),
+                  decoration: BoxDecoration(
+                    color: AppTheme.getInstance().backgroundBTSColor(),
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: TextFormField(
+                          enabled: enable,
+                          controller: message,
+                          maxLength: 100,
+                          onChanged: (value) {
+                            widget.cubit.focusTextField.add(value);
+                            if (value == '') {
+                              widget.cubit.errorMessage.add('Invalid message');
+                            } else {
+                              widget.cubit.messageCached = value;
+                              widget.cubit.errorMessage.add('');
+                            }
+                            widget.cubit.enableButtonRequest(
+                              collateralAmount.text,
+                              message.text,
+                              durationController.text,
+                            );
+                          },
+                          cursorColor: AppTheme.getInstance().whiteColor(),
+                          style: textNormal(
+                            AppTheme.getInstance().whiteColor(),
                             16,
                           ),
-                          border: InputBorder.none,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.zero,
+                            isCollapsed: true,
+                            counterText: '',
+                            hintText: S.current.enter_message,
+                            hintStyle: textNormal(
+                              Colors.white.withOpacity(0.5),
+                              16,
+                            ),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                    StreamBuilder(
-                      stream: widget.cubit.focusTextField,
-                      builder: (context, AsyncSnapshot<String> snapshot) {
-                        return GestureDetector(
-                          onTap: () {
-                            widget.cubit.focusTextField.add('');
-                            message.text = '';
-                          },
-                          child: (snapshot.data != '')
-                              ? Image.asset(
-                                  ImageAssets.ic_close,
-                                  width: 20.w,
-                                  height: 20.h,
-                                )
-                              : SizedBox(
-                                  height: 20.h,
-                                  width: 20.w,
-                                ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-          ),
+                      StreamBuilder(
+                        stream: widget.cubit.focusTextField,
+                        builder: (context, AsyncSnapshot<String> snapshot) {
+                          return GestureDetector(
+                            onTap: () {
+                              widget.cubit.focusTextField.add('');
+                              message.text = '';
+                            },
+                            child: (snapshot.data != '')
+                                ? Image.asset(
+                                    ImageAssets.ic_close,
+                                    width: 20.w,
+                                    height: 20.h,
+                                  )
+                                : SizedBox(
+                                    height: 20.h,
+                                    width: 20.w,
+                                  ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }),
           StreamBuilder<String>(
             stream: widget.cubit.errorMessage,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -464,10 +463,10 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                 duration = newValue!;
                               });
                               widget.cubit.enableButtonRequest(
-                            collateralAmount.text,
-                            message.text,
-                            durationController.text,
-                          );
+                                collateralAmount.text,
+                                message.text,
+                                durationController.text,
+                              );
                             }
                           },
                           value: duration,
@@ -615,6 +614,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         builder: (context) => SelectCryptoCollateral(
                           walletAddress: widget.walletAddress,
                           packageId: widget.packageId,
+                          isLoanRequest: true,
                         ),
                       ),
                     )
@@ -637,8 +637,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                               ? S.current.week
                               : S.current.month;
                           widget.cubit.durationCachedType = duration;
-                          item =
-                              widget.cubit.listTokenCollateral.firstWhere(
+                          item = widget.cubit.listTokenCollateral.firstWhere(
                             (element) =>
                                 element.nameShortToken ==
                                 select.collateralSymbol,
@@ -652,10 +651,10 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                           widget.cubit.loanTokenCached = loanToken;
                         }
                         widget.cubit.enableButtonRequest(
-                            collateralAmount.text,
-                            message.text,
-                            durationController.text,
-                          );
+                          collateralAmount.text,
+                          message.text,
+                          durationController.text,
+                        );
                       }
                     });
                   } else {
@@ -755,10 +754,10 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         widget.cubit.errorDuration.add('Duration not null');
                       }
                       widget.cubit.enableButtonRequest(
-                            collateralAmount.text,
-                            message.text,
-                            durationController.text,
-                          );
+                        collateralAmount.text,
+                        message.text,
+                        durationController.text,
+                      );
                     } else {
                       if (checkEmail) {
                         if (widget.cubit.chooseExisting.value) {
@@ -780,15 +779,14 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                             walletAddress: widget.walletAddress,
                           )
                               .then((value) async {
-                            if (value) {
+                            if (value == 'success') {
                               await showLoadSuccess(context).then(
                                 (value) => Navigator.of(context)
-                                  ..pop()
                                   ..pop()
                                   ..pop(true),
                               );
                             } else {
-                              await showLoadFail(context);
+                              await showLoadFail(context, content: value);
                               Navigator.of(context).pop();
                             }
                           });
@@ -830,7 +828,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                       walletAddress: widget.walletAddress,
                                     )
                                         .then((value) async {
-                                      if (value) {
+                                      if (value == 'success') {
                                         await showLoadSuccess(context).then(
                                           (value) => Navigator.of(context)
                                             ..pop()
@@ -838,7 +836,10 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                                             ..pop(true),
                                         );
                                       } else {
-                                        await showLoadFail(context);
+                                        await showLoadFail(
+                                          context,
+                                          content: value,
+                                        );
                                       }
                                     });
                                   },

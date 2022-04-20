@@ -16,11 +16,12 @@ class SelectCryptoCollateral extends StatefulWidget {
   const SelectCryptoCollateral({
     Key? key,
     required this.walletAddress,
-    required this.packageId,
+    required this.packageId, required this.isLoanRequest,
   }) : super(key: key);
 
   final String walletAddress;
   final String packageId;
+  final bool isLoanRequest;
 
   @override
   _SelectCryptoCollateralState createState() => _SelectCryptoCollateralState();
@@ -34,7 +35,11 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
     // TODO: implement initState
     super.initState();
     cubit = SelectCryptoCubit();
-    cubit.refreshPosts(widget.walletAddress, widget.packageId);
+    cubit.refreshPosts(
+      widget.walletAddress,
+      widget.packageId,
+      widget.isLoanRequest,
+    );
   }
 
   @override
@@ -63,7 +68,11 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
       builder: (context, state) {
         return StateStreamLayout(
           retry: () {
-            cubit.refreshPosts(widget.walletAddress, widget.packageId);
+            cubit.refreshPosts(
+              widget.walletAddress,
+              widget.packageId,
+              widget.isLoanRequest,
+            );
           },
           textEmpty: cubit.message,
           error: AppException(S.current.error, cubit.message),
@@ -79,62 +88,66 @@ class _SelectCryptoCollateralState extends State<SelectCryptoCollateral> {
                     cubit.loadMorePosts(
                       widget.walletAddress,
                       widget.packageId,
+                      widget.isLoanRequest,
                     );
                   }
                   return true;
                 },
-                child: (state is GetApiSuccess) ?
-                RefreshIndicator(
-                  onRefresh: () async {
-                    await cubit.refreshPosts(
-                      widget.walletAddress,
-                      widget.packageId,
-                    );
-                  },
-                  child: (cubit.listCryptoCollateral.isNotEmpty)
-                      ? ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 16.w,
-                            right: 16.w,
-                          ),
-                          itemCount: cubit.listCryptoCollateral.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                ItemCryptoCollateral(
-                                  model: cubit.listCryptoCollateral[index],
+                child: (state is GetApiSuccess)
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          await cubit.refreshPosts(
+                            widget.walletAddress,
+                            widget.packageId,
+                            widget.isLoanRequest,
+                          );
+                        },
+                        child: (cubit.listCryptoCollateral.isNotEmpty)
+                            ? ListView.builder(
+                                padding: EdgeInsets.only(
+                                  left: 16.w,
+                                  right: 16.w,
                                 ),
-                                spaceH20,
-                              ],
-                            );
-                          },
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 150.h),
-                          child: Column(
-                            children: [
-                              Image(
-                                image: const AssetImage(
-                                  ImageAssets.img_search_empty,
+                                itemCount: cubit.listCryptoCollateral.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(
+                                    children: [
+                                      ItemCryptoCollateral(
+                                        model:
+                                            cubit.listCryptoCollateral[index],
+                                      ),
+                                      spaceH20,
+                                    ],
+                                  );
+                                },
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(top: 150.h),
+                                child: Column(
+                                  children: [
+                                    Image(
+                                      image: const AssetImage(
+                                        ImageAssets.img_search_empty,
+                                      ),
+                                      height: 120.h,
+                                      width: 120.w,
+                                    ),
+                                    SizedBox(
+                                      height: 17.7.h,
+                                    ),
+                                    Text(
+                                      S.current.no_result_found,
+                                      style: textNormal(
+                                        Colors.white54,
+                                        20.sp,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                height: 120.h,
-                                width: 120.w,
                               ),
-                              SizedBox(
-                                height: 17.7.h,
-                              ),
-                              Text(
-                                S.current.no_result_found,
-                                style: textNormal(
-                                  Colors.white54,
-                                  20.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                ) : const SizedBox(),
+                      )
+                    : const SizedBox(),
               ),
             ),
           ),

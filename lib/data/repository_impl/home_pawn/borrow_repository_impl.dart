@@ -163,11 +163,17 @@ class BorrowRepositoryImpl implements BorrowRepository {
     String walletAddress,
     String packageId,
     String page,
+    bool isLoanRequest,
   ) {
     return runCatchingAsync<CryptoCollateralResponse,
         List<CryptoCollateralModel>>(
-      () => _client.getCryptoCollateral(walletAddress, packageId, 'false', page,
-          ApiConstants.DEFAULT_PAGE_SIZE.toString()),
+      () => _client.getCryptoCollateral(
+        walletAddress,
+        packageId,
+        isLoanRequest.toString(),
+        page,
+        ApiConstants.DEFAULT_PAGE_SIZE.toString(),
+      ),
       (response) => response.data?.toDomain() ?? [],
     );
   }
@@ -258,7 +264,13 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
-      (response) => response.error.toString(),
+      (response) {
+        if(response.error != 'success') {
+          return response.data.toString();
+        } else {
+          return response.error ?? 'success';
+        }
+      },
     );
   }
 
@@ -338,13 +350,12 @@ class BorrowRepositoryImpl implements BorrowRepository {
   Future<Result<dynamic>> postNftToServer({
     required NftSendLoanRequest request,
   }) {
-    return runCatchingAsync<NftResAfterPostLoanRequestResponse,
-        dynamic>(
+    return runCatchingAsync<NftResAfterPostLoanRequestResponse, dynamic>(
       () => _client.postNftOnLoanRequest(request),
       (response) {
-        if(response.error=='error'){
+        if (response.error == 'error') {
           return response.data ?? '';
-        }else{
+        } else {
           return 'success';
         }
       },
@@ -771,17 +782,23 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }
 
   @override
-  Future<Result<List<NftMarket>>> getListNftContract({String? borrowerWalletAddress, String? name, String? status, String? type, String? page, String? size}) {
+  Future<Result<List<NftMarket>>> getListNftContract(
+      {String? borrowerWalletAddress,
+      String? name,
+      String? status,
+      String? type,
+      String? page,
+      String? size}) {
     return runCatchingAsync<BorrowListMyAccResponse, List<NftMarket>>(
-          () => _client.getListNftCollateral(
+      () => _client.getListNftCollateral(
         borrowerWalletAddress,
         name,
         type,
         page,
         size,
       ),
-          (response) =>
-      response.data?.content?.map((e) => e.toNftMarket()).toList() ?? [],
+      (response) =>
+          response.data?.content?.map((e) => e.toNftMarket()).toList() ?? [],
     );
   }
 }

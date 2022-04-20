@@ -18,10 +18,7 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
 
   int page = 0;
 
-
   BorrowRepository get _repo => Get.find();
-
-
 
   bool loadMore = false;
   bool canLoadMoreList = true;
@@ -30,6 +27,7 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
   Future<void> refreshPosts(
     String walletAddress,
     String packageId,
+    bool isLoanRequest,
   ) async {
     if (!refresh) {
       showLoading();
@@ -37,32 +35,43 @@ class SelectCryptoCubit extends BaseCubit<SelectCryptoState> {
       page = 0;
       canLoadMoreList = true;
       refresh = true;
-      await getCryptoCollateral(walletAddress, packageId);
+      await getCryptoCollateral(
+        walletAddress,
+        packageId,
+        isLoanRequest,
+      );
     }
   }
 
   Future<void> loadMorePosts(
     String walletAddress,
     String packageId,
+    bool isLoanRequest,
   ) async {
     if (!loadMore) {
       showLoading();
       page += 1;
       canLoadMoreList = false;
       loadMore = true;
-      await getCryptoCollateral(walletAddress, packageId);
+      await getCryptoCollateral(
+        walletAddress,
+        packageId,
+        isLoanRequest,
+      );
     }
   }
 
   Future<void> getCryptoCollateral(
     String walletAddress,
     String packageId,
+    bool isLoanRequest,
   ) async {
     final Result<List<CryptoCollateralModel>> result =
         await _repo.getListCryptoCollateral(
       walletAddress,
       packageId,
       page.toString(),
+      isLoanRequest,
     );
     result.when(
       success: (res) {

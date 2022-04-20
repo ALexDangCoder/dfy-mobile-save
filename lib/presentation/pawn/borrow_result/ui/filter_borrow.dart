@@ -580,69 +580,69 @@ class _FilterBorrowState extends State<FilterBorrow> {
                               ),
                             ],
                           ),
-                          spaceH16,
-                          Text(
-                            S.current.networks,
-                            style: textNormalCustom(
-                              Colors.white,
-                              16,
-                              FontWeight.w600,
-                            ),
-                          ),
-                          spaceH16,
-                          Container(
-                            clipBehavior: Clip.hardEdge,
-                            height: 138.h,
-                            width: 343.w,
-                            padding: EdgeInsets.only(
-                              right: 6.w,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: divideColor),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.r)),
-                            ),
-                            child: Theme(
-                              data: ThemeData(
-                                highlightColor:
-                                    AppTheme.getInstance().colorTextReset(),
-                              ),
-                              child: Scrollbar(
-                                radius: Radius.circular(20.r),
-                                thickness: 4.w,
-                                controller: networkController,
-                                child: GridView.builder(
-                                  controller: networkController,
-                                  itemCount: widget.cubit.network.length,
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 5,
-                                    crossAxisSpacing: 10,
-                                    childAspectRatio: 55 / 15,
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    top: 5.h,
-                                    bottom: 5.h,
-                                    left: 16.w,
-                                  ),
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return CheckBoxMultiChoice(
-                                      nameCkcFilter: widget
-                                              .cubit.network[index].nameNetwork ??
-                                          '',
-                                      filterType: S.current.networks,
-                                      typeCkc: TYPE_CKC_FILTER.NON_IMG,
-                                      cubit: widget.cubit,
-                                      isSelected:
-                                          widget.cubit.network[index].isSelect,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
+                          // spaceH16,
+                          // Text(
+                          //   S.current.networks,
+                          //   style: textNormalCustom(
+                          //     Colors.white,
+                          //     16,
+                          //     FontWeight.w600,
+                          //   ),
+                          // ),
+                          // spaceH16,
+                          // Container(
+                          //   clipBehavior: Clip.hardEdge,
+                          //   height: 138.h,
+                          //   width: 343.w,
+                          //   padding: EdgeInsets.only(
+                          //     right: 6.w,
+                          //   ),
+                          //   decoration: BoxDecoration(
+                          //     border: Border.all(color: divideColor),
+                          //     borderRadius:
+                          //         BorderRadius.all(Radius.circular(20.r)),
+                          //   ),
+                          //   child: Theme(
+                          //     data: ThemeData(
+                          //       highlightColor:
+                          //           AppTheme.getInstance().colorTextReset(),
+                          //     ),
+                          //     child: Scrollbar(
+                          //       radius: Radius.circular(20.r),
+                          //       thickness: 4.w,
+                          //       controller: networkController,
+                          //       child: GridView.builder(
+                          //         controller: networkController,
+                          //         itemCount: widget.cubit.network.length,
+                          //         shrinkWrap: true,
+                          //         gridDelegate:
+                          //             const SliverGridDelegateWithFixedCrossAxisCount(
+                          //           crossAxisCount: 2,
+                          //           mainAxisSpacing: 5,
+                          //           crossAxisSpacing: 10,
+                          //           childAspectRatio: 55 / 15,
+                          //         ),
+                          //         padding: EdgeInsets.only(
+                          //           top: 5.h,
+                          //           bottom: 5.h,
+                          //           left: 16.w,
+                          //         ),
+                          //         itemBuilder: (BuildContext context, int index) {
+                          //           return CheckBoxMultiChoice(
+                          //             nameCkcFilter: widget
+                          //                     .cubit.network[index].nameNetwork ??
+                          //                 '',
+                          //             filterType: S.current.networks,
+                          //             typeCkc: TYPE_CKC_FILTER.NON_IMG,
+                          //             cubit: widget.cubit,
+                          //             isSelected:
+                          //                 widget.cubit.network[index].isSelect,
+                          //           );
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 40.h,
                           ),

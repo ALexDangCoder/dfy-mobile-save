@@ -2,6 +2,7 @@ import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/domain/model/pawn/personal_lending.dart';
+import 'package:Dfy/presentation/nft_detail/ui/nft_detail.dart';
 import 'package:Dfy/presentation/pawn/send_loan_request/ui/send_loan_requet.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
@@ -217,7 +218,18 @@ class PersonalLendingItem extends StatelessWidget {
                         [], type: personalLending.p2PLenderPackages?[0].type ?? 0,
                   ),
                 ),
-              );
+              ).then((value) {
+                if (value != null) {
+                  showDialogSuccess(
+                    context,
+                    alert: 'Congratulation',
+                    text:
+                    'Your Collateral has been sent to ${personalLending.name},\nPlease wait a moment',
+                    onlyPop: true,
+                    hasImage: true,
+                  );
+                }
+              });
             },
             child: Padding(
               padding: EdgeInsets.only(left: 76.w),
