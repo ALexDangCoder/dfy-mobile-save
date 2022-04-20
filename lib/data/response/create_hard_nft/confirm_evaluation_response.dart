@@ -15,6 +15,8 @@ class ConfirmEvaluationResponse extends Equatable {
   dynamic code;
   @JsonKey(name: 'error')
   String? error;
+  @JsonKey(name: 'data')
+  dynamic data;
 
   ConfirmEvaluationResponse(
     this.rd,

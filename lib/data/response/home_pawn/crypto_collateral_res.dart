@@ -59,7 +59,7 @@ class DataResponse extends Equatable {
   int? durationType;
   @JsonKey(name: 'isActive')
   bool? isSelect;
-  @JsonKey(name: 'bcCollateralId')
+  @JsonKey(name: 'id')
   int? bcCollateralId;
   @JsonKey(name: 'latestBlockchainTxn')
   String? txhHash;
