@@ -66,7 +66,9 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
     message.text = widget.cubit.messageCached ?? '';
     durationController.text = widget.cubit.durationCached ?? '';
     loanToken = widget.pawnshopPackage.loanToken?[0] ?? LoanToken();
-    duration = widget.pawnshopPackage.durationQtyType == 0 ? S.current.week : S.current.month;
+    duration = widget.pawnshopPackage.durationQtyType == 0
+        ? S.current.week
+        : S.current.month;
   }
 
   @override
@@ -968,7 +970,8 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                           final hexString =
                               await widget.cubit.getCreateCryptoCollateral(
                             collateralAddress: item.tokenAddress,
-                            packageID: '-1',
+                            packageID:
+                                widget.pawnshopPackage.bcPackageId.toString(),
                             amount: collateralAmount.text,
                             loanToken: loanToken.address ?? '',
                             durationQty: durationController.text,

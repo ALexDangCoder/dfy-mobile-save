@@ -7,6 +7,7 @@ class CryptoCollateralModel {
   int? durationType;
   bool? isSelect;
   int? bcCollateralId;
+  int? id;
   String? txhHash;
 
   CryptoCollateralModel({
@@ -19,5 +20,6 @@ class CryptoCollateralModel {
     this.isSelect,
     this.bcCollateralId,
     this.txhHash,
+    this.id,
   });
 }
