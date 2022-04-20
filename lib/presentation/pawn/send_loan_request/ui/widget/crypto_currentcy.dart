@@ -615,6 +615,7 @@ class _CryptoCurrencyState extends State<CryptoCurrency>
                         builder: (context) => SelectCryptoCollateral(
                           walletAddress: widget.walletAddress,
                           packageId: widget.packageId,
+                          isLoanRequest: true,
                         ),
                       ),
                     )

@@ -643,6 +643,7 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                         builder: (context) => SelectCryptoCollateral(
                           walletAddress: widget.cubit.wallet,
                           packageId: widget.pawnshopPackage.id.toString(),
+                          isLoanRequest: false,
                         ),
                       ),
                     )
