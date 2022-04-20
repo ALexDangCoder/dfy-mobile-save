@@ -264,7 +264,13 @@ class BorrowRepositoryImpl implements BorrowRepository {
   }) {
     return runCatchingAsync<ConfirmEvaluationResponse, String>(
       () => _client.confirmSendLoanRequest(map),
-      (response) => response.error.toString(),
+      (response) {
+        if(response.error != 'success') {
+          return response.data.toString();
+        } else {
+          return response.error ?? 'success';
+        }
+      },
     );
   }
 

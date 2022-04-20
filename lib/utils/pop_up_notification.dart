@@ -37,7 +37,7 @@ Future<void> showLoadingDialog(BuildContext context,
 }
 
 /// show dialog Error
-Future<void> showLoadFail(BuildContext context) async {
+Future<void> showLoadFail(BuildContext context,{String? content}) async {
   final navigator = Navigator.of(context);
   unawaited(
     navigator.push(
@@ -51,7 +51,7 @@ Future<void> showLoadFail(BuildContext context) async {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
                 child: TransactionSubmitFail(
-                  content: S.current.transaction_failed,
+                  content: content ?? S.current.transaction_failed,
                 ),
               ),
             ),

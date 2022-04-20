@@ -298,7 +298,7 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     return hexString;
   }
 
-  Future<bool> pushSendNftToBE({
+  Future<String> pushSendNftToBE({
     required String amount,
     required String bcPackageId,
     required String collateral,
@@ -326,15 +326,14 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
       'txid': txId,
       'wallet_address': walletAddress,
     };
-    bool checkSuccess = false;
+    String checkSuccess = '';
     final Result<String> code = await _repo.confirmCollateralToBe(map: map);
     code.when(
-        success: (res) {
-          if (res == 'success') {
-            checkSuccess = true;
-          }
-        },
-        error: (error) {});
+      success: (res) {
+        checkSuccess = res;
+      },
+      error: (error) {},
+    );
     return checkSuccess;
   }
 
@@ -663,14 +662,14 @@ class SendLoanRequestCubit extends BaseCubit<SendLoanRequestState> {
     final result = await _repo.postNftToServer(request: nftRequest);
     result.when(success: (res) {
       if (res == 'success') {
-        checkPostNft='';
+        checkPostNft = '';
         emit(SubmitNftSuccess(CompleteType.SUCCESS));
       } else {
-        checkPostNft=res;
+        checkPostNft = res;
         emit(SubmitNftSuccess(CompleteType.ERROR));
       }
     }, error: (error) {
-      checkPostNft=error.message;
+      checkPostNft = error.message;
       emit(SubmitNftSuccess(CompleteType.ERROR));
     });
   }

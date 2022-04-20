@@ -61,7 +61,13 @@ class PawnshopPackageItem extends StatelessWidget {
                     fit: BoxFit.cover,
                     image: pawnshopPackage.pawnshop?.avatar ?? '',
                     imageErrorBuilder: (context, url, error) {
-                      return const SizedBox();
+                      return Container(
+                        color: Colors.white38,
+                        child: const Icon(
+                          Icons.person_outline_rounded,
+                          color: Colors.white38,
+                        ),
+                      );
                     },
                   ),
                 ),

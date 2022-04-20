@@ -956,7 +956,6 @@ class _CryptoLoanContractState extends State<CryptoLoanContract> {
                               await showLoadSuccess(context).then(
                                 (value) => Navigator.of(context)
                                   ..pop()
-                                  ..pop()
                                   ..pop(true),
                               );
                             } else {
