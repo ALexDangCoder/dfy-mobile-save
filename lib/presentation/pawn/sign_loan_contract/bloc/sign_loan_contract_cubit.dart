@@ -274,6 +274,7 @@ class SignLoanContractCubit extends BaseCubit<SignLoanContractState> {
     final Map<String, String> map = {
       'amount': amount,
       'collateral': collateral,
+      'bcPackageId': bcPackageId,
       'collateralId': collateralId,
       'description': description,
       'expected_loan_duration_time': duration,
