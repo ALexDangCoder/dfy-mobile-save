@@ -12,6 +12,7 @@ import 'package:Dfy/domain/model/pawn/contract_detail_pawn.dart';
 import 'package:Dfy/domain/model/pawn/repayment_request_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/add_more_collateral/ui/add_more_collateral.dart';
+import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
 import 'package:Dfy/presentation/pawn/repayment/bloc/repayment_pay_bloc.dart';
 import 'package:Dfy/presentation/pawn/repayment/bloc/repayment_pay_state.dart';
 import 'package:Dfy/utils/app_utils.dart';
@@ -38,9 +39,11 @@ class RepaymentPay extends StatefulWidget {
     Key? key,
     required this.id,
     required this.obj,
+    required this.type,
   }) : super(key: key);
   final String id;
   final ContractDetailPawn obj;
+  final TypeBorrow type;
 
   @override
   _RepaymentPayState createState() => _RepaymentPayState();
@@ -420,7 +423,10 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                         if (TypeRepayment.LOAN == bloc.type) {
                                           if (obj.interest?.amount == 0 &&
                                               obj.penalty?.amount == 0) {
-                                            await approveRepayment();
+                                            widget.type ==
+                                                    TypeBorrow.CRYPTO_TYPE
+                                                ? await approveRepayment()
+                                                : await approveRepaymentNFT();
                                           } else {
                                             showErrDialog(
                                               context: context,
@@ -430,10 +436,14 @@ class _RepaymentPayState extends State<RepaymentPay> {
                                             );
                                           }
                                         } else {
-                                          await approveRepayment();
+                                          widget.type == TypeBorrow.CRYPTO_TYPE
+                                              ? await approveRepayment()
+                                              : await approveRepaymentNFT();
                                         }
                                       } else {
-                                        await approveRepayment();
+                                        widget.type == TypeBorrow.CRYPTO_TYPE
+                                            ? await approveRepayment()
+                                            : await approveRepaymentNFT();
                                       }
                                     } else {
                                       showErrDialog(
@@ -468,6 +478,127 @@ class _RepaymentPayState extends State<RepaymentPay> {
     );
   }
 
+  Future<void> approveRepaymentNFT() async {
+    final NavigatorState navigator = Navigator.of(context);
+    await bloc.getRepaymentDataNFT(
+      paidInterestAmount:
+          bloc.interest.value.isNotEmpty ? bloc.interest.value : '0',
+      paidLoanAmount: bloc.loan.value.isNotEmpty ? bloc.loan.value : '0',
+      paidPenaltyAmount:
+          bloc.penalty.value.isNotEmpty ? bloc.penalty.value : '0',
+      id: widget.obj.bcContractId.toString(),
+    );
+    unawaited(
+      navigator.push(
+        MaterialPageRoute(
+          builder: (context) => Approve(
+            needApprove: true,
+            payValue: '1000000000',
+            tokenAddress:
+                !isChoose && (bloc.maxInterest == 0 && bloc.maxPenalty == 0)
+                    ? ImageAssets.getAddressToken(obj.loan?.symbol ?? '')
+                    : ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
+            textActiveButton: S.current.confirm_repayment,
+            spender: Get.find<AppConstants>().nft_loan_contract,
+            hexString: bloc.hexString,
+            title: S.current.confirm_repayment,
+            listDetail: [
+              DetailItemApproveModel(
+                title: '${S.current.penalty}: ',
+                value:
+                    '${bloc.penalty.value.isNotEmpty ? bloc.penalty.value : '0'}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.interest}: ',
+                value:
+                    '${bloc.interest.value.isNotEmpty ? bloc.interest.value : '0'}'
+                    ' ${obj.interest?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.interest?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.system_fee}: ',
+                value: '${formatPrice.format(
+                  obj.systemFee ?? 0,
+                )}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.loan}: ',
+                value: '${bloc.loan.value.isNotEmpty ? bloc.loan.value : '0'}'
+                    ' ${obj.loan?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.loan?.symbol ?? '',
+                ),
+              ),
+              DetailItemApproveModel(
+                title: '${S.current.prepaid_fee}: ',
+                value: '${formatPrice.format(
+                  obj.prepaidFee ?? 0,
+                )}'
+                    ' ${obj.penalty?.symbol ?? ''}',
+                urlToken: ImageAssets.getUrlToken(
+                  obj.penalty?.symbol ?? '',
+                ),
+              ),
+            ],
+            onErrorSign: (context) {},
+            onSuccessSign: (context, data) {
+              bloc
+                  .postRepaymentToBE(
+                penaltyAmount: bloc.penalty.value,
+                loanSymbol: obj.loan?.symbol ?? '',
+                penaltyFee: '',
+                interestAmount: bloc.interest.value,
+                lenderWallet: bloc.obj.lenderWalletAddress.toString(),
+                penaltySymbol: obj.penalty?.symbol ?? '',
+                borrowWallet: obj.borrowerWalletAddress.toString(),
+                interestAddress:
+                    ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
+                loanAddress:
+                    ImageAssets.getAddressToken(obj.loan?.symbol ?? ''),
+                paymentRequestId: obj.id.toString(),
+                interestSymbol: obj.interest?.symbol ?? '',
+                loanSystemFee: '',
+                id: widget.id,
+                loanAmount: bloc.loan.value,
+                txnHash: data,
+                penaltyAddress:
+                    ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
+                interestSystemFee: '',
+              )
+                  .then((value) {
+                if (value == 'success') {
+                  showLoadSuccess(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
+                } else {
+                  showLoadFail(context).then((value) {
+                    Navigator.of(context).popUntil((route) {
+                      return route.settings.name ==
+                          AppRouter.contract_detail_my_acc;
+                    });
+                  });
+                }
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> approveRepayment() async {
     final NavigatorState navigator = Navigator.of(context);
     await bloc.getRepaymentData(
@@ -485,9 +616,10 @@ class _RepaymentPayState extends State<RepaymentPay> {
           builder: (context) => Approve(
             needApprove: true,
             payValue: '1000000000',
-            //todo a
-            // nghĩa bao
-            tokenAddress: Get.find<AppConstants>().contract_defy,
+            tokenAddress:
+              !isChoose && (bloc.maxInterest == 0 && bloc.maxPenalty == 0)
+              ? ImageAssets.getAddressToken(obj.loan?.symbol ?? '')
+              : ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
             textActiveButton: S.current.confirm_repayment,
             spender: Get.find<AppConstants>().collateral_contract,
             hexString: bloc.hexString,
@@ -564,7 +696,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
                 penaltyAddress:
                     ImageAssets.getAddressToken(obj.penalty?.symbol ?? ''),
                 interestSystemFee: '',
-              ).then((value) {
+              )
+                  .then((value) {
                 if (value == 'success') {
                   showLoadSuccess(context).then((value) {
                     Navigator.of(context).popUntil((route) {
