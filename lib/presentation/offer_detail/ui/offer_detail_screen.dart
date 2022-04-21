@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/config/resources/dimen.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
@@ -174,7 +172,6 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
       rejectProcess = true;
       acceptEnable = false;
     }
-
     return Container(
       height: 102.h,
       width: MediaQuery.of(context).size.width,
@@ -418,8 +415,7 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                 (value) => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        Approve(
+                    builder: (context) => Approve(
                       title: S.current.reject_offer,
                       spender: Get.find<AppConstants>().nftPawn,
                       textActiveButton: S.current.reject_offer,

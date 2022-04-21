@@ -1,15 +1,19 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
+import 'package:Dfy/data/web_socket/web_socket.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/detail_item_approve.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/list_book_evaluation.dart';
 import 'package:Dfy/presentation/create_hard_nft/ui/components/upload_document_widget.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_fail.dart';
 import 'package:Dfy/presentation/transaction_submit/transaction_submit.dart';
 import 'package:Dfy/utils/constants/api_constants.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/utils/pop_up_notification.dart';
 import 'package:Dfy/widgets/approve/ui/approve.dart';
 import 'package:Dfy/widgets/dialog/cupertino_loading.dart';
@@ -61,6 +65,7 @@ class Step1WhenSubmit extends StatefulWidget {
 class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
   late ProvideHardNftCubit cubit;
   late Timer timeReload;
+  late WebSocket webSocket;
   @override
   void initState() {
     super.initState();
@@ -74,10 +79,19 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     ///default asset from cubit
     if (widget.assetId != null) {
       cubit.checkStatusBeHandle(assetId: widget.assetId ?? '');
-      reloadAPI(id: widget.assetId ?? '');
+      // reloadAPI(id: widget.assetId ?? '');
     } else {
       cubit.checkStatusBeHandle(assetId: cubit.assetId);
-      reloadAPI(id: cubit.assetId);
+      // reloadAPI(id: cubit.assetId);
+    }
+    final account = PrefsService.getWalletLogin();
+    final Map<String, dynamic> mapLoginState = jsonDecode(account);
+    if (mapLoginState.stringValueOrEmpty('accessToken') != 'bid_auction') {
+      webSocket = WebSocket(
+          mapLoginState.stringValueOrEmpty('accessToken'), ['create_asset']);
+      webSocket.socketDataStream.listen((event) {
+        cubit.checkStatusBeHandle(assetId: widget.assetId ?? cubit.assetId);
+      });
     }
   }
 
@@ -85,7 +99,7 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
     const oneSec = Duration(seconds: 30);
     timeReload = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         cubit.checkStatusBeHandle(assetId: id);
       },
     );
@@ -348,9 +362,12 @@ class _Step1WhenSubmitState extends State<Step1WhenSubmit> {
                           ),
                         ),
                         spaceW4,
-                        circularImage(ImageAssets.getSymbolAsset(
-                          cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
-                        ), height: 16.h, width: 16.w),
+                        circularImage(
+                            ImageAssets.getSymbolAsset(
+                              cubit.dataDetailAsset.expectingPriceSymbol ?? DFY,
+                            ),
+                            height: 16.h,
+                            width: 16.w),
                         spaceW4,
                         Text(
                           '${formatValue.format(cubit.dataDetailAsset.expectingPrice)}'
