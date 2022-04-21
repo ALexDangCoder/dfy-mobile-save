@@ -23,5 +23,6 @@
   "crypto_pawn_contract": "0xe42389c5186c30857f793479b82ee177e9e74ba9",
   "collateral_contract": "0x9361DECA56f2A6B9e8C6a4217da61DeF5dB34099",
   "review_contract": "0xfD64c543aEfe2938a74Cd47Ce92a9d0fFA7B21DB",
-  "web_socket": "wss://nft-socket.prod.defiforyou.uk"
+  "web_socket": "wss://nft-socket.prod.defiforyou.uk",
+  "nft_loan_contract": "0x31a11E8f0D4f2F65243FBd9ccF8e78Cc14f0DFA0"
 }

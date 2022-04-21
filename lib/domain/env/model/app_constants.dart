@@ -78,6 +78,9 @@ class AppConstants {
   @JsonKey(name: 'web_socket')
   String web_socket;
 
+  @JsonKey(name: 'nft_loan_contract')
+  String nft_loan_contract;
+
   AppConstants(
     this.type,
     this.baseUrl,
@@ -104,6 +107,7 @@ class AppConstants {
     this.collateral_contract,
     this.review_contract,
     this.web_socket,
+    this.nft_loan_contract,
   );
 
   factory AppConstants.fromJson(Map<String, dynamic> json) =>

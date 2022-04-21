@@ -1297,6 +1297,27 @@ class Web3Utils {
     return hex.encode(repayment.data ?? []);
   }
 
+  Future<String> getRepaymentNftData({
+    required String contractId,
+    required String paidPenaltyAmount,
+    required String paidInterestAmount,
+    required String paidLoanAmount,
+  }) async {
+    final deployContract = await deployedNftLoanContract();
+    final function = deployContract.function('repayment');
+    final repayment = Transaction.callContract(
+      contract: deployContract,
+      function: function,
+      parameters: [
+        BigInt.from(num.parse(contractId)),
+        BigInt.from(num.parse(_handleAmount(18, paidPenaltyAmount))),
+        BigInt.from(num.parse(_handleAmount(18, paidInterestAmount))),
+        BigInt.from(num.parse(_handleAmount(18, paidLoanAmount))),
+      ],
+    );
+    return hex.encode(repayment.data ?? []);
+  }
+
   Future<String> getCreatePackageData({
     required int packageType,
     required String loanTokenAddress,
@@ -1540,6 +1561,15 @@ class Web3Utils {
     final deployContract = DeployedContract(
       ContractAbi.fromJson(abiCode, 'submit'),
       EthereumAddress.fromHex(Get.find<AppConstants>().review_contract),
+    );
+    return deployContract;
+  }
+
+  Future<DeployedContract> deployedNftLoanContract() async {
+    final abiCode = await rootBundle.loadString('assets/abi/loanNFTABI.json');
+    final deployContract = DeployedContract(
+      ContractAbi.fromJson(abiCode, 'nftLoan'),
+      EthereumAddress.fromHex(Get.find<AppConstants>().nft_loan_contract),
     );
     return deployContract;
   }
