@@ -1012,6 +1012,7 @@ class _ContractDetailState extends State<ContractDetail>
                                                       if (obj.borrowerWalletAddress ==
                                                           PrefsService
                                                               .getCurrentWalletCore()) {
+                                                        bloc.showLoading();
                                                         await bloc
                                                             .getRepaymentPay();
                                                         if (bloc.checkRepay ==
@@ -1082,6 +1083,7 @@ class _ContractDetailState extends State<ContractDetail>
                                               if (obj.borrowerWalletAddress ==
                                                   PrefsService
                                                       .getCurrentWalletCore()) {
+                                                bloc.showLoading();
                                                 await bloc.getRepaymentPay();
                                                 if (bloc.checkRepay == '') {
                                                   Navigator.push(

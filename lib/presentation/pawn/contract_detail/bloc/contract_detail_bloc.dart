@@ -57,7 +57,7 @@ class ContractDetailBloc extends BaseCubit<ContractDetailState> {
   static const int UNPAID = 2;
 
   Future<void> getRepaymentPay() async {
-    showLoading();
+
     final Result<dynamic> response =
         await _pawnService.getRepaymentPay(
       id: id.toString(),
