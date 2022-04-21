@@ -65,8 +65,7 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
                                 TypeImage.VIDEO)
                             ? FadeInImage.assetNetwork(
                                 placeholder: ImageAssets.image_loading,
-                                image: ApiConstants.BASE_URL_IMAGE +
-                                    nftPawnModel.nftAvatarCid.toString(),
+                                image: ApiConstants.BASE_URL_IMAGE+(nftPawnModel.nftAvatarCid ?? nftPawnModel.nftMediaCid.toString()),
                                 imageCacheHeight: 200,
                                 imageErrorBuilder: (context, url, error) {
                                   return Center(
@@ -86,7 +85,7 @@ class _NFTItemPawnState extends State<NFTItemPawn> {
                               )
                             : FadeInImage.assetNetwork(
                                 placeholder: ImageAssets.image_loading,
-                                image: nftPawnModel.nftMediaCid ?? '',
+                                image: ApiConstants.BASE_URL_IMAGE+(nftPawnModel.nftMediaCid ?? nftPawnModel.nftAvatarCid.toString()),
                                 imageCacheHeight: 200,
                                 imageErrorBuilder: (context, url, error) {
                                   return Center(
