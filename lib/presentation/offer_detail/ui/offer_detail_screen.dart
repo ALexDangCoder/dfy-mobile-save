@@ -176,8 +176,9 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     }
 
     return Container(
+      height: 102.h,
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(
-        bottom: 38.h,
         right: 16.w,
         left: 16.w,
       ),
