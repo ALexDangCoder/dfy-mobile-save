@@ -1332,8 +1332,9 @@ class Web3Utils {
         duration,
         EthereumAddress.fromHex(repaymentAssetAddress),
         BigInt.from(repaymentCycleType),
-        BigInt.from(num.parse(loanToValue)),
-        BigInt.from(num.parse(loanToValueLiquidationThreshold)),
+        BigInt.from(num.parse(_handleAmount(5, loanToValue))),
+        BigInt.from(
+            num.parse(_handleAmount(5, loanToValueLiquidationThreshold))),
       ],
     );
     return hex.encode(createPawnShopPackage.data ?? []);

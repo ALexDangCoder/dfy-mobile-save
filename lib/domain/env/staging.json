@@ -22,5 +22,6 @@
   "contract_defy": "0x20f1dE452e9057fe863b99d33CF82DBeE0C45B14",
   "crypto_pawn_contract": "0x6ff5fe3de90e847ac30c19894f29225cd85431f2",
   "collateral_contract": "0x90C3764c2998b57E215704938EDA227a8466b3aA",
-  "review_contract": "0x062df96c075fD38E8a83A59aa67187D62a9DC382"
+  "review_contract": "0x062df96c075fD38E8a83A59aa67187D62a9DC382",
+  "web_socket": "wss://beta.socket.defiforyou.uk"
 }

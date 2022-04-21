@@ -118,11 +118,12 @@ class NFTDetailScreenState extends State<NFTDetailScreen>
     _tabController = TabController(length: _tabPage.length, vsync: this);
     final account = PrefsService.getWalletLogin();
     final Map<String, dynamic> mapLoginState = jsonDecode(account);
-    if (mapLoginState.stringValueOrEmpty('accessToken') != 'bid_auction') {
-      webSocket =
-          WebSocket(mapLoginState.stringValueOrEmpty('accessToken'), '');
+    if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
+      webSocket = WebSocket(
+        mapLoginState.stringValueOrEmpty('accessToken'),
+        ['bid_auction'],
+      );
       webSocket.socketDataStream.listen((event) {
-        // print('Fuck data $event');
         onRefresh();
       });
     }
