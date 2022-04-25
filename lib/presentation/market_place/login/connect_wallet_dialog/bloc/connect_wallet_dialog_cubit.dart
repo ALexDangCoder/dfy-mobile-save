@@ -94,11 +94,11 @@ class ConnectWalletDialogCubit extends BaseCubit<ConnectWalletDialogState> {
               await client.getBalanceOfBnb(ofAddress: walletAddress);
           balanceSubject.sink.add(balance);
         } catch (e) {
-          showErrDialog(
-            context: context,
-            title: S.current.notify,
-            content: S.current.something_went_wrong,
-          );
+          // showErrDialog(
+          //   context: context,
+          //   title: S.current.notify,
+          //   content: S.current.something_went_wrong,
+          // );
         }
       }
     }
