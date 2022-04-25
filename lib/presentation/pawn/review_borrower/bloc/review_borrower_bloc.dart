@@ -2,6 +2,7 @@ import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/data/request/pawn/review_create_request.dart';
 import 'package:Dfy/data/result/result.dart';
 import 'package:Dfy/data/web3/web3_utils.dart';
+import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/repository/home_pawn/borrow_repository.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/pawn/contract_detail/ui/contract_detail.dart';
@@ -19,21 +20,20 @@ class ReviewBorrowerBloc {
 
   Future<void> getHexString({
     required String bcContractId,
-    required String bcContractAddress,
     required TypeBorrow typeBorrow,
   }) async {
     try {
       if (typeBorrow == TypeBorrow.NFT_TYPE) {
         hexString = await web3Client.getSubmitNFTContractData(
-          contractAddress: bcContractAddress,
+          contractAddress: Get.find<AppConstants>().nft_loan_contract,
           contractId: bcContractId,
-          point: rateNumber.value+1,
+          point: rateNumber.value + 1,
         );
       } else {
         hexString = await web3Client.getSubmitCryptoContractData(
-          contractAddress: bcContractAddress,
+          contractAddress: Get.find<AppConstants>().collateral_contract,
           contractId: bcContractId,
-          point: rateNumber.value+1,
+          point: rateNumber.value + 1,
         );
       }
     } catch (e) {

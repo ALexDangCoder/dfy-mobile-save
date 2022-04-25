@@ -288,8 +288,6 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                       onTap: () async {
                         final NavigatorState navigator = Navigator.of(context);
                         await bloc.getHexString(
-                          bcContractAddress:
-                              Get.find<AppConstants>().collateral_contract,
                           bcContractId:
                               widget.objDetail.bcContractId.toString(),
                           typeBorrow: widget.typeBorrow,
@@ -298,8 +296,7 @@ class _ReviewBorrowerState extends State<ReviewBorrower> {
                           navigator.push(
                             MaterialPageRoute(
                               builder: (context) => Approve(
-                                textActiveButton:
-                                    S.current.review_claim_reward,
+                                textActiveButton: S.current.review_claim_reward,
                                 spender:
                                     Get.find<AppConstants>().review_contract,
                                 hexString: bloc.hexString,
