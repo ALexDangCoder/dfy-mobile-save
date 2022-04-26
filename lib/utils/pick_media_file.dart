@@ -110,7 +110,7 @@ Future<Map<String, dynamic>> pickImageFunc({
             CropAspectRatioPreset.ratio7x5,
             CropAspectRatioPreset.ratio16x9,
           ];
-    final File? croppedFile = await ImageCropper.cropImage(
+    final File? croppedFile = await ImageCropper().cropImage(
       sourcePath: newImage.path,
       cropStyle:
           imageType == AVATAR_PHOTO ? CropStyle.circle : CropStyle.rectangle,

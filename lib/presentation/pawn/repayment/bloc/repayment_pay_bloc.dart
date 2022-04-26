@@ -123,6 +123,25 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     }
   }
 
+  Future<void> getRepaymentDataNFT({
+    required String paidInterestAmount,
+    required String paidLoanAmount,
+    required String paidPenaltyAmount,
+    required String id,
+  }) async {
+    try {
+      showLoading();
+      hexString = await web3Client.getRepaymentNftData(
+        paidPenaltyAmount: paidPenaltyAmount,
+        paidLoanAmount: paidLoanAmount,
+        contractId: id,
+        paidInterestAmount: paidInterestAmount,
+      );
+    } catch (e) {
+      throw AppException(S.current.error, e.toString());
+    }
+  }
+
   Future<void> getRepaymentData({
     required String paidInterestAmount,
     required String paidLoanAmount,
@@ -205,7 +224,7 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
         }
         showContent();
       },
-      error: (error) { },
+      error: (error) {},
     );
   }
 
@@ -231,19 +250,19 @@ class RepaymentPayBloc extends BaseCubit<RepaymentPayState> {
     String success = '';
     final Map<String, dynamic> mapInterest = {
       'address': interestAddress,
-      'amount': interestAmount,
+      'amount': interestAmount == '' ? '0' : interestAmount,
       'symbol': interestSymbol,
       'systemFee': interestSystemFee,
     };
     final Map<String, dynamic> mapLoan = {
       'address': loanAddress,
-      'amount': loanAmount,
+      'amount': loanAmount == '' ? '0' : loanAmount,
       'symbol': loanSymbol,
       'systemFee': penaltyFee,
     };
     final Map<String, dynamic> mapPenalty = {
       'address': penaltyAddress,
-      'amount': penaltyAmount,
+      'amount': penaltyAmount == '' ? '0' : penaltyAmount,
       'symbol': penaltySymbol,
       'systemFee': interestSystemFee,
     };

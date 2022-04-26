@@ -183,7 +183,7 @@ class _PawnListState extends State<PawnList> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (context) => DialogFilter(
-                                      title: S.current.interest_rate,
+                                      title: S.current.interest_rate_pawn,
                                       type: _bloc.typeInterest ??
                                           TypeFilter.HIGH_TO_LOW,
                                     ),
@@ -208,7 +208,7 @@ class _PawnListState extends State<PawnList> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (context) => DialogFilter(
-                                      title: S.current.sign_contract_pawn,
+                                      title: S.current.signed_contracts,
                                       type: _bloc.typeSigned ??
                                           TypeFilter.HIGH_TO_LOW,
                                     ),

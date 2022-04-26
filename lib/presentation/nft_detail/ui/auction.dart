@@ -24,7 +24,6 @@ Widget _buildButtonPlaceBid(
               isRequireLoginEmail: false,
               hasFunction: true,
               function: () {
-                print('Hello mother fucker');
                 handle();
               },
             ),
@@ -111,7 +110,6 @@ Widget _buildButtonBuyOut(
             isRequireLoginEmail: false,
             hasFunction: true,
             function: () {
-              print('fuck auction');
               nftOnAuction.isBoughtByOther = true;
               nftOnAuction.marketStatus = 10;
               bloc.emit(NftOnAuctionSuccess(nftOnAuction));

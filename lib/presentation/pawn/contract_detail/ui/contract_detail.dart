@@ -1008,12 +1008,13 @@ class _ContractDetailState extends State<ContractDetail>
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: () async{
-                                                      //todo
+                                                    onTap: () async {
                                                       if (obj.borrowerWalletAddress ==
                                                           PrefsService
                                                               .getCurrentWalletCore()) {
-                                                        await bloc.getRepaymentPay();
+                                                        bloc.showLoading();
+                                                        await bloc
+                                                            .getRepaymentPay();
                                                         if (bloc.checkRepay ==
                                                             '') {
                                                           Navigator.push(
@@ -1027,6 +1028,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                                         .name(),
                                                                 id: obj.id
                                                                     .toString(),
+                                                                type:
+                                                                    widget.type,
                                                               ),
                                                             ),
                                                           ).whenComplete(
@@ -1035,11 +1038,12 @@ class _ContractDetailState extends State<ContractDetail>
                                                           );
                                                         } else {
                                                           showErrDialog(
-                                                              context: context,
-                                                              title: S.current
-                                                                  .warning,
-                                                              content: bloc
-                                                                  .checkRepay,);
+                                                            context: context,
+                                                            title: S.current
+                                                                .warning,
+                                                            content:
+                                                                bloc.checkRepay,
+                                                          );
                                                         }
                                                       } else {
                                                         showAlert(
@@ -1071,63 +1075,60 @@ class _ContractDetailState extends State<ContractDetail>
                                         : null,
                                   )
                                 : SizedBox(
-                                    child:
-                                        obj.status == ContractDetailBloc.ACTIVE
-                                            ? GestureDetector(
-                                                onTap: () async{
-                                                  //todo
-                                                  if (obj.borrowerWalletAddress ==
-                                                      PrefsService
-                                                          .getCurrentWalletCore()) {
-                                                    await bloc.getRepaymentPay();
-                                                    if (bloc.checkRepay ==
-                                                        '') {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              RepaymentPay(
-                                                                obj: bloc
-                                                                    .objDetail ??
-                                                                    ContractDetailPawn
-                                                                        .name(),
-                                                                id: obj.id
-                                                                    .toString(),
-                                                              ),
-                                                        ),
-                                                      ).whenComplete(
-                                                            () =>
-                                                            bloc.getData(),
-                                                      );
-                                                    } else {
-                                                      showErrDialog(
-                                                          context: context,
-                                                          title: S.current
-                                                              .warning,
-                                                          content: bloc
-                                                              .checkRepay,);
-                                                    }
-                                                  } else {
-                                                    showAlert(
-                                                      context,
-                                                      PrefsService
-                                                          .getCurrentWalletCore(),
-                                                    );
-                                                  }
-                                                },
-                                                child: Container(
-                                                  color: AppTheme.getInstance()
-                                                      .bgBtsColor(),
-                                                  padding: EdgeInsets.only(
-                                                    bottom: 38.h,
-                                                  ),
-                                                  child: ButtonGold(
-                                                    isEnable: true,
-                                                    title: S.current.repayment,
-                                                  ),
-                                                ),
-                                              )
-                                            : null,
+                                    child: obj.status ==
+                                            ContractDetailBloc.ACTIVE
+                                        ? GestureDetector(
+                                            onTap: () async {
+                                              //todo
+                                              if (obj.borrowerWalletAddress ==
+                                                  PrefsService
+                                                      .getCurrentWalletCore()) {
+                                                bloc.showLoading();
+                                                await bloc.getRepaymentPay();
+                                                if (bloc.checkRepay == '') {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RepaymentPay(
+                                                        type: widget.type,
+                                                        obj: bloc.objDetail ??
+                                                            ContractDetailPawn
+                                                                .name(),
+                                                        id: obj.id.toString(),
+                                                      ),
+                                                    ),
+                                                  ).whenComplete(
+                                                    () => bloc.getData(),
+                                                  );
+                                                } else {
+                                                  showErrDialog(
+                                                    context: context,
+                                                    title: S.current.warning,
+                                                    content: bloc.checkRepay,
+                                                  );
+                                                }
+                                              } else {
+                                                showAlert(
+                                                  context,
+                                                  PrefsService
+                                                      .getCurrentWalletCore(),
+                                                );
+                                              }
+                                            },
+                                            child: Container(
+                                              color: AppTheme.getInstance()
+                                                  .bgBtsColor(),
+                                              padding: EdgeInsets.only(
+                                                bottom: 38.h,
+                                              ),
+                                              child: ButtonGold(
+                                                isEnable: true,
+                                                title: S.current.repayment,
+                                              ),
+                                            ),
+                                          )
+                                        : null,
                                   ),
                           ),
                       ],

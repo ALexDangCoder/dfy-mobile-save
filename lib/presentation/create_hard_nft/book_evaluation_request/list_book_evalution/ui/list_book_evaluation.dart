@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
+import 'package:Dfy/data/web_socket/web_socket.dart';
+import 'package:Dfy/domain/locals/prefs_service.dart';
 import 'package:Dfy/domain/model/market_place/pawn_shop_model.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/book_evalution/ui/book_evaluation.dart';
@@ -9,6 +13,7 @@ import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_bo
 import 'package:Dfy/presentation/create_hard_nft/book_evaluation_request/list_book_evalution/ui/widget/step_appbar.dart';
 import 'package:Dfy/presentation/create_hard_nft/evaluation_hard_nft_result/ui/evaluation_result.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/map_extension.dart';
 import 'package:Dfy/widgets/button/button.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +38,7 @@ class ListBookEvaluation extends StatefulWidget {
 
 class _ListBookEvaluationState extends State<ListBookEvaluation> {
   late final BlocListBookEvaluation _bloc;
+  late WebSocket webSocket;
 
   @override
   void initState() {
@@ -40,12 +46,23 @@ class _ListBookEvaluationState extends State<ListBookEvaluation> {
     _bloc = BlocListBookEvaluation();
     _bloc.assetId = widget.assetId;
     _bloc.getListPawnShop(assetId: widget.assetId);
-    _bloc.reloadAPI();
+    final account = PrefsService.getWalletLogin();
+    final Map<String, dynamic> mapLoginState = jsonDecode(account);
+    if (mapLoginState.stringValueOrEmpty('accessToken') != '') {
+      webSocket = WebSocket(
+        mapLoginState.stringValueOrEmpty('accessToken'),
+        ['appointment', 'evaluation'],
+      );
+      webSocket.socketDataStream.listen((event) {
+        _bloc.getListPawnShop(assetId: widget.assetId);
+      });
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
+    webSocket.dispose();
     _bloc.closeReload();
   }
 
