@@ -62,7 +62,7 @@ class _CreateNewLoanPackageState extends State<CreateNewLoanPackage> {
     cubit = CreateNewLoanPackageCubit();
     cubit.getListTokens();
     duration = S.current.months_pawn;
-    typeCreate = cubit.typeCreate[1];
+    typeCreate = cubit.typeCreate[0];
     loanToken = cubit.listToken[0];
     loanRepaymentToken = cubit.listRepaymentToken[0];
   }
