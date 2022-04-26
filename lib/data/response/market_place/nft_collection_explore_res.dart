@@ -10,7 +10,7 @@ class NftCollectionExploreResponse extends Equatable {
   String? id;
   @JsonKey(name: 'position')
   int? position;
-  @JsonKey(name: 'type')
+  @JsonKey(name: 'nft_type')
   int? type;
   @JsonKey(name: 'price')
   double? price;
