@@ -55,7 +55,6 @@ class DataResponse {
   @JsonKey(name: 'kyc')
   KycResponse? kyc;
 
-
   DataResponse(
       this.email,
       this.birthday,
@@ -78,21 +77,21 @@ class DataResponse {
   Map<String, dynamic> toJson() => _$DataResponseToJson(this);
 
   UserProfile toDomain() => UserProfile(
-    email: email,
-    birthday: birthday,
-    phoneNumber: phoneNumber,
-    address: address,
-    referredId: referredId,
-    isActive: isActive,
-    createAtl: createAt,
-    activatedAt: activatedAt,
-    links: links,
-    pawnshop: pawnshop?.toDomain(),
-    id: id,
-    name: name,
-    roleType: roleType,
-    kyc: kyc?.toDomain(),
-  );
+        email: email,
+        birthday: birthday,
+        phoneNumber: phoneNumber,
+        address: address,
+        referredId: referredId,
+        isActive: isActive,
+        createAtl: createAt,
+        activatedAt: activatedAt,
+        links: links,
+        pawnshop: pawnshop?.toDomain(),
+        id: id,
+        name: name,
+        roleType: roleType,
+        kyc: kyc?.toDomain(),
+      );
 }
 
 @JsonSerializable()
@@ -122,27 +121,27 @@ class PawnshopResponse extends Equatable {
   @JsonKey(name: 'updatedAt')
   int? updateAt;
 
-
-  PawnshopResponse(this.address,
-      this.avatar,
-      this.cover,
-      this.name,
-      this.id,
-      this.type,
-      this.userId,
-      this.email,
-      this.description,
-      this.phoneNumber,
-      this.createAt,
-      this.updateAt);
+  PawnshopResponse(
+    this.address,
+    this.avatar,
+    this.cover,
+    this.name,
+    this.id,
+    this.type,
+    this.userId,
+    this.email,
+    this.description,
+    this.phoneNumber,
+    this.createAt,
+    this.updateAt,
+  );
 
   factory PawnshopResponse.fromJson(Map<String, dynamic> json) =>
       _$PawnshopResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$PawnshopResponseToJson(this);
 
-  Pawnshop toDomain() =>
-      Pawnshop(
+  Pawnshop toDomain() => Pawnshop(
         address: address,
         avatar: avatar,
         cover: cover,
@@ -209,8 +208,8 @@ class KycResponse {
   @JsonKey(name: 'emailAdminVerify')
   String? emailAdminVerify;
 
-
-  KycResponse(this.id,
+  KycResponse(
+      this.id,
       this.firstName,
       this.name,
       this.lastName,
@@ -239,29 +238,29 @@ class KycResponse {
   Map<String, dynamic> toJson() => _$KycResponseToJson(this);
 
   KYC toDomain() => KYC(
-    id: id,
-    name: name,
-    firstName: firstName,
-    lastName: lastName,
-    middleName: middleName,
-    typePhoto: typePhoto,
-    frontPhoto: frontPhoto,
-    backPhoto: backPhoto,
-    selfiePhoto: selfiePhoto,
-    kycNumber: kycNumber,
-    address: address,
-    status: status,
-    dateOfBirth: dateOfBirth,
-    country: country?.toDomain(),
-    city: city?.toDomain(),
-    isActive: isActive,
-    walletAddress: walletAddress,
-    email: email,
-    createAt: createAt,
-    verifyAt: verifyAt,
-    emailAdminVerify: emailAdminVerify,
-    reason: reason,
-  );
+        id: id,
+        name: name,
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        typePhoto: typePhoto,
+        frontPhoto: frontPhoto,
+        backPhoto: backPhoto,
+        selfiePhoto: selfiePhoto,
+        kycNumber: kycNumber,
+        address: address,
+        status: status,
+        dateOfBirth: dateOfBirth,
+        country: country?.toDomain(),
+        city: city?.toDomain(),
+        isActive: isActive,
+        walletAddress: walletAddress,
+        email: email,
+        createAt: createAt,
+        verifyAt: verifyAt,
+        emailAdminVerify: emailAdminVerify,
+        reason: reason,
+      );
 }
 
 @JsonSerializable()
@@ -280,8 +279,7 @@ class CityResponse {
 
   Map<String, dynamic> toJson() => _$CityResponseToJson(this);
 
-  CityModel toDomain() =>
-      CityModel(
+  CityModel toDomain() => CityModel(
         id: id,
         name: name,
         countryID: countryId,
@@ -302,8 +300,7 @@ class CountryResponse {
 
   Map<String, dynamic> toJson() => _$CountryResponseToJson(this);
 
-  CountryModel toDomain() =>
-      CountryModel(
+  CountryModel toDomain() => CountryModel(
         id: id.toString(),
         name: name,
       );

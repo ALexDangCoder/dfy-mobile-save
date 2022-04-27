@@ -3,8 +3,6 @@ import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
 import 'package:Dfy/data/exception/app_exception.dart';
 import 'package:Dfy/domain/env/model/app_constants.dart';
-import 'package:Dfy/domain/locals/prefs_service.dart';
-import 'package:Dfy/domain/model/market_place/login_model.dart';
 import 'package:Dfy/domain/model/pawn/user_profile.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/login/connect_wallet_dialog/ui/connect_wallet_dialog.dart';
@@ -14,14 +12,11 @@ import 'package:Dfy/presentation/pawn/other_profile/cubit/other_profile_cubit.da
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/borrow_tab.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/header_tab_profile.dart';
 import 'package:Dfy/presentation/pawn/other_profile/ui/widget/lender_tab.dart';
-import 'package:Dfy/utils/constants/api_constants.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
-import 'package:Dfy/utils/screen_controller.dart';
 import 'package:Dfy/widgets/button/button_radial_gradient.dart';
 import 'package:Dfy/widgets/common_bts/base_design_screen.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
-import 'package:Dfy/widgets/views/coming_soon.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
@@ -567,10 +562,9 @@ class _OtherProfileState extends State<OtherProfile>
                 );
               },
               imageErrorBuilder: (ctx, obj, st) {
-                return Container(
-                  height: 145.h,
-                  width: double.infinity,
-                  color: borderItemColors,
+                return Image.network(
+                  'https://app.defiforyou.uk/_nuxt/img/banner.7a41966.png',
+                  fit: BoxFit.cover,
                 );
               },
               placeholderCacheHeight: 400,
@@ -603,9 +597,11 @@ class _OtherProfileState extends State<OtherProfile>
                     },
                     imageErrorBuilder: (ctx, obj, st) {
                       return Container(
-                        height: 145.h,
-                        width: double.infinity,
-                        color: borderItemColors,
+                        color: Colors.grey.withOpacity(0.2),
+                        child: Image.network(
+                          'https://app.defiforyou.uk/_nuxt/img/profile.1de847c.png',
+                          fit: BoxFit.cover,
+                        ),
                       );
                     },
                     placeholderCacheHeight: 400,
