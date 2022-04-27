@@ -51,9 +51,6 @@ class _LenderContractListState extends State<LenderContractList>
           },
           child: Container(
             height: 812.h,
-            margin: EdgeInsets.only(
-              top: 26.h,
-            ),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(

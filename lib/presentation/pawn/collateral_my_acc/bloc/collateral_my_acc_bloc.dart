@@ -74,7 +74,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   String loanToken = '';
   String collateralToken = '';
   String status = '';
-  String textAddress = 'all';
+  String textAddress = PrefsService.getCurrentWalletCore();
 
   void chooseAddressFilter(String address) {
     textAddressFilter.sink.add(
@@ -254,9 +254,10 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
     result.when(
       success: (res) {
         if (res.isEmpty) {
+          statusWallet = PrefsService.getCurrentWalletCore();
           checkWalletAddress = false;
         } else {
-          statusWallet = PrefsService.getCurrentWalletCore();
+
           if (res.length < 2) {
             for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
@@ -266,12 +267,14 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
             textAddress = PrefsService.getCurrentWalletCore();
             checkWalletAddress = false;
             textAddressFilter.add(PrefsService.getCurrentWalletCore());
+            statusWallet = PrefsService.getCurrentWalletCore();
           } else {
             for (final element in res) {
               if (element.walletAddress?.isNotEmpty ?? false) {
                 listAcc.add(element.walletAddress ?? '');
               }
             }
+            statusWallet = S.current.all;
             textAddress = 'all';
             checkWalletAddress = true;
             textAddressFilter.add(S.current.all);
