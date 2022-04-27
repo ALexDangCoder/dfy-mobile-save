@@ -26,7 +26,7 @@ class Crypto extends StatefulWidget {
   _CryptoState createState() => _CryptoState();
 }
 
-class _CryptoState extends State<Crypto> {
+class _CryptoState extends State<Crypto> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CollateralMyAccBloc, CollateralMyAccState>(
@@ -52,6 +52,7 @@ class _CryptoState extends State<Crypto> {
       builder: (context, state) {
         final list = widget.bloc.list;
         return StateStreamLayout(
+          isBack: false,
           retry: () {
             widget.bloc.getListCollateral();
           },
@@ -101,34 +102,35 @@ class _CryptoState extends State<Crypto> {
                       )
                     : state is CollateralMyAccSuccess
                         ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 60.h,
-                              ),
-                              Center(
-                                child: Image(
-                                  image: const AssetImage(
-                                    ImageAssets.img_search_empty,
-                                  ),
-                                  height: 120.h,
-                                  width: 120.w,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 17.7.h,
-                              ),
-                              Center(
-                                child: Text(
-                                  S.current.no_result_found,
-                                  style: textNormal(
-                                    Colors.white54,
-                                    20.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    SizedBox(
+                      height: 240.h,
+                    ),
+                    Center(
+                      child: Image(
+                        image: const AssetImage(
+                          ImageAssets.img_search_empty,
+                        ),
+                        height: 120.h,
+                        width: 120.w,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 17.7.h,
+                    ),
+                    Center(
+                      child: Text(
+                        S.current.no_result_found,
+                        style: textNormal(
+                          Colors.white54,
+                          20.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
                         : const SizedBox.shrink(),
               ),
             ),
@@ -137,4 +139,8 @@ class _CryptoState extends State<Crypto> {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

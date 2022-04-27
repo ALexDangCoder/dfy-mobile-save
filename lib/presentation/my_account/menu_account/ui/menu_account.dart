@@ -1,3 +1,5 @@
+
+
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
@@ -208,22 +210,13 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'sent_list':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: OfferSentList(),
-                isRequireLoginEmail: false,
-              ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OfferSentList(),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: OfferSentList(),
+              isRequireLoginEmail: true,
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'collection_list':
@@ -379,48 +372,27 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'contracts_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: LenderContractList(),
-                isRequireLoginEmail: false,
-              ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LenderContractList(),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: LenderContractList(),
+              isRequireLoginEmail:true,
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'loan_request_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: LenderLoanRequest(),
-                isRequireLoginEmail: false,
-                settings: RouteSettings(
-                  name: AppRouter.loan_request_lender,
-                ),
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: LenderLoanRequest(),
+              isRequireLoginEmail: true,
+              settings: RouteSettings(
+                name: AppRouter.loan_request_lender,
               ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LenderLoanRequest(),
-                settings: const RouteSettings(
-                  name: AppRouter.loan_request_lender,
-                ),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'setting':
@@ -446,28 +418,16 @@ class _MenuAccountState extends State<MenuAccount> {
       ///dong lai
       case 'setting_package_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: ManageLoanPackageList(),
-                isRequireLoginEmail: false,
-                settings: const RouteSettings(
-                  name: AppRouter.manage_loan_package,
-                ),
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: ManageLoanPackageList(),
+              isRequireLoginEmail: true,
+              settings: const RouteSettings(
+                name: AppRouter.manage_loan_package,
               ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ManageLoanPackageList(),
-                settings: const RouteSettings(
-                  name: AppRouter.manage_loan_package,
-                ),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'verification':
