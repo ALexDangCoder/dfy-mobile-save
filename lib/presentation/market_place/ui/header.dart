@@ -48,10 +48,10 @@ class HeaderMarketPlace extends StatelessWidget {
             ),
             searchBar(context, cubit),
             GestureDetector(
-              child: ImageIcon(
-                const AssetImage(ImageAssets.ic_notify),
-                size: 28.sp,
-                color: AppTheme.getInstance().whiteColor(),
+              child: Image.asset(
+                ImageAssets.ic_bsc_svg,
+                height: 28.h,
+                width: 28.w,
               ),
               onTap: () {},
             ),
