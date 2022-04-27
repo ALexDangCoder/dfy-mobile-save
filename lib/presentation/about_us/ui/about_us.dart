@@ -128,29 +128,29 @@ class AboutUs extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        RichText(
-                          text: TextSpan(
-                            text: appName,
-                            style: textNormalCustom(
-                              AppTheme.getInstance().getAmountColor(),
-                              16,
-                              FontWeight.w600,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: S.current.about_us_content,
-                                style: textNormalCustom(
-                                  AppTheme.getInstance().textThemeColor(),
-                                  16,
-                                  FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        // RichText(
+                        //   text: TextSpan(
+                        //     text: appName,
+                        //     style: textNormalCustom(
+                        //       AppTheme.getInstance().getAmountColor(),
+                        //       16,
+                        //       FontWeight.w600,
+                        //     ),
+                        //     children: <TextSpan>[
+                        //       TextSpan(
+                        //         text: S.current.about_us_content,
+                        //         style: textNormalCustom(
+                        //           AppTheme.getInstance().textThemeColor(),
+                        //           16,
+                        //           FontWeight.w400,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
                         Row(
                           children: [
                             Image.asset(ImageAssets.ic_global),
@@ -177,32 +177,32 @@ class AboutUs extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        Row(
-                          children: [
-                            Image.asset(ImageAssets.ic_email),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                launchMail(email: mailAsk);
-                              },
-                              child: SizedBox(
-                                child: Text(
-                                  mailAsk,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().textThemeColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Image.asset(ImageAssets.ic_email),
+                        //     const SizedBox(
+                        //       width: 8,
+                        //     ),
+                        //     GestureDetector(
+                        //       onTap: () {
+                        //         launchMail(email: mailAsk);
+                        //       },
+                        //       child: SizedBox(
+                        //         child: Text(
+                        //           mailAsk,
+                        //           style: textNormalCustom(
+                        //             AppTheme.getInstance().textThemeColor(),
+                        //             16,
+                        //             FontWeight.w400,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 16,
+                        // ),
                         Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
@@ -242,36 +242,36 @@ class AboutUs extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        Row(
-                          children: [
-                            Image.asset(ImageAssets.ic_email),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                launchMail(email: mailAskHanoi);
-                              },
-                              child: SizedBox(
-                                child: Text(
-                                  mailAskHanoi,
-                                  style: textNormalCustom(
-                                    AppTheme.getInstance().getAmountColor(),
-                                    16,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Image.asset(ImageAssets.ic_flag_vn),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Image.asset(ImageAssets.ic_email),
+                        //     const SizedBox(
+                        //       width: 8,
+                        //     ),
+                        //     GestureDetector(
+                        //       onTap: () {
+                        //         launchMail(email: mailAskHanoi);
+                        //       },
+                        //       child: SizedBox(
+                        //         child: Text(
+                        //           mailAskHanoi,
+                        //           style: textNormalCustom(
+                        //             AppTheme.getInstance().getAmountColor(),
+                        //             16,
+                        //             FontWeight.w400,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     const SizedBox(
+                        //       width: 8,
+                        //     ),
+                        //     Image.asset(ImageAssets.ic_flag_vn),
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 16,
+                        // ),
                         Row(
                           children: [
                             Image.asset(ImageAssets.ic_email),
