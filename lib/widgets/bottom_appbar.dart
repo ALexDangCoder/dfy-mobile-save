@@ -41,30 +41,30 @@ class _CustomBottomHomeAppbarState extends State<CustomBottomHomeAppbar> {
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           return Row(
             children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    widget.mainCubit.indexSink.add(tabHomeIndex);
-                  },
-                  child: snapshot.data == tabHomeIndex
-                      ? itemBottomBar(
-                          itemSelected(
-                            child: ImageAssets.svgAssets(
-                              ImageAssets.icTabHomeSelected,
-                            ),
-                          ),
-                          S.current.tab_home,
-                          snapshot.data == tabHomeIndex,
-                        )
-                      : itemBottomBar(
-                          ImageAssets.svgAssets(
-                            ImageAssets.icTabHomeUnselected,
-                          ),
-                          S.current.tab_home,
-                          snapshot.data == tabHomeIndex,
-                        ),
-                ),
-              ),
+              // Expanded(
+              //   child: InkWell(
+              //     onTap: () {
+              //       widget.mainCubit.indexSink.add(tabHomeIndex);
+              //     },
+              //     child: snapshot.data == tabHomeIndex
+              //         ? itemBottomBar(
+              //             itemSelected(
+              //               child: ImageAssets.svgAssets(
+              //                 ImageAssets.icTabHomeSelected,
+              //               ),
+              //             ),
+              //             S.current.tab_home,
+              //             snapshot.data == tabHomeIndex,
+              //           )
+              //         : itemBottomBar(
+              //             ImageAssets.svgAssets(
+              //               ImageAssets.icTabHomeUnselected,
+              //             ),
+              //             S.current.tab_home,
+              //             snapshot.data == tabHomeIndex,
+              //           ),
+              //   ),
+              // ),
               Expanded(
                 child: InkWell(
                   onTap: () {

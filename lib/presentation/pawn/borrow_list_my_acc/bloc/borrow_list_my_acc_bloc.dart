@@ -60,8 +60,8 @@ class BorrowListMyAccBloc extends BaseCubit<BorrowListMyAccState> {
     S.current.all,
   ];
   String? checkStatus;
-  String textAddress = 'all';
-  String textAddressNFT = 'all';
+  String textAddress = PrefsService.getCurrentWalletCore();
+  String textAddressNFT = PrefsService.getCurrentWalletCore();
   bool statusAllFilter = false;
   bool statusCompletedFilter = false;
   bool statusDefaultFilter = false;

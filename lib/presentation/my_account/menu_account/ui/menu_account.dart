@@ -26,6 +26,7 @@ import 'package:Dfy/presentation/pawn/verification/ui/verification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -196,6 +197,11 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+      case 'faq':
+        {
+          launchURL("https://defi-for-you.gitbook.io/faq/");
+        }
+        break;
       case 'about_us':
         {
           Navigator.push(
@@ -208,22 +214,13 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'sent_list':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: OfferSentList(),
-                isRequireLoginEmail: false,
-              ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OfferSentList(),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: OfferSentList(),
+              isRequireLoginEmail: true,
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'collection_list':
@@ -379,48 +376,27 @@ class _MenuAccountState extends State<MenuAccount> {
         break;
       case 'contracts_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: LenderContractList(),
-                isRequireLoginEmail: false,
-              ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LenderContractList(),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: LenderContractList(),
+              isRequireLoginEmail: true,
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'loan_request_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: LenderLoanRequest(),
-                isRequireLoginEmail: false,
-                settings: RouteSettings(
-                  name: AppRouter.loan_request_lender,
-                ),
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: LenderLoanRequest(),
+              isRequireLoginEmail: true,
+              settings: RouteSettings(
+                name: AppRouter.loan_request_lender,
               ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LenderLoanRequest(),
-                settings: const RouteSettings(
-                  name: AppRouter.loan_request_lender,
-                ),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'setting':
@@ -443,31 +419,20 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+
       ///dong lai
       case 'setting_package_lender':
         {
-          if (state is NoLoginState) {
-            showDialog(
-              context: context,
-              builder: (context) => const ConnectWalletDialog(
-                navigationTo: ManageLoanPackageList(),
-                isRequireLoginEmail: false,
-                settings: const RouteSettings(
-                  name: AppRouter.manage_loan_package,
-                ),
+          showDialog(
+            context: context,
+            builder: (context) => const ConnectWalletDialog(
+              navigationTo: ManageLoanPackageList(),
+              isRequireLoginEmail: true,
+              settings: const RouteSettings(
+                name: AppRouter.manage_loan_package,
               ),
-            ).then((_) => cubit.getLoginState());
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ManageLoanPackageList(),
-                settings: const RouteSettings(
-                  name: AppRouter.manage_loan_package,
-                ),
-              ),
-            ).then((_) => cubit.getLoginState());
-          }
+            ),
+          ).then((_) => cubit.getLoginState());
         }
         break;
       case 'verification':
@@ -555,12 +520,12 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_folder,
       children: [],
     ),
-    ItemMenuModel.createParent(
-      routeName: 'about_us',
-      title: S.current.nft_activity,
-      icon: ImageAssets.ic_activity,
-      children: [],
-    ),
+    // ItemMenuModel.createParent(
+    //   routeName: 'about_us',
+    //   title: S.current.nft_activity,
+    //   icon: ImageAssets.ic_activity,
+    //   children: [],
+    // ),
     ItemMenuModel.createParent(
       title: S.current.borrower_profile,
       icon: ImageAssets.ic_token_symbol,
@@ -604,7 +569,7 @@ class _MenuAccountState extends State<MenuAccount> {
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'about_us',
+      routeName: 'faq',
       title: 'FAQ',
       icon: ImageAssets.ic_faq,
       children: [],
