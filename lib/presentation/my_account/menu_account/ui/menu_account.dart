@@ -1,5 +1,3 @@
-
-
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/routes/router.dart';
@@ -28,6 +26,7 @@ import 'package:Dfy/presentation/pawn/verification/ui/verification.dart';
 import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/presentation/market_place/list_nft/ui/list_nft.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
+import 'package:Dfy/utils/extensions/common_ext.dart';
 import 'package:Dfy/utils/extensions/list_extension.dart';
 import 'package:Dfy/utils/extensions/string_extension.dart';
 import 'package:Dfy/widgets/views/state_stream_layout.dart';
@@ -196,6 +195,11 @@ class _MenuAccountState extends State<MenuAccount> {
               ),
             ).then((_) => cubit.getLoginState());
           }
+        }
+        break;
+      case 'faq':
+        {
+          launchURL("https://defi-for-you.gitbook.io/faq/");
         }
         break;
       case 'about_us':
@@ -376,7 +380,7 @@ class _MenuAccountState extends State<MenuAccount> {
             context: context,
             builder: (context) => const ConnectWalletDialog(
               navigationTo: LenderContractList(),
-              isRequireLoginEmail:true,
+              isRequireLoginEmail: true,
             ),
           ).then((_) => cubit.getLoginState());
         }
@@ -415,6 +419,7 @@ class _MenuAccountState extends State<MenuAccount> {
           }
         }
         break;
+
       ///dong lai
       case 'setting_package_lender':
         {
@@ -515,12 +520,12 @@ class _MenuAccountState extends State<MenuAccount> {
       icon: ImageAssets.ic_folder,
       children: [],
     ),
-    ItemMenuModel.createParent(
-      routeName: 'about_us',
-      title: S.current.nft_activity,
-      icon: ImageAssets.ic_activity,
-      children: [],
-    ),
+    // ItemMenuModel.createParent(
+    //   routeName: 'about_us',
+    //   title: S.current.nft_activity,
+    //   icon: ImageAssets.ic_activity,
+    //   children: [],
+    // ),
     ItemMenuModel.createParent(
       title: S.current.borrower_profile,
       icon: ImageAssets.ic_token_symbol,
@@ -564,7 +569,7 @@ class _MenuAccountState extends State<MenuAccount> {
       children: [],
     ),
     ItemMenuModel.createParent(
-      routeName: 'about_us',
+      routeName: 'faq',
       title: 'FAQ',
       icon: ImageAssets.ic_faq,
       children: [],
