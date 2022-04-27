@@ -16,27 +16,30 @@ class VideoPlayerView extends StatefulWidget {
 }
 
 class _VideoPlayerViewState extends State<VideoPlayerView> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController? _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.urlVideo);
-    _controller.addListener(() {
-      setState(() {});
-    });
-    if (widget.isJustWidget) {
-      _controller.setLooping(false);
-    } else {
-      _controller.setLooping(true);
-    }
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+      _controller = VideoPlayerController.network(widget.urlVideo);
+      _controller!.addListener(() {
+        setState(() {});
+      });
+      if (widget.isJustWidget) {
+        _controller!.setLooping(false);
+      } else {
+        _controller!.setLooping(true);
+      }
+      _controller!.initialize().then((_) => setState(() {}));
+      _controller!.play();
+
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if(_controller != null){
+      _controller!.dispose();
+    }
     super.dispose();
   }
 
@@ -48,7 +51,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
               horizontal: 16.w,
             ),
             height: 290.h,
-            child: VideoPlayer(_controller),
+            child: VideoPlayer(_controller!),
           )
         : Scaffold(
             backgroundColor: Colors.black,
@@ -58,18 +61,18 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
                   Align(
                     child: GestureDetector(
                       onTap: () {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
                       },
                       child: SizedBox(
                         height: 290.h,
-                        child: VideoPlayer(_controller),
+                        child: VideoPlayer(_controller!),
                       ),
                     ),
                   ),
                   Align(
-                    child: _controller.value.isPlaying
+                    child: _controller!.value.isPlaying
                         ? const SizedBox()
                         : Icon(
                             Icons.play_circle_outline_sharp,

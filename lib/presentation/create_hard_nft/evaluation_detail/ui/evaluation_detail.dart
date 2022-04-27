@@ -9,6 +9,7 @@ import 'package:Dfy/utils/constants/app_constants.dart';
 import 'package:Dfy/utils/constants/image_asset.dart';
 import 'package:Dfy/widgets/button/round_button.dart';
 import 'package:Dfy/widgets/common/hero_photo.dart';
+import 'package:Dfy/widgets/common/hero_video.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:flutter/material.dart';
@@ -154,18 +155,18 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                           borderRadius: BorderRadius.all(
                             Radius.circular(30.r),
                           ),
-                          child: PhotoHero(
-                            photo: media?.urlImage ?? '',
-                            width: double.infinity,
-                            typeImage: media?.type ?? TypeImage.IMAGE,
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) {
-                                    return Scaffold(
-                                      body: SizedBox(
-                                        child: media?.type == TypeImage.IMAGE
-                                            ? PhotoView(
+                          child: media?.type == TypeImage.IMAGE
+                              ? PhotoHero(
+                                  photo: media?.urlImage ?? '',
+                                  width: double.infinity,
+                                  typeImage: media?.type ?? TypeImage.IMAGE,
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) {
+                                          return Scaffold(
+                                            body: SizedBox(
+                                              child: PhotoView(
                                                 imageProvider: NetworkImage(
                                                   media?.urlImage ?? '',
                                                 ),
@@ -176,17 +177,34 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                                         .covered *
                                                     2,
                                                 enableRotation: true,
-                                              )
-                                            : VideoPlayerView(
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                )
+                              : PhotoVideo(
+                                  photo: media?.urlImage ?? '',
+                                  width: double.infinity,
+                                  typeImage: media?.type ?? TypeImage.VIDEO,
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) {
+                                          return Scaffold(
+                                            body: SizedBox(
+                                              child: VideoPlayerView(
                                                 urlVideo: media?.urlImage ?? '',
                                               ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     );
                                   },
                                 ),
-                              );
-                            },
-                          ),
                         ),
                       ),
                       StreamBuilder<bool>(
@@ -287,9 +305,11 @@ class _EvaluationDetailState extends State<EvaluationDetail>
             itemCount: widget.evaluation.document?.length,
             itemBuilder: (BuildContext context, int index) {
               return documentWidget(
-                  title: widget.evaluation.document?[index].name ?? '',
-                  type: widget.evaluation.document![index].type ?? DocumentType.DOC,
-                  urlDocument: widget.evaluation.document?[index].urlDocument ?? '',
+                title: widget.evaluation.document?[index].name ?? '',
+                type:
+                    widget.evaluation.document![index].type ?? DocumentType.DOC,
+                urlDocument:
+                    widget.evaluation.document?[index].urlDocument ?? '',
               );
             },
           ),
@@ -299,7 +319,6 @@ class _EvaluationDetailState extends State<EvaluationDetail>
       ],
     );
   }
-
 
   Widget title(String text) {
     return Text(
@@ -542,6 +561,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
       child: Container(
         width: 105.w,
         height: 83.h,
+        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
@@ -554,25 +574,17 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                   fit: BoxFit.cover,
                 ),
               )
-            : Container(
-                color: Colors.black,
-                child: Stack(
-                  children: [
-                    VideoPlayer(
-                      VideoPlayerController.network(img.urlImage!)
-                        ..initialize().then((_) {
-                          setState(() {});
-                        }),
-                    ),
-                    Center(
-                      child: Icon(
-                        Icons.play_circle_outline_sharp,
-                        size: 34.sp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+            : PhotoVideo(
+                photo: img.urlImage!,
+                width: double.infinity,
+                typeImage: TypeImage.VIDEO,
+                onTap: () {
+                  bloc.changeImage(img.urlImage!);
+                  scrollController.scrollTo(
+                    index: index > 2 ? index - 1 : 0,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                },
               ),
       ),
     );
@@ -582,6 +594,7 @@ class _EvaluationDetailState extends State<EvaluationDetail>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
+
 Widget documentWidget({
   required String title,
   required DocumentType type,
@@ -611,4 +624,3 @@ Widget documentWidget({
     ),
   );
 }
-
