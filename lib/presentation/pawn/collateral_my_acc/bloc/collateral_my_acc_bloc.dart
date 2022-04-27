@@ -74,7 +74,7 @@ class CollateralMyAccBloc extends BaseCubit<CollateralMyAccState> {
   String loanToken = '';
   String collateralToken = '';
   String status = '';
-  String textAddress = 'all';
+  String textAddress = PrefsService.getCurrentWalletCore();
 
   void chooseAddressFilter(String address) {
     textAddressFilter.sink.add(

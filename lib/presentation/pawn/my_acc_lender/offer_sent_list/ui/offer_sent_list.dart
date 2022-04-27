@@ -53,9 +53,6 @@ class _OfferSentListState extends State<OfferSentList>
           child: Container(
             height: 812.h,
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            margin: EdgeInsets.only(
-              top: 26.h,
-            ),
             decoration: BoxDecoration(
               color: AppTheme.getInstance().bgBtsColor(),
               borderRadius: BorderRadius.only(

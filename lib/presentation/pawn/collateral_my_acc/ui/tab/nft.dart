@@ -29,7 +29,6 @@ class _NFTTabState extends State<NFTCollateral> with AutomaticKeepAliveClientMix
     super.initState();
     widget.bloc.refreshPostsNft();
   }
-
   @override
   Widget build(BuildContext context) {
     final bloc = widget.bloc;
