@@ -43,11 +43,13 @@ class _LenderTabState extends State<LenderTab> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(
         left: 16.w,
         right: 16.w,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             height: 46.h,
