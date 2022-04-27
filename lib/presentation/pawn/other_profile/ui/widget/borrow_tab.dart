@@ -50,6 +50,7 @@ class _BorrowTabState extends State<BorrowTab>
         right: 16.w,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           StreamBuilder<bool>(
             stream: widget.cubit.getReputationStream,
