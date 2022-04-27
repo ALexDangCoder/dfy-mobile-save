@@ -263,7 +263,7 @@ class _PersonalLendingHardScreenState extends State<PersonalLendingHardScreen> {
                                         isShop: list[index].isKYC ?? false,
                                         nameShop: list[index].name.toString(),
                                         interestRate:
-                                            '${list[index].maxInterestRate}%'
+                                            '${list[index].minInterestRate}%'
                                             '-${list[index].maxInterestRate}%',
                                         collateral: list[index].type ?? 0,
                                         total: list[index]
