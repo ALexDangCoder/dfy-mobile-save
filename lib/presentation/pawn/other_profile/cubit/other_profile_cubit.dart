@@ -99,7 +99,12 @@ class OtherProfileCubit extends BaseCubit<OtherProfileState> {
           userId = res.pawnshop?.userId.toString() ?? '';
           getReputation(userId: res.pawnshop?.userId.toString() ?? '');
           getListComment();
+        } else {
+          userId = res.id.toString();
+          getReputation(userId: res.id.toString());
+          getListComment();
         }
+
         emit(
           OtherProfileSuccess(
             CompleteType.SUCCESS,
