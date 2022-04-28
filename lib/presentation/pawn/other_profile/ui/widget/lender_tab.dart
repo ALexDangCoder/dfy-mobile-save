@@ -105,6 +105,8 @@ class _LenderTabState extends State<LenderTab> {
                             if(widget.pageRouter ==PageRouter.MARKET){
                               widget.cubit.getPointLender(newValue!);
                               widget.cubit.selectWalletLender(newValue);
+                            } else {
+                              widget.cubit.getPointLender(newValue!);
                             }
                           },
                           dropdownMaxHeight: 150.h,
