@@ -40,10 +40,12 @@ class RepaymentPay extends StatefulWidget {
     required this.id,
     required this.obj,
     required this.type,
+    required this.listHistory,
   }) : super(key: key);
   final String id;
   final ContractDetailPawn obj;
   final TypeBorrow type;
+  final List<RepaymentRequestModel> listHistory;
 
   @override
   _RepaymentPayState createState() => _RepaymentPayState();
@@ -599,6 +601,27 @@ class _RepaymentPayState extends State<RepaymentPay> {
     );
   }
 
+  bool _validateHistory(RepaymentRequestModel history) {
+    final today = DateTime.now().millisecondsSinceEpoch;
+    if (today > (history.startDate ?? 0) &&
+        today < (history.dueDate ?? 0) &&
+        (history.status ?? 0) == 1 &&
+        history.isLocked == true) {
+      return true;
+    }
+    return false;
+  }
+
+  int _filterHistory() {
+    final history = widget.listHistory
+        .firstWhereOrNull((element) => _validateHistory(element));
+    if (history != null) {
+      return history.id ?? 0;
+    } else {
+      return widget.listHistory.last.id ?? 0;
+    }
+  }
+
   Future<void> approveRepayment() async {
     final NavigatorState navigator = Navigator.of(context);
     await bloc.getRepaymentData(
@@ -608,7 +631,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
       paidLoanAmount: bloc.loan.value.isNotEmpty ? bloc.loan.value : '0',
       paidPenaltyAmount:
           bloc.penalty.value.isNotEmpty ? bloc.penalty.value : '0',
-      uid: widget.obj.id.toString(),
+      // uid: widget.obj.id.toString(),
+      uid: _filterHistory().toString(),
     );
     unawaited(
       navigator.push(
@@ -617,9 +641,9 @@ class _RepaymentPayState extends State<RepaymentPay> {
             needApprove: true,
             payValue: '1000000000',
             tokenAddress:
-              !isChoose && (bloc.maxInterest == 0 && bloc.maxPenalty == 0)
-              ? ImageAssets.getAddressToken(obj.loan?.symbol ?? '')
-              : ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
+                !isChoose && (bloc.maxInterest == 0 && bloc.maxPenalty == 0)
+                    ? ImageAssets.getAddressToken(obj.loan?.symbol ?? '')
+                    : ImageAssets.getAddressToken(obj.interest?.symbol ?? ''),
             textActiveButton: S.current.confirm_repayment,
             spender: Get.find<AppConstants>().collateral_contract,
             hexString: bloc.hexString,

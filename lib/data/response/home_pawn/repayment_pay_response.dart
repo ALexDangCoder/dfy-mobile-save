@@ -51,7 +51,7 @@ class ContentRepaymentResponse {
   @JsonKey(name: 'paymentDate')
   int? paymentDate;
   @JsonKey(name: 'txnId')
-  int? txnId;
+  String? txnId;
 
   ContentRepaymentResponse(
     this.id,

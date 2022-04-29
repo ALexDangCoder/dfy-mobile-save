@@ -19,12 +19,13 @@ class RepaymentHistoryDetailBloc
   RepaymentHistoryDetailBloc(this.id) : super(RepaymentHistoryDetailInitial()) {
     refreshPosts();
     getTotalRepayment();
+    getListItemRepayment();
   }
 
   static const int PROCESSING = 0;
   static const int WAIT_PAYMENT = 1;
-  static const int COMPLETED = 3;
-  static const int LATE = 2;
+  static const int COMPLETED = 2;
+  static const int LATE = 3;
   static const int DEFAULT = 4;
 
   String mess = '';

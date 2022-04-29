@@ -100,6 +100,7 @@ class _ContractDetailState extends State<ContractDetail>
         },
         builder: (context, state) {
           final obj = bloc.objDetail ?? ContractDetailPawn.name();
+
           return StateStreamLayout(
             stream: bloc.stateStream,
             retry: () {
@@ -1017,6 +1018,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                             .getRepaymentPay();
                                                         if (bloc.checkRepay ==
                                                             '') {
+                                                          final list = bloc
+                                                              .listRequestMy;
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
@@ -1026,6 +1029,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                                         .objDetail ??
                                                                     ContractDetailPawn
                                                                         .name(),
+                                                                listHistory:
+                                                                    list,
                                                                 id: obj.id
                                                                     .toString(),
                                                                 type:
@@ -1086,6 +1091,8 @@ class _ContractDetailState extends State<ContractDetail>
                                                 bloc.showLoading();
                                                 await bloc.getRepaymentPay();
                                                 if (bloc.checkRepay == '') {
+                                                  final list =
+                                                      bloc.listRequestMy;
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -1095,6 +1102,7 @@ class _ContractDetailState extends State<ContractDetail>
                                                         obj: bloc.objDetail ??
                                                             ContractDetailPawn
                                                                 .name(),
+                                                        listHistory: list,
                                                         id: obj.id.toString(),
                                                       ),
                                                     ),
