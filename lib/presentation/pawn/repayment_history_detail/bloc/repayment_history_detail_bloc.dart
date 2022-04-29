@@ -22,11 +22,9 @@ class RepaymentHistoryDetailBloc
     getListItemRepayment();
   }
 
-  static const int PROCESSING = 0;
-  static const int WAIT_PAYMENT = 1;
-  static const int COMPLETED = 2;
-  static const int LATE = 3;
-  static const int DEFAULT = 4;
+  static const int PROCESSING = 1;
+  static const int SUCCESS = 2;
+  static const int FAIL = 3;
 
   String mess = '';
   bool canLoadMoreMy = true;
@@ -45,16 +43,12 @@ class RepaymentHistoryDetailBloc
 
   String getStatusHistory(int type) {
     switch (type) {
-      case LATE:
-        return S.current.late;
-      case COMPLETED:
-        return S.current.completed;
-      case WAIT_PAYMENT:
-        return S.current.wait_payment;
-      case DEFAULT:
-        return S.current.defaults;
       case PROCESSING:
         return S.current.processing;
+      case SUCCESS:
+        return S.current.success;
+      case FAIL:
+        return S.current.failed;
       default:
         return '';
     }
@@ -62,11 +56,11 @@ class RepaymentHistoryDetailBloc
 
   Color getColorHistory(int type) {
     switch (type) {
-      case LATE:
+      case FAIL:
         return AppTheme.getInstance().redColor();
-      case COMPLETED:
-        return AppTheme.getInstance().blueColor();
-      case WAIT_PAYMENT:
+      case SUCCESS:
+        return AppTheme.getInstance().greenMarketColors();
+      case PROCESSING:
         return AppTheme.getInstance().orangeMarketColors();
       default:
         return AppTheme.getInstance().redColor();
