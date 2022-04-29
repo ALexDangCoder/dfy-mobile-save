@@ -165,6 +165,9 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) {
                                           return Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: Colors.black,
+                                            ),
                                             body: SizedBox(
                                               child: PhotoView(
                                                 imageProvider: NetworkImage(
@@ -194,6 +197,9 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) {
                                           return Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: Colors.black,
+                                            ),
                                             body: SizedBox(
                                               child: VideoPlayerView(
                                                 urlVideo: media?.urlImage ?? '',
