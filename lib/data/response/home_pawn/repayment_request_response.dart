@@ -62,7 +62,7 @@ class ContentResponse {
   @JsonKey(name: 'paymentDate')
   int? paymentDate;
   @JsonKey(name: 'txnId')
-  int? txnId;
+  String? txnId;
   @JsonKey(name: 'lastCycle')
   bool? lastCycle;
 

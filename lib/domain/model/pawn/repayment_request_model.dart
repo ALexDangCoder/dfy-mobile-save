@@ -14,7 +14,7 @@ class RepaymentRequestModel {
   int? smartContractType;
   String? txnHash;
   int? paymentDate;
-  int? txnId;
+  String? txnId;
   bool? lastCycle;
 
   RepaymentRequestModel.name({this.id});
