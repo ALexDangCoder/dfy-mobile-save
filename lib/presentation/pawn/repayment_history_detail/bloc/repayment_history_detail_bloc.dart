@@ -46,7 +46,7 @@ class RepaymentHistoryDetailBloc
       case PROCESSING:
         return S.current.processing;
       case SUCCESS:
-        return S.current.success;
+        return 'Success';
       case FAIL:
         return S.current.failed;
       default:
