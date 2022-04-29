@@ -113,17 +113,11 @@ class _WalletState extends State<WalletScreen>
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ComingSoon(),
-                            ),
-                          );
                         },
                         icon: Icon(
                           Icons.menu,
                           size: 24.sp,
-                          color: Colors.white,
+                          color: Colors.transparent,
                         ),
                       ),
                       Padding(
