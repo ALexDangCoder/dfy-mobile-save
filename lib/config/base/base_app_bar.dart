@@ -160,7 +160,7 @@ class _BaseSpaceState extends State<BaseSpace> {
         text,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: textNormalCustom(null, 24, FontWeight.w600),
+        style: textNormalCustom(null, 23, FontWeight.w600),
       ),
     );
   }
