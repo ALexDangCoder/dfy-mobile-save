@@ -87,18 +87,18 @@ class LenderLoanRequestNftItem extends StatelessWidget {
                 ),
               ),
             ),
-            spaceH12,
-            _rowItem(
-              title: S.current.asset_location.capitalize(),
-              description: Text(
-                'tam thoi dang trong do be chua co data',
-                style: textNormalCustom(
-                  AppTheme.getInstance().whiteColor(),
-                  14,
-                  FontWeight.w400,
-                ),
-              ),
-            ),
+            // spaceH12,
+            // _rowItem(
+            //   title: S.current.asset_location.capitalize(),
+            //   description: Text(
+            //     'tam thoi dang trong do be chua co data',
+            //     style: textNormalCustom(
+            //       AppTheme.getInstance().whiteColor(),
+            //       14,
+            //       FontWeight.w400,
+            //     ),
+            //   ),
+            // ),
             spaceH12,
             _rowItem(
               title: S.current.status.capitalize(),
