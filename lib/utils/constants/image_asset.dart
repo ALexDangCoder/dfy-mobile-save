@@ -505,6 +505,18 @@ class ImageAssets {
     return '';
   }
 
+  static double getPriceToken(String symbol) {
+    List<TokenInf> listTokenSupport = [];
+    final String listToken = PrefsService.getListTokenSupport();
+    listTokenSupport = TokenInf.decode(listToken);
+    for (final item in listTokenSupport) {
+      if (symbol.toLowerCase() == item.symbol?.toLowerCase()) {
+        return item.usdExchange ?? 0;
+      }
+    }
+    return 0;
+  }
+
   static String getSymbolAsset(String shortName) {
     List<TokenInf> listTokenSupport = [];
     final String listToken = PrefsService.getListTokenSupport();
