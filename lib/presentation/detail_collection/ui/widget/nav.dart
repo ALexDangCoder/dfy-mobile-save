@@ -57,7 +57,7 @@ class NavCollection extends StatelessWidget {
               spaceW4,
               Expanded(
                 child: Text(
-                  formatPrice.format(double.parse(volumeTraded)),
+                  '\$${formatPrice.format(double.parse(volumeTraded))}',
                   style: textNormalCustom(
                     null,
                     14,
