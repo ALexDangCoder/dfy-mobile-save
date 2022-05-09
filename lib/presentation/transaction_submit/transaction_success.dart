@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TransactionSubmitSuccess extends StatelessWidget {
-  const TransactionSubmitSuccess({Key? key, this.onlySuccess})
+  const TransactionSubmitSuccess({Key? key, this.onlySuccess, })
       : super(key: key);
   final bool? onlySuccess;
+
 
   @override
   Widget build(BuildContext context) {

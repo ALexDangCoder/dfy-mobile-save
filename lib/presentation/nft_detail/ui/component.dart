@@ -138,25 +138,25 @@ Widget _nameNFT({
             SizedBox(
               width: 25.h,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ComingSoon();
-                    },
-                  ),
-                );
-              },
-              child: roundButton(
-                image: ImageAssets.ic_flag_svg,
-                whiteBackground: true,
-              ),
-            ),
-            SizedBox(
-              width: 20.h,
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) {
+            //           return const ComingSoon();
+            //         },
+            //       ),
+            //     );
+            //   },
+            //   child: roundButton(
+            //     image: ImageAssets.ic_flag_svg,
+            //     whiteBackground: true,
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 20.h,
+            // ),
             InkWell(
               onTap: () {
                 Share.share(urlShare, subject: 'Buy NFT with $price USD');
@@ -275,33 +275,33 @@ Widget additionalColumn(List<Properties> properties) {
 Widget _rowCollection(String symbol, String collectionName, bool verify) {
   return Row(
     children: [
-      SizedBox(
-        height: 28.h,
-        width: 28.w,
-        child: CircleAvatar(
-          backgroundColor: Colors.yellow,
-          radius: 18.r,
-          child: Center(
-            child: Text(
-              collectionName.substring(0, 1),
-              style: textNormalCustom(
-                Colors.black,
-                20,
-                FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: 8.w,
-      ),
+      // SizedBox(
+      //   height: 28.h,
+      //   width: 28.w,
+      //   child: CircleAvatar(
+      //     backgroundColor: Colors.yellow,
+      //     radius: 18.r,
+      //     child: Center(
+      //       child: Text(
+      //         collectionName.substring(0, 1),
+      //         style: textNormalCustom(
+      //           Colors.black,
+      //           20,
+      //           FontWeight.w600,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // SizedBox(
+      //   width: 8.w,
+      // ),
       Text(
-        collectionName,
+        collectionName.toUpperCase(),
         style: textNormalCustom(
           Colors.white,
           16,
-          FontWeight.w400,
+          FontWeight.w600,
         ),
       ),
       SizedBox(

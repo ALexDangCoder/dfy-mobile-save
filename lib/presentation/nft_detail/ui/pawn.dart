@@ -233,7 +233,7 @@ Widget _buildButtonCancelOnPawn(
           Timer(const Duration(seconds: 30), () {
             nftMarket.status = 0;
             bloc.emit(NftOnPawnSuccess(nftMarket));
-            showDialogSuccess(context);
+            showDialogSuccess(context, text: 'Your NFT is now not on the market');
           });
         }
       }

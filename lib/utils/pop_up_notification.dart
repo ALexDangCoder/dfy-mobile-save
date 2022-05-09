@@ -67,7 +67,7 @@ Future<void> showLoadFail(BuildContext context,{String? content}) async {
 }
 
 /// show dialog success
-Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess}) async {
+Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess,}) async {
   final navigator = Navigator.of(context);
   unawaited(
     navigator.push(

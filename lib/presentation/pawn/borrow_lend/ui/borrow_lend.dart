@@ -90,7 +90,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen> {
                                   ),
                                   spaceH20,
                                   Text(
-                                    S.current.what_is_your_collateral,
+                                    'What kind of collateral do you want to lend?',
                                     style: textNormalCustom(
                                       null,
                                       16,
@@ -137,7 +137,7 @@ class _BorrowLendScreenState extends State<BorrowLendScreen> {
                           ),
                           spaceH20,
                           Text(
-                            S.current.what_is_your_collateral,
+                            'What kind of collateral do you want to lend?',
                             style: textNormalCustom(
                               null,
                               16,
