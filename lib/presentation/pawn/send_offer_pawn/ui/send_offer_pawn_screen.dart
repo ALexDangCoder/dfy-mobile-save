@@ -42,13 +42,14 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
   late TextEditingController textInterestController;
   late String duration;
   late String symbolAmount;
-
+  double amountToken=0;
   @override
   void initState() {
     super.initState();
     bloc = SendOfferPawnBloc();
     bloc.getTokenInf();
     symbolAmount = widget.objCollateralDetail.expectedCollateralSymbol ?? '';
+     amountToken=ImageAssets.getPriceToken(symbolAmount);
     bloc.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
       tokenAddress: ImageAssets.getAddressToken(
@@ -487,7 +488,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                     if (bloc.funValidateLoan(value)) {
                       double? totalAmount;
                       totalAmount =
-                          bloc.collateralAmount * (double.parse(value) / 100);
+                          bloc.collateralAmount * (double.parse(value) / 100) /amountToken;
                       textAmountController.text =
                           formatPricePawn.format(totalAmount);
                       bloc.funValidateAmount(textAmountController.text);
