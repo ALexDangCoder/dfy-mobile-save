@@ -56,7 +56,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
   late TextEditingController textInterestController;
   late String duration;
   late String symbolAmount;
-
+  double amountToken=0;
   @override
   void initState() {
     super.initState();
@@ -69,6 +69,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
         symbolAmount,
       ),
     );
+    amountToken=ImageAssets.getPriceToken(symbolAmount);
     bloc.collateralAmount = ((widget.detailCrypto.collateralAmount ?? 0) *
         widget.cubit.getExchangeUSD(
             symbolToken: widget.detailCrypto.collateralSymbol ?? ''));
@@ -504,7 +505,7 @@ class _LoanSendOfferState extends State<LoanSendOffer> {
                     if (bloc.funValidateLoan(value)) {
                       double? totalAmount;
                       totalAmount =
-                          bloc.collateralAmount * (double.parse(value) / 100);
+                          bloc.collateralAmount * (double.parse(value) / 100)/amountToken;
                       textAmountController.text =
                           formatPricePawn.format(totalAmount);
                       bloc.funValidateAmount(textAmountController.text);
