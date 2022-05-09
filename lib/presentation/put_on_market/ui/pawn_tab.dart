@@ -292,40 +292,40 @@ class _PawnTabState extends State<PawnTab>
               const SizedBox(
                 height: 16,
               ),
-              Text(
-                S.current.quantity_of_collateral,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor(),
-                  16,
-                  FontWeight.w600,
-                ),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                S.current.set_the_nft_quantity_as_collateral,
-                style: textNormalCustom(
-                  AppTheme.getInstance().textThemeColor().withOpacity(0.7),
-                  14,
-                  FontWeight.w400,
-                ),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              InputNumberOfQuantity(
-                maxLength: 5,
-                canEdit: widget.canEdit,
-                quantity: widget.quantity,
-                onchangeText: (value) {
-                  widget.cubit.changeQuantityPawn(
-                    value: value != '' ? int.parse(value) : 0,
-                  );
-                  _putOnMarketModel.numberOfCopies =
-                      value != '' ? int.parse(value) : 0;
-                },
-              ),
+              // Text(
+              //   S.current.quantity_of_collateral,
+              //   style: textNormalCustom(
+              //     AppTheme.getInstance().textThemeColor(),
+              //     16,
+              //     FontWeight.w600,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 4,
+              // ),
+              // Text(
+              //   S.current.set_the_nft_quantity_as_collateral,
+              //   style: textNormalCustom(
+              //     AppTheme.getInstance().textThemeColor().withOpacity(0.7),
+              //     14,
+              //     FontWeight.w400,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 4,
+              // ),
+              // InputNumberOfQuantity(
+              //   maxLength: 5,
+              //   canEdit: widget.canEdit,
+              //   quantity: widget.quantity,
+              //   onchangeText: (value) {
+              //     widget.cubit.changeQuantityPawn(
+              //       value: value != '' ? int.parse(value) : 0,
+              //     );
+              //     _putOnMarketModel.numberOfCopies =
+              //         value != '' ? int.parse(value) : 0;
+              //   },
+              // ),
             ],
           ),
         ),

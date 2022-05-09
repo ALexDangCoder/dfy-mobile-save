@@ -292,9 +292,9 @@ class _SearchNFTState extends State<SearchNFT> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 24.h,
-            ),
+            // SizedBox(
+            //   height: 24.h,
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 17.w),
               child: Text(
@@ -385,9 +385,9 @@ class _SearchNFTState extends State<SearchNFT> {
             Divider(
               color: AppTheme.getInstance().divideColor(),
             ),
-            SizedBox(
-              height: 24.h,
-            ),
+            // SizedBox(
+            //   height: 24.h,
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 17.w),
               child: Text(

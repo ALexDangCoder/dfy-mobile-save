@@ -273,7 +273,7 @@ Widget _buildButtonCancelOnSale(
           Timer(const Duration(seconds: 30), () {
             nftMarket.marketStatus = 0;
             bloc.emit(NftOnSaleSuccess(nftMarket));
-            showDialogSuccess(context);
+            showDialogSuccess(context,text: 'Your NFT is now not on the market');
           });
         }
       }
@@ -598,7 +598,7 @@ Widget _buildButtonPutOnMarket(
                 showDialogSuccess(
                   context,
                   alert: S.current.put_on_pawn_success,
-                  text: S.current.check_data_on_market + PUT_ON_PAWN,
+                  text: 'Your NFT has been requested for loan successfully.',
                 );
               }
               if (check == PUT_ON_AUCTION) {
@@ -608,7 +608,7 @@ Widget _buildButtonPutOnMarket(
                 showDialogSuccess(
                   context,
                   alert: S.current.put_on_auction_success,
-                  text: S.current.check_data_on_market + PUT_ON_AUCTION,
+                  text: 'Your NFT auction request has been sent to DeFi For You. Review process could take up to 2 working days.',
                 );
               }
               if (check == PUT_ON_SALE) {
@@ -618,7 +618,7 @@ Widget _buildButtonPutOnMarket(
                 showDialogSuccess(
                   context,
                   alert: S.current.put_on_sale_success,
-                  text: S.current.check_data_on_market + PUT_ON_SALE,
+                  text: 'Your NFT has been put on sale successfully',
                 );
               }
             });

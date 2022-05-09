@@ -67,7 +67,7 @@ Future<void> showLoadFail(BuildContext context,{String? content}) async {
 }
 
 /// show dialog success
-Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess}) async {
+Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess, String? title}) async {
   final navigator = Navigator.of(context);
   unawaited(
     navigator.push(
@@ -82,6 +82,7 @@ Future<void> showLoadSuccess(BuildContext context, {bool? onlySuccess}) async {
                 filter: ImageFilter.blur(sigmaY: 2.0, sigmaX: 2.0),
                 child: TransactionSubmitSuccess(
                   onlySuccess: onlySuccess,
+                  title: title,
                 ),
               ),
             ),

@@ -74,7 +74,7 @@ class CategoriesDropDown extends StatelessWidget {
                   image: ImageAssets.ic_expand_white_svg,
                 ),
               ),
-              placeholder: S.current.collection_name,
+              placeholder: 'Collection',
               placeholderTS: textNormal(
                 Colors.white.withOpacity(0.5),
                 16,
