@@ -49,14 +49,17 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
     bloc = SendOfferPawnBloc();
     bloc.getTokenInf();
     symbolAmount = widget.objCollateralDetail.expectedCollateralSymbol ?? '';
+    String symbolCollateral = widget.objCollateralDetail.collateralSymbol ?? '';
      amountToken=ImageAssets.getPriceToken(symbolAmount);
+    double amountTokenCollateral=ImageAssets.getPriceToken(symbolCollateral);
     bloc.getBalanceToken(
       ofAddress: PrefsService.getCurrentBEWallet(),
       tokenAddress: ImageAssets.getAddressToken(
         symbolAmount,
       ),
     );
-    bloc.collateralAmount = widget.objCollateralDetail.estimatePrice ?? 0;
+    bloc.collateralAmount = (widget.objCollateralDetail.collateralAmount ?? 0)*
+        amountTokenCollateral;
     textMessController = TextEditingController();
     textLiquidationThresholdController = TextEditingController();
     textAmountController = TextEditingController();
@@ -488,7 +491,7 @@ class _SendOfferPawnScreenState extends State<SendOfferPawnScreen> {
                     if (bloc.funValidateLoan(value)) {
                       double? totalAmount;
                       totalAmount =
-                          bloc.collateralAmount * (double.parse(value) / 100) /amountToken;
+                          (bloc.collateralAmount * (double.parse(value) / 100) )/amountToken;
                       textAmountController.text =
                           formatPricePawn.format(totalAmount);
                       bloc.funValidateAmount(textAmountController.text);
