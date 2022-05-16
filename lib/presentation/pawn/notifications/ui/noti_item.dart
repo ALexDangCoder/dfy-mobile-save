@@ -959,7 +959,7 @@ class _NotiItemState extends State<NotiItem> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Send collateral',
+                  text: 'Send collateral ',
                   style: textNormal(
                     textHistory,
                     14,
@@ -1121,7 +1121,7 @@ class _NotiItemState extends State<NotiItem> {
                   style: richTextOrange,
                 ),
                 TextSpan(
-                  text: ' for collateral',
+                  text: ' for collateral ',
                   style: textNormal(
                     textHistory,
                     14,
@@ -1129,7 +1129,7 @@ class _NotiItemState extends State<NotiItem> {
                 ),
                 TextSpan(
                   text:
-                      '${widget.notificationDetail.notiDTO?.collateralNotiDTO?.nameCollateral},',
+                      '${widget.notificationDetail.notiDTO?.collateralNotiDTO?.nameCollateral}, ',
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       goTo(
@@ -1655,8 +1655,15 @@ class _NotiItemState extends State<NotiItem> {
                 ),
               ),
               TextSpan(
-                text:
-                    '${widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate}',
+                text: formatDateTime3.format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                    int.parse(
+                      widget.notificationDetail.notiDTO?.repaymentNotiDTO
+                              ?.dueDate ??
+                          '0',
+                    ),
+                  ),
+                ),
                 style: textNormal(
                   textHistory,
                   14,
@@ -1664,7 +1671,7 @@ class _NotiItemState extends State<NotiItem> {
               ),
               TextSpan(
                 text:
-                    '.If you do not fully repay the interest before the due date, the payment period will be marked as late payment.'
+                    '. If you do not fully repay the interest before the due date, the payment period will be marked as late payment.'
                     ' If you made 3 times late payment, your contract will be liquidated.',
                 style: textNormal(
                   textHistory,
@@ -1704,7 +1711,15 @@ class _NotiItemState extends State<NotiItem> {
                 ),
                 TextSpan(
                   text:
-                      '${widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate}',
+                  formatDateTime3.format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(
+                        widget.notificationDetail.notiDTO?.repaymentNotiDTO
+                            ?.dueDate ??
+                            '0',
+                      ),
+                    ),
+                  ),
                   style: textNormal(
                     textHistory,
                     14,
@@ -1712,7 +1727,7 @@ class _NotiItemState extends State<NotiItem> {
                 ),
                 TextSpan(
                   text:
-                      '.If you do not fully repay the interest before the due date, the payment period will be marked as late payment.'
+                      '. If you do not fully repay the interest before the due date, the payment period will be marked as late payment.'
                       ' If you made 3 times late payment, your contract will be liquidated.',
                   style: textNormal(
                     textHistory,
@@ -1828,7 +1843,15 @@ class _NotiItemState extends State<NotiItem> {
                 ),
                 TextSpan(
                   text:
-                      '${widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate}',
+                  formatDateTime3.format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(
+                        widget.notificationDetail.notiDTO?.repaymentNotiDTO
+                            ?.dueDate ??
+                            '0',
+                      ),
+                    ),
+                  ),
                   style: textNormal(
                     textHistory,
                     14,
@@ -1934,7 +1957,8 @@ class _NotiItemState extends State<NotiItem> {
           ),
         );
       case 18:
-        final String date = widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate ?? '0';
+        final String date =
+            widget.notificationDetail.notiDTO?.repaymentNotiDTO?.dueDate ?? '0';
         return RichText(
           text: TextSpan(
             children: [
@@ -1947,8 +1971,8 @@ class _NotiItemState extends State<NotiItem> {
                 ),
               ),
               TextSpan(
-                text:
-                    formatDateTime.format(DateTime.fromMillisecondsSinceEpoch(int.parse(date))),
+                text: formatDateTime.format(
+                    DateTime.fromMillisecondsSinceEpoch(int.parse(date))),
                 style: textNormal(
                   textHistory,
                   14,
