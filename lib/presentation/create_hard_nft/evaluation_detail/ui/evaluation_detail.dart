@@ -12,12 +12,12 @@ import 'package:Dfy/widgets/common/hero_photo.dart';
 import 'package:Dfy/widgets/common/hero_video.dart';
 import 'package:Dfy/widgets/sized_image/sized_png_image.dart';
 import 'package:Dfy/widgets/video_player/video_player_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 class EvaluationDetail extends StatefulWidget {
   const EvaluationDetail({
@@ -77,6 +77,10 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                   amountColor,
                   14,
                 ).copyWith(decoration: TextDecoration.underline),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => launch(
+                        'https://evaluator.defiforyou.uk/evaluator/infor?id=${widget.evaluation.evaluator?.id.toString() ?? ''}&typeScroll=home',
+                      ),
               ),
               TextSpan(
                 text: ' at $time',
@@ -112,6 +116,10 @@ class _EvaluationDetailState extends State<EvaluationDetail>
                         amountColor,
                         14,
                       ).copyWith(decoration: TextDecoration.underline),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launch(
+                          'https://evaluator.defiforyou.uk/evaluator/infor?id=${widget.evaluation.evaluator?.id.toString() ?? ''}&typeScroll=map',
+                        ),
                     ),
                   ],
                 ),

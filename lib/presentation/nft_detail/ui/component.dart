@@ -304,6 +304,7 @@ Widget _rowCollection(String symbol, String collectionName, bool verify) {
           FontWeight.w600,
         ),
       ),
+
       SizedBox(
         width: 8.w,
       ),

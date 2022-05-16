@@ -428,7 +428,7 @@ class _MenuAccountState extends State<MenuAccount> {
             builder: (context) => const ConnectWalletDialog(
               navigationTo: ManageLoanPackageList(),
               isRequireLoginEmail: true,
-              settings: const RouteSettings(
+              settings: RouteSettings(
                 name: AppRouter.manage_loan_package,
               ),
             ),
