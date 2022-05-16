@@ -157,6 +157,7 @@ class ContentResponse {
         cover: getPath(nftMediaCid ?? ''),
         typeNFT: getTypeNft(nftType ?? 0),
         image: getPath(nftAvatarCid ?? ''),
+        urlToken: urlToken,
         nftId: nftId,
         price: expectedLoanAmount,
         name: nftName,
