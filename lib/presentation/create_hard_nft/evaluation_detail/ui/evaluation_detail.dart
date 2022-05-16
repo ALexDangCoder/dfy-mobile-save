@@ -1,7 +1,6 @@
 import 'package:Dfy/config/resources/color.dart';
 import 'package:Dfy/config/resources/styles.dart';
 import 'package:Dfy/config/themes/app_theme.dart';
-import 'package:Dfy/domain/env/model/app_constants.dart';
 import 'package:Dfy/domain/model/evaluation_hard_nft.dart';
 import 'package:Dfy/generated/l10n.dart';
 import 'package:Dfy/presentation/market_place/hard_nft/bloc/hard_nft_bloc.dart';
@@ -16,11 +15,9 @@ import 'package:Dfy/widgets/video_player/video_player_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 class EvaluationDetail extends StatefulWidget {
   const EvaluationDetail({
