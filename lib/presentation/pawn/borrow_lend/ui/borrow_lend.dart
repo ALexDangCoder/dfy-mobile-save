@@ -59,98 +59,100 @@ class _BorrowLendScreenState extends State<BorrowLendScreen> {
         children: [
           Column(
             children: [
-              if (index == 0) GestureDetector(
-                      onTap: () {
-                        final FocusScopeNode currentFocus =
-                            FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-                        _bloc.isChooseToken.add(false);
-                      },
-                      child: SingleChildScrollView(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 20.h,
+              if (index == 0)
+                GestureDetector(
+                  onTap: () {
+                    final FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                    _bloc.isChooseToken.add(false);
+                  },
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 20.h,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.current.what_you_can_borrow,
+                                style: textNormalCustom(
+                                  null,
+                                  20,
+                                  FontWeight.w700,
+                                ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    S.current.what_you_can_borrow,
-                                    style: textNormalCustom(
-                                      null,
-                                      20,
-                                      FontWeight.w700,
-                                    ),
-                                  ),
-                                  spaceH20,
-                                  Text(
-                                    'What kind of collateral do you want to lend?',
-                                    style: textNormalCustom(
-                                      null,
-                                      16,
-                                      FontWeight.w400,
-                                    ),
-                                  ),
-                                  spaceH16,
-                                  SelectType(
-                                    bloc: _bloc,
-                                  ),
-                                  StreamBuilder<TypeLend>(
-                                    stream: _bloc.typeScreen,
-                                    builder: (context, snapshot) {
-                                      return SizedBox(
-                                        child: snapshot.data == TypeLend.CRYPTO
-                                            ? BorrowItem(
-                                                bloc: _bloc,
-                                              )
-                                            : const SizedBox.shrink(),
-                                      );
-                                    },
-                                  ),
-                                ],
+                              spaceH20,
+                              Text(
+                                'What kind of collateral do you want to lend?',
+                                style: textNormalCustom(
+                                  null,
+                                  16,
+                                  FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ],
+                              spaceH16,
+                              SelectType(
+                                bloc: _bloc,
+                              ),
+                              StreamBuilder<TypeLend>(
+                                stream: _bloc.typeScreen,
+                                builder: (context, snapshot) {
+                                  return SizedBox(
+                                    child: snapshot.data == TypeLend.CRYPTO
+                                        ? BorrowItem(
+                                            bloc: _bloc,
+                                          )
+                                        : const SizedBox.shrink(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.current.what_you_can_lend,
+                        style: textNormalCustom(
+                          null,
+                          20,
+                          FontWeight.w700,
                         ),
                       ),
-                    ) else Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 20.h,
+                      spaceH20,
+                      Text(
+                        'What kind of collateral are you looking for?',
+                        style: textNormalCustom(
+                          null,
+                          16,
+                          FontWeight.w400,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            S.current.what_you_can_lend,
-                            style: textNormalCustom(
-                              null,
-                              20,
-                              FontWeight.w700,
-                            ),
-                          ),
-                          spaceH20,
-                          Text(
-                            'What kind of collateral do you want to lend?',
-                            style: textNormalCustom(
-                              null,
-                              16,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          spaceH16,
-                          SelectType(
-                            bloc: _bloc,
-                          ),
-                        ],
+                      spaceH16,
+                      SelectType(
+                        bloc: _bloc,
                       ),
-                    ),
+                    ],
+                  ),
+                ),
               spaceH40,
             ],
           ),
