@@ -614,8 +614,8 @@ class _RepaymentPayState extends State<RepaymentPay> {
 
   int _filterHistory() {
     final history = widget.listHistory
-        .firstWhereOrNull((element) => _validateHistory(element));
-    if (history != null) {
+        .firstWhere((element) => _validateHistory(element), orElse: () => RepaymentRequestModel.name());
+    if (history.id != null) {
       return history.id ?? 0;
     } else {
       return widget.listHistory.last.id ?? 0;
